@@ -1,5 +1,5 @@
 {
-  "base": "base/Propuesta_Gauchos_Rugby_Club_2027_base.pdf",
+  "base": "base/Propuesta_Gauchos_Rugby_Club_2027_base_v2.pdf",
   "salida": "Propuesta_Gauchos_Rugby_Club_2027.pdf",
   "iva": 0.19,
   "escudo_portada": {
@@ -64,8 +64,14 @@
     "GAU-17": {
       "imagen": "img/con_escudo/17_player_hoodie_core.jpg"
     },
+    "GAU-19": {
+      "imagen": "img/con_escudo/16_player_tee_boost_eco.jpg"
+    },
     "GAU-22": {
       "imagen": "img/con_escudo/18_player_pant_maas.jpg"
+    },
+    "GAU-23": {
+      "imagen": "img/con_escudo/15_parka_larga.jpg"
     }
   }
 }
