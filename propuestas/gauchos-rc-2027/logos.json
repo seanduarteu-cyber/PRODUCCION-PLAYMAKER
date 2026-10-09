@@ -284,9 +284,9 @@
       {"logo": "isotipo", "zona": [1338, 628, 1468, 732]}
     ],
     "img/chaqueta_varsity.jpg": [
-      {"logo": "playmaker", "zona": [118, 182, 198, 242]},
-      {"logo": "playmaker", "zona": [872, 182, 950, 242]},
-      {"logo": "playmaker", "zona": [300, 695, 465, 820]},
+      {"logo": "isotipo", "zona": [118, 182, 198, 242]},
+      {"logo": "isotipo", "zona": [872, 182, 950, 242]},
+      {"logo": "isotipo", "zona": [300, 695, 465, 820]},
       {"logo": "escudo", "zona": [265, 165, 340, 258]},
       {"logo": "escudo", "zona": [1022, 167, 1095, 258]},
       {"logo": "escudo", "zona": [490, 660, 640, 850]},
