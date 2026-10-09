@@ -8,22 +8,22 @@
   },
   "renders": {
     "GAU-01": {
-      "imagen": "img/con_escudo/01_player_tee_home_op1.jpg"
+      "imagen": "img/con_logos/01_player_tee_home_op1.jpg"
     },
     "GAU-02": {
-      "imagen": "img/con_escudo/03_player_tee_home_02.jpg"
+      "imagen": "img/con_logos/03_player_tee_home_02.jpg"
     },
     "GAU-03": {
-      "imagen": "img/con_escudo/02_player_tee_away_01.jpg"
+      "imagen": "img/con_logos/02_player_tee_away_01.jpg"
     },
     "GAU-04": {
-      "imagen": "img/con_escudo/04_player_tee_away_02.jpg"
+      "imagen": "img/con_logos/04_player_tee_away_02.jpg"
     },
     "GAU-05": {
-      "imagen": "img/con_escudo/05_short_de_juego_rugby.jpg"
+      "imagen": "img/con_logos/05_short_de_juego_rugby.jpg"
     },
     "GAU-06": {
-      "imagen": "img/05_player_short_home.jpg",
+      "imagen": "img/con_logos/05_player_short_home.jpg",
       "recorte": [
         790,
         632,
@@ -32,46 +32,52 @@
       ]
     },
     "GAU-07": {
-      "imagen": "img/con_escudo/06_match_day_shirt_golem.jpg"
+      "imagen": "img/con_logos/06_match_day_shirt_golem.jpg"
     },
     "GAU-08": {
-      "imagen": "img/con_escudo/07_player_wyrn_training.jpg"
+      "imagen": "img/con_logos/07_player_wyrn_training.jpg"
     },
     "GAU-09": {
-      "imagen": "img/con_escudo/08_player_isen_training_quarter_zip.jpg"
+      "imagen": "img/con_logos/08_player_isen_training_quarter_zip.jpg"
     },
     "GAU-10": {
-      "imagen": "img/con_escudo/09_player_skarn_contact.jpg"
+      "imagen": "img/con_logos/09_player_skarn_contact.jpg"
     },
     "GAU-11": {
-      "imagen": "img/con_escudo/10_player_freon_tank_12.jpg"
+      "imagen": "img/con_logos/10_player_freon_tank_12.jpg"
     },
     "GAU-12": {
-      "imagen": "img/con_escudo/11_player_kansas_12.jpg"
+      "imagen": "img/con_logos/11_player_kansas_12.jpg"
     },
     "GAU-13": {
-      "imagen": "img/con_escudo/12_player_polo_clarinet.jpg"
+      "imagen": "img/con_logos/12_player_polo_clarinet.jpg"
     },
     "GAU-14": {
-      "imagen": "img/con_escudo/13_player_jacket_kendo.jpg"
+      "imagen": "img/con_logos/13_player_jacket_kendo.jpg"
     },
     "GAU-15": {
-      "imagen": "img/con_escudo/14_rivendell_windbreaker.jpg"
+      "imagen": "img/con_logos/14_rivendell_windbreaker.jpg"
     },
     "GAU-16": {
-      "imagen": "img/con_escudo/19_player_crew_neck_axima.jpg"
+      "imagen": "img/con_logos/19_player_crew_neck_axima.jpg"
     },
     "GAU-17": {
-      "imagen": "img/con_escudo/17_player_hoodie_core.jpg"
+      "imagen": "img/con_logos/17_player_hoodie_core.jpg"
+    },
+    "GAU-18": {
+      "imagen": "img/con_logos/chaqueta_varsity.jpg"
     },
     "GAU-19": {
-      "imagen": "img/con_escudo/16_player_tee_boost_eco.jpg"
+      "imagen": "img/con_logos/16_player_tee_boost_eco.jpg"
+    },
+    "GAU-21": {
+      "imagen": "img/con_logos/17_player_bermuda_maracas.jpg"
     },
     "GAU-22": {
-      "imagen": "img/con_escudo/18_player_pant_maas.jpg"
+      "imagen": "img/con_logos/18_player_pant_maas.jpg"
     },
     "GAU-23": {
-      "imagen": "img/con_escudo/15_parka_larga.jpg"
+      "imagen": "img/con_logos/15_parka_larga.jpg"
     }
   }
 }

@@ -1,0 +1,298 @@
+{
+  "logos": {
+    "escudo": {
+      "archivo": "img/escudo_gauchos.png",
+      "color": "original"
+    },
+    "isotipo": {
+      "archivo": "../_recursos/playmaker_isotipo_blanco.png",
+      "color": "tinta"
+    },
+    "playmaker": {
+      "archivo": "../_recursos/playmaker_logo_blanco.png",
+      "color": "tinta",
+      "ajuste": "contener"
+    },
+    "playmaker_horizontal": {
+      "archivo": "../_recursos/playmaker_logo_horizontal_blanco.png",
+      "color": "tinta",
+      "ajuste": "contener",
+      "alto_max": 1.15
+    }
+  },
+  "salida": "img/con_logos",
+  "renders": {
+    "img/01_player_tee_home_op1.jpg": [
+      {"logo": "escudo", "caja": [425, 350, 492, 447]},
+      {"logo": "escudo", "caja": [1390, 7, 1442, 73]},
+      {"logo": "escudo", "caja": [1350, 480, 1457, 617]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [215, 365, 285, 425]},
+      {"logo": "isotipo", "zona": [1335, 310, 1475, 425]}
+    ],
+    "img/02_player_tee_away_01.jpg": [
+      {"logo": "escudo", "caja": [423, 345, 493, 448]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1347, 476, 1457, 620]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [215, 360, 295, 425]},
+      {"logo": "isotipo", "zona": [1335, 310, 1475, 420]}
+    ],
+    "img/03_player_tee_home_02.jpg": [
+      {"logo": "escudo", "caja": [423, 346, 493, 450]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1350, 480, 1459, 622]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [210, 365, 295, 430]},
+      {"logo": "isotipo", "zona": [1335, 310, 1475, 420]}
+    ],
+    "img/04_player_tee_away_02.jpg": [
+      {"logo": "escudo", "caja": [547, 220, 591, 291]},
+      {"logo": "escudo", "caja": [539, 681, 589, 744]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1349, 479, 1459, 623]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [412, 232, 470, 282]},
+      {"logo": "isotipo", "zona": [420, 688, 472, 732]},
+      {"logo": "isotipo", "zona": [1320, 300, 1490, 428]}
+    ],
+    "img/05_player_short_home.jpg": [
+      {"logo": "isotipo", "zona": [817, 741, 854, 770]},
+      {"logo": "isotipo", "zona": [887, 741, 925, 769]},
+      {"logo": "isotipo", "zona": [965, 740, 1012, 776]},
+      {"logo": "isotipo", "zona": [1035, 740, 1082, 776]}
+    ],
+    "img/05_short_de_juego_rugby.jpg": [
+      {"logo": "escudo", "caja": [406, 397, 463, 479]},
+      {"logo": "escudo", "caja": [206, 764, 244, 813]},
+      {"logo": "escudo", "caja": [469, 764, 506, 813]},
+      {"logo": "escudo", "caja": [749, 764, 787, 813]},
+      {"logo": "escudo", "caja": [1389, 4, 1442, 78]},
+      {"logo": "escudo", "caja": [1354, 464, 1454, 594]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [75, 415, 145, 478]},
+      {"logo": "isotipo", "zona": [1135, 415, 1210, 478]},
+      {"logo": "isotipo", "zona": [35, 775, 80, 815]},
+      {"logo": "isotipo", "zona": [295, 775, 340, 815]},
+      {"logo": "isotipo", "zona": [557, 775, 602, 815]},
+      {"logo": "isotipo", "zona": [1180, 772, 1222, 810]},
+      {"logo": "isotipo", "zona": [1340, 295, 1475, 400]}
+    ],
+    "img/06_match_day_shirt_golem.jpg": [
+      {"logo": "escudo", "caja": [526, 245, 591, 323]},
+      {"logo": "escudo", "caja": [243, 746, 276, 792]},
+      {"logo": "escudo", "caja": [536, 744, 568, 790]},
+      {"logo": "escudo", "caja": [825, 746, 858, 792]},
+      {"logo": "escudo", "caja": [1109, 743, 1143, 790]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1353, 476, 1457, 619]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [375, 258, 440, 308]},
+      {"logo": "isotipo", "zona": [960, 170, 1020, 215]},
+      {"logo": "isotipo", "zona": [156, 748, 197, 785]},
+      {"logo": "isotipo", "zona": [451, 748, 492, 785]},
+      {"logo": "isotipo", "zona": [741, 748, 782, 785]},
+      {"logo": "isotipo", "zona": [1029, 748, 1070, 785]},
+      {"logo": "isotipo", "zona": [1340, 305, 1470, 415]}
+    ],
+    "img/07_player_wyrn_training.jpg": [
+      {"logo": "escudo", "caja": [561, 243, 623, 320]},
+      {"logo": "escudo", "caja": [211, 739, 248, 786]},
+      {"logo": "escudo", "caja": [816, 739, 851, 785]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1353, 475, 1454, 619]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [400, 255, 468, 308]},
+      {"logo": "isotipo", "zona": [933, 170, 990, 212]},
+      {"logo": "isotipo", "zona": [120, 743, 162, 782]},
+      {"logo": "isotipo", "zona": [414, 704, 450, 735]},
+      {"logo": "isotipo", "zona": [728, 745, 770, 782]},
+      {"logo": "isotipo", "zona": [1047, 704, 1083, 735]},
+      {"logo": "isotipo", "zona": [1340, 305, 1470, 415]}
+    ],
+    "img/08_player_isen_training_quarter_zip.jpg": [
+      {"logo": "escudo", "caja": [381, 269, 419, 332]},
+      {"logo": "escudo", "caja": [1023, 258, 1051, 306], "angosto": 0.6},
+      {"logo": "escudo", "caja": [241, 735, 271, 774]},
+      {"logo": "escudo", "caja": [634, 733, 663, 772]},
+      {"logo": "escudo", "caja": [1031, 731, 1063, 772]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1350, 473, 1457, 617]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [228, 278, 290, 328]},
+      {"logo": "isotipo", "zona": [755, 198, 810, 245]},
+      {"logo": "isotipo", "zona": [153, 735, 194, 770]},
+      {"logo": "isotipo", "zona": [548, 735, 589, 770]},
+      {"logo": "isotipo", "zona": [948, 735, 987, 770]},
+      {"logo": "isotipo", "zona": [1340, 300, 1470, 410]}
+    ],
+    "img/09_player_skarn_contact.jpg": [
+      {"logo": "escudo", "caja": [369, 260, 419, 322]},
+      {"logo": "escudo", "caja": [996, 250, 1026, 314], "angosto": 0.6},
+      {"logo": "escudo", "caja": [243, 711, 279, 754]},
+      {"logo": "escudo", "caja": [646, 710, 679, 752]},
+      {"logo": "escudo", "caja": [1046, 710, 1081, 754]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1353, 475, 1457, 615]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [225, 268, 280, 315]},
+      {"logo": "isotipo", "zona": [733, 193, 785, 236]},
+      {"logo": "isotipo", "zona": [150, 720, 192, 755]},
+      {"logo": "isotipo", "zona": [554, 720, 594, 755]},
+      {"logo": "isotipo", "zona": [953, 720, 995, 755]},
+      {"logo": "isotipo", "zona": [1340, 305, 1470, 415]}
+    ],
+    "img/10_player_freon_tank_12.jpg": [
+      {"logo": "escudo", "caja": [366, 246, 419, 307]},
+      {"logo": "escudo", "caja": [1010, 228, 1058, 302], "angosto": 0.7},
+      {"logo": "escudo", "caja": [159, 708, 191, 752]},
+      {"logo": "escudo", "caja": [561, 708, 591, 750]},
+      {"logo": "escudo", "caja": [979, 708, 1009, 752]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1351, 468, 1459, 612]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [215, 263, 272, 310]},
+      {"logo": "isotipo", "zona": [690, 188, 748, 240]},
+      {"logo": "isotipo", "zona": [945, 252, 975, 294], "lateral": true, "tela": [43, 43, 41], "pegar_en": [956, 258, 970, 286]},
+      {"logo": "isotipo", "zona": [78, 715, 115, 752]},
+      {"logo": "isotipo", "zona": [290, 678, 330, 712]},
+      {"logo": "isotipo", "zona": [481, 715, 519, 752]},
+      {"logo": "isotipo", "zona": [690, 678, 730, 712]},
+      {"logo": "isotipo", "zona": [901, 715, 939, 752]},
+      {"logo": "isotipo", "zona": [1111, 678, 1152, 712]},
+      {"logo": "isotipo", "zona": [1340, 305, 1470, 412]}
+    ],
+    "img/11_player_kansas_12.jpg": [
+      {"logo": "escudo", "caja": [432, 468, 489, 547]},
+      {"logo": "escudo", "caja": [174, 828, 203, 870]},
+      {"logo": "escudo", "caja": [591, 828, 621, 870]},
+      {"logo": "escudo", "caja": [1006, 828, 1036, 870]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1353, 468, 1457, 614]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [138, 472, 212, 540]},
+      {"logo": "isotipo", "zona": [996, 468, 1042, 540], "lateral": true},
+      {"logo": "isotipo", "zona": [33, 828, 72, 870]},
+      {"logo": "isotipo", "zona": [457, 830, 497, 868]},
+      {"logo": "isotipo", "zona": [876, 830, 912, 868]},
+      {"logo": "isotipo", "zona": [1340, 305, 1470, 412]}
+    ],
+    "img/12_player_polo_clarinet.jpg": [
+      {"logo": "escudo", "caja": [361, 276, 411, 342]},
+      {"logo": "escudo", "caja": [1004, 270, 1038, 334], "angosto": 0.65},
+      {"logo": "escudo", "caja": [153, 726, 183, 764]},
+      {"logo": "escudo", "caja": [579, 725, 606, 762]},
+      {"logo": "escudo", "caja": [982, 726, 1011, 764]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1353, 472, 1457, 616]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [211, 285, 270, 332]},
+      {"logo": "isotipo", "zona": [711, 205, 768, 252]},
+      {"logo": "isotipo", "zona": [75, 728, 109, 759]},
+      {"logo": "isotipo", "zona": [301, 690, 335, 719]},
+      {"logo": "isotipo", "zona": [503, 728, 537, 759]},
+      {"logo": "isotipo", "zona": [720, 690, 755, 719]},
+      {"logo": "isotipo", "zona": [905, 728, 939, 759]},
+      {"logo": "isotipo", "zona": [1121, 690, 1157, 719]},
+      {"logo": "isotipo", "zona": [1340, 305, 1470, 412]}
+    ],
+    "img/13_player_jacket_kendo.jpg": [
+      {"logo": "escudo", "caja": [356, 268, 411, 334]},
+      {"logo": "escudo", "caja": [1036, 260, 1064, 307], "angosto": 0.6},
+      {"logo": "escudo", "caja": [151, 733, 181, 774]},
+      {"logo": "escudo", "caja": [561, 733, 591, 772]},
+      {"logo": "escudo", "caja": [969, 733, 999, 774]},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1353, 468, 1457, 614]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [215, 281, 275, 329]},
+      {"logo": "isotipo", "zona": [733, 205, 792, 252]},
+      {"logo": "isotipo", "zona": [85, 735, 119, 767]},
+      {"logo": "isotipo", "zona": [306, 705, 340, 735]},
+      {"logo": "isotipo", "zona": [493, 735, 527, 767]},
+      {"logo": "isotipo", "zona": [715, 705, 752, 735]},
+      {"logo": "isotipo", "zona": [903, 735, 937, 767]},
+      {"logo": "isotipo", "zona": [1123, 705, 1157, 735]},
+      {"logo": "isotipo", "zona": [1340, 305, 1470, 412]}
+    ],
+    "img/14_rivendell_windbreaker.jpg": [
+      {"logo": "escudo", "caja": [336, 333, 394, 407]},
+      {"logo": "escudo", "caja": [1022, 333, 1056, 402], "angosto": 0.6},
+      {"logo": "escudo", "caja": [1390, 5, 1442, 75]},
+      {"logo": "escudo", "caja": [1353, 468, 1457, 607]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [170, 348, 240, 400]},
+      {"logo": "isotipo", "zona": [728, 228, 792, 282]},
+      {"logo": "isotipo", "zona": [1340, 300, 1470, 410]}
+    ],
+    "img/15_parka_larga.jpg": [
+      {"logo": "escudo", "caja": [394, 220, 443, 282]},
+      {"logo": "escudo", "caja": [1247, 250, 1276, 302], "angosto": 0.6},
+      {"logo": "escudo", "caja": [1368, 2, 1421, 71]},
+      {"logo": "escudo", "caja": [603, 718, 727, 867]},
+      {"logo": "playmaker_horizontal", "zona": [1075, 8, 1325, 72]},
+      {"logo": "isotipo", "zona": [278, 233, 332, 280]},
+      {"logo": "isotipo", "zona": [665, 133, 730, 180]},
+      {"logo": "isotipo", "zona": [1037, 256, 1059, 288], "lateral": true, "tela": [40, 42, 41]},
+      {"logo": "isotipo", "zona": [415, 750, 555, 850]}
+    ],
+    "img/16_player_tee_boost_eco.jpg": [
+      {"logo": "escudo", "caja": [235, 364, 278, 432]},
+      {"logo": "escudo", "caja": [871, 368, 921, 434]},
+      {"logo": "escudo", "caja": [1390, 4, 1443, 78]},
+      {"logo": "escudo", "caja": [1328, 538, 1472, 720]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [93, 378, 142, 422]},
+      {"logo": "isotipo", "zona": [473, 293, 522, 337]},
+      {"logo": "isotipo", "zona": [726, 378, 779, 422]},
+      {"logo": "isotipo", "zona": [1083, 298, 1132, 340]},
+      {"logo": "isotipo", "zona": [1300, 330, 1505, 475]}
+    ],
+    "img/17_player_bermuda_maracas.jpg": [
+      {"logo": "escudo", "caja": [385, 645, 450, 725]},
+      {"logo": "escudo", "caja": [1338, 632, 1460, 768]},
+      {"logo": "escudo", "caja": [1390, 4, 1443, 78]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [40, 650, 110, 710]},
+      {"logo": "isotipo", "zona": [1312, 462, 1490, 584]}
+    ],
+    "img/17_player_hoodie_core.jpg": [
+      {"logo": "escudo", "caja": [329, 373, 389, 449]},
+      {"logo": "escudo", "caja": [1011, 380, 1049, 449], "angosto": 0.6},
+      {"logo": "escudo", "caja": [1390, 4, 1443, 78]},
+      {"logo": "escudo", "caja": [1328, 536, 1467, 722]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [165, 388, 228, 437]},
+      {"logo": "isotipo", "zona": [698, 258, 757, 307]},
+      {"logo": "isotipo", "zona": [974, 397, 1000, 431], "lateral": true, "tela": [18, 18, 16], "pegar_en": [990, 406, 1001, 426]},
+      {"logo": "isotipo", "zona": [1325, 335, 1478, 452]}
+    ],
+    "img/18_player_pant_maas.jpg": [
+      {"logo": "escudo", "caja": [367, 343, 421, 410]},
+      {"logo": "escudo", "caja": [1390, 4, 1443, 78]},
+      {"logo": "escudo", "caja": [1345, 630, 1454, 767]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [128, 348, 185, 400]},
+      {"logo": "isotipo", "zona": [1335, 468, 1468, 578]}
+    ],
+    "img/19_player_crew_neck_axima.jpg": [
+      {"logo": "escudo", "caja": [424, 346, 471, 422]},
+      {"logo": "escudo", "caja": [1390, 4, 1443, 78]},
+      {"logo": "escudo", "caja": [1350, 783, 1454, 932]},
+      {"logo": "playmaker_horizontal", "zona": [1100, 8, 1352, 78]},
+      {"logo": "isotipo", "zona": [213, 358, 270, 407]},
+      {"logo": "isotipo", "zona": [1338, 628, 1468, 732]}
+    ],
+    "img/chaqueta_varsity.jpg": [
+      {"logo": "playmaker", "zona": [118, 182, 198, 242]},
+      {"logo": "playmaker", "zona": [872, 182, 950, 242]},
+      {"logo": "playmaker", "zona": [300, 695, 465, 820]},
+      {"logo": "escudo", "zona": [265, 165, 340, 258]},
+      {"logo": "escudo", "zona": [1022, 167, 1095, 258]},
+      {"logo": "escudo", "zona": [490, 660, 640, 850]},
+      {"borrar": [485, 186, 628, 364]},
+      {"borrar": [1238, 186, 1395, 364]},
+      {"borrar": [1305, 684, 1475, 886]}
+    ]
+  }
+}
