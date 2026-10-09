@@ -27,11 +27,26 @@
         982
       ]
     },
+    "GAU-07": {
+      "imagen": "img/06_match_day_shirt_golem.jpg"
+    },
+    "GAU-08": {
+      "imagen": "img/07_player_wyrn_training.jpg"
+    },
+    "GAU-09": {
+      "imagen": "img/08_player_isen_training_quarter_zip.jpg"
+    },
+    "GAU-10": {
+      "imagen": "img/09_player_skarn_contact.jpg"
+    },
     "GAU-11": {
       "imagen": "img/10_player_freon_tank_12.jpg"
     },
     "GAU-12": {
       "imagen": "img/11_player_kansas_12.jpg"
+    },
+    "GAU-13": {
+      "imagen": "img/12_player_polo_clarinet.jpg"
     },
     "GAU-14": {
       "imagen": "img/13_player_jacket_kendo.jpg"
