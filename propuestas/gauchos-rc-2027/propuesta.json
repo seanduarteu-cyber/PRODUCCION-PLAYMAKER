@@ -8,19 +8,19 @@
   },
   "renders": {
     "GAU-01": {
-      "imagen": "img/01_player_tee_home_op1.jpg"
+      "imagen": "img/con_escudo/01_player_tee_home_op1.jpg"
     },
     "GAU-02": {
-      "imagen": "img/03_player_tee_home_02.jpg"
+      "imagen": "img/con_escudo/03_player_tee_home_02.jpg"
     },
     "GAU-03": {
-      "imagen": "img/02_player_tee_away_01.jpg"
+      "imagen": "img/con_escudo/02_player_tee_away_01.jpg"
     },
     "GAU-04": {
-      "imagen": "img/04_player_tee_away_02.jpg"
+      "imagen": "img/con_escudo/04_player_tee_away_02.jpg"
     },
     "GAU-05": {
-      "imagen": "img/05_short_de_juego_rugby.jpg"
+      "imagen": "img/con_escudo/05_short_de_juego_rugby.jpg"
     },
     "GAU-06": {
       "imagen": "img/05_player_short_home.jpg",
@@ -32,40 +32,40 @@
       ]
     },
     "GAU-07": {
-      "imagen": "img/06_match_day_shirt_golem.jpg"
+      "imagen": "img/con_escudo/06_match_day_shirt_golem.jpg"
     },
     "GAU-08": {
-      "imagen": "img/07_player_wyrn_training.jpg"
+      "imagen": "img/con_escudo/07_player_wyrn_training.jpg"
     },
     "GAU-09": {
-      "imagen": "img/08_player_isen_training_quarter_zip.jpg"
+      "imagen": "img/con_escudo/08_player_isen_training_quarter_zip.jpg"
     },
     "GAU-10": {
-      "imagen": "img/09_player_skarn_contact.jpg"
+      "imagen": "img/con_escudo/09_player_skarn_contact.jpg"
     },
     "GAU-11": {
-      "imagen": "img/10_player_freon_tank_12.jpg"
+      "imagen": "img/con_escudo/10_player_freon_tank_12.jpg"
     },
     "GAU-12": {
-      "imagen": "img/11_player_kansas_12.jpg"
+      "imagen": "img/con_escudo/11_player_kansas_12.jpg"
     },
     "GAU-13": {
-      "imagen": "img/12_player_polo_clarinet.jpg"
+      "imagen": "img/con_escudo/12_player_polo_clarinet.jpg"
     },
     "GAU-14": {
-      "imagen": "img/13_player_jacket_kendo.jpg"
+      "imagen": "img/con_escudo/13_player_jacket_kendo.jpg"
     },
     "GAU-15": {
-      "imagen": "img/14_rivendell_windbreaker.jpg"
+      "imagen": "img/con_escudo/14_rivendell_windbreaker.jpg"
     },
     "GAU-16": {
-      "imagen": "img/19_player_crew_neck_axima.jpg"
+      "imagen": "img/con_escudo/19_player_crew_neck_axima.jpg"
     },
     "GAU-17": {
-      "imagen": "img/17_player_hoodie_core.jpg"
+      "imagen": "img/con_escudo/17_player_hoodie_core.jpg"
     },
     "GAU-22": {
-      "imagen": "img/18_player_pant_maas.jpg"
+      "imagen": "img/con_escudo/18_player_pant_maas.jpg"
     }
   }
 }
