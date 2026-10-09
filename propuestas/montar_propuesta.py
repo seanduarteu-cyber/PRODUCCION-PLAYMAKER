@@ -25,7 +25,7 @@ import pypdfium2 as pdfium
 from fontTools import subset
 from fontTools.ttLib import TTFont
 from PIL import Image
-from pypdf import PdfReader, PdfWriter
+from pypdf import PdfReader, PdfWriter, Transformation
 from pypdf.generic import (ArrayObject, BooleanObject, DecodedStreamObject, DictionaryObject,
                            FloatObject, NameObject, NumberObject, TextStringObject)
 from reportlab.lib.utils import ImageReader
@@ -93,6 +93,16 @@ def analizar_base(ruta):
     return fichas, cuadro
 
 
+def analizar_portada(ruta):
+    """Emblema de la portada (recuadro blanco central) y color de fondo de la página."""
+    with pdfplumber.open(ruta) as pdf:
+        page = pdf.pages[0]
+        fondo = next(r for r in page.rects if r["fill"] and r["width"] > page.width - 1)
+        emblema = next(r for r in page.rects if r["fill"] and 100 < r["width"] < 300 and 100 < r["height"] < 300)
+        return {"fondo": tuple(fondo["non_stroking_color"]),
+                "emblema": (emblema["x0"], emblema["top"], emblema["x1"], emblema["bottom"])}
+
+
 def parche(bitmap, escala, bbox):
     """Color de fondo y rect (coordenadas pdfplumber) que tapa por completo un marcador.
 
@@ -115,7 +125,7 @@ def parche(bitmap, escala, bbox):
 
 # ---------------------------------------------------------------- capa visual (reportlab)
 
-def construir_capa(base_path, cfg_dir, cfg, fichas, cuadro, n_paginas, w, h):
+def construir_capa(base_path, cfg_dir, cfg, fichas, cuadro, portada, n_paginas, w, h):
     """Una página de superposición por página de la base: renders + parches sobre marcadores."""
     doc = pdfium.PdfDocument(base_path)
     escala = 3
@@ -131,6 +141,11 @@ def construir_capa(base_path, cfg_dir, cfg, fichas, cuadro, n_paginas, w, h):
     c = canvas.Canvas(buf, pagesize=(w, h))
     renders_por_pagina = {fichas[code]["page"]: (code, r) for code, r in cfg["renders"].items() if code in fichas}
     for i in range(n_paginas):
+        if i == 0 and portada:
+            # tapa el emblema genérico; el escudo vectorial se monta después en main()
+            x0, top, x1, bottom = portada["emblema"]
+            c.setFillColorRGB(*portada["fondo"])
+            c.rect(x0 - 1, h - bottom - 1, x1 - x0 + 2, bottom - top + 2, stroke=0, fill=1)
         if i in parches:
             bmp = doc[i].render(scale=escala).to_pil().convert("RGB")
             for bbox in parches[i]:
@@ -358,11 +373,24 @@ def main(cfg_path):
     if faltan:
         sys.exit(f"Códigos sin ficha en la base: {faltan}")
 
+    escudo = cfg.get("escudo_portada")
+    portada = analizar_portada(base) if escudo else None
+
     writer = PdfWriter(clone_from=str(base))
     w, h = float(writer.pages[0].mediabox.width), float(writer.pages[0].mediabox.height)
-    capa = construir_capa(base, cfg_dir, cfg, fichas, cuadro, len(writer.pages), w, h)
+    capa = construir_capa(base, cfg_dir, cfg, fichas, cuadro, portada, len(writer.pages), w, h)
     for page, over in zip(writer.pages, capa.pages):
         page.merge_page(over)
+
+    if escudo:
+        # escudo vectorial (fondo transparente) centrado donde estaba el emblema
+        pagina_escudo = PdfReader(cfg_dir / escudo["pdf"]).pages[0]
+        ew, eh = float(pagina_escudo.mediabox.width), float(pagina_escudo.mediabox.height)
+        s = escudo.get("alto", 160) / eh
+        x0, top, x1, bottom = portada["emblema"]
+        cx, cy = (x0 + x1) / 2, h - (top + bottom) / 2
+        writer.pages[0].merge_transformed_page(
+            pagina_escudo, Transformation().scale(s).translate(cx - ew * s / 2, cy - eh * s / 2))
 
     fuentes = DictionaryObject({NameObject("/" + k): fuente_truetype(writer, v, k) for k, v in FUENTES.items()})
     campos, orden = agregar_formulario(writer, fichas, cuadro, cfg.get("iva", 0.19), h)
