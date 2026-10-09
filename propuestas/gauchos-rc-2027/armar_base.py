@@ -1,18 +1,17 @@
-"""Agrega la Parka larga (GAU-23) a la propuesta base y pasa Accesorios a GAU-24.
+"""Arma la base de la propuesta a partir del PDF original: agrega la Parka larga y quita las
+fichas que no tienen render (Bermuda sastre y Accesorios del club).
 
 Uso:
-    python3 propuestas/gauchos-rc-2027/agregar_parka.py
+    python3 propuestas/gauchos-rc-2027/armar_base.py
 
-Lee  base/Propuesta_Gauchos_Rugby_Club_2027_base.pdf   (original, no se modifica)
-Crea base/Propuesta_Gauchos_Rugby_Club_2027_base_v2.pdf (la que usa propuesta.json)
+Lee  base/Propuesta_Gauchos_Rugby_Club_2027_base.pdf    (original, no se modifica)
+Crea base/Propuesta_Gauchos_Rugby_Club_2027_base_v2.pdf  (la que usa propuesta.json)
 
-Cambios:
-  - Ficha nueva "Parka larga" (FICHA 23 · PRESENTACIÓN Y ABRIGO) después del Pantalón pitillo,
-    con el mismo diseño de las demás fichas.
-  - Accesorios del club pasa a FICHA 24 / GAU-24.
-  - Catálogo: "Veinticuatro líneas", fila nueva GAU-23 y Accesorios como GAU-24.
-  - Cuadro de valores: fila nueva GAU-23 y Accesorios como GAU-24 (totales reacomodados).
-  - Numeración de páginas corrida desde la ficha nueva.
+Resultado (22 productos en tres categorías):
+  - Presentación y abrigo queda: ... 19 Polera de algodón, 20 Bermuda deportiva, 21 Pantalón pitillo,
+    22 Parka larga (ficha nueva con el mismo diseño de las demás).
+  - Sin Bermuda sastre ni la categoría Accesorios.
+  - Portada, "Sobre esta propuesta", catálogo y cuadro de valores actualizados; páginas renumeradas.
 Los textos se dibujan con las mismas fuentes, tamaños, colores y espaciado que la base.
 """
 
@@ -35,12 +34,15 @@ for nombre in ("Poppins-Regular", "Poppins-SemiBold", "PlayfairDisplay-Regular",
     pdfmetrics.registerFont(TTFont(nombre, str(FUENTES / f"{nombre}.ttf")))
 
 # páginas de la base (índice 0)
-P_CATALOGO, P_MODELO_FICHA, P_PITILLO, P_ACCESORIOS, P_CUADRO = 2, 3, 24, 25, 26
-NUEVA = P_PITILLO + 1  # la parka queda justo después del Pantalón pitillo
+P_PORTADA, P_SOBRE, P_CATALOGO, P_MODELO_FICHA = 0, 1, 2, 3
+P_BERMUDA_SASTRE, P_BERMUDA_DEP, P_PITILLO, P_ACCESORIOS, P_CUADRO = 22, 23, 24, 25, 26
+PARKA_PAG = "parka"
+# orden de las páginas del documento final (índices de la base; la parka es una copia de la ficha modelo)
+ORDEN = [i for i in range(P_BERMUDA_SASTRE)] + [P_BERMUDA_DEP, P_PITILLO, PARKA_PAG, P_CUADRO, 27, 28]
 
 PARKA = {
-    "ficha": "FICHA 23 · PRESENTACIÓN Y ABRIGO",
-    "codigo": "GAU-23",
+    "ficha": "FICHA 22 · PRESENTACIÓN Y ABRIGO",
+    "codigo": "GAU-22",
     "titulo": "Parka larga",
     "bajada": "Negra, con paneles rojos y vivos blancos, capucha con visera y largo a medio muslo",
     "tallas": "5XS a 5XL",
@@ -55,6 +57,18 @@ PARKA = {
         ("TELA", "100% poliéster."),
     ],
 }
+# fichas que suben un número al salir la Bermuda sastre
+RENUMERAR = {P_BERMUDA_DEP: ("FICHA 20 · PRESENTACIÓN Y ABRIGO", "GAU-20"),
+             P_PITILLO: ("FICHA 21 · PRESENTACIÓN Y ABRIGO", "GAU-21")}
+# filas del catálogo y del cuadro: el código queda, cambia el producto
+FILAS = {"Bermuda sastre": "Bermuda deportiva", "Bermuda deportiva": "Pantalón pitillo",
+         "Pantalón pitillo": "Parka larga"}
+TEXTOS = [  # (página, línea donde está, texto viejo, texto nuevo); el párrafo completo se vuelve a armar
+    (P_PORTADA, "Línea completa", "presentación y accesorios", "presentación y abrigo"),
+    (P_SOBRE, "documento cubre", "presentación, abrigo y accesorios—", "presentación y abrigo—"),
+    (P_CATALOGO, "Veintitrés", "Veintitrés líneas de producto agrupadas en cuatro categorías",
+     "Veintidós líneas de producto agrupadas en tres categorías"),
+]
 
 
 # ---------------------------------------------------------------- lectura de estilos
@@ -62,7 +76,7 @@ PARKA = {
 class Run:
     """Tramo de texto de la base con su estilo (fuente, tamaño, color, espaciado, línea base)."""
 
-    def __init__(self, chars, alto_pagina):
+    def __init__(self, chars):
         self.chars = chars
         self.texto = "".join(c["text"] for c in chars)
         c0 = chars[0]
@@ -91,11 +105,11 @@ def runs_de(page):
         actual = [cs[0]]
         for a, b in zip(cs, cs[1:]):
             if b["x0"] - a["x1"] > 15:
-                runs.append(Run(actual, page.height))
+                runs.append(Run(actual))
                 actual = [b]
             else:
                 actual.append(b)
-        runs.append(Run(actual, page.height))
+        runs.append(Run(actual))
     return runs
 
 
@@ -106,6 +120,22 @@ def buscar(runs, inicio, cerca_de=None):
     if not candidatos:
         raise LookupError(f"No se encontró «{inicio}» en la base")
     return candidatos[0]
+
+
+def parrafo(runs, contiene):
+    """Líneas del párrafo (mismo estilo, interlineado parejo) que contiene un texto."""
+    ancla = next(r for r in runs if contiene in r.texto)
+    lineas = sorted([r for r in runs if r.fuente == ancla.fuente and abs(r.size - ancla.size) < 0.1
+                     and abs(r.x0 - ancla.x0) < 1], key=lambda r: -r.base)
+    i = lineas.index(ancla)
+    paso = 1.3 * ancla.size * 1.4
+    ini = i
+    while ini > 0 and lineas[ini - 1].base - lineas[ini].base < paso:
+        ini -= 1
+    fin = i
+    while fin + 1 < len(lineas) and lineas[fin].base - lineas[fin + 1].base < paso:
+        fin += 1
+    return lineas[ini:fin + 1]
 
 
 # ---------------------------------------------------------------- escritura
@@ -149,6 +179,8 @@ class Capa:
                     _, e, texto, x, base, alinear = op
                     if alinear == "der":
                         x -= self.ancho(e, texto)
+                    elif alinear == "centro":
+                        x -= self.ancho(e, texto) / 2
                     t = c.beginText(x, base)
                     t.setFont(e.fuente, e.size)
                     t.setCharSpace(e.espaciado)
@@ -178,41 +210,45 @@ def partir(capa, estilo, texto, ancho_max):
 def main():
     with pdfplumber.open(BASE) as pdf:
         R = {i: runs_de(pdf.pages[i]) for i in range(len(pdf.pages))}
-        lineas_catalogo = pdf.pages[P_CATALOGO].lines
-        lineas_cuadro = pdf.pages[P_CUADRO].lines
+        lineas = {i: pdf.pages[i].lines for i in (P_CATALOGO, P_CUADRO)}
         rects_cuadro = pdf.pages[P_CUADRO].rects
         w, h = pdf.pages[0].width, pdf.pages[0].height
-        n_base = len(pdf.pages)
 
+    # documento con las páginas en el orden final
     doc = pymupdf.open(BASE)
-    doc.insert_pdf(pymupdf.open(BASE), from_page=P_MODELO_FICHA, to_page=P_MODELO_FICHA, start_at=NUEVA)
-    final = lambda i: i if i < NUEVA else i + 1  # índice en el documento nuevo
+    doc.insert_pdf(pymupdf.open(BASE), from_page=P_MODELO_FICHA, to_page=P_MODELO_FICHA, start_at=doc.page_count)
+    copia = doc.page_count - 1
+    doc.select([copia if i == PARKA_PAG else i for i in ORDEN])
+    final = ORDEN.index
     capa = Capa(len(doc), w, h)
-    tachar = {i: [] for i in range(len(doc))}  # rects (top-based) a borrar por página
+    tachar = {i: [] for i in range(len(doc))}  # rects (top-based) a borrar por página final
     borrar_graficos = set()
+
+    def borrar(pag_final, run, alto=1.25):
+        tachar[pag_final].append((run.x0 - 1, run.top - 1.5, run.x1 + 1, run.top + run.size * alto))
 
     def reemplazar(pag_base, run, texto, alinear="izq", pag_final=None):
         """Borra un tramo de la base y escribe otro texto con el mismo estilo y posición."""
         p = final(pag_base) if pag_final is None else pag_final
-        tachar[p].append((run.x0 - 1, run.top - 1.5, run.x1 + 1, run.top + run.size * 1.25))
-        x = run.x1 if alinear == "der" else run.x0
+        borrar(p, run)
+        x = {"der": run.x1, "centro": (run.x0 + run.x1) / 2}.get(alinear, run.x0)
         capa.texto(p, run, texto, x, run.base, alinear)
 
-    # 1. Ficha nueva (copia de la ficha modelo con sus textos cambiados)
-    m = R[P_MODELO_FICHA]
-    reemplazar(P_MODELO_FICHA, buscar(m, "FICHA"), PARKA["ficha"], pag_final=NUEVA)
-    reemplazar(P_MODELO_FICHA, buscar(m, "GAU-"), PARKA["codigo"], "der", pag_final=NUEVA)
-    reemplazar(P_MODELO_FICHA, buscar(m, "Camiseta"), PARKA["titulo"], pag_final=NUEVA)
-    reemplazar(P_MODELO_FICHA, buscar(m, "Negra con"), PARKA["bajada"], pag_final=NUEVA)
-    reemplazar(P_MODELO_FICHA, buscar(m, "XS a 5XL"), PARKA["tallas"], pag_final=NUEVA)
+    # 1. Ficha nueva: Parka larga (copia de la ficha modelo con sus textos cambiados)
+    m, NUEVA = R[P_MODELO_FICHA], final(PARKA_PAG)
+    reemplazar(None, buscar(m, "FICHA"), PARKA["ficha"], pag_final=NUEVA)
+    reemplazar(None, buscar(m, "GAU-"), PARKA["codigo"], "der", pag_final=NUEVA)
+    reemplazar(None, buscar(m, "Camiseta"), PARKA["titulo"], pag_final=NUEVA)
+    reemplazar(None, buscar(m, "Negra con"), PARKA["bajada"], pag_final=NUEVA)
+    reemplazar(None, buscar(m, "XS a 5XL"), PARKA["tallas"], pag_final=NUEVA)
     etiquetas = [r for r in m if r.fuente == "Poppins-SemiBold" and 480 < r.top < 700 and r.size < 7]
     cuerpos = [r for r in m if r.fuente == "Poppins-Regular" and 480 < r.top < 700]
     for r in etiquetas + cuerpos:
-        tachar[NUEVA].append((r.x0 - 1, r.top - 1.5, r.x1 + 1, r.top + r.size * 1.25))
+        borrar(NUEVA, r)
     etiquetas.sort(key=lambda r: (round(r.top), r.x0))
     estilo_cuerpo = cuerpos[0]
-    interlinea = sorted({round(r.base, 1) for r in cuerpos}, reverse=True)
-    interlinea = min(a - b for a, b in zip(interlinea, interlinea[1:]) if a - b > 1)
+    bases = sorted({round(r.base, 1) for r in cuerpos}, reverse=True)
+    interlinea = min(a - b for a, b in zip(bases, bases[1:]) if a - b > 1)
     primera = min(r.base for r in cuerpos if abs(r.top - etiquetas[0].top) < 20)
     salto_etiqueta = etiquetas[0].base - primera
     ancho_col = etiquetas[1].x0 - etiquetas[0].x0 - 18
@@ -221,99 +257,62 @@ def main():
         for k, linea in enumerate(partir(capa, estilo_cuerpo, cuerpo, ancho_col)):
             capa.texto(NUEVA, estilo_cuerpo, linea, etq.x0, etq.base - salto_etiqueta - k * interlinea)
 
-    # 2. Ficha de accesorios pasa a 24
-    a = R[P_ACCESORIOS]
-    reemplazar(P_ACCESORIOS, buscar(a, "FICHA"), "FICHA 24 · ACCESORIOS")
-    reemplazar(P_ACCESORIOS, buscar(a, "GAU-"), "GAU-24", "der")
+    # 2. Fichas que suben un número
+    for pag, (ficha, codigo) in RENUMERAR.items():
+        reemplazar(pag, buscar(R[pag], "FICHA"), ficha)
+        reemplazar(pag, buscar(R[pag], "GAU-"), codigo, "der")
 
-    # 3. Numeración de páginas desde la ficha nueva
-    for i in range(P_PITILLO, n_base):
-        num = [r for r in R[i] if r.top > 790 and r.texto.isdigit()]
-        if not num:
+    # 3. Numeración de páginas (pie de página)
+    for k, pag in enumerate(ORDEN):
+        origen = P_MODELO_FICHA if pag == PARKA_PAG else pag
+        num = [r for r in R[origen] if r.top > 790 and r.texto.isdigit()]
+        if num and int(num[0].texto) != k + 1:
+            reemplazar(None, num[0], f"{k + 1:02d}", "der", pag_final=k)
+
+    # 4. Textos que nombran los accesorios o el total de productos
+    ancho_texto = 537 - 58  # ancho de la caja de texto de la base
+    for pag, ancla, viejo, nuevo in TEXTOS:
+        lineas_p = parrafo(R[pag], ancla)
+        texto = " ".join(r.texto for r in lineas_p)
+        assert viejo in texto, f"«{viejo}» no está en la página {pag + 1}"
+        texto = texto.replace(viejo, nuevo)
+        e = lineas_p[0]
+        centrado = abs((e.x0 + e.x1) / 2 - w / 2) < 2 and len(lineas_p) == 1
+        for r in lineas_p:
+            borrar(final(pag), r, alto=1.35)
+        if centrado:
+            capa.texto(final(pag), e, texto, w / 2, e.base, "centro")
             continue
-        if i == P_PITILLO:  # la ficha nueva hereda el número del modelo, corrido
-            reemplazar(P_MODELO_FICHA, buscar(R[P_MODELO_FICHA], "04", cerca_de=801),
-                       f"{int(num[0].texto) + 1:02d}", "der", pag_final=NUEVA)
-        else:
-            reemplazar(i, num[0], f"{int(num[0].texto) + 1:02d}", "der")
+        paso = (lineas_p[0].base - lineas_p[1].base) if len(lineas_p) > 1 else e.size * 1.6
+        for k, linea in enumerate(partir(capa, e, texto, ancho_texto)):
+            capa.texto(final(pag), e, linea, e.x0, e.base - k * paso)
 
-    # 4. Catálogo: texto de introducción, fila nueva y Accesorios como GAU-24
-    c = R[P_CATALOGO]
-    intro = [buscar(c, "Veintitrés"), buscar(c, "en las páginas")]
-    for r in intro:
-        tachar[P_CATALOGO].append((r.x0 - 1, r.top - 1.5, r.x1 + 1, r.top + r.size * 1.3))
-    texto_intro = " ".join(r.texto for r in intro).replace("Veintitrés", "Veinticuatro")
-    paso_intro = intro[0].base - intro[1].base
-    for k, linea in enumerate(partir(capa, intro[0], texto_intro, intro[0].x1 - intro[0].x0 + 3.5)):
-        capa.texto(P_CATALOGO, intro[0], linea, intro[0].x0, intro[0].base - k * paso_intro)
+    # 5. Catálogo: filas renombradas y sin la categoría Accesorios
+    c, PC = R[P_CATALOGO], final(P_CATALOGO)
+    for viejo, nuevo in FILAS.items():
+        reemplazar(P_CATALOGO, buscar(c, viejo), nuevo)
+    cab, fila_acc = buscar(c, "ACCESORIOS"), buscar(c, "GAU-23")
+    tachar[PC].append((40, cab.top - 6, w - 40, fila_acc.top + 16))
+    borrar_graficos.add(PC)
 
-    fila = {"cod": buscar(c, "GAU-22"), "nom": buscar(c, "Pantalón pitillo"),
-            "ficha": buscar(c, "Ficha 22")}
-    paso = buscar(c, "GAU-21").base - fila["cod"].base  # distancia entre filas
-    cab_acc, cod_acc = buscar(c, "ACCESORIOS"), buscar(c, "GAU-23")
-    zona_top = fila["nom"].top + 14
-    tachar[P_CATALOGO].append((40, zona_top, w - 40, cod_acc.top + 16))
-    borrar_graficos.add(P_CATALOGO)
-    for clave, texto, al in (("cod", "GAU-23", "izq"), ("nom", "Parka larga", "izq"), ("ficha", "Ficha 23", "der")):
-        r = fila[clave]
-        capa.texto(P_CATALOGO, r, texto, r.x1 if al == "der" else r.x0, r.base - paso, al)
-    capa.texto(P_CATALOGO, cab_acc, cab_acc.texto, cab_acc.x0, cab_acc.base - paso)
-    for clave, texto, al in (("cod", "GAU-24", "izq"), ("nom", "Accesorios del club", "izq"),
-                             ("ficha", "Ficha 24", "der")):
-        r = fila[clave]
-        capa.texto(P_CATALOGO, r, texto, r.x1 if al == "der" else r.x0,
-                   cod_acc.base - (fila["cod"].base - r.base) - paso, al)
-    regla = next(l for l in lineas_catalogo if zona_top < l["top"] < cod_acc.top)
-    capa.linea(P_CATALOGO, regla["stroking_color"], regla["linewidth"], regla["x0"], regla["x1"],
-               regla["top"] + paso)
-
-    # 5. Cuadro de valores
-    q = R[P_CUADRO]
-    PQ = final(P_CUADRO)
-    fila = {k: buscar(q, t, cerca_de=636) for k, t in
-            (("cod", "GAU-22"), ("nom", "Pantalón pitillo"), ("cant", "[00]"), ("valor", "$[00.000]"))}
-    paso = buscar(q, "GAU-21").base - fila["cod"].base  # distancia entre filas
-    zona_top = fila["nom"].top + 10
-    regla = next(l for l in lineas_cuadro if zona_top < l["top"] < 760)
+    # 6. Cuadro de valores: filas renombradas, sin Accesorios y totales más arriba
+    q, PQ = R[P_CUADRO], final(P_CUADRO)
+    for viejo, nuevo in FILAS.items():
+        reemplazar(P_CUADRO, buscar(q, viejo), nuevo)
+    cab, fila_acc = buscar(q, "ACCESORIOS"), buscar(q, "GAU-23")
+    ultima = buscar(q, "GAU-22")
+    sube = ultima.base - fila_acc.base  # alto del bloque que sale (cabecera + fila); base PDF crece hacia arriba
+    regla = next(l for l in lineas[P_CUADRO] if fila_acc.top < l["top"] < 760)
     caja = next(r for r in rects_cuadro if r["fill"] and r["top"] > 700 and r["width"] > 200)
-    cebras = [r for r in rects_cuadro if r["fill"] and r["height"] < 25 and r["width"] > 400
-              and min(r["non_stroking_color"]) > 0.8 and r["top"] < fila["cod"].top]  # franjas grises
-    modelo = cebras[-1]
-    cod_modelo = min((r for r in q if r.texto.startswith("GAU-")), key=lambda r: abs(r.top - modelo["top"] - 4.7))
-    cebra_off = modelo["top"] - cod_modelo.top
-    tachar[PQ].append((40, zona_top, w - 40, caja["bottom"] + 4))
+    tachar[PQ].append((40, cab.top - 6, w - 40, caja["bottom"] + 4))
     borrar_graficos.add(PQ)
+    capa.linea(PQ, regla["stroking_color"], regla["linewidth"], regla["x0"], regla["x1"], regla["top"] - sube)
+    capa.rect(PQ, caja["non_stroking_color"], caja["x0"], caja["top"] - sube, caja["x1"], caja["bottom"] - sube)
+    for r in q:
+        if regla["top"] < r.top < caja["bottom"]:
+            capa.texto(PQ, r, r.texto, r.x0, r.base + sube)
 
-    def fila_cuadro(base_cod, cod, nombre):
-        for clave, texto in (("cod", cod), ("nom", nombre), ("cant", "[00]"), ("valor", "$[00.000]")):
-            r = fila[clave]
-            capa.texto(PQ, r, texto, r.x0, base_cod - (fila["cod"].base - r.base))
-
-    def cebra(base_cod):
-        top = fila["cod"].top + (fila["cod"].base - base_cod) + cebra_off
-        capa.rect(PQ, modelo["non_stroking_color"], modelo["x0"], top, modelo["x1"], top + modelo["height"])
-
-    base_parka = fila["cod"].base - paso
-    cebra(base_parka)
-    fila_cuadro(base_parka, "GAU-23", "Parka larga")
-    cab = buscar(q, "ACCESORIOS")
-    cod_viejo = buscar(q, "GAU-23")
-    corrimiento = 13.0  # se comprime el espacio entre grupos para que entren los totales
-    capa.texto(PQ, cab, cab.texto, cab.x0, cab.base - corrimiento)
-    base_acc = cod_viejo.base - corrimiento
-    cebra(base_acc)
-    fila_cuadro(base_acc, "GAU-24", "Accesorios del club")
-    d_tot = 1.0  # los totales bajan apenas: se quita aire entre líneas
-    capa.linea(PQ, regla["stroking_color"], regla["linewidth"], regla["x0"], regla["x1"], regla["top"] + 7)
-    sub_l, sub_v = buscar(q, "Subtotal"), buscar(q, "$[00.000]", cerca_de=713.7)
-    iva_l, iva_v = buscar(q, "IVA 19%"), buscar(q, "$[00.000]", cerca_de=731.7)
-    for r, dy in ((sub_l, 4.8), (sub_v, 4.8), (iva_l, 2.3), (iva_v, 2.3)):
-        capa.texto(PQ, r, r.texto, r.x0, r.base - dy)
-    capa.rect(PQ, caja["non_stroking_color"], caja["x0"], caja["top"] + d_tot, caja["x1"], caja["bottom"] + d_tot)
-    for r in (buscar(q, "TOTAL"), buscar(q, "$[00.000]", cerca_de=753.8)):
-        capa.texto(PQ, r, r.texto, r.x0, r.base - d_tot)
-
-    # 6. Borrar lo reemplazado y superponer lo nuevo
+    # 7. Borrar lo reemplazado y superponer lo nuevo
     for i, rects in tachar.items():
         if not rects:
             continue
