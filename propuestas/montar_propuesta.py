@@ -12,6 +12,9 @@ los valores como marcadores "$[00.000]" / "[00]". Este script:
      - Cantidad por producto en el cuadro de valores.
      - Subtotal neto, IVA y total, calculados solos en Acrobat / Chrome / Edge /
        Firefox (Vista Previa de macOS no ejecuta cálculos: ahí se escriben a mano).
+  3. Si el JSON trae "precios", los deja escritos en los campos (siguen editables).
+     Con "precios_con_iva": true, los precios incluyen IVA: el total con IVA es la suma de
+     cantidad × precio, y el subtotal neto y el IVA se calculan desde ese total.
 """
 
 import io
@@ -279,12 +282,43 @@ def widget(writer, page, rect, da, padre=None):
     return ref
 
 
-def campo(writer, nombre, ayuda, aa):
+def ancho_texto(archivo, texto, size, _cache={}):
+    if archivo not in _cache:
+        f = TTFont(RECURSOS / "fonts" / archivo)
+        _cache[archivo] = (f.getBestCmap(), f["hmtx"], f["head"].unitsPerEm)
+    cmap, hmtx, upm = _cache[archivo]
+    return sum(hmtx[cmap[ord(ch)]][0] for ch in texto) * size / upm
+
+
+def pesos(valor):
+    return "$" + f"{int(valor):,}".replace(",", ".")
+
+
+def apariencia(writer, rect, texto, fuente, fuente_ref, size, color):
+    """Apariencia de un campo con su texto ya formateado, alineado a la derecha como el campo (Q=2)."""
+    ancho = float(rect[2]) - float(rect[0])
+    alto = float(rect[3]) - float(rect[1])
+    x = ancho - 2 - ancho_texto(FUENTES[fuente], texto, size)
+    y = (alto - 0.7 * size) / 2
+    st = DecodedStreamObject()
+    st.set_data((f"/Tx BMC q BT /{fuente} {size:.1f} Tf {color} {x:.2f} {y:.2f} Td ({texto}) Tj ET Q EMC").encode("latin-1"))
+    st.update({
+        NameObject("/Type"): NameObject("/XObject"),
+        NameObject("/Subtype"): NameObject("/Form"),
+        NameObject("/BBox"): ArrayObject([FloatObject(0), FloatObject(0), FloatObject(round(ancho, 2)),
+                                          FloatObject(round(alto, 2))]),
+        NameObject("/Resources"): DictionaryObject({NameObject("/Font"): DictionaryObject(
+            {NameObject("/" + fuente): fuente_ref})}),
+    })
+    return DictionaryObject({NameObject("/N"): writer._add_object(st)})
+
+
+def campo(writer, nombre, ayuda, aa, valor=""):
     return DictionaryObject({
         NameObject("/FT"): NameObject("/Tx"),
         NameObject("/T"): TextStringObject(nombre),
         NameObject("/TU"): TextStringObject(ayuda),
-        NameObject("/V"): TextStringObject(""),
+        NameObject("/V"): TextStringObject(valor),
         NameObject("/Q"): NumberObject(2),
         NameObject("/AA"): aa,
     })
@@ -306,23 +340,31 @@ def campo_simple(writer, page, nombre, ayuda, rect, da, aa):
     return ref
 
 
-def agregar_formulario(writer, fichas, cuadro, iva, h):
+def agregar_formulario(writer, fichas, cuadro, iva, h, fuentes, precios=None, con_iva=False):
     campos, orden_calculo = ArrayObject(), ArrayObject()
     codigos = sorted(set(fichas) | set(cuadro["filas"] if cuadro else []))
+    precios = precios or {}
+    ayuda_valor = "Precio socio {} (CLP, IVA incluido)" if con_iva else "Valor unitario {} (CLP, neto)"
 
     for code in codigos:
         # valor unitario: un campo, un widget por cada página donde aparece
-        padre = writer._add_object(campo(writer, f"valor_{code}", f"Valor unitario {code} (CLP, neto)",
-                                         acciones(FMT_PESOS, KEY_PESOS)))
+        precio = precios.get(code)
+        padre = writer._add_object(campo(writer, f"valor_{code}", ayuda_valor.format(code),
+                                         acciones(FMT_PESOS, KEY_PESOS), "" if precio is None else str(precio)))
         kids = ArrayObject()
+        lugares = []
         if code in fichas:
             f = fichas[code]
-            kids.append(widget(writer, writer.pages[f["page"]], rect_campo(f["valor"], h, f["valor"][0] - 30),
-                               f"/PopSB {f['size']:.1f} Tf {NAVY}", padre))
+            lugares.append((writer.pages[f["page"]], rect_campo(f["valor"], h, f["valor"][0] - 30), f["size"]))
         if cuadro and code in cuadro["filas"]:
             f = cuadro["filas"][code]
-            kids.append(widget(writer, writer.pages[cuadro["page"]], rect_campo(f["valor"], h, f["valor"][0] - 34),
-                               f"/PopSB {f['size']:.1f} Tf {NAVY}", padre))
+            lugares.append((writer.pages[cuadro["page"]], rect_campo(f["valor"], h, f["valor"][0] - 34), f["size"]))
+        for page, rect, size in lugares:
+            ref = widget(writer, page, rect, f"/PopSB {size:.1f} Tf {NAVY}", padre)
+            if precio is not None:
+                ref.get_object()[NameObject("/AP")] = apariencia(writer, rect, pesos(precio), "PopSB",
+                                                                 fuentes["/PopSB"], size, NAVY)
+            kids.append(ref)
         padre.get_object()[NameObject("/Kids")] = kids
         campos.append(padre)
 
@@ -337,18 +379,26 @@ def agregar_formulario(writer, fichas, cuadro, iva, h):
                                        acciones(FMT_NUM, KEY_NUM)))
 
     lista = ", ".join(f'"{c}"' for c in cuadro["filas"])
-    calc = {
-        "subtotal": (JS_NUM + f'var c = [{lista}], s = 0;'
-                     'for (var i = 0; i < c.length; i++) s += n("cant_" + c[i]) * n("valor_" + c[i]);'
-                     'event.value = s > 0 ? Math.round(s) : "";'),
-        "iva": JS_NUM + f'var s = n("subtotal_neto"); event.value = s > 0 ? Math.round(s * {iva}) : "";',
-        "total": JS_NUM + 'var s = n("subtotal_neto"); event.value = s > 0 ? s + n("iva") : "";',
-    }
+    suma = (f'var c = [{lista}], s = 0;'
+            'for (var i = 0; i < c.length; i++) s += n("cant_" + c[i]) * n("valor_" + c[i]);'
+            'event.value = s > 0 ? Math.round(s) : "";')
+    if con_iva:  # precios con IVA: el total es la suma y el neto se calcula hacia atrás
+        calc = {
+            "total": JS_NUM + suma,
+            "subtotal": JS_NUM + f'var t = n("total_con_iva"); event.value = t > 0 ? Math.round(t / {1 + iva}) : "";',
+            "iva": JS_NUM + 'var t = n("total_con_iva"); event.value = t > 0 ? t - n("subtotal_neto") : "";',
+        }
+    else:
+        calc = {
+            "subtotal": JS_NUM + suma,
+            "iva": JS_NUM + f'var s = n("subtotal_neto"); event.value = s > 0 ? Math.round(s * {iva}) : "";',
+            "total": JS_NUM + 'var s = n("subtotal_neto"); event.value = s > 0 ? s + n("iva") : "";',
+        }
     nombres = {"subtotal": ("subtotal_neto", "Subtotal neto"), "iva": ("iva", f"IVA {round(iva * 100)}%"),
                "total": ("total_con_iva", "Total con IVA")}
     estilos = {"subtotal": f"/PopSB 9 Tf {GRIS_OSCURO}", "iva": f"/PopSB 9 Tf {GRIS_OSCURO}",
                "total": f"/PfdB 13 Tf {CREMA}"}
-    for clave in ("subtotal", "iva", "total"):
+    for clave in calc:  # en el orden en que deben calcularse
         t = cuadro["totales"][clave]
         nombre, ayuda = nombres[clave]
         izquierda = t["bbox"][0] - (70 if clave == "total" else 44)
@@ -393,11 +443,14 @@ def main(cfg_path):
             pagina_escudo, Transformation().scale(s).translate(cx - ew * s / 2, cy - eh * s / 2))
 
     fuentes = DictionaryObject({NameObject("/" + k): fuente_truetype(writer, v, k) for k, v in FUENTES.items()})
-    campos, orden = agregar_formulario(writer, fichas, cuadro, cfg.get("iva", 0.19), h)
+    precios = cfg.get("precios", {})
+    campos, orden = agregar_formulario(writer, fichas, cuadro, cfg.get("iva", 0.19), h, fuentes,
+                                       precios, cfg.get("precios_con_iva", False))
     writer._root_object[NameObject("/AcroForm")] = writer._add_object(DictionaryObject({
         NameObject("/Fields"): campos,
         NameObject("/CO"): orden,
-        NameObject("/NeedAppearances"): BooleanObject(True),
+        # con precios ya escritos, cada visor usa la apariencia formateada ($29.900) en vez de rehacerla
+        NameObject("/NeedAppearances"): BooleanObject(not precios),
         NameObject("/DR"): DictionaryObject({NameObject("/Font"): fuentes}),
         NameObject("/DA"): TextStringObject(f"/PopR 9 Tf {NAVY}"),
     }))
@@ -412,6 +465,8 @@ def main(cfg_path):
     print(f"    Con render: {con_render}")
     print(f"    Sin render: {sin_render or '—'}")
     print(f"    Campos: {len(campos)} (valor unitario x{len(fichas)}, cantidades, subtotal, IVA, total)")
+    if precios:
+        print(f"    Precios cargados: {len(precios)} ({'con IVA' if cfg.get('precios_con_iva') else 'netos'})")
 
 
 if __name__ == "__main__":

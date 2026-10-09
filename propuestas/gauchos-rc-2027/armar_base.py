@@ -69,12 +69,21 @@ RENUMERAR = {P_BERMUDA_DEP: ("FICHA 20 · PRESENTACIÓN Y ABRIGO", "GAU-20"),
              P_PITILLO: ("FICHA 21 · PRESENTACIÓN Y ABRIGO", "GAU-21")}
 # filas del catálogo y del cuadro: el código queda, cambia el producto
 FILAS = {"Bermuda sastre": "Bermuda deportiva", "Bermuda deportiva": "Pantalón pitillo",
-         "Pantalón pitillo": "Parka larga"}
+         "Pantalón pitillo": "Parka larga", "Chaqueta cierre completo": "Polerón cierre completo"}
+# títulos de ficha que cambian (página de la base: (título viejo, título nuevo))
+TITULOS = {16: ("Chaqueta cierre completo", "Polerón cierre completo")}
+# etiqueta del precio en cada ficha y en el cuadro de valores: los precios cargados son precio socio con IVA
+ETIQUETA_PRECIO = ("VALOR UNITARIO", "PRECIO SOCIO · IVA INCL.", "PRECIO SOCIO")
 TEXTOS = [  # (página, línea donde está, texto viejo, texto nuevo); el párrafo completo se vuelve a armar
     (P_PORTADA, "Línea completa", "presentación y accesorios", "presentación y abrigo"),
     (P_SOBRE, "documento cubre", "presentación, abrigo y accesorios—", "presentación y abrigo—"),
     (P_CATALOGO, "Veintitrés", "Veintitrés líneas de producto agrupadas en cuatro categorías",
      "Veintidós líneas de producto agrupadas en tres categorías"),
+    (P_CUADRO, "Valores en pesos",
+     "Valores en pesos chilenos. El valor final por producto se confirma una vez definidas las cantidades por "
+     "prenda y la curva de tallas del club.",
+     "Precios por unidad para socios en la Preventa Oficial Gauchos, en pesos chilenos con IVA incluido. Las "
+     "cantidades son referenciales y permiten estimar la venta de una preventa o de la temporada."),
 ]
 
 PROGRAMA = {
@@ -455,10 +464,10 @@ def main():
     def borrar(pag_final, run, alto=1.25):
         tachar[pag_final].append((run.x0 - 1, run.top - 1.5, run.x1 + 1, run.top + run.size * alto))
 
-    def reemplazar(pag_base, run, texto, alinear="izq", pag_final=None):
+    def reemplazar(pag_base, run, texto, alinear="izq", pag_final=None, alto=1.25):
         """Borra un tramo de la base y escribe otro texto con el mismo estilo y posición."""
         p = final(pag_base) if pag_final is None else pag_final
-        borrar(p, run)
+        borrar(p, run, alto)
         x = {"der": run.x1, "centro": (run.x0 + run.x1) / 2}.get(alinear, run.x0)
         capa.texto(p, run, texto, x, run.base, alinear)
 
@@ -485,10 +494,22 @@ def main():
         for k, linea in enumerate(partir(capa, estilo_cuerpo, cuerpo, ancho_col)):
             capa.texto(NUEVA, estilo_cuerpo, linea, etq.x0, etq.base - salto_etiqueta - k * interlinea)
 
-    # 2. Fichas que suben un número
+    # 2. Fichas que suben un número, títulos que cambian y etiqueta del precio
     for pag, (ficha, codigo) in RENUMERAR.items():
         reemplazar(pag, buscar(R[pag], "FICHA"), ficha)
         reemplazar(pag, buscar(R[pag], "GAU-"), codigo, "der")
+    for pag, (viejo, nuevo) in TITULOS.items():  # alto menor: la bajada en cursiva va justo debajo
+        reemplazar(pag, buscar(R[pag], viejo), nuevo, alto=1.0)
+    viejo, en_ficha, en_cuadro = ETIQUETA_PRECIO
+    for k, pag in enumerate(ORDEN):
+        origen = COPIAS.get(pag, pag)
+        for r in R[origen]:
+            if r.texto.startswith(viejo) and r.texto != viejo:  # ficha: la etiqueta y "$[00.000]" van juntas
+                etq = Run(r.chars[:len(viejo)])
+                borrar(k, etq)
+                capa.texto(k, etq, en_ficha, etq.x1, etq.base, "der")
+            elif r.texto == viejo and origen == P_CUADRO:
+                reemplazar(None, r, en_cuadro, "der", pag_final=k)
 
     # 3. Numeración de páginas (pie de página)
     for k, pag in enumerate(ORDEN):

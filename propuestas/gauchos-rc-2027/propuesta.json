@@ -2,6 +2,8 @@
   "base": "base/Propuesta_Gauchos_Rugby_Club_2027_base_v2.pdf",
   "salida": "Propuesta_Gauchos_Rugby_Club_2027.pdf",
   "iva": 0.19,
+  "precios_con_iva": true,
+  "precios": { "GAU-01": 29900, "GAU-02": 29900, "GAU-03": 29900, "GAU-04": 29900, "GAU-05": 19900, "GAU-06": 10900, "GAU-07": 21900, "GAU-08": 22900, "GAU-09": 34900, "GAU-10": 28900, "GAU-11": 21900, "GAU-12": 19900, "GAU-13": 23900, "GAU-14": 37900, "GAU-15": 40900, "GAU-16": 22900, "GAU-17": 31900, "GAU-18": 47900, "GAU-19": 17900, "GAU-20": 21900, "GAU-21": 25900, "GAU-22": 79900 },
   "escudo_portada": {
     "pdf": "img/escudo_gauchos.pdf",
     "alto": 160
