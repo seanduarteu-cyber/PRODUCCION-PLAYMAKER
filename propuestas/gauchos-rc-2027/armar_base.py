@@ -100,7 +100,8 @@ PROGRAMA = {
                       ("PREVENTA 3", "Fin de año")],
         "preventas_nota": "Fechas a definir con el club",
         # (unidades vendidas a socios en la temporada, royalty sobre la venta neta)
-        "tramos": [("Hasta 150 unidades", 10), ("De 151 a 400 unidades", 11), ("Más de 400 unidades", 12)],
+        "tramos": [("Hasta 100 unidades", 11), ("De 101 a 200 unidades", 12), ("De 201 a 350 unidades", 13),
+                   ("De 351 a 500 unidades", 14), ("Más de 500 unidades", 15)],
         "bono_credito": 30,
     },
     "transparencia": {
@@ -383,11 +384,11 @@ def paginas_programa(capa, tachar, borrar_graficos, plantilla, pag_preventa, pag
     fila = Estilo("Poppins-Regular", 9.0, (0.043, 0.071, 0.149))
     pct = Estilo("Poppins-SemiBold", 11, NAVY)
     for i, (txt, valor) in enumerate(cfg["tramos"]):
-        ft = top + 20 + i * 22
-        capa.rect(pag, BLANCO if i % 2 == 0 else (0.965, 0.961, 0.949), 46, ft, w - 46, ft + 22)
-        escribir(pag, fila, txt, X0, ft + 14.5)
-        escribir(pag, pct, f"{valor}%", X1, ft + 15, "der")
-    fin_tabla = top + 20 + len(cfg["tramos"]) * 22
+        ft = top + 20 + i * 20
+        capa.rect(pag, BLANCO if i % 2 == 0 else (0.965, 0.961, 0.949), 46, ft, w - 46, ft + 20)
+        escribir(pag, fila, txt, X0, ft + 13.5)
+        escribir(pag, pct, f"{valor}%", X1, ft + 14, "der")
+    fin_tabla = top + 20 + len(cfg["tramos"]) * 20
     capa.linea(pag, REGLA, 0.6, 46, w - 46, fin_tabla)
     notas = [
         "El porcentaje del tramo alcanzado se aplica a todas las unidades vendidas en la temporada.",
