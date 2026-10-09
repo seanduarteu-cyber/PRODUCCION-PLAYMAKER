@@ -7,11 +7,14 @@ Uso:
 Lee  base/Propuesta_Gauchos_Rugby_Club_2027_base.pdf    (original, no se modifica)
 Crea base/Propuesta_Gauchos_Rugby_Club_2027_base_v2.pdf  (la que usa propuesta.json)
 
-Resultado (22 productos en tres categorías):
+Resultado (22 productos en tres categorías, 30 páginas):
   - Presentación y abrigo queda: ... 19 Polera de algodón, 20 Bermuda deportiva, 21 Pantalón pitillo,
     22 Parka larga (ficha nueva con el mismo diseño de las demás).
   - Sin Bermuda sastre ni la categoría Accesorios.
   - Portada, "Sobre esta propuesta", catálogo y cuadro de valores actualizados; páginas renumeradas.
+  - Dos páginas nuevas después de "Cómo trabajamos": "Preventa Oficial Gauchos" (programa para socios con
+    royalty por tramos) y "Transparencia y pagos" (cómo se liquida y qué aporta cada parte).
+    Sus textos y porcentajes están en PROGRAMA, más abajo.
 Los textos se dibujan con las mismas fuentes, tamaños, colores y espaciado que la base.
 """
 
@@ -36,9 +39,13 @@ for nombre in ("Poppins-Regular", "Poppins-SemiBold", "PlayfairDisplay-Regular",
 # páginas de la base (índice 0)
 P_PORTADA, P_SOBRE, P_CATALOGO, P_MODELO_FICHA = 0, 1, 2, 3
 P_BERMUDA_SASTRE, P_BERMUDA_DEP, P_PITILLO, P_ACCESORIOS, P_CUADRO = 22, 23, 24, 25, 26
-PARKA_PAG = "parka"
-# orden de las páginas del documento final (índices de la base; la parka es una copia de la ficha modelo)
-ORDEN = [i for i in range(P_BERMUDA_SASTRE)] + [P_BERMUDA_DEP, P_PITILLO, PARKA_PAG, P_CUADRO, 27, 28]
+P_COMO, P_PASOS = 27, 28
+PARKA_PAG, PREVENTA_PAG, TRANSPARENCIA_PAG = "parka", "preventa", "transparencia"
+# páginas nuevas: copias de una página de la base que se vacían y se vuelven a llenar
+COPIAS = {PARKA_PAG: P_MODELO_FICHA, PREVENTA_PAG: P_COMO, TRANSPARENCIA_PAG: P_COMO}
+# orden de las páginas del documento final (índices de la base o páginas nuevas)
+ORDEN = ([i for i in range(P_BERMUDA_SASTRE)] +
+         [P_BERMUDA_DEP, P_PITILLO, PARKA_PAG, P_CUADRO, P_COMO, PREVENTA_PAG, TRANSPARENCIA_PAG, P_PASOS])
 
 PARKA = {
     "ficha": "FICHA 22 · PRESENTACIÓN Y ABRIGO",
@@ -69,6 +76,70 @@ TEXTOS = [  # (página, línea donde está, texto viejo, texto nuevo); el párra
     (P_CATALOGO, "Veintitrés", "Veintitrés líneas de producto agrupadas en cuatro categorías",
      "Veintidós líneas de producto agrupadas en tres categorías"),
 ]
+
+PROGRAMA = {
+    "preventa": {
+        "seccion": "SECCIÓN 05",
+        "tema": "PROGRAMA PARA SOCIOS",
+        "titulo": "Preventa Oficial Gauchos",
+        "intro": ("Una vitrina propia del club en playmaker.cl, dentro de la sección de clubes e instituciones, "
+                  "donde socios, jugadores y familias compran la colección Gauchos en fechas de preventa. "
+                  "Playmaker se encarga del cobro, la producción y la entrega; el club recibe un royalty por "
+                  "cada venta, sin invertir en stock."),
+        "banda_etiqueta": "PARA LOS SOCIOS",
+        "banda": "El {base}% de cada compra va directo a Gauchos",
+        "pasos": [
+            ("Difusión del club", "El club comparte el link y el código QR de la página Gauchos en sus canales."),
+            ("Compra en línea", "Socios y familias eligen producto, talla y personalización, y pagan en "
+                                "playmaker.cl con boleta electrónica."),
+            ("Producción por lote", "Al cierre de la preventa, Playmaker fabrica todo lo vendido en su "
+                                    "planta en Santiago."),
+            ("Entrega en el club", "Los pedidos llegan consolidados al club, listos para entregar a cada socio."),
+        ],
+        "preventas": [("PREVENTA 1", "Inicio de temporada"), ("PREVENTA 2", "Mitad de temporada"),
+                      ("PREVENTA 3", "Fin de año")],
+        "preventas_nota": "Fechas a definir con el club",
+        # (unidades vendidas a socios en la temporada, royalty sobre la venta neta)
+        "tramos": [("Hasta 150 unidades", 10), ("De 151 a 400 unidades", 11), ("Más de 400 unidades", 12)],
+        "bono_credito": 30,
+    },
+    "transparencia": {
+        "seccion": "SECCIÓN 06",
+        "tema": "PREVENTA OFICIAL GAUCHOS",
+        "titulo": "Transparencia y pagos",
+        "intro": ("Playmaker administra el cobro de la preventa y el club puede comprobar cada venta. Estas "
+                  "reglas son parte del convenio y se aplican desde la primera preventa."),
+        "recuadro": "CÓMO SE LIQUIDA EL ROYALTY",
+        "reglas": [
+            ("LIQUIDACIÓN", "Al cierre de cada preventa, el club recibe el detalle de cada venta: producto, "
+                            "talla, comprador, monto neto, número de boleta y royalty."),
+            ("RESPALDO", "Se adjunta la exportación directa de la plataforma de pago con la que se cobró."),
+            ("CONTROL EN LA ENTREGA", "El club recibe y cuenta los pedidos consolidados y firma la guía de "
+                                      "entrega; el royalty se calcula sobre esas mismas unidades."),
+            ("PLAZO DE PAGO", "15 días desde el cierre de cada preventa, por transferencia o como crédito en "
+                              "productos con un {bono}% adicional."),
+            ("BASE DEL ROYALTY", "Venta neta: sin IVA y descontadas las devoluciones."),
+            ("REVISIÓN", "El club puede pedir el respaldo de cualquier venta en cualquier momento."),
+            ("PREVENTA PILOTO", "La primera preventa funciona como piloto para validar el proceso con la "
+                                "directiva del club."),
+        ],
+        "aportes": [
+            ("PLAYMAKER APORTA", [
+                "Página Gauchos en playmaker.cl con todos los productos en preventa.",
+                "Cobro, producción, atención a socios y entrega consolidada en el club.",
+                "Contenido para redes con los montajes de la colección.",
+                "Kit de tallas para que los socios se prueben antes de comprar.",
+                "Liquidación y reporte al cierre de cada preventa.",
+            ]),
+            ("EL CLUB APORTA", [
+                "Difusión de cada preventa en sus redes, web y grupos de socios.",
+                "Espacio en partidos y entrenamientos para el kit de tallas.",
+                "Aprobación de cada diseño antes de publicarlo.",
+                "Recepción y control de los pedidos en el club.",
+            ]),
+        ],
+    },
+}
 
 
 # ---------------------------------------------------------------- lectura de estilos
@@ -140,6 +211,13 @@ def parrafo(runs, contiene):
 
 # ---------------------------------------------------------------- escritura
 
+class Estilo:
+    """Estilo de texto para contenido nuevo (mismos atributos que Run)."""
+
+    def __init__(self, fuente, size, color, espaciado=0.0):
+        self.fuente, self.size, self.color, self.espaciado = fuente, size, tuple(color), espaciado
+
+
 class Capa:
     """Superposición reportlab: una página por página del documento final."""
 
@@ -158,6 +236,9 @@ class Capa:
     def linea(self, pagina, color, ancho, x0, x1, top):
         self.paginas[pagina].append(("l", color, ancho, x0, x1, top))
 
+    def marco(self, pagina, color, ancho, x0, top, x1, bottom):
+        self.paginas[pagina].append(("m", color, ancho, x0, top, x1, bottom))
+
     def ancho(self, estilo, texto):
         return pdfmetrics.stringWidth(texto, estilo.fuente, estilo.size) + estilo.espaciado * (len(texto) - 1)
 
@@ -174,6 +255,11 @@ class Capa:
                     c.setStrokeColorRGB(*color)
                     c.setLineWidth(ancho)
                     c.line(x0, self.h - top, x1, self.h - top)
+                elif op[0] == "m":
+                    _, color, ancho, x0, top, x1, bottom = op
+                    c.setStrokeColorRGB(*color)
+                    c.setLineWidth(ancho)
+                    c.rect(x0, self.h - bottom, x1 - x0, bottom - top, stroke=1, fill=0)
             for op in self.paginas[i]:
                 if op[0] == "t":
                     _, e, texto, x, base, alinear = op
@@ -205,6 +291,145 @@ def partir(capa, estilo, texto, ancho_max):
     return lineas + [actual]
 
 
+# ---------------------------------------------------------------- páginas del programa
+
+def paginas_programa(capa, tachar, borrar_graficos, plantilla, pag_preventa, pag_transparencia, w, h):
+    """Dibuja "Preventa Oficial Gauchos" y "Transparencia y pagos" con el estilo de "Cómo trabajamos"."""
+    seccion, tema = buscar(plantilla, "SECCIÓN"), buscar(plantilla, "CONDICIONES COMERCIALES")
+    titulo, intro = buscar(plantilla, "Cómo trabajamos"), buscar(plantilla, "Playmaker fabrica")
+    cab_rec, etq_rec = buscar(plantilla, "CONDICIONES DE"), buscar(plantilla, "ABONO")
+    val_rec = buscar(plantilla, "Abono del")
+    paso_intro = intro.base - buscar(plantilla, "club sin depender").base
+    NAVY, ORO, MARFIL = titulo.color, seccion.color, etq_rec.color
+    TEXTO, REGLA, BLANCO = (0.227, 0.247, 0.322), (0.863, 0.847, 0.796), (1, 1, 1)
+    X0, X1 = 58.0, 537.3
+    ANCHO = X1 - X0
+
+    def asc(r):  # distancia de la parte superior del texto a su línea base
+        return (h - r.base) - r.top
+
+    etiqueta = Estilo("Poppins-SemiBold", 7.4, ORO, 2.2)
+    cuerpo = Estilo("Poppins-Regular", 8.1, TEXTO)
+    sub = Estilo("Poppins-SemiBold", 9.5, NAVY)
+    numero = Estilo("PlayfairDisplay-Bold", 20, ORO)
+    nota = Estilo("Poppins-Regular", 7.6, (0.431, 0.447, 0.502))
+
+    def escribir(pag, e, texto, x, yb, alinear="izq"):  # yb: línea base medida desde arriba
+        capa.texto(pag, e, texto, x, h - yb, alinear)
+
+    def parrafo_en(pag, e, texto, x, yb, ancho, paso):
+        lineas = partir(capa, e, texto, ancho)
+        for k, linea in enumerate(lineas):
+            escribir(pag, e, linea, x, yb + k * paso)
+        return yb + (len(lineas) - 1) * paso
+
+    def encabezado(pag, cfg):
+        tachar[pag].append((30, 60, w - 30, 785))  # vacía la copia: textos, recuadro y regla del encabezado
+        borrar_graficos.add(pag)
+        escribir(pag, seccion, cfg["seccion"], seccion.x0, h - seccion.base)
+        escribir(pag, tema, cfg["tema"], tema.x1, h - tema.base, "der")
+        capa.linea(pag, REGLA, 0.6, X0, X1, 87.0)
+        escribir(pag, titulo, cfg["titulo"], titulo.x0, h - titulo.base)
+        return parrafo_en(pag, intro, cfg["intro"], X0, h - intro.base, ANCHO, paso_intro)
+
+    def rotulo(pag, texto, top):
+        escribir(pag, etiqueta, texto, X0, top + 6)
+        capa.linea(pag, REGLA, 0.6, X0, X1, top + 13)
+        return top + 13
+
+    def recuadro_navy(pag, top, bottom):
+        capa.rect(pag, NAVY, 40, top, w - 40, bottom)
+        capa.marco(pag, ORO, 0.7, 48, top + 8, w - 48, bottom - 8)
+
+    def vineta(pag, x, yb):
+        capa.rect(pag, ORO, x, yb - 5, x + 3, yb - 2)
+
+    # ---- Preventa Oficial Gauchos
+    cfg = PROGRAMA["preventa"]
+    pag = pag_preventa
+    y = encabezado(pag, cfg)
+    top = y + 22
+    recuadro_navy(pag, top, top + 72)
+    escribir(pag, cab_rec, cfg["banda_etiqueta"], w / 2, top + 30, "centro")
+    escribir(pag, Estilo("PlayfairDisplay-Bold", 19, MARFIL), cfg["banda"].format(base=cfg["tramos"][0][1]),
+             w / 2, top + 54, "centro")
+
+    y = rotulo(pag, "CÓMO FUNCIONA", top + 72 + 24)
+    sep = 16
+    col = (ANCHO - sep * 3) / 4
+    fondo_pasos = y
+    for i, (tit, txt) in enumerate(cfg["pasos"]):
+        x = X0 + i * (col + sep)
+        escribir(pag, numero, f"{i + 1:02d}", x, y + 30)
+        escribir(pag, sub, tit, x, y + 47)
+        fondo_pasos = max(fondo_pasos, parrafo_en(pag, cuerpo, txt, x, y + 61, col, 10.6))
+
+    y = rotulo(pag, "CALENDARIO DE PREVENTAS", fondo_pasos + 24)
+    col3 = (ANCHO - sep * 2) / 3
+    for i, (etq, tit) in enumerate(cfg["preventas"]):
+        x = X0 + i * (col3 + sep)
+        capa.rect(pag, BLANCO, x, y + 12, x + col3, y + 62)
+        capa.marco(pag, REGLA, 0.6, x, y + 12, x + col3, y + 62)
+        escribir(pag, Estilo("Poppins-SemiBold", 6.6, ORO, 1.4), etq, x + 12, y + 27)
+        escribir(pag, sub, tit, x + 12, y + 41)
+        escribir(pag, cuerpo, cfg["preventas_nota"], x + 12, y + 54)
+
+    y = rotulo(pag, "ROYALTY PARA EL CLUB", y + 62 + 24)
+    top = y + 12
+    capa.rect(pag, NAVY, 46, top, w - 46, top + 20)
+    cab = Estilo("Poppins-SemiBold", 6.6, MARFIL, 1.4)
+    escribir(pag, cab, "UNIDADES VENDIDAS A SOCIOS EN LA TEMPORADA", X0, top + 13)
+    escribir(pag, cab, "ROYALTY SOBRE VENTA NETA", X1, top + 13, "der")
+    fila = Estilo("Poppins-Regular", 9.0, (0.043, 0.071, 0.149))
+    pct = Estilo("Poppins-SemiBold", 11, NAVY)
+    for i, (txt, valor) in enumerate(cfg["tramos"]):
+        ft = top + 20 + i * 22
+        capa.rect(pag, BLANCO if i % 2 == 0 else (0.965, 0.961, 0.949), 46, ft, w - 46, ft + 22)
+        escribir(pag, fila, txt, X0, ft + 14.5)
+        escribir(pag, pct, f"{valor}%", X1, ft + 15, "der")
+    fin_tabla = top + 20 + len(cfg["tramos"]) * 22
+    capa.linea(pag, REGLA, 0.6, 46, w - 46, fin_tabla)
+    notas = [
+        "El porcentaje del tramo alcanzado se aplica a todas las unidades vendidas en la temporada.",
+        "Venta neta: sin IVA y descontadas las devoluciones.",
+        f"Si el club elige recibir el royalty en productos, se abona un {cfg['bono_credito']}% adicional "
+        "en crédito para indumentaria.",
+    ]
+    y = fin_tabla + 18
+    for n in notas:
+        vineta(pag, X0, y)
+        y = parrafo_en(pag, nota, n, X0 + 9, y, ANCHO - 9, 10) + 13
+
+    # ---- Transparencia y pagos
+    cfg = PROGRAMA["transparencia"]
+    pag = pag_transparencia
+    y = encabezado(pag, cfg)
+    top = y + 24
+    filas, yy = [], top + 55  # mismas medidas que el recuadro de "Cómo trabajamos"
+    for etq, txt in cfg["reglas"]:
+        lineas = partir(capa, val_rec, txt.format(bono=PROGRAMA["preventa"]["bono_credito"]), 335)
+        filas.append((etq, lineas, yy))
+        yy += 20 + 11 * (len(lineas) - 1)
+    bottom = yy - 20 + 55
+    recuadro_navy(pag, top, bottom)
+    escribir(pag, cab_rec, cfg["recuadro"], 70, top + 29 + asc(cab_rec))
+    for etq, lineas, ft in filas:
+        escribir(pag, etq_rec, etq, 70, ft + 1 + asc(etq_rec))
+        for k, linea in enumerate(lineas):
+            escribir(pag, val_rec, linea, 196, ft + asc(val_rec) + k * 11)
+
+    y = bottom + 30
+    col2 = (ANCHO - 30) / 2
+    for i, (tit, items) in enumerate(cfg["aportes"]):
+        x = X0 + i * (col2 + 30)
+        escribir(pag, etiqueta, tit, x, y + 6)
+        capa.linea(pag, REGLA, 0.6, x, x + col2, y + 13)
+        yy = y + 30
+        for item in items:
+            vineta(pag, x, yy)
+            yy = parrafo_en(pag, cuerpo, item, x + 10, yy, col2 - 10, 10.6) + 17
+
+
 # ---------------------------------------------------------------- principal
 
 def main():
@@ -216,9 +441,11 @@ def main():
 
     # documento con las páginas en el orden final
     doc = pymupdf.open(BASE)
-    doc.insert_pdf(pymupdf.open(BASE), from_page=P_MODELO_FICHA, to_page=P_MODELO_FICHA, start_at=doc.page_count)
-    copia = doc.page_count - 1
-    doc.select([copia if i == PARKA_PAG else i for i in ORDEN])
+    pos_copia = {}
+    for clave, origen in COPIAS.items():
+        doc.insert_pdf(pymupdf.open(BASE), from_page=origen, to_page=origen, start_at=doc.page_count)
+        pos_copia[clave] = doc.page_count - 1
+    doc.select([pos_copia.get(i, i) for i in ORDEN])
     final = ORDEN.index
     capa = Capa(len(doc), w, h)
     tachar = {i: [] for i in range(len(doc))}  # rects (top-based) a borrar por página final
@@ -264,7 +491,7 @@ def main():
 
     # 3. Numeración de páginas (pie de página)
     for k, pag in enumerate(ORDEN):
-        origen = P_MODELO_FICHA if pag == PARKA_PAG else pag
+        origen = COPIAS.get(pag, pag)
         num = [r for r in R[origen] if r.top > 790 and r.texto.isdigit()]
         if num and int(num[0].texto) != k + 1:
             reemplazar(None, num[0], f"{k + 1:02d}", "der", pag_final=k)
@@ -312,7 +539,10 @@ def main():
         if regla["top"] < r.top < caja["bottom"]:
             capa.texto(PQ, r, r.texto, r.x0, r.base + sube)
 
-    # 7. Borrar lo reemplazado y superponer lo nuevo
+    # 7. Páginas nuevas del programa (sobre copias vaciadas de "Cómo trabajamos")
+    paginas_programa(capa, tachar, borrar_graficos, R[P_COMO], final(PREVENTA_PAG), final(TRANSPARENCIA_PAG), w, h)
+
+    # 8. Borrar lo reemplazado y superponer lo nuevo
     for i, rects in tachar.items():
         if not rects:
             continue
