@@ -7,13 +7,14 @@ Uso:
 Lee  base/Propuesta_Gauchos_Rugby_Club_2027_base.pdf    (original, no se modifica)
 Crea base/Propuesta_Gauchos_Rugby_Club_2027_base_v2.pdf  (la que usa propuesta.json)
 
-Resultado (22 productos en tres categorías, 30 páginas):
+Resultado (22 productos en tres categorías, 29 páginas):
   - Presentación y abrigo queda: ... 19 Polera de algodón, 20 Bermuda deportiva, 21 Pantalón pitillo,
     22 Parka larga (ficha nueva con el mismo diseño de las demás).
   - Sin Bermuda sastre ni la categoría Accesorios.
   - Portada, "Sobre esta propuesta", catálogo y cuadro de valores actualizados; páginas renumeradas.
-  - Dos páginas nuevas después de "Cómo trabajamos": "Preventa Oficial Gauchos" (programa para socios con
-    royalty por tramos) y "Transparencia y pagos" (cómo se liquida y qué aporta cada parte).
+  - Sin "Cómo trabajamos" (condiciones de compra del club que no aplican a la preventa). En su lugar,
+    "Preventa Oficial Gauchos" (programa para socios con royalty por tramos) y "Transparencia y pagos"
+    (cómo se liquida y qué aporta cada parte), con el diseño de esa página.
     Sus textos y porcentajes están en PROGRAMA, más abajo.
 Los textos se dibujan con las mismas fuentes, tamaños, colores y espaciado que la base.
 """
@@ -45,7 +46,9 @@ PARKA_PAG, PREVENTA_PAG, TRANSPARENCIA_PAG = "parka", "preventa", "transparencia
 COPIAS = {PARKA_PAG: P_MODELO_FICHA, PREVENTA_PAG: P_COMO, TRANSPARENCIA_PAG: P_COMO}
 # orden de las páginas del documento final (índices de la base o páginas nuevas)
 ORDEN = ([i for i in range(P_BERMUDA_SASTRE)] +
-         [P_BERMUDA_DEP, P_PITILLO, PARKA_PAG, P_CUADRO, P_COMO, PREVENTA_PAG, TRANSPARENCIA_PAG, P_PASOS])
+         [P_BERMUDA_DEP, P_PITILLO, PARKA_PAG, P_CUADRO, PREVENTA_PAG, TRANSPARENCIA_PAG, P_PASOS])
+# "Cómo trabajamos" (P_COMO) no va: sus condiciones son de compra del club y no aplican a la preventa.
+# Se usa solo como plantilla de diseño para las páginas del programa.
 
 PARKA = {
     "ficha": "FICHA 22 · PRESENTACIÓN Y ABRIGO",
@@ -88,7 +91,7 @@ TEXTOS = [  # (página, línea donde está, texto viejo, texto nuevo); el párra
 
 PROGRAMA = {
     "preventa": {
-        "seccion": "SECCIÓN 05",
+        "seccion": "SECCIÓN 04",
         "tema": "PROGRAMA PARA SOCIOS",
         "titulo": "Preventa Oficial Gauchos",
         "intro": ("Una vitrina propia del club en playmaker.cl, dentro de la sección de clubes e instituciones, "
@@ -114,7 +117,7 @@ PROGRAMA = {
         "bono_credito": 30,
     },
     "transparencia": {
-        "seccion": "SECCIÓN 06",
+        "seccion": "SECCIÓN 05",
         "tema": "PREVENTA OFICIAL GAUCHOS",
         "titulo": "Transparencia y pagos",
         "intro": ("Playmaker administra el cobro de la preventa y el club puede comprobar cada venta. Estas "
