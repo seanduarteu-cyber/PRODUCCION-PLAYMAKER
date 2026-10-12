@@ -1,0 +1,935 @@
+[
+  {
+    "nivel": "3_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 4: Profundizar la comprensión de las narraciones leídas: información explícita e implícita, secuencia, personajes, ambiente y opinión fundamentada.",
+    "dificultad": 3,
+    "prerequisitos": [
+      "2_basico.lenguaje.OA5"
+    ],
+    "id_objetivo": "3_basico.lenguaje.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/3-basico"
+    },
+    "desafios": [
+      {
+        "id": "len3-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "El faro de la caleta llevaba años apagado. Don Tomás, el pescador más viejo, decidió repararlo. Trabajó una semana entera y, la última noche, la luz volvió a brillar sobre el mar.",
+        "enunciado": "¿Quién reparó el faro?",
+        "alternativas": [
+          "un niño",
+          "Don Tomás",
+          "el alcalde",
+          "nadie"
+        ],
+        "correcta": 1,
+        "pista": "Busca quién decidió repararlo.",
+        "explicacion_error": "Don Tomás, el pescador más viejo, lo reparó.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "El faro de la caleta llevaba años apagado. Don Tomás, el pescador más viejo, decidió repararlo. Trabajó una semana entera y, la última noche, la luz volvió a brillar sobre el mar.",
+        "enunciado": "¿Cuánto tiempo trabajó?",
+        "alternativas": [
+          "un año",
+          "un día",
+          "un mes",
+          "una semana"
+        ],
+        "correcta": 3,
+        "pista": "Busca «trabajó».",
+        "explicacion_error": "Trabajó una semana entera.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "El faro de la caleta llevaba años apagado. Don Tomás, el pescador más viejo, decidió repararlo. Trabajó una semana entera y, la última noche, la luz volvió a brillar sobre el mar.",
+        "enunciado": "¿Dónde estaba el faro?",
+        "alternativas": [
+          "en la ciudad",
+          "en el bosque",
+          "en la caleta",
+          "en el desierto"
+        ],
+        "correcta": 2,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "Era «el faro de la caleta».",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-004",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "texto": "{personaje} encontró un mapa antiguo en {lugar}. Siguió las pistas: cruzó un río, subió una colina y, junto a un árbol torcido, encontró un cofre lleno de {objetos}.",
+        "enunciado": "Ordena lo que hizo {personaje}.",
+        "elementos": [
+          "Encontró un mapa.",
+          "Cruzó un río.",
+          "Subió una colina.",
+          "Encontró un cofre."
+        ],
+        "pista": "Sigue las pistas en orden.",
+        "explicacion_error": "Mapa, río, colina y cofre, en ese orden.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "{personaje} encontró un mapa antiguo en {lugar}. Siguió las pistas: cruzó un río, subió una colina y, junto a un árbol torcido, encontró un cofre lleno de {objetos}.",
+        "enunciado": "¿Dónde estaba el cofre?",
+        "alternativas": [
+          "en la cima de la colina",
+          "en el río",
+          "bajo la arena",
+          "junto a un árbol torcido"
+        ],
+        "correcta": 3,
+        "pista": "Busca la palabra «junto».",
+        "explicacion_error": "El cofre estaba junto a un árbol torcido.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "{personaje} encontró un mapa antiguo en {lugar}. Siguió las pistas: cruzó un río, subió una colina y, junto a un árbol torcido, encontró un cofre lleno de {objetos}.",
+        "enunciado": "¿Qué había en el cofre?",
+        "alternativas": [
+          "monedas de chocolate",
+          "{objetos}",
+          "ropa vieja",
+          "nada"
+        ],
+        "correcta": 1,
+        "pista": "Lee el final.",
+        "explicacion_error": "Era un cofre lleno de {objetos}.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Cuando el curso supo que Matías se cambiaría de ciudad, nadie habló durante el recreo. Al día siguiente le regalaron un álbum con fotos y mensajes. Matías lo abrazó contra su pecho.",
+        "enunciado": "¿Cómo se sintió el curso al saber la noticia?",
+        "alternativas": [
+          "triste",
+          "enojado",
+          "aburrido",
+          "alegre"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué pasó en el recreo?",
+        "explicacion_error": "Nadie habló en el recreo: estaban tristes.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Cuando el curso supo que Matías se cambiaría de ciudad, nadie habló durante el recreo. Al día siguiente le regalaron un álbum con fotos y mensajes. Matías lo abrazó contra su pecho.",
+        "enunciado": "¿Por qué le regalaron un álbum?",
+        "alternativas": [
+          "porque ganó un concurso",
+          "porque lo pidió",
+          "para que recordara a sus compañeros",
+          "porque era su cumpleaños"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué tenía el álbum y por qué se lo dieron?",
+        "explicacion_error": "Se iba de la ciudad: el álbum con fotos y mensajes era un recuerdo.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Cuando el curso supo que Matías se cambiaría de ciudad, nadie habló durante el recreo. Al día siguiente le regalaron un álbum con fotos y mensajes. Matías lo abrazó contra su pecho.",
+        "enunciado": "¿Qué muestra que a Matías le gustó el regalo?",
+        "alternativas": [
+          "lo guardó sin mirarlo",
+          "lo abrazó contra su pecho",
+          "nadie habló en el recreo",
+          "se cambió de ciudad"
+        ],
+        "correcta": 1,
+        "pista": "Busca qué hizo Matías con el álbum.",
+        "explicacion_error": "Abrazar el álbum muestra que le gustó.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "La tormenta golpeaba las ventanas de la vieja casona. Adentro, a la luz de una vela, Clara leía un libro mientras su hermano menor, Lucas, se escondía bajo una frazada cada vez que sonaba un trueno.",
+        "enunciado": "¿Cómo era el ambiente de la historia?",
+        "alternativas": [
+          "alegre y ruidoso",
+          "oscuro y tormentoso",
+          "caluroso y seco",
+          "soleado y tranquilo"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en la tormenta y la vela.",
+        "explicacion_error": "Hay tormenta y solo la luz de una vela: oscuro y tormentoso.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-011",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "texto": "La tormenta golpeaba las ventanas de la vieja casona. Adentro, a la luz de una vela, Clara leía un libro mientras su hermano menor, Lucas, se escondía bajo una frazada cada vez que sonaba un trueno.",
+        "enunciado": "Une cada elemento con lo que dice el texto.",
+        "pares": [
+          [
+            "Clara",
+            "leía un libro"
+          ],
+          [
+            "Lucas",
+            "se escondía con cada trueno"
+          ],
+          [
+            "la casona",
+            "era vieja"
+          ]
+        ],
+        "pista": "Relee qué se dice de cada uno.",
+        "explicacion_error": "Clara leía, Lucas se escondía y la casona era vieja.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "La tormenta golpeaba las ventanas de la vieja casona. Adentro, a la luz de una vela, Clara leía un libro mientras su hermano menor, Lucas, se escondía bajo una frazada cada vez que sonaba un trueno.",
+        "enunciado": "¿Qué palabra describe mejor a Lucas en esta escena?",
+        "alternativas": [
+          "enojado",
+          "valiente",
+          "asustado",
+          "aburrido"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué hacía cuando sonaba un trueno?",
+        "explicacion_error": "Se escondía con cada trueno: estaba asustado.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Rocío encontró una billetera en la plaza. Adentro había dinero y una credencial con una dirección. Aunque quería comprarse un helado, caminó diez cuadras para devolverla. La dueña, una señora mayor, le dio las gracias con una gran sonrisa.",
+        "enunciado": "¿Qué valor muestra Rocío?",
+        "alternativas": [
+          "flojera",
+          "honestidad",
+          "egoísmo",
+          "envidia"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué hizo con la billetera?",
+        "explicacion_error": "Devolvió la billetera con el dinero: es honesta.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Rocío encontró una billetera en la plaza. Adentro había dinero y una credencial con una dirección. Aunque quería comprarse un helado, caminó diez cuadras para devolverla. La dueña, una señora mayor, le dio las gracias con una gran sonrisa.",
+        "enunciado": "¿Qué opinión se puede fundamentar con el texto?",
+        "alternativas": [
+          "La señora se enojó con Rocío",
+          "Rocío actuó bien, porque devolvió la billetera aunque quería un helado",
+          "Rocío fue egoísta porque caminó diez cuadras",
+          "Rocío se quedó con el dinero"
+        ],
+        "correcta": 1,
+        "pista": "Busca una opinión con un ejemplo del texto.",
+        "explicacion_error": "El texto muestra que devolvió la billetera aunque quería algo para ella.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa4-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "texto": "Rocío encontró una billetera en la plaza. Adentro había dinero y una credencial con una dirección. Aunque quería comprarse un helado, caminó diez cuadras para devolverla. La dueña, una señora mayor, le dio las gracias con una gran sonrisa.",
+        "enunciado": "¿Lo dice el texto o se infiere?",
+        "categorias": [
+          "Lo dice el texto",
+          "Se infiere"
+        ],
+        "elementos": [
+          {
+            "texto": "Rocío caminó diez cuadras.",
+            "categoria": 0
+          },
+          {
+            "texto": "La billetera tenía una credencial.",
+            "categoria": 0
+          },
+          {
+            "texto": "Rocío es honesta.",
+            "categoria": 1
+          },
+          {
+            "texto": "La señora se sintió aliviada.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Si está escrito tal cual, lo dice el texto; si lo deduces, se infiere.",
+        "explicacion_error": "Las cuadras y la credencial están escritas; la honestidad y el alivio se deducen.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_basico",
+    "asignatura": "lenguaje",
+    "eje": "Escritura",
+    "objetivo_oficial": "OA 20: Comprender la función de los artículos, sustantivos y adjetivos, y reemplazarlos o combinarlos para enriquecer y precisar lo que se escribe.",
+    "dificultad": 3,
+    "prerequisitos": [
+      "1_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "3_basico.lenguaje.OA20",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-17203.html"
+    },
+    "desafios": [
+      {
+        "id": "len3-oa20-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué palabra es un sustantivo?",
+        "alternativas": [
+          "mesa",
+          "correr",
+          "rápido",
+          "bonita"
+        ],
+        "correcta": 0,
+        "pista": "Los sustantivos nombran personas, animales, cosas o lugares.",
+        "explicacion_error": "«Mesa» nombra una cosa: es un sustantivo.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "___ casas",
+        "alternativas": [
+          "el",
+          "las",
+          "los",
+          "la"
+        ],
+        "correcta": 1,
+        "pista": "«Casas» es femenino y plural.",
+        "explicacion_error": "Se dice «las casas».",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué palabra es un adjetivo?",
+        "alternativas": [
+          "ayer",
+          "saltar",
+          "alegre",
+          "perro"
+        ],
+        "correcta": 2,
+        "pista": "Los adjetivos dicen cómo es algo.",
+        "explicacion_error": "«Alegre» dice cómo es alguien.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "En «el perro grande», ¿cuál es el adjetivo?",
+        "alternativas": [
+          "perro",
+          "el perro",
+          "el",
+          "grande"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué palabra dice cómo es el perro?",
+        "explicacion_error": "«Grande» describe al perro.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "___ árboles altos",
+        "alternativas": [
+          "las",
+          "el",
+          "la",
+          "los"
+        ],
+        "correcta": 3,
+        "pista": "«Árboles» es masculino y plural.",
+        "explicacion_error": "Se dice «los árboles altos».",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Es sustantivo o adjetivo?",
+        "categorias": [
+          "Sustantivo",
+          "Adjetivo"
+        ],
+        "elementos": [
+          {
+            "texto": "árbol",
+            "categoria": 0
+          },
+          {
+            "texto": "ciudad",
+            "categoria": 0
+          },
+          {
+            "texto": "niña",
+            "categoria": 0
+          },
+          {
+            "texto": "verde",
+            "categoria": 1
+          },
+          {
+            "texto": "alto",
+            "categoria": 1
+          },
+          {
+            "texto": "feliz",
+            "categoria": 1
+          }
+        ],
+        "pista": "Sustantivo: nombra. Adjetivo: describe.",
+        "explicacion_error": "árbol, ciudad y niña nombran; verde, alto y feliz describen.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Las flores ___.",
+        "alternativas": [
+          "rojos",
+          "rojo",
+          "roja",
+          "rojas"
+        ],
+        "correcta": 3,
+        "pista": "El adjetivo concuerda con «flores»: femenino y plural.",
+        "explicacion_error": "«Las flores rojas».",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-008",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Sustantivo propio o común?",
+        "categorias": [
+          "Propio",
+          "Común"
+        ],
+        "elementos": [
+          {
+            "texto": "Chile",
+            "categoria": 0
+          },
+          {
+            "texto": "Andrea",
+            "categoria": 0
+          },
+          {
+            "texto": "Biobío",
+            "categoria": 0
+          },
+          {
+            "texto": "perro",
+            "categoria": 1
+          },
+          {
+            "texto": "ciudad",
+            "categoria": 1
+          },
+          {
+            "texto": "río",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los propios nombran a uno en particular y llevan mayúscula.",
+        "explicacion_error": "Chile, Andrea y Biobío son nombres propios.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué artículo indefinido acompaña a «mariposa»?",
+        "alternativas": [
+          "unos",
+          "el",
+          "una",
+          "un"
+        ],
+        "correcta": 2,
+        "pista": "Mariposa es femenino singular.",
+        "explicacion_error": "Se dice «una mariposa».",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-010",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada sustantivo con el adjetivo que concuerda con él.",
+        "pares": [
+          [
+            "casa",
+            "blanca"
+          ],
+          [
+            "perros",
+            "juguetones"
+          ],
+          [
+            "sol",
+            "amarillo"
+          ]
+        ],
+        "pista": "Fíjate en el género (masculino o femenino) y en el número (singular o plural).",
+        "explicacion_error": "casa blanca, perros juguetones y sol amarillo.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué palabra puede reemplazar a «perro» sin cambiar el sentido?",
+        "alternativas": [
+          "casa",
+          "gato",
+          "can",
+          "ladrar"
+        ],
+        "correcta": 2,
+        "pista": "Busca un sinónimo.",
+        "explicacion_error": "«Can» es otra forma de decir perro.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "La niña ___ ganó la carrera.",
+        "alternativas": [
+          "rápidos",
+          "lentos",
+          "veloces",
+          "veloz"
+        ],
+        "correcta": 3,
+        "pista": "«Niña» es singular.",
+        "explicacion_error": "«La niña veloz» concuerda en número.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-013",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "Clasifica cada palabra.",
+        "categorias": [
+          "Artículo",
+          "Sustantivo",
+          "Adjetivo"
+        ],
+        "elementos": [
+          {
+            "texto": "el",
+            "categoria": 0
+          },
+          {
+            "texto": "una",
+            "categoria": 0
+          },
+          {
+            "texto": "dragón",
+            "categoria": 1
+          },
+          {
+            "texto": "bosque",
+            "categoria": 1
+          },
+          {
+            "texto": "verde",
+            "categoria": 2
+          },
+          {
+            "texto": "enorme",
+            "categoria": 2
+          }
+        ],
+        "pista": "Artículos acompañan, sustantivos nombran y adjetivos describen.",
+        "explicacion_error": "el y una son artículos; dragón y bosque, sustantivos; verde y enorme, adjetivos.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En «Una nube gris tapó el sol», ¿cuántos sustantivos hay?",
+        "alternativas": [
+          "1",
+          "3",
+          "2",
+          "4"
+        ],
+        "correcta": 2,
+        "pista": "Busca las palabras que nombran cosas.",
+        "explicacion_error": "Hay 2 sustantivos: nube y sol.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa20-015",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Los ___ gatos durmieron.",
+        "alternativas": [
+          "pequeñas",
+          "pequeña",
+          "pequeño",
+          "pequeños"
+        ],
+        "correcta": 3,
+        "pista": "«Gatos» es masculino y plural.",
+        "explicacion_error": "«Los pequeños gatos».",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_basico",
+    "asignatura": "lenguaje",
+    "eje": "Escritura",
+    "objetivo_oficial": "OA 22: Escribir correctamente: mayúsculas, punto seguido y aparte, plurales de palabras terminadas en z, ge-gi y je-ji, terminaciones cito-cita y coma en enumeraciones.",
+    "dificultad": 3,
+    "prerequisitos": [
+      "2_basico.lenguaje.OA21"
+    ],
+    "id_objetivo": "3_basico.lenguaje.OA22",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Escritura-Produccion/17205:LE03-OA-22"
+    },
+    "desafios": [
+      {
+        "id": "len3-oa22-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es el plural de «lápiz»?",
+        "alternativas": [
+          "lápices",
+          "lápis",
+          "lápizs",
+          "lápizes"
+        ],
+        "correcta": 0,
+        "pista": "Las palabras que terminan en z cambian la z por c y agregan -es.",
+        "explicacion_error": "lápiz → lápices.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Un pez, dos ___.",
+        "alternativas": [
+          "pezes",
+          "pezs",
+          "pez",
+          "peces"
+        ],
+        "correcta": 3,
+        "pista": "La z cambia a c antes de -es.",
+        "explicacion_error": "pez → peces.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es el plural de «luz»?",
+        "alternativas": [
+          "luzs",
+          "lus",
+          "luces",
+          "luzes"
+        ],
+        "correcta": 2,
+        "pista": "z → c + es.",
+        "explicacion_error": "luz → luces.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "___rafa 🦒",
+        "alternativas": [
+          "ji",
+          "gi",
+          "ge",
+          "je"
+        ],
+        "correcta": 0,
+        "pista": "Esta palabra se escribe con j.",
+        "explicacion_error": "Se escribe «jirafa».",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "___latina 🍮",
+        "alternativas": [
+          "ge",
+          "je",
+          "ji",
+          "gue"
+        ],
+        "correcta": 0,
+        "pista": "Esta palabra se escribe con g.",
+        "explicacion_error": "Se escribe «gelatina».",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Se escribe con g o con j?",
+        "categorias": [
+          "Con g",
+          "Con j"
+        ],
+        "elementos": [
+          {
+            "texto": "gigante",
+            "categoria": 0
+          },
+          {
+            "texto": "gente",
+            "categoria": 0
+          },
+          {
+            "texto": "girasol",
+            "categoria": 0
+          },
+          {
+            "texto": "jefe",
+            "categoria": 1
+          },
+          {
+            "texto": "jinete",
+            "categoria": 1
+          },
+          {
+            "texto": "tejido",
+            "categoria": 1
+          }
+        ],
+        "pista": "Recuerda cómo las viste escritas.",
+        "explicacion_error": "gigante, gente y girasol van con g; jefe, jinete y tejido, con j.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "ratón → raton___",
+        "alternativas": [
+          "zito",
+          "cito",
+          "ito",
+          "sito"
+        ],
+        "correcta": 1,
+        "pista": "Las palabras terminadas en n forman el diminutivo con -cito.",
+        "explicacion_error": "ratón → ratoncito.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuál está bien escrita?",
+        "alternativas": [
+          "flortita",
+          "florzita",
+          "florcita",
+          "florsita"
+        ],
+        "correcta": 2,
+        "pista": "Diminutivo de palabras terminadas en r: -cita.",
+        "explicacion_error": "flor → florcita.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuál es el diminutivo de «camión»?",
+        "alternativas": [
+          "camiónsito",
+          "camionzito",
+          "camionsito",
+          "camioncito"
+        ],
+        "correcta": 3,
+        "pista": "Termina en n: -cito.",
+        "explicacion_error": "camión → camioncito.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué oración usa bien las comas?",
+        "alternativas": [
+          "Compré manzanas peras, uvas, y, plátanos.",
+          "Compré manzanas, peras, uvas y plátanos.",
+          "Compré manzanas peras uvas y, plátanos.",
+          "Compré, manzanas peras uvas y plátanos."
+        ],
+        "correcta": 1,
+        "pista": "En una enumeración, la coma separa los elementos; antes de «y» no va coma.",
+        "explicacion_error": "manzanas, peras, uvas y plátanos.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Vivo en ___.",
+        "alternativas": [
+          "Valdibia",
+          "Valdivia",
+          "balbivia",
+          "valdivia"
+        ],
+        "correcta": 1,
+        "pista": "Los nombres de ciudades llevan mayúscula.",
+        "explicacion_error": "Se escribe «Valdivia».",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Lleva mayúscula?",
+        "categorias": [
+          "Con mayúscula",
+          "Con minúscula"
+        ],
+        "elementos": [
+          {
+            "texto": "Antofagasta",
+            "categoria": 0
+          },
+          {
+            "texto": "Martina",
+            "categoria": 0
+          },
+          {
+            "texto": "Los Andes",
+            "categoria": 0
+          },
+          {
+            "texto": "cerro",
+            "categoria": 1
+          },
+          {
+            "texto": "playa",
+            "categoria": 1
+          },
+          {
+            "texto": "mamá",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los nombres propios llevan mayúscula.",
+        "explicacion_error": "Antofagasta, Martina y Los Andes son nombres propios.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Cuándo se usa el punto aparte?",
+        "alternativas": [
+          "al terminar un párrafo",
+          "al terminar cada palabra",
+          "al inicio de un texto",
+          "después de una coma"
+        ],
+        "correcta": 0,
+        "pista": "Separa ideas en párrafos.",
+        "explicacion_error": "El punto aparte cierra un párrafo.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué oración está bien escrita?",
+        "alternativas": [
+          "Los peces nadan rápido en el Río maule.",
+          "los pezes nadan rápido en el río maule.",
+          "Los pezes nadan rápido en el río Maule.",
+          "Los peces nadan rápido en el río Maule."
+        ],
+        "correcta": 3,
+        "pista": "Revisa mayúsculas y el plural de pez.",
+        "explicacion_error": "Mayúscula al inicio y en «Maule», y «peces» con c.",
+        "monedas": 10
+      },
+      {
+        "id": "len3-oa22-015",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Necesito lápiz___ goma y cuaderno.",
+        "alternativas": [
+          ".",
+          "?",
+          ",",
+          "!"
+        ],
+        "correcta": 2,
+        "pista": "Es una enumeración.",
+        "explicacion_error": "Necesito lápiz, goma y cuaderno.",
+        "monedas": 10
+      }
+    ]
+  }
+]

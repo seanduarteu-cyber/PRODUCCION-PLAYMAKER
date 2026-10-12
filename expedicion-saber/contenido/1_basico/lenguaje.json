@@ -1,0 +1,869 @@
+[
+  {
+    "nivel": "1_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 3: Identificar los sonidos que componen las palabras (conciencia fonológica), separando y combinando fonemas y sílabas.",
+    "dificultad": 1,
+    "prerequisitos": [],
+    "id_objetivo": "1_basico.lenguaje.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-17116.html"
+    },
+    "desafios": [
+      {
+        "id": "len1-oa3-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuántas sílabas tiene la palabra «pato»?",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "pista": "Aplaude cada vez que dices un pedacito: pa… to.",
+        "explicacion_error": "«Pato» se separa en pa-to: 2 sílabas.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Con qué sonido empieza la palabra «mesa»?",
+        "alternativas": [
+          "m",
+          "l",
+          "p",
+          "s"
+        ],
+        "correcta": 0,
+        "pista": "Di la palabra lento y fíjate en el primer sonido.",
+        "explicacion_error": "«Mesa» empieza con el sonido /m/.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-003",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une las palabras que riman.",
+        "pares": [
+          [
+            "luna",
+            "cuna"
+          ],
+          [
+            "gato",
+            "pato"
+          ],
+          [
+            "sol",
+            "col"
+          ]
+        ],
+        "pista": "Las palabras que riman terminan igual.",
+        "explicacion_error": "luna-cuna, gato-pato y sol-col terminan con los mismos sonidos.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-004",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuántas sílabas tiene la palabra «pelota»?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Aplaude: pe… lo… ta.",
+        "explicacion_error": "«Pelota» se separa en pe-lo-ta: 3 sílabas.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué palabra empieza con el mismo sonido que «casa»?",
+        "alternativas": [
+          "pera",
+          "luna",
+          "copa",
+          "mesa"
+        ],
+        "correcta": 2,
+        "pista": "Escucha el primer sonido de «casa»: /k/.",
+        "explicacion_error": "«Casa» y «copa» empiezan con /k/.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-006",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena las sílabas para formar una palabra.",
+        "elementos": [
+          "pe",
+          "lo",
+          "ta"
+        ],
+        "pista": "Es algo redondo para jugar a la pelota.",
+        "explicacion_error": "pe + lo + ta = pelota.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuántas sílabas tiene la palabra «mariposa»?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "pista": "Aplaude: ma… ri… po… sa.",
+        "explicacion_error": "«Mariposa» se separa en ma-ri-po-sa: 4 sílabas.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Con qué sonido termina la palabra «pan»?",
+        "alternativas": [
+          "n",
+          "p",
+          "m",
+          "a"
+        ],
+        "correcta": 0,
+        "pista": "Di la palabra y quédate en el último sonido.",
+        "explicacion_error": "«Pan» termina con el sonido /n/.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "Separa las palabras según su número de sílabas.",
+        "categorias": [
+          "Una sílaba",
+          "Dos sílabas"
+        ],
+        "elementos": [
+          {
+            "texto": "sol",
+            "categoria": 0
+          },
+          {
+            "texto": "pan",
+            "categoria": 0
+          },
+          {
+            "texto": "mar",
+            "categoria": 0
+          },
+          {
+            "texto": "casa",
+            "categoria": 1
+          },
+          {
+            "texto": "gato",
+            "categoria": 1
+          },
+          {
+            "texto": "luna",
+            "categoria": 1
+          }
+        ],
+        "pista": "Aplaude cada palabra.",
+        "explicacion_error": "sol, pan y mar tienen 1 sílaba; ca-sa, ga-to y lu-na tienen 2.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena las sílabas para formar una palabra.",
+        "elementos": [
+          "bi",
+          "ci",
+          "cle",
+          "ta"
+        ],
+        "pista": "Tiene dos ruedas y pedales.",
+        "explicacion_error": "bi + ci + cle + ta = bicicleta.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Si en «casa» cambias el sonido /k/ por /m/, ¿qué palabra se forma?",
+        "alternativas": [
+          "cama",
+          "masa",
+          "taza",
+          "pasa"
+        ],
+        "correcta": 1,
+        "pista": "Cambia solo el primer sonido.",
+        "explicacion_error": "c-asa → m-asa: «masa».",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-012",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada sonido con la palabra que empieza con él.",
+        "pares": [
+          [
+            "s",
+            "sapo"
+          ],
+          [
+            "m",
+            "mano"
+          ],
+          [
+            "l",
+            "lápiz"
+          ],
+          [
+            "t",
+            "tomate"
+          ]
+        ],
+        "pista": "Di cada palabra y escucha su primer sonido.",
+        "explicacion_error": "sapo empieza con /s/, mano con /m/, lápiz con /l/ y tomate con /t/.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "¿Cuántos sonidos (fonemas) tiene la palabra «sol»?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Estira la palabra: sss… ooo… lll.",
+        "explicacion_error": "«Sol» tiene 3 sonidos: /s/ /o/ /l/.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué palabra se forma si unes los sonidos /p/ /a/ /n/?",
+        "alternativas": [
+          "pie",
+          "pon",
+          "pan",
+          "paz"
+        ],
+        "correcta": 2,
+        "pista": "Junta los sonidos de a uno.",
+        "explicacion_error": "/p/ + /a/ + /n/ = pan.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa3-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Rima con «ratón»?",
+        "categorias": [
+          "Rima con ratón",
+          "No rima"
+        ],
+        "elementos": [
+          {
+            "texto": "camión",
+            "categoria": 0
+          },
+          {
+            "texto": "botón",
+            "categoria": 0
+          },
+          {
+            "texto": "cajón",
+            "categoria": 0
+          },
+          {
+            "texto": "ratita",
+            "categoria": 1
+          },
+          {
+            "texto": "perro",
+            "categoria": 1
+          },
+          {
+            "texto": "mesa",
+            "categoria": 1
+          }
+        ],
+        "pista": "Riman si terminan igual: …ón.",
+        "explicacion_error": "camión, botón y cajón terminan en «-ón», como ratón.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 4: Leer palabras aisladas y en contexto, aplicando la correspondencia letra-sonido en sílabas directas, indirectas, complejas y dígrafos.",
+    "dificultad": 1,
+    "prerequisitos": [
+      "1_basico.lenguaje.OA3"
+    ],
+    "id_objetivo": "1_basico.lenguaje.OA4",
+    "verificacion": {
+      "codigo": "pendiente",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/recursos/leo-1-basico-texto-estudiante-tomo-1"
+    },
+    "desafios": [
+      {
+        "id": "len1-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué palabra corresponde al dibujo? 🐱",
+        "alternativas": [
+          "dato",
+          "gato",
+          "rato",
+          "pato"
+        ],
+        "correcta": 1,
+        "pista": "Lee cada palabra despacio.",
+        "explicacion_error": "🐱 es un gato: g-a-t-o.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué palabra corresponde al dibujo? 🌙",
+        "alternativas": [
+          "luna",
+          "lana",
+          "lupa",
+          "cuna"
+        ],
+        "correcta": 0,
+        "pista": "Fíjate en todas las letras.",
+        "explicacion_error": "🌙 es la luna: l-u-n-a.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué palabra corresponde al dibujo? ☀️",
+        "alternativas": [
+          "col",
+          "sal",
+          "sopa",
+          "sol"
+        ],
+        "correcta": 3,
+        "pista": "Mira la letra del medio.",
+        "explicacion_error": "☀️ es el sol: s-o-l.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "El ___ ladra.",
+        "alternativas": [
+          "perro",
+          "pan",
+          "sol",
+          "mesa"
+        ],
+        "correcta": 0,
+        "pista": "¿Quién puede ladrar?",
+        "explicacion_error": "El perro ladra.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Mi mamá me ___.",
+        "alternativas": [
+          "mima",
+          "mano",
+          "mesa",
+          "mapa"
+        ],
+        "correcta": 0,
+        "pista": "Busca una palabra que tenga sentido.",
+        "explicacion_error": "«Mi mamá me mima».",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Lee: «El oso come miel». ¿Quién come miel?",
+        "alternativas": [
+          "el niño",
+          "el oso",
+          "la abeja",
+          "la mamá"
+        ],
+        "correcta": 1,
+        "pista": "Busca quién hace la acción.",
+        "explicacion_error": "La oración dice que el oso come miel.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué palabra está bien escrita? 🧀",
+        "alternativas": [
+          "queso",
+          "ceso",
+          "keso",
+          "qeso"
+        ],
+        "correcta": 0,
+        "pista": "El sonido /k/ antes de e se escribe «qu».",
+        "explicacion_error": "Se escribe «queso», con qu.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué palabra está bien escrita? 🐴",
+        "alternativas": [
+          "caballo",
+          "cabayo",
+          "kaballo",
+          "cavallo"
+        ],
+        "correcta": 0,
+        "pista": "Lleva «ll».",
+        "explicacion_error": "Se escribe «caballo».",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena las palabras para formar una oración.",
+        "elementos": [
+          "El",
+          "gato",
+          "duerme",
+          "mucho."
+        ],
+        "pista": "La oración empieza con mayúscula y termina con punto.",
+        "explicacion_error": "«El gato duerme mucho.»",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-010",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "La ___ vuela alto. 🐦",
+        "alternativas": [
+          "pala",
+          "piedra",
+          "silla",
+          "paloma"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué puede volar?",
+        "explicacion_error": "La paloma vuela alto.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-011",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena las palabras para formar una oración.",
+        "elementos": [
+          "{personaje}",
+          "busca",
+          "{objetos}",
+          "en {lugar}."
+        ],
+        "pista": "Primero quién, después qué hace.",
+        "explicacion_error": "«{personaje} busca {objetos} en {lugar}.»",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Lee: «Tito tiene un trompo azul». ¿De qué color es el trompo?",
+        "alternativas": [
+          "verde",
+          "azul",
+          "amarillo",
+          "rojo"
+        ],
+        "correcta": 1,
+        "pista": "Busca la palabra que dice el color.",
+        "explicacion_error": "La oración dice «trompo azul».",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-013",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "Lee cada palabra y sepárala.",
+        "categorias": [
+          "Animales",
+          "Objetos"
+        ],
+        "elementos": [
+          {
+            "texto": "perro",
+            "categoria": 0
+          },
+          {
+            "texto": "gallina",
+            "categoria": 0
+          },
+          {
+            "texto": "ratón",
+            "categoria": 0
+          },
+          {
+            "texto": "cuchara",
+            "categoria": 1
+          },
+          {
+            "texto": "lápiz",
+            "categoria": 1
+          },
+          {
+            "texto": "silla",
+            "categoria": 1
+          }
+        ],
+        "pista": "Lee con calma cada palabra.",
+        "explicacion_error": "perro, gallina y ratón son animales; cuchara, lápiz y silla son objetos.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué palabra tiene el grupo «tr»?",
+        "alternativas": [
+          "mano",
+          "tela",
+          "tren",
+          "pera"
+        ],
+        "correcta": 2,
+        "pista": "Busca la t seguida de r.",
+        "explicacion_error": "«Tren» empieza con tr.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa4-015",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "El ___ pasa por el túnel. 🚂",
+        "alternativas": [
+          "trigo",
+          "tres",
+          "tierra",
+          "tren"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué pasa por un túnel?",
+        "explicacion_error": "El tren pasa por el túnel.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 8: Demostrar comprensión de narraciones: información explícita, secuencia de acciones y personajes.",
+    "dificultad": 2,
+    "prerequisitos": [
+      "1_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "1_basico.lenguaje.OA8",
+    "verificacion": {
+      "codigo": "pendiente",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/recursos/leo-1-basico-texto-estudiante-tomo-1"
+    },
+    "desafios": [
+      {
+        "id": "len1-oa8-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "{personaje} tiene un perro llamado Pelusa. Pelusa es blanco y le gusta correr en {lugar}.",
+        "enunciado": "¿Cómo se llama el perro?",
+        "alternativas": [
+          "Coco",
+          "Toby",
+          "Pelusa",
+          "Nube"
+        ],
+        "correcta": 2,
+        "pista": "Busca la palabra «llamado».",
+        "explicacion_error": "El texto dice: «un perro llamado Pelusa».",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "{personaje} tiene un perro llamado Pelusa. Pelusa es blanco y le gusta correr en {lugar}.",
+        "enunciado": "¿De qué color es Pelusa?",
+        "alternativas": [
+          "café",
+          "blanco",
+          "negro",
+          "gris"
+        ],
+        "correcta": 1,
+        "pista": "Busca el color en el texto.",
+        "explicacion_error": "El texto dice: «Pelusa es blanco».",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "{personaje} tiene un perro llamado Pelusa. Pelusa es blanco y le gusta correr en {lugar}.",
+        "enunciado": "¿Qué le gusta hacer a Pelusa?",
+        "alternativas": [
+          "dormir",
+          "comer",
+          "correr",
+          "nadar"
+        ],
+        "correcta": 2,
+        "pista": "Busca «le gusta».",
+        "explicacion_error": "A Pelusa le gusta correr.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-004",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "texto": "En {lugar} llovió toda la noche. En la mañana salió el sol. Después apareció un arcoíris.",
+        "enunciado": "Ordena lo que pasó.",
+        "elementos": [
+          "Llovió toda la noche.",
+          "Salió el sol.",
+          "Apareció un arcoíris."
+        ],
+        "pista": "Busca las palabras «noche», «mañana» y «después».",
+        "explicacion_error": "Primero llovió, luego salió el sol y después apareció el arcoíris.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "En {lugar} llovió toda la noche. En la mañana salió el sol. Después apareció un arcoíris.",
+        "enunciado": "¿Cuándo llovió?",
+        "alternativas": [
+          "en la tarde",
+          "nunca",
+          "en la mañana",
+          "en la noche"
+        ],
+        "correcta": 3,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "Llovió toda la noche.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "En {lugar} llovió toda la noche. En la mañana salió el sol. Después apareció un arcoíris.",
+        "enunciado": "¿Qué apareció al final?",
+        "alternativas": [
+          "un arcoíris",
+          "un barco",
+          "una estrella",
+          "un perro"
+        ],
+        "correcta": 0,
+        "pista": "Lee la última oración.",
+        "explicacion_error": "Al final apareció un arcoíris.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Ana perdió su gorro. Lo buscó en su pieza y en el patio. Al final, lo encontró debajo de la cama. Ana sonrió.",
+        "enunciado": "¿Dónde estaba el gorro?",
+        "alternativas": [
+          "en la cocina",
+          "en la mochila",
+          "en el patio",
+          "debajo de la cama"
+        ],
+        "correcta": 3,
+        "pista": "Busca «lo encontró».",
+        "explicacion_error": "Lo encontró debajo de la cama.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Ana perdió su gorro. Lo buscó en su pieza y en el patio. Al final, lo encontró debajo de la cama. Ana sonrió.",
+        "enunciado": "¿Cómo se sintió Ana al final?",
+        "alternativas": [
+          "feliz",
+          "triste",
+          "enojada",
+          "asustada"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué hizo Ana al final? Sonreír…",
+        "explicacion_error": "Ana sonrió: estaba feliz.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "texto": "Ana perdió su gorro. Lo buscó en su pieza y en el patio. Al final, lo encontró debajo de la cama. Ana sonrió.",
+        "enunciado": "Ordena lo que pasó.",
+        "elementos": [
+          "Ana perdió su gorro.",
+          "Lo buscó en el patio.",
+          "Lo encontró debajo de la cama."
+        ],
+        "pista": "¿Qué pasó primero?",
+        "explicacion_error": "Primero lo perdió, luego lo buscó y al final lo encontró.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "La tortuga y la liebre hicieron una carrera. La liebre corrió muy rápido y se durmió bajo un árbol. La tortuga caminó sin parar y llegó primero.",
+        "enunciado": "¿Quién ganó la carrera?",
+        "alternativas": [
+          "la liebre",
+          "nadie",
+          "el árbol",
+          "la tortuga"
+        ],
+        "correcta": 3,
+        "pista": "¿Quién llegó primero?",
+        "explicacion_error": "La tortuga llegó primero.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "La tortuga y la liebre hicieron una carrera. La liebre corrió muy rápido y se durmió bajo un árbol. La tortuga caminó sin parar y llegó primero.",
+        "enunciado": "¿Por qué perdió la liebre?",
+        "alternativas": [
+          "porque se cayó",
+          "porque llovió",
+          "porque se durmió",
+          "porque se perdió"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué hizo la liebre bajo el árbol?",
+        "explicacion_error": "La liebre se durmió bajo el árbol.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-012",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "texto": "La tortuga y la liebre hicieron una carrera. La liebre corrió muy rápido y se durmió bajo un árbol. La tortuga caminó sin parar y llegó primero.",
+        "enunciado": "Une cada personaje con lo que lo describe.",
+        "pares": [
+          [
+            "la liebre",
+            "corrió rápido y se durmió"
+          ],
+          [
+            "la tortuga",
+            "caminó sin parar"
+          ],
+          [
+            "el árbol",
+            "donde durmió la liebre"
+          ]
+        ],
+        "pista": "Relee qué hizo cada uno.",
+        "explicacion_error": "La liebre corrió y se durmió; la tortuga caminó sin parar.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "{personaje} quería terminar {la_construccion}, pero le faltaban {objetos}. Su amiga Lía le regaló cinco. Al final, {la_construccion} quedó lista.",
+        "enunciado": "¿Qué le faltaba a {personaje}?",
+        "alternativas": [
+          "un mapa",
+          "una llave",
+          "agua",
+          "{objetos}"
+        ],
+        "correcta": 3,
+        "pista": "Busca «le faltaban».",
+        "explicacion_error": "Le faltaban {objetos}.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "{personaje} quería terminar {la_construccion}, pero le faltaban {objetos}. Su amiga Lía le regaló cinco. Al final, {la_construccion} quedó lista.",
+        "enunciado": "¿Quién ayudó a {personaje}?",
+        "alternativas": [
+          "su perro",
+          "Lía",
+          "un robot",
+          "nadie"
+        ],
+        "correcta": 1,
+        "pista": "Busca quién regaló algo.",
+        "explicacion_error": "Su amiga Lía le regaló cinco.",
+        "monedas": 10
+      },
+      {
+        "id": "len1-oa8-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "texto": "{personaje} quería terminar {la_construccion}, pero le faltaban {objetos}. Su amiga Lía le regaló cinco. Al final, {la_construccion} quedó lista.",
+        "enunciado": "¿Pasó en el cuento?",
+        "categorias": [
+          "Pasó en el cuento",
+          "No pasó"
+        ],
+        "elementos": [
+          {
+            "texto": "Lía le regaló cinco.",
+            "categoria": 0
+          },
+          {
+            "texto": "Se terminó {la_construccion}.",
+            "categoria": 0
+          },
+          {
+            "texto": "Llovió toda la noche.",
+            "categoria": 1
+          },
+          {
+            "texto": "{personaje} se fue a dormir.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Relee el cuento y busca cada idea.",
+        "explicacion_error": "Lía regaló cinco y se terminó {la_construccion}; lo otro no aparece.",
+        "monedas": 10
+      }
+    ]
+  }
+]

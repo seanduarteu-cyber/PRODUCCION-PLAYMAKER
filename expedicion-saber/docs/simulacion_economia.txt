@@ -1,0 +1,30 @@
+OA por tramo (promedio del banco): 3.25
+
+### Juega 7 días por semana (1 sesión por día)
+
+| Hito | Le cuesta (habilidad 0,55) | Promedio (0,70) | Le va muy bien (0,85) |
+|---|---|---|---|
+| monedas 1a sesión | 107 | 116 | 124 |
+| monedas por sesión | 172 | 181 | 191 |
+| primera mejora (50) | 1 ses. | 1 ses. | 1 ses. |
+| juntar mejora intermedia (400) | 4 ses. | 4 ses. | 3 ses. |
+| juntar nivel 4 (800) | 6 ses. | 6 ses. | 5 ses. |
+| dominar 1 OA | 5 ses. | 4 ses. | 3 ses. |
+| dominar 1 tramo | 22 ses. | 16 ses. | 13 ses. |
+| juntar mejora final (1800) | 12 ses. | 11 ses. | 10 ses. |
+| avatar completo de un mundo | 94 ses. | 89 ses. | 85 ses. |
+
+### Juega 4 días por semana (1 sesión por día)
+
+| Hito | Le cuesta (habilidad 0,55) | Promedio (0,70) | Le va muy bien (0,85) |
+|---|---|---|---|
+| monedas 1a sesión | 107 | 116 | 124 |
+| monedas por sesión | 147 | 157 | 166 |
+| primera mejora (50) | 1 ses. | 1 ses. | 1 ses. |
+| juntar mejora intermedia (400) | 4 ses. | 4 ses. | 3 ses. |
+| juntar nivel 4 (800) | 6 ses. | 6 ses. | 6 ses. |
+| dominar 1 OA | 5 ses. | 4 ses. | 3 ses. |
+| dominar 1 tramo | 22 ses. | 16 ses. | 13 ses. |
+| juntar mejora final (1800) | 13 ses. | 12 ses. | 12 ses. |
+| avatar completo de un mundo | 109 ses. | 103 ses. | 97 ses. |
+

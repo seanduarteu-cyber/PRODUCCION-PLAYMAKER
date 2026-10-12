@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "niveles": [
+    "1_basico",
+    "2_basico",
+    "3_basico",
+    "4_basico"
+  ],
+  "nombres_nivel": {
+    "1_basico": "1° básico",
+    "2_basico": "2° básico",
+    "3_basico": "3° básico",
+    "4_basico": "4° básico"
+  },
+  "asignaturas": {
+    "matematica": "Matemática",
+    "lenguaje": "Lenguaje y Comunicación"
+  },
+  "archivos": [
+    {
+      "archivo": "1_basico/matematica.json",
+      "nivel": "1_basico",
+      "asignatura": "matematica",
+      "objetivos": [
+        "1_basico.matematica.OA1",
+        "1_basico.matematica.OA4",
+        "1_basico.matematica.OA9"
+      ],
+      "desafios": 60
+    },
+    {
+      "archivo": "1_basico/lenguaje.json",
+      "nivel": "1_basico",
+      "asignatura": "lenguaje",
+      "objetivos": [
+        "1_basico.lenguaje.OA3",
+        "1_basico.lenguaje.OA4",
+        "1_basico.lenguaje.OA8"
+      ],
+      "desafios": 45
+    },
+    {
+      "archivo": "2_basico/matematica.json",
+      "nivel": "2_basico",
+      "asignatura": "matematica",
+      "objetivos": [
+        "2_basico.matematica.OA1",
+        "2_basico.matematica.OA3",
+        "2_basico.matematica.OA9",
+        "2_basico.matematica.OA11"
+      ],
+      "desafios": 80
+    },
+    {
+      "archivo": "2_basico/lenguaje.json",
+      "nivel": "2_basico",
+      "asignatura": "lenguaje",
+      "objetivos": [
+        "2_basico.lenguaje.OA5",
+        "2_basico.lenguaje.OA21"
+      ],
+      "desafios": 30
+    },
+    {
+      "archivo": "3_basico/matematica.json",
+      "nivel": "3_basico",
+      "asignatura": "matematica",
+      "objetivos": [
+        "3_basico.matematica.OA6",
+        "3_basico.matematica.OA8",
+        "3_basico.matematica.OA9",
+        "3_basico.matematica.OA11"
+      ],
+      "desafios": 80
+    },
+    {
+      "archivo": "3_basico/lenguaje.json",
+      "nivel": "3_basico",
+      "asignatura": "lenguaje",
+      "objetivos": [
+        "3_basico.lenguaje.OA4",
+        "3_basico.lenguaje.OA20",
+        "3_basico.lenguaje.OA22"
+      ],
+      "desafios": 45
+    },
+    {
+      "archivo": "4_basico/matematica.json",
+      "nivel": "4_basico",
+      "asignatura": "matematica",
+      "objetivos": [
+        "4_basico.matematica.OA3",
+        "4_basico.matematica.OA5",
+        "4_basico.matematica.OA6",
+        "4_basico.matematica.OA8"
+      ],
+      "desafios": 80
+    },
+    {
+      "archivo": "4_basico/lenguaje.json",
+      "nivel": "4_basico",
+      "asignatura": "lenguaje",
+      "objetivos": [
+        "4_basico.lenguaje.OA4",
+        "4_basico.lenguaje.OA10",
+        "4_basico.lenguaje.OA21"
+      ],
+      "desafios": 45
+    }
+  ],
+  "tramos": [
+    {
+      "id": "1_basico.matematica",
+      "nombre": "Matemática 1° básico",
+      "objetivos": [
+        "1_basico.matematica.OA1",
+        "1_basico.matematica.OA4",
+        "1_basico.matematica.OA9"
+      ]
+    },
+    {
+      "id": "1_basico.lenguaje",
+      "nombre": "Lenguaje y Comunicación 1° básico",
+      "objetivos": [
+        "1_basico.lenguaje.OA3",
+        "1_basico.lenguaje.OA4",
+        "1_basico.lenguaje.OA8"
+      ]
+    },
+    {
+      "id": "2_basico.matematica",
+      "nombre": "Matemática 2° básico",
+      "objetivos": [
+        "2_basico.matematica.OA1",
+        "2_basico.matematica.OA3",
+        "2_basico.matematica.OA9",
+        "2_basico.matematica.OA11"
+      ]
+    },
+    {
+      "id": "2_basico.lenguaje",
+      "nombre": "Lenguaje y Comunicación 2° básico",
+      "objetivos": [
+        "2_basico.lenguaje.OA5",
+        "2_basico.lenguaje.OA21"
+      ]
+    },
+    {
+      "id": "3_basico.matematica",
+      "nombre": "Matemática 3° básico",
+      "objetivos": [
+        "3_basico.matematica.OA6",
+        "3_basico.matematica.OA8",
+        "3_basico.matematica.OA9",
+        "3_basico.matematica.OA11"
+      ]
+    },
+    {
+      "id": "3_basico.lenguaje",
+      "nombre": "Lenguaje y Comunicación 3° básico",
+      "objetivos": [
+        "3_basico.lenguaje.OA4",
+        "3_basico.lenguaje.OA20",
+        "3_basico.lenguaje.OA22"
+      ]
+    },
+    {
+      "id": "4_basico.matematica",
+      "nombre": "Matemática 4° básico",
+      "objetivos": [
+        "4_basico.matematica.OA3",
+        "4_basico.matematica.OA5",
+        "4_basico.matematica.OA6",
+        "4_basico.matematica.OA8"
+      ]
+    },
+    {
+      "id": "4_basico.lenguaje",
+      "nombre": "Lenguaje y Comunicación 4° básico",
+      "objetivos": [
+        "4_basico.lenguaje.OA4",
+        "4_basico.lenguaje.OA10",
+        "4_basico.lenguaje.OA21"
+      ]
+    }
+  ]
+}

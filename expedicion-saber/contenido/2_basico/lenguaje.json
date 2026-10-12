@@ -1,0 +1,609 @@
+[
+  {
+    "nivel": "2_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 5: Demostrar comprensión de las narraciones leídas: información explícita e implícita, secuencia de acciones, características y sentimientos de los personajes, ambiente y opinión.",
+    "dificultad": 2,
+    "prerequisitos": [
+      "1_basico.lenguaje.OA8"
+    ],
+    "id_objetivo": "2_basico.lenguaje.OA5",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/17151:LE02-OA-05"
+    },
+    "desafios": [
+      {
+        "id": "len2-oa5-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Martina vive cerca del mar. Todas las mañanas camina por la playa con su abuelo. Juntos recogen conchitas de colores y las guardan en un frasco.",
+        "enunciado": "¿Con quién camina Martina?",
+        "alternativas": [
+          "con su abuelo",
+          "con su mamá",
+          "con su perro",
+          "sola"
+        ],
+        "correcta": 0,
+        "pista": "Busca «camina por la playa con…».",
+        "explicacion_error": "Camina con su abuelo.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Martina vive cerca del mar. Todas las mañanas camina por la playa con su abuelo. Juntos recogen conchitas de colores y las guardan en un frasco.",
+        "enunciado": "¿Dónde vive Martina?",
+        "alternativas": [
+          "cerca del mar",
+          "en el campo",
+          "en la cordillera",
+          "en el desierto"
+        ],
+        "correcta": 0,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "Martina vive cerca del mar.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Martina vive cerca del mar. Todas las mañanas camina por la playa con su abuelo. Juntos recogen conchitas de colores y las guardan en un frasco.",
+        "enunciado": "¿Qué guardan en el frasco?",
+        "alternativas": [
+          "piedras",
+          "peces",
+          "arena",
+          "conchitas"
+        ],
+        "correcta": 3,
+        "pista": "Busca «las guardan».",
+        "explicacion_error": "Guardan conchitas de colores.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-004",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "texto": "{personaje} se despertó temprano. Tomó desayuno, preparó sus herramientas y salió hacia {lugar}. Allí trabajó toda la mañana.",
+        "enunciado": "Ordena lo que hizo {personaje}.",
+        "elementos": [
+          "Se despertó temprano.",
+          "Tomó desayuno.",
+          "Preparó sus herramientas.",
+          "Salió hacia {lugar}."
+        ],
+        "pista": "Sigue el orden del texto.",
+        "explicacion_error": "Se despertó, desayunó, preparó sus herramientas y salió.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "{personaje} se despertó temprano. Tomó desayuno, preparó sus herramientas y salió hacia {lugar}. Allí trabajó toda la mañana.",
+        "enunciado": "¿Qué hizo primero {personaje}?",
+        "alternativas": [
+          "tomó desayuno",
+          "salió hacia {lugar}",
+          "trabajó",
+          "se despertó"
+        ],
+        "correcta": 3,
+        "pista": "Mira la primera oración.",
+        "explicacion_error": "Lo primero fue despertarse.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "{personaje} se despertó temprano. Tomó desayuno, preparó sus herramientas y salió hacia {lugar}. Allí trabajó toda la mañana.",
+        "enunciado": "¿Cuánto tiempo trabajó?",
+        "alternativas": [
+          "toda la semana",
+          "toda la mañana",
+          "toda la noche",
+          "un minuto"
+        ],
+        "correcta": 1,
+        "pista": "Lee la última oración.",
+        "explicacion_error": "Trabajó toda la mañana.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Benja esperaba el cumpleaños de su abuela. Le hizo una tarjeta con dibujos. Cuando ella la abrió, se le llenaron los ojos de lágrimas y lo abrazó fuerte.",
+        "enunciado": "¿Cómo se sintió la abuela al recibir la tarjeta?",
+        "alternativas": [
+          "asustada",
+          "aburrida",
+          "enojada",
+          "emocionada"
+        ],
+        "correcta": 3,
+        "pista": "Lágrimas y un abrazo fuerte: ¿qué sentía?",
+        "explicacion_error": "Lloró de emoción y lo abrazó: estaba emocionada.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Benja esperaba el cumpleaños de su abuela. Le hizo una tarjeta con dibujos. Cuando ella la abrió, se le llenaron los ojos de lágrimas y lo abrazó fuerte.",
+        "enunciado": "¿Por qué Benja hizo una tarjeta?",
+        "alternativas": [
+          "porque se lo pidió la profesora",
+          "porque era el cumpleaños de su abuela",
+          "porque estaba aburrido",
+          "porque estaba enfermo"
+        ],
+        "correcta": 1,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "Esperaba el cumpleaños de su abuela.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Benja esperaba el cumpleaños de su abuela. Le hizo una tarjeta con dibujos. Cuando ella la abrió, se le llenaron los ojos de lágrimas y lo abrazó fuerte.",
+        "enunciado": "¿Qué hizo la abuela al final?",
+        "alternativas": [
+          "lo abrazó",
+          "lo retó",
+          "se durmió",
+          "se fue"
+        ],
+        "correcta": 0,
+        "pista": "Lee la última parte.",
+        "explicacion_error": "La abuela lo abrazó fuerte.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "En un bosque oscuro y frío vivía un búho muy sabio llamado Don Ulises. Cada noche, los animales iban a pedirle consejos. Un día llegó un zorro que se había perdido, y Don Ulises le mostró el camino con calma.",
+        "enunciado": "¿Cómo era el bosque?",
+        "alternativas": [
+          "oscuro y frío",
+          "lleno de flores",
+          "pequeño y seco",
+          "soleado y caluroso"
+        ],
+        "correcta": 0,
+        "pista": "Busca las palabras que describen el bosque.",
+        "explicacion_error": "El texto dice «un bosque oscuro y frío».",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-011",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "texto": "En un bosque oscuro y frío vivía un búho muy sabio llamado Don Ulises. Cada noche, los animales iban a pedirle consejos. Un día llegó un zorro que se había perdido, y Don Ulises le mostró el camino con calma.",
+        "enunciado": "Une cada personaje con lo que dice el texto de él.",
+        "pares": [
+          [
+            "Don Ulises",
+            "búho sabio"
+          ],
+          [
+            "el zorro",
+            "se había perdido"
+          ],
+          [
+            "los animales",
+            "pedían consejos"
+          ]
+        ],
+        "pista": "Relee qué hace cada personaje.",
+        "explicacion_error": "Don Ulises es un búho sabio, el zorro se perdió y los animales pedían consejos.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "En un bosque oscuro y frío vivía un búho muy sabio llamado Don Ulises. Cada noche, los animales iban a pedirle consejos. Un día llegó un zorro que se había perdido, y Don Ulises le mostró el camino con calma.",
+        "enunciado": "¿Qué palabra describe mejor a Don Ulises?",
+        "alternativas": [
+          "sabio",
+          "perezoso",
+          "miedoso",
+          "egoísta"
+        ],
+        "correcta": 0,
+        "pista": "¿Para qué lo buscaban los animales?",
+        "explicacion_error": "Daba consejos y ayudó al zorro: es sabio.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Sofía quería ganar la carrera del colegio. Entrenó todas las tardes durante un mes. El día de la carrera llegó segunda, pero mejoró su tiempo y se sintió orgullosa.",
+        "enunciado": "¿En qué lugar llegó Sofía?",
+        "alternativas": [
+          "segunda",
+          "primera",
+          "última",
+          "tercera"
+        ],
+        "correcta": 0,
+        "pista": "Busca «llegó».",
+        "explicacion_error": "Llegó segunda.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Sofía quería ganar la carrera del colegio. Entrenó todas las tardes durante un mes. El día de la carrera llegó segunda, pero mejoró su tiempo y se sintió orgullosa.",
+        "enunciado": "¿Por qué Sofía se sintió orgullosa si no ganó?",
+        "alternativas": [
+          "porque no corrió",
+          "porque ganó un premio",
+          "porque mejoró su tiempo",
+          "porque se cansó"
+        ],
+        "correcta": 2,
+        "pista": "Lee la última oración.",
+        "explicacion_error": "Se sintió orgullosa porque mejoró su tiempo.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa5-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Sofía quería ganar la carrera del colegio. Entrenó todas las tardes durante un mes. El día de la carrera llegó segunda, pero mejoró su tiempo y se sintió orgullosa.",
+        "enunciado": "¿Qué opinión se puede fundamentar con el texto?",
+        "alternativas": [
+          "Sofía fue perseverante, porque entrenó durante un mes",
+          "Sofía no se esforzó nada",
+          "A Sofía no le gustan las carreras",
+          "Sofía es la más rápida de todos"
+        ],
+        "correcta": 0,
+        "pista": "Busca una opinión que tenga un ejemplo en el texto.",
+        "explicacion_error": "Entrenar todas las tardes durante un mes muestra perseverancia.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_basico",
+    "asignatura": "lenguaje",
+    "eje": "Escritura",
+    "objetivo_oficial": "OA 21: Escribir correctamente para facilitar la comprensión del lector: ce-ci, que-qui, ge-gi, gue-gui, güe-güi, r-rr-nr, mayúsculas y punto final.",
+    "dificultad": 2,
+    "prerequisitos": [
+      "1_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "2_basico.lenguaje.OA21",
+    "verificacion": {
+      "codigo": "pendiente",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Educacion-General/Lenguaje-y-comunicacion-2-basico/LE02-OA-01/131696:Programa-de-apoyo-compartido-Lenguaje-y-Comunicacion-2-basico-Periodo-2"
+    },
+    "desafios": [
+      {
+        "id": "len2-oa21-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué palabra está bien escrita?",
+        "alternativas": [
+          "cince",
+          "quince",
+          "kince",
+          "qince"
+        ],
+        "correcta": 1,
+        "pista": "El sonido /k/ antes de i se escribe «qu».",
+        "explicacion_error": "Se escribe «quince».",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "___ vive en Chile.",
+        "alternativas": [
+          "aNa",
+          "Ana",
+          "anA",
+          "ana"
+        ],
+        "correcta": 1,
+        "pista": "Los nombres propios empiezan con mayúscula.",
+        "explicacion_error": "«Ana» es un nombre: va con mayúscula.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Dónde va el punto en una oración?",
+        "alternativas": [
+          "no se usa",
+          "al inicio",
+          "al final",
+          "en medio de cada palabra"
+        ],
+        "correcta": 2,
+        "pista": "El punto indica que la oración terminó.",
+        "explicacion_error": "El punto va al final de la oración.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "pa___te 🎁",
+        "alternativas": [
+          "ce",
+          "que",
+          "ke",
+          "qe"
+        ],
+        "correcta": 1,
+        "pista": "El sonido /k/ antes de e se escribe «qu».",
+        "explicacion_error": "Se escribe «paquete».",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "___tarra 🎸",
+        "alternativas": [
+          "gi",
+          "güi",
+          "ge",
+          "gui"
+        ],
+        "correcta": 3,
+        "pista": "Para el sonido suave de /g/ antes de i se escribe «gu».",
+        "explicacion_error": "Se escribe «guitarra».",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Se escribe con c o con qu?",
+        "categorias": [
+          "Con c",
+          "Con qu"
+        ],
+        "elementos": [
+          {
+            "texto": "cine",
+            "categoria": 0
+          },
+          {
+            "texto": "cereza",
+            "categoria": 0
+          },
+          {
+            "texto": "cielo",
+            "categoria": 0
+          },
+          {
+            "texto": "queso",
+            "categoria": 1
+          },
+          {
+            "texto": "quince",
+            "categoria": 1
+          },
+          {
+            "texto": "mosquito",
+            "categoria": 1
+          }
+        ],
+        "pista": "Si suena /s/ antes de e o i, va c; si suena /k/, va qu.",
+        "explicacion_error": "cine, cereza y cielo van con c; queso, quince y mosquito con qu.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "pin___no 🐧",
+        "alternativas": [
+          "ui",
+          "gi",
+          "güi",
+          "gui"
+        ],
+        "correcta": 2,
+        "pista": "Si la u se pronuncia, lleva diéresis (ü).",
+        "explicacion_error": "Se escribe «pingüino»: la u suena.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "ci___ña",
+        "alternativas": [
+          "gue",
+          "üe",
+          "güe",
+          "ge"
+        ],
+        "correcta": 2,
+        "pista": "Se dice ci-güe-ña: la u suena.",
+        "explicacion_error": "Se escribe «cigüeña».",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué palabra está bien escrita?",
+        "alternativas": [
+          "vergenza",
+          "vergüenza",
+          "verguenza",
+          "berguenza"
+        ],
+        "correcta": 1,
+        "pista": "Se dice ver-güen-za: la u suena.",
+        "explicacion_error": "Se escribe «vergüenza», con ü.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-010",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "pe___o 🐶",
+        "alternativas": [
+          "r",
+          "rr",
+          "l",
+          "nr"
+        ],
+        "correcta": 1,
+        "pista": "Entre vocales, el sonido fuerte se escribe con rr.",
+        "explicacion_error": "Se escribe «perro».",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "En___ique",
+        "alternativas": [
+          "r",
+          "l",
+          "rr",
+          "d"
+        ],
+        "correcta": 0,
+        "pista": "Después de n se escribe una sola r, aunque suene fuerte.",
+        "explicacion_error": "Se escribe «Enrique».",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Se escribe con r o con rr?",
+        "categorias": [
+          "Con r",
+          "Con rr"
+        ],
+        "elementos": [
+          {
+            "texto": "ratón",
+            "categoria": 0
+          },
+          {
+            "texto": "enredo",
+            "categoria": 0
+          },
+          {
+            "texto": "pera",
+            "categoria": 0
+          },
+          {
+            "texto": "perro",
+            "categoria": 1
+          },
+          {
+            "texto": "carro",
+            "categoria": 1
+          },
+          {
+            "texto": "tierra",
+            "categoria": 1
+          }
+        ],
+        "pista": "Al inicio o después de n va r; el sonido fuerte entre vocales va con rr.",
+        "explicacion_error": "ratón, enredo y pera llevan r; perro, carro y tierra, rr.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué oración está bien escrita?",
+        "alternativas": [
+          "mi amiga sofía vive en talca.",
+          "Mi amiga sofía vive en Talca",
+          "Mi amiga Sofía vive en Talca.",
+          "mi amiga Sofía vive en talca."
+        ],
+        "correcta": 2,
+        "pista": "Revisa la mayúscula inicial, los nombres y el punto final.",
+        "explicacion_error": "Mayúscula al inicio, en «Sofía» y «Talca», y punto al final.",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-014",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena las palabras para formar una oración bien escrita.",
+        "elementos": [
+          "Los",
+          "niños",
+          "juegan",
+          "en",
+          "el",
+          "parque."
+        ],
+        "pista": "La palabra con mayúscula va primero y la del punto, al final.",
+        "explicacion_error": "«Los niños juegan en el parque.»",
+        "monedas": 10
+      },
+      {
+        "id": "len2-oa21-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Lleva mayúscula siempre?",
+        "categorias": [
+          "Siempre con mayúscula",
+          "Con minúscula"
+        ],
+        "elementos": [
+          {
+            "texto": "Chile",
+            "categoria": 0
+          },
+          {
+            "texto": "Pedro",
+            "categoria": 0
+          },
+          {
+            "texto": "Valparaíso",
+            "categoria": 0
+          },
+          {
+            "texto": "perro",
+            "categoria": 1
+          },
+          {
+            "texto": "ciudad",
+            "categoria": 1
+          },
+          {
+            "texto": "río",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los nombres propios llevan mayúscula.",
+        "explicacion_error": "Chile, Pedro y Valparaíso son nombres propios.",
+        "monedas": 10
+      }
+    ]
+  }
+]

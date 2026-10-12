@@ -1,0 +1,1380 @@
+[
+  {
+    "nivel": "3_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 6: Demostrar que comprende la adición y la sustracción de números del 0 al 1 000, con estrategias personales, algoritmos con y sin reserva y problemas con operaciones combinadas.",
+    "dificultad": 3,
+    "prerequisitos": [
+      "2_basico.matematica.OA9"
+    ],
+    "id_objetivo": "3_basico.matematica.OA6",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17551:MA03-OA-06"
+    },
+    "desafios": [
+      {
+        "id": "mat3-oa6-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 400 + 200?",
+        "respuesta": 600,
+        "tolerancia": 0,
+        "pista": "Suma las centenas.",
+        "explicacion_error": "4 centenas + 2 centenas = 6 centenas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 384 + 4?",
+        "respuesta": 388,
+        "tolerancia": 0,
+        "pista": "Solo cambian las unidades.",
+        "explicacion_error": "384 + 4 = 388.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 700 − 200?",
+        "alternativas": [
+          "500",
+          "900",
+          "520",
+          "400"
+        ],
+        "correcta": 0,
+        "pista": "7 centenas menos 2 centenas.",
+        "explicacion_error": "700 − 200 = 500.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-004",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 136 − 1?",
+        "respuesta": 135,
+        "tolerancia": 0,
+        "pista": "Resta solo las unidades.",
+        "explicacion_error": "136 − 1 = 135.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 301 + 63?",
+        "respuesta": 364,
+        "tolerancia": 0,
+        "pista": "Suma por columnas: unidades, decenas y centenas.",
+        "explicacion_error": "301 + 63 = 364.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 956 + 43?",
+        "respuesta": 999,
+        "tolerancia": 0,
+        "pista": "Suma por columnas: unidades, decenas y centenas.",
+        "explicacion_error": "956 + 43 = 999.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-007",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "161 − 61 = ___",
+        "alternativas": [
+          "222",
+          "0",
+          "100",
+          "110"
+        ],
+        "correcta": 2,
+        "pista": "Resta por columnas.",
+        "explicacion_error": "161 − 61 = 100.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 691 − 60?",
+        "respuesta": 631,
+        "tolerancia": 0,
+        "pista": "Resta por columnas.",
+        "explicacion_error": "691 − 60 = 631.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 267 + 59?",
+        "respuesta": 326,
+        "tolerancia": 0,
+        "pista": "Si una columna suma 10 o más, llevas 1 a la columna siguiente.",
+        "explicacion_error": "267 + 59 = 326.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 418 + 289?",
+        "respuesta": 707,
+        "tolerancia": 0,
+        "pista": "Si una columna suma 10 o más, llevas 1 a la columna siguiente.",
+        "explicacion_error": "418 + 289 = 707.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 249 + 338?",
+        "alternativas": [
+          "577",
+          "487",
+          "587",
+          "597"
+        ],
+        "correcta": 2,
+        "pista": "No olvides la reserva.",
+        "explicacion_error": "249 + 338 = 587.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-012",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "225 + 92 = ___",
+        "alternativas": [
+          "316",
+          "317",
+          "417",
+          "307"
+        ],
+        "correcta": 1,
+        "pista": "Suma por columnas con reserva.",
+        "explicacion_error": "225 + 92 = 317.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuánto es 702 − 152?",
+        "respuesta": 550,
+        "tolerancia": 0,
+        "pista": "Si arriba hay menos, pide prestado a la columna de la izquierda.",
+        "explicacion_error": "702 − 152 = 550.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuánto es 700 − 277?",
+        "respuesta": 423,
+        "tolerancia": 0,
+        "pista": "Puedes descomponer: 700 = 600 + 90 + 10.",
+        "explicacion_error": "700 − 277 = 423.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "{personaje} tenía 316 {objetos} y usó 181 en {la_construccion}. ¿Cuántos le quedan?",
+        "respuesta": 135,
+        "tolerancia": 0,
+        "pista": "Usar es restar.",
+        "explicacion_error": "316 − 181 = 135.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-016",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada resta con su resultado.",
+        "pares": [
+          [
+            "776 − 90",
+            "686"
+          ],
+          [
+            "401 − 76",
+            "325"
+          ],
+          [
+            "511 − 25",
+            "486"
+          ],
+          [
+            "382 − 96",
+            "286"
+          ]
+        ],
+        "pista": "Resuelve cada resta con reserva.",
+        "explicacion_error": "776 − 90 = 686; 401 − 76 = 325; 511 − 25 = 486; 382 − 96 = 286.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} tenía 350 {objetos}, juntó 275 más y después usó 180. ¿Cuántos tiene ahora?",
+        "respuesta": 445,
+        "tolerancia": 0,
+        "pista": "Primero suma, después resta.",
+        "explicacion_error": "350 + 275 = 625 y 625 − 180 = 445.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-018",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "___ + 245 = 600",
+        "alternativas": [
+          "845",
+          "345",
+          "455",
+          "355"
+        ],
+        "correcta": 3,
+        "pista": "Piensa al revés: 600 − 245.",
+        "explicacion_error": "600 − 245 = 355.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-019",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿El resultado es mayor que 500?",
+        "categorias": [
+          "500 o menos",
+          "Mayor que 500"
+        ],
+        "elementos": [
+          {
+            "texto": "250 + 180",
+            "categoria": 0
+          },
+          {
+            "texto": "900 − 450",
+            "categoria": 0
+          },
+          {
+            "texto": "610 − 125",
+            "categoria": 0
+          },
+          {
+            "texto": "380 + 145",
+            "categoria": 1
+          },
+          {
+            "texto": "999 − 400",
+            "categoria": 1
+          },
+          {
+            "texto": "275 + 275",
+            "categoria": 1
+          }
+        ],
+        "pista": "Calcula cada operación.",
+        "explicacion_error": "250 + 180 = 430, 900 − 450 = 450, 610 − 125 = 485; 380 + 145 = 525, 999 − 400 = 599, 275 + 275 = 550.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa6-020",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En {lugar} hay 820 {objetos}. Se usan 315 y luego llegan 140. ¿Cuántos hay ahora?",
+        "alternativas": [
+          "1275",
+          "505",
+          "365",
+          "645"
+        ],
+        "correcta": 3,
+        "pista": "Resta lo que se usa y suma lo que llega.",
+        "explicacion_error": "820 − 315 = 505 y 505 + 140 = 645.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 8: Demostrar que comprende las tablas de multiplicar hasta 10 de manera progresiva, usando representaciones y la distributividad como estrategia.",
+    "dificultad": 3,
+    "prerequisitos": [
+      "2_basico.matematica.OA11"
+    ],
+    "id_objetivo": "3_basico.matematica.OA8",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docente/629/w3-article-17553.html"
+    },
+    "desafios": [
+      {
+        "id": "mat3-oa8-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 5 × 2?",
+        "respuesta": 10,
+        "tolerancia": 0,
+        "pista": "Cuenta de 2 en 2.",
+        "explicacion_error": "5 × 2 = 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "5 × 10 = ___",
+        "alternativas": [
+          "50",
+          "40",
+          "60",
+          "15"
+        ],
+        "correcta": 0,
+        "pista": "Usa la tabla del 10.",
+        "explicacion_error": "5 × 10 = 50.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-003",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada multiplicación con su resultado.",
+        "pares": [
+          [
+            "10 × 5",
+            "50"
+          ],
+          [
+            "6 × 5",
+            "30"
+          ],
+          [
+            "3 × 5",
+            "15"
+          ]
+        ],
+        "pista": "Usa la tabla del 5.",
+        "explicacion_error": "10 × 5 = 50, 6 × 5 = 30, 3 × 5 = 15.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 5 × 10?",
+        "alternativas": [
+          "50",
+          "55",
+          "45",
+          "15"
+        ],
+        "correcta": 0,
+        "pista": "El orden de los factores no cambia el producto.",
+        "explicacion_error": "5 × 10 = 50.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 8 × 3?",
+        "respuesta": 24,
+        "tolerancia": 0,
+        "pista": "Cuenta de 3 en 3.",
+        "explicacion_error": "8 × 3 = 24.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "5 × 4 = ___",
+        "alternativas": [
+          "9",
+          "20",
+          "16",
+          "24"
+        ],
+        "correcta": 1,
+        "pista": "Usa la tabla del 4.",
+        "explicacion_error": "5 × 4 = 20.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-007",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada multiplicación con su resultado.",
+        "pares": [
+          [
+            "3 × 4",
+            "12"
+          ],
+          [
+            "10 × 4",
+            "40"
+          ],
+          [
+            "2 × 4",
+            "8"
+          ]
+        ],
+        "pista": "Usa la tabla del 4.",
+        "explicacion_error": "3 × 4 = 12, 10 × 4 = 40, 2 × 4 = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 3 × 10?",
+        "alternativas": [
+          "27",
+          "33",
+          "30",
+          "13"
+        ],
+        "correcta": 2,
+        "pista": "El orden de los factores no cambia el producto.",
+        "explicacion_error": "3 × 10 = 30.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 9 × 6?",
+        "respuesta": 54,
+        "tolerancia": 0,
+        "pista": "Cuenta de 6 en 6.",
+        "explicacion_error": "9 × 6 = 54.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-010",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "7 × 7 = ___",
+        "alternativas": [
+          "56",
+          "49",
+          "42",
+          "14"
+        ],
+        "correcta": 1,
+        "pista": "Usa la tabla del 7.",
+        "explicacion_error": "7 × 7 = 49.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-011",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada multiplicación con su resultado.",
+        "pares": [
+          [
+            "6 × 7",
+            "42"
+          ],
+          [
+            "8 × 7",
+            "56"
+          ],
+          [
+            "4 × 7",
+            "28"
+          ]
+        ],
+        "pista": "Usa la tabla del 7.",
+        "explicacion_error": "6 × 7 = 42, 8 × 7 = 56, 4 × 7 = 28.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 7 × 9?",
+        "alternativas": [
+          "56",
+          "16",
+          "63",
+          "70"
+        ],
+        "correcta": 2,
+        "pista": "El orden de los factores no cambia el producto.",
+        "explicacion_error": "7 × 9 = 63.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuánto es 6 × 8?",
+        "respuesta": 48,
+        "tolerancia": 0,
+        "pista": "Cuenta de 8 en 8.",
+        "explicacion_error": "6 × 8 = 48.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-014",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "8 × 9 = ___",
+        "alternativas": [
+          "17",
+          "72",
+          "63",
+          "81"
+        ],
+        "correcta": 1,
+        "pista": "Usa la tabla del 9.",
+        "explicacion_error": "8 × 9 = 72.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "{personaje} arma 8 filas de 6 {objetos}. ¿Cuántos {objetos} hay?",
+        "respuesta": 48,
+        "tolerancia": 0,
+        "pista": "Son 8 veces 6.",
+        "explicacion_error": "8 × 6 = 48.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Cada {contenedor} tiene 9 {objetos}. ¿Cuántos hay en 7 {contenedores}?",
+        "respuesta": 63,
+        "tolerancia": 0,
+        "pista": "Son 7 veces 9.",
+        "explicacion_error": "7 × 9 = 63.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-017",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "7 × 8 = 7 × 5 + 7 × ___",
+        "alternativas": [
+          "3",
+          "8",
+          "5",
+          "2"
+        ],
+        "correcta": 0,
+        "pista": "8 se puede separar en 5 + 3.",
+        "explicacion_error": "7 × 8 = 7 × 5 + 7 × 3 = 35 + 21 = 56.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-018",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "6 × ___ = 54",
+        "alternativas": [
+          "9",
+          "8",
+          "7",
+          "6"
+        ],
+        "correcta": 0,
+        "pista": "Cuenta de 6 en 6 hasta 54.",
+        "explicacion_error": "6 × 9 = 54.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-019",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada multiplicación con su resultado.",
+        "pares": [
+          [
+            "6 × 7",
+            "42"
+          ],
+          [
+            "8 × 8",
+            "64"
+          ],
+          [
+            "9 × 4",
+            "36"
+          ],
+          [
+            "7 × 7",
+            "49"
+          ]
+        ],
+        "pista": "Usa las tablas.",
+        "explicacion_error": "6 × 7 = 42, 8 × 8 = 64, 9 × 4 = 36 y 7 × 7 = 49.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa8-020",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿El resultado es mayor que 50?",
+        "categorias": [
+          "50 o menos",
+          "Mayor que 50"
+        ],
+        "elementos": [
+          {
+            "texto": "6 × 8",
+            "categoria": 0
+          },
+          {
+            "texto": "7 × 7",
+            "categoria": 0
+          },
+          {
+            "texto": "9 × 5",
+            "categoria": 0
+          },
+          {
+            "texto": "8 × 7",
+            "categoria": 1
+          },
+          {
+            "texto": "9 × 6",
+            "categoria": 1
+          },
+          {
+            "texto": "8 × 9",
+            "categoria": 1
+          }
+        ],
+        "pista": "Calcula cada producto.",
+        "explicacion_error": "6 × 8 = 48, 7 × 7 = 49, 9 × 5 = 45; 8 × 7 = 56, 9 × 6 = 54, 8 × 9 = 72.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 9: Demostrar que comprende la división en el contexto de las tablas de hasta 10 × 10, relacionándola con la multiplicación.",
+    "dificultad": 4,
+    "prerequisitos": [
+      "3_basico.matematica.OA8"
+    ],
+    "id_objetivo": "3_basico.matematica.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17554:MA03-OA-09"
+    },
+    "desafios": [
+      {
+        "id": "mat3-oa9-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 12 ÷ 2?",
+        "respuesta": 6,
+        "tolerancia": 0,
+        "pista": "Piensa: ¿qué número por 2 da 12?",
+        "explicacion_error": "2 × 6 = 12, entonces 12 ÷ 2 = 6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 8 ÷ 2?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "pista": "Usa la tabla del 2.",
+        "explicacion_error": "8 ÷ 2 = 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 12 ÷ 2?",
+        "alternativas": [
+          "5",
+          "10",
+          "6",
+          "7"
+        ],
+        "correcta": 2,
+        "pista": "La división es la operación inversa de la multiplicación.",
+        "explicacion_error": "12 ÷ 2 = 6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-004",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "10 ÷ 2 = ___",
+        "alternativas": [
+          "2",
+          "5",
+          "7",
+          "3"
+        ],
+        "correcta": 1,
+        "pista": "¿Cuántas veces cabe 2 en 10?",
+        "explicacion_error": "10 ÷ 2 = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 9 ÷ 3?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Piensa: ¿qué número por 3 da 9?",
+        "explicacion_error": "3 × 3 = 9, entonces 9 ÷ 3 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 9 ÷ 3?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Usa la tabla del 3.",
+        "explicacion_error": "9 ÷ 3 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 12 ÷ 4?",
+        "alternativas": [
+          "4",
+          "8",
+          "3",
+          "2"
+        ],
+        "correcta": 2,
+        "pista": "La división es la operación inversa de la multiplicación.",
+        "explicacion_error": "12 ÷ 4 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-008",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "15 ÷ 3 = ___",
+        "alternativas": [
+          "3",
+          "7",
+          "6",
+          "5"
+        ],
+        "correcta": 3,
+        "pista": "¿Cuántas veces cabe 3 en 15?",
+        "explicacion_error": "15 ÷ 3 = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 72 ÷ 9?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "pista": "Piensa: ¿qué número por 9 da 72?",
+        "explicacion_error": "9 × 8 = 72, entonces 72 ÷ 9 = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 63 ÷ 7?",
+        "respuesta": 9,
+        "tolerancia": 0,
+        "pista": "Usa la tabla del 7.",
+        "explicacion_error": "63 ÷ 7 = 9.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 45 ÷ 9?",
+        "alternativas": [
+          "36",
+          "5",
+          "6",
+          "4"
+        ],
+        "correcta": 1,
+        "pista": "La división es la operación inversa de la multiplicación.",
+        "explicacion_error": "45 ÷ 9 = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-012",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "24 ÷ 8 = ___",
+        "alternativas": [
+          "3",
+          "8",
+          "1",
+          "5"
+        ],
+        "correcta": 0,
+        "pista": "¿Cuántas veces cabe 8 en 24?",
+        "explicacion_error": "24 ÷ 8 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "{personaje} reparte 24 {objetos} en 6 grupos iguales. ¿Cuántos quedan en cada grupo?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "pista": "Repartir en partes iguales es dividir.",
+        "explicacion_error": "24 ÷ 6 = 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Hay 30 {objetos} y se ponen 5 en cada {contenedor}. ¿Cuántos {contenedores} se llenan?",
+        "respuesta": 6,
+        "tolerancia": 0,
+        "pista": "¿Cuántas veces cabe 5 en 30?",
+        "explicacion_error": "30 ÷ 5 = 6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "{personaje} tiene 56 {objetos} y los ordena en 8 filas iguales. ¿Cuántos hay en cada fila?",
+        "respuesta": 7,
+        "tolerancia": 0,
+        "pista": "Divide 56 en 8 partes iguales.",
+        "explicacion_error": "56 ÷ 8 = 7.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Se reparten 45 {objetos} en partes iguales entre 9 amigos. ¿Cuántos recibe cada uno?",
+        "alternativas": [
+          "9",
+          "6",
+          "5",
+          "36"
+        ],
+        "correcta": 2,
+        "pista": "Usa la tabla del 9.",
+        "explicacion_error": "45 ÷ 9 = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Si 7 × 6 = 42, entonces 42 ÷ 6 = ?",
+        "alternativas": [
+          "6",
+          "36",
+          "48",
+          "7"
+        ],
+        "correcta": 3,
+        "pista": "La división deshace la multiplicación.",
+        "explicacion_error": "42 ÷ 6 = 7, porque 7 × 6 = 42.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-018",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Si 8 × 9 = 72, entonces 72 ÷ 9 = ___",
+        "alternativas": [
+          "7",
+          "8",
+          "9",
+          "63"
+        ],
+        "correcta": 1,
+        "pista": "Usa la multiplicación que te dan.",
+        "explicacion_error": "72 ÷ 9 = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-019",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada multiplicación con la división que le corresponde.",
+        "pares": [
+          [
+            "4 × 7 = 28",
+            "28 ÷ 7 = 4"
+          ],
+          [
+            "6 × 9 = 54",
+            "54 ÷ 9 = 6"
+          ],
+          [
+            "3 × 8 = 24",
+            "24 ÷ 8 = 3"
+          ]
+        ],
+        "pista": "Busca los mismos tres números.",
+        "explicacion_error": "Cada división usa los mismos números que su multiplicación.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa9-020",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Cuál es el resultado de cada división?",
+        "categorias": [
+          "Da 6",
+          "Da 7"
+        ],
+        "elementos": [
+          {
+            "texto": "36 ÷ 6",
+            "categoria": 0
+          },
+          {
+            "texto": "54 ÷ 9",
+            "categoria": 0
+          },
+          {
+            "texto": "48 ÷ 8",
+            "categoria": 0
+          },
+          {
+            "texto": "49 ÷ 7",
+            "categoria": 1
+          },
+          {
+            "texto": "63 ÷ 9",
+            "categoria": 1
+          },
+          {
+            "texto": "56 ÷ 8",
+            "categoria": 1
+          }
+        ],
+        "pista": "Usa las tablas del 6, 7, 8 y 9.",
+        "explicacion_error": "36 ÷ 6, 54 ÷ 9 y 48 ÷ 8 dan 6; 49 ÷ 7, 63 ÷ 9 y 56 ÷ 8 dan 7.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 11: Demostrar que comprende las fracciones de uso común (1/4, 1/3, 1/2, 2/3, 3/4): parte de un todo, situaciones de uso y comparación con igual denominador.",
+    "dificultad": 4,
+    "prerequisitos": [
+      "3_basico.matematica.OA9"
+    ],
+    "id_objetivo": "3_basico.matematica.OA11",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17556:MA03-OA-11"
+    },
+    "desafios": [
+      {
+        "id": "mat3-oa11-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué fracción de la barra está pintada? 🟩⬜",
+        "alternativas": [
+          "1/3",
+          "1/2",
+          "1/4",
+          "2/3"
+        ],
+        "correcta": 1,
+        "pista": "Cuenta las partes pintadas (arriba) y las partes en total (abajo).",
+        "explicacion_error": "Hay 1 parte pintada de 2: 1/2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué fracción de la barra está pintada? 🟩⬜⬜⬜",
+        "alternativas": [
+          "1/3",
+          "2/3",
+          "1/2",
+          "1/4"
+        ],
+        "correcta": 3,
+        "pista": "Cuenta las partes pintadas (arriba) y las partes en total (abajo).",
+        "explicacion_error": "Hay 1 parte pintada de 4: 1/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué fracción de la barra está pintada? 🟩⬜⬜",
+        "alternativas": [
+          "2/3",
+          "1/2",
+          "1/3",
+          "1/4"
+        ],
+        "correcta": 2,
+        "pista": "Cuenta las partes pintadas (arriba) y las partes en total (abajo).",
+        "explicacion_error": "Hay 1 parte pintada de 3: 1/3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-007",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada fracción con su nombre.",
+        "pares": [
+          [
+            "1/2",
+            "un medio"
+          ],
+          [
+            "1/3",
+            "un tercio"
+          ],
+          [
+            "1/4",
+            "un cuarto"
+          ]
+        ],
+        "pista": "El número de abajo dice en cuántas partes se dividió.",
+        "explicacion_error": "1/2 es un medio, 1/3 un tercio y 1/4 un cuarto.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué fracción de la barra está pintada? 🟩🟩⬜",
+        "alternativas": [
+          "1/4",
+          "1/3",
+          "1/2",
+          "2/3"
+        ],
+        "correcta": 3,
+        "pista": "Cuenta las partes pintadas (arriba) y las partes en total (abajo).",
+        "explicacion_error": "Hay 2 partes pintadas de 3: 2/3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué fracción de la barra está pintada? 🟩🟩🟩⬜",
+        "alternativas": [
+          "3/4",
+          "1/3",
+          "1/4",
+          "1/2"
+        ],
+        "correcta": 0,
+        "pista": "Cuenta las partes pintadas (arriba) y las partes en total (abajo).",
+        "explicacion_error": "Hay 3 partes pintadas de 4: 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué fracción de la barra está pintada? 🟩⬜",
+        "alternativas": [
+          "2/3",
+          "1/2",
+          "1/4",
+          "1/3"
+        ],
+        "correcta": 1,
+        "pista": "Cuenta las partes pintadas (arriba) y las partes en total (abajo).",
+        "explicacion_error": "Hay 1 parte pintada de 2: 1/2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-008",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada fracción con su nombre.",
+        "pares": [
+          [
+            "2/3",
+            "dos tercios"
+          ],
+          [
+            "3/4",
+            "tres cuartos"
+          ],
+          [
+            "1/2",
+            "un medio"
+          ],
+          [
+            "1/4",
+            "un cuarto"
+          ]
+        ],
+        "pista": "Lee primero el número de arriba y luego el de abajo.",
+        "explicacion_error": "2/3 son dos tercios y 3/4 son tres cuartos.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuál es mayor?",
+        "alternativas": [
+          "1/3",
+          "2/3",
+          "Son iguales",
+          "No se puede saber"
+        ],
+        "correcta": 1,
+        "pista": "Con el mismo denominador, gana la que tiene más partes.",
+        "explicacion_error": "2 partes de 3 es más que 1 parte de 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuál es menor?",
+        "alternativas": [
+          "Son iguales",
+          "3/4",
+          "1/4",
+          "No se puede saber"
+        ],
+        "correcta": 2,
+        "pista": "Mismo denominador: compara los numeradores.",
+        "explicacion_error": "1 parte de 4 es menos que 3 partes de 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-011",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "1/4 ___ 3/4",
+        "alternativas": [
+          "<",
+          ">",
+          "=",
+          "+"
+        ],
+        "correcta": 0,
+        "pista": "Mismo denominador: compara los numeradores.",
+        "explicacion_error": "1/4 es menor que 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "1/4",
+          "2/4",
+          "3/4"
+        ],
+        "pista": "Todas tienen 4 partes: compara cuántas se toman.",
+        "explicacion_error": "1/4 < 2/4 < 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "{personaje} divide {la_construccion} en 3 partes iguales y pinta 1. ¿Qué fracción pintó?",
+        "alternativas": [
+          "3/1",
+          "2/3",
+          "1/3",
+          "1/2"
+        ],
+        "correcta": 2,
+        "pista": "Son 3 partes iguales y se pinta 1.",
+        "explicacion_error": "1 de 3 partes es 1/3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Una torta se reparte en partes iguales entre 4 personas. ¿Qué fracción recibe cada una?",
+        "alternativas": [
+          "3/4",
+          "4/1",
+          "1/2",
+          "1/4"
+        ],
+        "correcta": 3,
+        "pista": "Son 4 partes iguales.",
+        "explicacion_error": "Cada persona recibe 1 de 4 partes: 1/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-015",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "La mitad de algo es ___",
+        "alternativas": [
+          "2/3",
+          "1/2",
+          "1/4",
+          "1/3"
+        ],
+        "correcta": 1,
+        "pista": "Mitad significa dividir en 2 partes iguales.",
+        "explicacion_error": "La mitad es 1/2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Es más o menos de la mitad?",
+        "categorias": [
+          "Menos de la mitad",
+          "Más de la mitad"
+        ],
+        "elementos": [
+          {
+            "texto": "1/4",
+            "categoria": 0
+          },
+          {
+            "texto": "1/3",
+            "categoria": 0
+          },
+          {
+            "texto": "3/4",
+            "categoria": 1
+          },
+          {
+            "texto": "2/3",
+            "categoria": 1
+          }
+        ],
+        "pista": "Imagina una barra: ¿queda pintada más o menos de la mitad?",
+        "explicacion_error": "1/4 y 1/3 son menos de la mitad; 3/4 y 2/3 son más.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} usa 1/4 de una barra. ¿Qué fracción queda?",
+        "alternativas": [
+          "1/4",
+          "1/3",
+          "3/4",
+          "1/2"
+        ],
+        "correcta": 2,
+        "pista": "Lo que se usa y lo que queda forman la barra completa.",
+        "explicacion_error": "Si se usa 1/4, queda 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-018",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} usa 2/3 de una barra. ¿Qué fracción queda?",
+        "alternativas": [
+          "1/3",
+          "1/2",
+          "2/3",
+          "1/4"
+        ],
+        "correcta": 0,
+        "pista": "Lo que se usa y lo que queda forman la barra completa.",
+        "explicacion_error": "Si se usa 2/3, queda 1/3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-019",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} usa 1/2 de una barra. ¿Qué fracción queda?",
+        "alternativas": [
+          "2/3",
+          "1/2",
+          "1/3",
+          "1/4"
+        ],
+        "correcta": 1,
+        "pista": "Lo que se usa y lo que queda forman la barra completa.",
+        "explicacion_error": "Si se usa 1/2, queda 1/2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat3-oa11-020",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une lo que se come con lo que queda.",
+        "pares": [
+          [
+            "Comes 1/4",
+            "Queda 3/4"
+          ],
+          [
+            "Comes 2/3",
+            "Queda 1/3"
+          ],
+          [
+            "Comes 3/4",
+            "Queda 1/4"
+          ],
+          [
+            "Comes 1/3",
+            "Queda 2/3"
+          ]
+        ],
+        "pista": "Las dos partes juntas forman el entero.",
+        "explicacion_error": "1/4 + 3/4, 2/3 + 1/3, 3/4 + 1/4 y 1/3 + 2/3 forman un entero.",
+        "monedas": 10
+      }
+    ]
+  }
+]

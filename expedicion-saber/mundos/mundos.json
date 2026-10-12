@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "economia": {
+    "monedas_por_intento": [10, 5, 2],
+    "intentos_maximos": 3,
+    "desafios_por_sesion": 10,
+    "bono_sesion": 25,
+    "racha": { "bono_por_dia": 10, "tope": 50 },
+    "bono_dominio_objetivo": 100,
+    "costos_por_nivel": [50, 150, 400, 800, 1800],
+    "nivel_final": { "nivel": 5, "requiere_tramos_dominados": "uno por cada mejora final del mundo" }
+  },
+  "progresion": {
+    "nivel_inicial": 1,
+    "aciertos_seguidos_para_subir": 3,
+    "fallos_seguidos_para_bajar": 2,
+    "dominio": "3 aciertos seguidos al primer intento estando en dificultad 5",
+    "disponible_si": "cada prerequisito está dominado, va en dificultad 3 o más, o es de un nivel escolar anterior al del jugador"
+  },
+  "mundos": [
+    {
+      "id": "bloques",
+      "nombre": "Valle Bloque",
+      "estilo": "Mundo de bloques: estética voxel, construcción, herramientas y biomas.",
+      "estado": "jugable",
+      "guia": "Rocío, la minera",
+      "tokens": {
+        "personaje": "Rocío",
+        "objeto": "bloque de piedra",
+        "objetos": "bloques de piedra",
+        "un_objeto": "un bloque de piedra",
+        "los_objetos": "los bloques de piedra",
+        "lugar": "la mina",
+        "contenedor": "cofre",
+        "contenedores": "cofres",
+        "el_contenedor": "el cofre",
+        "la_construccion": "la torre",
+        "junto": "picó"
+      },
+      "espacios": [
+        { "id": "casco", "nombre": "Casco", "niveles": ["Gorro de cuero", "Casco de cobre", "Casco de hierro", "Casco de lumita", "Corona estelar"] },
+        { "id": "armadura", "nombre": "Armadura", "niveles": ["Chaleco de cuero", "Peto de cobre", "Armadura de hierro", "Armadura de lumita", "Armadura estelar"] },
+        { "id": "herramienta", "nombre": "Herramienta", "niveles": ["Pala de madera", "Pico de cobre", "Pico de hierro", "Martillo de lumita", "Taladro estelar"] },
+        { "id": "botas", "nombre": "Botas", "niveles": ["Botas de cuero", "Botas de cobre", "Botas de hierro", "Botas de lumita", "Botas estelares"] },
+        { "id": "estructura", "nombre": "Estructura", "niveles": ["Fogata", "Carpa", "Cabaña", "Torre de vigía", "Castillo de lumita"] }
+      ]
+    },
+    {
+      "id": "plataformas",
+      "nombre": "Isla Brinco",
+      "estilo": "Mundo de plataformas: avatares coloridos y accesorios.",
+      "estado": "en_construccion",
+      "guia": "Pipo, el saltarín",
+      "tokens": {
+        "personaje": "Pipo",
+        "objeto": "cascabel",
+        "objetos": "cascabeles",
+        "un_objeto": "un cascabel",
+        "los_objetos": "los cascabeles",
+        "lugar": "la isla",
+        "contenedor": "baúl",
+        "contenedores": "baúles",
+        "el_contenedor": "el baúl",
+        "la_construccion": "la plataforma",
+        "junto": "recogió"
+      },
+      "espacios": [
+        { "id": "skin", "nombre": "Skin", "niveles": ["Rayas", "Lunares", "Arcoíris", "Galaxia", "Brillo dorado"] },
+        { "id": "sombrero", "nombre": "Sombrero", "niveles": ["Gorrito", "Boina", "Sombrero de copa", "Casco espacial", "Corona de luz"] },
+        { "id": "mascota", "nombre": "Mascota", "niveles": ["Pollito", "Gato saltarín", "Zorrito", "Dragoncito", "Ballena voladora"] },
+        { "id": "gesto", "nombre": "Gesto", "niveles": ["Saludo", "Salto", "Giro", "Voltereta", "Baile estelar"] },
+        { "id": "objeto", "nombre": "Objeto", "niveles": ["Globo", "Yoyó", "Patineta", "Mochila cohete", "Alas de luz"] }
+      ]
+    },
+    {
+      "id": "heroes",
+      "nombre": "Ciudad Voltia",
+      "estilo": "Mundo de héroes: estética de cómic, poderes y trajes.",
+      "estado": "en_construccion",
+      "guia": "Capitana Chispa",
+      "tokens": {
+        "personaje": "Capitana Chispa",
+        "objeto": "cristal de energía",
+        "objetos": "cristales de energía",
+        "un_objeto": "un cristal de energía",
+        "los_objetos": "los cristales de energía",
+        "lugar": "la ciudad",
+        "contenedor": "maletín",
+        "contenedores": "maletines",
+        "el_contenedor": "el maletín",
+        "la_construccion": "la base secreta",
+        "junto": "cargó"
+      },
+      "espacios": [
+        { "id": "mascara", "nombre": "Máscara", "niveles": ["Antifaz", "Visor", "Casco ligero", "Casco blindado", "Casco relámpago"] },
+        { "id": "traje", "nombre": "Traje", "niveles": ["Buzo de entrenamiento", "Traje elástico", "Traje reforzado", "Traje de energía", "Traje relámpago"] },
+        { "id": "capa", "nombre": "Capa", "niveles": ["Bufanda", "Capa corta", "Capa larga", "Capa de luz", "Capa estelar"] },
+        { "id": "poder", "nombre": "Poder", "niveles": ["Chispa", "Escudo", "Rayo", "Vuelo", "Tormenta"] },
+        { "id": "vehiculo", "nombre": "Vehículo", "niveles": ["Patines", "Moto", "Planeador", "Jet", "Nave relámpago"] }
+      ]
+    }
+  ]
+}

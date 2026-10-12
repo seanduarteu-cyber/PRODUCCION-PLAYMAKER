@@ -1,0 +1,1007 @@
+[
+  {
+    "nivel": "1_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 1: Contar números del 0 al 100 de 1 en 1, de 2 en 2, de 5 en 5 y de 10 en 10, hacia adelante y hacia atrás, empezando por cualquier número menor que 100.",
+    "dificultad": 1,
+    "prerequisitos": [],
+    "id_objetivo": "1_basico.matematica.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-17473.html"
+    },
+    "desafios": [
+      {
+        "id": "mat1-oa1-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "Cuenta de 1 en 1. ¿Qué número sigue? 4, 5, 6, ___",
+        "respuesta": 7,
+        "tolerancia": 0,
+        "pista": "Mira cuánto cambia cada número: suma 1.",
+        "explicacion_error": "Después de 6 viene 7: le sumamos 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "Cuenta de 1 en 1. ¿Qué número sigue? 13, 14, 15, ___",
+        "respuesta": 16,
+        "tolerancia": 0,
+        "pista": "Mira cuánto cambia cada número: suma 1.",
+        "explicacion_error": "Después de 15 viene 16: le sumamos 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-003",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 1,
+        "enunciado": "Ordena los números como cuando cuentas de 1 en 1.",
+        "elementos": [
+          "7",
+          "8",
+          "9",
+          "10"
+        ],
+        "pista": "Empieza por el más pequeño.",
+        "explicacion_error": "Al contar de 1 en 1 el orden es 7, 8, 9, 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué número va justo antes de 13?",
+        "alternativas": [
+          "14",
+          "15",
+          "11",
+          "12"
+        ],
+        "correcta": 3,
+        "pista": "Antes significa uno menos.",
+        "explicacion_error": "Justo antes de 13 está 12.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Cuenta de 1 en 1. ¿Qué número sigue? 68, 69, ___",
+        "respuesta": 70,
+        "tolerancia": 0,
+        "pista": "Mira cuánto cambia cada número: suma 1.",
+        "explicacion_error": "Después de 69 viene 70: le sumamos 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Cuenta de 1 en 1 hacia atrás. ¿Qué número sigue? 57, 56, 55, ___",
+        "respuesta": 54,
+        "tolerancia": 0,
+        "pista": "Mira cuánto cambia cada número: resta 1.",
+        "explicacion_error": "Después de 55 viene 54: le restamos 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-007",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "{personaje} cuenta {objetos}: 70, 71, ___, 73.",
+        "alternativas": [
+          "74",
+          "72",
+          "69",
+          "82"
+        ],
+        "correcta": 1,
+        "pista": "Falta el número que va entre los dos de los lados.",
+        "explicacion_error": "Entre 71 y 73 va 72.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena como cuando cuentas hacia atrás de 1 en 1.",
+        "elementos": [
+          "56",
+          "55",
+          "54",
+          "53"
+        ],
+        "pista": "Hacia atrás, cada número es uno menos.",
+        "explicacion_error": "Hacia atrás: 56, 55, 54, 53.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Cuenta de 10 en 10. ¿Qué número sigue? 40, 50, 60, ___",
+        "respuesta": 70,
+        "tolerancia": 0,
+        "pista": "Mira cuánto cambia cada número: suma 10.",
+        "explicacion_error": "Después de 60 viene 70: le sumamos 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Cuenta de 5 en 5. ¿Qué número sigue? 10, 15, 20, ___",
+        "respuesta": 25,
+        "tolerancia": 0,
+        "pista": "Mira cuánto cambia cada número: suma 5.",
+        "explicacion_error": "Después de 20 viene 25: le sumamos 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-011",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Cuenta de 10 en 10: 5, 15, 25, ___",
+        "alternativas": [
+          "45",
+          "30",
+          "35",
+          "26"
+        ],
+        "correcta": 2,
+        "pista": "Contar de 10 en 10 cambia solo las decenas.",
+        "explicacion_error": "25 + 10 = 35.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena los números como cuando cuentas de 5 en 5.",
+        "elementos": [
+          "45",
+          "50",
+          "55",
+          "60"
+        ],
+        "pista": "Cada número es 5 más que el anterior.",
+        "explicacion_error": "De 5 en 5: 45, 50, 55, 60.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Cuenta de 2 en 2. ¿Qué número sigue? 78, 80, 82, ___",
+        "respuesta": 84,
+        "tolerancia": 0,
+        "pista": "Mira cuánto cambia cada número: suma 2.",
+        "explicacion_error": "Después de 82 viene 84: le sumamos 2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Cuenta de 10 en 10 hacia atrás. ¿Qué número sigue? 100, 90, 80, ___",
+        "respuesta": 70,
+        "tolerancia": 0,
+        "pista": "Mira cuánto cambia cada número: resta 10.",
+        "explicacion_error": "Después de 80 viene 70: le restamos 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-015",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Cuenta de 2 en 2: 43, 45, ___, 49",
+        "alternativas": [
+          "47",
+          "48",
+          "44",
+          "46"
+        ],
+        "correcta": 0,
+        "pista": "Si empiezas en un número impar, contando de 2 en 2 sigues en impares.",
+        "explicacion_error": "45 + 2 = 47.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Aparece al contar de 5 en 5 desde 0?",
+        "categorias": [
+          "Sí aparece",
+          "No aparece"
+        ],
+        "elementos": [
+          {
+            "texto": "40",
+            "categoria": 0
+          },
+          {
+            "texto": "65",
+            "categoria": 0
+          },
+          {
+            "texto": "70",
+            "categoria": 0
+          },
+          {
+            "texto": "37",
+            "categoria": 1
+          },
+          {
+            "texto": "19",
+            "categoria": 1
+          },
+          {
+            "texto": "66",
+            "categoria": 1
+          }
+        ],
+        "pista": "Contando de 5 en 5 desde 0, los números terminan en 0 o en 5.",
+        "explicacion_error": "Solo los números que terminan en 0 o en 5 aparecen al contar de 5 en 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿De cuánto en cuánto se cuenta? 65, 70, 75, 80",
+        "alternativas": [
+          "de 1 en 1",
+          "de 10 en 10",
+          "de 5 en 5",
+          "de 2 en 2"
+        ],
+        "correcta": 2,
+        "pista": "Resta dos números seguidos de la serie.",
+        "explicacion_error": "Cada número aumenta 5: se cuenta de 5 en 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-018",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿De cuánto en cuánto se cuenta? 30, 32, 34, 36",
+        "alternativas": [
+          "de 2 en 2",
+          "de 1 en 1",
+          "de 10 en 10",
+          "de 5 en 5"
+        ],
+        "correcta": 0,
+        "pista": "Resta dos números seguidos de la serie.",
+        "explicacion_error": "Cada número aumenta 2: se cuenta de 2 en 2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-019",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Cuenta de 5 en 5 hacia atrás. ¿Qué número sigue? 90, 85, 80, ___",
+        "respuesta": 75,
+        "tolerancia": 0,
+        "pista": "Mira cuánto cambia cada número: resta 5.",
+        "explicacion_error": "Después de 80 viene 75: le restamos 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa1-020",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Cuenta de 2 en 2 hacia atrás. ¿Qué número sigue? 94, 92, 90, ___",
+        "respuesta": 88,
+        "tolerancia": 0,
+        "pista": "Mira cuánto cambia cada número: resta 2.",
+        "explicacion_error": "Después de 90 viene 88: le restamos 2.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 4: Comparar y ordenar números del 0 al 20 de menor a mayor y/o viceversa, utilizando material concreto y/o software educativo.",
+    "dificultad": 1,
+    "prerequisitos": [
+      "1_basico.matematica.OA1"
+    ],
+    "id_objetivo": "1_basico.matematica.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://curriculumnacional.mineduc.cl/614/w3-propertyvalue-53688.html"
+    },
+    "desafios": [
+      {
+        "id": "mat1-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es el número mayor?",
+        "alternativas": [
+          "0",
+          "6",
+          "9",
+          "3"
+        ],
+        "correcta": 2,
+        "pista": "El mayor es el que está más lejos del 0 al contar.",
+        "explicacion_error": "9 es el mayor de los cuatro.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es el número menor?",
+        "alternativas": [
+          "1",
+          "2",
+          "9",
+          "0"
+        ],
+        "correcta": 3,
+        "pista": "El menor es el que aparece primero al contar.",
+        "explicacion_error": "0 es el menor de los cuatro.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué número está entre 3 y 5?",
+        "alternativas": [
+          "6",
+          "2",
+          "7",
+          "4"
+        ],
+        "correcta": 3,
+        "pista": "Cuenta desde el primero hasta el segundo.",
+        "explicacion_error": "Entre 3 y 5 está 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-004",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 1,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "2",
+          "5",
+          "6"
+        ],
+        "pista": "Pon primero el más pequeño.",
+        "explicacion_error": "De menor a mayor: 2, 5, 6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuál es el número mayor?",
+        "alternativas": [
+          "15",
+          "17",
+          "11",
+          "14"
+        ],
+        "correcta": 1,
+        "pista": "Todos tienen una decena: compara las unidades.",
+        "explicacion_error": "17 es el mayor.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuál es el número menor?",
+        "alternativas": [
+          "8",
+          "5",
+          "18",
+          "1"
+        ],
+        "correcta": 3,
+        "pista": "Busca el que tiene menos.",
+        "explicacion_error": "1 es el menor.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-007",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "10 es mayor que ___",
+        "alternativas": [
+          "16",
+          "15",
+          "18",
+          "5"
+        ],
+        "correcta": 3,
+        "pista": "Busca un número más pequeño.",
+        "explicacion_error": "10 es mayor que 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "1",
+          "3",
+          "14",
+          "17"
+        ],
+        "pista": "Empieza por el más pequeño.",
+        "explicacion_error": "De menor a mayor: 1, 3, 14, 17.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena de mayor a menor.",
+        "elementos": [
+          "19",
+          "15",
+          "7",
+          "4"
+        ],
+        "pista": "Empieza por el más grande.",
+        "explicacion_error": "De mayor a menor: 19, 15, 7, 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "1",
+          "5",
+          "12",
+          "16",
+          "20"
+        ],
+        "pista": "Compara de a dos números.",
+        "explicacion_error": "De menor a mayor: 1, 5, 12, 16, 20.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "Separa los números.",
+        "categorias": [
+          "Menores que 10",
+          "Mayores que 10"
+        ],
+        "elementos": [
+          {
+            "texto": "0",
+            "categoria": 0
+          },
+          {
+            "texto": "2",
+            "categoria": 0
+          },
+          {
+            "texto": "7",
+            "categoria": 0
+          },
+          {
+            "texto": "13",
+            "categoria": 1
+          },
+          {
+            "texto": "14",
+            "categoria": 1
+          },
+          {
+            "texto": "18",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los números con una decena son mayores que 10.",
+        "explicacion_error": "Del 0 al 9 son menores que 10; del 11 al 20, mayores.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "En {el_contenedor} de {personaje} hay 12 {objetos} y en el de Lía hay 11. ¿Quién tiene más?",
+        "alternativas": [
+          "No se puede saber",
+          "Tienen lo mismo",
+          "{personaje}",
+          "Lía"
+        ],
+        "correcta": 2,
+        "pista": "Compara los dos números.",
+        "explicacion_error": "12 es mayor que 11.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-013",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "12 ___ 13",
+        "alternativas": [
+          "<",
+          ">",
+          "=",
+          "+"
+        ],
+        "correcta": 0,
+        "pista": "La boca del signo se abre hacia el número mayor.",
+        "explicacion_error": "12 es menor que 13: se usa <.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-014",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "19 ___ 11",
+        "alternativas": [
+          "<",
+          ">",
+          "=",
+          "+"
+        ],
+        "correcta": 1,
+        "pista": "La boca del signo se abre hacia el número mayor.",
+        "explicacion_error": "19 es mayor que 11: se usa >.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Está entre 5 y 15 (incluidos)?",
+        "categorias": [
+          "Entre 5 y 15",
+          "Fuera de ese rango"
+        ],
+        "elementos": [
+          {
+            "texto": "11",
+            "categoria": 0
+          },
+          {
+            "texto": "9",
+            "categoria": 0
+          },
+          {
+            "texto": "5",
+            "categoria": 0
+          },
+          {
+            "texto": "0",
+            "categoria": 1
+          },
+          {
+            "texto": "3",
+            "categoria": 1
+          },
+          {
+            "texto": "20",
+            "categoria": 1
+          }
+        ],
+        "pista": "Revisa si cada número es al menos 5 y como máximo 15.",
+        "explicacion_error": "Los números del 5 al 15 están en el rango; los demás, fuera.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-016",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de mayor a menor.",
+        "elementos": [
+          "20",
+          "18",
+          "16",
+          "8",
+          "0"
+        ],
+        "pista": "Busca primero el mayor.",
+        "explicacion_error": "De mayor a menor: 20, 18, 16, 8, 0.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Cuál de estos números está más cerca de 20?",
+        "alternativas": [
+          "9",
+          "12",
+          "14",
+          "17"
+        ],
+        "correcta": 3,
+        "pista": "Mira cuánto le falta a cada uno para llegar a 20.",
+        "explicacion_error": "A 17 le faltan solo 3 para llegar a 20.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-018",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "18 ___ 18",
+        "alternativas": [
+          "<",
+          ">",
+          "+",
+          "="
+        ],
+        "correcta": 3,
+        "pista": "Mira bien: ¿los dos números son iguales?",
+        "explicacion_error": "18 es igual a 18: se usa =.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-019",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "12",
+          "13",
+          "14",
+          "15",
+          "17"
+        ],
+        "pista": "Todos tienen una decena: compara las unidades.",
+        "explicacion_error": "De menor a mayor: 12, 13, 14, 15, 17.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa4-020",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué número es menor que 15 pero mayor que 12?",
+        "alternativas": [
+          "11",
+          "15",
+          "16",
+          "13"
+        ],
+        "correcta": 3,
+        "pista": "Tiene que cumplir las dos condiciones.",
+        "explicacion_error": "13 es mayor que 12 y menor que 15.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 9: Demostrar que comprende la adición y la sustracción de números del 0 al 20 progresivamente (0 a 5, 6 a 10, 11 a 20), con dos sumandos.",
+    "dificultad": 2,
+    "prerequisitos": [
+      "1_basico.matematica.OA1"
+    ],
+    "id_objetivo": "1_basico.matematica.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17481:MA01-OA-09"
+    },
+    "desafios": [
+      {
+        "id": "mat1-oa9-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 2 + 1?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Cuenta hacia adelante desde el número mayor.",
+        "explicacion_error": "2 + 1 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 4 − 4?",
+        "respuesta": 0,
+        "tolerancia": 0,
+        "pista": "Quitar es contar hacia atrás.",
+        "explicacion_error": "4 − 4 = 0.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 1 + 3?",
+        "alternativas": [
+          "3",
+          "5",
+          "2",
+          "4"
+        ],
+        "correcta": 3,
+        "pista": "Junta los dos grupos.",
+        "explicacion_error": "1 + 3 = 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-004",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada operación con su resultado.",
+        "pares": [
+          [
+            "2 + 1",
+            "3"
+          ],
+          [
+            "4 + 1",
+            "5"
+          ],
+          [
+            "2 − 2",
+            "0"
+          ]
+        ],
+        "pista": "Resuelve cada operación antes de unir.",
+        "explicacion_error": "2 + 1 = 3, 4 + 1 = 5 y 2 − 2 = 0.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 6 + 3?",
+        "respuesta": 9,
+        "tolerancia": 0,
+        "pista": "Parte del mayor y suma de a uno.",
+        "explicacion_error": "6 + 3 = 9.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 7 − 3?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "pista": "Cuenta hacia atrás desde el primer número.",
+        "explicacion_error": "7 − 3 = 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-007",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "10 − 5 = ___",
+        "alternativas": [
+          "4",
+          "5",
+          "15",
+          "6"
+        ],
+        "correcta": 1,
+        "pista": "Quita de a uno.",
+        "explicacion_error": "10 − 5 = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "{personaje} {junto} 4 {objetos} y después 4 más. ¿Cuántos tiene ahora?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "pista": "Junta las dos cantidades.",
+        "explicacion_error": "4 + 4 = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 6 + 9?",
+        "respuesta": 15,
+        "tolerancia": 0,
+        "pista": "Completa 10 primero: 6 + 4 = 10.",
+        "explicacion_error": "6 + 9 = 15.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 13 − 8?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "pista": "Puedes restar primero hasta llegar a 10.",
+        "explicacion_error": "13 − 8 = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-011",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "{personaje} {junto} 9 {objetos} y después 10 más. ¿Cuántos {objetos} tiene ahora?",
+        "respuesta": 19,
+        "tolerancia": 0,
+        "pista": "Juntar es sumar.",
+        "explicacion_error": "9 + 10 = 19.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 13 + 3?",
+        "alternativas": [
+          "26",
+          "16",
+          "15",
+          "17"
+        ],
+        "correcta": 1,
+        "pista": "Suma solo las unidades.",
+        "explicacion_error": "13 + 3 = 16.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "{personaje} tenía 16 {objetos} y usó 8 en {la_construccion}. ¿Cuántos le quedan?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "pista": "Usar es quitar: resta.",
+        "explicacion_error": "16 − 8 = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-014",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada suma con su resultado.",
+        "pares": [
+          [
+            "8 + 7",
+            "15"
+          ],
+          [
+            "9 + 5",
+            "14"
+          ],
+          [
+            "6 + 6",
+            "12"
+          ],
+          [
+            "13 + 4",
+            "17"
+          ]
+        ],
+        "pista": "Resuelve cada suma.",
+        "explicacion_error": "8 + 7 = 15, 9 + 5 = 14, 6 + 6 = 12 y 13 + 4 = 17.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿El resultado es menor que 10 o es 10 o más?",
+        "categorias": [
+          "Menor que 10",
+          "10 o más"
+        ],
+        "elementos": [
+          {
+            "texto": "3 + 4",
+            "categoria": 0
+          },
+          {
+            "texto": "15 − 8",
+            "categoria": 0
+          },
+          {
+            "texto": "12 − 5",
+            "categoria": 0
+          },
+          {
+            "texto": "6 + 5",
+            "categoria": 1
+          },
+          {
+            "texto": "9 + 3",
+            "categoria": 1
+          },
+          {
+            "texto": "18 − 7",
+            "categoria": 1
+          }
+        ],
+        "pista": "Calcula primero cada operación.",
+        "explicacion_error": "3 + 4 = 7, 15 − 8 = 7, 12 − 5 = 7; 6 + 5 = 11, 9 + 3 = 12, 18 − 7 = 11.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "En {el_contenedor} hay 5 {objetos}. {personaje} agrega 7. ¿Cuántos hay ahora?",
+        "respuesta": 12,
+        "tolerancia": 0,
+        "pista": "Agregar es sumar.",
+        "explicacion_error": "5 + 7 = 12.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-017",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "7 + ___ = 13",
+        "alternativas": [
+          "20",
+          "7",
+          "6",
+          "13"
+        ],
+        "correcta": 2,
+        "pista": "¿Cuánto le falta a 7 para llegar a 13?",
+        "explicacion_error": "7 + 6 = 13.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-018",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Si 9 + 6 = 15, entonces 15 − 6 = ?",
+        "alternativas": [
+          "9",
+          "15",
+          "6",
+          "21"
+        ],
+        "correcta": 0,
+        "pista": "La resta deshace la suma.",
+        "explicacion_error": "Si 9 + 6 = 15, entonces 15 − 6 = 9.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-019",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "¿Qué número menos 4 da 12?",
+        "respuesta": 16,
+        "tolerancia": 0,
+        "pista": "Piensa al revés: suma.",
+        "explicacion_error": "16 − 4 = 12.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1-oa9-020",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} tiene 16 {objetos} y Lía tiene 2 menos. ¿Cuántos tiene Lía?",
+        "respuesta": 14,
+        "tolerancia": 0,
+        "pista": "Tener menos significa restar.",
+        "explicacion_error": "16 − 2 = 14.",
+        "monedas": 10
+      }
+    ]
+  }
+]

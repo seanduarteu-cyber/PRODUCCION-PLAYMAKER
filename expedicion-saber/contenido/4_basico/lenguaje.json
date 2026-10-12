@@ -1,0 +1,895 @@
+[
+  {
+    "nivel": "4_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 4: Profundizar la comprensión de las narraciones leídas: ambiente, causas y consecuencias, personajes y postura fundamentada con ejemplos del texto.",
+    "dificultad": 4,
+    "prerequisitos": [
+      "3_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "4_basico.lenguaje.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/17225:LE04-OA-04"
+    },
+    "desafios": [
+      {
+        "id": "len4-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "El volcán despertó una mañana de invierno. Las cenizas cubrieron los techos del pueblo y los animales huyeron hacia el valle. Los bomberos ayudaron a las familias a salir a tiempo.",
+        "enunciado": "¿Qué pasó cuando despertó el volcán?",
+        "alternativas": [
+          "empezó a nevar",
+          "las cenizas cubrieron los techos",
+          "se secó el río",
+          "llegó el verano"
+        ],
+        "correcta": 1,
+        "pista": "Lee la segunda oración.",
+        "explicacion_error": "Las cenizas cubrieron los techos del pueblo.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "El volcán despertó una mañana de invierno. Las cenizas cubrieron los techos del pueblo y los animales huyeron hacia el valle. Los bomberos ayudaron a las familias a salir a tiempo.",
+        "enunciado": "¿Quiénes ayudaron a las familias?",
+        "alternativas": [
+          "los turistas",
+          "nadie",
+          "los bomberos",
+          "los animales"
+        ],
+        "correcta": 2,
+        "pista": "Lee la última oración.",
+        "explicacion_error": "Los bomberos ayudaron a las familias.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "El volcán despertó una mañana de invierno. Las cenizas cubrieron los techos del pueblo y los animales huyeron hacia el valle. Los bomberos ayudaron a las familias a salir a tiempo.",
+        "enunciado": "¿En qué estación ocurrió?",
+        "alternativas": [
+          "en verano",
+          "en otoño",
+          "en primavera",
+          "en invierno"
+        ],
+        "correcta": 3,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "Fue una mañana de invierno.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Como no había llovido en meses, el estero se secó. Los agricultores no pudieron regar y la cosecha fue pequeña. Por eso, el pueblo decidió construir un estanque para guardar agua.",
+        "enunciado": "¿Por qué se secó el estero?",
+        "alternativas": [
+          "porque hubo una inundación",
+          "porque construyeron un estanque",
+          "porque lo taparon",
+          "porque no había llovido en meses"
+        ],
+        "correcta": 3,
+        "pista": "Busca la palabra «como».",
+        "explicacion_error": "«Como no había llovido en meses, el estero se secó».",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Como no había llovido en meses, el estero se secó. Los agricultores no pudieron regar y la cosecha fue pequeña. Por eso, el pueblo decidió construir un estanque para guardar agua.",
+        "enunciado": "¿Cuál fue una consecuencia de la sequía?",
+        "alternativas": [
+          "la cosecha fue pequeña",
+          "el estero creció",
+          "los agricultores se mudaron",
+          "llovió mucho"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué pasó porque no pudieron regar?",
+        "explicacion_error": "Sin riego, la cosecha fue pequeña.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "texto": "Como no había llovido en meses, el estero se secó. Los agricultores no pudieron regar y la cosecha fue pequeña. Por eso, el pueblo decidió construir un estanque para guardar agua.",
+        "enunciado": "Une cada causa con su consecuencia.",
+        "pares": [
+          [
+            "No llovió en meses",
+            "El estero se secó"
+          ],
+          [
+            "No pudieron regar",
+            "La cosecha fue pequeña"
+          ],
+          [
+            "Faltaba agua",
+            "Construyeron un estanque"
+          ]
+        ],
+        "pista": "La causa es por qué pasa algo; la consecuencia, lo que pasa después.",
+        "explicacion_error": "Cada causa lleva a la consecuencia que sigue en el texto.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Ignacio siempre llegaba primero a clases y ayudaba a ordenar la sala. Una mañana vio que su compañera Paula lloraba porque había olvidado su colación. Sin decir nada, partió su sándwich en dos y le dio la mitad.",
+        "enunciado": "¿Qué palabra describe mejor a Ignacio?",
+        "alternativas": [
+          "generoso",
+          "desordenado",
+          "impuntual",
+          "egoísta"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué hizo con su sándwich?",
+        "explicacion_error": "Compartió su sándwich: es generoso.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Ignacio siempre llegaba primero a clases y ayudaba a ordenar la sala. Una mañana vio que su compañera Paula lloraba porque había olvidado su colación. Sin decir nada, partió su sándwich en dos y le dio la mitad.",
+        "enunciado": "¿Por qué lloraba Paula?",
+        "alternativas": [
+          "porque olvidó su colación",
+          "porque llegó tarde",
+          "porque Ignacio la molestó",
+          "porque perdió su mochila"
+        ],
+        "correcta": 0,
+        "pista": "Busca «porque».",
+        "explicacion_error": "Lloraba porque había olvidado su colación.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Ignacio siempre llegaba primero a clases y ayudaba a ordenar la sala. Una mañana vio que su compañera Paula lloraba porque había olvidado su colación. Sin decir nada, partió su sándwich en dos y le dio la mitad.",
+        "enunciado": "¿Qué parte del texto muestra que Ignacio es responsable?",
+        "alternativas": [
+          "había olvidado su colación",
+          "Paula lloraba",
+          "partió su sándwich en dos",
+          "llegaba primero y ayudaba a ordenar la sala"
+        ],
+        "correcta": 3,
+        "pista": "Busca algo que muestre responsabilidad, no generosidad.",
+        "explicacion_error": "Llegar primero y ordenar la sala muestran responsabilidad.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "El desierto de Atacama amaneció cubierto de flores moradas. El cielo, limpio y azul, contrastaba con la tierra seca y rojiza. Era el desierto florido, que aparece solo en algunos años lluviosos.",
+        "enunciado": "¿Qué adjetivos describen el cielo?",
+        "alternativas": [
+          "oscuro y nublado",
+          "limpio y azul",
+          "seco y rojizo",
+          "morado y florido"
+        ],
+        "correcta": 1,
+        "pista": "Busca la palabra «cielo».",
+        "explicacion_error": "«El cielo, limpio y azul».",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "El desierto de Atacama amaneció cubierto de flores moradas. El cielo, limpio y azul, contrastaba con la tierra seca y rojiza. Era el desierto florido, que aparece solo en algunos años lluviosos.",
+        "enunciado": "¿Cuándo aparece el desierto florido?",
+        "alternativas": [
+          "cada invierno",
+          "nunca",
+          "todos los veranos",
+          "en algunos años lluviosos"
+        ],
+        "correcta": 3,
+        "pista": "Lee la última oración.",
+        "explicacion_error": "Aparece solo en algunos años lluviosos.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "texto": "El desierto de Atacama amaneció cubierto de flores moradas. El cielo, limpio y azul, contrastaba con la tierra seca y rojiza. Era el desierto florido, que aparece solo en algunos años lluviosos.",
+        "enunciado": "¿Qué describe cada adjetivo?",
+        "categorias": [
+          "El cielo",
+          "La tierra"
+        ],
+        "elementos": [
+          {
+            "texto": "limpio",
+            "categoria": 0
+          },
+          {
+            "texto": "azul",
+            "categoria": 0
+          },
+          {
+            "texto": "seca",
+            "categoria": 1
+          },
+          {
+            "texto": "rojiza",
+            "categoria": 1
+          }
+        ],
+        "pista": "Relee la segunda oración.",
+        "explicacion_error": "Limpio y azul describen el cielo; seca y rojiza, la tierra.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "En la escuela de Paula votaron si el recreo debía ser más largo. Paula votó que sí: dijo que con más tiempo podrían jugar, conversar y descansar antes de la siguiente clase. Joaquín votó que no, porque así saldrían más tarde a sus casas.",
+        "enunciado": "¿Qué argumento dio Paula?",
+        "alternativas": [
+          "con más tiempo podrían jugar, conversar y descansar",
+          "no le gusta el recreo",
+          "saldrían más tarde a sus casas",
+          "el recreo es aburrido"
+        ],
+        "correcta": 0,
+        "pista": "Busca lo que dijo Paula.",
+        "explicacion_error": "Paula dijo que podrían jugar, conversar y descansar.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "En la escuela de Paula votaron si el recreo debía ser más largo. Paula votó que sí: dijo que con más tiempo podrían jugar, conversar y descansar antes de la siguiente clase. Joaquín votó que no, porque así saldrían más tarde a sus casas.",
+        "enunciado": "¿Por qué Joaquín votó que no?",
+        "alternativas": [
+          "porque quiere más clases",
+          "porque llovía",
+          "porque saldrían más tarde",
+          "porque no tiene amigos"
+        ],
+        "correcta": 2,
+        "pista": "Busca «porque».",
+        "explicacion_error": "Votó que no porque saldrían más tarde.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa4-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "En la escuela de Paula votaron si el recreo debía ser más largo. Paula votó que sí: dijo que con más tiempo podrían jugar, conversar y descansar antes de la siguiente clase. Joaquín votó que no, porque así saldrían más tarde a sus casas.",
+        "enunciado": "¿Cuál es una opinión bien fundamentada?",
+        "alternativas": [
+          "Paula tiene razón porque sí",
+          "Estoy de acuerdo con Paula, porque descansar ayuda a concentrarse en la siguiente clase",
+          "No me importa el recreo",
+          "Joaquín está mal y punto"
+        ],
+        "correcta": 1,
+        "pista": "Una opinión fundamentada da una razón.",
+        "explicacion_error": "Da una postura y una razón que la apoya.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 10: Aplicar estrategias para determinar el significado de palabras nuevas: claves del contexto, raíces y afijos, y orden alfabético para usar el diccionario.",
+    "dificultad": 4,
+    "prerequisitos": [
+      "3_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "4_basico.lenguaje.OA10",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Lectura/Vocabulario/17231:LE04-OA-10"
+    },
+    "desafios": [
+      {
+        "id": "len4-oa10-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "«El perro estaba exhausto después de correr todo el día; se tiró a dormir». ¿Qué significa «exhausto»?",
+        "alternativas": [
+          "muy feliz",
+          "muy cansado",
+          "con hambre",
+          "enojado"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué hizo el perro después?",
+        "explicacion_error": "Se tiró a dormir después de correr: estaba muy cansado.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "«Después de ganar, Tomás estaba radiante: sonreía sin parar». ¿Qué significa «radiante»?",
+        "alternativas": [
+          "muy triste",
+          "muy cansado",
+          "muy enojado",
+          "muy feliz"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué hacía Tomás?",
+        "explicacion_error": "Sonreía sin parar: estaba muy feliz.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "«Abrió la caja con cautela, despacio y mirando bien, por si había algo peligroso». ¿Qué significa «cautela»?",
+        "alternativas": [
+          "ruido",
+          "rapidez",
+          "alegría",
+          "cuidado"
+        ],
+        "correcta": 3,
+        "pista": "Busca las pistas «despacio» y «mirando bien».",
+        "explicacion_error": "Con cautela es con cuidado.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué significa «deshacer»?",
+        "alternativas": [
+          "hacer antes",
+          "lo contrario de hacer",
+          "hacer otra vez",
+          "hacer mucho"
+        ],
+        "correcta": 1,
+        "pista": "El prefijo «des-» indica lo contrario.",
+        "explicacion_error": "des + hacer = lo contrario de hacer.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué significa «releer»?",
+        "alternativas": [
+          "volver a leer",
+          "no leer",
+          "leer antes",
+          "leer poco"
+        ],
+        "correcta": 0,
+        "pista": "El prefijo «re-» indica repetición.",
+        "explicacion_error": "re + leer = volver a leer.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada prefijo con su significado.",
+        "pares": [
+          [
+            "des-",
+            "lo contrario"
+          ],
+          [
+            "re-",
+            "otra vez"
+          ],
+          [
+            "sub-",
+            "debajo de"
+          ]
+        ],
+        "pista": "Piensa en deshacer, rehacer y submarino.",
+        "explicacion_error": "des- = lo contrario; re- = otra vez; sub- = debajo de.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Un «zapatero» es…",
+        "alternativas": [
+          "un zapato viejo",
+          "un lugar con zapatos",
+          "una persona que hace o arregla zapatos",
+          "un zapato grande"
+        ],
+        "correcta": 2,
+        "pista": "El sufijo «-ero» suele indicar oficio.",
+        "explicacion_error": "zapat + ero = quien trabaja con zapatos.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Alguien «miedoso» es alguien que…",
+        "alternativas": [
+          "no tiene miedo",
+          "asusta a otros",
+          "siente miedo con facilidad",
+          "estudia el miedo"
+        ],
+        "correcta": 2,
+        "pista": "El sufijo «-oso» significa «que tiene mucho».",
+        "explicacion_error": "miedoso = que tiene mucho miedo.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada palabra con su significado.",
+        "pares": [
+          [
+            "perrito",
+            "perro pequeño"
+          ],
+          [
+            "panadero",
+            "persona que hace pan"
+          ],
+          [
+            "librería",
+            "lugar donde venden libros"
+          ]
+        ],
+        "pista": "Fíjate en el final de cada palabra.",
+        "explicacion_error": "-ito: pequeño; -ero: oficio; -ería: lugar.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-010",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Es de la familia de «pan»?",
+        "categorias": [
+          "Familia de pan",
+          "No es de la familia"
+        ],
+        "elementos": [
+          {
+            "texto": "panadero",
+            "categoria": 0
+          },
+          {
+            "texto": "panadería",
+            "categoria": 0
+          },
+          {
+            "texto": "empanada",
+            "categoria": 0
+          },
+          {
+            "texto": "pantalón",
+            "categoria": 1
+          },
+          {
+            "texto": "pantalla",
+            "categoria": 1
+          },
+          {
+            "texto": "panda",
+            "categoria": 1
+          }
+        ],
+        "pista": "Deben tener relación con el significado de pan, no solo las mismas letras.",
+        "explicacion_error": "panadero, panadería y empanada vienen de pan; las otras solo se parecen.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Es de la familia de «mar»?",
+        "categorias": [
+          "Familia de mar",
+          "No es de la familia"
+        ],
+        "elementos": [
+          {
+            "texto": "marino",
+            "categoria": 0
+          },
+          {
+            "texto": "marinero",
+            "categoria": 0
+          },
+          {
+            "texto": "marea",
+            "categoria": 0
+          },
+          {
+            "texto": "martes",
+            "categoria": 1
+          },
+          {
+            "texto": "martillo",
+            "categoria": 1
+          },
+          {
+            "texto": "mariposa",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa si tienen que ver con el mar.",
+        "explicacion_error": "marino, marinero y marea vienen de mar.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué palabra es de la familia de «flor»?",
+        "alternativas": [
+          "flota",
+          "forro",
+          "flojo",
+          "florero"
+        ],
+        "correcta": 3,
+        "pista": "Busca la que tiene que ver con flores.",
+        "explicacion_error": "Un florero es donde se ponen flores.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena las palabras alfabéticamente, como en el diccionario.",
+        "elementos": [
+          "abeja",
+          "barco",
+          "casa",
+          "dedo"
+        ],
+        "pista": "Mira la primera letra.",
+        "explicacion_error": "a, b, c, d.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-014",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena alfabéticamente.",
+        "elementos": [
+          "cama",
+          "cara",
+          "casa",
+          "cazo"
+        ],
+        "pista": "Las dos primeras letras son iguales: mira la tercera.",
+        "explicacion_error": "m, r, s, z: cama, cara, casa, cazo.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa10-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En el diccionario, ¿entre qué palabras aparece «río»?",
+        "alternativas": [
+          "risa y rueda",
+          "mapa y mesa",
+          "rincón y rizo",
+          "rana y rata"
+        ],
+        "correcta": 2,
+        "pista": "Compara letra por letra: r-i-o.",
+        "explicacion_error": "rincón (r-i-n) va antes y rizo (r-i-z) va después de río (r-i-o).",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_basico",
+    "asignatura": "lenguaje",
+    "eje": "Escritura",
+    "objetivo_oficial": "OA 21: Escribir correctamente: b-v, h de uso frecuente, ay-hay-ahí y acentuación de palabras agudas, graves, esdrújulas y sobresdrújulas.",
+    "dificultad": 4,
+    "prerequisitos": [
+      "3_basico.lenguaje.OA22"
+    ],
+    "id_objetivo": "4_basico.lenguaje.OA21",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-17242.html"
+    },
+    "desafios": [
+      {
+        "id": "len4-oa21-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "am___ulancia 🚑",
+        "alternativas": [
+          "b",
+          "d",
+          "v",
+          "p"
+        ],
+        "correcta": 0,
+        "pista": "Después de m siempre va b.",
+        "explicacion_error": "Se escribe «ambulancia»: mb.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "en___iar",
+        "alternativas": [
+          "d",
+          "b",
+          "p",
+          "v"
+        ],
+        "correcta": 3,
+        "pista": "Después de n va v.",
+        "explicacion_error": "Se escribe «enviar»: nv.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué palabra está bien escrita?",
+        "alternativas": [
+          "bicicleta",
+          "bicicleda",
+          "bisicleta",
+          "vicicleta"
+        ],
+        "correcta": 0,
+        "pista": "Empieza con «bi», que significa dos.",
+        "explicacion_error": "Se escribe «bicicleta».",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "___uevo 🥚",
+        "alternativas": [
+          "h",
+          "j",
+          "g",
+          "w"
+        ],
+        "correcta": 0,
+        "pista": "Las palabras que empiezan con «ue» llevan h.",
+        "explicacion_error": "Se escribe «huevo».",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué palabra está bien escrita?",
+        "alternativas": [
+          "joy",
+          "oy",
+          "hoy",
+          "hoi"
+        ],
+        "correcta": 2,
+        "pista": "Lleva una h que no suena.",
+        "explicacion_error": "Se escribe «hoy».",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué palabra está bien escrita?",
+        "alternativas": [
+          "ielo",
+          "jielo",
+          "hielo",
+          "yelo"
+        ],
+        "correcta": 2,
+        "pista": "Las palabras que empiezan con «ie» llevan h.",
+        "explicacion_error": "Se escribe «hielo».",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "___ muchos niños en el patio.",
+        "alternativas": [
+          "Ay",
+          "Ai",
+          "Hay",
+          "Ahí"
+        ],
+        "correcta": 2,
+        "pista": "«Hay» viene del verbo haber: indica que existe algo.",
+        "explicacion_error": "«Hay muchos niños».",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "¡___, me pisaste!",
+        "alternativas": [
+          "Ai",
+          "Ay",
+          "Ahí",
+          "Hay"
+        ],
+        "correcta": 1,
+        "pista": "«Ay» expresa dolor o sorpresa.",
+        "explicacion_error": "«¡Ay, me pisaste!».",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Deja la mochila ___, junto a la puerta.",
+        "alternativas": [
+          "ay",
+          "ai",
+          "hay",
+          "ahí"
+        ],
+        "correcta": 3,
+        "pista": "«Ahí» indica un lugar.",
+        "explicacion_error": "«Deja la mochila ahí».",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-010",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "Clasifica según la sílaba tónica.",
+        "categorias": [
+          "Aguda",
+          "Grave",
+          "Esdrújula"
+        ],
+        "elementos": [
+          {
+            "texto": "canción",
+            "categoria": 0
+          },
+          {
+            "texto": "reloj",
+            "categoria": 0
+          },
+          {
+            "texto": "árbol",
+            "categoria": 1
+          },
+          {
+            "texto": "mesa",
+            "categoria": 1
+          },
+          {
+            "texto": "pájaro",
+            "categoria": 2
+          },
+          {
+            "texto": "música",
+            "categoria": 2
+          }
+        ],
+        "pista": "Aguda: última sílaba; grave: penúltima; esdrújula: antepenúltima.",
+        "explicacion_error": "can-CIÓN y re-LOJ son agudas; ÁR-bol y ME-sa, graves; PÁ-ja-ro y MÚ-si-ca, esdrújulas.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "«Lápiz» es una palabra…",
+        "alternativas": [
+          "esdrújula",
+          "aguda",
+          "grave",
+          "sobresdrújula"
+        ],
+        "correcta": 2,
+        "pista": "Separa: lá-piz. ¿Dónde está la fuerza?",
+        "explicacion_error": "LÁ-piz: la fuerza está en la penúltima sílaba.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué «camión» lleva tilde?",
+        "alternativas": [
+          "porque es aguda y termina en n",
+          "porque es esdrújula",
+          "porque todas las palabras llevan tilde",
+          "porque es grave y termina en n"
+        ],
+        "correcta": 0,
+        "pista": "Las agudas llevan tilde si terminan en n, s o vocal.",
+        "explicacion_error": "ca-MIÓN es aguda y termina en n.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué palabra está bien escrita?",
+        "alternativas": [
+          "música",
+          "musica",
+          "musicá",
+          "músíca"
+        ],
+        "correcta": 0,
+        "pista": "Las esdrújulas siempre llevan tilde.",
+        "explicacion_error": "MÚ-si-ca es esdrújula: lleva tilde en la ú.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "«Dígamelo» es una palabra…",
+        "alternativas": [
+          "esdrújula",
+          "grave",
+          "sobresdrújula",
+          "aguda"
+        ],
+        "correcta": 2,
+        "pista": "Separa: dí-ga-me-lo.",
+        "explicacion_error": "La fuerza está antes de la antepenúltima: es sobresdrújula.",
+        "monedas": 10
+      },
+      {
+        "id": "len4-oa21-015",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "El ___ cantó al amanecer.",
+        "alternativas": [
+          "pájaro",
+          "pajaro",
+          "pájaró",
+          "pajáro"
+        ],
+        "correcta": 0,
+        "pista": "PÁ-ja-ro es esdrújula.",
+        "explicacion_error": "Las esdrújulas llevan tilde: pájaro.",
+        "monedas": 10
+      }
+    ]
+  }
+]

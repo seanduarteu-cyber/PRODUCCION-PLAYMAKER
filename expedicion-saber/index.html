@@ -1,0 +1,183 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Expedición Saber</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Pixelify+Sans:wght@500;700&display=swap">
+<style>
+:root{
+  /* Layout: phone-first column with the avatar dock pinned on top; from 900px the dock becomes a left
+     column so the avatar stays in view next to every challenge. Single daylight voxel look (by choice). */
+  --cielo:#8ecdf2;
+  --cielo-claro:#d3efff;
+  --pasto:#4f9a32;
+  --pasto-luz:#8fd16a;
+  --pasto-osc:#356b20;
+  --tierra:#8a5a33;
+  --tierra-osc:#5c3a1e;
+  --panel:#f4ecd9;
+  --panel-osc:#e3d5b3;
+  --tinta:#2b2118;
+  --tinta-suave:#5b4a3a;
+  --oro:#f2c230;
+  --lumita:#1b9fb2;
+  --ok:#2e7d32;
+  --ok-fondo:#d7f0d0;
+  --error:#b3362b;
+  --error-fondo:#f8d8d2;
+  --blanco:#ffffff;
+  --font-display:"Pixelify Sans","Courier New",monospace;
+  --font-texto:"Atkinson Hyperlegible","Verdana","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:var(--cielo);background-image:linear-gradient(var(--cielo-claro),var(--cielo) 320px);color:var(--tinta);font-family:var(--font-texto);font-size:17px;line-height:1.45}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--lumita);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.1;text-wrap:balance;margin:0}
+
+.app{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:12px 32px;display:grid;gap:14px}
+@media (min-width:900px){.app{grid-template-columns:300px minmax(0,1fr);align-items:start}}
+
+/* bloque: panel con bisel de voxel */
+.bloque{background:var(--panel);border:3px solid var(--tinta);box-shadow:inset -4px -4px 0 var(--panel-osc),inset 4px 4px 0 rgba(255,255,255,.7),4px 4px 0 rgba(43,33,24,.25);padding:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:8px 18px;font-family:var(--font-display);font-weight:700;font-size:1.15rem;letter-spacing:.02em;color:var(--blanco);background:var(--pasto);border:3px solid var(--tinta);box-shadow:inset -4px -4px 0 var(--pasto-osc),inset 4px 4px 0 var(--pasto-luz)}
+.btn:active{transform:translateY(2px)}
+.btn.piedra{background:#8c939c;box-shadow:inset -4px -4px 0 #5f646c,inset 4px 4px 0 #c3c8ce}
+.btn.tierra{background:var(--tierra);box-shadow:inset -4px -4px 0 var(--tierra-osc),inset 4px 4px 0 #b07a45}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn.chico{min-height:40px;font-size:1rem;padding:6px 12px}
+.fila{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.nota{color:var(--tinta-suave);font-size:.92rem}
+.monedas{font-family:var(--font-display);font-weight:700;font-variant-numeric:tabular-nums}
+.moneda{display:inline-block;width:.9em;height:.9em;background:var(--oro);border:2px solid var(--tinta);box-shadow:inset -2px -2px 0 #b8860b;vertical-align:-.1em}
+
+/* dock del avatar */
+.dock{display:flex;gap:12px;align-items:center;position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:5}
+.dock canvas{width:112px;height:98px;border:3px solid var(--tinta);image-rendering:pixelated;background:var(--cielo);flex-shrink:0}
+.dock-info{min-width:0;display:grid;gap:2px}
+.dock-nombre{font-family:var(--font-display);font-size:1.35rem;overflow-wrap:anywhere}
+.dock-meta{font-size:.9rem;color:var(--tinta-suave)}
+.dock .monedas{font-size:1.35rem}
+.dock-acciones{display:none}
+@media (min-width:900px){
+  .dock{flex-direction:column;align-items:stretch;top:calc(env(safe-area-inset-top,0px) + 12px)}
+  .dock canvas{width:100%;height:auto;aspect-ratio:64/56}
+  .dock-acciones{display:flex;flex-direction:column;gap:8px}
+}
+.monedas.sube{animation:sube .5s}
+@keyframes sube{40%{transform:scale(1.35);color:#8a5a00}}
+
+main{min-width:0;display:grid;gap:14px;align-content:start}
+.pantalla{display:grid;gap:14px}
+.titulo{font-size:1.9rem}
+.subtitulo{font-size:1.25rem}
+
+/* perfiles y mundos */
+.perfiles,.mundos,.asignaturas{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.perfil{display:flex;gap:12px;align-items:center;text-align:left;width:100%}
+.perfil canvas{width:72px;height:63px;border:2px solid var(--tinta);image-rendering:pixelated;flex-shrink:0}
+.perfil strong{font-family:var(--font-display);font-size:1.25rem;display:block}
+.campo{display:grid;gap:4px;font-weight:700}
+.campo input,.campo select{font:inherit;padding:10px;border:3px solid var(--tinta);background:var(--blanco);min-height:48px}
+.mundo h3{font-size:1.3rem}
+.mundo.activo{outline:4px solid var(--oro);outline-offset:-2px}
+.etiqueta{display:inline-block;font-size:.8rem;font-weight:700;padding:2px 8px;border:2px solid var(--tinta);background:var(--panel-osc);text-transform:uppercase;letter-spacing:.05em}
+.etiqueta.ok{background:var(--ok-fondo)}
+.etiqueta.lista{background:#cdeefa}
+.etiqueta.bloqueado{background:#e6e1d6;color:var(--tinta-suave)}
+.etiqueta.pendiente{background:#fff2c2}
+
+/* base */
+.asignatura h3{font-size:1.45rem}
+.asignatura .oa{margin:6px 0 10px}
+.pips{display:inline-flex;gap:3px;vertical-align:middle}
+.pips i{width:12px;height:12px;border:2px solid var(--tinta);background:var(--blanco)}
+.pips i.on{background:var(--lumita)}
+
+/* árbol */
+.arbol{display:grid;gap:10px}
+.nodo{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center}
+.nodo p{margin:2px 0 0;font-size:.95rem}
+.nodo .codigo{font-family:var(--font-display);font-size:1.05rem}
+.nivel-grupo{font-family:var(--font-display);font-size:1.3rem;margin-top:6px}
+
+/* desafío */
+.reto-cab{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.progreso{display:flex;gap:4px}
+.progreso i{width:14px;height:14px;border:2px solid var(--tinta);background:var(--blanco)}
+.progreso i.hecho{background:var(--pasto)}
+.progreso i.actual{background:var(--oro)}
+.texto-lectura{background:var(--blanco);border:3px dashed var(--tierra);padding:12px 14px;font-size:1.1rem;line-height:1.6;max-width:65ch}
+.enunciado{display:flex;gap:10px;align-items:flex-start}
+.enunciado p{margin:0;font-size:1.3rem;font-weight:700;line-height:1.35;flex:1;min-width:0;overflow-wrap:anywhere}
+.voz{width:48px;height:48px;flex-shrink:0;border:3px solid var(--tinta);background:var(--lumita);color:var(--blanco);font-size:1.3rem;box-shadow:inset -3px -3px 0 #127282}
+.intento{font-size:.9rem;font-weight:700;color:var(--tinta-suave)}
+.opciones{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.opcion{min-height:56px;padding:10px 14px;text-align:left;font-size:1.15rem;font-weight:700;background:var(--blanco);border:3px solid var(--tinta);box-shadow:inset -3px -3px 0 var(--panel-osc);overflow-wrap:anywhere}
+.opcion:disabled{cursor:default}
+.opcion.mala{background:var(--error-fondo);border-color:var(--error);text-decoration:line-through;opacity:.75}
+.opcion.buena{background:var(--ok-fondo);border-color:var(--ok)}
+.hueco{display:inline-block;min-width:3.5em;border-bottom:4px solid var(--tinta);text-align:center;color:var(--lumita)}
+.fichas{display:flex;flex-wrap:wrap;gap:8px;min-height:56px;padding:8px;border:3px dashed var(--tinta-suave);background:rgba(255,255,255,.5)}
+.ficha{min-height:46px;padding:8px 12px;font-size:1.1rem;font-weight:700;background:var(--blanco);border:3px solid var(--tinta);box-shadow:inset -3px -3px 0 var(--panel-osc);touch-action:none}
+.ficha.sel{background:#fff2c2;border-color:#b8860b}
+.ficha.mala{background:var(--error-fondo);border-color:var(--error)}
+.fila-respuesta{border-style:solid;background:var(--blanco)}
+.parejas{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}
+.parejas .col{display:grid;gap:8px;align-content:start;min-width:0}
+.ficha[data-par]::after{content:attr(data-par);margin-left:8px;display:inline-grid;place-items:center;width:1.5em;height:1.5em;border:2px solid var(--tinta);background:var(--oro);font-family:var(--font-display);font-size:.85rem}
+.bandejas{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.bandeja{min-height:110px;border:3px solid var(--tinta);background:#efe4c8;padding:8px;display:grid;align-content:start;gap:8px}
+.bandeja h4{margin:0;font-family:var(--font-display);font-size:1.05rem}
+.bandeja.blanco{outline:4px solid var(--oro)}
+.bandeja .fichas{border:0;padding:0;background:none;min-height:46px}
+.teclado{display:grid;grid-template-columns:repeat(3,minmax(0,72px));gap:8px}
+.tecla{min-height:52px;font-family:var(--font-display);font-size:1.4rem;background:var(--blanco);border:3px solid var(--tinta);box-shadow:inset -3px -3px 0 var(--panel-osc)}
+.pantalla-num{font-family:var(--font-display);font-size:2rem;min-height:56px;min-width:9ch;padding:6px 12px;border:3px solid var(--tinta);background:var(--blanco);font-variant-numeric:tabular-nums}
+.retro{padding:10px 14px;border:3px solid var(--tinta);font-weight:700}
+.retro.pista{background:#fff2c2}
+.retro.bien{background:var(--ok-fondo);border-color:var(--ok)}
+.retro.mal{background:var(--error-fondo);border-color:var(--error)}
+.retro p{margin:4px 0 0;font-weight:400}
+
+/* aviso flotante */
+.aviso{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%);z-index:20;max-width:calc(100% - 32px);padding:10px 16px;font-family:var(--font-display);font-size:1.15rem;background:var(--oro);border:3px solid var(--tinta);box-shadow:4px 4px 0 rgba(43,33,24,.3)}
+
+/* taller */
+.taller-escena canvas{width:100%;max-width:420px;aspect-ratio:64/56;height:auto;border:3px solid var(--tinta);image-rendering:pixelated;display:block}
+.espacios{display:grid;gap:10px}
+.espacio{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center}
+.espacio h3{font-size:1.15rem}
+.espacio p{margin:0;font-size:.95rem}
+.resumen dl{display:grid;grid-template-columns:auto auto;gap:4px 16px;margin:0;justify-content:start}
+.resumen dt{color:var(--tinta-suave)}
+.resumen dd{margin:0;font-family:var(--font-display);font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){.monedas.sube{animation:none}.btn:active{transform:none}}
+</style>
+
+<div class="app" id="app">
+  <aside class="dock bloque" id="dock" hidden aria-label="Tu avatar">
+    <canvas id="dock-canvas" width="256" height="224" aria-hidden="true"></canvas>
+    <div class="dock-info">
+      <span class="dock-nombre" id="dock-nombre"></span>
+      <span class="dock-meta" id="dock-meta"></span>
+      <span class="monedas" id="dock-monedas"><span class="moneda" aria-hidden="true"></span> 0</span>
+      <span class="dock-meta" id="dock-racha"></span>
+    </div>
+    <div class="dock-acciones">
+      <button class="btn chico" type="button" data-ir="base">Base</button>
+      <button class="btn chico tierra" type="button" data-ir="taller">Taller</button>
+      <button class="btn chico piedra" type="button" data-ir="mundos">Cambiar mundo</button>
+    </div>
+  </aside>
+  <main id="principal" aria-live="polite"></main>
+</div>
+<div class="aviso" id="aviso" role="status" hidden></div>
+
+<script src="js/motor.js"></script>
+<script src="js/avatar_bloques.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/retos.js"></script>
