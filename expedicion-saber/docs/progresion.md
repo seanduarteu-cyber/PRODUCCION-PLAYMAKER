@@ -65,6 +65,13 @@ flowchart LR
   4_basico_lenguaje_OA4["4° Len OA 4"] --> 5_basico_lenguaje_OA4["5° Len OA 4"]
   4_basico_lenguaje_OA10["4° Len OA 10"] --> 5_basico_lenguaje_OA12["5° Len OA 12"]
   3_basico_lenguaje_OA20["3° Len OA 20"] --> 5_basico_lenguaje_OA21["5° Len OA 21"]
+  4_basico_lenguaje_OA21["4° Len OA 21"] --> 5_basico_lenguaje_OA22["5° Len OA 22"]
+  5_basico_lenguaje_OA4["5° Len OA 4"] --> 6_basico_lenguaje_OA4["6° Len OA 4"]
+  5_basico_lenguaje_OA21["5° Len OA 21"] --> 6_basico_lenguaje_OA21["6° Len OA 21"]
+  6_basico_lenguaje_OA4["6° Len OA 4"] --> 7_basico_lenguaje_OA3["7° Len OA 3"]
+  5_basico_lenguaje_OA4["5° Len OA 4"] --> 7_basico_lenguaje_OA4["7° Len OA 4"]
+  7_basico_lenguaje_OA3["7° Len OA 3"] --> 8_basico_lenguaje_OA3["8° Len OA 3"]
+  7_basico_lenguaje_OA4["7° Len OA 4"] --> 8_basico_lenguaje_OA4["8° Len OA 4"]
 ```
 
 #### Ciencias Naturales
@@ -76,8 +83,14 @@ flowchart LR
   1_basico_ciencias_OA1["1° Cie OA 1"] --> 2_basico_ciencias_OA7["2° Cie OA 7"]
   1_basico_ciencias_OA4["1° Cie OA 4"] --> 3_basico_ciencias_OA1["3° Cie OA 1"]
   1_basico_ciencias_OA12["1° Cie OA 12"] --> 3_basico_ciencias_OA11["3° Cie OA 11"]
+  3_basico_ciencias_OA11["3° Cie OA 11"] --> 3_basico_ciencias_OA12["3° Cie OA 12"]
+  2_basico_ciencias_OA1["2° Cie OA 1"] --> 4_basico_ciencias_OA1["4° Cie OA 1"]
+  4_basico_ciencias_OA1["4° Cie OA 1"] --> 4_basico_ciencias_OA3["4° Cie OA 3"]
+  3_basico_ciencias_OA1["3° Cie OA 1"] --> 4_basico_ciencias_OA3["4° Cie OA 3"]
+  2_basico_ciencias_OA7["2° Cie OA 7"] --> 4_basico_ciencias_OA5["4° Cie OA 5"]
   2_basico_ciencias_OA7["2° Cie OA 7"] --> 5_basico_ciencias_OA1["5° Cie OA 1"]
   5_basico_ciencias_OA8["5° Cie OA 8"] --> 5_basico_ciencias_OA10["5° Cie OA 10"]
+  4_basico_ciencias_OA3["4° Cie OA 3"] --> 6_basico_ciencias_OA1["6° Cie OA 1"]
   3_basico_ciencias_OA1["3° Cie OA 1"] --> 6_basico_ciencias_OA1["6° Cie OA 1"]
   5_basico_ciencias_OA8["5° Cie OA 8"] --> 6_basico_ciencias_OA8["6° Cie OA 8"]
   2_basico_ciencias_OA9["2° Cie OA 9"] --> 6_basico_ciencias_OA13["6° Cie OA 13"]
@@ -88,6 +101,7 @@ flowchart LR
   6_basico_ciencias_OA13["6° Cie OA 13"] --> 8_basico_ciencias_OA11["8° Cie OA 11"]
   7_basico_ciencias_OA14["7° Cie OA 14"] --> 8_basico_ciencias_OA12["8° Cie OA 12"]
   3_basico_ciencias_OA9["3° Cie OA 9"]
+  4_basico_ciencias_OA16["4° Cie OA 16"]
   7_basico_ciencias_OA8["7° Cie OA 8"]
 ```
 
@@ -106,6 +120,10 @@ flowchart LR
   4_basico_ingles_OA13["4° Ing OA 13"] --> 5_basico_ingles_OA14["5° Ing OA 14"]
   5_basico_ingles_OA5["5° Ing OA 5"] --> 6_basico_ingles_OA5["6° Ing OA 5"]
   5_basico_ingles_OA14["5° Ing OA 14"] --> 6_basico_ingles_OA15["6° Ing OA 15"]
+  6_basico_ingles_OA5["6° Ing OA 5"] --> 7_basico_ingles_OA9["7° Ing OA 9"]
+  6_basico_ingles_OA15["6° Ing OA 15"] --> 7_basico_ingles_OA16["7° Ing OA 16"]
+  7_basico_ingles_OA9["7° Ing OA 9"] --> 8_basico_ingles_OA9["8° Ing OA 9"]
+  7_basico_ingles_OA16["7° Ing OA 16"] --> 8_basico_ingles_OA16["8° Ing OA 16"]
 ```
 <!-- fin:arbol -->
 

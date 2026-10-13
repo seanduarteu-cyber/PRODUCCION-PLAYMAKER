@@ -228,7 +228,7 @@
         "id": "cie3-oa1-011",
         "tipo": "opcion_multiple",
         "dificultad": 4,
-        "enunciado": "Vicente pone dos plantas iguales al sol, pero riega solo una. ¿Qué quiere averiguar?",
+        "enunciado": "{personaje} pone dos plantas iguales al sol, pero riega solo una. ¿Qué quiere averiguar?",
         "alternativas": [
           "si la planta necesita tierra",
           "si la planta necesita aire",
@@ -573,7 +573,7 @@
         "id": "cie3-oa9-012",
         "tipo": "completar",
         "dificultad": 4,
-        "enunciado": "El ___ es un objeto de vidrio que separa la luz blanca en colores.",
+        "enunciado": "{personaje} usa un ___, un objeto de vidrio que separa la luz blanca en colores.",
         "alternativas": [
           "espejo",
           "termómetro",
@@ -913,7 +913,7 @@
         "id": "cie3-oa11-012",
         "tipo": "respuesta_numerica",
         "dificultad": 4,
-        "enunciado": "Si cuentas los planetas desde el Sol, ¿en qué lugar está Saturno?",
+        "enunciado": "{personaje} cuenta los planetas desde el Sol. ¿En qué lugar está Saturno?",
         "respuesta": 6,
         "tolerancia": 0,
         "pista": "Mercurio es el 1, Venus el 2…",
@@ -940,7 +940,7 @@
         "id": "cie3-oa11-014",
         "tipo": "opcion_multiple",
         "dificultad": 5,
-        "enunciado": "En el desierto de Atacama hay muchos observatorios astronómicos. ¿Por qué es un buen lugar?",
+        "enunciado": "{personaje} visita un observatorio en el desierto de Atacama. ¿Por qué ese lugar es bueno para observar el cielo?",
         "alternativas": [
           "ahí nunca es de día",
           "está más cerca del Sol",
@@ -996,6 +996,320 @@
         ],
         "pista": "La Luna cabe muchas veces dentro de la Tierra.",
         "explicacion_error": "Luna → Tierra → Júpiter → Sol: el Sol es mucho más grande que todos los planetas.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la Tierra y el Universo",
+    "objetivo_oficial": "OA 12: Explicar, por medio de modelos, los movimientos de rotación y traslación y sus efectos en la Tierra.",
+    "dificultad": 3,
+    "prerequisitos": [
+      "3_basico.ciencias.OA11"
+    ],
+    "id_objetivo": "3_basico.ciencias.OA12",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Educacion-General/Ciencias-Naturales-3-basico/CN03-OA-12/182826:Ficha-Pedagogica-para-la-priorizacion-curricular-Ciencias-naturales-3-basico-OA-12"
+    },
+    "desafios": [
+      {
+        "id": "cie3-oa12-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué movimiento de la Tierra produce el día y la noche?",
+        "alternativas": [
+          "la rotación",
+          "el viento",
+          "la traslación",
+          "el movimiento de la Luna"
+        ],
+        "correcta": 0,
+        "pista": "Es el giro de la Tierra sobre sí misma.",
+        "explicacion_error": "La rotación, el giro de la Tierra sobre su eje, produce el día y la noche.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La Tierra da una vuelta completa alrededor del ___ en un año.",
+        "alternativas": [
+          "satélite lunar",
+          "planeta Marte",
+          "Sol",
+          "cinturón de asteroides"
+        ],
+        "correcta": 2,
+        "pista": "Es la estrella del Sistema Solar.",
+        "explicacion_error": "La Tierra se traslada alrededor del Sol y demora un año en dar la vuelta.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-003",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuántas horas demora la Tierra en dar una vuelta sobre sí misma?",
+        "respuesta": 24,
+        "tolerancia": 0,
+        "unidad": "horas",
+        "pista": "Es lo que dura un día completo.",
+        "explicacion_error": "Una rotación completa dura 24 horas: un día.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto demora la Tierra en dar una vuelta completa alrededor del Sol?",
+        "alternativas": [
+          "una semana",
+          "un día",
+          "un mes",
+          "un año"
+        ],
+        "correcta": 3,
+        "pista": "Es el tiempo entre un cumpleaños y el siguiente.",
+        "explicacion_error": "La traslación dura un año, unos 365 días.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada concepto con su significado.",
+        "pares": [
+          [
+            "rotación",
+            "giro de la Tierra sobre sí misma"
+          ],
+          [
+            "traslación",
+            "vuelta de la Tierra alrededor del Sol"
+          ],
+          [
+            "eje terrestre",
+            "línea imaginaria de polo a polo"
+          ]
+        ],
+        "pista": "«Trasladarse» es ir de un lugar a otro.",
+        "explicacion_error": "Rotación: giro sobre sí misma; traslación: vuelta al Sol; eje: línea imaginaria entre los polos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Por dónde sale el Sol cada mañana?",
+        "alternativas": [
+          "por el este",
+          "por el oeste",
+          "por el sur",
+          "por el norte"
+        ],
+        "correcta": 0,
+        "pista": "En Santiago, el Sol aparece por la cordillera.",
+        "explicacion_error": "Por la rotación de la Tierra, el Sol se ve salir por el este y ocultarse por el oeste.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Rotación o traslación?",
+        "categorias": [
+          "Rotación",
+          "Traslación"
+        ],
+        "elementos": [
+          {
+            "texto": "dura 24 horas",
+            "categoria": 0
+          },
+          {
+            "texto": "produce el día y la noche",
+            "categoria": 0
+          },
+          {
+            "texto": "giro sobre el eje",
+            "categoria": 0
+          },
+          {
+            "texto": "dura unos 365 días",
+            "categoria": 1
+          },
+          {
+            "texto": "vuelta alrededor del Sol",
+            "categoria": 1
+          },
+          {
+            "texto": "junto con la inclinación, produce las estaciones",
+            "categoria": 1
+          }
+        ],
+        "pista": "Uno es un giro corto; el otro, un viaje largo.",
+        "explicacion_error": "Rotación: 24 horas, día y noche, giro sobre el eje; traslación: un año, vuelta al Sol y estaciones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Cuando en Chile es mediodía, en China, al otro lado del planeta, es…",
+        "alternativas": [
+          "de noche",
+          "de mañana temprano, siempre",
+          "también mediodía",
+          "imposible saberlo"
+        ],
+        "correcta": 0,
+        "pista": "La mitad de la Tierra que no mira al Sol está a oscuras.",
+        "explicacion_error": "Mientras un lado de la Tierra mira al Sol (día), el lado opuesto está de noche.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena lo que ves durante un día en Chile.",
+        "elementos": [
+          "el Sol sale por el este",
+          "el Sol está alto al mediodía",
+          "el Sol se oculta por el oeste",
+          "es de noche"
+        ],
+        "pista": "Todo empieza en la mañana.",
+        "explicacion_error": "Por la rotación, vemos el Sol salir por el este, subir, ocultarse por el oeste y luego llega la noche.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "{personaje} ilumina una pelota con una linterna en una pieza oscura para hacer un modelo. ¿Qué representa la linterna?",
+        "alternativas": [
+          "la Luna",
+          "una estrella fugaz",
+          "la Tierra",
+          "el Sol"
+        ],
+        "correcta": 3,
+        "pista": "La pelota es la Tierra. ¿Qué la ilumina?",
+        "explicacion_error": "La linterna representa al Sol, que ilumina la Tierra (la pelota).",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Las estaciones se producen por la traslación y la ___ del eje de la Tierra.",
+        "alternativas": [
+          "longitud",
+          "rotación",
+          "inclinación",
+          "forma"
+        ],
+        "correcta": 2,
+        "pista": "El eje de la Tierra no está derecho.",
+        "explicacion_error": "Las estaciones ocurren porque la Tierra gira alrededor del Sol con su eje inclinado.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Un año normal tiene 365 días. Cada 4 años hay un año bisiesto con 1 día más. ¿Cuántos días tiene un año bisiesto?",
+        "respuesta": 366,
+        "tolerancia": 0,
+        "unidad": "días",
+        "pista": "Suma el día extra.",
+        "explicacion_error": "365 + 1 = 366 días.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué en diciembre es verano en Chile e invierno en España?",
+        "alternativas": [
+          "porque Chile está más cerca del Sol que España",
+          "por la inclinación del eje, el hemisferio sur recibe los rayos del Sol más directos",
+          "porque la Tierra deja de girar en diciembre",
+          "porque en España es de noche en diciembre"
+        ],
+        "correcta": 1,
+        "pista": "Chile y España están en hemisferios distintos.",
+        "explicacion_error": "La inclinación del eje hace que en diciembre el hemisferio sur reciba la luz más directa: verano en Chile, invierno en España.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Si la Tierra girara más lento sobre su eje, ¿qué pasaría?",
+        "alternativas": [
+          "no habría estaciones",
+          "los días y las noches durarían más",
+          "el Sol saldría por el oeste",
+          "el año duraría menos"
+        ],
+        "correcta": 1,
+        "pista": "El giro sobre el eje produce el día y la noche.",
+        "explicacion_error": "La rotación produce el día y la noche: si fuera más lenta, cada día y cada noche serían más largos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} cumple 9 años hoy. ¿Cuántas vueltas alrededor del Sol ha dado la Tierra desde su nacimiento?",
+        "respuesta": 9,
+        "tolerancia": 0,
+        "unidad": "vueltas",
+        "pista": "¿Cuánto dura una vuelta al Sol?",
+        "explicacion_error": "Cada traslación dura un año: en 9 años la Tierra dio 9 vueltas al Sol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa12-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "En diciembre, ¿qué estación hay en cada ciudad?",
+        "categorias": [
+          "Verano",
+          "Invierno"
+        ],
+        "elementos": [
+          {
+            "texto": "Santiago",
+            "categoria": 0
+          },
+          {
+            "texto": "Punta Arenas",
+            "categoria": 0
+          },
+          {
+            "texto": "Buenos Aires",
+            "categoria": 0
+          },
+          {
+            "texto": "Madrid",
+            "categoria": 1
+          },
+          {
+            "texto": "Nueva York",
+            "categoria": 1
+          },
+          {
+            "texto": "Tokio",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en qué hemisferio está cada ciudad.",
+        "explicacion_error": "Santiago, Punta Arenas y Buenos Aires están en el hemisferio sur (verano); Madrid, Nueva York y Tokio, en el norte (invierno).",
         "monedas": 10
       }
     ]

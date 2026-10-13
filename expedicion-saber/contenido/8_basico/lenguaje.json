@@ -1,0 +1,667 @@
+[
+  {
+    "nivel": "8_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 3: Analizar narraciones: conflictos, evolución de los personajes, diferencia entre narrador y autor, y prejuicios y estereotipos del relato.",
+    "dificultad": 7,
+    "prerequisitos": [
+      "7_basico.lenguaje.OA3"
+    ],
+    "id_objetivo": "8_basico.lenguaje.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/lengua-literatura/8-basico"
+    },
+    "desafios": [
+      {
+        "id": "len8-oa3-001",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada concepto con su definición.",
+        "pares": [
+          [
+            "autor",
+            "persona real que escribe la obra"
+          ],
+          [
+            "narrador",
+            "voz ficticia que cuenta la historia"
+          ],
+          [
+            "personaje",
+            "ser que participa en los hechos"
+          ]
+        ],
+        "pista": "Solo uno de ellos existe fuera del libro.",
+        "explicacion_error": "El autor es real; el narrador es una voz creada por él; los personajes viven los hechos.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Los ___ son ideas simplificadas sobre un grupo de personas, como «todos los abuelos son lentos».",
+        "alternativas": [
+          "estereotipos",
+          "narradores",
+          "conflictos",
+          "desenlaces"
+        ],
+        "correcta": 0,
+        "pista": "Son generalizaciones que no consideran a cada persona.",
+        "explicacion_error": "Un estereotipo atribuye una misma característica a todo un grupo.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "«Soy una anciana de ochenta años y he visto crecer este puerto desde mi ventana. Vi llegar los primeros contenedores y vi irse a mis hijos en los barcos.» (Inicio del cuento «La ventana», de la escritora Javiera Muñoz, de 28 años).",
+        "enunciado": "¿Quién narra el cuento?",
+        "alternativas": [
+          "Javiera Muñoz",
+          "el capitán de un barco",
+          "una anciana de ochenta años",
+          "uno de sus hijos"
+        ],
+        "correcta": 2,
+        "pista": "¿Quién dice «yo» dentro del relato?",
+        "explicacion_error": "La voz que cuenta es la de una anciana de ochenta años.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "«Soy una anciana de ochenta años y he visto crecer este puerto desde mi ventana. Vi llegar los primeros contenedores y vi irse a mis hijos en los barcos.» (Inicio del cuento «La ventana», de la escritora Javiera Muñoz, de 28 años).",
+        "enunciado": "¿Quién eligió las palabras con que se describe el puerto?",
+        "alternativas": [
+          "la escritora Javiera Muñoz",
+          "la anciana de la ventana",
+          "los marineros del puerto",
+          "los hijos de la anciana"
+        ],
+        "correcta": 0,
+        "pista": "¿Quién escribió el cuento en la realidad?",
+        "explicacion_error": "La autora real, Javiera Muñoz, escribió todo el cuento, incluidas las palabras de la narradora.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-006",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "texto": "Al comienzo del año, Maximiliano se burlaba de los que leían en el recreo. Un día lo castigaron en la biblioteca y, por aburrimiento, abrió una novela de piratas. Hoy dirige el club de lectura del colegio y presta sus libros a quien se los pida.",
+        "enunciado": "Ordena la transformación de Maximiliano.",
+        "elementos": [
+          "Se burla de los lectores.",
+          "Lo castigan en la biblioteca.",
+          "Lee una novela por aburrimiento.",
+          "Dirige el club de lectura."
+        ],
+        "pista": "Sigue el camino desde cómo era hasta cómo es.",
+        "explicacion_error": "Se burlaba, lo castigaron, leyó la novela y terminó dirigiendo el club.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Cuando llegó la nueva profesora de mecánica automotriz, varios apoderados reclamaron: «¿Una mujer enseñando a arreglar motores?». Al terminar el semestre, su curso ganó el concurso regional de autos solares.",
+        "enunciado": "¿Quiénes expresan un prejuicio en el relato?",
+        "alternativas": [
+          "los apoderados",
+          "los estudiantes del curso",
+          "el jurado del concurso",
+          "la profesora"
+        ],
+        "correcta": 0,
+        "pista": "¿Quién reclama sin conocer el trabajo de la profesora?",
+        "explicacion_error": "Los apoderados juzgan a la profesora antes de verla trabajar.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "«Soy una anciana de ochenta años y he visto crecer este puerto desde mi ventana. Vi llegar los primeros contenedores y vi irse a mis hijos en los barcos.» (Inicio del cuento «La ventana», de la escritora Javiera Muñoz, de 28 años).",
+        "enunciado": "¿Por qué la narradora y la autora no son la misma persona?",
+        "alternativas": [
+          "la autora es una persona real que inventó una narradora ficticia",
+          "porque la autora no puede usar la primera persona",
+          "sí son la misma, porque el texto usa «yo»",
+          "porque la narradora escribió el cuento"
+        ],
+        "correcta": 0,
+        "pista": "Compara la edad de la autora con la de la narradora.",
+        "explicacion_error": "La autora, de 28 años, creó una voz ficticia de 80 años: narrador y autor son distintos.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Al comienzo del año, Maximiliano se burlaba de los que leían en el recreo. Un día lo castigaron en la biblioteca y, por aburrimiento, abrió una novela de piratas. Hoy dirige el club de lectura del colegio y presta sus libros a quien se los pida.",
+        "enunciado": "¿Qué hecho provoca el cambio del personaje?",
+        "alternativas": [
+          "burlarse de sus compañeros",
+          "dirigir el club de lectura",
+          "prestar sus libros",
+          "leer una novela durante su castigo"
+        ],
+        "correcta": 3,
+        "pista": "Busca lo que ocurre entre el inicio y el final.",
+        "explicacion_error": "Leer la novela de piratas en la biblioteca es lo que lo transforma.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Cuando llegó la nueva profesora de mecánica automotriz, varios apoderados reclamaron: «¿Una mujer enseñando a arreglar motores?». Al terminar el semestre, su curso ganó el concurso regional de autos solares.",
+        "enunciado": "¿Qué estereotipo muestran los apoderados?",
+        "alternativas": [
+          "que los concursos son injustos",
+          "que la mecánica es un oficio solo para hombres",
+          "que los autos solares son caros",
+          "que los profesores nuevos son mejores"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en la pregunta que hacen los apoderados.",
+        "explicacion_error": "Dudan porque es mujer: creen que la mecánica es cosa de hombres.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Ana siempre había callado en clases por miedo a equivocarse. El día del debate, su equipo quedó sin vocero. Con la voz temblorosa, se levantó y defendió el reciclaje en su comuna. Perdieron por un punto, pero al salir, Ana sintió que había ganado algo más importante.",
+        "enunciado": "¿Qué conflicto vive Ana al inicio?",
+        "alternativas": [
+          "interno: su miedo a equivocarse",
+          "con su equipo",
+          "con el profesor",
+          "con la naturaleza"
+        ],
+        "correcta": 0,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "Ana lucha contra su propio miedo: es un conflicto interno.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-008",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "texto": "Al comienzo del año, Maximiliano se burlaba de los que leían en el recreo. Un día lo castigaron en la biblioteca y, por aburrimiento, abrió una novela de piratas. Hoy dirige el club de lectura del colegio y presta sus libros a quien se los pida.",
+        "enunciado": "¿Cómo era Maximiliano al inicio y cómo es al final?",
+        "categorias": [
+          "Al inicio",
+          "Al final"
+        ],
+        "elementos": [
+          {
+            "texto": "burlón",
+            "categoria": 0
+          },
+          {
+            "texto": "indiferente a los libros",
+            "categoria": 0
+          },
+          {
+            "texto": "lector entusiasta",
+            "categoria": 1
+          },
+          {
+            "texto": "generoso con sus libros",
+            "categoria": 1
+          },
+          {
+            "texto": "líder del club de lectura",
+            "categoria": 1
+          }
+        ],
+        "pista": "Compara el comienzo del año con el «hoy».",
+        "explicacion_error": "Al inicio era burlón e indiferente; al final lee, presta libros y lidera el club.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Cuando llegó la nueva profesora de mecánica automotriz, varios apoderados reclamaron: «¿Una mujer enseñando a arreglar motores?». Al terminar el semestre, su curso ganó el concurso regional de autos solares.",
+        "enunciado": "¿Cómo desmiente el relato ese estereotipo?",
+        "alternativas": [
+          "la profesora deja el colegio",
+          "el narrador da la razón a los apoderados",
+          "muestra que el curso de la profesora gana el concurso regional",
+          "los apoderados la despiden"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué ocurre al final del semestre?",
+        "explicacion_error": "El éxito del curso demuestra que el estereotipo era falso.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "En el pueblo decían que los Rivas, recién llegados del norte, eran desconfiados, aunque nadie había hablado con ellos. Una noche de temporal se cayó el puente, y fue el señor Rivas quien, con sus hijos, cruzó el río para rescatar a los vecinos aislados. Al día siguiente, nadie repitió aquel comentario.",
+        "enunciado": "¿Por qué la opinión del pueblo sobre los Rivas es un prejuicio?",
+        "alternativas": [
+          "porque el puente se cayó",
+          "porque los Rivas eran realmente desconfiados",
+          "porque juzgaban a la familia sin conocerla",
+          "porque venían del norte"
+        ],
+        "correcta": 2,
+        "pista": "Fíjate en la frase «aunque nadie había hablado con ellos».",
+        "explicacion_error": "Un prejuicio es juzgar antes de conocer: nadie había hablado con los Rivas.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "En el pueblo decían que los Rivas, recién llegados del norte, eran desconfiados, aunque nadie había hablado con ellos. Una noche de temporal se cayó el puente, y fue el señor Rivas quien, con sus hijos, cruzó el río para rescatar a los vecinos aislados. Al día siguiente, nadie repitió aquel comentario.",
+        "enunciado": "¿Qué conflicto plantea el inicio del relato?",
+        "alternativas": [
+          "una persona enfrenta a un animal salvaje",
+          "dos hermanos se pelean una herencia",
+          "un personaje lucha contra sus propios miedos",
+          "una familia enfrenta los prejuicios de la comunidad"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué problema tienen los Rivas antes del temporal?",
+        "explicacion_error": "Los Rivas son mal juzgados por el pueblo: un conflicto con la sociedad.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "En el pueblo decían que los Rivas, recién llegados del norte, eran desconfiados, aunque nadie había hablado con ellos. Una noche de temporal se cayó el puente, y fue el señor Rivas quien, con sus hijos, cruzó el río para rescatar a los vecinos aislados. Al día siguiente, nadie repitió aquel comentario.",
+        "enunciado": "¿Qué transformación vive el pueblo?",
+        "alternativas": [
+          "expulsa a la familia Rivas",
+          "abandona su prejuicio al ver la valentía de los Rivas",
+          "sigue desconfiando de los Rivas",
+          "decide construir un puente nuevo"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué significa que «nadie repitió aquel comentario»?",
+        "explicacion_error": "Tras el rescate, el pueblo dejó de decir que los Rivas eran desconfiados: cambió su opinión.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Ana siempre había callado en clases por miedo a equivocarse. El día del debate, su equipo quedó sin vocero. Con la voz temblorosa, se levantó y defendió el reciclaje en su comuna. Perdieron por un punto, pero al salir, Ana sintió que había ganado algo más importante.",
+        "enunciado": "¿Cómo evoluciona Ana en el relato?",
+        "alternativas": [
+          "no cambia en nada",
+          "pasa de ganar debates a perderlos",
+          "pasa de hablar mucho a quedarse callada",
+          "pasa de callar por miedo a atreverse a hablar en público"
+        ],
+        "correcta": 3,
+        "pista": "Compara cómo era en clases con lo que hizo en el debate.",
+        "explicacion_error": "Al inicio callaba por miedo; en el debate se atrevió a hablar: se transformó.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa3-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Ana siempre había callado en clases por miedo a equivocarse. El día del debate, su equipo quedó sin vocero. Con la voz temblorosa, se levantó y defendió el reciclaje en su comuna. Perdieron por un punto, pero al salir, Ana sintió que había ganado algo más importante.",
+        "enunciado": "¿Qué «ganó» Ana, aunque su equipo perdió?",
+        "alternativas": [
+          "el premio del debate",
+          "confianza para expresarse en público",
+          "la amistad del equipo rival",
+          "un punto extra en la nota"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en el miedo que tenía al comienzo.",
+        "explicacion_error": "Superó su miedo a hablar: ganó confianza en sí misma, algo más importante que el resultado.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "8_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 4: Analizar poemas: lenguaje figurado, efecto de las repeticiones de estructuras, sonidos, palabras o ideas, y relación con otros textos.",
+    "dificultad": 7,
+    "prerequisitos": [
+      "7_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "8_basico.lenguaje.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-70416.html"
+    },
+    "desafios": [
+      {
+        "id": "len8-oa4-001",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada recurso con su ejemplo.",
+        "pares": [
+          [
+            "metáfora",
+            "Tus manos son palomas."
+          ],
+          [
+            "comparación",
+            "Blanca como la espuma."
+          ],
+          [
+            "personificación",
+            "La luna llora en silencio."
+          ],
+          [
+            "hipérbole",
+            "Te llamé un millón de veces."
+          ]
+        ],
+        "pista": "Comparación usa «como»; metáfora identifica; personificación humaniza; hipérbole exagera.",
+        "explicacion_error": "Manos = palomas es metáfora; «como la espuma», comparación; la luna que llora, personificación; un millón de veces, hipérbole.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Vuelvo al sur por sus lluvias, / vuelvo al sur por su pan, / vuelvo al sur por mi madre / que me espera en el umbral.",
+        "enunciado": "¿Qué recurso consiste en repetir palabras al comienzo de varios versos, como aquí?",
+        "alternativas": [
+          "personificación",
+          "comparación",
+          "hipérbole",
+          "anáfora"
+        ],
+        "correcta": 3,
+        "pista": "Fíjate en cómo empiezan los tres primeros versos.",
+        "explicacion_error": "Repetir «vuelvo al sur» al inicio de los versos es una anáfora.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-015",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "Tic, tac, tic, tac, la tarde se va, / tiembla la taza, la tetera también; / tras la ventana trota el tren / y tú, tan lejos, no vuelves ya.",
+        "enunciado": "En el primer verso, «___» imita el sonido de un reloj.",
+        "alternativas": [
+          "tic, tac",
+          "la taza",
+          "se va",
+          "la tarde"
+        ],
+        "correcta": 0,
+        "pista": "Busca palabras que suenan como lo que nombran.",
+        "explicacion_error": "«Tic, tac» es una onomatopeya: imita el sonido del reloj.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "texto": "Vuelvo al sur por sus lluvias, / vuelvo al sur por su pan, / vuelvo al sur por mi madre / que me espera en el umbral.",
+        "enunciado": "La expresión que se repite al comienzo de los versos es «___».",
+        "alternativas": [
+          "por sus lluvias",
+          "vuelvo al sur",
+          "en el umbral",
+          "mi madre"
+        ],
+        "correcta": 1,
+        "pista": "Lee solo el inicio de cada verso.",
+        "explicacion_error": "Los tres primeros versos comienzan con «vuelvo al sur».",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "El mar te dio su azul, / el bosque te dio su sombra, / el viento te dio su voz, / y yo te di mi nombre.",
+        "enunciado": "¿Qué recurso hay en los tres primeros versos, que repiten la misma estructura?",
+        "alternativas": [
+          "aliteración",
+          "paralelismo",
+          "rima consonante",
+          "hipérbole"
+        ],
+        "correcta": 1,
+        "pista": "Compara cómo están construidos los versos: «el ___ te dio su ___».",
+        "explicacion_error": "Repetir la misma construcción en varios versos es un paralelismo.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "texto": "Llueve, llueve sobre Valdivia, / llueve en el río y en el portón, / llueve en los ojos de mi abuela / y llueve adentro, en el corazón.",
+        "enunciado": "¿Cuántas veces se repite la palabra «llueve» en el poema?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "unidad": "veces",
+        "pista": "Cuenta con cuidado: el primer verso tiene más de una.",
+        "explicacion_error": "Aparece 5 veces: dos en el primer verso y una en cada uno de los otros tres.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-002",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Lenguaje literal o figurado?",
+        "categorias": [
+          "Literal",
+          "Figurado"
+        ],
+        "elementos": [
+          {
+            "texto": "Llueve sobre Valdivia.",
+            "categoria": 0
+          },
+          {
+            "texto": "La tetera está en la mesa.",
+            "categoria": 0
+          },
+          {
+            "texto": "El tren pasa por el pueblo.",
+            "categoria": 0
+          },
+          {
+            "texto": "Llueve adentro, en el corazón.",
+            "categoria": 1
+          },
+          {
+            "texto": "Tus ojos son dos lagunas.",
+            "categoria": 1
+          },
+          {
+            "texto": "El viento te dio su voz.",
+            "categoria": 1
+          }
+        ],
+        "pista": "El lenguaje figurado no se entiende al pie de la letra.",
+        "explicacion_error": "Las tres primeras dicen exactamente lo que pasa; las otras expresan sentimientos o imágenes con sentido figurado.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Vuelvo al sur por sus lluvias, / vuelvo al sur por su pan, / vuelvo al sur por mi madre / que me espera en el umbral.",
+        "enunciado": "¿Qué efecto produce la anáfora en este poema?",
+        "alternativas": [
+          "describe el clima del norte",
+          "enfatiza el deseo intenso del hablante de regresar",
+          "indica que el hablante nunca se fue",
+          "hace que el poema sea más corto"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué idea queda más fuerte al repetirse tres veces?",
+        "explicacion_error": "Repetir «vuelvo al sur» insiste en las ganas de volver y en todo lo que lo atrae.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Caperucita ya no teme al bosque: / ahora el lobo vive en la ciudad, / tiene auto, corbata y oficina, / y sonríe en la televisión.",
+        "enunciado": "¿Con qué texto conocido se relaciona este poema?",
+        "alternativas": [
+          "el cuento de Caperucita Roja",
+          "la leyenda del Caleuche",
+          "la fábula de la cigarra y la hormiga",
+          "el cuento de los tres cerditos"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué personaje se nombra en el primer verso?",
+        "explicacion_error": "Menciona a Caperucita, al lobo y al bosque: dialoga con el cuento de Caperucita Roja.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Llueve, llueve sobre Valdivia, / llueve en el río y en el portón, / llueve en los ojos de mi abuela / y llueve adentro, en el corazón.",
+        "enunciado": "¿Qué efecto produce repetir «llueve»?",
+        "alternativas": [
+          "muestra que la lluvia le da risa al hablante",
+          "transmite la sensación de una lluvia constante que lo invade todo",
+          "hace que el poema tenga menos versos",
+          "indica que la lluvia ya terminó"
+        ],
+        "correcta": 1,
+        "pista": "¿Cómo es una lluvia que se nombra una y otra vez?",
+        "explicacion_error": "La repetición imita una lluvia que no para y que llega a todas partes, incluso adentro.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "El mar te dio su azul, / el bosque te dio su sombra, / el viento te dio su voz, / y yo te di mi nombre.",
+        "enunciado": "¿Qué efecto tiene que el último verso rompa la estructura con «y yo te di mi nombre»?",
+        "alternativas": [
+          "explica de qué color es el mar",
+          "muestra que el hablante olvidó el patrón",
+          "indica que el poema no tiene ritmo",
+          "destaca el regalo del hablante como el más personal"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué cambia en el último verso y quién aparece?",
+        "explicacion_error": "Al cambiar la estructura, el último verso llama la atención: el hablante entrega algo propio, su nombre.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Caperucita ya no teme al bosque: / ahora el lobo vive en la ciudad, / tiene auto, corbata y oficina, / y sonríe en la televisión.",
+        "enunciado": "¿Qué elementos del cuento tradicional conserva el poema?",
+        "alternativas": [
+          "los personajes de Caperucita y el lobo",
+          "la casita de la abuela",
+          "el cazador y la abuela",
+          "la canasta con pasteles"
+        ],
+        "correcta": 0,
+        "pista": "Fíjate en qué personajes del cuento aparecen.",
+        "explicacion_error": "El poema toma a Caperucita y al lobo del cuento, pero los sitúa en el mundo actual.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Llueve, llueve sobre Valdivia, / llueve en el río y en el portón, / llueve en los ojos de mi abuela / y llueve adentro, en el corazón.",
+        "enunciado": "¿Qué sugieren «llueve en los ojos de mi abuela» y «llueve adentro, en el corazón»?",
+        "alternativas": [
+          "que hay tristeza y llanto",
+          "que hay goteras en la casa",
+          "que la abuela quedó mojada",
+          "que al hablante le gusta la lluvia"
+        ],
+        "correcta": 0,
+        "pista": "No los leas al pie de la letra: ¿qué «lluvia» sale de los ojos?",
+        "explicacion_error": "Son metáforas: la lluvia en los ojos es llanto y la lluvia en el corazón, tristeza.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Tic, tac, tic, tac, la tarde se va, / tiembla la taza, la tetera también; / tras la ventana trota el tren / y tú, tan lejos, no vuelves ya.",
+        "enunciado": "¿Qué sonido se repite en todo el poema y qué imita?",
+        "alternativas": [
+          "la «r», que imita un motor",
+          "la «s», que imita el viento",
+          "la «m», que imita el mar",
+          "la «t», que imita el tictac del reloj"
+        ],
+        "correcta": 3,
+        "pista": "Lee en voz alta: tarde, tiembla, taza, tetera, tras, trota, tren…",
+        "explicacion_error": "La «t» repetida (aliteración) imita el golpeteo del reloj.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "El mar te dio su azul, / el bosque te dio su sombra, / el viento te dio su voz, / y yo te di mi nombre.",
+        "enunciado": "¿Qué idea une todo el poema?",
+        "alternativas": [
+          "la persona amada recibe lo mejor de la naturaleza y del hablante",
+          "el mar y el viento compiten entre sí",
+          "el hablante critica a la naturaleza",
+          "el poema describe un paisaje vacío"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué tienen en común todos los versos?",
+        "explicacion_error": "En cada verso alguien le da algo valioso a «ti»: el poema celebra a la persona amada.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Caperucita ya no teme al bosque: / ahora el lobo vive en la ciudad, / tiene auto, corbata y oficina, / y sonríe en la televisión.",
+        "enunciado": "¿Qué sentido nuevo le da el poema al lobo?",
+        "alternativas": [
+          "es un personaje bueno que ayuda a todos",
+          "es el abuelo de Caperucita",
+          "es un animal real que escapó del zoológico",
+          "representa peligros disfrazados de la vida moderna"
+        ],
+        "correcta": 3,
+        "pista": "En el cuento el lobo engaña disfrazado. ¿Cómo se «disfraza» ahora?",
+        "explicacion_error": "El lobo con corbata que sonríe en televisión simboliza amenazas que hoy se ven confiables.",
+        "monedas": 10
+      },
+      {
+        "id": "len8-oa4-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Tic, tac, tic, tac, la tarde se va, / tiembla la taza, la tetera también; / tras la ventana trota el tren / y tú, tan lejos, no vuelves ya.",
+        "enunciado": "¿Qué relación hay entre el tictac y el último verso?",
+        "alternativas": [
+          "el reloj está roto y por eso nadie vuelve",
+          "no hay ninguna relación entre ambos",
+          "el tren hace tictac al pasar",
+          "el tictac marca el tiempo que pasa mientras el hablante espera a alguien que no vuelve"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué mide un reloj y qué le pasa al hablante?",
+        "explicacion_error": "El reloj hace sentir el paso del tiempo y la espera inútil de quien está «tan lejos».",
+        "monedas": 10
+      }
+    ]
+  }
+]

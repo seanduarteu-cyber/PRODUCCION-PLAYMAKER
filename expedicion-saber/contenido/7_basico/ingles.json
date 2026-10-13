@@ -1,0 +1,722 @@
+[
+  {
+    "nivel": "7_basico",
+    "asignatura": "ingles",
+    "eje": "Comprensión de lectura",
+    "objetivo_oficial": "OA 9: Demostrar comprensión de ideas generales e información explícita en textos simples, adaptados o auténticos, impresos o digitales, sobre temas variados.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "6_basico.ingles.OA5"
+    ],
+    "id_objetivo": "7_basico.ingles.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ingles/7-basico/in07-oa-09"
+    },
+    "desafios": [
+      {
+        "id": "ing7-oa9-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "NOTICE: Clean-up Day at Playa Grande! Join us this Saturday at 10 a.m. Bring gloves, a hat and a water bottle. We will give bags to all volunteers. Let's keep our beach clean!",
+        "enunciado": "When is the Clean-up Day?",
+        "alternativas": [
+          "on Saturday at 10 a.m.",
+          "on Sunday at 10 a.m.",
+          "on Friday at 2 p.m.",
+          "on Saturday at 10 p.m."
+        ],
+        "correcta": 0,
+        "pista": "Busca el día y la hora en la segunda oración.",
+        "explicacion_error": "El aviso dice «this Saturday at 10 a.m.»: el sábado a las 10 de la mañana.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "texto": "Sleep is very important for teenagers. Experts say that young people need eight to ten hours of sleep every night. Without enough sleep, it is difficult to concentrate at school. Try to turn off your phone one hour before bed.",
+        "enunciado": "What is the minimum number of hours of sleep teenagers need?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "unidad": "horas",
+        "pista": "Busca «eight to ten hours».",
+        "explicacion_error": "Los expertos dicen que necesitan de ocho a diez horas (eight to ten): como mínimo, 8 horas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Hi Amanda, Greetings from San Pedro de Atacama! The desert is amazing. Yesterday we visited the Valle de la Luna and watched the sunset. Tonight we're going to look at the stars because the sky is very clear here. Love, Martina",
+        "enunciado": "Where is Martina?",
+        "alternativas": [
+          "in San Pedro de Atacama",
+          "in Chiloé",
+          "in Valparaíso",
+          "in Punta Arenas"
+        ],
+        "correcta": 0,
+        "pista": "Lee el saludo: «Greetings from…».",
+        "explicacion_error": "Martina escribe «Greetings from San Pedro de Atacama!»: está en San Pedro de Atacama.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Diego: Can you send me the science homework? Sofía: Sure! I'm sending you a photo now. Diego: Thanks! My laptop isn't working, so I'm using my mom's phone.",
+        "enunciado": "What does Diego need?",
+        "alternativas": [
+          "a photo of Sofía",
+          "his mom's phone",
+          "the science homework",
+          "a new laptop"
+        ],
+        "correcta": 2,
+        "pista": "Lee el primer mensaje de Diego.",
+        "explicacion_error": "Diego pregunta «Can you send me the science homework?»: necesita la tarea de ciencias.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-005",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "texto": "Hi Amanda, Greetings from San Pedro de Atacama! The desert is amazing. Yesterday we visited the Valle de la Luna and watched the sunset. Tonight we're going to look at the stars because the sky is very clear here. Love, Martina",
+        "enunciado": "Put Martina's activities in order.",
+        "elementos": [
+          "She visited the Valle de la Luna.",
+          "She watched the sunset.",
+          "She is going to look at the stars."
+        ],
+        "pista": "Fíjate en «yesterday» (ayer) y en «tonight» (esta noche).",
+        "explicacion_error": "Ayer visitó el Valle de la Luna y vio la puesta de sol; esta noche va a mirar las estrellas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "COMPUTER LAB RULES: Do not eat or drink near the computers. Ask the teacher before you print. Save your work on your USB drive. Turn off the computer when you finish.",
+        "enunciado": "Is it allowed in the computer lab?",
+        "categorias": [
+          "Allowed",
+          "Not allowed"
+        ],
+        "elementos": [
+          {
+            "texto": "eat a sandwich near the computers",
+            "categoria": 1
+          },
+          {
+            "texto": "drink juice near the computers",
+            "categoria": 1
+          },
+          {
+            "texto": "save your work on a USB drive",
+            "categoria": 0
+          },
+          {
+            "texto": "print after asking the teacher",
+            "categoria": 0
+          }
+        ],
+        "pista": "«Do not» indica una prohibición.",
+        "explicacion_error": "No se puede comer ni beber cerca de los computadores; sí se puede guardar el trabajo en un pendrive e imprimir después de preguntarle al profesor.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "texto": "NOTICE: Clean-up Day at Playa Grande! Join us this Saturday at 10 a.m. Bring gloves, a hat and a water bottle. We will give bags to all volunteers. Let's keep our beach clean!",
+        "enunciado": "Según el aviso, ¿quién aporta cada cosa?",
+        "categorias": [
+          "Los voluntarios",
+          "Los organizadores"
+        ],
+        "elementos": [
+          {
+            "texto": "gloves",
+            "categoria": 0
+          },
+          {
+            "texto": "a hat",
+            "categoria": 0
+          },
+          {
+            "texto": "a water bottle",
+            "categoria": 0
+          },
+          {
+            "texto": "bags",
+            "categoria": 1
+          }
+        ],
+        "pista": "«Bring» significa traer; «we will give» significa nosotros entregaremos.",
+        "explicacion_error": "Los voluntarios traen guantes, gorro y botella de agua; los organizadores entregan las bolsas (we will give bags).",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Diego: Can you send me the science homework? Sofía: Sure! I'm sending you a photo now. Diego: Thanks! My laptop isn't working, so I'm using my mom's phone.",
+        "enunciado": "In the chat, «Sure!» means…",
+        "alternativas": [
+          "¡Lo siento!",
+          "¡Claro!",
+          "¡Chao!",
+          "¡Para nada!"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en lo que hace Sofía después: envía una foto.",
+        "explicacion_error": "«Sure!» significa ¡claro!: Sofía acepta y envía una foto de la tarea.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "texto": "Every year, Chile produces a lot of plastic waste. Many Chilean cities have recycling points in parks and supermarkets. People can take bottles, cans and paper there. Recycling helps to reduce pollution and protect animals in the ocean.",
+        "enunciado": "Match the words from the text with their meaning.",
+        "pares": [
+          [
+            "waste",
+            "basura, desechos"
+          ],
+          [
+            "cans",
+            "latas"
+          ],
+          [
+            "reduce",
+            "reducir"
+          ],
+          [
+            "pollution",
+            "contaminación"
+          ]
+        ],
+        "pista": "Algunas se parecen al español; para las otras, usa el contexto.",
+        "explicacion_error": "waste = basura o desechos, cans = latas, reduce = reducir y pollution = contaminación.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Diego: Can you send me the science homework? Sofía: Sure! I'm sending you a photo now. Diego: Thanks! My laptop isn't working, so I'm using my mom's phone.",
+        "enunciado": "Why is Diego using his mom's phone?",
+        "alternativas": [
+          "because he lost his phone",
+          "because his mom is sending the homework",
+          "because Sofía asked him to",
+          "because his laptop isn't working"
+        ],
+        "correcta": 3,
+        "pista": "Busca la palabra «so»: lo que va antes es la causa.",
+        "explicacion_error": "«My laptop isn't working, so I'm using my mom's phone»: usa el celular de su mamá porque su notebook no funciona.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Sleep is very important for teenagers. Experts say that young people need eight to ten hours of sleep every night. Without enough sleep, it is difficult to concentrate at school. Try to turn off your phone one hour before bed.",
+        "enunciado": "In the text, «turn off» means…",
+        "alternativas": [
+          "cargar",
+          "encender",
+          "revisar",
+          "apagar"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en qué conviene hacer con el celular antes de dormir.",
+        "explicacion_error": "«Turn off» significa apagar: el texto aconseja apagar el celular una hora antes de dormir.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Every year, Chile produces a lot of plastic waste. Many Chilean cities have recycling points in parks and supermarkets. People can take bottles, cans and paper there. Recycling helps to reduce pollution and protect animals in the ocean.",
+        "enunciado": "In the text, «there» refers to…",
+        "alternativas": [
+          "people's houses",
+          "the recycling points",
+          "the ocean",
+          "the animals"
+        ],
+        "correcta": 1,
+        "pista": "Busca en la oración anterior a qué lugar se refiere.",
+        "explicacion_error": "«People can take bottles, cans and paper there»: «there» (allí) se refiere a los puntos de reciclaje (recycling points).",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "NOTICE: Clean-up Day at Playa Grande! Join us this Saturday at 10 a.m. Bring gloves, a hat and a water bottle. We will give bags to all volunteers. Let's keep our beach clean!",
+        "enunciado": "What is the purpose of this notice?",
+        "alternativas": [
+          "to tell people not to go to the beach",
+          "to invite people to clean the beach",
+          "to sell gloves and hats",
+          "to describe a beautiful beach"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en «Join us» y en la última oración.",
+        "explicacion_error": "«Join us» (únete) y «Let's keep our beach clean» muestran que el aviso invita a limpiar la playa.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Sleep is very important for teenagers. Experts say that young people need eight to ten hours of sleep every night. Without enough sleep, it is difficult to concentrate at school. Try to turn off your phone one hour before bed.",
+        "enunciado": "What is the main idea of the text?",
+        "alternativas": [
+          "Sleeping well is important for teenagers.",
+          "Teenagers sleep too much.",
+          "Phones are bad for school.",
+          "Experts need more sleep."
+        ],
+        "correcta": 0,
+        "pista": "Lee la primera oración y piensa de qué hablan todas las demás.",
+        "explicacion_error": "Todo el texto explica por qué dormir bien es importante para los adolescentes; lo del celular es solo un consejo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Hi Amanda, Greetings from San Pedro de Atacama! The desert is amazing. Yesterday we visited the Valle de la Luna and watched the sunset. Tonight we're going to look at the stars because the sky is very clear here. Love, Martina",
+        "enunciado": "How does Martina feel about her trip?",
+        "alternativas": [
+          "She is enjoying it.",
+          "She is scared.",
+          "She wants to go home.",
+          "She is bored."
+        ],
+        "correcta": 0,
+        "pista": "Busca palabras que muestren su opinión, como «amazing».",
+        "explicacion_error": "Martina dice que el desierto es «amazing» (increíble) y cuenta sus actividades con entusiasmo: lo está pasando bien.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "COMPUTER LAB RULES: Do not eat or drink near the computers. Ask the teacher before you print. Save your work on your USB drive. Turn off the computer when you finish.",
+        "enunciado": "Who is this text for?",
+        "alternativas": [
+          "people who sell computers",
+          "parents at home",
+          "students who use the computer lab",
+          "technicians who fix printers"
+        ],
+        "correcta": 2,
+        "pista": "Piensa quién usa la sala y le pide permiso al profesor.",
+        "explicacion_error": "Las reglas hablan de «ask the teacher» y de guardar «your work»: son para los estudiantes que usan la sala de computación.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa9-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Every year, Chile produces a lot of plastic waste. Many Chilean cities have recycling points in parks and supermarkets. People can take bottles, cans and paper there. Recycling helps to reduce pollution and protect animals in the ocean.",
+        "enunciado": "Which is the best title for the text?",
+        "alternativas": [
+          "The Best Supermarkets",
+          "How to Make Plastic",
+          "Animals in the Ocean",
+          "Recycling in Chile"
+        ],
+        "correcta": 3,
+        "pista": "El mejor título resume todo el texto, no solo un detalle.",
+        "explicacion_error": "Todo el texto trata sobre reciclar en Chile; los otros títulos hablan de un detalle o de temas que no están.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "7_basico",
+    "asignatura": "ingles",
+    "eje": "Expresión escrita",
+    "objetivo_oficial": "OA 16: Escribir usando funciones del lenguaje como expresar obligación y prohibición, justificar respuestas y explicar causa y efecto.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "6_basico.ingles.OA15"
+    ],
+    "id_objetivo": "7_basico.ingles.OA16",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/70353:IN07-OA-16"
+    },
+    "desafios": [
+      {
+        "id": "ing7-oa16-001",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada señal con su regla.",
+        "pares": [
+          [
+            "📵",
+            "You mustn't use your phone."
+          ],
+          [
+            "🤫",
+            "You must be quiet."
+          ],
+          [
+            "🚭",
+            "You mustn't smoke."
+          ],
+          [
+            "🚳",
+            "You mustn't ride a bike here."
+          ],
+          [
+            "⛑️",
+            "You must wear a helmet."
+          ]
+        ],
+        "pista": "«Must» indica obligación y «mustn't», prohibición.",
+        "explicacion_error": "📵 no usar el celular, 🤫 guardar silencio, 🚭 no fumar, 🚳 no andar en bicicleta y ⛑️ usar casco.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Completa la regla: «You ___ run in the hallway.» 🏃❌",
+        "alternativas": [
+          "must",
+          "can",
+          "has to",
+          "mustn't"
+        ],
+        "correcta": 3,
+        "pista": "La ❌ indica que está prohibido.",
+        "explicacion_error": "Para prohibir se usa «mustn't»: «You mustn't run in the hallway» significa no debes correr en el pasillo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Escucha el modelo y completa: «I'm happy ___ it's my birthday.»",
+        "audio": {
+          "texto": "I'm happy because it's my birthday.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "if",
+          "so",
+          "because",
+          "but"
+        ],
+        "correcta": 2,
+        "pista": "La segunda parte explica la razón.",
+        "explicacion_error": "«Because» (porque) introduce la razón: estoy feliz porque es mi cumpleaños.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Obligación o prohibición?",
+        "categorias": [
+          "Obligación",
+          "Prohibición"
+        ],
+        "elementos": [
+          {
+            "texto": "You must wear a uniform.",
+            "categoria": 0
+          },
+          {
+            "texto": "We have to be on time.",
+            "categoria": 0
+          },
+          {
+            "texto": "Students must bring their books.",
+            "categoria": 0
+          },
+          {
+            "texto": "You mustn't shout.",
+            "categoria": 1
+          },
+          {
+            "texto": "You mustn't eat in class.",
+            "categoria": 1
+          },
+          {
+            "texto": "You mustn't litter.",
+            "categoria": 1
+          }
+        ],
+        "pista": "«Must» y «have to» obligan; «mustn't» prohíbe.",
+        "explicacion_error": "Must y have to expresan obligación (uniforme, puntualidad, libros); mustn't expresa prohibición (gritar, comer en clase, botar basura).",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa: «My sister ___ to wake up at 6 a.m. every day.»",
+        "alternativas": [
+          "is",
+          "has",
+          "must",
+          "have"
+        ],
+        "correcta": 1,
+        "pista": "Con «my sister» (she) se usa la forma con -s.",
+        "explicacion_error": "Con she se usa «has to»: «My sister has to wake up at 6 a.m.» significa mi hermana tiene que despertarse a las 6. «Must» no lleva «to».",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-006",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Escucha el modelo y ordena la regla: «Debes apagar tu celular.»",
+        "audio": {
+          "texto": "You must turn off your phone.",
+          "idioma": "en"
+        },
+        "elementos": [
+          "You",
+          "must",
+          "turn off",
+          "your phone."
+        ],
+        "pista": "Después de «must» va el verbo sin «to».",
+        "explicacion_error": "«You must turn off your phone.» expresa una obligación: debes apagar tu celular.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Completa: «It's raining, ___ I'm taking an umbrella.»",
+        "alternativas": [
+          "if",
+          "so",
+          "because",
+          "but"
+        ],
+        "correcta": 1,
+        "pista": "La segunda parte es la consecuencia de la primera.",
+        "explicacion_error": "«So» (así que) introduce la consecuencia: está lloviendo, así que llevo paraguas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-008",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada causa con su efecto.",
+        "pares": [
+          [
+            "If you heat ice,",
+            "it melts."
+          ],
+          [
+            "If it rains,",
+            "the streets get wet."
+          ],
+          [
+            "If you don't water plants,",
+            "they die."
+          ],
+          [
+            "If you exercise,",
+            "you get stronger."
+          ]
+        ],
+        "pista": "Piensa en lo que siempre ocurre en cada caso.",
+        "explicacion_error": "Si calientas hielo, se derrite; si llueve, las calles se mojan; si no riegas las plantas, se mueren; si haces ejercicio, te pones más fuerte.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué oración está bien escrita?",
+        "alternativas": [
+          "You mustn't feed the animals.",
+          "You mustn't to feed the animals.",
+          "You don't must feed the animals.",
+          "You mustn't feeding the animals."
+        ],
+        "correcta": 0,
+        "pista": "Después de «mustn't» va el verbo en su forma base, sin «to».",
+        "explicacion_error": "Lo correcto es «You mustn't feed the animals»: mustn't + verbo sin «to» y sin -ing.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Escribe en inglés: «Me quedé en casa porque estaba enfermo.»",
+        "elementos": [
+          "I stayed",
+          "at home",
+          "because",
+          "I was sick."
+        ],
+        "pista": "«Because» va antes de la razón.",
+        "explicacion_error": "«I stayed at home because I was sick.» usa «because» para justificar.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Completa: «If you mix blue and yellow, you ___ green.»",
+        "alternativas": [
+          "got",
+          "gets",
+          "getting",
+          "get"
+        ],
+        "correcta": 3,
+        "pista": "Con «if» + presente, la otra parte también va en presente.",
+        "explicacion_error": "Para hechos que siempre ocurren se usa if + presente: «If you mix blue and yellow, you get green».",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Se completa con «because» o con «so»?",
+        "categorias": [
+          "because",
+          "so"
+        ],
+        "elementos": [
+          {
+            "texto": "I ate a sandwich ___ I was hungry.",
+            "categoria": 0
+          },
+          {
+            "texto": "We can't play outside ___ it's raining.",
+            "categoria": 0
+          },
+          {
+            "texto": "She's tired ___ she ran ten kilometers.",
+            "categoria": 0
+          },
+          {
+            "texto": "I was hungry, ___ I ate a sandwich.",
+            "categoria": 1
+          },
+          {
+            "texto": "It's cold, ___ I'm wearing a jacket.",
+            "categoria": 1
+          },
+          {
+            "texto": "The bus was late, ___ I missed the class.",
+            "categoria": 1
+          }
+        ],
+        "pista": "«Because» va antes de la causa; «so», antes de la consecuencia.",
+        "explicacion_error": "Después de «because» viene la razón (I was hungry, it's raining, she ran); después de «so» viene el resultado (I ate, I'm wearing a jacket, I missed the class).",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Escribe en inglés: «Si llueve, los niños juegan adentro.»",
+        "elementos": [
+          "If it rains,",
+          "the children",
+          "play",
+          "inside."
+        ],
+        "pista": "Empieza con la condición (if).",
+        "explicacion_error": "«If it rains, the children play inside.»: la condición va con «if» y en presente.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-014",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Lee el letrero del museo: 📸🚫. Completa: «Visitors ___ take photos in the museum.»",
+        "alternativas": [
+          "don't have to",
+          "must",
+          "has to",
+          "mustn't"
+        ],
+        "correcta": 3,
+        "pista": "El letrero prohíbe algo.",
+        "explicacion_error": "📸🚫 es una prohibición: «Visitors mustn't take photos». «Don't have to» significa que no es necesario, no que esté prohibido.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué oración significa «No es necesario que traigas comida»?",
+        "alternativas": [
+          "You mustn't bring food.",
+          "You have to bring food.",
+          "You don't have to bring food.",
+          "You must bring food."
+        ],
+        "correcta": 2,
+        "pista": "Ojo: «mustn't» prohíbe, pero «don't have to» dice que algo no es necesario.",
+        "explicacion_error": "«You don't have to bring food» significa no es necesario que traigas comida; «You mustn't bring food» significa está prohibido traer comida.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} escribe una regla para la sala con su razón. ¿Cuál está bien escrita y tiene sentido?",
+        "alternativas": [
+          "We must recycle paper because it helps the environment.",
+          "We mustn't recycle paper because it helps the environment.",
+          "We must to recycle paper because it helps the environment.",
+          "We must recycle paper because it hurts the environment."
+        ],
+        "correcta": 0,
+        "pista": "Revisa la gramática de «must» y que la razón tenga sentido.",
+        "explicacion_error": "«We must recycle paper because it helps the environment» está bien: must + verbo sin «to», y la razón justifica la regla.",
+        "monedas": 10
+      },
+      {
+        "id": "ing7-oa16-017",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada regla con su justificación.",
+        "pares": [
+          [
+            "You must wear a helmet",
+            "because it protects your head."
+          ],
+          [
+            "You mustn't swim here",
+            "because the sea is dangerous."
+          ],
+          [
+            "You have to wear sunscreen",
+            "because the sun is very strong."
+          ],
+          [
+            "You mustn't feed the animals",
+            "because human food can make them sick."
+          ]
+        ],
+        "pista": "Busca la razón lógica de cada regla.",
+        "explicacion_error": "El casco protege la cabeza; no se nada si el mar es peligroso; el bloqueador protege del sol fuerte; la comida humana enferma a los animales.",
+        "monedas": 10
+      }
+    ]
+  }
+]

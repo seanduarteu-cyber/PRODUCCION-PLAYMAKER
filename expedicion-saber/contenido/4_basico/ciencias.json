@@ -1,0 +1,1346 @@
+[
+  {
+    "nivel": "4_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la vida",
+    "objetivo_oficial": "OA 1: Reconocer los elementos vivos y no vivos de un ecosistema y cómo interactúan entre sí.",
+    "dificultad": 4,
+    "prerequisitos": [
+      "2_basico.ciencias.OA1"
+    ],
+    "id_objetivo": "4_basico.ciencias.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Ciencias-de-la-Vida/18433:CN04-OA-01"
+    },
+    "desafios": [
+      {
+        "id": "cie4-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es un factor biótico (ser vivo) de un ecosistema?",
+        "alternativas": [
+          "un huemul",
+          "el agua de un río",
+          "la luz del sol",
+          "una roca"
+        ],
+        "correcta": 0,
+        "pista": "Biótico significa que tiene vida.",
+        "explicacion_error": "El huemul es un ser vivo: es un factor biótico.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-002",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Biótico o abiótico?",
+        "categorias": [
+          "Biótico (vivo)",
+          "Abiótico (no vivo)"
+        ],
+        "elementos": [
+          {
+            "texto": "araucaria",
+            "categoria": 0
+          },
+          {
+            "texto": "cóndor",
+            "categoria": 0
+          },
+          {
+            "texto": "hongo",
+            "categoria": 0
+          },
+          {
+            "texto": "agua",
+            "categoria": 1
+          },
+          {
+            "texto": "aire",
+            "categoria": 1
+          },
+          {
+            "texto": "roca",
+            "categoria": 1
+          }
+        ],
+        "pista": "Pregúntate: ¿nace, crece y se reproduce?",
+        "explicacion_error": "Araucaria, cóndor y hongo son bióticos; agua, aire y roca son abióticos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La luz, el agua y la temperatura son factores ___ del ecosistema.",
+        "alternativas": [
+          "bióticos",
+          "vivos",
+          "animales",
+          "abióticos"
+        ],
+        "correcta": 3,
+        "pista": "Ninguno de ellos es un ser vivo.",
+        "explicacion_error": "Luz, agua y temperatura no tienen vida: son factores abióticos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué es un ecosistema?",
+        "alternativas": [
+          "solo las rocas y el agua de un lugar",
+          "seres vivos y el ambiente de un lugar, interactuando",
+          "solo los animales de un bosque",
+          "una planta sola en un macetero"
+        ],
+        "correcta": 1,
+        "pista": "Incluye lo vivo y lo no vivo.",
+        "explicacion_error": "Un ecosistema reúne los seres vivos y los factores no vivos de un lugar, que se relacionan entre sí.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada ser vivo con lo que usa del ambiente.",
+        "pares": [
+          [
+            "el pasto",
+            "la luz del sol para fabricar alimento"
+          ],
+          [
+            "la trucha",
+            "el oxígeno disuelto en el agua"
+          ],
+          [
+            "la lombriz",
+            "el suelo húmedo para vivir"
+          ]
+        ],
+        "pista": "Piensa dónde vive cada uno.",
+        "explicacion_error": "El pasto usa la luz; la trucha, el oxígeno del agua; la lombriz, el suelo húmedo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "En un bosque de Chiloé, {personaje} anota: zorro, musgo, lluvia, roca, chucao, helecho. ¿Cuántos son factores bióticos?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "unidad": "factores",
+        "pista": "Cuenta solo los seres vivos.",
+        "explicacion_error": "Zorro, musgo, chucao y helecho son seres vivos: son 4.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Biótico o abiótico?",
+        "categorias": [
+          "Biótico",
+          "Abiótico"
+        ],
+        "elementos": [
+          {
+            "texto": "bacterias del suelo",
+            "categoria": 0
+          },
+          {
+            "texto": "líquenes",
+            "categoria": 0
+          },
+          {
+            "texto": "semillas",
+            "categoria": 0
+          },
+          {
+            "texto": "temperatura",
+            "categoria": 1
+          },
+          {
+            "texto": "viento",
+            "categoria": 1
+          },
+          {
+            "texto": "sal del mar",
+            "categoria": 1
+          }
+        ],
+        "pista": "Algunos seres vivos son muy pequeños o parecen inmóviles.",
+        "explicacion_error": "Bacterias, líquenes y semillas tienen vida; temperatura, viento y sal no.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "En el desierto de Atacama llueve muy poco. ¿Qué factor abiótico limita más la vida ahí?",
+        "alternativas": [
+          "la falta de agua",
+          "el exceso de árboles",
+          "la cantidad de huemules",
+          "la falta de rocas"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué necesitan todos los seres vivos y escasea en el desierto?",
+        "explicacion_error": "En Atacama casi no llueve: la falta de agua limita a los seres vivos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "{personaje} deja una planta dentro de una caja cerrada y oscura. ¿Qué factor abiótico le falta?",
+        "alternativas": [
+          "las bacterias",
+          "los animales",
+          "los hongos",
+          "la luz"
+        ],
+        "correcta": 3,
+        "pista": "Los factores abióticos no tienen vida.",
+        "explicacion_error": "En la caja oscura falta la luz, un factor abiótico que la planta necesita para fabricar alimento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Un incendio quema los árboles de un bosque. ¿Qué les pasa a los animales que vivían ahí?",
+        "alternativas": [
+          "se vuelven abióticos",
+          "pierden su refugio y su alimento",
+          "tienen más comida",
+          "no les afecta"
+        ],
+        "correcta": 1,
+        "pista": "Los animales dependen de los árboles.",
+        "explicacion_error": "Al perder los árboles, los animales se quedan sin refugio ni alimento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Si un río se contamina y le falta oxígeno, los ___ del río pueden morir.",
+        "alternativas": [
+          "granos de arena",
+          "peces",
+          "reflejos del sol",
+          "guijarros"
+        ],
+        "correcta": 1,
+        "pista": "¿Quién respira dentro del agua?",
+        "explicacion_error": "Los peces necesitan el oxígeno del agua: sin él, mueren.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-012",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada tipo de interacción con un ejemplo.",
+        "pares": [
+          [
+            "abiótico afecta a biótico",
+            "la lluvia hace crecer el pasto"
+          ],
+          [
+            "biótico afecta a abiótico",
+            "las raíces sujetan el suelo"
+          ],
+          [
+            "biótico afecta a biótico",
+            "el zorro se come un ratón"
+          ]
+        ],
+        "pista": "Fíjate si participan seres vivos, cosas no vivas o ambos.",
+        "explicacion_error": "Lluvia → pasto: abiótico a biótico; raíces → suelo: biótico a abiótico; zorro → ratón: entre seres vivos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Una sequía afecta a una laguna. Ordena lo que ocurre.",
+        "elementos": [
+          "deja de llover por meses",
+          "baja el nivel del agua",
+          "las plantas acuáticas se secan",
+          "los patos se van a otro lugar"
+        ],
+        "pista": "Empieza por el cambio en un factor abiótico.",
+        "explicacion_error": "Sin lluvia baja el agua, se secan las plantas y los patos, sin alimento ni refugio, se van.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En una laguna del altiplano, los flamencos comen pequeños crustáceos. Si el agua se vuelve demasiado salada y los crustáceos mueren, ¿qué pasará?",
+        "alternativas": [
+          "los flamencos comerán sal",
+          "aumentarán los flamencos",
+          "los flamencos tendrán menos alimento",
+          "los flamencos no se verán afectados"
+        ],
+        "correcta": 2,
+        "pista": "Un cambio abiótico puede afectar a varios seres vivos.",
+        "explicacion_error": "La sal afectó a los crustáceos, y al faltar ese alimento, también se afectan los flamencos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué tipo de interacción es?",
+        "categorias": [
+          "Entre seres vivos",
+          "Entre ser vivo y ambiente"
+        ],
+        "elementos": [
+          {
+            "texto": "el picaflor bebe néctar de una flor",
+            "categoria": 0
+          },
+          {
+            "texto": "el zorro caza un conejo",
+            "categoria": 0
+          },
+          {
+            "texto": "el pudú come hojas de un arbusto",
+            "categoria": 0
+          },
+          {
+            "texto": "una lagartija toma sol en una roca",
+            "categoria": 1
+          },
+          {
+            "texto": "las raíces absorben agua del suelo",
+            "categoria": 1
+          },
+          {
+            "texto": "el viento lleva semillas lejos",
+            "categoria": 1
+          }
+        ],
+        "pista": "Si participan dos seres vivos, es entre seres vivos.",
+        "explicacion_error": "Picaflor-flor, zorro-conejo y pudú-arbusto son seres vivos; sol, roca, agua, suelo y viento son parte del ambiente.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa1-016",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Las raíces sujetan el suelo. Si se tala el bosque de un cerro, la lluvia ___ el suelo con más facilidad.",
+        "alternativas": [
+          "congela",
+          "fabrica",
+          "fortalece",
+          "arrastra"
+        ],
+        "correcta": 3,
+        "pista": "Sin raíces, nada retiene la tierra.",
+        "explicacion_error": "Sin árboles que lo sujeten, la lluvia arrastra el suelo: lo biótico también afecta a lo abiótico.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la vida",
+    "objetivo_oficial": "OA 3: Dar ejemplos de cadenas alimentarias, identificando la función de productores, consumidores y descomponedores en ecosistemas de Chile.",
+    "dificultad": 4,
+    "prerequisitos": [
+      "4_basico.ciencias.OA1",
+      "3_basico.ciencias.OA1"
+    ],
+    "id_objetivo": "4_basico.ciencias.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Ciencias-de-la-Vida/18435:CN04-OA-03"
+    },
+    "desafios": [
+      {
+        "id": "cie4-oa3-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es un productor en una cadena alimentaria?",
+        "alternativas": [
+          "el pasto",
+          "el puma",
+          "el zorro",
+          "el conejo"
+        ],
+        "correcta": 0,
+        "pista": "Los productores fabrican su propio alimento.",
+        "explicacion_error": "El pasto es un productor: fabrica su alimento con la luz del sol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Los ___ fabrican su propio alimento con la luz del sol.",
+        "alternativas": [
+          "descomponedores",
+          "productores",
+          "carnívoros",
+          "consumidores"
+        ],
+        "correcta": 1,
+        "pista": "Son las plantas y las algas.",
+        "explicacion_error": "Los productores, como plantas y algas, fabrican su alimento con la luz del sol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Productor o consumidor?",
+        "categorias": [
+          "Productor",
+          "Consumidor"
+        ],
+        "elementos": [
+          {
+            "texto": "pasto",
+            "categoria": 0
+          },
+          {
+            "texto": "algas",
+            "categoria": 0
+          },
+          {
+            "texto": "copihue",
+            "categoria": 0
+          },
+          {
+            "texto": "puma",
+            "categoria": 1
+          },
+          {
+            "texto": "cóndor",
+            "categoria": 1
+          },
+          {
+            "texto": "chinita",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los consumidores se alimentan de otros seres vivos.",
+        "explicacion_error": "Pasto, algas y copihue son productores; puma, cóndor y chinita son consumidores.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-004",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada función con un ejemplo.",
+        "pares": [
+          [
+            "productor",
+            "quillay"
+          ],
+          [
+            "consumidor",
+            "conejo"
+          ],
+          [
+            "descomponedor",
+            "hongo"
+          ]
+        ],
+        "pista": "El hongo crece sobre troncos y hojas muertas.",
+        "explicacion_error": "El quillay es productor, el conejo es consumidor y el hongo es descomponedor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué hacen los descomponedores, como los hongos y las bacterias?",
+        "alternativas": [
+          "cazan a otros animales",
+          "comen solo plantas vivas",
+          "fabrican alimento con la luz",
+          "descomponen restos de seres vivos y devuelven nutrientes al suelo"
+        ],
+        "correcta": 3,
+        "pista": "Actúan sobre hojas caídas y animales muertos.",
+        "explicacion_error": "Los descomponedores transforman los restos de seres vivos en nutrientes para el suelo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-006",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena esta cadena alimentaria, empezando por el productor.",
+        "elementos": [
+          "pasto",
+          "conejo",
+          "zorro culpeo"
+        ],
+        "pista": "Empieza por quien fabrica su alimento.",
+        "explicacion_error": "Pasto → conejo → zorro culpeo: el conejo come pasto y el zorro come conejos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-007",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena esta cadena alimentaria del mar de Chile.",
+        "elementos": [
+          "fitoplancton",
+          "zooplancton",
+          "anchoveta",
+          "pingüino de Humboldt"
+        ],
+        "pista": "El fitoplancton son algas microscópicas.",
+        "explicacion_error": "Fitoplancton → zooplancton → anchoveta → pingüino de Humboldt.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "En la cadena pasto → conejo → zorro, ¿qué es el conejo?",
+        "alternativas": [
+          "consumidor primario",
+          "consumidor secundario",
+          "descomponedor",
+          "productor"
+        ],
+        "correcta": 0,
+        "pista": "Se alimenta directamente del productor.",
+        "explicacion_error": "El conejo come pasto, un productor: es consumidor primario.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "{personaje} observa en la costa la cadena alga → caracol → pez → gaviota. ¿Cuántos consumidores hay?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "unidad": "consumidores",
+        "pista": "Todos menos el productor.",
+        "explicacion_error": "Caracol, pez y gaviota son consumidores: son 3. El alga es el productor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-010",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "En una cadena alimentaria, las flechas indican hacia dónde pasa la ___.",
+        "alternativas": [
+          "luz de la luna",
+          "lluvia",
+          "sombra",
+          "energía del alimento"
+        ],
+        "correcta": 3,
+        "pista": "La flecha va desde el que es comido hacia el que come.",
+        "explicacion_error": "Las flechas muestran cómo pasa la energía del alimento de un ser vivo a otro.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "Clasifica cada ser vivo.",
+        "categorias": [
+          "Productor",
+          "Consumidor",
+          "Descomponedor"
+        ],
+        "elementos": [
+          {
+            "texto": "algarrobo",
+            "categoria": 0
+          },
+          {
+            "texto": "luche (alga)",
+            "categoria": 0
+          },
+          {
+            "texto": "guanaco",
+            "categoria": 1
+          },
+          {
+            "texto": "cóndor",
+            "categoria": 1
+          },
+          {
+            "texto": "hongo",
+            "categoria": 2
+          },
+          {
+            "texto": "bacteria del suelo",
+            "categoria": 2
+          }
+        ],
+        "pista": "El cóndor come animales muertos, pero no los descompone.",
+        "explicacion_error": "Algarrobo y luche: productores; guanaco y cóndor: consumidores; hongo y bacteria: descomponedores.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Si desaparecen todos los productores de un ecosistema, ¿qué pasa?",
+        "alternativas": [
+          "los consumidores tienen más alimento",
+          "los consumidores se quedan sin alimento",
+          "solo se afectan los descomponedores",
+          "no pasa nada"
+        ],
+        "correcta": 1,
+        "pista": "Toda cadena empieza en un productor.",
+        "explicacion_error": "Sin productores no hay alimento para los herbívoros, y luego tampoco para los carnívoros.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En la cadena maqui → zorzal → peuco, si desaparecen los peucos, ¿qué pasará primero?",
+        "alternativas": [
+          "aumentarán los zorzales",
+          "aumentará el maqui",
+          "desaparecerán los hongos",
+          "disminuirán los zorzales"
+        ],
+        "correcta": 0,
+        "pista": "¿Quién se comía a los zorzales?",
+        "explicacion_error": "Sin su depredador, los zorzales aumentan; después, al comer más, puede disminuir el maqui.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué pasaría en un bosque sin descomponedores?",
+        "alternativas": [
+          "las plantas crecerían más",
+          "los animales tendrían más alimento",
+          "no pasaría nada",
+          "se acumularían restos y el suelo perdería nutrientes"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en las hojas caídas y los animales muertos.",
+        "explicacion_error": "Sin descomponedores, los restos no se transforman y las plantas no reciben nutrientes del suelo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-015",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada ser vivo del bosque con su función.",
+        "pares": [
+          [
+            "maqui",
+            "productor"
+          ],
+          [
+            "zorzal",
+            "consumidor primario"
+          ],
+          [
+            "peuco",
+            "consumidor secundario"
+          ],
+          [
+            "hongo",
+            "descomponedor"
+          ]
+        ],
+        "pista": "El zorzal come frutos de maqui y el peuco caza zorzales.",
+        "explicacion_error": "Maqui: productor; zorzal: consumidor primario; peuco: secundario; hongo: descomponedor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa3-016",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "{personaje} dibuja el camino de la energía. Ordénalo desde el comienzo.",
+        "elementos": [
+          "el Sol",
+          "el pasto",
+          "el guanaco",
+          "el puma"
+        ],
+        "pista": "La energía de toda cadena viene de una estrella.",
+        "explicacion_error": "Sol → pasto → guanaco → puma: el pasto usa la luz del Sol y la energía pasa a los consumidores.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la vida",
+    "objetivo_oficial": "OA 5: Identificar y describir estructuras del sistema esquelético y sus funciones de protección, soporte y movimiento.",
+    "dificultad": 4,
+    "prerequisitos": [
+      "2_basico.ciencias.OA7"
+    ],
+    "id_objetivo": "4_basico.ciencias.OA5",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/4-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie4-oa5-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué hueso protege el cerebro?",
+        "alternativas": [
+          "el cráneo",
+          "la columna",
+          "las costillas",
+          "el fémur"
+        ],
+        "correcta": 0,
+        "pista": "Está en la cabeza.",
+        "explicacion_error": "El cráneo es una caja de huesos que protege el cerebro.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Las ___ protegen el corazón y los pulmones.",
+        "alternativas": [
+          "vértebras",
+          "costillas",
+          "rótulas",
+          "falanges"
+        ],
+        "correcta": 1,
+        "pista": "Forman una especie de jaula en el pecho.",
+        "explicacion_error": "Las costillas rodean el pecho y protegen el corazón y los pulmones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuáles son las tres funciones del esqueleto?",
+        "alternativas": [
+          "fabricar sangre, oír y oler",
+          "digestión, respiración y visión",
+          "protección, soporte y movimiento",
+          "pensar, hablar y comer"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en el cráneo, la columna y las piernas.",
+        "explicacion_error": "El esqueleto protege órganos, sostiene el cuerpo y permite el movimiento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-004",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada función del esqueleto con un ejemplo.",
+        "pares": [
+          [
+            "protección",
+            "el cráneo cubre el cerebro"
+          ],
+          [
+            "soporte",
+            "la columna nos mantiene erguidos"
+          ],
+          [
+            "movimiento",
+            "los huesos de las piernas nos permiten caminar"
+          ]
+        ],
+        "pista": "Soporte es sostener el cuerpo.",
+        "explicacion_error": "Cráneo: protección; columna: soporte; huesos de las piernas: movimiento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuántos huesos tiene el esqueleto de una persona adulta?",
+        "respuesta": 206,
+        "tolerancia": 0,
+        "unidad": "huesos",
+        "pista": "Son más de 200.",
+        "explicacion_error": "El esqueleto adulto tiene 206 huesos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "La columna vertebral está formada por huesos llamados ___.",
+        "alternativas": [
+          "rótulas",
+          "costillas",
+          "vértebras",
+          "falanges"
+        ],
+        "correcta": 2,
+        "pista": "Su nombre se parece al de la columna.",
+        "explicacion_error": "La columna vertebral está formada por vértebras.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Qué función cumple principalmente cada hueso?",
+        "categorias": [
+          "Protección",
+          "Soporte",
+          "Movimiento"
+        ],
+        "elementos": [
+          {
+            "texto": "cráneo",
+            "categoria": 0
+          },
+          {
+            "texto": "costillas",
+            "categoria": 0
+          },
+          {
+            "texto": "columna vertebral",
+            "categoria": 1
+          },
+          {
+            "texto": "pelvis",
+            "categoria": 1
+          },
+          {
+            "texto": "huesos de los dedos",
+            "categoria": 2
+          },
+          {
+            "texto": "huesos del brazo",
+            "categoria": 2
+          }
+        ],
+        "pista": "El cráneo y las costillas cubren órganos delicados.",
+        "explicacion_error": "Cráneo y costillas protegen; columna y pelvis sostienen; dedos y brazos permiten movimiento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena estos huesos desde la cabeza hasta los pies.",
+        "elementos": [
+          "cráneo",
+          "costillas",
+          "pelvis",
+          "fémur",
+          "tibia"
+        ],
+        "pista": "El fémur está en el muslo.",
+        "explicacion_error": "Cráneo → costillas → pelvis → fémur → tibia.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cómo se llama la unión entre dos huesos que les permite moverse, como en la rodilla?",
+        "alternativas": [
+          "articulación",
+          "vértebra",
+          "cráneo",
+          "músculo"
+        ],
+        "correcta": 0,
+        "pista": "También está en el codo y en los dedos.",
+        "explicacion_error": "Las articulaciones unen huesos y permiten el movimiento, como la rodilla o el codo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-010",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Los huesos no se mueven solos: los ___ tiran de ellos.",
+        "alternativas": [
+          "cartílagos",
+          "músculos",
+          "pulmones",
+          "dientes"
+        ],
+        "correcta": 1,
+        "pista": "Se contraen cuando haces fuerza.",
+        "explicacion_error": "Los músculos están unidos a los huesos y, al contraerse, los mueven.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué {personaje} debe usar casco en bicicleta, si el cráneo ya protege el cerebro?",
+        "alternativas": [
+          "porque un golpe fuerte puede quebrar el cráneo y dañar el cerebro",
+          "porque el casco hace crecer los huesos",
+          "porque el cerebro está fuera del cráneo",
+          "porque el cráneo es blando como una esponja"
+        ],
+        "correcta": 0,
+        "pista": "El cráneo es duro, pero tiene un límite.",
+        "explicacion_error": "El cráneo protege, pero un golpe fuerte puede romperlo; el casco agrega protección.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-012",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada hueso con su ubicación.",
+        "pares": [
+          [
+            "fémur",
+            "muslo"
+          ],
+          [
+            "húmero",
+            "brazo"
+          ],
+          [
+            "tibia",
+            "pierna, bajo la rodilla"
+          ],
+          [
+            "falanges",
+            "dedos"
+          ],
+          [
+            "esternón",
+            "centro del pecho"
+          ]
+        ],
+        "pista": "El fémur es el hueso más largo del cuerpo.",
+        "explicacion_error": "Fémur: muslo; húmero: brazo; tibia: bajo la rodilla; falanges: dedos; esternón: centro del pecho.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Las costillas van en pares: tenemos 12 pares. ¿Cuántas costillas tenemos en total?",
+        "respuesta": 24,
+        "tolerancia": 0,
+        "unidad": "costillas",
+        "pista": "Un par son dos.",
+        "explicacion_error": "12 pares × 2 = 24 costillas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} se quebró el fémur. ¿Qué función del esqueleto se afecta más?",
+        "alternativas": [
+          "la protección del corazón",
+          "la digestión de la comida",
+          "el soporte y el movimiento de la pierna",
+          "la protección del cerebro"
+        ],
+        "correcta": 2,
+        "pista": "¿Dónde está el fémur y qué hace?",
+        "explicacion_error": "El fémur está en el muslo: sostiene el cuerpo y permite mover la pierna.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-015",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada órgano con el hueso que lo protege.",
+        "pares": [
+          [
+            "cerebro",
+            "cráneo"
+          ],
+          [
+            "corazón y pulmones",
+            "costillas"
+          ],
+          [
+            "médula espinal",
+            "columna vertebral"
+          ]
+        ],
+        "pista": "La médula espinal va por dentro de la espalda.",
+        "explicacion_error": "El cráneo protege el cerebro, las costillas al corazón y los pulmones, y la columna a la médula espinal.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa5-016",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena lo que pasa cuando pateas una pelota.",
+        "elementos": [
+          "el cerebro da la orden",
+          "los músculos de la pierna se contraen",
+          "los músculos tiran de los huesos",
+          "la pierna se mueve y patea"
+        ],
+        "pista": "Todo empieza con una orden.",
+        "explicacion_error": "El cerebro ordena, los músculos se contraen, tiran de los huesos y la pierna se mueve en la articulación.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la Tierra y el Universo",
+    "objetivo_oficial": "OA 16: Explicar los cambios de la superficie de la Tierra por la interacción de sus capas y el movimiento de las placas: sismos, tsunamis y erupciones volcánicas.",
+    "dificultad": 4,
+    "prerequisitos": [],
+    "id_objetivo": "4_basico.ciencias.OA16",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Ciencias-de-la-Tierra-y-el-Universo/18448:CN04-OA-16"
+    },
+    "desafios": [
+      {
+        "id": "cie4-oa16-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es la capa más externa de la Tierra, donde vivimos?",
+        "alternativas": [
+          "el magma",
+          "el núcleo",
+          "el manto",
+          "la corteza"
+        ],
+        "correcta": 3,
+        "pista": "Es la capa más delgada, como la cáscara de una fruta.",
+        "explicacion_error": "La corteza es la capa externa y sólida donde vivimos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-002",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 1,
+        "enunciado": "Ordena las capas de la Tierra desde afuera hacia adentro.",
+        "elementos": [
+          "corteza",
+          "manto",
+          "núcleo"
+        ],
+        "pista": "El núcleo está en el centro.",
+        "explicacion_error": "Corteza → manto → núcleo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué debes hacer durante un sismo en la sala de clases?",
+        "alternativas": [
+          "pararte junto a la ventana",
+          "correr por la escalera",
+          "agacharte, cubrirte y afirmarte",
+          "subirte a una silla"
+        ],
+        "correcta": 2,
+        "pista": "Protege tu cabeza bajo la mesa.",
+        "explicacion_error": "Durante un sismo, agáchate, cúbrete bajo la mesa y afírmate hasta que pase.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "La corteza terrestre está dividida en grandes trozos llamados ___.",
+        "alternativas": [
+          "núcleos",
+          "cráteres",
+          "placas tectónicas",
+          "capas de hielo"
+        ],
+        "correcta": 2,
+        "pista": "Se mueven lentamente sobre el manto.",
+        "explicacion_error": "La corteza está dividida en placas tectónicas que se mueven sobre el manto.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada fenómeno con su descripción.",
+        "pares": [
+          [
+            "sismo",
+            "movimiento brusco del suelo"
+          ],
+          [
+            "tsunami",
+            "olas gigantes que llegan a la costa"
+          ],
+          [
+            "erupción volcánica",
+            "salida de lava, gases y cenizas"
+          ]
+        ],
+        "pista": "Tsunami es una palabra japonesa relacionada con el mar.",
+        "explicacion_error": "Sismo: el suelo se mueve; tsunami: olas gigantes; erupción: el volcán expulsa lava, gases y cenizas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Estás en la playa y ocurre un sismo muy fuerte. ¿Qué debes hacer?",
+        "alternativas": [
+          "acercarte a mirar el mar",
+          "ir a pie a un lugar alto, lejos del mar",
+          "quedarte en la arena",
+          "meterte al agua"
+        ],
+        "correcta": 1,
+        "pista": "Después de un sismo fuerte en la costa puede venir un tsunami.",
+        "explicacion_error": "Tras un sismo fuerte en la costa, hay que evacuar a una zona alta por si llega un tsunami.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Medida segura o peligrosa?",
+        "categorias": [
+          "Segura",
+          "Peligrosa"
+        ],
+        "elementos": [
+          {
+            "texto": "tener una mochila de emergencia",
+            "categoria": 0
+          },
+          {
+            "texto": "conocer las vías de evacuación",
+            "categoria": 0
+          },
+          {
+            "texto": "ir a la zona de seguridad",
+            "categoria": 0
+          },
+          {
+            "texto": "usar el ascensor durante un sismo",
+            "categoria": 1
+          },
+          {
+            "texto": "bajar a la playa a ver el mar retirarse",
+            "categoria": 1
+          },
+          {
+            "texto": "acercarse a un volcán en erupción",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa qué te protege y qué te expone al peligro.",
+        "explicacion_error": "Prepararse y evacuar es seguro; el ascensor, la playa tras un sismo y los volcanes activos son peligrosos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Por qué en Chile hay tantos sismos y volcanes?",
+        "alternativas": [
+          "porque es un país muy largo",
+          "porque tiene mucha nieve en la cordillera",
+          "porque está cerca de la Antártica",
+          "porque está donde se encuentran dos placas tectónicas"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en lo que pasa bajo el suelo frente a la costa.",
+        "explicacion_error": "Frente a Chile, la placa de Nazca choca y se hunde bajo la placa Sudamericana.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Bajo la superficie, la roca fundida se llama ___.",
+        "alternativas": [
+          "arena",
+          "ceniza",
+          "magma",
+          "lava"
+        ],
+        "correcta": 2,
+        "pista": "Cuando sale por el volcán cambia de nombre.",
+        "explicacion_error": "Bajo tierra es magma; cuando sale por el volcán se llama lava.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "{personaje} está en la costa y, después de un sismo, ve que el mar se retira de golpe. ¿Qué puede significar?",
+        "alternativas": [
+          "que se acerca un tsunami",
+          "que es una marea baja normal",
+          "que va a llover",
+          "que el peligro ya pasó"
+        ],
+        "correcta": 0,
+        "pista": "Es una señal natural de alerta.",
+        "explicacion_error": "Si el mar se retira de golpe tras un sismo, puede venir un tsunami: hay que evacuar a la altura.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-011",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena cómo se forma un tsunami.",
+        "elementos": [
+          "las placas se mueven bajo el mar",
+          "ocurre un sismo submarino",
+          "se desplaza una gran masa de agua",
+          "olas gigantes llegan a la costa"
+        ],
+        "pista": "Empieza bajo el fondo del mar.",
+        "explicacion_error": "Las placas se mueven, ocurre un sismo bajo el mar, el agua se desplaza y llegan olas gigantes a la costa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "El terremoto de Valdivia fue en 1960 y el del 27F en el centro-sur de Chile, en 2010. ¿Cuántos años pasaron entre ambos?",
+        "respuesta": 50,
+        "tolerancia": 0,
+        "unidad": "años",
+        "pista": "Resta los años.",
+        "explicacion_error": "2010 − 1960 = 50 años.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-013",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada capa de la Tierra con su característica.",
+        "pares": [
+          [
+            "corteza",
+            "capa delgada y sólida donde vivimos"
+          ],
+          [
+            "manto",
+            "roca muy caliente que se mueve lentamente"
+          ],
+          [
+            "núcleo",
+            "centro de la Tierra, el más caliente"
+          ]
+        ],
+        "pista": "El manto mueve a las placas.",
+        "explicacion_error": "Corteza: delgada y sólida; manto: roca caliente que se mueve; núcleo: el centro, lo más caliente.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué la cordillera de los Andes tiene tantos volcanes?",
+        "alternativas": [
+          "porque el núcleo está más cerca de la superficie ahí",
+          "porque es muy alta y fría",
+          "porque la placa de Nazca se hunde bajo la Sudamericana y se forma magma",
+          "porque llueve mucho en ella"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en el choque de placas frente a Chile.",
+        "explicacion_error": "Al hundirse la placa de Nazca bajo la Sudamericana se funde roca; ese magma sube y forma volcanes.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Cuándo se hace cada acción ante un sismo?",
+        "categorias": [
+          "Antes",
+          "Durante",
+          "Después"
+        ],
+        "elementos": [
+          {
+            "texto": "preparar una mochila de emergencia",
+            "categoria": 0
+          },
+          {
+            "texto": "participar en simulacros",
+            "categoria": 0
+          },
+          {
+            "texto": "agacharse, cubrirse y afirmarse",
+            "categoria": 1
+          },
+          {
+            "texto": "alejarse de las ventanas",
+            "categoria": 1
+          },
+          {
+            "texto": "revisar si hay heridos",
+            "categoria": 2
+          },
+          {
+            "texto": "revisar si hay olor a gas",
+            "categoria": 2
+          }
+        ],
+        "pista": "Algunas cosas se preparan con tiempo.",
+        "explicacion_error": "Antes: mochila y simulacros; durante: protegerse y alejarse de ventanas; después: revisar heridos y fugas de gas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-016",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "En la costa, si un sismo no te deja mantenerte en pie, debes evacuar a la altura sin esperar la ___.",
+        "alternativas": [
+          "mochila de emergencia",
+          "zona de seguridad",
+          "ruta de evacuación",
+          "alarma oficial"
+        ],
+        "correcta": 3,
+        "pista": "Cada minuto cuenta si viene un tsunami.",
+        "explicacion_error": "Si el sismo no te deja estar de pie, evacúa de inmediato hacia la altura, sin esperar la alarma.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4-oa16-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} está en un edificio de Valparaíso durante un sismo fuerte. Cuando termina, ¿qué debe hacer?",
+        "alternativas": [
+          "encender fósforos para ver mejor",
+          "bajar por la escalera con calma hacia la zona de seguridad",
+          "usar el ascensor para salir más rápido",
+          "quedarse junto a la ventana"
+        ],
+        "correcta": 1,
+        "pista": "Puede haber cortes de luz y fugas de gas.",
+        "explicacion_error": "Se baja por la escalera con calma; el ascensor puede quedar detenido y el fuego es peligroso si hay gas.",
+        "monedas": 10
+      }
+    ]
+  }
+]

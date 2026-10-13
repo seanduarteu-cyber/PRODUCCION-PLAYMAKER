@@ -1,0 +1,685 @@
+[
+  {
+    "nivel": "6_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 4: Profundizar la comprensión de narraciones: acciones principales, reacciones de los personajes según sus motivaciones, ambiente y lenguaje figurado.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "5_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "6_basico.lenguaje.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docentes/Educacion-General/Lenguaje-y-comunicacion-6-basico/LE06-OA-04/17299:LE06-OA-04"
+    },
+    "desafios": [
+      {
+        "id": "len6-oa4-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "Diego miraba el mar desde el muelle de Caldera. Las olas eran caballos blancos que galopaban hacia la playa. Su papá, pescador, aún no regresaba, y el cielo se volvía gris como el plomo.",
+        "enunciado": "El cielo se volvía gris como ___.",
+        "alternativas": [
+          "el plomo",
+          "la playa",
+          "el mar",
+          "caballos blancos"
+        ],
+        "correcta": 0,
+        "pista": "Busca la comparación con «como» al final.",
+        "explicacion_error": "El cielo se compara con el plomo: «gris como el plomo».",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-010",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "La niebla se tragó el camino del bosque. Los árboles estiraban sus ramas como brazos que querían atrapar a Clara. Ella apretó la linterna y siguió el ladrido de su perro, que la esperaba en la tranquera de la casa.",
+        "enunciado": "En el texto, las ramas de los árboles se comparan con ___.",
+        "alternativas": [
+          "brazos",
+          "la niebla",
+          "linternas",
+          "perros"
+        ],
+        "correcta": 0,
+        "pista": "Busca la palabra «como».",
+        "explicacion_error": "«Estiraban sus ramas como brazos»: las ramas se comparan con brazos.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "El reloj de la plaza de Talca tosía cada hora. Los vecinos decían que estaba viejo y cansado, pero nadie quería cambiarlo: sus campanadas eran parte del pueblo, como el olor a pan de la mañana.",
+        "enunciado": "¿Qué recurso es «el reloj tosía cada hora»?",
+        "alternativas": [
+          "onomatopeya",
+          "comparación",
+          "metáfora",
+          "personificación"
+        ],
+        "correcta": 3,
+        "pista": "¿Quiénes tosen normalmente?",
+        "explicacion_error": "Toser es propio de seres vivos: se le atribuye al reloj, por eso es personificación.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Diego miraba el mar desde el muelle de Caldera. Las olas eran caballos blancos que galopaban hacia la playa. Su papá, pescador, aún no regresaba, y el cielo se volvía gris como el plomo.",
+        "enunciado": "«Las olas eran caballos blancos» es una…",
+        "alternativas": [
+          "personificación",
+          "rima",
+          "metáfora",
+          "comparación"
+        ],
+        "correcta": 2,
+        "pista": "Identifica las olas con caballos sin usar «como».",
+        "explicacion_error": "Dice que las olas «eran» caballos, sin «como»: es una metáfora.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-004",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "texto": "Antonia quería ganar la feria científica. Durante semanas construyó un pequeño molino que generaba electricidad con el viento. El día de la feria, el molino no giró: no había viento en el gimnasio. Antonia pidió prestado un abanico, lo agitó frente a las aspas y la ampolleta se encendió entre aplausos.",
+        "enunciado": "Ordena las acciones principales.",
+        "elementos": [
+          "Antonia quiere ganar la feria.",
+          "Construye un molino de viento.",
+          "El molino no gira en el gimnasio.",
+          "Agita un abanico frente a las aspas.",
+          "La ampolleta se enciende."
+        ],
+        "pista": "Sigue el orden de la historia: meta, problema y solución.",
+        "explicacion_error": "Primero la meta y el molino, luego el problema y al final la solución con el abanico.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "El reloj de la plaza de Talca tosía cada hora. Los vecinos decían que estaba viejo y cansado, pero nadie quería cambiarlo: sus campanadas eran parte del pueblo, como el olor a pan de la mañana.",
+        "enunciado": "¿Por qué los vecinos no querían cambiar el reloj?",
+        "alternativas": [
+          "porque sus campanadas eran parte de la vida del pueblo",
+          "porque no tenían dinero",
+          "porque nunca se atrasaba",
+          "porque era nuevo"
+        ],
+        "correcta": 0,
+        "pista": "Lee lo que viene después de los dos puntos.",
+        "explicacion_error": "Sus campanadas eran parte del pueblo, como el olor a pan: lo querían tal como era.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Diego miraba el mar desde el muelle de Caldera. Las olas eran caballos blancos que galopaban hacia la playa. Su papá, pescador, aún no regresaba, y el cielo se volvía gris como el plomo.",
+        "enunciado": "¿Qué sensación crea el ambiente del relato?",
+        "alternativas": [
+          "aburrimiento, porque no pasa nada",
+          "calma, porque el mar está quieto",
+          "preocupación, porque el papá no vuelve y el cielo se oscurece",
+          "alegría, porque es un día de playa"
+        ],
+        "correcta": 2,
+        "pista": "Fíjate en el cielo gris y en que el papá no regresa.",
+        "explicacion_error": "El cielo que se oscurece y el papá que no vuelve crean un ambiente de preocupación.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Antonia quería ganar la feria científica. Durante semanas construyó un pequeño molino que generaba electricidad con el viento. El día de la feria, el molino no giró: no había viento en el gimnasio. Antonia pidió prestado un abanico, lo agitó frente a las aspas y la ampolleta se encendió entre aplausos.",
+        "enunciado": "¿Qué acción resuelve el problema de la historia?",
+        "alternativas": [
+          "Antonia decide participar en la feria",
+          "Antonia construye el molino",
+          "Antonia agita un abanico frente al molino",
+          "el público aplaude"
+        ],
+        "correcta": 2,
+        "pista": "El problema era que no había viento.",
+        "explicacion_error": "El abanico reemplaza al viento y hace girar el molino: esa acción resuelve el problema.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Benjamín guardaba cada moneda en un tarro. No compraba dulces ni láminas, aunque sus amigos se burlaban de él. En diciembre rompió el tarro y fue a la librería. Compró una caja de lápices de colores y la envolvió con cuidado: su hermana menor nunca había tenido una.",
+        "enunciado": "¿Para qué ahorraba Benjamín?",
+        "alternativas": [
+          "porque sus amigos se lo pidieron",
+          "para comprar dulces",
+          "para hacerle un regalo a su hermana",
+          "para comprarse láminas"
+        ],
+        "correcta": 2,
+        "pista": "Lee el final: ¿para quién eran los lápices?",
+        "explicacion_error": "Envolvió los lápices para su hermana, que nunca había tenido una caja: ahorraba para regalárselos.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Antonia quería ganar la feria científica. Durante semanas construyó un pequeño molino que generaba electricidad con el viento. El día de la feria, el molino no giró: no había viento en el gimnasio. Antonia pidió prestado un abanico, lo agitó frente a las aspas y la ampolleta se encendió entre aplausos.",
+        "enunciado": "¿Qué muestra la reacción de Antonia ante el problema?",
+        "alternativas": [
+          "que prefiere que otros resuelvan sus problemas",
+          "que es descuidada con su trabajo",
+          "que no le importaba ganar",
+          "que es ingeniosa y no se rinde"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué hizo cuando el molino no giró?",
+        "explicacion_error": "Buscó rápido una solución con el abanico: es ingeniosa y persistente.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Benjamín guardaba cada moneda en un tarro. No compraba dulces ni láminas, aunque sus amigos se burlaban de él. En diciembre rompió el tarro y fue a la librería. Compró una caja de lápices de colores y la envolvió con cuidado: su hermana menor nunca había tenido una.",
+        "enunciado": "¿Por qué Benjamín soportaba las burlas de sus amigos?",
+        "alternativas": [
+          "porque su meta de alegrar a su hermana era más importante para él",
+          "porque no le gustaban los dulces",
+          "porque quería que lo admiraran",
+          "porque no escuchaba a sus amigos"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en su motivación.",
+        "explicacion_error": "Su motivación, regalarle algo a su hermana, pesaba más que las burlas.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "texto": "La niebla se tragó el camino del bosque. Los árboles estiraban sus ramas como brazos que querían atrapar a Clara. Ella apretó la linterna y siguió el ladrido de su perro, que la esperaba en la tranquera de la casa.",
+        "enunciado": "Clasifica cada expresión.",
+        "categorias": [
+          "Personificación",
+          "Comparación",
+          "Metáfora"
+        ],
+        "elementos": [
+          {
+            "texto": "La niebla se tragó el camino.",
+            "categoria": 0
+          },
+          {
+            "texto": "El viento silbaba enojado.",
+            "categoria": 0
+          },
+          {
+            "texto": "Ramas como brazos.",
+            "categoria": 1
+          },
+          {
+            "texto": "Rápido como un rayo.",
+            "categoria": 1
+          },
+          {
+            "texto": "La luna era una moneda de plata.",
+            "categoria": 2
+          },
+          {
+            "texto": "Sus ojos eran dos luceros.",
+            "categoria": 2
+          }
+        ],
+        "pista": "Comparación usa «como»; metáfora identifica sin «como»; personificación da rasgos humanos.",
+        "explicacion_error": "Tragar y silbar enojado son acciones humanas; «como» marca comparaciones; «era/eran» sin «como» forma metáforas.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-013",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "texto": "Mi abuelo es un roble: lleva setenta inviernos en el campo de Curicó y nunca ha dejado de trabajar la tierra. Este año la sequía secó su huerto, pero él cavó un pozo con sus propias manos. «La tierra no abandona a quien la cuida», me dijo sonriendo.",
+        "enunciado": "Une cada expresión del texto con su significado.",
+        "pares": [
+          [
+            "es un roble",
+            "es fuerte y resistente"
+          ],
+          [
+            "setenta inviernos",
+            "setenta años"
+          ],
+          [
+            "con sus propias manos",
+            "con su propio esfuerzo"
+          ]
+        ],
+        "pista": "Piensa en el sentido figurado de cada expresión.",
+        "explicacion_error": "Roble: fortaleza; inviernos: años; con sus propias manos: con su propio esfuerzo.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Benjamín guardaba cada moneda en un tarro. No compraba dulces ni láminas, aunque sus amigos se burlaban de él. En diciembre rompió el tarro y fue a la librería. Compró una caja de lápices de colores y la envolvió con cuidado: su hermana menor nunca había tenido una.",
+        "enunciado": "¿Qué enseñanza deja el relato?",
+        "alternativas": [
+          "hay que gastar el dinero apenas se tiene",
+          "las burlas de los amigos siempre tienen razón",
+          "los regalos caros son los mejores",
+          "la generosidad a veces exige esfuerzo y sacrificio"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué tuvo que dejar de lado Benjamín para lograr su regalo?",
+        "explicacion_error": "Benjamín renunció a dulces y láminas y soportó burlas para regalar: ser generoso le costó esfuerzo.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "La niebla se tragó el camino del bosque. Los árboles estiraban sus ramas como brazos que querían atrapar a Clara. Ella apretó la linterna y siguió el ladrido de su perro, que la esperaba en la tranquera de la casa.",
+        "enunciado": "¿Cómo se relaciona el ambiente con lo que vive Clara?",
+        "alternativas": [
+          "el bosque soleado la hace sentir tranquila",
+          "la niebla y el bosque oscuro hacen difícil el camino y aumentan su miedo",
+          "la niebla la ayuda a encontrar la casa",
+          "el ambiente no tiene relación con lo que le pasa"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué siente alguien que no ve el camino y cree que los árboles lo quieren atrapar?",
+        "explicacion_error": "La niebla tapa el camino y los árboles parecen amenazarla: el ambiente crea el problema y el miedo de Clara.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa4-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Mi abuelo es un roble: lleva setenta inviernos en el campo de Curicó y nunca ha dejado de trabajar la tierra. Este año la sequía secó su huerto, pero él cavó un pozo con sus propias manos. «La tierra no abandona a quien la cuida», me dijo sonriendo.",
+        "enunciado": "¿Qué motiva al abuelo a cavar el pozo?",
+        "alternativas": [
+          "su nieto se lo ordenó",
+          "su amor por la tierra y su decisión de no rendirse",
+          "el miedo a la sequía lo hizo vender el campo",
+          "quería buscar un tesoro"
+        ],
+        "correcta": 1,
+        "pista": "Relee la frase que dice al final.",
+        "explicacion_error": "Él cree que «la tierra no abandona a quien la cuida»: lo mueve su amor por la tierra y su perseverancia.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "6_basico",
+    "asignatura": "lenguaje",
+    "eje": "Escritura",
+    "objetivo_oficial": "OA 21: Utilizar correctamente los participios irregulares (roto, abierto, dicho, escrito, muerto, puesto, vuelto) en sus producciones escritas.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "5_basico.lenguaje.OA21"
+    ],
+    "id_objetivo": "6_basico.lenguaje.OA21",
+    "verificacion": {
+      "codigo": "pendiente",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/6-basico"
+    },
+    "desafios": [
+      {
+        "id": "len6-oa21-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La ventana está ___ (romper).",
+        "alternativas": [
+          "roto",
+          "rota",
+          "rompada",
+          "rompida"
+        ],
+        "correcta": 1,
+        "pista": "«Romper» tiene un participio irregular y debe concordar con «la ventana».",
+        "explicacion_error": "El participio de romper es roto; con «la ventana», rota.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-002",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada verbo con su participio.",
+        "pares": [
+          [
+            "abrir",
+            "abierto"
+          ],
+          [
+            "escribir",
+            "escrito"
+          ],
+          [
+            "hacer",
+            "hecho"
+          ],
+          [
+            "ver",
+            "visto"
+          ]
+        ],
+        "pista": "Ninguno termina en -ado ni en -ido.",
+        "explicacion_error": "abrir → abierto, escribir → escrito, hacer → hecho, ver → visto.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es el participio de «decir»?",
+        "alternativas": [
+          "dicido",
+          "dicho",
+          "decidido",
+          "decido"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en «lo dicho, dicho está».",
+        "explicacion_error": "El participio de decir es dicho.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Ya he ___ la tarea de Lenguaje.",
+        "alternativas": [
+          "echo",
+          "hacido",
+          "hecho",
+          "hacho"
+        ],
+        "correcta": 2,
+        "pista": "Es el participio de «hacer» y lleva h.",
+        "explicacion_error": "El participio de hacer es «hecho», con h; «echo» es del verbo echar.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Participio correcto o incorrecto?",
+        "categorias": [
+          "Correcto",
+          "Incorrecto"
+        ],
+        "elementos": [
+          {
+            "texto": "vuelto",
+            "categoria": 0
+          },
+          {
+            "texto": "puesto",
+            "categoria": 0
+          },
+          {
+            "texto": "cubierto",
+            "categoria": 0
+          },
+          {
+            "texto": "volvido",
+            "categoria": 1
+          },
+          {
+            "texto": "ponido",
+            "categoria": 1
+          },
+          {
+            "texto": "cubrido",
+            "categoria": 1
+          }
+        ],
+        "pista": "Volver, poner y cubrir tienen participios irregulares.",
+        "explicacion_error": "Lo correcto es vuelto, puesto y cubierto; volvido, ponido y cubrido son errores.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "¿Has ___ mi cuaderno? Lo dejé sobre la mesa.",
+        "alternativas": [
+          "visto",
+          "veído",
+          "vido",
+          "vito"
+        ],
+        "correcta": 0,
+        "pista": "Es el participio irregular de «ver».",
+        "explicacion_error": "El participio de ver es visto: «¿Has visto…?».",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "La carta fue ___ a mano.",
+        "alternativas": [
+          "escribida",
+          "escrita",
+          "escribita",
+          "escrito"
+        ],
+        "correcta": 1,
+        "pista": "Usa el participio de «escribir» y concuerda con «la carta».",
+        "explicacion_error": "Escribir → escrito; con «la carta», escrita.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Me encantan las papas ___ (freír).",
+        "alternativas": [
+          "fritos",
+          "fritas",
+          "frías",
+          "fridas"
+        ],
+        "correcta": 1,
+        "pista": "Concuerda con «las papas».",
+        "explicacion_error": "Como adjetivo, el participio de freír es frito: las papas fritas.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Participio regular o irregular?",
+        "categorias": [
+          "Regular (-ado, -ido)",
+          "Irregular"
+        ],
+        "elementos": [
+          {
+            "texto": "cantado",
+            "categoria": 0
+          },
+          {
+            "texto": "comido",
+            "categoria": 0
+          },
+          {
+            "texto": "vivido",
+            "categoria": 0
+          },
+          {
+            "texto": "muerto",
+            "categoria": 1
+          },
+          {
+            "texto": "resuelto",
+            "categoria": 1
+          },
+          {
+            "texto": "puesto",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los regulares terminan en -ado o -ido.",
+        "explicacion_error": "cantado, comido y vivido son regulares; muerto, resuelto y puesto, irregulares.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-010",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "{personaje} ha ___ (volver) de {lugar} con {los_objetos}.",
+        "alternativas": [
+          "vuelvido",
+          "volvido",
+          "vuelto",
+          "volvió"
+        ],
+        "correcta": 2,
+        "pista": "Después de «ha» va un participio.",
+        "explicacion_error": "El participio de volver es vuelto: «ha vuelto».",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "El profesor ha ___ (resolver) todas nuestras dudas.",
+        "alternativas": [
+          "resuelto",
+          "resolvido",
+          "resolvado",
+          "resuelvido"
+        ],
+        "correcta": 0,
+        "pista": "Se parece a vuelto (de volver).",
+        "explicacion_error": "El participio de resolver es resuelto.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Las montañas estaban ___ (cubrir) de nieve.",
+        "alternativas": [
+          "cubiertos",
+          "cubridas",
+          "cubiertas",
+          "cubierto"
+        ],
+        "correcta": 2,
+        "pista": "Participio irregular que concuerda con «las montañas».",
+        "explicacion_error": "Cubrir → cubierto; con «las montañas», cubiertas.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué oración tiene un error?",
+        "alternativas": [
+          "Ya pusieron la mesa.",
+          "Los niños han ponido la mesa.",
+          "La mesa está puesta.",
+          "Los niños han puesto la mesa."
+        ],
+        "correcta": 1,
+        "pista": "Revisa el participio de «poner».",
+        "explicacion_error": "El participio de poner es puesto: «han puesto», no «han ponido».",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuántos participios irregulares hay? «He escrito una carta, he abierto la ventana y he cantado una canción.»",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "unidad": "participios",
+        "pista": "Los regulares terminan en -ado o -ido.",
+        "explicacion_error": "escrito y abierto son irregulares; cantado es regular.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "«Cuando llegué, el florero estaba rompido y nadie había dicho nada.» ¿Qué palabra está mal y cómo se corrige?",
+        "alternativas": [
+          "rompido → roto",
+          "estaba → estuvo",
+          "llegué → llegé",
+          "dicho → decido"
+        ],
+        "correcta": 0,
+        "pista": "Busca un participio terminado en -ido que debería ser irregular.",
+        "explicacion_error": "El participio de romper es roto: «estaba roto». «Dicho» está bien.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "¿Cuántos participios están mal escritos? «Hemos hacido el mural, hemos escrito el título y hemos ponido la fecha.»",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "unidad": "participios",
+        "pista": "Revisa los participios de hacer, escribir y poner.",
+        "explicacion_error": "Están mal hacido (hecho) y ponido (puesto); escrito está bien.",
+        "monedas": 10
+      },
+      {
+        "id": "len6-oa21-017",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Participio bien o mal usado?",
+        "categorias": [
+          "Bien usado",
+          "Mal usado"
+        ],
+        "elementos": [
+          {
+            "texto": "La puerta está abierta.",
+            "categoria": 0
+          },
+          {
+            "texto": "El cuento fue escrito por Josefa.",
+            "categoria": 0
+          },
+          {
+            "texto": "Ya he impreso la guía.",
+            "categoria": 0
+          },
+          {
+            "texto": "El pez está morido.",
+            "categoria": 1
+          },
+          {
+            "texto": "Hemos devolvido los libros.",
+            "categoria": 1
+          },
+          {
+            "texto": "La olla está descubrida.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los verbos derivados (devolver, descubrir) forman el participio como su verbo base.",
+        "explicacion_error": "Lo correcto es muerto, devuelto (como vuelto) y descubierta (como cubierta).",
+        "monedas": 10
+      }
+    ]
+  }
+]

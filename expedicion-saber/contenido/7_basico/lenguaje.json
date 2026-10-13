@@ -1,0 +1,657 @@
+[
+  {
+    "nivel": "7_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 3: Analizar los relatos leídos: conflictos, diferencia entre la voz del narrador y la de los personajes, y orden temporal de los hechos.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "6_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "7_basico.lenguaje.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/70382:LE07-OA-03"
+    },
+    "desafios": [
+      {
+        "id": "len7-oa3-001",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada tipo de narrador con su descripción.",
+        "pares": [
+          [
+            "protagonista",
+            "cuenta su propia historia en primera persona"
+          ],
+          [
+            "testigo",
+            "cuenta lo que vio que le pasó a otro"
+          ],
+          [
+            "omnisciente",
+            "lo sabe todo, incluso lo que piensan los personajes"
+          ]
+        ],
+        "pista": "Piensa en cuánto sabe cada narrador y de quién habla.",
+        "explicacion_error": "El protagonista cuenta su historia; el testigo, la de otro; el omnisciente lo sabe todo.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "En un relato con orden ___, los hechos se cuentan en el mismo orden en que ocurrieron.",
+        "alternativas": [
+          "inverso",
+          "circular",
+          "retrospectivo",
+          "lineal"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en una línea recta del inicio al final.",
+        "explicacion_error": "El orden lineal (o cronológico) sigue los hechos tal como ocurrieron.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Nunca olvidaré mi primer día en Punta Arenas. El viento me empujaba por la calle y yo, que venía de Iquique, no entendía cómo la gente caminaba tan tranquila. Esa tarde me compré mi primer gorro de lana.",
+        "enunciado": "¿Qué tipo de narrador tiene este relato?",
+        "alternativas": [
+          "testigo",
+          "no tiene narrador",
+          "protagonista",
+          "omnisciente"
+        ],
+        "correcta": 2,
+        "pista": "¿A quién le pasan los hechos que se cuentan?",
+        "explicacion_error": "Quien narra cuenta lo que le pasó a sí mismo: es narrador protagonista.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Nunca olvidaré mi primer día en Punta Arenas. El viento me empujaba por la calle y yo, que venía de Iquique, no entendía cómo la gente caminaba tan tranquila. Esa tarde me compré mi primer gorro de lana.",
+        "enunciado": "¿Qué pista indica el tipo de narrador?",
+        "alternativas": [
+          "conoce los pensamientos de todos los personajes",
+          "cuenta en primera persona lo que le pasó a él mismo",
+          "cuenta lo que le pasó a un amigo",
+          "usa la tercera persona"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en palabras como «me», «mi» y «yo».",
+        "explicacion_error": "Usa la primera persona (me, mi, yo) para contar su propia experiencia: es protagonista.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Yo estaba en la galería cuando Ignacio subió al escenario. Le temblaban las manos. Desde mi asiento vi cómo cerraba los ojos un segundo antes de tocar el violín. No sé qué pensó, pero cuando terminó, el teatro entero se puso de pie.",
+        "enunciado": "¿Qué tipo de narrador tiene este relato?",
+        "alternativas": [
+          "testigo",
+          "protagonista",
+          "Ignacio, en primera persona",
+          "omnisciente"
+        ],
+        "correcta": 0,
+        "pista": "¿El narrador cuenta su historia o la de otro?",
+        "explicacion_error": "Narra en primera persona lo que vio que le pasó a Ignacio: es narrador testigo.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "La lluvia caía sin parar sobre el campamento. —¡Hay que subir al cerro! —gritó Rodrigo. —Exageras, es solo un chubasco —respondió Matías. Nadie se movió. Una hora después, el río creció, cubrió las carpas y todos corrieron cuesta arriba.",
+        "enunciado": "¿Qué signo marca en el texto que comienza a hablar un personaje?",
+        "alternativas": [
+          "los dos puntos (:)",
+          "el punto y coma (;)",
+          "los paréntesis ( )",
+          "la raya (—)"
+        ],
+        "correcta": 3,
+        "pista": "Mira lo que aparece justo antes de «¡Hay que subir…».",
+        "explicacion_error": "La raya introduce las palabras de cada personaje en el diálogo.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Yo estaba en la galería cuando Ignacio subió al escenario. Le temblaban las manos. Desde mi asiento vi cómo cerraba los ojos un segundo antes de tocar el violín. No sé qué pensó, pero cuando terminó, el teatro entero se puso de pie.",
+        "enunciado": "¿Qué frase demuestra que el narrador NO es omnisciente?",
+        "alternativas": [
+          "«Le temblaban las manos»",
+          "«No sé qué pensó»",
+          "«Ignacio subió al escenario»",
+          "«el teatro entero se puso de pie»"
+        ],
+        "correcta": 1,
+        "pista": "Un narrador omnisciente conoce los pensamientos de los personajes.",
+        "explicacion_error": "Si dice «No sé qué pensó», no conoce la mente de Ignacio: no es omnisciente.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Catalina sabía que su amiga Fernanda había copiado en la prueba. La profesora no lo sospechaba, y Fernanda, desde el banco de atrás, rezaba para que nadie hablara. Catalina se mordió el labio: si callaba, traicionaba lo que creía justo; si hablaba, perdía a su mejor amiga.",
+        "enunciado": "¿Qué tipo de narrador tiene este relato?",
+        "alternativas": [
+          "testigo",
+          "protagonista",
+          "Catalina, en primera persona",
+          "omnisciente"
+        ],
+        "correcta": 3,
+        "pista": "¿El narrador participa en la historia? ¿Qué sabe de los personajes?",
+        "explicacion_error": "Narra en tercera persona y conoce lo que piensan varios personajes: es omnisciente.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Al ver la vieja bicicleta en la bodega, don Héctor sonrió. Recordó aquel verano de 1975 en Pichilemu, cuando su padre le enseñó a pedalear por la costanera y él cayó tres veces antes de lograrlo. Ahora, con cuidado, infló las ruedas: era el turno de su nieta.",
+        "enunciado": "¿Qué recurso temporal hay en «Recordó aquel verano de 1975…»?",
+        "alternativas": [
+          "retrospección (flashback)",
+          "un diálogo entre personajes",
+          "anticipación de hechos futuros",
+          "orden lineal"
+        ],
+        "correcta": 0,
+        "pista": "La historia salta hacia atrás en el tiempo.",
+        "explicacion_error": "Se interrumpe el presente para contar un hecho del pasado: es una retrospección.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "La lluvia caía sin parar sobre el campamento. —¡Hay que subir al cerro! —gritó Rodrigo. —Exageras, es solo un chubasco —respondió Matías. Nadie se movió. Una hora después, el río creció, cubrió las carpas y todos corrieron cuesta arriba.",
+        "enunciado": "¿Qué conflicto principal enfrentan todos en el campamento?",
+        "alternativas": [
+          "con un animal salvaje",
+          "consigo mismos: el miedo a la oscuridad",
+          "con la sociedad: una ley injusta",
+          "con la naturaleza: la crecida del río"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué amenaza a todo el campamento?",
+        "explicacion_error": "La lluvia y el río que crece amenazan a todos: es un conflicto con la naturaleza.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Catalina sabía que su amiga Fernanda había copiado en la prueba. La profesora no lo sospechaba, y Fernanda, desde el banco de atrás, rezaba para que nadie hablara. Catalina se mordió el labio: si callaba, traicionaba lo que creía justo; si hablaba, perdía a su mejor amiga.",
+        "enunciado": "¿Qué tipo de conflicto vive Catalina?",
+        "alternativas": [
+          "consigo misma (conflicto interno)",
+          "con la profesora",
+          "con la sociedad",
+          "con la naturaleza"
+        ],
+        "correcta": 0,
+        "pista": "Su lucha ocurre dentro de ella: debe elegir entre dos cosas que valora.",
+        "explicacion_error": "Catalina duda entre la justicia y la amistad: es un conflicto interno.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Catalina sabía que su amiga Fernanda había copiado en la prueba. La profesora no lo sospechaba, y Fernanda, desde el banco de atrás, rezaba para que nadie hablara. Catalina se mordió el labio: si callaba, traicionaba lo que creía justo; si hablaba, perdía a su mejor amiga.",
+        "enunciado": "¿Qué muestra que el narrador es omnisciente?",
+        "alternativas": [
+          "usa la primera persona",
+          "solo describe lo que se ve desde afuera",
+          "conoce lo que piensan y sienten Catalina y Fernanda",
+          "es un compañero de curso que observa"
+        ],
+        "correcta": 2,
+        "pista": "¿Cómo sabe el narrador lo que pasa por la mente de cada una?",
+        "explicacion_error": "Sabe lo que sabe Catalina y lo que desea Fernanda: conoce el interior de los personajes.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "texto": "La lluvia caía sin parar sobre el campamento. —¡Hay que subir al cerro! —gritó Rodrigo. —Exageras, es solo un chubasco —respondió Matías. Nadie se movió. Una hora después, el río creció, cubrió las carpas y todos corrieron cuesta arriba.",
+        "enunciado": "¿Habla el narrador o un personaje?",
+        "categorias": [
+          "Narrador",
+          "Personaje"
+        ],
+        "elementos": [
+          {
+            "texto": "La lluvia caía sin parar sobre el campamento.",
+            "categoria": 0
+          },
+          {
+            "texto": "gritó Rodrigo",
+            "categoria": 0
+          },
+          {
+            "texto": "respondió Matías",
+            "categoria": 0
+          },
+          {
+            "texto": "Nadie se movió.",
+            "categoria": 0
+          },
+          {
+            "texto": "¡Hay que subir al cerro!",
+            "categoria": 1
+          },
+          {
+            "texto": "Exageras, es solo un chubasco",
+            "categoria": 1
+          }
+        ],
+        "pista": "Las palabras de los personajes van después de la raya; el narrador cuenta y aclara quién habla.",
+        "explicacion_error": "El narrador cuenta los hechos y dice «gritó Rodrigo» y «respondió Matías»; los personajes dicen lo que va entre rayas.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "En el pueblo de Las Quilas, una vieja regla prohibía que las niñas jugaran fútbol en la cancha. Elena entrenaba sola al amanecer. Un día juntó firmas, habló en el consejo del pueblo y logró que la cancha fuera para todos.",
+        "enunciado": "¿Qué tipo de conflicto enfrenta Elena?",
+        "alternativas": [
+          "con la naturaleza: el frío del amanecer",
+          "con la sociedad: una regla injusta del pueblo",
+          "consigo misma: su miedo a jugar",
+          "con otro personaje: una rival del equipo"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué le impide jugar en la cancha?",
+        "explicacion_error": "Lo que se opone a Elena es una regla del pueblo: es un conflicto con la sociedad.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Yo estaba en la galería cuando Ignacio subió al escenario. Le temblaban las manos. Desde mi asiento vi cómo cerraba los ojos un segundo antes de tocar el violín. No sé qué pensó, pero cuando terminó, el teatro entero se puso de pie.",
+        "enunciado": "Si Ignacio contara la historia como narrador protagonista, ¿qué frase podría aparecer?",
+        "alternativas": [
+          "«Cerré los ojos y pensé en mi abuela.»",
+          "«No sé qué pensó Ignacio.»",
+          "«Ignacio subió al escenario.»",
+          "«Desde mi asiento vi a Ignacio.»"
+        ],
+        "correcta": 0,
+        "pista": "El protagonista cuenta en primera persona lo que él mismo hace y piensa.",
+        "explicacion_error": "Solo Ignacio podría decir en primera persona lo que hizo y pensó: «Cerré los ojos y pensé…».",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "texto": "Al ver la vieja bicicleta en la bodega, don Héctor sonrió. Recordó aquel verano de 1975 en Pichilemu, cuando su padre le enseñó a pedalear por la costanera y él cayó tres veces antes de lograrlo. Ahora, con cuidado, infló las ruedas: era el turno de su nieta.",
+        "enunciado": "Ordena los hechos según cuándo ocurrieron (no según el orden del texto).",
+        "elementos": [
+          "El padre le enseña a pedalear.",
+          "Héctor se cae tres veces.",
+          "Héctor logra pedalear.",
+          "Héctor ve la bicicleta en la bodega.",
+          "Infla las ruedas para su nieta."
+        ],
+        "pista": "Lo que se recuerda ocurrió antes que lo que pasa en la bodega.",
+        "explicacion_error": "Primero ocurre el verano de 1975 (enseñanza, caídas, logro) y después, años más tarde, la escena de la bodega.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa3-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "En el pueblo de Las Quilas, una vieja regla prohibía que las niñas jugaran fútbol en la cancha. Elena entrenaba sola al amanecer. Un día juntó firmas, habló en el consejo del pueblo y logró que la cancha fuera para todos.",
+        "enunciado": "¿Cómo se resuelve el conflicto y qué muestra eso de Elena?",
+        "alternativas": [
+          "abandona el fútbol: Elena es insegura",
+          "se organiza y argumenta hasta cambiar la regla: es perseverante",
+          "se resuelve solo con el tiempo: Elena es pasiva",
+          "el consejo la castiga: Elena es rebelde"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en lo que hizo «un día».",
+        "explicacion_error": "Juntó firmas y habló en el consejo hasta lograr el cambio: es perseverante y luchadora.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "7_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 4: Analizar poemas: lenguaje que apela a los sentidos, lenguaje figurado y efecto del ritmo y la sonoridad.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "5_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "7_basico.lenguaje.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/70383:LE07-OA-04"
+    },
+    "desafios": [
+      {
+        "id": "len7-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Huele a sal la mañana en la caleta, / chillan las gaviotas sobre el muelle gris, / la arena tibia me acaricia los pies / y la tarde sabe a mote con huesillo.",
+        "enunciado": "¿A qué sentido apela «chillan las gaviotas»?",
+        "alternativas": [
+          "al olfato",
+          "al gusto",
+          "al oído",
+          "a la vista"
+        ],
+        "correcta": 2,
+        "pista": "¿Cómo percibes un chillido?",
+        "explicacion_error": "Un chillido se escucha: es una imagen auditiva.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Tu risa es un cascabel de plata, / tus ojos, dos lagunas del sur; / caminas liviana como el humo / bajo un cielo de terciopelo azul.",
+        "enunciado": "¿Qué recurso hay en «caminas liviana como el humo»?",
+        "alternativas": [
+          "metáfora",
+          "aliteración",
+          "comparación",
+          "hipérbole"
+        ],
+        "correcta": 2,
+        "pista": "Busca la palabra que une los dos elementos.",
+        "explicacion_error": "Usa «como» para relacionar a la persona con el humo: es una comparación.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-009",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "La lluvia golpea el tejado, / canta en la noche su canción; / el perro duerme a mi lado / y late lento mi corazón.",
+        "enunciado": "En el poema, «canción» rima con ___.",
+        "alternativas": [
+          "corazón",
+          "tejado",
+          "lado",
+          "noche"
+        ],
+        "correcta": 0,
+        "pista": "Busca otra palabra al final de un verso que termine en -ón.",
+        "explicacion_error": "canción y corazón terminan igual (-ón): riman.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-002",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "texto": "Huele a sal la mañana en la caleta, / chillan las gaviotas sobre el muelle gris, / la arena tibia me acaricia los pies / y la tarde sabe a mote con huesillo.",
+        "enunciado": "Une cada expresión con el sentido al que apela.",
+        "pares": [
+          [
+            "huele a sal la mañana",
+            "olfato"
+          ],
+          [
+            "el muelle gris",
+            "vista"
+          ],
+          [
+            "la arena tibia",
+            "tacto"
+          ],
+          [
+            "sabe a mote con huesillo",
+            "gusto"
+          ]
+        ],
+        "pista": "Piensa con qué parte del cuerpo percibes cada cosa.",
+        "explicacion_error": "Oler: olfato; un color: vista; la temperatura: tacto; un sabor: gusto.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "texto": "Tu risa es un cascabel de plata, / tus ojos, dos lagunas del sur; / caminas liviana como el humo / bajo un cielo de terciopelo azul.",
+        "enunciado": "«Tus ojos, dos lagunas del sur» es una ___, porque identifica los ojos con lagunas sin usar «como».",
+        "alternativas": [
+          "hipérbole",
+          "comparación",
+          "personificación",
+          "metáfora"
+        ],
+        "correcta": 3,
+        "pista": "Es como una comparación, pero sin nexo.",
+        "explicacion_error": "Identificar una cosa con otra sin «como» es una metáfora.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Te esperé mil años en la estación, / lloré un río entero de pena, / y cuando al fin bajaste del tren / el mundo entero se puso a cantar.",
+        "enunciado": "¿Qué recurso hay en «Te esperé mil años»?",
+        "alternativas": [
+          "comparación",
+          "metáfora",
+          "personificación",
+          "hipérbole"
+        ],
+        "correcta": 3,
+        "pista": "¿Es posible esperar mil años?",
+        "explicacion_error": "Es una exageración evidente: una hipérbole.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Huele a sal la mañana en la caleta, / chillan las gaviotas sobre el muelle gris, / la arena tibia me acaricia los pies / y la tarde sabe a mote con huesillo.",
+        "enunciado": "Además de una imagen táctil, «la arena tibia me acaricia los pies» contiene una…",
+        "alternativas": [
+          "comparación",
+          "hipérbole",
+          "personificación",
+          "aliteración"
+        ],
+        "correcta": 2,
+        "pista": "¿Quién suele acariciar?",
+        "explicacion_error": "Acariciar es una acción humana atribuida a la arena: es una personificación.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Te esperé mil años en la estación, / lloré un río entero de pena, / y cuando al fin bajaste del tren / el mundo entero se puso a cantar.",
+        "enunciado": "¿Qué efecto producen las exageraciones del poema?",
+        "alternativas": [
+          "describen el paisaje de la estación",
+          "intensifican la emoción de la espera y del reencuentro",
+          "indican cuántos años pasaron exactamente",
+          "hacen que los versos rimen"
+        ],
+        "correcta": 1,
+        "pista": "¿Para qué exagera alguien al hablar de sus sentimientos?",
+        "explicacion_error": "Las hipérboles agrandan los sentimientos: muestran cuánto sufrió y cuánto se alegró.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "La lluvia golpea el tejado, / canta en la noche su canción; / el perro duerme a mi lado / y late lento mi corazón.",
+        "enunciado": "¿Qué tipo de rima hay entre «tejado» y «lado»?",
+        "alternativas": [
+          "no riman",
+          "aliteración",
+          "asonante",
+          "consonante"
+        ],
+        "correcta": 3,
+        "pista": "Compara vocales y consonantes desde la última vocal acentuada.",
+        "explicacion_error": "Coinciden vocales y consonantes (-ado): es rima consonante.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "texto": "Te esperé mil años en la estación, / lloré un río entero de pena, / y cuando al fin bajaste del tren / el mundo entero se puso a cantar.",
+        "enunciado": "¿Cuántas hipérboles hay en los dos primeros versos?",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "unidad": "hipérboles",
+        "pista": "Busca exageraciones de tiempo y de cantidad.",
+        "explicacion_error": "Hay 2: «mil años» y «un río entero de pena».",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "La lluvia golpea el tejado, / canta en la noche su canción; / el perro duerme a mi lado / y late lento mi corazón.",
+        "enunciado": "¿Qué esquema de rima tiene la estrofa?",
+        "alternativas": [
+          "ABAB",
+          "ABBA",
+          "AABB",
+          "AAAA"
+        ],
+        "correcta": 0,
+        "pista": "Marca con la misma letra los versos que riman entre sí.",
+        "explicacion_error": "tejado (A), canción (B), lado (A), corazón (B): ABAB.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Bajo el cielo de Atacama / la noche se viste de luz; / brillan estrellas sin calma / sobre el silencio azul.",
+        "enunciado": "¿Qué tipo de rima tienen «Atacama» y «calma»?",
+        "alternativas": [
+          "asonante",
+          "no tienen rima",
+          "consonante",
+          "aliteración"
+        ],
+        "correcta": 0,
+        "pista": "Desde la vocal acentuada, ¿coinciden las vocales, las consonantes o ambas?",
+        "explicacion_error": "Coinciden solo las vocales (a-a), no las consonantes: es rima asonante.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Suena el silbido suave del viento / sobre la sierra serena y sola; / rueda la roca, ruge el río, / y el rumor regresa en cada ola.",
+        "enunciado": "¿Qué recurso sonoro predomina en los dos primeros versos?",
+        "alternativas": [
+          "hipérbole",
+          "aliteración de la «s»",
+          "comparación",
+          "rima asonante"
+        ],
+        "correcta": 1,
+        "pista": "Lee en voz alta y fíjate qué sonido se repite.",
+        "explicacion_error": "Se repite el sonido «s» (suena, silbido, suave, sierra, serena, sola): aliteración.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Bajo el cielo de Atacama / la noche se viste de luz; / brillan estrellas sin calma / sobre el silencio azul.",
+        "enunciado": "¿Qué tipo de imagen predomina y qué efecto logra?",
+        "alternativas": [
+          "auditiva: hace oír el ruido del desierto",
+          "visual: hace ver un cielo nocturno lleno de luz",
+          "olfativa: hace oler las flores del desierto",
+          "táctil: hace sentir el frío de la noche"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en cielo, luz, estrellas y azul.",
+        "explicacion_error": "Cielo, luz, estrellas que brillan y color azul son imágenes visuales: pintan una noche luminosa.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Suena el silbido suave del viento / sobre la sierra serena y sola; / rueda la roca, ruge el río, / y el rumor regresa en cada ola.",
+        "enunciado": "¿Qué efecto produce la repetición de la «r» en «rueda la roca, ruge el río»?",
+        "alternativas": [
+          "imita el silencio de la sierra",
+          "indica que es de noche",
+          "hace que el verso sea más largo",
+          "imita el ruido fuerte del agua y las piedras"
+        ],
+        "correcta": 3,
+        "pista": "Pronuncia la «r» fuerte: ¿a qué sonido se parece?",
+        "explicacion_error": "La «r» vibrante imita el estruendo del río y de las rocas que ruedan.",
+        "monedas": 10
+      },
+      {
+        "id": "len7-oa4-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué recurso usa cada verso?",
+        "categorias": [
+          "Aliteración",
+          "Hipérbole",
+          "Comparación"
+        ],
+        "elementos": [
+          {
+            "texto": "Susurra el sauce su secreto.",
+            "categoria": 0
+          },
+          {
+            "texto": "Mece el mar su manto marino.",
+            "categoria": 0
+          },
+          {
+            "texto": "Te lo he dicho un millón de veces.",
+            "categoria": 1
+          },
+          {
+            "texto": "Lloré mares por ti.",
+            "categoria": 1
+          },
+          {
+            "texto": "Blanca como la nieve.",
+            "categoria": 2
+          },
+          {
+            "texto": "Fuerte como un roble.",
+            "categoria": 2
+          }
+        ],
+        "pista": "Aliteración repite sonidos; hipérbole exagera; comparación usa «como».",
+        "explicacion_error": "Se repiten la s y la m; «un millón de veces» y «mares» exageran; «como» marca las comparaciones.",
+        "monedas": 10
+      }
+    ]
+  }
+]

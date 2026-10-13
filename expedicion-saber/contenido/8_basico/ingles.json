@@ -1,0 +1,721 @@
+[
+  {
+    "nivel": "8_basico",
+    "asignatura": "ingles",
+    "eje": "Comprensión de lectura",
+    "objetivo_oficial": "OA 9: Demostrar comprensión de ideas generales e información explícita en textos adaptados y auténticos simples sobre temas variados.",
+    "dificultad": 7,
+    "prerequisitos": [
+      "7_basico.ingles.OA9"
+    ],
+    "id_objetivo": "8_basico.ingles.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ingles/8-basico"
+    },
+    "desafios": [
+      {
+        "id": "ing8-oa9-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "texto": "Gabriela Mistral was born in Vicuña, Chile, in 1889. She worked as a teacher for many years and wrote beautiful poems for children. In 1945, she won the Nobel Prize in Literature. She was the first Latin American writer to receive this prize.",
+        "enunciado": "In what year did Gabriela Mistral win the Nobel Prize?",
+        "respuesta": 1945,
+        "tolerancia": 0,
+        "pista": "Busca el año que aparece junto a «Nobel Prize».",
+        "explicacion_error": "El texto dice «In 1945, she won the Nobel Prize in Literature»: lo ganó en 1945.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "texto": "PEBRE (for 4 people). Ingredients: 3 tomatoes, 1 onion, some cilantro, oil and salt. First, chop the tomatoes, the onion and the cilantro. Then, put everything in a bowl. Finally, add oil and salt, mix well and serve with bread.",
+        "enunciado": "How many tomatoes do you need?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "unidad": "tomates",
+        "pista": "Revisa la lista de ingredientes.",
+        "explicacion_error": "Los ingredientes dicen «3 tomatoes»: necesitas 3 tomates. El 4 es el número de personas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "A strong storm hit the south of Chile yesterday. In Puerto Montt, heavy rain and wind closed some schools and roads. Nobody was hurt, but many houses lost electricity for several hours. Experts say the weather will improve on Friday.",
+        "enunciado": "Which part of Chile did the storm hit?",
+        "alternativas": [
+          "the south",
+          "Easter Island",
+          "the north",
+          "the center"
+        ],
+        "correcta": 0,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "La noticia dice «hit the south of Chile»: la tormenta afectó al sur de Chile.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-004",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "Last week, students from a school in Rancagua won a national robotics competition. Their robot can separate plastic, glass and paper for recycling. The team worked on the project for six months. In December, they will travel to Brazil to compete with teams from other countries.",
+        "enunciado": "Complete: «The robot separates plastic, glass and ___.»",
+        "alternativas": [
+          "metal",
+          "food",
+          "cans",
+          "paper"
+        ],
+        "correcta": 3,
+        "pista": "Busca la oración que habla del robot.",
+        "explicacion_error": "El texto dice «separate plastic, glass and paper»: el robot separa plástico, vidrio y papel.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-005",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "texto": "PEBRE (for 4 people). Ingredients: 3 tomatoes, 1 onion, some cilantro, oil and salt. First, chop the tomatoes, the onion and the cilantro. Then, put everything in a bowl. Finally, add oil and salt, mix well and serve with bread.",
+        "enunciado": "Put the steps in order.",
+        "elementos": [
+          "Chop the vegetables.",
+          "Put everything in a bowl.",
+          "Add oil and salt and mix.",
+          "Serve with bread."
+        ],
+        "pista": "Fíjate en «first», «then» y «finally», y en el orden dentro de cada oración.",
+        "explicacion_error": "Primero se pican las verduras, luego se pone todo en un bol, después se agrega aceite y sal y se mezcla, y al final se sirve con pan.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Visit Chiloé! Discover its colorful wooden churches and its palafitos, traditional houses on stilts over the water. Try curanto, a delicious dish cooked in a hole in the ground. You can get there by ferry from Pargua. Come and enjoy the magic of the island!",
+        "enunciado": "How can you get to Chiloé?",
+        "alternativas": [
+          "by ferry from Pargua",
+          "by ferry from Valparaíso",
+          "by train from Pargua",
+          "by plane from Pargua"
+        ],
+        "correcta": 0,
+        "pista": "Busca la palabra «ferry».",
+        "explicacion_error": "El folleto dice «by ferry from Pargua»: se llega en transbordador desde Pargua.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Violeta Parra was a Chilean singer, songwriter and artist. She was born in 1917. She traveled around the Chilean countryside and collected traditional songs. She also made arpilleras, colorful pictures sewn on cloth. Today, her song “Gracias a la vida” is famous all over the world.",
+        "enunciado": "What did Violeta Parra collect?",
+        "alternativas": [
+          "colorful stones",
+          "traditional songs",
+          "famous books",
+          "old paintings"
+        ],
+        "correcta": 1,
+        "pista": "Busca el verbo «collected».",
+        "explicacion_error": "El texto dice «collected traditional songs»: recopiló canciones tradicionales.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Gabriela Mistral was born in Vicuña, Chile, in 1889. She worked as a teacher for many years and wrote beautiful poems for children. In 1945, she won the Nobel Prize in Literature. She was the first Latin American writer to receive this prize.",
+        "enunciado": "In the text, «won» is the past form of…",
+        "alternativas": [
+          "win",
+          "want",
+          "wonder",
+          "one"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en qué se hace con un premio.",
+        "explicacion_error": "«Won» es el pasado irregular de «win» (ganar): ella ganó el Premio Nobel.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Visit Chiloé! Discover its colorful wooden churches and its palafitos, traditional houses on stilts over the water. Try curanto, a delicious dish cooked in a hole in the ground. You can get there by ferry from Pargua. Come and enjoy the magic of the island!",
+        "enunciado": "According to the brochure, palafitos are…",
+        "alternativas": [
+          "colorful wooden churches",
+          "traditional houses on stilts",
+          "a typical dish",
+          "small boats"
+        ],
+        "correcta": 1,
+        "pista": "La explicación aparece justo después de la palabra «palafitos».",
+        "explicacion_error": "El folleto explica que los palafitos son «traditional houses on stilts over the water»: casas tradicionales sobre pilotes.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-010",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "texto": "Violeta Parra was a Chilean singer, songwriter and artist. She was born in 1917. She traveled around the Chilean countryside and collected traditional songs. She also made arpilleras, colorful pictures sewn on cloth. Today, her song “Gracias a la vida” is famous all over the world.",
+        "enunciado": "Match the words with their meaning.",
+        "pares": [
+          [
+            "songwriter",
+            "compositora"
+          ],
+          [
+            "countryside",
+            "el campo"
+          ],
+          [
+            "sewn",
+            "cosido"
+          ],
+          [
+            "famous",
+            "famosa"
+          ]
+        ],
+        "pista": "Piensa en el contexto: canciones, lugares, telas y fama.",
+        "explicacion_error": "songwriter = compositora, countryside = el campo, sewn = cosido y famous = famosa.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "PEBRE (for 4 people). Ingredients: 3 tomatoes, 1 onion, some cilantro, oil and salt. First, chop the tomatoes, the onion and the cilantro. Then, put everything in a bowl. Finally, add oil and salt, mix well and serve with bread.",
+        "enunciado": "In the recipe, «chop» means…",
+        "alternativas": [
+          "mezclar",
+          "hervir",
+          "lavar",
+          "picar"
+        ],
+        "correcta": 3,
+        "pista": "Piensa qué se hace con el tomate y la cebolla antes de ponerlos en el bol.",
+        "explicacion_error": "«Chop» significa picar, cortar en trozos pequeños: así se preparan el tomate, la cebolla y el cilantro.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "A strong storm hit the south of Chile yesterday. In Puerto Montt, heavy rain and wind closed some schools and roads. Nobody was hurt, but many houses lost electricity for several hours. Experts say the weather will improve on Friday.",
+        "enunciado": "In the text, «Nobody was hurt» means…",
+        "alternativas": [
+          "Nadie resultó herido.",
+          "Todos se enfermaron.",
+          "Nadie tenía luz.",
+          "Nadie ayudó."
+        ],
+        "correcta": 0,
+        "pista": "«Nobody» significa nadie; «hurt» tiene que ver con lesiones.",
+        "explicacion_error": "«Nobody was hurt» significa nadie resultó herido; lo que perdieron muchas casas fue la electricidad.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-013",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "texto": "Violeta Parra was a Chilean singer, songwriter and artist. She was born in 1917. She traveled around the Chilean countryside and collected traditional songs. She also made arpilleras, colorful pictures sewn on cloth. Today, her song “Gracias a la vida” is famous all over the world.",
+        "enunciado": "True or false?",
+        "categorias": [
+          "True",
+          "False"
+        ],
+        "elementos": [
+          {
+            "texto": "She was Chilean.",
+            "categoria": 0
+          },
+          {
+            "texto": "She collected songs from the countryside.",
+            "categoria": 0
+          },
+          {
+            "texto": "She only sang; she didn't make art.",
+            "categoria": 1
+          },
+          {
+            "texto": "Her song is famous only in Chile.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Fíjate en las palabras «also» y «all over the world».",
+        "explicacion_error": "Era chilena y recopiló canciones del campo; también hizo arpilleras (also made) y su canción es famosa en todo el mundo (all over the world).",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Gabriela Mistral was born in Vicuña, Chile, in 1889. She worked as a teacher for many years and wrote beautiful poems for children. In 1945, she won the Nobel Prize in Literature. She was the first Latin American writer to receive this prize.",
+        "enunciado": "What is the main purpose of the text?",
+        "alternativas": [
+          "to sell a book of poems",
+          "to teach how to write poems",
+          "to invite tourists to Vicuña",
+          "to give information about Gabriela Mistral's life"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en qué tipo de texto es: cuenta datos de la vida de una persona.",
+        "explicacion_error": "Es una biografía breve: informa sobre la vida de Gabriela Mistral (dónde nació, en qué trabajó y qué premio ganó).",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "A strong storm hit the south of Chile yesterday. In Puerto Montt, heavy rain and wind closed some schools and roads. Nobody was hurt, but many houses lost electricity for several hours. Experts say the weather will improve on Friday.",
+        "enunciado": "What is the main idea of the news?",
+        "alternativas": [
+          "The weather is always bad in the south.",
+          "Puerto Montt has new schools.",
+          "Many people were hurt in a storm.",
+          "A storm caused problems in the south of Chile."
+        ],
+        "correcta": 3,
+        "pista": "La idea principal resume toda la noticia; descarta lo que el texto no dice.",
+        "explicacion_error": "La noticia cuenta que una tormenta causó problemas en el sur (colegios, caminos y luz); además dice que nadie resultó herido.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Visit Chiloé! Discover its colorful wooden churches and its palafitos, traditional houses on stilts over the water. Try curanto, a delicious dish cooked in a hole in the ground. You can get there by ferry from Pargua. Come and enjoy the magic of the island!",
+        "enunciado": "What is the purpose of the brochure?",
+        "alternativas": [
+          "to report news about Chiloé",
+          "to persuade tourists to visit Chiloé",
+          "to give a recipe for curanto",
+          "to explain how to build churches"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en «Visit», «Discover» y «Try»: son invitaciones.",
+        "explicacion_error": "Los folletos turísticos buscan convencer: «Visit», «Discover» y «Try» invitan a los turistas a ir a Chiloé.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa9-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Last week, students from a school in Rancagua won a national robotics competition. Their robot can separate plastic, glass and paper for recycling. The team worked on the project for six months. In December, they will travel to Brazil to compete with teams from other countries.",
+        "enunciado": "Which is the best headline for this news?",
+        "alternativas": [
+          "Brazil Wins Recycling Prize",
+          "Robots Are Dangerous for Students",
+          "Chilean Students Win Robotics Competition",
+          "Rancagua Builds a New School"
+        ],
+        "correcta": 2,
+        "pista": "El titular debe resumir lo más importante de la noticia.",
+        "explicacion_error": "Lo principal es que estudiantes de Rancagua ganaron un concurso nacional de robótica; los otros titulares no dicen eso.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "8_basico",
+    "asignatura": "ingles",
+    "eje": "Expresión escrita",
+    "objetivo_oficial": "OA 16: Escribir usando funciones del lenguaje como expresar cantidades, gustos y preferencias, comparar y pedir o dar información sobre el tiempo.",
+    "dificultad": 7,
+    "prerequisitos": [
+      "7_basico.ingles.OA16"
+    ],
+    "id_objetivo": "8_basico.ingles.OA16",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/70374:IN08-OA-16"
+    },
+    "desafios": [
+      {
+        "id": "ing8-oa16-001",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Contable o incontable?",
+        "categorias": [
+          "Countable",
+          "Uncountable"
+        ],
+        "elementos": [
+          {
+            "texto": "apple",
+            "categoria": 0
+          },
+          {
+            "texto": "egg",
+            "categoria": 0
+          },
+          {
+            "texto": "tomato",
+            "categoria": 0
+          },
+          {
+            "texto": "milk",
+            "categoria": 1
+          },
+          {
+            "texto": "rice",
+            "categoria": 1
+          },
+          {
+            "texto": "water",
+            "categoria": 1
+          }
+        ],
+        "pista": "¿Puedes contarlo de uno en uno (one, two, three)?",
+        "explicacion_error": "Apple, egg y tomato se cuentan (two apples); milk, rice y water no se cuentan de uno en uno: son incontables.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-002",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada símbolo con el tiempo que indica.",
+        "pares": [
+          [
+            "☀️",
+            "It's sunny."
+          ],
+          [
+            "🌧️",
+            "It's raining."
+          ],
+          [
+            "❄️",
+            "It's snowing."
+          ],
+          [
+            "💨",
+            "It's windy."
+          ],
+          [
+            "☁️",
+            "It's cloudy."
+          ]
+        ],
+        "pista": "Piensa en «sun», «rain», «snow», «wind» y «cloud».",
+        "explicacion_error": "☀️ sunny (soleado), 🌧️ raining (lloviendo), ❄️ snowing (nevando), 💨 windy (con viento) y ☁️ cloudy (nublado).",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Escucha el modelo y completa: «I love ___ in the sea.»",
+        "audio": {
+          "texto": "I love swimming in the sea.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "swim",
+          "swimming",
+          "swims",
+          "swam"
+        ],
+        "correcta": 1,
+        "pista": "Después de «love» el verbo termina en -ing.",
+        "explicacion_error": "Después de love, like o hate se usa el verbo con -ing: «I love swimming in the sea».",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa: «How ___ water do you drink every day?»",
+        "alternativas": [
+          "much",
+          "any",
+          "some",
+          "many"
+        ],
+        "correcta": 0,
+        "pista": "«Water» no se cuenta de uno en uno.",
+        "explicacion_error": "Con sustantivos incontables, como water, se pregunta «How much…?».",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa: «Santiago is ___ than Valparaíso.» (más grande)",
+        "alternativas": [
+          "more big",
+          "bigger",
+          "biggest",
+          "biger"
+        ],
+        "correcta": 1,
+        "pista": "Adjetivo corto + -er; ojo con la consonante final.",
+        "explicacion_error": "«Big» dobla la g: bigger. «Santiago is bigger than Valparaíso» significa Santiago es más grande que Valparaíso.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-006",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Escucha el modelo y ordena la pregunta: «¿Cómo está el tiempo hoy?»",
+        "audio": {
+          "texto": "What's the weather like today?",
+          "idioma": "en"
+        },
+        "elementos": [
+          "What's",
+          "the weather",
+          "like",
+          "today?"
+        ],
+        "pista": "En esta pregunta, «like» significa cómo es y va después de «the weather».",
+        "explicacion_error": "«What's the weather like today?» significa ¿cómo está el tiempo hoy?",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Completa: «There aren't ___ eggs in the fridge.»",
+        "alternativas": [
+          "much",
+          "some",
+          "a",
+          "any"
+        ],
+        "correcta": 3,
+        "pista": "En oraciones negativas se usa una palabra especial.",
+        "explicacion_error": "En oraciones negativas y en preguntas se usa «any»: «There aren't any eggs in the fridge».",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué oración está bien escrita?",
+        "alternativas": [
+          "I prefer read to watching TV.",
+          "I prefer reading than watching TV.",
+          "I prefer reading to watching TV.",
+          "I prefers reading to watching TV."
+        ],
+        "correcta": 2,
+        "pista": "Después de «prefer» va un verbo con -ing, y se compara con «to».",
+        "explicacion_error": "Se dice prefer + verbo con -ing + to + verbo con -ing: «I prefer reading to watching TV».",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada adjetivo con su comparativo.",
+        "pares": [
+          [
+            "good",
+            "better"
+          ],
+          [
+            "bad",
+            "worse"
+          ],
+          [
+            "big",
+            "bigger"
+          ],
+          [
+            "happy",
+            "happier"
+          ],
+          [
+            "expensive",
+            "more expensive"
+          ]
+        ],
+        "pista": "Ojo: good y bad son irregulares.",
+        "explicacion_error": "good → better, bad → worse, big → bigger, happy → happier y expensive → more expensive.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-010",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Completa: «Look at those dark clouds! It's going ___ rain.»",
+        "alternativas": [
+          "at",
+          "will",
+          "for",
+          "to"
+        ],
+        "correcta": 3,
+        "pista": "Para predecir algo que ves venir se usa «be going» + una palabra corta + el verbo.",
+        "explicacion_error": "«It's going to rain» significa va a llover: going to sirve para predicciones con evidencia, como las nubes negras.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Completa: «Ojos del Salado is the ___ volcano in the world.»",
+        "alternativas": [
+          "more high",
+          "higher",
+          "highest",
+          "most high"
+        ],
+        "correcta": 2,
+        "pista": "Comparas con todos los volcanes del mundo: necesitas el superlativo.",
+        "explicacion_error": "Con «the … in the world» se usa el superlativo: high → the highest. El Ojos del Salado es el volcán más alto del mundo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Se completa con «much» o con «many»?",
+        "categorias": [
+          "much",
+          "many"
+        ],
+        "elementos": [
+          {
+            "texto": "How ___ money do you have?",
+            "categoria": 0
+          },
+          {
+            "texto": "There isn't ___ time.",
+            "categoria": 0
+          },
+          {
+            "texto": "How ___ sugar do you want?",
+            "categoria": 0
+          },
+          {
+            "texto": "How ___ students are there?",
+            "categoria": 1
+          },
+          {
+            "texto": "I don't have ___ friends in this city.",
+            "categoria": 1
+          },
+          {
+            "texto": "Are there ___ tourists in Pucón?",
+            "categoria": 1
+          }
+        ],
+        "pista": "«Much» va con lo que no se cuenta; «many», con lo que se cuenta.",
+        "explicacion_error": "Money, time y sugar son incontables: much. Students, friends y tourists son contables: many.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Escribe en inglés: «Preferiría quedarme en casa que salir.»",
+        "elementos": [
+          "I'd rather",
+          "stay",
+          "at home",
+          "than",
+          "go out."
+        ],
+        "pista": "Después de «I'd rather» va el verbo sin «to».",
+        "explicacion_error": "«I'd rather stay at home than go out.» significa preferiría quedarme en casa que salir.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "{personaje} pregunta: «What's the weather like in Punta Arenas tomorrow?» El pronóstico dice ❄️. ¿Qué respuesta está bien escrita?",
+        "alternativas": [
+          "It's going to snow.",
+          "It's go to snow.",
+          "It going to snow.",
+          "It's going to snowing."
+        ],
+        "correcta": 0,
+        "pista": "Revisa que esté «is», que diga «going to» y que el verbo vaya sin -ing.",
+        "explicacion_error": "Para predecir el tiempo se usa It's going to + verbo: «It's going to snow» significa va a nevar.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-015",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Temperaturas: Arica 25 °C, Santiago 18 °C, Punta Arenas 8 °C. Completa: «Punta Arenas is the ___ city of the three.»",
+        "alternativas": [
+          "most cold",
+          "colder",
+          "coldest",
+          "hottest"
+        ],
+        "correcta": 2,
+        "pista": "Comparas tres ciudades: busca la más fría y usa el superlativo.",
+        "explicacion_error": "Punta Arenas tiene la temperatura más baja: es «the coldest» (la más fría). Con tres o más se usa el superlativo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Martina odia levantarse temprano, pero le encanta dormir hasta tarde. ¿Qué oración la describe?",
+        "alternativas": [
+          "She hates get up early, but she loves sleeping late.",
+          "She hates getting up early, but she love sleeping late.",
+          "She loves getting up early, but she hates sleeping late.",
+          "She hates getting up early, but she loves sleeping late."
+        ],
+        "correcta": 3,
+        "pista": "Revisa el significado, el -ing después de love y hate, y la -s con she.",
+        "explicacion_error": "«She hates getting up early, but she loves sleeping late»: hate y love + verbo con -ing, y con she el verbo lleva -s.",
+        "monedas": 10
+      },
+      {
+        "id": "ing8-oa16-017",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿La oración está bien escrita o tiene un error?",
+        "categorias": [
+          "Bien escrita",
+          "Tiene un error"
+        ],
+        "elementos": [
+          {
+            "texto": "There isn't much milk.",
+            "categoria": 0
+          },
+          {
+            "texto": "This is the most interesting book in the library.",
+            "categoria": 0
+          },
+          {
+            "texto": "We have a lot of homework.",
+            "categoria": 0
+          },
+          {
+            "texto": "I'd rather to walk.",
+            "categoria": 1
+          },
+          {
+            "texto": "My brother is more tall than me.",
+            "categoria": 1
+          },
+          {
+            "texto": "How many bread do you want?",
+            "categoria": 1
+          }
+        ],
+        "pista": "Revisa would rather, los comparativos y si el sustantivo se cuenta o no.",
+        "explicacion_error": "Lo correcto es «I'd rather walk», «taller than me» y «How much bread…?»; las otras tres están bien escritas.",
+        "monedas": 10
+      }
+    ]
+  }
+]

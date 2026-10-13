@@ -78,16 +78,14 @@ las construcciones siempre femeninas. Ejemplo: «{personaje} {junto} 8 {objetos}
 ## Cobertura actual
 
 <!-- inicio:cobertura -->
-72 objetivos y 1.268 desafíos (87 con audio en inglés). Resumen por asignatura:
+88 objetivos y 1.534 desafíos (91 con audio en inglés). Resumen por asignatura:
 
 | Asignatura | Cursos | OA | Desafíos |
 |---|---|---|---|
 | Matemática | 1° a 8° básico | 25 | 500 |
-| Lenguaje y Comunicación | 1° a 5° básico | 14 | 215 |
-| Ciencias Naturales | 1° a 8° básico | 21 | 338 |
-| Inglés | 1° a 6° básico | 12 | 215 |
-
-Registrados en `herramientas/objetivos.py` y aún sin desafíos (16): 5° Len OA 22, 6° Len OA 4, 6° Len OA 21, 7° Len OA 3, 7° Len OA 4, 8° Len OA 3, 8° Len OA 4, 3° Cie OA 12, 4° Cie OA 1, 4° Cie OA 3, 4° Cie OA 5, 4° Cie OA 16, 7° Ing OA 9, 7° Ing OA 16, 8° Ing OA 9, 8° Ing OA 16.
+| Lenguaje y Comunicación | 1° a 8° básico | 21 | 332 |
+| Ciencias Naturales | 1° a 8° básico | 26 | 419 |
+| Inglés | 1° a 8° básico | 16 | 283 |
 
 ### Matemática
 
@@ -137,6 +135,13 @@ Registrados en `herramientas/objetivos.py` y aún sin desafíos (16): 5° Len OA
 | 5° básico | [OA 4](https://www.curriculumnacional.cl/614/w3-article-17262.html) | Lectura | 17 | verificado | 4° Len OA 4 |
 | 5° básico | [OA 12](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/5-basico) | Lectura | 16 | verificado | 4° Len OA 10 |
 | 5° básico | [OA 21](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/5-basico) | Escritura | 17 | verificado | 3° Len OA 20 |
+| 5° básico | [OA 22](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/5-basico) | Escritura | 17 | verificado | 4° Len OA 21 |
+| 6° básico | [OA 4](https://www.curriculumnacional.cl/docentes/Educacion-General/Lenguaje-y-comunicacion-6-basico/LE06-OA-04/17299:LE06-OA-04) | Lectura | 16 | verificado | 5° Len OA 4 |
+| 6° básico | [OA 21](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/6-basico) | Escritura | 17 | **pendiente** | 5° Len OA 21 |
+| 7° básico | [OA 3](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/70382:LE07-OA-03) | Lectura | 17 | verificado | 6° Len OA 4 |
+| 7° básico | [OA 4](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/70383:LE07-OA-04) | Lectura | 16 | verificado | 5° Len OA 4 |
+| 8° básico | [OA 3](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/lengua-literatura/8-basico) | Lectura | 17 | verificado | 7° Len OA 3 |
+| 8° básico | [OA 4](https://www.curriculumnacional.cl/614/w3-article-70416.html) | Lectura | 17 | verificado | 7° Len OA 4 |
 
 ### Ciencias Naturales
 
@@ -151,6 +156,11 @@ Registrados en `herramientas/objetivos.py` y aún sin desafíos (16): 5° Len OA
 | 3° básico | [OA 1](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/3-basico) | Ciencias de la vida | 16 | verificado | 1° Cie OA 4 |
 | 3° básico | [OA 9](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/3-basico) | Ciencias físicas y químicas | 16 | verificado | — |
 | 3° básico | [OA 11](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Ciencias-de-la-Tierra-y-el-Universo/18418:CN03-OA-11) | Ciencias de la Tierra y el Universo | 16 | verificado | 1° Cie OA 12 |
+| 3° básico | [OA 12](https://www.curriculumnacional.cl/portal/Educacion-General/Ciencias-Naturales-3-basico/CN03-OA-12/182826:Ficha-Pedagogica-para-la-priorizacion-curricular-Ciencias-naturales-3-basico-OA-12) | Ciencias de la Tierra y el Universo | 16 | verificado | 3° Cie OA 11 |
+| 4° básico | [OA 1](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Ciencias-de-la-Vida/18433:CN04-OA-01) | Ciencias de la vida | 16 | verificado | 2° Cie OA 1 |
+| 4° básico | [OA 3](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Ciencias-de-la-Vida/18435:CN04-OA-03) | Ciencias de la vida | 16 | verificado | 4° Cie OA 1, 3° Cie OA 1 |
+| 4° básico | [OA 5](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/4-basico) | Ciencias de la vida | 16 | verificado | 2° Cie OA 7 |
+| 4° básico | [OA 16](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Ciencias-de-la-Tierra-y-el-Universo/18448:CN04-OA-16) | Ciencias de la Tierra y el Universo | 17 | verificado | — |
 | 5° básico | [OA 1](https://www.curriculumnacional.cl/614/w3-article-18462.html) | Ciencias de la vida | 16 | verificado | 2° Cie OA 7 |
 | 5° básico | [OA 8](https://www.curriculumnacional.cl/docentes/Educacion-General/Ciencias-Naturales-5-basico/CN05-OA-08/18469:CN05-OA-08) | Ciencias físicas y químicas | 16 | verificado | — |
 | 5° básico | [OA 10](https://www.curriculumnacional.cl/docentes/Educacion-General/Ciencias-Naturales-5-basico/CN05-OA-10/18471:CN05-OA-10) | Ciencias físicas y químicas | 15 | verificado | 5° Cie OA 8 |
@@ -180,6 +190,10 @@ Registrados en `herramientas/objetivos.py` y aún sin desafíos (16): 5° Len OA
 | 5° básico | [OA 14](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/18717:IN05-OA-14) | Expresión escrita | 17 | verificado | 4° Ing OA 13 |
 | 6° básico | [OA 5](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Comprension-de-lectura/18728:IN06-OA-05) | Comprensión de lectura | 16 | verificado | 5° Ing OA 5 |
 | 6° básico | [OA 15](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/18738:IN06-OA-15) | Expresión escrita | 17 | verificado | 5° Ing OA 14 |
+| 7° básico | [OA 9](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ingles/7-basico/in07-oa-09) | Comprensión de lectura | 17 | verificado | 6° Ing OA 5 |
+| 7° básico | [OA 16](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/70353:IN07-OA-16) | Expresión escrita | 17 | verificado | 6° Ing OA 15 |
+| 8° básico | [OA 9](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ingles/8-basico) | Comprensión de lectura | 17 | verificado | 7° Ing OA 9 |
+| 8° básico | [OA 16](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/70374:IN08-OA-16) | Expresión escrita | 17 | verificado | 7° Ing OA 16 |
 <!-- fin:cobertura -->
 
 ### Pendientes de verificación

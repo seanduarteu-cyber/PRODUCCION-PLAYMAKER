@@ -1041,5 +1041,395 @@
         "monedas": 10
       }
     ]
+  },
+  {
+    "nivel": "5_basico",
+    "asignatura": "lenguaje",
+    "eje": "Escritura",
+    "objetivo_oficial": "OA 22: Escribir correctamente: uso de c-s-z, raya para el diálogo, acento diacrítico, diéresis y coma en frases explicativas.",
+    "dificultad": 5,
+    "prerequisitos": [
+      "4_basico.lenguaje.OA21"
+    ],
+    "id_objetivo": "5_basico.lenguaje.OA22",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/5-basico"
+    },
+    "desafios": [
+      {
+        "id": "len5-oa22-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Un lápiz, dos ___.",
+        "alternativas": [
+          "lápizes",
+          "lápices",
+          "lápises",
+          "lapices"
+        ],
+        "correcta": 1,
+        "pista": "Las palabras terminadas en z forman el plural con -ces.",
+        "explicacion_error": "lápiz → lápices: la z cambia a c y conserva la tilde.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál está bien escrita?",
+        "alternativas": [
+          "pinguino",
+          "pinhuino",
+          "pingüíno",
+          "pingüino"
+        ],
+        "correcta": 3,
+        "pista": "Se pronuncia la u entre la g y la i.",
+        "explicacion_error": "Se escribe «pingüino»: la diéresis (ü) indica que la u suena.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué signo indica, en un diálogo, que habla un personaje?",
+        "alternativas": [
+          "el asterisco (*)",
+          "el punto (.)",
+          "la raya (—)",
+          "el paréntesis ( )"
+        ],
+        "correcta": 2,
+        "pista": "Es una línea horizontal larga al inicio de lo que dice el personaje.",
+        "explicacion_error": "La raya (—) marca la intervención de cada personaje en un diálogo.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Bien escrita o mal escrita?",
+        "categorias": [
+          "Bien escrita",
+          "Mal escrita"
+        ],
+        "elementos": [
+          {
+            "texto": "vergüenza",
+            "categoria": 0
+          },
+          {
+            "texto": "paragüero",
+            "categoria": 0
+          },
+          {
+            "texto": "guitarra",
+            "categoria": 0
+          },
+          {
+            "texto": "pinguino",
+            "categoria": 1
+          },
+          {
+            "texto": "cigueña",
+            "categoria": 1
+          },
+          {
+            "texto": "güitarra",
+            "categoria": 1
+          }
+        ],
+        "pista": "La ü se usa solo cuando la u suena entre g y e o i.",
+        "explicacion_error": "vergüenza, paragüero y guitarra están bien; se escribe pingüino, cigüeña y guitarra (sin diéresis, porque la u no suena).",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Ellas son muy ___ (capaz) de lograrlo.",
+        "alternativas": [
+          "capases",
+          "capaces",
+          "capazes",
+          "capaz"
+        ],
+        "correcta": 1,
+        "pista": "Plural de una palabra terminada en z.",
+        "explicacion_error": "capaz → capaces: la z cambia a c antes de -es.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "¿Quieres un ___ o un café?",
+        "alternativas": [
+          "tee",
+          "té",
+          "tea",
+          "te"
+        ],
+        "correcta": 1,
+        "pista": "Es la bebida, no el pronombre.",
+        "explicacion_error": "La bebida lleva tilde diacrítica: té. Sin tilde, «te» es pronombre (te quiero).",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "La confi___ entre amigos es importante.",
+        "alternativas": [
+          "anza",
+          "asa",
+          "ancia",
+          "ansa"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en «esperanza» y «enseñanza».",
+        "explicacion_error": "Los sustantivos con el sufijo -anza se escriben con z: confianza.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-008",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Bien escrita o mal escrita?",
+        "categorias": [
+          "Bien escrita",
+          "Mal escrita"
+        ],
+        "elementos": [
+          {
+            "texto": "belleza",
+            "categoria": 0
+          },
+          {
+            "texto": "rapidez",
+            "categoria": 0
+          },
+          {
+            "texto": "tristeza",
+            "categoria": 0
+          },
+          {
+            "texto": "niñes",
+            "categoria": 1
+          },
+          {
+            "texto": "pobresa",
+            "categoria": 1
+          },
+          {
+            "texto": "vejes",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los sustantivos abstractos terminados en -ez y -eza se escriben con z.",
+        "explicacion_error": "Se escribe niñez, pobreza y vejez, con z, como belleza, rapidez y tristeza.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "A ___ me gusta el pastel de choclo.",
+        "alternativas": [
+          "mí",
+          "mi",
+          "mío",
+          "me"
+        ],
+        "correcta": 0,
+        "pista": "Después de «a», es el pronombre de la persona que habla.",
+        "explicacion_error": "«Mí» con tilde es pronombre (a mí); «mi» sin tilde es posesivo (mi casa).",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-010",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿La palabra derivada termina en -ción o en -sión?",
+        "categorias": [
+          "-ción",
+          "-sión"
+        ],
+        "elementos": [
+          {
+            "texto": "educado → educa…",
+            "categoria": 0
+          },
+          {
+            "texto": "atento → aten…",
+            "categoria": 0
+          },
+          {
+            "texto": "redactor → redac…",
+            "categoria": 0
+          },
+          {
+            "texto": "confuso → confu…",
+            "categoria": 1
+          },
+          {
+            "texto": "decisivo → deci…",
+            "categoria": 1
+          },
+          {
+            "texto": "televisor → televi…",
+            "categoria": 1
+          }
+        ],
+        "pista": "Si la palabra base termina en -do, -to o -tor, usa -ción; si termina en -so, -sor o -sivo, usa -sión.",
+        "explicacion_error": "educación, atención y redacción llevan -ción; confusión, decisión y televisión, -sión.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué diálogo está bien escrito?",
+        "alternativas": [
+          "—¿Vienes a jugar? —preguntó Diego.",
+          "—¿Vienes a jugar? preguntó Diego—.",
+          "¿Vienes a jugar? —preguntó Diego.",
+          "—¿Vienes a jugar?, preguntó Diego."
+        ],
+        "correcta": 0,
+        "pista": "Va una raya al inicio de lo que dice el personaje y otra antes de lo que aclara el narrador.",
+        "explicacion_error": "Se abre con raya y el comentario del narrador también va tras una raya: —¿Vienes a jugar? —preguntó Diego.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué oración usa bien las comas?",
+        "alternativas": [
+          "Valparaíso, la ciudad de los cerros está junto al mar.",
+          "Valparaíso la ciudad de los cerros, está junto al mar.",
+          "Valparaíso, la ciudad de los cerros, está junto al mar.",
+          "Valparaíso la ciudad, de los cerros está junto al mar."
+        ],
+        "correcta": 2,
+        "pista": "Una frase explicativa va entre dos comas.",
+        "explicacion_error": "«la ciudad de los cerros» explica qué es Valparaíso: va entre dos comas.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-013",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada palabra con su uso.",
+        "pares": [
+          [
+            "tú",
+            "pronombre (tú cantas)"
+          ],
+          [
+            "tu",
+            "posesivo (tu casa)"
+          ],
+          [
+            "sí",
+            "afirmación (sí, quiero)"
+          ],
+          [
+            "si",
+            "condición (si llueve…)"
+          ]
+        ],
+        "pista": "La tilde diacrítica distingue palabras que se escriben igual.",
+        "explicacion_error": "tú y sí con tilde son pronombre y afirmación; tu y si sin tilde son posesivo y condición.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-014",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "—Mañana iremos a Chiloé ___dijo mamá—. Lleven ropa de lluvia.",
+        "alternativas": [
+          "—",
+          ":",
+          ",",
+          "«"
+        ],
+        "correcta": 0,
+        "pista": "Lo que aclara el narrador dentro de un diálogo va entre rayas.",
+        "explicacion_error": "El inciso del narrador se abre con raya: «—Mañana iremos a Chiloé —dijo mamá—».",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué oración está escrita sin errores?",
+        "alternativas": [
+          "Si tú quieres, mañana te invito un té.",
+          "Si tú quieres, mañana té invito un té.",
+          "Si tu quieres, mañana te invito un té.",
+          "Sí tu quieres, mañana té invito un te."
+        ],
+        "correcta": 0,
+        "pista": "Revisa cada palabra: si, tú, te y té.",
+        "explicacion_error": "«Si» es condición, «tú» pronombre, «te» pronombre y «té» la bebida.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "¿Cuántas comas faltan? «El huemul animal de nuestro escudo vive en el sur.»",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "unidad": "comas",
+        "pista": "Busca la frase que explica qué es el huemul.",
+        "explicacion_error": "Faltan 2: El huemul, animal de nuestro escudo, vive en el sur.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa22-017",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué letra va en el espacio?",
+        "categorias": [
+          "c",
+          "s",
+          "z"
+        ],
+        "elementos": [
+          {
+            "texto": "lu_es (plural de luz)",
+            "categoria": 0
+          },
+          {
+            "texto": "can_ión (de cantar)",
+            "categoria": 0
+          },
+          {
+            "texto": "confu_ión (de confuso)",
+            "categoria": 1
+          },
+          {
+            "texto": "pa_ito (de paso)",
+            "categoria": 1
+          },
+          {
+            "texto": "rique_a",
+            "categoria": 2
+          },
+          {
+            "texto": "timide_",
+            "categoria": 2
+          }
+        ],
+        "pista": "Piensa en la palabra de origen y en las terminaciones -eza y -ez.",
+        "explicacion_error": "luces y canción con c; confusión y pasito con s (vienen de confuso y paso); riqueza y timidez con z.",
+        "monedas": 10
+      }
+    ]
   }
 ]
