@@ -95,8 +95,9 @@ def main():
                 err.append(f"{oid}: nivel/asignatura no coinciden con el archivo")
             if not re.fullmatch(r"\d_(basico|medio)\.\w+\.OA\d+", oid):
                 err.append(f"{oid}: id de objetivo con formato inválido")
-            if not oa["objetivo_oficial"].startswith("OA "):
-                err.append(f"{oid}: objetivo_oficial debe empezar con 'OA n:'")
+            oficial = oa["verificacion"].get("codigo_oficial")
+            if not (oa["objetivo_oficial"].startswith("OA ") or (oficial and oa["objetivo_oficial"].startswith(oficial + ":"))):
+                err.append(f"{oid}: objetivo_oficial debe empezar con 'OA n:' o con su código oficial")
             if oa["verificacion"]["codigo"] != "verificado":
                 pendientes.append(oid)
             ds = oa["desafios"]

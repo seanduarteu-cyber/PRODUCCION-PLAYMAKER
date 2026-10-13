@@ -26,7 +26,11 @@
   const ultimoNivel = () => A.datos.objetivos[A.datos.orden.reduce((m, id) => (Motor.idxNivel(A.datos.objetivos[id].nivel) > Motor.idxNivel(A.datos.objetivos[m].nivel) ? id : m))].nivel;
   const listaAsig = () => { const n = asignaturas().map(a => NOMBRE_ASIG[a] || a); return n.length > 1 ? `${n.slice(0, -1).join(', ')} y ${n[n.length - 1]}` : n.join(''); };
   const codigoCorto = oaId => { const o = A.datos.objetivos[oaId]; return `${o.objetivo_oficial.split(':')[0]} · ${nombreNivel(o.nivel)}`; };
-  const resumenOA = oaId => A.datos.objetivos[oaId].objetivo_oficial.replace(/^OA \d+:\s*/, '');
+  const resumenOA = oaId => A.datos.objetivos[oaId].objetivo_oficial.replace(/^[^:]+:\s*/, ''); // quita «OA n:» o «FG-…-OAC-0n:»
+  // En media Lenguaje es Lengua y Literatura; en 3° y 4° medio Ciencias es Ciencias para la Ciudadanía.
+  const nombreAsig = (asig, nivel) => (asig === 'lenguaje' && /_medio$/.test(nivel || '') ? 'Lengua y Literatura'
+    : asig === 'ciencias' && /^[34]_medio$/.test(nivel || '') ? 'Ciencias para la Ciudadanía' : NOMBRE_ASIG[asig] || asig);
+  ES.nombreAsig = nombreAsig;
   ES.codigoCorto = codigoCorto; ES.resumenOA = resumenOA;
   const pips = (n, total = 5) => `<span class="pips" role="img" aria-label="Dificultad ${n} de ${total}">${Array.from({ length: total }, (_, i) => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</span>`;
   ES.pips = pips;
@@ -176,11 +180,12 @@
       ? `<p class="nota">Tu curso (${esc(nombreNivel(p.nivel_escolar))}) aún no tiene contenido. Mientras tanto practicas hasta ${esc(nombreNivel(ultimoNivel()))}.</p>` : '';
     const tarjeta = asig => {
       const alcance = A.datos.orden.some(id => A.datos.objetivos[id].asignatura === asig && Motor.idxNivel(A.datos.objetivos[id].nivel) <= Motor.idxNivel(p.nivel_escolar));
-      if (!alcance) return `<article class="bloque asignatura"><h3>${NOMBRE_ASIG[asig]}</h3><p>Los desafíos de tu curso están en preparación. ¡Muy pronto!</p></article>`;
+      const titulo = nombreAsig(asig, p.nivel_escolar);
+      if (!alcance) return `<article class="bloque asignatura"><h3>${titulo}</h3><p>Los desafíos de tu curso están en preparación. ¡Muy pronto!</p></article>`;
       const oaId = Motor.recomendar(p, asig, A.datos);
-      if (!oaId) return `<article class="bloque asignatura"><h3>${NOMBRE_ASIG[asig]}</h3><p>Dominaste todo lo disponible en tu curso. ¡Excelente!</p>
+      if (!oaId) return `<article class="bloque asignatura"><h3>${titulo}</h3><p>Dominaste todo lo disponible en tu curso. ¡Excelente!</p>
         <button class="btn piedra" type="button" data-arbol="${asig}">Ver el árbol</button></article>`;
-      return `<article class="bloque asignatura"><h3>${NOMBRE_ASIG[asig]}</h3>
+      return `<article class="bloque asignatura"><h3>${nombreAsig(asig, A.datos.objetivos[oaId].nivel)}</h3>
         <p class="oa"><strong>${esc(codigoCorto(oaId))}</strong><br>${esc(resumenOA(oaId))}</p>
         <p>${estadoTexto(p, oaId)}</p>
         <div class="fila"><button class="btn" type="button" data-jugar="${asig}">Jugar 10 desafíos</button><button class="btn piedra" type="button" data-arbol="${asig}">Ver el árbol</button></div>
@@ -218,7 +223,7 @@
       return `<article class="bloque nodo"><div><span class="codigo">${esc(codigoCorto(id))}</span>${pend}<p>${esc(resumenOA(id))}</p><p>${estado}</p></div>${boton}</article>`;
     };
     main.innerHTML = `<section class="pantalla">
-      <div class="fila"><button class="btn chico piedra" type="button" data-ir="base">← Base</button><h1 class="titulo">Árbol de ${NOMBRE_ASIG[asig]}</h1></div>
+      <div class="fila"><button class="btn chico piedra" type="button" data-ir="base">← Base</button><h1 class="titulo">Árbol de ${nombreAsig(asig, p.nivel_escolar)}</h1></div>
       <p class="nota">Cada objetivo se abre cuando sus prerequisitos están dominados o van en dificultad 3. Los cursos anteriores al tuyo se dan por aprendidos y quedan para repasar.</p>
       <div class="arbol">${niveles.map(n => `<h2 class="nivel-grupo">${esc(nombreNivel(n))}</h2>${ids.filter(id => D.objetivos[id].nivel === n).map(nodo).join('')}`).join('')}</div>
     </section>`;

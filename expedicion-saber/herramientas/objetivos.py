@@ -1,6 +1,7 @@
 """Registro de objetivos de aprendizaje (OA) incluidos en el banco.
 
-Códigos según las Bases Curriculares de 1° a 6° básico (curriculumnacional.cl).
+Códigos según las Bases Curriculares de 1° básico a 4° medio (curriculumnacional.cl). En 3° y 4° medio
+(Bases 2019) el código oficial va en verificacion.codigo_oficial (FG-MATE-3M-OAC-01, …).
 - verificacion.codigo = "verificado": el código y su tema se confirmaron en una página
   oficial de curriculumnacional.cl (la URL queda en verificacion.fuente).
 - verificacion.codigo = "pendiente": el código existe en el eje, pero no se pudo confirmar
@@ -11,16 +12,21 @@ Códigos según las Bases Curriculares de 1° a 6° básico (curriculumnacional.
 CN = "https://www.curriculumnacional.cl"
 
 
-def oa(nivel, asig, num, eje, resumen, dificultad, prereq, fuente, codigo="verificado"):
+def oa(nivel, asig, num, eje, resumen, dificultad, prereq, fuente, codigo="verificado", oficial=None):
+    """oficial: código completo cuando no es «OA n» (3° y 4° medio, Bases 2019: FG-MATE-3M-OAC-01, …).
+    En Ciencias para la Ciudadanía los módulos son comunes a 3° y 4° medio; num solo ordena los OA dentro del curso."""
+    v = {"codigo": codigo, "texto": "resumen", "fuente": fuente}
+    if oficial:
+        v["codigo_oficial"] = oficial
     return {
         "id_objetivo": f"{nivel}.{asig}.OA{num}",
         "nivel": nivel,
         "asignatura": asig,
         "eje": eje,
-        "objetivo_oficial": f"OA {num}: {resumen}",
+        "objetivo_oficial": f"{oficial or f'OA {num}'}: {resumen}",
         "dificultad": dificultad,
         "prerequisitos": prereq,
-        "verificacion": {"codigo": codigo, "texto": "resumen", "fuente": fuente},
+        "verificacion": v,
     }
 
 
@@ -222,6 +228,61 @@ OBJETIVOS = [
        7, ["7_basico.ingles.OA9"], f"{CN}/curriculum/7o-basico-2o-medio/ingles/8-basico"),
     oa("8_basico", "ingles", 16, ESCRITA, "Escribir usando funciones del lenguaje como expresar cantidades, gustos y preferencias, comparar y pedir o dar información sobre el tiempo.",
        7, ["7_basico.ingles.OA16"], f"{CN}/portal/Ejes/Ingles/Expresion-escrita/70374:IN08-OA-16"),
+    # ---------- Matemática 1° a 4° medio ----------
+    oa("1_medio", "matematica", 1, "Números", "Resolver operaciones combinadas con números racionales en forma simbólica, respetando la prioridad de las operaciones y los paréntesis.", 8, ["8_basico.matematica.OA1"], f"{CN}/614/w3-article-81005.html"),
+    oa("1_medio", "matematica", 4, "Álgebra y funciones", "Resolver sistemas de ecuaciones lineales 2x2 asociados a problemas cotidianos, por métodos gráficos y algebraicos (sustitución, igualación, reducción), distinguiendo si tienen solución única, infinitas o ninguna.", 8, ["8_basico.matematica.OA7"], f"{CN}/614/w3-article-81008.html"),
+    oa("1_medio", "matematica", 14, "Probabilidad y estadística", "Calcular probabilidades de eventos compuestos con la regla aditiva, la regla multiplicativa y su combinación, apoyándose en diagramas de árbol.", 8, [], f"{CN}/portal/Ejes/Matematica/Probabilidad-y-estadistica/81018:MA1M-OA-14"),
+    oa("2_medio", "matematica", 2, "Números", "Relacionar potencias de exponente racional, raíces enésimas y logaritmos, convirtiendo de una representación a otra (a^x = P equivale a log_a P = x).", 9, ["1_medio.matematica.OA1", "8_basico.matematica.OA3"], f"{CN}/portal/Ejes/Matematica/Numeros/81042:MA2M-OA-02"),
+    oa("2_medio", "matematica", 4, "Álgebra y funciones", "Resolver ecuaciones cuadráticas de las formas ax² = b, (ax + b)² = c, ax² + bx = 0 y ax² + bx = c, por factorización, completación del cuadrado, fórmula o gráficamente.", 9, ["1_medio.matematica.OA4"], f"{CN}/portal/Ejes/Matematica/Algebra-y-funciones/81044:MA2M-OA-04"),
+    oa("2_medio", "matematica", 11, "Probabilidad y estadística", "Usar permutaciones, factoriales y combinatoria sencilla para contar casos y calcular probabilidades de eventos.", 9, ["1_medio.matematica.OA14"], f"{CN}/portal/Ejes/Matematica/Probabilidad-y-estadistica/81051:MA2M-OA-11"),
+    oa("3_medio", "matematica", 1, "Números", "Resolver problemas de adición, sustracción, multiplicación y división de números complejos en forma pictórica y simbólica.", 10, ["2_medio.matematica.OA2"], f"{CN}/curriculum/3o-4o-medio/matematica-3o-medio/3-medio-fg", oficial="FG-MATE-3M-OAC-01"),
+    oa("3_medio", "matematica", 2, "Probabilidad y estadística", "Tomar decisiones en situaciones de incerteza analizando datos con medidas de dispersión y probabilidades condicionales.", 10, ["2_medio.matematica.OA11"], f"{CN}/portal/Ejes/Matematica/91154:FG-MATE-3M-OAC-02", oficial="FG-MATE-3M-OAC-02"),
+    oa("3_medio", "matematica", 3, "Álgebra y funciones", "Aplicar modelos con funciones exponencial y logarítmica para describir fenómenos de crecimiento y decrecimiento.", 10, ["2_medio.matematica.OA2"], f"{CN}/docentes/Formacion-General/Matematica-3-medio/FG-MATE-3M-OAC-03/91155:FG-MATE-3M-OAC-03", oficial="FG-MATE-3M-OAC-03"),
+    oa("4_medio", "matematica", 1, "Números", "Fundamentar decisiones financieras personales o comunitarias con modelos que usan porcentajes, tasas de interés e índices económicos.", 11, ["3_medio.matematica.OA3"], f"{CN}/portal/Ejes/Matematica/91169:FG-MATE-4M-OAC-01", oficial="FG-MATE-4M-OAC-01"),
+    oa("4_medio", "matematica", 2, "Probabilidad y estadística", "Fundamentar decisiones en situaciones de incerteza analizando críticamente datos estadísticos con los modelos binomial y normal.", 11, ["3_medio.matematica.OA2"], f"{CN}/portal/Ejes/Matematica/91170:FG-MATE-4M-OAC-02", oficial="FG-MATE-4M-OAC-02"),
+    oa("4_medio", "matematica", 3, "Álgebra y funciones", "Modelar fenómenos de crecimiento, decrecimiento y periódicos con funciones potencia de exponente entero y con las funciones seno y coseno.", 11, ["3_medio.matematica.OA3"], f"{CN}/portal/Formacion-General/Matematica/Matematica-4-medio/145083:Unidad-3-Funciones-potencias-y-trigonometricas", oficial="FG-MATE-4M-OAC-03"),
+
+    # ---------- Lengua y Literatura 1° a 4° medio ----------
+    oa("1_medio", "lenguaje", 3, LEC, "Analizar narraciones considerando el conflicto, los personajes y sus relaciones, la relación de un fragmento con la obra y el efecto de narrar en primera o tercera persona.", 8, ["8_basico.lenguaje.OA3"], f"{CN}/614/w3-article-80943.html"),
+    oa("1_medio", "lenguaje", 4, LEC, "Analizar poemas considerando sus símbolos, la actitud del hablante, el efecto del lenguaje figurado y la relación entre forma y significado.", 8, ["8_basico.lenguaje.OA4"], f"{CN}/614/w3-article-80944.html"),
+    oa("1_medio", "lenguaje", 9, LEC, "Analizar y evaluar textos argumentativos (columnas, cartas, discursos, ensayos): tesis, argumentos que la sostienen, diferencia entre hecho y opinión y suficiencia de la evidencia.", 8, [], f"{CN}/614/w3-article-80949.html"),
+    oa("2_medio", "lenguaje", 3, LEC, "Analizar narraciones considerando conflictos, personajes tipo, símbolos y tópicos literarios, creencias o estereotipos del relato y el efecto de recursos como el flashback o la historia dentro de otra historia.", 9, ["1_medio.lenguaje.OA3"], f"{CN}/docentes/Educacion-General/Lengua-y-literatura-2-Medio/LE2M-OA-03/80975:LE2M-OA-03"),
+    oa("2_medio", "lenguaje", 9, LEC, "Analizar y evaluar textos argumentativos identificando tesis y argumentos, recursos emocionales, modalizadores y fallas como generalizaciones, estereotipos o descalificaciones personales.", 9, ["1_medio.lenguaje.OA9"], f"{CN}/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/80981:LE2M-OA-09"),
+    oa("2_medio", "lenguaje", 18, ESC, "Escribir correctamente aplicando las reglas de ortografía literal, acentual y puntual (punto, coma, punto y coma, raya, dos puntos, paréntesis, puntos suspensivos y comillas).", 9, [], f"{CN}/portal/Ejes/Lenguaje-y-Comunicacion/Escritura-Produccion/80990:LE2M-OA-18"),
+    oa("3_medio", "lenguaje", 1, "Comprensión", "Formular interpretaciones literarias considerando cómo los recursos literarios (narrador, personajes, tópicos, figuras) construyen el sentido de la obra y sus relaciones intertextuales.", 10, ["2_medio.lenguaje.OA3", "1_medio.lenguaje.OA4"], f"{CN}/portal/Ejes/Lengua-y-literatura/Comprension/91136:FG-LELI-3M-OAC-01", oficial="FG-LELI-3M-OAC-01"),
+    oa("3_medio", "lenguaje", 3, "Comprensión", "Analizar críticamente textos no literarios considerando el contexto de enunciador y audiencia, el género discursivo, cómo se relacionan las ideas para razonar y la veracidad de la información.", 10, ["2_medio.lenguaje.OA9"], f"{CN}/614/w3-article-91138.html", oficial="FG-LELI-3M-OAC-03"),
+    oa("3_medio", "lenguaje", 5, "Comprensión", "Evaluar recursos lingüísticos (léxico valorativo, deícticos, verbos, construcciones oracionales, puntuación) y no lingüísticos de un texto y su efecto en la postura del enunciador y en la audiencia.", 10, ["2_medio.lenguaje.OA18", "2_medio.lenguaje.OA9"], f"{CN}/614/w3-article-91140.html", oficial="FG-LELI-3M-OAC-05"),
+    oa("4_medio", "lenguaje", 1, "Comprensión", "Formular interpretaciones de obras que abordan un mismo tema comparando su relación con los contextos de producción y recepción, la perspectiva adoptada y el efecto estético.", 11, ["3_medio.lenguaje.OA1"], f"{CN}/614/w3-article-91145.html", oficial="FG-LELI-4M-OAC-01"),
+    oa("4_medio", "lenguaje", 3, "Comprensión", "Evaluar críticamente textos no literarios analizando intenciones explícitas e implícitas, veracidad de la información, ideologías y creencias, y el posicionamiento del enunciador.", 11, ["3_medio.lenguaje.OA3"], f"{CN}/docentes/Formacion-General/Lengua-y-literatura-4-medio/FG-LELI-4M-OAC-03/91147:FG-LELI-4M-OAC-03", oficial="FG-LELI-4M-OAC-03"),
+    oa("4_medio", "lenguaje", 4, "Comprensión", "Evaluar cómo los recursos lingüísticos y no lingüísticos de un texto inciden en el posicionamiento frente al tema, en los roles asumidos ante la audiencia y en la construcción del sentido.", 11, ["3_medio.lenguaje.OA5"], f"{CN}/portal/Formacion-General/Lengua-y-literatura-4-medio/FG-LELI-4M-OAC-04/224056:Lengua-y-Literatura-Recursos-ling-isticos-lexico-valorativo-deicticos-verbos-construcciones-oracionales-puntuacion-entre-otras-y-no-ling-isticos-orientados-a-la-coherencia-y-cohesion-textual", oficial="FG-LELI-4M-OAC-04"),
+
+    # ---------- Ciencias Naturales 1° y 2° medio; Ciencias para la Ciudadanía 3° y 4° medio ----------
+    oa("1_medio", "ciencias", 2, "Biología", "Analizar evidencias de que la diversidad de organismos es resultado de la evolución (registro fósil, estructuras homólogas, embriología, ADN) y explicar la selección natural de Darwin y Wallace.", 8, [], f"{CN}/614/w3-article-80700.html"),
+    oa("1_medio", "ciencias", 9, "Física", "Explicar que las ondas transmiten energía y pueden reflejarse, refractarse y absorberse, describiendo amplitud, frecuencia, longitud de onda y rapidez, y clasificándolas en mecánicas o electromagnéticas y transversales o longitudinales.", 8, [], f"{CN}/portal/Ejes/Ciencias-Naturales/Fisica/80707:CN1M-OA-09"),
+    oa("1_medio", "ciencias", 18, "Química", "Explicar con modelos que en una reacción química el número total de átomos no varía y la masa se conserva, aplicando la ley de conservación de la materia a ecuaciones químicas.", 8, ["8_basico.ciencias.OA12"], f"{CN}/portal/Ejes/Quimica/Reacciones-quimicas/80716:CN1M-OA-18"),
+    oa("2_medio", "ciencias", 7, "Biología", "Explicar la herencia genética en plantas y animales aplicando los principios de Mendel, incluyendo problemas de monohibridismo y dihibridismo.", 9, ["1_medio.ciencias.OA2"], f"{CN}/portal/Ejes/Ciencias-Naturales/Biologia/80746:CN2M-OA-07"),
+    oa("2_medio", "ciencias", 9, "Física", "Analizar el movimiento rectilíneo uniforme y acelerado de un objeto respecto de un sistema de referencia, usando posición, desplazamiento, velocidad y aceleración.", 9, [], f"{CN}/portal/Ejes/Ciencias-Naturales/Fisica/80748:CN2M-OA-09"),
+    oa("2_medio", "ciencias", 15, "Química", "Explicar las propiedades de las soluciones (componentes, estado físico, cantidad de soluto) y calcular concentraciones y diluciones.", 9, ["1_medio.ciencias.OA18"], f"{CN}/614/w3-article-80754.html"),
+    oa("3_medio", "ciencias", 1, "Bienestar y salud", "Analizar cómo factores biológicos, ambientales y sociales influyen en la salud humana: nutrición, actividad física, estrés, consumo de alcohol y drogas, y exposición a radiación UV, plaguicidas, patógenos y contaminantes.", 10, [], f"{CN}/614/w3-article-91029.html", oficial="FG-CIBS-3y4-OAC-01"),
+    oa("3_medio", "ciencias", 2, "Tecnología y sociedad", "Explicar cómo avances tecnológicos en robótica, telecomunicaciones, astronomía o física cuántica han ampliado las capacidades sensoriales humanas y la comprensión de la materia, los seres vivos y el entorno.", 10, ["1_medio.ciencias.OA9"], f"{CN}/docentes/Formacion-General/Tecnologia-y-sociedad/FG-CITS-3y4-OAC-02/91045:FG-CITS-3y4-OAC-02", oficial="FG-CITS-3y4-OAC-02"),
+    oa("3_medio", "ciencias", 3, "Bienestar y salud", "Analizar con evidencias cómo se transmiten agentes infecciosos a nivel nacional y mundial, y evaluar medidas de prevención como las vacunas.", 10, ["3_medio.ciencias.OA1"], f"{CN}/portal/Ejes/Ciencias-para-la-ciudadania/Bienestar-y-salud/91031:FG-CIBS-3y4-OAC-03", oficial="FG-CIBS-3y4-OAC-03"),
+    oa("4_medio", "ciencias", 1, "Seguridad, prevención y autocuidado", "Reconocer en sustancias químicas de uso cotidiano (medicamentos, detergentes, plaguicidas) su composición, reactividad y riesgos, y las medidas seguras para manipularlas, almacenarlas y eliminarlas.", 11, ["2_medio.ciencias.OA15", "1_medio.ciencias.OA18"], f"{CN}/docentes/Formacion-General/Seguridad-prevencion-y-autocuidado/FG-CISA-3y4-OAC-01/91041:FG-CISA-3y4-OAC-01", oficial="FG-CISA-3y4-OAC-01"),
+    oa("4_medio", "ciencias", 2, "Seguridad, prevención y autocuidado", "Evaluar y proponer soluciones para reducir amenazas en el hogar y el trabajo, como riesgos de las instalaciones eléctricas, de los sistemas de calefacción y de la exposición a radiaciones.", 11, ["8_basico.ciencias.OA10", "8_basico.ciencias.OA11"], f"{CN}/portal/Curso/Educacion-General/3-Medio-FG/144973:Unidad-2-Modulo-Seguridad-prevencion-y-autocuidado-Amenazas-y-riesgos-cerca-de-nosotros-Estoy-actuando-responsablemente", oficial="FG-CISA-3y4-OAC-02"),
+    oa("4_medio", "ciencias", 3, "Ambiente y sostenibilidad", "Modelar los efectos del cambio climático sobre los ecosistemas y sus componentes biológicos, físicos y químicos, y evaluar soluciones para mitigarlo.", 11, ["8_basico.ciencias.OA11"], f"{CN}/portal/Ejes/Ciencias-para-la-ciudadania/Ambiente-y-sostenibilidad/91028:FG-CIAS-3y4-OAC-03", oficial="FG-CIAS-3y4-OAC-03"),
+
+    # ---------- Inglés 1° a 4° medio ----------
+    oa("1_medio", "ingles", 9, LECT_IN, "Comprender ideas generales e información explícita en textos adaptados y auténticos simples, impresos o digitales, sobre temas variados.", 8, ["8_basico.ingles.OA9"], f"{CN}/docentes/Educacion-General/Ingles-1-medio/IN1M-OA-09/80907:IN1M-OA-09"),
+    oa("1_medio", "ingles", 10, LECT_IN, "Comprender textos no literarios (artículos, avisos, emails, páginas web, biografías, noticias) identificando propósito, idea principal, detalles, relaciones de contraste y problema-solución y vocabulario clave.", 8, ["8_basico.ingles.OA9"], f"{CN}/portal/Ejes/Ingles/Comprension-de-lectura/"),
+    oa("1_medio", "ingles", 16, ESCRITA, "Escribir usando funciones del nivel: hábitos pasados (used to), acciones pasadas que continúan en el presente (present perfect), cláusulas relativas, voz pasiva y conectores como although o so that.", 8, ["8_basico.ingles.OA16"], f"{CN}/portal/Ejes/Ingles/Expresion-escrita/80914:IN1M-OA-16"),
+    oa("2_medio", "ingles", 10, LECT_IN, "Comprender textos no literarios identificando propósito, idea principal, información específica, relaciones de importancia y problema-solución, y expresiones y conectores clave.", 9, ["1_medio.ingles.OA10"], f"{CN}/portal/Innovacion/Lineas-de-Innovacion/Modernizacion-de-Textos-escolares-2020/140095:Textos-Escolares-Reimpresos-Ingles-2-medio"),
+    oa("2_medio", "ingles", 11, LECT_IN, "Comprender textos literarios (canciones, poemas, tiras cómicas, cuentos, novelas adaptadas, mitos) identificando tema, personajes, ambiente, trama y conflicto.", 9, ["1_medio.ingles.OA9"], f"{CN}/portal/Innovacion/Lineas-de-Innovacion/Modernizacion-de-Textos-escolares-2020/140095:Textos-Escolares-Reimpresos-Ingles-2-medio"),
+    oa("2_medio", "ingles", 16, ESCRITA, "Escribir usando funciones del nivel: narrar acciones pasadas ordenadas en el tiempo, reportar lo que otros dijeron, plantear situaciones hipotéticas y dar consejos.", 9, ["1_medio.ingles.OA16"], f"{CN}/portal/Ejes/Ingles/Expresion-escrita/80935:IN2M-OA-16"),
+    oa("3_medio", "ingles", 1, "Comprensión", "Comprender la información central de textos orales y escritos sobre temas de interés, para conocer cómo otras culturas abordan esos contextos.", 10, ["2_medio.ingles.OA10", "2_medio.ingles.OA11"], f"{CN}/portal/Ejes/Ingles/91128:FG-INGL-3M-OAC-01", oficial="FG-INGL-3M-OAC-01"),
+    oa("3_medio", "ingles", 2, "Producción", "Producir textos orales y escritos breves y claros sobre temas de interés para expresar una postura personal crítica que respete otras posturas.", 10, ["2_medio.ingles.OA16"], f"{CN}/docentes/Formacion-General/Ingles-3-medio/FG-INGL-3M-OAC-02/91129:FG-INGL-3M-OAC-02", oficial="FG-INGL-3M-OAC-02"),
+    oa("3_medio", "ingles", 3, "Comprensión y producción", "Usar el conocimiento del inglés para comprender y producir textos breves y claros que construyan una postura personal crítica sobre temas de interés.", 10, ["3_medio.ingles.OA1", "3_medio.ingles.OA2"], f"{CN}/portal/Formacion-General/Ingles/Ingles-3-medio/145038:Unidad-2-My-Reflections-on-Global-Issues", oficial="FG-INGL-3M-OAC-03"),
+    oa("4_medio", "ingles", 1, "Comprensión", "Comprender información relevante para un propósito específico en textos orales y escritos sobre temas de interés, para conocer cómo otras culturas los abordan.", 11, ["3_medio.ingles.OA1"], f"{CN}/curriculum/3o-4o-medio/ingles-4o-medio/4-medio-fg", oficial="FG-INGL-4M-OAC-01"),
+    oa("4_medio", "ingles", 2, "Producción", "Producir textos orales y escritos claros sobre temas de interés para expresar una postura personal crítica que respete otras posturas.", 11, ["3_medio.ingles.OA2"], f"{CN}/curriculum/3o-4o-medio/ingles-4o-medio/4-medio-fg/fg-ingl-4m-oac-02", oficial="FG-INGL-4M-OAC-02"),
+    oa("4_medio", "ingles", 3, "Comprensión y producción", "Usar el conocimiento del inglés para comprender y producir textos orales y escritos claros que construyan una postura personal crítica sobre temas de interés.", 11, ["3_medio.ingles.OA3"], f"{CN}/portal/Formacion-General/Ingles/Ingles-4-medio/145048:Unidad-3-It-s-business-time", oficial="FG-INGL-4M-OAC-03"),
 ]
 
 POR_ID = {o["id_objetivo"]: o for o in OBJETIVOS}

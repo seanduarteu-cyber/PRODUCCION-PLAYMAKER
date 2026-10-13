@@ -8,7 +8,7 @@ import json
 import os
 import re
 
-from objetivos import OBJETIVOS
+from objetivos import OBJETIVOS, POR_ID
 
 BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 CONTENIDO = os.path.join(BASE, "contenido")
@@ -41,10 +41,13 @@ def nombre_nivel(nivel):
 def etiqueta(oid):
     nivel, asig, oa = oid.split(".")
     n, tipo = nivel.split("_")
-    return f"{n}°{'M' if tipo == 'medio' else ''} {CORTA[asig]} OA {oa[2:]}"
+    oficial = POR_ID.get(oid, {}).get("verificacion", {}).get("codigo_oficial")
+    return f"{n}°{'M' if tipo == 'medio' else ''} {CORTA[asig]} {(oficial.split('-')[1] + ' OAC ' + oficial.split('-')[-1]) if oficial else 'OA ' + oa[2:]}"
 
 
 def codigo_oficial(o):
+    if o["verificacion"].get("codigo_oficial"):
+        return o["verificacion"]["codigo_oficial"]
     n, tipo = o["nivel"].split("_")
     num = int(o["id_objetivo"].split(".OA")[1])
     if tipo == "medio":
@@ -94,7 +97,8 @@ def main():
             num = o["id_objetivo"].split(".OA")[1]
             cod = "verificado" if o["verificacion"]["codigo"] == "verificado" else "**pendiente**"
             pre = ", ".join(etiqueta(p) for p in o["prerequisitos"]) or "—"
-            lineas.append(f"| {nombre_nivel(o['nivel'])} | [OA {num}]({o['verificacion']['fuente']}) | {o['eje']} | "
+            cod_txt = o["verificacion"].get("codigo_oficial") or f"OA {num}"
+            lineas.append(f"| {nombre_nivel(o['nivel'])} | [{cod_txt}]({o['verificacion']['fuente']}) | {o['eje']} | "
                           f"{len(o['desafios'])} | {cod} | {pre} |")
     reemplazar(os.path.join(BASE, "docs", "contenido.md"), "cobertura", "\n".join(lineas))
 

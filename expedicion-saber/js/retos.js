@@ -71,7 +71,7 @@
     const d = s.d, st = Motor.estadoOA(p, s.oaId);
     const enun = d.tipo === 'completar' ? esc(d.enunciado).replace('___', '<span class="hueco" id="hueco">?</span>') : esc(d.enunciado);
     main.innerHTML = `<section class="pantalla"><article class="bloque pantalla reto">
-      <div class="reto-cab"><span class="nota"><strong>${ES.NOMBRE_ASIG[s.asig]}</strong> · ${esc(ES.codigoCorto(s.oaId))}</span><span class="nota">Dificultad ${ES.pips(st.nivel)}</span></div>
+      <div class="reto-cab"><span class="nota"><strong>${ES.nombreAsig(s.asig, A.datos.objetivos[s.oaId].nivel)}</strong> · ${esc(ES.codigoCorto(s.oaId))}</span><span class="nota">Dificultad ${ES.pips(st.nivel)}</span></div>
       <div class="progreso" role="img" aria-label="Desafío ${s.i + 1} de ${s.total}">${Array.from({ length: s.total }, (_, k) => `<i class="${k < s.i ? 'hecho' : k === s.i ? 'actual' : ''}"></i>`).join('')}</div>
       ${d.texto ? `<div class="texto-lectura" ${s.asig === 'ingles' ? 'lang="en"' : ''}>${esc(d.texto)}</div>` : ''}
       <div class="enunciado"><p id="enunciado" ${idiomaDe(d.enunciado, s.asig) === 'en' ? 'lang="en"' : ''}>${enun}</p>${Voz.ok ? '<button class="voz" type="button" id="btn-voz" aria-label="Leer el desafío en voz alta">🔊</button>' : ''}</div>

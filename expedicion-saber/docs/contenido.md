@@ -87,6 +87,8 @@ las construcciones siempre femeninas. Ejemplo: «{personaje} {junto} 8 {objetos}
 | Ciencias Naturales | 1° básico a 8° básico | 26 | 419 |
 | Inglés | 1° básico a 8° básico | 16 | 283 |
 
+Registrados en `herramientas/objetivos.py` y aún sin desafíos (48): 1°M Mat OA 1, 1°M Mat OA 4, 1°M Mat OA 14, 2°M Mat OA 2, 2°M Mat OA 4, 2°M Mat OA 11, 3°M Mat MATE OAC 01, 3°M Mat MATE OAC 02, 3°M Mat MATE OAC 03, 4°M Mat MATE OAC 01, 4°M Mat MATE OAC 02, 4°M Mat MATE OAC 03, 1°M Len OA 3, 1°M Len OA 4, 1°M Len OA 9, 2°M Len OA 3, 2°M Len OA 9, 2°M Len OA 18, 3°M Len LELI OAC 01, 3°M Len LELI OAC 03, 3°M Len LELI OAC 05, 4°M Len LELI OAC 01, 4°M Len LELI OAC 03, 4°M Len LELI OAC 04, 1°M Cie OA 2, 1°M Cie OA 9, 1°M Cie OA 18, 2°M Cie OA 7, 2°M Cie OA 9, 2°M Cie OA 15, 3°M Cie CIBS OAC 01, 3°M Cie CITS OAC 02, 3°M Cie CIBS OAC 03, 4°M Cie CISA OAC 01, 4°M Cie CISA OAC 02, 4°M Cie CIAS OAC 03, 1°M Ing OA 9, 1°M Ing OA 10, 1°M Ing OA 16, 2°M Ing OA 10, 2°M Ing OA 11, 2°M Ing OA 16, 3°M Ing INGL OAC 01, 3°M Ing INGL OAC 02, 3°M Ing INGL OAC 03, 4°M Ing INGL OAC 01, 4°M Ing INGL OAC 02, 4°M Ing INGL OAC 03.
+
 ### Matemática
 
 | Nivel | OA | Eje | Desafíos | Código | Prerequisitos |
