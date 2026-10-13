@@ -1,5 +1,5 @@
 /* Avatar del Mundo de héroes (Ciudad Voltia): escena de cómic dibujada en una grilla lógica de 64 × 56.
-   equipo = { mascara, traje, capa, poder, vehiculo } con niveles 0-5. op.colores = índice de COLORES del traje. */
+   equipo = { mascara, traje, capa, poder, vehiculo } con niveles 0-5 (poder 3: cuerda gancho; 4: balanceo entre edificios). op.colores = índice de COLORES del traje. */
 (function (raiz) {
   'use strict';
   const W = 64, H = 56, SUELO = 44;
@@ -109,14 +109,40 @@
 
   /* ---------- el héroe ---------- */
   function heroe(px, e, t, celebrar, col) {
-    const flota = e.poder >= 4;
+    if (e.poder === 4) return balanceo(px, e, t, col);
+    const flota = e.poder === 5;
     const salto = celebrar ? Math.round(Math.abs(Math.sin(t * 7)) * 4) : flota ? 7 + Math.round(Math.sin(t * 2.4) * 1.5) : Math.round(Math.sin(t * 2.2) * 0.6 + 0.4);
     const y0 = SUELO - salto;
     if (flota) { px(11, SUELO - 1, 10, 1, 'rgba(0,0,0,0.25)'); if (Math.floor(t * 6) % 2) { px(13, y0 + 1, 1, 3, LUZ); px(18, y0 + 2, 1, 2, LUZ); } }
+    if (e.poder === 3) cuerda(px, celebrar ? 23 : 24, celebrar ? y0 - 24 : y0 - 10, 34, 26, t); // cuerda gancho hasta la azotea
     capa(px, e.capa, y0, t, col);
     traje(px, e.traje, y0, t, col, celebrar);
     cabeza(px, e.mascara, y0, t, col);
     poder(px, e.poder, y0, t, celebrar);
+  }
+
+  // línea punteada de una mano a un punto; con gancho en la punta si el punto se ve
+  function cuerda(px, x1, y1, x2, y2, t) {
+    const pasos = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+    for (let i = 0; i <= pasos; i++) {
+      const x = Math.round(x1 + (x2 - x1) * i / pasos), y = Math.round(y1 + (y2 - y1) * i / pasos);
+      if (y >= 0) px(x, y, 1, 1, i % 3 === 2 ? '#b9bdd0' : '#eef0f8');
+    }
+    if (y2 >= 0) { px(x2 - 1, y2 - 1, 3, 1, '#c9ced6'); px(x2 - 1, y2, 1, 1, '#c9ced6'); px(x2 + 1, y2, 1, 1, '#c9ced6'); }
+  }
+
+  // Balanceo entre edificios: el héroe cuelga de una cuerda anclada sobre la escena y va y viene como péndulo.
+  function balanceo(px, e, t, col) {
+    const ax = 30, ay = -20, largo = 31, ang = Math.sin(t * 1.8) * 0.5;
+    const manoX = Math.round(ax - Math.sin(ang) * largo), manoY = Math.round(ay + Math.cos(ang) * largo);
+    const dx = manoX - 23, y0 = manoY + 24;
+    cuerda(px, manoX, manoY, ax, ay, t);
+    const pm = (x, y, w, h, c) => px(x + dx, y, w, h, c);
+    px(11 + dx, SUELO - 1, 10, 1, 'rgba(0,0,0,0.2)'); // sombra en la vereda
+    capa(pm, e.capa, y0, t + 0.3, col);
+    traje(pm, e.traje, y0, t, col, true);
+    cabeza(pm, e.mascara, y0, t, col);
+    if (Math.abs(ang) > 0.35 && Math.floor(t * 8) % 2) { const lado = ang > 0 ? 1 : -1; pm(lado > 0 ? 4 : 26, y0 - 18, 2, 1, BLANCO); pm(lado > 0 ? 3 : 27, y0 - 12, 3, 1, BLANCO); } // líneas de velocidad
   }
 
   function capa(px, n, y0, t, col) {
@@ -179,9 +205,10 @@
     if (n <= 2) { pelo(); ojos(); px(15, y + 10, 3, 1, '#a0522d'); }
     if (n === 1) { px(10, y + 5, 12, 4, col.s); px(9, y + 5, 1, 2, col.s); px(13, y + 6, 2, 2, BLANCO); px(18, y + 6, 2, 2, BLANCO); px(14, y + 7, 1, 1, TINTA); px(19, y + 7, 1, 1, TINTA); }
     if (n === 2) { px(10, y + 5, 12, 3, Math.floor(t * 3) % 2 ? LUZ : '#c9fbff'); px(10, y + 5, 12, 1, BLANCO); }
-    if (n === 3) { // casco ligero: cubre cabeza y orejas, cara a la vista
-      px(9, y - 1, 14, 5, col.p); px(9, y - 1, 14, 1, tono(col.p, 0.35)); px(9, y + 4, 2, 6, col.p); px(21, y + 4, 2, 6, col.p);
-      ojos(); px(15, y + 10, 3, 1, '#a0522d');
+    if (n === 3) { // máscara completa con ojos grandes
+      px(10, y, 12, 12, col.p); px(10, y, 12, 1, tono(col.p, 0.35)); px(10, y + 11, 12, 1, tono(col.p, -0.3));
+      for (const ox of [11, 17]) { px(ox, y + 4, 4, 4, TINTA); px(ox + 1, y + 5, 2, 2, BLANCO); px(ox + (ox < 16 ? 1 : 0), y + 4, 3, 1, TINTA); }
+      px(11, y + 5, 1, 2, BLANCO); px(20, y + 5, 1, 2, BLANCO);
     }
     if (n >= 4) { // casco blindado con visor
       px(9, y - 1, 14, 13, col.p); px(9, y - 1, 14, 1, tono(col.p, 0.35)); px(9, y + 11, 14, 1, tono(col.p, -0.3));
@@ -197,16 +224,12 @@
   function poder(px, n, y0, t, celebrar) {
     if (!n) return;
     const hx = 22, hy = celebrar ? y0 - 24 : y0 - 9, f = Math.floor(t * 8) % 2;
-    if (n === 1 || n >= 4) { // chispas en la mano
+    if (n === 1 || n === 5) { // chispas en la mano
       px(hx + 2 + f, hy - 2, 1, 1, ORO); px(hx + 3, hy + 1 - f, 1, 1, '#fff7c8'); px(hx - 1 - f, hy - 3, 1, 1, ORO);
     }
     if (n === 2) { // escudo de energía
       for (let a = 0; a < 12; a++) { const ang = -Math.PI / 2 + (a / 11) * Math.PI; px(hx + 4 + Math.round(Math.cos(ang) * 5), hy - 1 + Math.round(Math.sin(ang) * 6), 1, 1, a % 2 ? LUZ : '#c9fbff'); }
       px(hx + 3, hy - 6, 1, 11, 'rgba(125,249,255,0.35)');
-    }
-    if (n === 3) { // rayo desde la mano
-      const largo = 10 + (f ? 2 : 0);
-      px(hx + 2, hy, largo, 1, '#fff7c8'); px(hx + 2, hy - 1, largo, 1, ORO); px(hx + 2, hy + 1, largo - 3, 1, ORO);
     }
   }
 

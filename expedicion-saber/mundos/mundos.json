@@ -75,7 +75,7 @@
     {
       "id": "heroes",
       "nombre": "Ciudad Voltia",
-      "estilo": "Mundo de héroes: estética de cómic, poderes y trajes.",
+      "estilo": "Mundo de héroes: estética de cómic, trajes, poderes y balanceo entre edificios.",
       "estado": "jugable",
       "guia": "Capitana Chispa",
       "tokens": {
@@ -92,10 +92,10 @@
         "junto": "cargó"
       },
       "espacios": [
-        { "id": "mascara", "nombre": "Máscara", "niveles": ["Antifaz", "Visor", "Casco ligero", "Casco blindado", "Casco relámpago"] },
+        { "id": "mascara", "nombre": "Máscara", "niveles": ["Antifaz", "Visor", "Máscara completa", "Casco blindado", "Casco relámpago"] },
         { "id": "traje", "nombre": "Traje", "niveles": ["Buzo de entrenamiento", "Traje elástico", "Traje reforzado", "Traje de energía", "Traje relámpago"] },
         { "id": "capa", "nombre": "Capa", "niveles": ["Bufanda", "Capa corta", "Capa larga", "Capa de luz", "Capa estelar"] },
-        { "id": "poder", "nombre": "Poder", "niveles": ["Chispa", "Escudo", "Rayo", "Vuelo", "Tormenta"] },
+        { "id": "poder", "nombre": "Poder", "niveles": ["Chispa", "Escudo", "Cuerda gancho", "Balanceo entre edificios", "Tormenta"] },
         { "id": "vehiculo", "nombre": "Vehículo", "niveles": ["Patines", "Moto", "Planeador", "Jet", "Nave relámpago"] }
       ]
     }
