@@ -1,0 +1,1073 @@
+[
+  {
+    "nivel": "1_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la vida",
+    "objetivo_oficial": "OA 1: Reconocer y observar que los seres vivos crecen, responden a estímulos, se reproducen y necesitan agua, alimento y aire, comparándolos con las cosas no vivas.",
+    "dificultad": 1,
+    "prerequisitos": [],
+    "id_objetivo": "1_basico.ciencias.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docentes/Educacion-General/Ciencias-Naturales-1-basico/CN01-OA-01/18361:CN01-OA-01"
+    },
+    "desafios": [
+      {
+        "id": "cie1-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es un ser vivo?",
+        "alternativas": [
+          "🪨",
+          "🐶",
+          "🚗",
+          "🧸"
+        ],
+        "correcta": 1,
+        "pista": "Busca el que come, respira y crece.",
+        "explicacion_error": "El perro 🐶 es un ser vivo: come, respira y crece.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-002",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Ser vivo o no vivo?",
+        "categorias": [
+          "Ser vivo 🌱",
+          "No vivo 🪨"
+        ],
+        "elementos": [
+          {
+            "texto": "🐱 gato",
+            "categoria": 0
+          },
+          {
+            "texto": "🌳 árbol",
+            "categoria": 0
+          },
+          {
+            "texto": "🐦 pájaro",
+            "categoria": 0
+          },
+          {
+            "texto": "🪨 piedra",
+            "categoria": 1
+          },
+          {
+            "texto": "⚽ pelota",
+            "categoria": 1
+          },
+          {
+            "texto": "🪑 silla",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los seres vivos comen, respiran y crecen.",
+        "explicacion_error": "Gato, árbol y pájaro son seres vivos; piedra, pelota y silla no.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "El pollito 🐣 ___ y se vuelve gallina 🐔.",
+        "alternativas": [
+          "se apaga",
+          "se derrite",
+          "se rompe",
+          "crece"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en cómo cambia con el tiempo.",
+        "explicacion_error": "El pollito crece hasta ser gallina: los seres vivos crecen.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "El conejo 🐰 necesita ___ para vivir.",
+        "alternativas": [
+          "agua y alimento",
+          "juguetes",
+          "ropa",
+          "zapatos"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué le das a una mascota cada día?",
+        "explicacion_error": "El conejo necesita agua y alimento, como todos los seres vivos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué necesitan todos los seres vivos?",
+        "alternativas": [
+          "juguetes y pelotas ⚽",
+          "ropa y zapatos 👟",
+          "agua, alimento y aire 💧",
+          "luz de lámpara 💡"
+        ],
+        "correcta": 2,
+        "pista": "Sin esto, ningún ser vivo puede vivir.",
+        "explicacion_error": "Todos los seres vivos necesitan agua, alimento y aire.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada animal con su cría.",
+        "pares": [
+          [
+            "🐔 gallina",
+            "🐣 pollito"
+          ],
+          [
+            "🐄 vaca",
+            "ternero"
+          ],
+          [
+            "🐶 perra",
+            "cachorro"
+          ],
+          [
+            "🐸 rana",
+            "renacuajo"
+          ]
+        ],
+        "pista": "Las crías son los hijos de cada animal.",
+        "explicacion_error": "Gallina-pollito, vaca-ternero, perra-cachorro, rana-renacuajo: los seres vivos se reproducen.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-007",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena cómo crece una planta.",
+        "elementos": [
+          "🌰 semilla",
+          "🌱 brote",
+          "🪴 planta pequeña",
+          "🌳 árbol"
+        ],
+        "pista": "Empieza por lo más pequeño.",
+        "explicacion_error": "Semilla → brote → planta pequeña → árbol: la planta crece.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Un gato 🐱 oye un ruido 🔔 y corre. ¿Qué hace el gato?",
+        "alternativas": [
+          "se alimenta",
+          "crece",
+          "se reproduce",
+          "responde a un estímulo"
+        ],
+        "correcta": 3,
+        "pista": "El ruido lo hizo reaccionar.",
+        "explicacion_error": "El gato reacciona al ruido: responde a un estímulo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada ejemplo con lo que muestra.",
+        "pares": [
+          [
+            "👶 el bebé se hace grande",
+            "crece"
+          ],
+          [
+            "🐱 la gata tiene gatitos",
+            "se reproduce"
+          ],
+          [
+            "🐶 el perro viene si lo llamas",
+            "responde a estímulos"
+          ]
+        ],
+        "pista": "Busca la palabra que explica cada ejemplo.",
+        "explicacion_error": "Hacerse grande es crecer; tener crías es reproducirse; reaccionar al llamado es responder a estímulos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuántos son seres vivos? 🐦 🪑 🌻 ⚽ 🐞 🧸 🐄",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "unidad": "seres vivos",
+        "pista": "Cuenta solo los que comen o crecen.",
+        "explicacion_error": "Pájaro, girasol, chinita y vaca son seres vivos: son 4.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "La planta 🪴 de la ventana se inclina hacia el sol ☀️. ¿Qué muestra?",
+        "alternativas": [
+          "que no necesita agua",
+          "que es una cosa no viva",
+          "que se está reproduciendo",
+          "que responde a estímulos"
+        ],
+        "correcta": 3,
+        "pista": "La luz es lo que la hace moverse.",
+        "explicacion_error": "La planta se inclina hacia la luz: responde a un estímulo, como los seres vivos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Ser vivo o no vivo? ¡Cuidado!",
+        "categorias": [
+          "Ser vivo",
+          "No vivo"
+        ],
+        "elementos": [
+          {
+            "texto": "🌰 semilla",
+            "categoria": 0
+          },
+          {
+            "texto": "🍄 hongo",
+            "categoria": 0
+          },
+          {
+            "texto": "🐛 gusano",
+            "categoria": 0
+          },
+          {
+            "texto": "🔥 fuego",
+            "categoria": 1
+          },
+          {
+            "texto": "☁️ nube",
+            "categoria": 1
+          },
+          {
+            "texto": "🤖 robot",
+            "categoria": 1
+          }
+        ],
+        "pista": "Algo puede moverse o cambiar y no estar vivo.",
+        "explicacion_error": "Semilla, hongo y gusano están vivos; el fuego, la nube y el robot no comen ni se reproducen.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-013",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "El auto 🚗 se mueve, pero no es un ser vivo porque no ___.",
+        "alternativas": [
+          "hace ruido",
+          "tiene ruedas",
+          "crece ni se reproduce",
+          "tiene color"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en lo que hacen todos los seres vivos.",
+        "explicacion_error": "El auto no crece ni se reproduce: por eso no es un ser vivo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} pone una piedra 🪨 y un poroto 🫘 en algodón mojado. Pasan unos días. ¿Qué ocurre?",
+        "alternativas": [
+          "Los dos brotan.",
+          "Los dos se convierten en árboles.",
+          "La piedra crece y el poroto no.",
+          "El poroto brota y la piedra sigue igual."
+        ],
+        "correcta": 3,
+        "pista": "Solo uno de los dos es un ser vivo.",
+        "explicacion_error": "El poroto es una semilla viva y brota; la piedra no es un ser vivo y no cambia.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Martina no riega su planta 🪴 por muchas semanas. ¿Qué le pasará?",
+        "alternativas": [
+          "Se secará, porque le falta agua.",
+          "Crecerá más rápido.",
+          "Tendrá más flores.",
+          "Seguirá igual para siempre."
+        ],
+        "correcta": 0,
+        "pista": "¿Qué necesitan todos los seres vivos?",
+        "explicacion_error": "Sin agua la planta se seca: los seres vivos necesitan agua para vivir.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa1-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Esto prueba que algo es un ser vivo?",
+        "categorias": [
+          "Sí, es de seres vivos",
+          "No lo prueba"
+        ],
+        "elementos": [
+          {
+            "texto": "crece",
+            "categoria": 0
+          },
+          {
+            "texto": "se reproduce",
+            "categoria": 0
+          },
+          {
+            "texto": "respira",
+            "categoria": 0
+          },
+          {
+            "texto": "se mueve con el viento",
+            "categoria": 1
+          },
+          {
+            "texto": "tiene colores",
+            "categoria": 1
+          },
+          {
+            "texto": "brilla",
+            "categoria": 1
+          }
+        ],
+        "pista": "Una bolsa también se mueve con el viento.",
+        "explicacion_error": "Crecer, reproducirse y respirar son de seres vivos; moverse con el viento, tener color o brillar, no.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la vida",
+    "objetivo_oficial": "OA 4: Observar y clasificar semillas, frutos, flores y tallos a partir de criterios como tamaño, forma, textura y color.",
+    "dificultad": 1,
+    "prerequisitos": [
+      "1_basico.ciencias.OA1"
+    ],
+    "id_objetivo": "1_basico.ciencias.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Ciencias-de-la-Vida/18364:CN01-OA-04"
+    },
+    "desafios": [
+      {
+        "id": "cie1-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es una flor?",
+        "alternativas": [
+          "🌻",
+          "🫘",
+          "🍎",
+          "🪵"
+        ],
+        "correcta": 0,
+        "pista": "Tiene pétalos de colores.",
+        "explicacion_error": "El girasol 🌻 es una flor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es un fruto?",
+        "alternativas": [
+          "🫘",
+          "🌷",
+          "🪵",
+          "🍎"
+        ],
+        "correcta": 3,
+        "pista": "Se come y tiene semillas adentro.",
+        "explicacion_error": "La manzana 🍎 es un fruto: guarda semillas adentro.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Grande o pequeño?",
+        "categorias": [
+          "Grande",
+          "Pequeño"
+        ],
+        "elementos": [
+          {
+            "texto": "🍉 sandía",
+            "categoria": 0
+          },
+          {
+            "texto": "🎃 zapallo",
+            "categoria": 0
+          },
+          {
+            "texto": "🍍 piña",
+            "categoria": 0
+          },
+          {
+            "texto": "🫐 arándano",
+            "categoria": 1
+          },
+          {
+            "texto": "🍒 cereza",
+            "categoria": 1
+          },
+          {
+            "texto": "🫘 poroto",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa si cabe en tu mano.",
+        "explicacion_error": "Sandía, zapallo y piña son grandes; arándano, cereza y poroto son pequeños.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "Ordena por color.",
+        "categorias": [
+          "Rojo 🔴",
+          "Amarillo 🟡"
+        ],
+        "elementos": [
+          {
+            "texto": "🍓 frutilla",
+            "categoria": 0
+          },
+          {
+            "texto": "🍒 cereza",
+            "categoria": 0
+          },
+          {
+            "texto": "🍅 tomate",
+            "categoria": 0
+          },
+          {
+            "texto": "🍌 plátano",
+            "categoria": 1
+          },
+          {
+            "texto": "🍋 limón",
+            "categoria": 1
+          },
+          {
+            "texto": "🌻 girasol",
+            "categoria": 1
+          }
+        ],
+        "pista": "Mira bien el color de cada uno.",
+        "explicacion_error": "Frutilla, cereza y tomate son rojos; plátano, limón y girasol son amarillos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada parte de la planta con un ejemplo.",
+        "pares": [
+          [
+            "flor",
+            "🌷 tulipán"
+          ],
+          [
+            "fruto",
+            "🍐 pera"
+          ],
+          [
+            "semilla",
+            "🫘 poroto"
+          ],
+          [
+            "tallo",
+            "🪵 tronco"
+          ]
+        ],
+        "pista": "El tronco sostiene al árbol.",
+        "explicacion_error": "Tulipán: flor; pera: fruto; poroto: semilla; tronco: tallo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "La cáscara de la piña 🍍 es ___ al tocarla.",
+        "alternativas": [
+          "áspera",
+          "suave",
+          "lisa",
+          "blanda"
+        ],
+        "correcta": 0,
+        "pista": "Imagina que pasas tu mano por encima.",
+        "explicacion_error": "La cáscara de la piña es áspera: tiene muchas escamas duras.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "Clasifica por textura.",
+        "categorias": [
+          "Piel lisa",
+          "Piel áspera o peluda"
+        ],
+        "elementos": [
+          {
+            "texto": "🍎 manzana",
+            "categoria": 0
+          },
+          {
+            "texto": "🍒 cereza",
+            "categoria": 0
+          },
+          {
+            "texto": "🍅 tomate",
+            "categoria": 0
+          },
+          {
+            "texto": "🍍 piña",
+            "categoria": 1
+          },
+          {
+            "texto": "🥥 coco",
+            "categoria": 1
+          },
+          {
+            "texto": "🥝 kiwi",
+            "categoria": 1
+          }
+        ],
+        "pista": "La textura es cómo se siente al tocar.",
+        "explicacion_error": "Manzana, cereza y tomate son lisos; piña, coco y kiwi son ásperos o peludos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuántos frutos son rojos? 🍎 🍌 🍓 🍋 🍒 🍐",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "unidad": "frutos",
+        "pista": "Fíjate solo en el color.",
+        "explicacion_error": "Manzana, frutilla y cereza son rojas: son 3.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada fruto con su forma.",
+        "pares": [
+          [
+            "🍌 plátano",
+            "alargada y curva"
+          ],
+          [
+            "🍊 naranja",
+            "redonda"
+          ],
+          [
+            "🍐 pera",
+            "ancha abajo, angosta arriba"
+          ]
+        ],
+        "pista": "Imagina el contorno de cada fruto.",
+        "explicacion_error": "El plátano es alargado y curvo, la naranja es redonda y la pera es ancha abajo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena las semillas de la más pequeña a la más grande.",
+        "elementos": [
+          "semilla de frutilla 🍓",
+          "lenteja",
+          "poroto 🫘",
+          "cuesco de palta 🥑"
+        ],
+        "pista": "Las de la frutilla son puntitos en su piel.",
+        "explicacion_error": "Semilla de frutilla → lenteja → poroto → cuesco de palta.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué criterio usó Tomás? Grupo A: 🍉 🎃 🍍  Grupo B: 🫐 🍒 🫘",
+        "alternativas": [
+          "sabor",
+          "tamaño",
+          "color",
+          "textura"
+        ],
+        "correcta": 1,
+        "pista": "Compara cuánto espacio ocupa cada uno.",
+        "explicacion_error": "En el grupo A todos son grandes y en el B todos pequeños: usó el tamaño.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Diego separó 🍏 🍒 🍋 de 🍍 🥥 🥝. Usó el criterio de ___.",
+        "alternativas": [
+          "tamaño",
+          "textura",
+          "sabor",
+          "color"
+        ],
+        "correcta": 1,
+        "pista": "Hay colores y tamaños distintos en cada grupo.",
+        "explicacion_error": "Manzana verde, cereza y limón son lisos; piña, coco y kiwi son ásperos: usó la textura.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-013",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "Clasifica los tallos según su textura.",
+        "categorias": [
+          "Duro y rugoso",
+          "Blando y liso"
+        ],
+        "elementos": [
+          {
+            "texto": "tronco de roble",
+            "categoria": 0
+          },
+          {
+            "texto": "tronco de araucaria",
+            "categoria": 0
+          },
+          {
+            "texto": "rama de pino",
+            "categoria": 0
+          },
+          {
+            "texto": "tallo de tulipán",
+            "categoria": 1
+          },
+          {
+            "texto": "tallo de margarita",
+            "categoria": 1
+          },
+          {
+            "texto": "tallo de pasto",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los troncos de los árboles son de madera.",
+        "explicacion_error": "Los troncos y ramas de árboles son duros y rugosos; los tallos de flores y pasto son blandos y lisos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} toca un fruto con los ojos cerrados. Es grande, áspero y tiene hojas arriba. ¿Cuál es?",
+        "alternativas": [
+          "🍍 piña",
+          "🍎 manzana",
+          "🍉 sandía",
+          "🍒 cereza"
+        ],
+        "correcta": 0,
+        "pista": "Usa las tres pistas: tamaño, textura y forma.",
+        "explicacion_error": "La piña es grande, áspera y tiene hojas arriba; la sandía es grande pero lisa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} clasifica 10 semillas por tamaño. 6 son grandes y el resto, pequeñas. ¿Cuántas son pequeñas?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "unidad": "semillas",
+        "pista": "Quita las grandes del total.",
+        "explicacion_error": "10 − 6 = 4: hay 4 semillas pequeñas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-016",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "🍓 🍒 🫐 🍇 se parecen en su ___.",
+        "alternativas": [
+          "color",
+          "tamaño",
+          "forma",
+          "textura"
+        ],
+        "correcta": 1,
+        "pista": "Unos son rojos, otros azules; unos lisos, otros no.",
+        "explicacion_error": "Todos son frutos pequeños: se parecen en su tamaño, no en color, forma ni textura.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa4-017",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena del fruto más pequeño al más grande.",
+        "elementos": [
+          "🫐 arándano",
+          "🍒 cereza",
+          "🍋 limón",
+          "🍍 piña",
+          "🍉 sandía"
+        ],
+        "pista": "Empieza por el que es como una bolita.",
+        "explicacion_error": "Arándano → cereza → limón → piña → sandía.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la Tierra y el Universo",
+    "objetivo_oficial": "OA 12: Describir y comunicar los cambios del ciclo de las estaciones y sus efectos en los seres vivos y el ambiente.",
+    "dificultad": 1,
+    "prerequisitos": [],
+    "id_objetivo": "1_basico.ciencias.OA12",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-18372.html"
+    },
+    "desafios": [
+      {
+        "id": "cie1-oa12-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿En qué estación hace más calor? ☀️",
+        "alternativas": [
+          "otoño",
+          "verano",
+          "invierno",
+          "primavera"
+        ],
+        "correcta": 1,
+        "pista": "Es la estación de ir a la playa.",
+        "explicacion_error": "En verano hace más calor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué ropa usas en invierno? ❄️",
+        "alternativas": [
+          "🧥 parka",
+          "🩴 chalas",
+          "🕶️ lentes de sol",
+          "🩱 traje de baño"
+        ],
+        "correcta": 0,
+        "pista": "En invierno hace frío.",
+        "explicacion_error": "En invierno usamos parka para abrigarnos del frío.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-003",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada estación con su dibujo.",
+        "pares": [
+          [
+            "verano",
+            "☀️"
+          ],
+          [
+            "otoño",
+            "🍂"
+          ],
+          [
+            "invierno",
+            "❄️"
+          ],
+          [
+            "primavera",
+            "🌸"
+          ]
+        ],
+        "pista": "Piensa en el clima de cada estación.",
+        "explicacion_error": "Verano ☀️, otoño 🍂, invierno ❄️ y primavera 🌸.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-004",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena las estaciones, empezando por el verano.",
+        "elementos": [
+          "verano ☀️",
+          "otoño 🍂",
+          "invierno ❄️",
+          "primavera 🌸"
+        ],
+        "pista": "Después del calor, empiezan a caer las hojas.",
+        "explicacion_error": "Verano → otoño → invierno → primavera, y vuelve el verano.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "En otoño 🍂, las hojas de muchos árboles se ___.",
+        "alternativas": [
+          "caen",
+          "multiplican",
+          "derriten",
+          "vuelven azules"
+        ],
+        "correcta": 0,
+        "pista": "Mira el suelo de una plaza en otoño.",
+        "explicacion_error": "En otoño muchos árboles pierden sus hojas: se caen.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿En qué estación los árboles se llenan de flores nuevas 🌸 después del frío?",
+        "alternativas": [
+          "primavera",
+          "invierno",
+          "otoño",
+          "verano"
+        ],
+        "correcta": 0,
+        "pista": "Viene justo después del invierno.",
+        "explicacion_error": "En primavera las plantas florecen después del frío del invierno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Verano o invierno?",
+        "categorias": [
+          "Verano ☀️",
+          "Invierno ❄️"
+        ],
+        "elementos": [
+          {
+            "texto": "días calurosos",
+            "categoria": 0
+          },
+          {
+            "texto": "ir a la playa 🏖️",
+            "categoria": 0
+          },
+          {
+            "texto": "días más largos",
+            "categoria": 0
+          },
+          {
+            "texto": "lluvia y frío 🌧️",
+            "categoria": 1
+          },
+          {
+            "texto": "nieve en la cordillera 🏔️",
+            "categoria": 1
+          },
+          {
+            "texto": "días más cortos",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en el calor y en el frío.",
+        "explicacion_error": "En verano hay calor, playa y días largos; en invierno, lluvia, nieve y días cortos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "En Chile, ¿en qué mes empieza el verano?",
+        "alternativas": [
+          "marzo",
+          "septiembre",
+          "diciembre",
+          "junio"
+        ],
+        "correcta": 2,
+        "pista": "Es el mes de Navidad.",
+        "explicacion_error": "En Chile el verano empieza en diciembre y dura hasta marzo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "En Chile, el invierno empieza en ___.",
+        "alternativas": [
+          "junio",
+          "septiembre",
+          "marzo",
+          "diciembre"
+        ],
+        "correcta": 0,
+        "pista": "Es a mitad de año.",
+        "explicacion_error": "En Chile el invierno empieza en junio y dura hasta septiembre.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué muchos animales tienen el pelo más grueso en invierno?",
+        "alternativas": [
+          "para esconderse del sol",
+          "para protegerse del frío",
+          "para nadar mejor",
+          "porque comen más fruta"
+        ],
+        "correcta": 1,
+        "pista": "Piensa para qué te pones parka.",
+        "explicacion_error": "El pelo grueso los abriga, como una parka: los protege del frío.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-011",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada estación con lo que pasa en la naturaleza.",
+        "pares": [
+          [
+            "primavera",
+            "nacen flores y brotes"
+          ],
+          [
+            "verano",
+            "maduran muchas frutas"
+          ],
+          [
+            "otoño",
+            "caen las hojas"
+          ],
+          [
+            "invierno",
+            "llueve y nieva más"
+          ]
+        ],
+        "pista": "Las cerezas y sandías se comen en el calor.",
+        "explicacion_error": "Primavera: flores; verano: frutas maduras; otoño: caen hojas; invierno: lluvia y nieve.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Cada estación dura más o menos el mismo tiempo. ¿Cuántos meses dura cada una?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "unidad": "meses",
+        "pista": "Un año tiene 12 meses y 4 estaciones.",
+        "explicacion_error": "12 meses repartidos en 4 estaciones: cada una dura unos 3 meses.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En el cumpleaños de {personaje} hace frío y llueve. ¿En qué mes puede ser?",
+        "alternativas": [
+          "febrero",
+          "diciembre",
+          "julio",
+          "enero"
+        ],
+        "correcta": 2,
+        "pista": "En Chile, ¿cuándo hace frío?",
+        "explicacion_error": "Julio es invierno en Chile: hace frío y llueve. Enero, febrero y diciembre son de verano.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En Chile, Navidad 🎄 es en diciembre. ¿Qué estación empieza?",
+        "alternativas": [
+          "verano",
+          "otoño",
+          "invierno",
+          "primavera"
+        ],
+        "correcta": 0,
+        "pista": "En Chile, en Navidad hace calor.",
+        "explicacion_error": "En Chile el verano empieza en diciembre; por eso en Navidad hace calor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-015",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena lo que le pasa a un cerezo en el año, desde la primavera.",
+        "elementos": [
+          "🌸 florece",
+          "🍒 da frutos",
+          "🍂 se le caen las hojas",
+          "❄️ queda sin hojas"
+        ],
+        "pista": "Las flores llegan después del frío.",
+        "explicacion_error": "Primavera: florece; verano: da cerezas; otoño: bota las hojas; invierno: queda sin hojas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1-oa12-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "En Chile, ¿ropa de verano o de invierno en cada mes?",
+        "categorias": [
+          "Ropa de verano 🩱",
+          "Ropa de invierno 🧥"
+        ],
+        "elementos": [
+          {
+            "texto": "enero",
+            "categoria": 0
+          },
+          {
+            "texto": "febrero",
+            "categoria": 0
+          },
+          {
+            "texto": "julio",
+            "categoria": 1
+          },
+          {
+            "texto": "agosto",
+            "categoria": 1
+          }
+        ],
+        "pista": "Recuerda: el verano empieza en diciembre.",
+        "explicacion_error": "Enero y febrero son de verano; julio y agosto, de invierno.",
+        "monedas": 10
+      }
+    ]
+  }
+]

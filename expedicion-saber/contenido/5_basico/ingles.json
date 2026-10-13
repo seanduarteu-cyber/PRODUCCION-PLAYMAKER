@@ -1,0 +1,730 @@
+[
+  {
+    "nivel": "5_basico",
+    "asignatura": "ingles",
+    "eje": "Comprensión de lectura",
+    "objetivo_oficial": "OA 5: Leer y demostrar comprensión de textos adaptados y auténticos simples no literarios, con apoyo visual, sobre los temas del año (saludos, instrucciones, personas, lugares, gustos).",
+    "dificultad": 5,
+    "prerequisitos": [
+      "4_basico.ingles.OA1"
+    ],
+    "id_objetivo": "5_basico.ingles.OA5",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Comprension-de-lectura/18708:IN05-OA-05"
+    },
+    "desafios": [
+      {
+        "id": "ing5-oa5-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "texto": "Hi! My name is Sofía and I'm ten years old. I live in La Serena with my mom, my dad and my little brother, Tomás. I have long black hair and brown eyes. I like music, but I don't like soccer.",
+        "enunciado": "Lee el texto. ¿Cuántos años tiene Sofía?",
+        "respuesta": 10,
+        "tolerancia": 0,
+        "unidad": "años",
+        "pista": "Busca la palabra «years».",
+        "explicacion_error": "Sofía dice «I'm ten years old»: tiene 10 años (ten = diez).",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "texto": "Good morning, class! Please open your books to page 12. Read the text and answer the questions. Use your pencil, not your pen. Work in pairs, please.",
+        "enunciado": "¿En qué página deben abrir el libro?",
+        "respuesta": 12,
+        "tolerancia": 0,
+        "pista": "Busca la palabra «page».",
+        "explicacion_error": "La profesora dice «open your books to page 12»: deben abrirlo en la página 12.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Diego lives in Valparaíso. Near his house there is a park, a supermarket and a big school. There isn't a hospital or a bank in his street. On Saturdays, Diego goes to the park with his cousins.",
+        "enunciado": "¿En qué ciudad vive Diego?",
+        "alternativas": [
+          "Arica",
+          "Santiago",
+          "Temuco",
+          "Valparaíso"
+        ],
+        "correcta": 3,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "El texto dice «Diego lives in Valparaíso»: Diego vive en Valparaíso.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-004",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "texto": "Good morning, class! Please open your books to page 12. Read the text and answer the questions. Use your pencil, not your pen. Work in pairs, please.",
+        "enunciado": "Ordena las instrucciones en el orden en que las da la profesora.",
+        "elementos": [
+          "open your books",
+          "read the text",
+          "answer the questions",
+          "use your pencil",
+          "work in pairs"
+        ],
+        "pista": "Vuelve a leer el texto de principio a fin.",
+        "explicacion_error": "El orden es: open your books, read the text, answer the questions, use your pencil y work in pairs.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "texto": "This is my house. It has two bedrooms, a kitchen, a living room and a small garden. My favorite room is the kitchen because my grandma cooks there. My dog sleeps in the garden.",
+        "enunciado": "¿Cuántos dormitorios tiene la casa?",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "unidad": "dormitorios",
+        "pista": "Busca la palabra «bedrooms».",
+        "explicacion_error": "El texto dice «two bedrooms»: la casa tiene 2 dormitorios.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "Martina loves fruit. She likes apples, bananas and grapes. She doesn't like fish, but her brother Vicente loves it. On Sundays, they eat empanadas with their grandparents.",
+        "enunciado": "¿A Martina le gusta o no le gusta?",
+        "categorias": [
+          "Le gusta",
+          "No le gusta"
+        ],
+        "elementos": [
+          {
+            "texto": "apples",
+            "categoria": 0
+          },
+          {
+            "texto": "bananas",
+            "categoria": 0
+          },
+          {
+            "texto": "grapes",
+            "categoria": 0
+          },
+          {
+            "texto": "fish",
+            "categoria": 1
+          }
+        ],
+        "pista": "«She likes» significa le gusta; «she doesn't like», no le gusta.",
+        "explicacion_error": "A Martina le gustan las manzanas, los plátanos y las uvas; no le gusta el pescado (fish).",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-007",
+        "tipo": "completar",
+        "dificultad": 2,
+        "texto": "My family is big. My grandpa is old and tall, and he has white hair. My aunt Josefa is short and she has curly red hair. My cousins are twins: they are eight years old.",
+        "enunciado": "Completa según el texto: «Aunt Josefa has curly ___ hair.»",
+        "alternativas": [
+          "brown",
+          "white",
+          "black",
+          "red"
+        ],
+        "correcta": 3,
+        "pista": "Busca la oración que habla de la tía Josefa.",
+        "explicacion_error": "El texto dice «she has curly red hair»: la tía Josefa tiene el pelo crespo y colorín (rojo).",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-008",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "texto": "Hi! My name is Sofía and I'm ten years old. I live in La Serena with my mom, my dad and my little brother, Tomás. I have long black hair and brown eyes. I like music, but I don't like soccer.",
+        "enunciado": "Une cada palabra del texto con su significado.",
+        "pares": [
+          [
+            "long",
+            "largo"
+          ],
+          [
+            "black",
+            "negro"
+          ],
+          [
+            "brown",
+            "café"
+          ],
+          [
+            "little brother",
+            "hermano menor"
+          ]
+        ],
+        "pista": "Piensa en cómo describe Sofía su pelo, sus ojos y a Tomás.",
+        "explicacion_error": "long = largo, black = negro, brown = café y little brother = hermano menor (Tomás).",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "texto": "Diego lives in Valparaíso. Near his house there is a park, a supermarket and a big school. There isn't a hospital or a bank in his street. On Saturdays, Diego goes to the park with his cousins.",
+        "enunciado": "Según el texto, ¿qué hay y qué no hay cerca de la casa de Diego?",
+        "categorias": [
+          "Hay",
+          "No hay"
+        ],
+        "elementos": [
+          {
+            "texto": "park",
+            "categoria": 0
+          },
+          {
+            "texto": "supermarket",
+            "categoria": 0
+          },
+          {
+            "texto": "school",
+            "categoria": 0
+          },
+          {
+            "texto": "hospital",
+            "categoria": 1
+          },
+          {
+            "texto": "bank",
+            "categoria": 1
+          }
+        ],
+        "pista": "«There is» significa hay; «there isn't» significa no hay.",
+        "explicacion_error": "Hay un parque, un supermercado y una escuela (there is); no hay hospital ni banco (there isn't).",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-010",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "texto": "My family is big. My grandpa is old and tall, and he has white hair. My aunt Josefa is short and she has curly red hair. My cousins are twins: they are eight years old.",
+        "enunciado": "Une cada persona con su descripción.",
+        "pares": [
+          [
+            "grandpa",
+            "old and tall"
+          ],
+          [
+            "aunt Josefa",
+            "short"
+          ],
+          [
+            "cousins",
+            "eight years old"
+          ]
+        ],
+        "pista": "Busca a cada persona en el texto.",
+        "explicacion_error": "El abuelo es old and tall (viejo y alto), la tía Josefa es short (baja) y los primos tienen ocho años (eight years old).",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Good morning, class! Please open your books to page 12. Read the text and answer the questions. Use your pencil, not your pen. Work in pairs, please.",
+        "enunciado": "En el texto, «work in pairs» significa…",
+        "alternativas": [
+          "trabajar en silencio",
+          "trabajar solo",
+          "trabajar en parejas",
+          "trabajar en casa"
+        ],
+        "correcta": 2,
+        "pista": "«Pair» se usa para cosas que vienen de a dos, como «a pair of shoes».",
+        "explicacion_error": "«Work in pairs» significa trabajar en parejas, es decir, de a dos.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "This is my house. It has two bedrooms, a kitchen, a living room and a small garden. My favorite room is the kitchen because my grandma cooks there. My dog sleeps in the garden.",
+        "enunciado": "¿Por qué la cocina es el lugar favorito de la casa?",
+        "alternativas": [
+          "porque es muy grande",
+          "porque está al lado del jardín",
+          "porque ahí cocina su abuela",
+          "porque ahí duerme su perro"
+        ],
+        "correcta": 2,
+        "pista": "Busca la palabra «because», que significa porque.",
+        "explicacion_error": "El texto dice «because my grandma cooks there»: porque ahí cocina su abuela.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Martina loves fruit. She likes apples, bananas and grapes. She doesn't like fish, but her brother Vicente loves it. On Sundays, they eat empanadas with their grandparents.",
+        "enunciado": "¿Qué muestra la palabra «but» en el texto?",
+        "alternativas": [
+          "que a Vicente le gusta algo que a Martina no",
+          "que a Martina le encanta el pescado",
+          "que a los dos les gusta el pescado",
+          "que Martina come pescado los domingos"
+        ],
+        "correcta": 0,
+        "pista": "«But» significa pero: une dos ideas diferentes.",
+        "explicacion_error": "«But» (pero) muestra un contraste: a Martina no le gusta el pescado, pero a Vicente le encanta.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "My family is big. My grandpa is old and tall, and he has white hair. My aunt Josefa is short and she has curly red hair. My cousins are twins: they are eight years old.",
+        "enunciado": "En el texto, «twins» significa…",
+        "alternativas": [
+          "primos lejanos",
+          "bebés recién nacidos",
+          "hermanos mayores",
+          "gemelos o mellizos"
+        ],
+        "correcta": 3,
+        "pista": "Fíjate: los dos primos tienen la misma edad.",
+        "explicacion_error": "«Twins» son gemelos o mellizos: hermanos que nacieron el mismo día; por eso tienen la misma edad.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Hi! My name is Sofía and I'm ten years old. I live in La Serena with my mom, my dad and my little brother, Tomás. I have long black hair and brown eyes. I like music, but I don't like soccer.",
+        "enunciado": "¿Para qué escribió Sofía este texto?",
+        "alternativas": [
+          "para invitar a una fiesta",
+          "para describir su ciudad",
+          "para dar instrucciones",
+          "para presentarse"
+        ],
+        "correcta": 3,
+        "pista": "Fíjate en cómo empieza: «Hi! My name is…».",
+        "explicacion_error": "Sofía cuenta su nombre, su edad, su familia y sus gustos: escribió el texto para presentarse.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Diego lives in Valparaíso. Near his house there is a park, a supermarket and a big school. There isn't a hospital or a bank in his street. On Saturdays, Diego goes to the park with his cousins.",
+        "enunciado": "¿Cuál es la idea principal del texto?",
+        "alternativas": [
+          "Describe a los primos de Diego.",
+          "Cuenta un viaje de Diego a la playa.",
+          "Explica cómo llegar al hospital.",
+          "Describe el barrio donde vive Diego."
+        ],
+        "correcta": 3,
+        "pista": "Piensa de qué habla casi todo el texto.",
+        "explicacion_error": "Casi todo el texto cuenta qué hay y qué no hay cerca de la casa de Diego: describe su barrio.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa5-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Martina loves fruit. She likes apples, bananas and grapes. She doesn't like fish, but her brother Vicente loves it. On Sundays, they eat empanadas with their grandparents.",
+        "enunciado": "¿Qué colación le gustaría más a Martina?",
+        "alternativas": [
+          "pescado frito",
+          "una ensalada de frutas",
+          "una sopa de pescado",
+          "un sándwich de atún"
+        ],
+        "correcta": 1,
+        "pista": "Revisa qué le encanta y qué no le gusta a Martina.",
+        "explicacion_error": "A Martina le encanta la fruta (loves fruit) y no le gusta el pescado; el atún también es pescado.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "5_basico",
+    "asignatura": "ingles",
+    "eje": "Expresión escrita",
+    "objetivo_oficial": "OA 14: Completar y escribir, de acuerdo a un modelo y con apoyo visual, textos no literarios breves (postales, listas, descripciones) sobre los temas del año.",
+    "dificultad": 5,
+    "prerequisitos": [
+      "4_basico.ingles.OA13"
+    ],
+    "id_objetivo": "5_basico.ingles.OA14",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/18717:IN05-OA-14"
+    },
+    "desafios": [
+      {
+        "id": "ing5-oa14-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Escucha el modelo y completa: «I ___ ten years old.»",
+        "audio": {
+          "texto": "I am ten years old.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "am",
+          "is",
+          "are",
+          "be"
+        ],
+        "correcta": 0,
+        "pista": "Con «I» se usa una forma especial del verbo to be.",
+        "explicacion_error": "Con «I» se usa «am»: «I am ten years old» significa tengo diez años.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-002",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada pronombre con su adjetivo posesivo.",
+        "pares": [
+          [
+            "I",
+            "my"
+          ],
+          [
+            "you",
+            "your"
+          ],
+          [
+            "he",
+            "his"
+          ],
+          [
+            "she",
+            "her"
+          ],
+          [
+            "we",
+            "our"
+          ]
+        ],
+        "pista": "«My» significa mi; piensa en los demás.",
+        "explicacion_error": "I → my (mi), you → your (tu), he → his (su, de él), she → her (su, de ella) y we → our (nuestro).",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Escucha el modelo y completa la invitación: «Come to my birthday ___!» 🎂",
+        "audio": {
+          "texto": "Come to my birthday party!",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "partie",
+          "part",
+          "party",
+          "play"
+        ],
+        "correcta": 2,
+        "pista": "Es la palabra «fiesta». Revisa bien sus letras.",
+        "explicacion_error": "Fiesta se escribe «party»: «Come to my birthday party!» significa ¡ven a mi fiesta de cumpleaños!",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa: «She ___ got a cat.» 🐱",
+        "alternativas": [
+          "has",
+          "is",
+          "haves",
+          "have"
+        ],
+        "correcta": 0,
+        "pista": "Con he, she o it se usa la forma que termina en -s.",
+        "explicacion_error": "Con «she» se usa «has got»: «She has got a cat» significa ella tiene un gato.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "Ayuda a {personaje} a describir su pieza. ¿Va con «There is» o con «There are»?",
+        "categorias": [
+          "There is",
+          "There are"
+        ],
+        "elementos": [
+          {
+            "texto": "a bed",
+            "categoria": 0
+          },
+          {
+            "texto": "a lamp",
+            "categoria": 0
+          },
+          {
+            "texto": "an old sofa",
+            "categoria": 0
+          },
+          {
+            "texto": "two chairs",
+            "categoria": 1
+          },
+          {
+            "texto": "three windows",
+            "categoria": 1
+          },
+          {
+            "texto": "some books",
+            "categoria": 1
+          }
+        ],
+        "pista": "«There is» va con una sola cosa; «there are», con varias.",
+        "explicacion_error": "There is a bed, a lamp y an old sofa (una cosa); there are two chairs, three windows y some books (varias).",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-006",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Escucha el modelo y ordena: «Mi hermano tiene el pelo corto.»",
+        "audio": {
+          "texto": "My brother has got short hair.",
+          "idioma": "en"
+        },
+        "elementos": [
+          "My brother",
+          "has got",
+          "short",
+          "hair."
+        ],
+        "pista": "En inglés, el adjetivo (short) va antes de la palabra hair.",
+        "explicacion_error": "«My brother has got short hair.» significa mi hermano tiene el pelo corto.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-007",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa la descripción: «This is my sister. ___ name is Amanda.»",
+        "alternativas": [
+          "His",
+          "Your",
+          "She",
+          "Her"
+        ],
+        "correcta": 3,
+        "pista": "Hablas de una niña: ¿cómo se dice «su nombre» (de ella)?",
+        "explicacion_error": "Para una mujer se usa «her»: «Her name is Amanda» significa su nombre es Amanda.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Completa: «We have got a dog. ___ dog is very friendly.»",
+        "alternativas": [
+          "Our",
+          "Us",
+          "We",
+          "Their"
+        ],
+        "correcta": 0,
+        "pista": "Busca el posesivo de «we» (nosotros).",
+        "explicacion_error": "El posesivo de «we» es «our»: «Our dog is very friendly» significa nuestro perro es muy amistoso.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena la pregunta: «¿Hay un baño en tu casa?»",
+        "elementos": [
+          "Is there",
+          "a bathroom",
+          "in",
+          "your house?"
+        ],
+        "pista": "En las preguntas, «is» va antes de «there».",
+        "explicacion_error": "«Is there a bathroom in your house?» significa ¿hay un baño en tu casa?",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué oración está bien escrita?",
+        "alternativas": [
+          "There are two bedroom in my house.",
+          "There are two bedrooms in my house.",
+          "There two bedrooms are in my house.",
+          "There is two bedrooms in my house."
+        ],
+        "correcta": 1,
+        "pista": "Son dos dormitorios: revisa el verbo y el plural.",
+        "explicacion_error": "Con dos o más cosas se usa «there are» y el sustantivo en plural: «There are two bedrooms in my house.»",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-011",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada parte de la postal con su función.",
+        "pares": [
+          [
+            "Dear Grandma,",
+            "saludo"
+          ],
+          [
+            "I'm in Arica with my family.",
+            "dónde estás"
+          ],
+          [
+            "It's hot and sunny here.",
+            "cómo está el tiempo"
+          ],
+          [
+            "Love, Josefa",
+            "despedida y firma"
+          ]
+        ],
+        "pista": "Una postal empieza con un saludo y termina con una despedida y tu nombre.",
+        "explicacion_error": "«Dear Grandma,» es el saludo; «I'm in Arica…» dice dónde estás; «It's hot and sunny» cuenta el tiempo y «Love, Josefa» es la despedida y firma.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Completa la postal: «Dear Vicente, I'm in Torres del Paine. There ___ a lot of mountains here!»",
+        "alternativas": [
+          "has",
+          "have",
+          "is",
+          "are"
+        ],
+        "correcta": 3,
+        "pista": "«A lot of mountains» son muchas montañas.",
+        "explicacion_error": "Con varias cosas se usa «there are»: «There are a lot of mountains here!» significa ¡aquí hay muchas montañas!",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-013",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿La oración está bien escrita o tiene un error?",
+        "categorias": [
+          "Bien escrita",
+          "Tiene un error"
+        ],
+        "elementos": [
+          {
+            "texto": "She has got blue eyes.",
+            "categoria": 0
+          },
+          {
+            "texto": "My cat is black.",
+            "categoria": 0
+          },
+          {
+            "texto": "Our school is near the park.",
+            "categoria": 0
+          },
+          {
+            "texto": "They has got a big house.",
+            "categoria": 1
+          },
+          {
+            "texto": "He have got two sisters.",
+            "categoria": 1
+          },
+          {
+            "texto": "There is three bananas.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Revisa si el verbo concuerda con quién es y con cuántas cosas hay.",
+        "explicacion_error": "Lo correcto es «They have got», «He has got» y «There are three bananas»; las otras tres están bien escritas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-014",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena la invitación de Amanda.",
+        "elementos": [
+          "Hi, Diego!",
+          "Come to my party.",
+          "It's on Saturday at 4 o'clock.",
+          "See you there! Amanda"
+        ],
+        "pista": "Una invitación empieza con un saludo y termina con una despedida.",
+        "explicacion_error": "Primero el saludo, luego la invitación, después el día y la hora, y al final la despedida con la firma.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Mira la pieza: 🛏️🛏️ 🪑 📚📚📚. ¿Qué descripción está bien escrita?",
+        "alternativas": [
+          "There is two beds, a chair and three books.",
+          "There are two beds, a chair and three books.",
+          "There are two beds, a chair and three book.",
+          "There are two bed, a chairs and three books."
+        ],
+        "correcta": 1,
+        "pista": "Cuenta las cosas y revisa el verbo y los plurales.",
+        "explicacion_error": "Hay dos camas, una silla y tres libros: «There are two beds, a chair and three books», con «are» y los plurales correctos.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-016",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Amanda escribe sobre sus abuelos: «My grandparents live in Chillán. ___ house has got a big garden.»",
+        "alternativas": [
+          "His",
+          "They're",
+          "There",
+          "Their"
+        ],
+        "correcta": 3,
+        "pista": "Necesitas el posesivo de «they» (ellos). Ojo: hay palabras que suenan igual.",
+        "explicacion_error": "El posesivo de «they» es «their»: «Their house has got a big garden». «There» (allí) y «they're» (ellos son) suenan igual, pero significan otra cosa.",
+        "monedas": 10
+      },
+      {
+        "id": "ing5-oa14-017",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada inicio con su final para escribir la postal de {personaje}.",
+        "pares": [
+          [
+            "Hello from",
+            "Valdivia!"
+          ],
+          [
+            "The river",
+            "is very big."
+          ],
+          [
+            "My parents",
+            "are very happy."
+          ],
+          [
+            "There are",
+            "a lot of boats."
+          ]
+        ],
+        "pista": "Revisa que cada oración tenga sentido y que el verbo concuerde con quién es.",
+        "explicacion_error": "La postal dice: «Hello from Valdivia! The river is very big. My parents are very happy. There are a lot of boats.»",
+        "monedas": 10
+      }
+    ]
+  }
+]

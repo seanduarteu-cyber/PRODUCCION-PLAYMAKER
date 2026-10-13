@@ -1,0 +1,1003 @@
+[
+  {
+    "nivel": "3_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la vida",
+    "objetivo_oficial": "OA 1: Observar y describir las necesidades de las plantas y su relación con la raíz, el tallo y las hojas.",
+    "dificultad": 3,
+    "prerequisitos": [
+      "1_basico.ciencias.OA4"
+    ],
+    "id_objetivo": "3_basico.ciencias.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/3-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie3-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué parte de la planta absorbe el agua del suelo?",
+        "alternativas": [
+          "el fruto",
+          "la flor",
+          "la raíz",
+          "la hoja"
+        ],
+        "correcta": 2,
+        "pista": "Está bajo la tierra.",
+        "explicacion_error": "La raíz absorbe el agua y las sales minerales del suelo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-002",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Qué necesita una planta para vivir?",
+        "categorias": [
+          "Lo necesita",
+          "No lo necesita"
+        ],
+        "elementos": [
+          {
+            "texto": "agua",
+            "categoria": 0
+          },
+          {
+            "texto": "luz",
+            "categoria": 0
+          },
+          {
+            "texto": "aire",
+            "categoria": 0
+          },
+          {
+            "texto": "música",
+            "categoria": 1
+          },
+          {
+            "texto": "oscuridad total",
+            "categoria": 1
+          },
+          {
+            "texto": "plástico",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en lo que le das a una planta de tu casa.",
+        "explicacion_error": "Las plantas necesitan agua, luz y aire; no necesitan música, oscuridad ni plástico.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Las hojas necesitan la ___ del sol para fabricar su alimento.",
+        "alternativas": [
+          "nieve",
+          "luz",
+          "lluvia",
+          "sombra"
+        ],
+        "correcta": 1,
+        "pista": "Por eso las plantas buscan el sol.",
+        "explicacion_error": "Las hojas usan la luz del sol para fabricar su alimento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-004",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada parte de la planta con su función.",
+        "pares": [
+          [
+            "raíz",
+            "absorbe agua y sales minerales"
+          ],
+          [
+            "tallo",
+            "transporta el agua y sostiene"
+          ],
+          [
+            "hojas",
+            "fabrican alimento con la luz"
+          ]
+        ],
+        "pista": "Piensa de abajo hacia arriba.",
+        "explicacion_error": "La raíz absorbe, el tallo transporta y sostiene, y las hojas fabrican el alimento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué parte sostiene la planta y lleva el agua hacia las hojas?",
+        "alternativas": [
+          "la semilla",
+          "el tallo",
+          "la flor",
+          "la raíz"
+        ],
+        "correcta": 1,
+        "pista": "Une la raíz con las hojas.",
+        "explicacion_error": "El tallo sostiene la planta y transporta el agua desde la raíz hasta las hojas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Además de absorber agua, la raíz ___ la planta al suelo.",
+        "alternativas": [
+          "suelta",
+          "separa",
+          "fija",
+          "levanta"
+        ],
+        "correcta": 2,
+        "pista": "Por eso el viento no se lleva a los árboles.",
+        "explicacion_error": "La raíz fija la planta al suelo y la mantiene firme.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-007",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena el camino del agua en una planta.",
+        "elementos": [
+          "suelo",
+          "raíz",
+          "tallo",
+          "hojas"
+        ],
+        "pista": "El agua entra por abajo.",
+        "explicacion_error": "Suelo → raíz → tallo → hojas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Una planta crece en un rincón oscuro y sus hojas están amarillas y débiles. ¿Qué le falta?",
+        "alternativas": [
+          "una maceta más grande",
+          "luz",
+          "más oscuridad",
+          "más tierra"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en dónde está la planta.",
+        "explicacion_error": "Sin luz, las hojas no pueden fabricar alimento y se ponen amarillas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Josefa riega su planta con 2 vasos de agua cada día. ¿Cuántos vasos usa en una semana?",
+        "respuesta": 14,
+        "tolerancia": 0,
+        "unidad": "vasos",
+        "pista": "Una semana tiene 7 días.",
+        "explicacion_error": "2 vasos × 7 días = 14 vasos de agua.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-010",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Qué parte de la planta comemos?",
+        "categorias": [
+          "Raíz",
+          "Tallo",
+          "Hoja"
+        ],
+        "elementos": [
+          {
+            "texto": "zanahoria",
+            "categoria": 0
+          },
+          {
+            "texto": "betarraga",
+            "categoria": 0
+          },
+          {
+            "texto": "espárrago",
+            "categoria": 1
+          },
+          {
+            "texto": "caña de azúcar",
+            "categoria": 1
+          },
+          {
+            "texto": "lechuga",
+            "categoria": 2
+          },
+          {
+            "texto": "acelga",
+            "categoria": 2
+          }
+        ],
+        "pista": "La raíz crece bajo tierra; el tallo sostiene; la hoja es verde y plana.",
+        "explicacion_error": "Zanahoria y betarraga son raíces; espárrago y caña, tallos; lechuga y acelga, hojas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Vicente pone dos plantas iguales al sol, pero riega solo una. ¿Qué quiere averiguar?",
+        "alternativas": [
+          "si la planta necesita tierra",
+          "si la planta necesita aire",
+          "si la planta necesita luz",
+          "si la planta necesita agua"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué es lo único distinto entre las dos plantas?",
+        "explicacion_error": "Lo único que cambia es el riego: quiere saber si la planta necesita agua.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Si las hojas de una planta quedan cubiertas de barro y no les llega luz, ¿qué pasará?",
+        "alternativas": [
+          "crecerá más rápido",
+          "sus raíces se volverán hojas",
+          "no podrá fabricar su alimento",
+          "absorberá más agua"
+        ],
+        "correcta": 2,
+        "pista": "Recuerda para qué usan la luz las hojas.",
+        "explicacion_error": "Las hojas necesitan luz para fabricar alimento; cubiertas, la planta se debilita.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Si cortas todas las raíces de una planta, ¿qué le pasará?",
+        "alternativas": [
+          "tomará el agua por las flores",
+          "crecerá más rápido",
+          "sus hojas se pondrán más verdes",
+          "no podrá absorber agua y se marchitará"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en qué parte toma el agua del suelo.",
+        "explicacion_error": "Sin raíces no absorbe agua, el tallo no tiene qué transportar y la planta se marchita.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} pone un clavel blanco en agua con colorante azul. Al día siguiente los pétalos se ven azulados. ¿Qué demuestra?",
+        "alternativas": [
+          "que el tallo transporta el agua hacia arriba",
+          "que la raíz fabrica colorante",
+          "que las flores toman color del aire",
+          "que las hojas absorben agua de lluvia"
+        ],
+        "correcta": 0,
+        "pista": "¿Cómo llegó el colorante a los pétalos?",
+        "explicacion_error": "El agua con colorante subió por el tallo hasta la flor: el tallo transporta el agua.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-015",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "El tamarugo, árbol del norte de Chile, tiene raíces muy ___ para llegar al agua subterránea.",
+        "alternativas": [
+          "débiles",
+          "cortas",
+          "superficiales",
+          "profundas"
+        ],
+        "correcta": 3,
+        "pista": "En el desierto, el agua está muy abajo.",
+        "explicacion_error": "Sus raíces son muy profundas: así alcanzan el agua que está bajo el suelo del desierto.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa1-016",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada problema con su causa.",
+        "pares": [
+          [
+            "hojas amarillas en un lugar oscuro",
+            "falta de luz"
+          ],
+          [
+            "planta marchita y tierra seca",
+            "falta de agua"
+          ],
+          [
+            "planta pequeña en tierra muy pobre",
+            "faltan sales minerales del suelo"
+          ]
+        ],
+        "pista": "Busca qué necesidad no se cumple en cada caso.",
+        "explicacion_error": "Lugar oscuro: falta luz; tierra seca: falta agua; tierra pobre: faltan sales minerales.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias físicas y químicas",
+    "objetivo_oficial": "OA 9: Investigar y explicar características de la luz: viaja en línea recta, se refleja y puede separarse en colores.",
+    "dificultad": 3,
+    "prerequisitos": [],
+    "id_objetivo": "3_basico.ciencias.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/3-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie3-oa9-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es una fuente natural de luz?",
+        "alternativas": [
+          "una vela",
+          "una linterna",
+          "el Sol",
+          "una ampolleta"
+        ],
+        "correcta": 2,
+        "pista": "No la fabricaron las personas.",
+        "explicacion_error": "El Sol es una fuente natural de luz; la ampolleta, la linterna y la vela son artificiales.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La luz viaja en línea ___.",
+        "alternativas": [
+          "circular",
+          "recta",
+          "en zigzag",
+          "curva"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en un rayo de sol que entra por la ventana.",
+        "explicacion_error": "La luz viaja en línea recta.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿En qué objeto puedes ver tu imagen reflejada?",
+        "alternativas": [
+          "un trozo de madera",
+          "una toalla",
+          "un espejo",
+          "una hoja de cuaderno"
+        ],
+        "correcta": 2,
+        "pista": "Es liso y muy brillante.",
+        "explicacion_error": "El espejo refleja la luz de forma ordenada y por eso ves tu imagen.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuándo se puede ver un arcoíris?",
+        "alternativas": [
+          "cuando sopla mucho viento",
+          "en una noche oscura",
+          "cuando la luz del sol atraviesa gotas de agua",
+          "cuando el cielo está nublado y sin sol"
+        ],
+        "correcta": 2,
+        "pista": "Se necesitan sol y gotitas de agua.",
+        "explicacion_error": "El arcoíris aparece cuando la luz del sol atraviesa gotas de agua y se separa en colores.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Las sombras se forman porque la luz no puede ___ los objetos opacos.",
+        "alternativas": [
+          "pintar",
+          "tocar",
+          "atravesar",
+          "calentar"
+        ],
+        "correcta": 2,
+        "pista": "Un objeto opaco no deja pasar la luz.",
+        "explicacion_error": "La luz no atraviesa los objetos opacos y detrás de ellos se forma una sombra.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Produce su propia luz o solo la refleja?",
+        "categorias": [
+          "Produce luz",
+          "Solo refleja luz"
+        ],
+        "elementos": [
+          {
+            "texto": "el Sol",
+            "categoria": 0
+          },
+          {
+            "texto": "una linterna encendida",
+            "categoria": 0
+          },
+          {
+            "texto": "una fogata",
+            "categoria": 0
+          },
+          {
+            "texto": "la Luna",
+            "categoria": 1
+          },
+          {
+            "texto": "un espejo",
+            "categoria": 1
+          },
+          {
+            "texto": "una cuchara",
+            "categoria": 1
+          }
+        ],
+        "pista": "¡Ojo con la Luna!",
+        "explicacion_error": "El Sol, la linterna y la fogata producen luz; la Luna, el espejo y la cuchara solo reflejan la luz que reciben.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-007",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena estos colores como aparecen en el arcoíris, desde arriba.",
+        "elementos": [
+          "rojo",
+          "naranjo",
+          "amarillo",
+          "verde",
+          "azul",
+          "violeta"
+        ],
+        "pista": "Arriba está el rojo y abajo, el violeta.",
+        "explicacion_error": "Rojo, naranjo, amarillo, verde, azul y violeta (entre azul y violeta está el añil).",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-008",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada fenómeno con la característica de la luz que muestra.",
+        "pares": [
+          [
+            "arcoíris",
+            "la luz se separa en colores"
+          ],
+          [
+            "tu imagen en un espejo",
+            "la luz se refleja"
+          ],
+          [
+            "sombra con la forma del objeto",
+            "la luz viaja en línea recta"
+          ]
+        ],
+        "pista": "Piensa en qué le pasa a la luz en cada caso.",
+        "explicacion_error": "Arcoíris: se separa en colores; espejo: se refleja; sombra: viaja en línea recta.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuántos colores se distinguen en el arcoíris?",
+        "respuesta": 7,
+        "tolerancia": 0,
+        "unidad": "colores",
+        "pista": "Rojo, naranjo, amarillo… sigue contando.",
+        "explicacion_error": "Se distinguen 7 colores: rojo, naranjo, amarillo, verde, azul, añil y violeta.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Miras una vela por un tubo recto y la ves. Si doblas el tubo, ya no la ves. ¿Qué demuestra?",
+        "alternativas": [
+          "que la luz viaja en línea recta",
+          "que la luz se separa en colores",
+          "que la vela se apagó",
+          "que el tubo produce luz"
+        ],
+        "correcta": 0,
+        "pista": "La luz no puede doblar la curva del tubo.",
+        "explicacion_error": "La luz viaja en línea recta: no puede seguir la curva del tubo doblado.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Forma una imagen nítida al reflejar la luz?",
+        "categorias": [
+          "Sí, como un espejo",
+          "No forma imagen"
+        ],
+        "elementos": [
+          {
+            "texto": "espejo",
+            "categoria": 0
+          },
+          {
+            "texto": "cuchara metálica pulida",
+            "categoria": 0
+          },
+          {
+            "texto": "agua quieta de un lago",
+            "categoria": 0
+          },
+          {
+            "texto": "ladrillo",
+            "categoria": 1
+          },
+          {
+            "texto": "cartón",
+            "categoria": 1
+          },
+          {
+            "texto": "toalla",
+            "categoria": 1
+          }
+        ],
+        "pista": "Las superficies lisas y brillantes reflejan mejor.",
+        "explicacion_error": "Espejo, cuchara pulida y agua quieta son lisos y forman imagen; ladrillo, cartón y toalla son ásperos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "El ___ es un objeto de vidrio que separa la luz blanca en colores.",
+        "alternativas": [
+          "espejo",
+          "termómetro",
+          "imán",
+          "prisma"
+        ],
+        "correcta": 3,
+        "pista": "Tiene forma triangular.",
+        "explicacion_error": "El prisma separa la luz blanca en los colores del arcoíris.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} quiere iluminar un rincón que está detrás de una roca. Tiene una linterna y un espejo. ¿Qué debe hacer?",
+        "alternativas": [
+          "apuntar la linterna directo a la roca",
+          "doblar el rayo de luz con la mano",
+          "tapar el espejo con la mano",
+          "apuntar la linterna al espejo para que la luz rebote hacia el rincón"
+        ],
+        "correcta": 3,
+        "pista": "La luz no dobla sola, pero puede rebotar.",
+        "explicacion_error": "La luz viaja en línea recta, pero se refleja en el espejo y así puede llegar al rincón.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Para ver un arcoíris después de la lluvia, ¿dónde debe estar el Sol?",
+        "alternativas": [
+          "detrás de ti, con gotas de agua frente a ti",
+          "bajo el horizonte, de noche",
+          "frente a ti, tapado por nubes",
+          "justo encima de las gotas, sin luz"
+        ],
+        "correcta": 0,
+        "pista": "La luz debe llegar a las gotas y volver hacia tus ojos.",
+        "explicacion_error": "Con el Sol a tu espalda, su luz entra en las gotas de enfrente, se separa en colores y llega a tus ojos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué característica de la luz explica cada caso?",
+        "categorias": [
+          "Viaja en línea recta",
+          "Se refleja",
+          "Se separa en colores"
+        ],
+        "elementos": [
+          {
+            "texto": "tu sombra en el patio",
+            "categoria": 0
+          },
+          {
+            "texto": "rayos de sol rectos entre los árboles",
+            "categoria": 0
+          },
+          {
+            "texto": "ver tu cara en una ventana",
+            "categoria": 1
+          },
+          {
+            "texto": "el brillo de la Luna",
+            "categoria": 1
+          },
+          {
+            "texto": "arcoíris después de la lluvia",
+            "categoria": 2
+          },
+          {
+            "texto": "colores al pasar luz por un prisma",
+            "categoria": 2
+          }
+        ],
+        "pista": "La Luna no produce luz propia.",
+        "explicacion_error": "Sombra y rayos rectos: línea recta; ventana y Luna: reflexión; arcoíris y prisma: separación en colores.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa9-016",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena el camino de la luz para que puedas ver la Luna.",
+        "elementos": [
+          "el Sol emite luz",
+          "la luz llega a la Luna",
+          "la Luna refleja la luz",
+          "la luz llega a tus ojos"
+        ],
+        "pista": "La Luna no tiene luz propia.",
+        "explicacion_error": "El Sol emite luz, llega a la Luna, la Luna la refleja y llega a tus ojos.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la Tierra y el Universo",
+    "objetivo_oficial": "OA 11: Describir componentes del Sistema Solar (Sol, planetas, lunas, cometas y asteroides) en relación con su tamaño, localización, apariencia y distancia a la Tierra.",
+    "dificultad": 3,
+    "prerequisitos": [
+      "1_basico.ciencias.OA12"
+    ],
+    "id_objetivo": "3_basico.ciencias.OA11",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Ciencias-de-la-Tierra-y-el-Universo/18418:CN03-OA-11"
+    },
+    "desafios": [
+      {
+        "id": "cie3-oa11-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es la estrella del Sistema Solar?",
+        "alternativas": [
+          "Marte",
+          "la Luna",
+          "el Sol",
+          "la Tierra"
+        ],
+        "correcta": 2,
+        "pista": "Nos da luz y calor.",
+        "explicacion_error": "El Sol es la estrella del Sistema Solar.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuántos planetas tiene el Sistema Solar?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "unidad": "planetas",
+        "pista": "Mercurio, Venus, Tierra… sigue contando.",
+        "explicacion_error": "Hay 8 planetas: Mercurio, Venus, Tierra, Marte, Júpiter, Saturno, Urano y Neptuno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La Luna gira alrededor de la ___.",
+        "alternativas": [
+          "Venus",
+          "estrella Polar",
+          "Marte",
+          "Tierra"
+        ],
+        "correcta": 3,
+        "pista": "Es el satélite natural de nuestro planeta.",
+        "explicacion_error": "La Luna es el satélite de la Tierra y gira a su alrededor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuál es el planeta más grande del Sistema Solar?",
+        "alternativas": [
+          "la Tierra",
+          "Júpiter",
+          "Marte",
+          "Mercurio"
+        ],
+        "correcta": 1,
+        "pista": "Es un gigante gaseoso.",
+        "explicacion_error": "Júpiter es el planeta más grande del Sistema Solar.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "El planeta conocido como «el planeta rojo» es ___.",
+        "alternativas": [
+          "Marte",
+          "Saturno",
+          "Venus",
+          "Neptuno"
+        ],
+        "correcta": 0,
+        "pista": "Está justo después de la Tierra.",
+        "explicacion_error": "Marte se ve rojizo por el polvo de su superficie.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué planeta está más cerca del Sol?",
+        "alternativas": [
+          "Neptuno",
+          "la Tierra",
+          "Mercurio",
+          "Venus"
+        ],
+        "correcta": 2,
+        "pista": "Es el primero de la lista.",
+        "explicacion_error": "Mercurio es el planeta más cercano al Sol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-007",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena los planetas desde el más cercano al Sol.",
+        "elementos": [
+          "Mercurio",
+          "Venus",
+          "Tierra",
+          "Marte",
+          "Júpiter",
+          "Saturno"
+        ],
+        "pista": "La Tierra es el tercero.",
+        "explicacion_error": "Mercurio → Venus → Tierra → Marte → Júpiter → Saturno (luego siguen Urano y Neptuno).",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-008",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada cuerpo con su descripción.",
+        "pares": [
+          [
+            "Sol",
+            "estrella que da luz y calor"
+          ],
+          [
+            "Luna",
+            "satélite natural de la Tierra"
+          ],
+          [
+            "cometa",
+            "hielo y polvo con una cola brillante"
+          ],
+          [
+            "asteroide",
+            "roca pequeña de forma irregular"
+          ],
+          [
+            "planeta",
+            "cuerpo grande y redondo que gira alrededor del Sol"
+          ]
+        ],
+        "pista": "El cometa tiene cola.",
+        "explicacion_error": "Sol: estrella; Luna: satélite; cometa: hielo y polvo con cola; asteroide: roca irregular; planeta: cuerpo redondo que orbita el Sol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Planeta rocoso o planeta gigante?",
+        "categorias": [
+          "Rocoso (cerca del Sol)",
+          "Gigante (lejos del Sol)"
+        ],
+        "elementos": [
+          {
+            "texto": "Mercurio",
+            "categoria": 0
+          },
+          {
+            "texto": "Venus",
+            "categoria": 0
+          },
+          {
+            "texto": "Tierra",
+            "categoria": 0
+          },
+          {
+            "texto": "Marte",
+            "categoria": 0
+          },
+          {
+            "texto": "Júpiter",
+            "categoria": 1
+          },
+          {
+            "texto": "Saturno",
+            "categoria": 1
+          },
+          {
+            "texto": "Urano",
+            "categoria": 1
+          },
+          {
+            "texto": "Neptuno",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los cuatro primeros son pequeños y de roca.",
+        "explicacion_error": "Mercurio, Venus, Tierra y Marte son rocosos; Júpiter, Saturno, Urano y Neptuno son gigantes.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué el Sol se ve mucho más grande que las otras estrellas del cielo?",
+        "alternativas": [
+          "porque es un planeta",
+          "porque es la estrella más grande del universo",
+          "porque está mucho más cerca de la Tierra",
+          "porque solo brilla de día"
+        ],
+        "correcta": 2,
+        "pista": "Un objeto lejano se ve pequeño.",
+        "explicacion_error": "El Sol es una estrella mediana, pero está mucho más cerca que las demás; por eso se ve tan grande.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Entre Marte y Júpiter hay un cinturón de ___.",
+        "alternativas": [
+          "cometas",
+          "asteroides",
+          "estrellas",
+          "lunas"
+        ],
+        "correcta": 1,
+        "pista": "Son rocas de distintos tamaños.",
+        "explicacion_error": "Entre Marte y Júpiter está el cinturón de asteroides.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Si cuentas los planetas desde el Sol, ¿en qué lugar está Saturno?",
+        "respuesta": 6,
+        "tolerancia": 0,
+        "pista": "Mercurio es el 1, Venus el 2…",
+        "explicacion_error": "Mercurio 1, Venus 2, Tierra 3, Marte 4, Júpiter 5 y Saturno 6.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué a un cometa le aparece una cola al acercarse al Sol?",
+        "alternativas": [
+          "se incendia como un fósforo",
+          "le crecen rocas nuevas",
+          "el calor del Sol evapora su hielo y libera gas y polvo",
+          "choca con la Luna"
+        ],
+        "correcta": 2,
+        "pista": "Los cometas están hechos de hielo y polvo.",
+        "explicacion_error": "Cerca del Sol, el hielo del cometa se evapora y suelta gas y polvo que forman la cola.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En el desierto de Atacama hay muchos observatorios astronómicos. ¿Por qué es un buen lugar?",
+        "alternativas": [
+          "ahí nunca es de día",
+          "está más cerca del Sol",
+          "las estrellas están más bajas",
+          "tiene cielos despejados, secos y oscuros"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en las nubes y en la luz de las ciudades.",
+        "explicacion_error": "En Atacama casi no hay nubes, el aire es seco y hay poca luz artificial: el cielo se ve muy bien.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-015",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada planeta con su característica.",
+        "pares": [
+          [
+            "Venus",
+            "el más caliente, con nubes gruesas"
+          ],
+          [
+            "Marte",
+            "rocoso y de color rojizo"
+          ],
+          [
+            "Júpiter",
+            "el más grande, con una gran mancha roja"
+          ],
+          [
+            "Saturno",
+            "grandes anillos muy visibles"
+          ],
+          [
+            "Neptuno",
+            "el más lejano del Sol"
+          ]
+        ],
+        "pista": "Saturno es famoso por sus anillos.",
+        "explicacion_error": "Venus: el más caliente; Marte: rojizo; Júpiter: el más grande; Saturno: anillos; Neptuno: el más lejano.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3-oa11-016",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena del más pequeño al más grande.",
+        "elementos": [
+          "la Luna",
+          "la Tierra",
+          "Júpiter",
+          "el Sol"
+        ],
+        "pista": "La Luna cabe muchas veces dentro de la Tierra.",
+        "explicacion_error": "Luna → Tierra → Júpiter → Sol: el Sol es mucho más grande que todos los planetas.",
+        "monedas": 10
+      }
+    ]
+  }
+]

@@ -1,0 +1,1022 @@
+[
+  {
+    "nivel": "2_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la vida",
+    "objetivo_oficial": "OA 1: Observar, describir y clasificar los vertebrados en mamíferos, aves, reptiles, anfibios y peces, según su cubierta corporal, presencia de mamas y estructuras para respirar.",
+    "dificultad": 2,
+    "prerequisitos": [
+      "1_basico.ciencias.OA1"
+    ],
+    "id_objetivo": "2_basico.ciencias.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Ciencias-de-la-Vida/18383:CN02-OA-01"
+    },
+    "desafios": [
+      {
+        "id": "cie2-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué animal tiene plumas? 🪶",
+        "alternativas": [
+          "🐟",
+          "🐸",
+          "🐦",
+          "🐶"
+        ],
+        "correcta": 2,
+        "pista": "Las plumas sirven para volar y abrigarse.",
+        "explicacion_error": "El pájaro 🐦 tiene plumas: es un ave.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es un pez?",
+        "alternativas": [
+          "🐟",
+          "🐍",
+          "🐱",
+          "🐦"
+        ],
+        "correcta": 0,
+        "pista": "Vive en el agua y tiene aletas.",
+        "explicacion_error": "El pez 🐟 vive en el agua, tiene aletas y escamas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "El perro 🐶 tiene el cuerpo cubierto de ___.",
+        "alternativas": [
+          "pelo",
+          "piel húmeda",
+          "plumas",
+          "escamas"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en cómo se siente al acariciarlo.",
+        "explicacion_error": "El perro tiene pelo, como todos los mamíferos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Mamífero o ave?",
+        "categorias": [
+          "Mamífero",
+          "Ave"
+        ],
+        "elementos": [
+          {
+            "texto": "🐄 vaca",
+            "categoria": 0
+          },
+          {
+            "texto": "🐶 perro",
+            "categoria": 0
+          },
+          {
+            "texto": "pudú",
+            "categoria": 0
+          },
+          {
+            "texto": "🐧 pingüino",
+            "categoria": 1
+          },
+          {
+            "texto": "cóndor",
+            "categoria": 1
+          },
+          {
+            "texto": "🐔 gallina",
+            "categoria": 1
+          }
+        ],
+        "pista": "Las aves tienen plumas; los mamíferos, pelo.",
+        "explicacion_error": "Vaca, perro y pudú son mamíferos; pingüino, cóndor y gallina son aves.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Los peces 🐟 respiran con ___.",
+        "alternativas": [
+          "plumas",
+          "pulmones",
+          "branquias",
+          "la piel seca"
+        ],
+        "correcta": 2,
+        "pista": "Es una estructura que saca el aire del agua.",
+        "explicacion_error": "Los peces respiran con branquias, que toman el oxígeno del agua.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué tienen las mamás mamíferas para alimentar a sus crías? 🍼",
+        "alternativas": [
+          "escamas",
+          "branquias",
+          "mamas con leche",
+          "plumas"
+        ],
+        "correcta": 2,
+        "pista": "Su nombre viene de esta parte del cuerpo.",
+        "explicacion_error": "Los mamíferos tienen mamas: alimentan a sus crías con leche.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Mamífero, reptil o pez?",
+        "categorias": [
+          "Mamífero",
+          "Reptil",
+          "Pez"
+        ],
+        "elementos": [
+          {
+            "texto": "🐱 gato",
+            "categoria": 0
+          },
+          {
+            "texto": "huemul",
+            "categoria": 0
+          },
+          {
+            "texto": "🦎 lagartija",
+            "categoria": 1
+          },
+          {
+            "texto": "🐢 tortuga",
+            "categoria": 1
+          },
+          {
+            "texto": "jurel",
+            "categoria": 2
+          },
+          {
+            "texto": "🦈 tiburón",
+            "categoria": 2
+          }
+        ],
+        "pista": "Fíjate en si tiene pelo, escamas secas o aletas y branquias.",
+        "explicacion_error": "Gato y huemul: mamíferos; lagartija y tortuga: reptiles; jurel y tiburón: peces.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-008",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada grupo con su cubierta.",
+        "pares": [
+          [
+            "mamíferos",
+            "pelo"
+          ],
+          [
+            "aves",
+            "plumas"
+          ],
+          [
+            "reptiles",
+            "escamas secas"
+          ],
+          [
+            "anfibios",
+            "piel húmeda y desnuda"
+          ]
+        ],
+        "pista": "La rana es un anfibio.",
+        "explicacion_error": "Mamíferos: pelo; aves: plumas; reptiles: escamas secas; anfibios: piel húmeda y desnuda.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuántos son aves? 🐧 🐶 🦅 🐟 🦜 🐍",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "unidad": "aves",
+        "pista": "Cuenta los que tienen plumas.",
+        "explicacion_error": "Pingüino, águila y loro tienen plumas: son 3 aves.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "La ballena 🐋 vive en el mar, pero es un mamífero. ¿Por qué?",
+        "alternativas": [
+          "porque es muy grande",
+          "porque tiene aletas",
+          "porque nada",
+          "respira con pulmones y amamanta a sus crías"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en cómo respira y cómo alimenta a sus crías.",
+        "explicacion_error": "La ballena respira con pulmones y sus crías toman leche: es un mamífero.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-011",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuántos son mamíferos? 🐬 🐟 🦇 🐦 🐄 🐍",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "unidad": "mamíferos",
+        "pista": "¡Ojo! Algunos mamíferos nadan o vuelan.",
+        "explicacion_error": "Delfín, murciélago y vaca son mamíferos: son 3.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Con qué respira?",
+        "categorias": [
+          "Pulmones",
+          "Branquias"
+        ],
+        "elementos": [
+          {
+            "texto": "🐬 delfín",
+            "categoria": 0
+          },
+          {
+            "texto": "🐢 tortuga marina",
+            "categoria": 0
+          },
+          {
+            "texto": "🐧 pingüino",
+            "categoria": 0
+          },
+          {
+            "texto": "salmón",
+            "categoria": 1
+          },
+          {
+            "texto": "🦈 tiburón",
+            "categoria": 1
+          },
+          {
+            "texto": "congrio",
+            "categoria": 1
+          }
+        ],
+        "pista": "Que viva en el agua no significa que tenga branquias.",
+        "explicacion_error": "Delfín, tortuga y pingüino suben a respirar con pulmones; salmón, tiburón y congrio usan branquias.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} ve un animal con escamas secas, que respira con pulmones y pone huevos en la arena. ¿Qué es?",
+        "alternativas": [
+          "un ave",
+          "un anfibio",
+          "un pez",
+          "un reptil"
+        ],
+        "correcta": 3,
+        "pista": "Los peces tienen branquias y los anfibios, piel húmeda.",
+        "explicacion_error": "Escamas secas, pulmones y huevos en tierra: es un reptil, como la tortuga.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "El murciélago 🦇 vuela, pero tiene pelo y sus crías toman leche. ¿Qué es?",
+        "alternativas": [
+          "un mamífero",
+          "un insecto",
+          "un ave",
+          "un reptil"
+        ],
+        "correcta": 0,
+        "pista": "Volar no lo hace ave: busca plumas.",
+        "explicacion_error": "Tiene pelo y amamanta: el murciélago es un mamífero que vuela.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-015",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena cómo cambia la rana 🐸 en su vida.",
+        "elementos": [
+          "huevo",
+          "renacuajo con branquias",
+          "renacuajo con patas",
+          "rana adulta con pulmones"
+        ],
+        "pista": "Primero vive solo en el agua.",
+        "explicacion_error": "Huevo → renacuajo con branquias → renacuajo con patas → rana con pulmones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa1-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Ave, reptil o anfibio?",
+        "categorias": [
+          "Ave",
+          "Reptil",
+          "Anfibio"
+        ],
+        "elementos": [
+          {
+            "texto": "🐧 pingüino",
+            "categoria": 0
+          },
+          {
+            "texto": "flamenco",
+            "categoria": 0
+          },
+          {
+            "texto": "🐊 cocodrilo",
+            "categoria": 1
+          },
+          {
+            "texto": "🐍 culebra",
+            "categoria": 1
+          },
+          {
+            "texto": "sapo",
+            "categoria": 2
+          },
+          {
+            "texto": "salamandra",
+            "categoria": 2
+          }
+        ],
+        "pista": "Plumas, escamas secas o piel húmeda.",
+        "explicacion_error": "Pingüino y flamenco: aves; cocodrilo y culebra: reptiles; sapo y salamandra: anfibios.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la vida",
+    "objetivo_oficial": "OA 7: Identificar la ubicación y explicar la función de partes del cuerpo fundamentales para vivir: corazón, pulmones, estómago, esqueleto y músculos.",
+    "dificultad": 2,
+    "prerequisitos": [
+      "1_basico.ciencias.OA1"
+    ],
+    "id_objetivo": "2_basico.ciencias.OA7",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/2-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie2-oa7-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué órgano late y bombea la sangre? 🫀",
+        "alternativas": [
+          "los huesos",
+          "el corazón",
+          "el estómago",
+          "los pulmones"
+        ],
+        "correcta": 1,
+        "pista": "Lo sientes en el pecho: pum, pum.",
+        "explicacion_error": "El corazón late y bombea la sangre a todo el cuerpo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Con qué órganos respiras? 🌬️",
+        "alternativas": [
+          "los músculos",
+          "el estómago",
+          "los pulmones",
+          "el corazón"
+        ],
+        "correcta": 2,
+        "pista": "Se llenan de aire cuando inspiras.",
+        "explicacion_error": "Respiras con los pulmones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-003",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada parte con su dibujo.",
+        "pares": [
+          [
+            "corazón",
+            "🫀"
+          ],
+          [
+            "pulmones",
+            "🫁"
+          ],
+          [
+            "huesos",
+            "🦴"
+          ],
+          [
+            "músculos",
+            "💪"
+          ]
+        ],
+        "pista": "El brazo fuerte muestra un músculo.",
+        "explicacion_error": "Corazón 🫀, pulmones 🫁, huesos 🦴 y músculos 💪.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Al tragar, la comida 🍎 llega al ___.",
+        "alternativas": [
+          "cráneo",
+          "corazón",
+          "pulmón",
+          "estómago"
+        ],
+        "correcta": 3,
+        "pista": "Está en la guatita.",
+        "explicacion_error": "La comida baja hasta el estómago, donde se procesa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué parte del cuerpo te sostiene y te da forma? 🦴",
+        "alternativas": [
+          "el esqueleto",
+          "los pulmones",
+          "el estómago",
+          "la sangre"
+        ],
+        "correcta": 0,
+        "pista": "Está formado por huesos.",
+        "explicacion_error": "El esqueleto es el conjunto de huesos que sostiene el cuerpo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Cuando inspiras, los pulmones se llenan de ___.",
+        "alternativas": [
+          "sangre",
+          "aire",
+          "agua",
+          "comida"
+        ],
+        "correcta": 1,
+        "pista": "Respira hondo y fíjate en tu pecho.",
+        "explicacion_error": "Al inspirar, los pulmones se llenan de aire.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Dónde está cada órgano?",
+        "categorias": [
+          "Pecho",
+          "Guatita (abdomen)"
+        ],
+        "elementos": [
+          {
+            "texto": "🫀 corazón",
+            "categoria": 0
+          },
+          {
+            "texto": "🫁 pulmones",
+            "categoria": 0
+          },
+          {
+            "texto": "estómago",
+            "categoria": 1
+          },
+          {
+            "texto": "intestinos",
+            "categoria": 1
+          }
+        ],
+        "pista": "Las costillas cubren el pecho.",
+        "explicacion_error": "Corazón y pulmones están en el pecho; estómago e intestinos, en la guatita.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Los ___ mueven los huesos cuando caminas.",
+        "alternativas": [
+          "pulmones",
+          "intestinos",
+          "músculos",
+          "dientes"
+        ],
+        "correcta": 2,
+        "pista": "Se ponen duros cuando haces fuerza.",
+        "explicacion_error": "Los músculos tiran de los huesos y así nos movemos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada parte con su función.",
+        "pares": [
+          [
+            "corazón",
+            "bombea la sangre"
+          ],
+          [
+            "pulmones",
+            "toman el aire"
+          ],
+          [
+            "estómago",
+            "procesa la comida"
+          ],
+          [
+            "músculos",
+            "mueven el cuerpo"
+          ],
+          [
+            "esqueleto",
+            "sostiene el cuerpo"
+          ]
+        ],
+        "pista": "Piensa en qué pasaría si cada uno no funcionara.",
+        "explicacion_error": "Corazón: sangre; pulmones: aire; estómago: comida; músculos: movimiento; esqueleto: sostén.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "El corazón de Josefa late 80 veces en 1 minuto. ¿Cuántas veces late en 2 minutos?",
+        "respuesta": 160,
+        "tolerancia": 0,
+        "unidad": "latidos",
+        "pista": "Suma los latidos de cada minuto.",
+        "explicacion_error": "80 + 80 = 160 latidos en 2 minutos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué protegen las costillas?",
+        "alternativas": [
+          "los músculos de las piernas",
+          "los dedos de las manos",
+          "el estómago y los pies",
+          "el corazón y los pulmones"
+        ],
+        "correcta": 3,
+        "pista": "Las costillas forman una jaula en el pecho.",
+        "explicacion_error": "Las costillas rodean el pecho y protegen el corazón y los pulmones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena el camino de la comida.",
+        "elementos": [
+          "boca 👄",
+          "esófago",
+          "estómago",
+          "intestinos"
+        ],
+        "pista": "Empieza donde masticas.",
+        "explicacion_error": "Boca → esófago → estómago → intestinos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Después de correr 🏃, el corazón late más rápido. ¿Por qué?",
+        "alternativas": [
+          "porque los huesos crecen",
+          "porque los pulmones se detienen",
+          "para llevar más sangre a los músculos",
+          "porque el estómago tiene hambre"
+        ],
+        "correcta": 2,
+        "pista": "Los músculos trabajan mucho al correr.",
+        "explicacion_error": "Al correr los músculos necesitan más sangre, y el corazón late más rápido para llevarla.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Si no tuviéramos esqueleto, ¿cómo sería el cuerpo?",
+        "alternativas": [
+          "más rápido para correr",
+          "blando, sin forma y sin poder estar de pie",
+          "igual que ahora",
+          "más alto y fuerte"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué sostiene tu cuerpo?",
+        "explicacion_error": "Sin esqueleto el cuerpo no tendría sostén ni forma, y no podríamos pararnos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué órgano está trabajando?",
+        "categorias": [
+          "Corazón",
+          "Pulmones",
+          "Estómago"
+        ],
+        "elementos": [
+          {
+            "texto": "late más rápido al correr",
+            "categoria": 0
+          },
+          {
+            "texto": "bombea sangre",
+            "categoria": 0
+          },
+          {
+            "texto": "se inflan al inspirar",
+            "categoria": 1
+          },
+          {
+            "texto": "sacan el aire al soplar",
+            "categoria": 1
+          },
+          {
+            "texto": "recibe el almuerzo",
+            "categoria": 2
+          },
+          {
+            "texto": "mezcla la comida con jugos",
+            "categoria": 2
+          }
+        ],
+        "pista": "Piensa en sangre, aire o comida.",
+        "explicacion_error": "Latir y bombear: corazón; inflarse y soplar: pulmones; recibir y mezclar comida: estómago.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa7-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Benjamín respira 20 veces en un minuto. Después de saltar, respira 35 veces en un minuto. ¿Cuántas veces más respira?",
+        "respuesta": 15,
+        "tolerancia": 0,
+        "unidad": "veces",
+        "pista": "Resta lo que respira en reposo.",
+        "explicacion_error": "35 − 20 = 15: respira 15 veces más, porque sus músculos necesitan más aire.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias físicas y químicas",
+    "objetivo_oficial": "OA 9: Observar y describir características del agua: escurre, adopta la forma del recipiente, disuelve algunos sólidos y cambia de estado con la temperatura.",
+    "dificultad": 2,
+    "prerequisitos": [],
+    "id_objetivo": "2_basico.ciencias.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/2-basico/cn02-oa-09"
+    },
+    "desafios": [
+      {
+        "id": "cie2-oa9-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué le pasa al hielo 🧊 al sol ☀️?",
+        "alternativas": [
+          "se pone más duro",
+          "se derrite",
+          "se vuelve piedra",
+          "se agranda"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en un helado en verano.",
+        "explicacion_error": "Con el calor del sol, el hielo se derrite y se vuelve agua líquida.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Dejas agua 💧 en el congelador. ¿Qué obtienes?",
+        "alternativas": [
+          "🧊 hielo",
+          "🧂 sal",
+          "🪨 piedra",
+          "🔥 fuego"
+        ],
+        "correcta": 0,
+        "pista": "En el congelador hace mucho frío.",
+        "explicacion_error": "Con mucho frío, el agua se congela y se vuelve hielo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "El agua derramada ___ por la mesa. 💧",
+        "alternativas": [
+          "se para",
+          "rebota",
+          "escurre",
+          "crece"
+        ],
+        "correcta": 2,
+        "pista": "El agua no se queda quieta en un solo lugar.",
+        "explicacion_error": "El agua es líquida: escurre por la mesa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Se disuelve en agua o no?",
+        "categorias": [
+          "Se disuelve",
+          "No se disuelve"
+        ],
+        "elementos": [
+          {
+            "texto": "🧂 sal",
+            "categoria": 0
+          },
+          {
+            "texto": "azúcar",
+            "categoria": 0
+          },
+          {
+            "texto": "jugo en polvo",
+            "categoria": 0
+          },
+          {
+            "texto": "🪨 piedra",
+            "categoria": 1
+          },
+          {
+            "texto": "arena",
+            "categoria": 1
+          },
+          {
+            "texto": "clavo",
+            "categoria": 1
+          }
+        ],
+        "pista": "Si revuelves y ya no lo ves, se disolvió.",
+        "explicacion_error": "Sal, azúcar y jugo en polvo se disuelven; piedra, arena y clavo no.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Echas agua en un molde de estrella ⭐. ¿Qué forma toma el agua?",
+        "alternativas": [
+          "forma de cubo",
+          "forma de pelota",
+          "forma de gota",
+          "forma de estrella"
+        ],
+        "correcta": 3,
+        "pista": "El agua se acomoda al recipiente.",
+        "explicacion_error": "El agua toma la forma del recipiente: en el molde, forma de estrella.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada estado del agua con un ejemplo.",
+        "pares": [
+          [
+            "sólido",
+            "🧊 hielo"
+          ],
+          [
+            "líquido",
+            "💧 agua de la llave"
+          ],
+          [
+            "gaseoso",
+            "♨️ vapor de la tetera"
+          ]
+        ],
+        "pista": "El vapor sube de la tetera caliente.",
+        "explicacion_error": "Hielo: sólido; agua de la llave: líquido; vapor: gaseoso.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-007",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Un cubo de hielo se calienta cada vez más. Ordena lo que pasa.",
+        "elementos": [
+          "🧊 hielo (sólido)",
+          "💧 agua (líquido)",
+          "♨️ vapor (gas)"
+        ],
+        "pista": "Primero se derrite y después hierve.",
+        "explicacion_error": "Hielo → agua líquida → vapor: con calor, el agua cambia de estado.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Cuando el agua hierve, se transforma en ___.",
+        "alternativas": [
+          "nieve",
+          "vapor",
+          "sal",
+          "hielo"
+        ],
+        "correcta": 1,
+        "pista": "Mira lo que sale de una olla hirviendo.",
+        "explicacion_error": "Al hervir, el agua líquida se transforma en vapor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Pasas agua de una botella a un plato. ¿Qué pasa con su forma?",
+        "alternativas": [
+          "se vuelve sólida",
+          "toma la forma del plato",
+          "mantiene la forma de la botella",
+          "queda en forma de gota"
+        ],
+        "correcta": 1,
+        "pista": "Los líquidos no tienen forma propia.",
+        "explicacion_error": "El agua es líquida: toma la forma del recipiente donde la pones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-010",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Qué característica del agua muestra cada caso?",
+        "categorias": [
+          "Escurre",
+          "Toma la forma del recipiente",
+          "Cambia de estado"
+        ],
+        "elementos": [
+          {
+            "texto": "la lluvia baja por la calle",
+            "categoria": 0
+          },
+          {
+            "texto": "el agua corre por un tobogán",
+            "categoria": 0
+          },
+          {
+            "texto": "el jugo llena un vaso con forma de corazón",
+            "categoria": 1
+          },
+          {
+            "texto": "el agua de la piscina tiene su forma",
+            "categoria": 1
+          },
+          {
+            "texto": "el charco se seca al sol",
+            "categoria": 2
+          },
+          {
+            "texto": "la nieve se derrite en primavera",
+            "categoria": 2
+          }
+        ],
+        "pista": "Secarse y derretirse son cambios de estado.",
+        "explicacion_error": "Bajar y correr: escurre; llenar el vaso o la piscina: toma su forma; secarse y derretirse: cambia de estado.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Martina revuelve sal 🧂 en agua y ya no la ve. ¿Qué pasó?",
+        "alternativas": [
+          "la sal desapareció para siempre",
+          "la sal se disolvió en el agua",
+          "la sal se volvió hielo",
+          "la sal se fue al aire"
+        ],
+        "correcta": 1,
+        "pista": "Prueba el agua: ¿está salada?",
+        "explicacion_error": "La sal se disolvió: sigue en el agua aunque no la veas, por eso el agua queda salada.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Un helado 🍦 al sol se ___ porque sube su temperatura.",
+        "alternativas": [
+          "derrite",
+          "endurece",
+          "enfría",
+          "congela"
+        ],
+        "correcta": 0,
+        "pista": "El calor cambia el estado del hielo.",
+        "explicacion_error": "Con el calor, el helado se derrite: pasa de sólido a líquido.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} deja ropa mojada al sol ☀️ y se seca. ¿Adónde fue el agua?",
+        "alternativas": [
+          "desapareció para siempre",
+          "se evaporó y pasó al aire",
+          "se quedó escondida en la ropa",
+          "se convirtió en hielo"
+        ],
+        "correcta": 1,
+        "pista": "El calor del sol cambia el estado del agua.",
+        "explicacion_error": "El calor evaporó el agua: pasó al aire como vapor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En la cordillera hay nieve en invierno, y en verano gran parte se derrite. ¿Por qué?",
+        "alternativas": [
+          "la nieve escurre hacia arriba",
+          "la nieve se disuelve en el aire",
+          "en verano llueve más fuerte",
+          "el frío congela el agua y el calor la derrite"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en la temperatura de cada estación.",
+        "explicacion_error": "Con frío el agua se congela en nieve; con el calor del verano se derrite y baja por los ríos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-015",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Mezclas arena con agua y esperas. La arena queda ___.",
+        "alternativas": [
+          "pegada en el borde de arriba",
+          "disuelta en el agua",
+          "en el fondo del vaso",
+          "flotando en el aire"
+        ],
+        "correcta": 2,
+        "pista": "La arena no se disuelve en agua.",
+        "explicacion_error": "La arena no se disuelve: se hunde y queda en el fondo del vaso.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2-oa9-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "El agua hierve a 100 grados. Si el agua de la olla está a 60 grados, ¿cuántos grados le faltan para hervir?",
+        "respuesta": 40,
+        "tolerancia": 0,
+        "unidad": "grados",
+        "pista": "Resta la temperatura que tiene.",
+        "explicacion_error": "100 − 60 = 40: le faltan 40 grados para hervir y convertirse en vapor.",
+        "monedas": 10
+      }
+    ]
+  }
+]

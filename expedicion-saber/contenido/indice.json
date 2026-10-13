@@ -50,6 +50,17 @@
       "desafios": 45
     },
     {
+      "archivo": "1_basico/ciencias.json",
+      "nivel": "1_basico",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "1_basico.ciencias.OA1",
+        "1_basico.ciencias.OA4",
+        "1_basico.ciencias.OA12"
+      ],
+      "desafios": 49
+    },
+    {
       "archivo": "1_basico/ingles.json",
       "nivel": "1_basico",
       "asignatura": "ingles",
@@ -80,6 +91,17 @@
         "2_basico.lenguaje.OA21"
       ],
       "desafios": 30
+    },
+    {
+      "archivo": "2_basico/ciencias.json",
+      "nivel": "2_basico",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "2_basico.ciencias.OA1",
+        "2_basico.ciencias.OA7",
+        "2_basico.ciencias.OA9"
+      ],
+      "desafios": 48
     },
     {
       "archivo": "2_basico/ingles.json",
@@ -113,6 +135,17 @@
         "3_basico.lenguaje.OA22"
       ],
       "desafios": 45
+    },
+    {
+      "archivo": "3_basico/ciencias.json",
+      "nivel": "3_basico",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "3_basico.ciencias.OA1",
+        "3_basico.ciencias.OA9",
+        "3_basico.ciencias.OA11"
+      ],
+      "desafios": 48
     },
     {
       "archivo": "3_basico/ingles.json",
@@ -169,6 +202,17 @@
       "desafios": 60
     },
     {
+      "archivo": "5_basico/lenguaje.json",
+      "nivel": "5_basico",
+      "asignatura": "lenguaje",
+      "objetivos": [
+        "5_basico.lenguaje.OA4",
+        "5_basico.lenguaje.OA12",
+        "5_basico.lenguaje.OA21"
+      ],
+      "desafios": 50
+    },
+    {
       "archivo": "5_basico/ciencias.json",
       "nivel": "5_basico",
       "asignatura": "ciencias",
@@ -178,6 +222,16 @@
         "5_basico.ciencias.OA10"
       ],
       "desafios": 47
+    },
+    {
+      "archivo": "5_basico/ingles.json",
+      "nivel": "5_basico",
+      "asignatura": "ingles",
+      "objetivos": [
+        "5_basico.ingles.OA5",
+        "5_basico.ingles.OA14"
+      ],
+      "desafios": 34
     },
     {
       "archivo": "6_basico/matematica.json",
@@ -199,6 +253,16 @@
         "6_basico.ciencias.OA13"
       ],
       "desafios": 48
+    },
+    {
+      "archivo": "6_basico/ingles.json",
+      "nivel": "6_basico",
+      "asignatura": "ingles",
+      "objetivos": [
+        "6_basico.ingles.OA5",
+        "6_basico.ingles.OA15"
+      ],
+      "desafios": 33
     },
     {
       "archivo": "7_basico/matematica.json",
@@ -264,6 +328,15 @@
       ]
     },
     {
+      "id": "1_basico.ciencias",
+      "nombre": "Ciencias Naturales 1° básico",
+      "objetivos": [
+        "1_basico.ciencias.OA1",
+        "1_basico.ciencias.OA4",
+        "1_basico.ciencias.OA12"
+      ]
+    },
+    {
       "id": "1_basico.ingles",
       "nombre": "Inglés 1° básico",
       "objetivos": [
@@ -287,6 +360,15 @@
       "objetivos": [
         "2_basico.lenguaje.OA5",
         "2_basico.lenguaje.OA21"
+      ]
+    },
+    {
+      "id": "2_basico.ciencias",
+      "nombre": "Ciencias Naturales 2° básico",
+      "objetivos": [
+        "2_basico.ciencias.OA1",
+        "2_basico.ciencias.OA7",
+        "2_basico.ciencias.OA9"
       ]
     },
     {
@@ -314,6 +396,15 @@
         "3_basico.lenguaje.OA4",
         "3_basico.lenguaje.OA20",
         "3_basico.lenguaje.OA22"
+      ]
+    },
+    {
+      "id": "3_basico.ciencias",
+      "nombre": "Ciencias Naturales 3° básico",
+      "objetivos": [
+        "3_basico.ciencias.OA1",
+        "3_basico.ciencias.OA9",
+        "3_basico.ciencias.OA11"
       ]
     },
     {
@@ -361,12 +452,29 @@
       ]
     },
     {
+      "id": "5_basico.lenguaje",
+      "nombre": "Lenguaje y Comunicación 5° básico",
+      "objetivos": [
+        "5_basico.lenguaje.OA4",
+        "5_basico.lenguaje.OA12",
+        "5_basico.lenguaje.OA21"
+      ]
+    },
+    {
       "id": "5_basico.ciencias",
       "nombre": "Ciencias Naturales 5° básico",
       "objetivos": [
         "5_basico.ciencias.OA1",
         "5_basico.ciencias.OA8",
         "5_basico.ciencias.OA10"
+      ]
+    },
+    {
+      "id": "5_basico.ingles",
+      "nombre": "Inglés 5° básico",
+      "objetivos": [
+        "5_basico.ingles.OA5",
+        "5_basico.ingles.OA14"
       ]
     },
     {
@@ -384,6 +492,14 @@
         "6_basico.ciencias.OA1",
         "6_basico.ciencias.OA8",
         "6_basico.ciencias.OA13"
+      ]
+    },
+    {
+      "id": "6_basico.ingles",
+      "nombre": "Inglés 6° básico",
+      "objetivos": [
+        "6_basico.ingles.OA5",
+        "6_basico.ingles.OA15"
       ]
     },
     {

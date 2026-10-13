@@ -1,0 +1,1045 @@
+[
+  {
+    "nivel": "5_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 4: Analizar aspectos relevantes de narraciones leídas: lenguaje figurado, actitudes de los personajes, consecuencias de los hechos, ambiente y costumbres.",
+    "dificultad": 5,
+    "prerequisitos": [
+      "4_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "5_basico.lenguaje.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-17262.html"
+    },
+    "desafios": [
+      {
+        "id": "len5-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "El viento soplaba como un lobo hambriento entre los cerros de Chiloé. Las nubes corrían apuradas hacia el mar. En la casa de palafito, la abuela Rosa tejía un chaleco de lana junto al fogón, mientras Pedro escuchaba sus historias de barcos y tormentas.",
+        "enunciado": "¿Qué comparación aparece en el texto?",
+        "alternativas": [
+          "las nubes corrían apuradas",
+          "Pedro escuchaba historias",
+          "el viento soplaba como un lobo hambriento",
+          "la abuela tejía un chaleco"
+        ],
+        "correcta": 2,
+        "pista": "Una comparación une dos cosas con la palabra «como».",
+        "explicacion_error": "«El viento soplaba como un lobo hambriento» compara el viento con un lobo usando «como».",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Martina llegó corriendo al colegio, roja como un tomate. Había olvidado su disertación en la micro. Su profesora le sonrió y le dijo que podía presentarla al día siguiente. Martina respiró aliviada y se sentó.",
+        "enunciado": "¿Con qué se compara a Martina?",
+        "alternativas": [
+          "con su profesora",
+          "con una micro",
+          "con un tomate",
+          "con una disertación"
+        ],
+        "correcta": 2,
+        "pista": "Busca la palabra «como».",
+        "explicacion_error": "Dice que llegó «roja como un tomate».",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-015",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "La casa de mis abuelos en Valparaíso es pequeña como una caja de fósforos, pero está pintada de colores. Desde la ventana, los cerros parecen escaleras gigantes que bajan hasta el mar, y los ascensores suben y bajan como hormigas trabajadoras.",
+        "enunciado": "La casa de los abuelos es pequeña como ___.",
+        "alternativas": [
+          "una hormiga",
+          "una escalera gigante",
+          "un ascensor",
+          "una caja de fósforos"
+        ],
+        "correcta": 3,
+        "pista": "Busca lo que viene después de «pequeña como».",
+        "explicacion_error": "La casa es «pequeña como una caja de fósforos».",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "El viento soplaba como un lobo hambriento entre los cerros de Chiloé. Las nubes corrían apuradas hacia el mar. En la casa de palafito, la abuela Rosa tejía un chaleco de lana junto al fogón, mientras Pedro escuchaba sus historias de barcos y tormentas.",
+        "enunciado": "«Las nubes corrían apuradas» es una personificación porque…",
+        "alternativas": [
+          "da a las nubes una acción propia de las personas",
+          "compara las nubes con algo usando «como»",
+          "describe el color de las nubes",
+          "cuenta cuántas nubes había"
+        ],
+        "correcta": 0,
+        "pista": "¿Quiénes suelen correr apurados?",
+        "explicacion_error": "Correr apurado es algo que hacen las personas: se le atribuye a las nubes, por eso es personificación.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "El viento soplaba como un lobo hambriento entre los cerros de Chiloé. Las nubes corrían apuradas hacia el mar. En la casa de palafito, la abuela Rosa tejía un chaleco de lana junto al fogón, mientras Pedro escuchaba sus historias de barcos y tormentas.",
+        "enunciado": "¿Qué lugares y costumbres muestra el texto?",
+        "categorias": [
+          "Aparece en el texto",
+          "No aparece"
+        ],
+        "elementos": [
+          {
+            "texto": "casa de palafito",
+            "categoria": 0
+          },
+          {
+            "texto": "tejer con lana junto al fogón",
+            "categoria": 0
+          },
+          {
+            "texto": "contar historias de barcos",
+            "categoria": 0
+          },
+          {
+            "texto": "volar volantines",
+            "categoria": 1
+          },
+          {
+            "texto": "esquiar en la nieve",
+            "categoria": 1
+          },
+          {
+            "texto": "bailar cueca en la plaza",
+            "categoria": 1
+          }
+        ],
+        "pista": "Relee qué hace la abuela y dónde viven.",
+        "explicacion_error": "El texto muestra el palafito, el tejido junto al fogón y las historias de barcos; lo demás no aparece.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Martina llegó corriendo al colegio, roja como un tomate. Había olvidado su disertación en la micro. Su profesora le sonrió y le dijo que podía presentarla al día siguiente. Martina respiró aliviada y se sentó.",
+        "enunciado": "¿Cómo reaccionó Martina cuando la profesora le dio otro día?",
+        "alternativas": [
+          "se puso a llorar",
+          "se sintió aliviada",
+          "salió corriendo de la sala",
+          "se enojó con la profesora"
+        ],
+        "correcta": 1,
+        "pista": "Lee la última oración.",
+        "explicacion_error": "El texto dice que «respiró aliviada»: se le pasó la preocupación.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-016",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "texto": "La casa de mis abuelos en Valparaíso es pequeña como una caja de fósforos, pero está pintada de colores. Desde la ventana, los cerros parecen escaleras gigantes que bajan hasta el mar, y los ascensores suben y bajan como hormigas trabajadoras.",
+        "enunciado": "Une cada elemento con aquello con lo que se compara.",
+        "pares": [
+          [
+            "la casa",
+            "una caja de fósforos"
+          ],
+          [
+            "los cerros",
+            "escaleras gigantes"
+          ],
+          [
+            "los ascensores",
+            "hormigas trabajadoras"
+          ]
+        ],
+        "pista": "Busca «como» y «parecen».",
+        "explicacion_error": "La casa es como una caja de fósforos, los cerros parecen escaleras y los ascensores son como hormigas.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Martina llegó corriendo al colegio, roja como un tomate. Había olvidado su disertación en la micro. Su profesora le sonrió y le dijo que podía presentarla al día siguiente. Martina respiró aliviada y se sentó.",
+        "enunciado": "¿Qué consecuencia tuvo que Martina olvidara su disertación?",
+        "alternativas": [
+          "perdió la micro de vuelta",
+          "se sacó un uno",
+          "la presentará al día siguiente",
+          "la profesora la retó"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué decidió la profesora?",
+        "explicacion_error": "Como no tenía su disertación, la profesora le permitió presentarla al día siguiente.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Vicente rompió sin querer el macetero de su vecina, doña Elena. Pensó en esconderse, pero tocó el timbre y le contó lo ocurrido. Doña Elena, en vez de retarlo, le pidió ayuda para plantar el cardenal en otro macetero. Desde ese día, Vicente la visita cada sábado para regar juntos el jardín.",
+        "enunciado": "¿Qué actitud muestra Vicente al tocar el timbre?",
+        "alternativas": [
+          "honestidad",
+          "orgullo",
+          "cobardía",
+          "indiferencia"
+        ],
+        "correcta": 0,
+        "pista": "Pensó en esconderse, pero ¿qué hizo finalmente?",
+        "explicacion_error": "En vez de esconderse, contó lo que pasó: actuó con honestidad.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "texto": "Vicente rompió sin querer el macetero de su vecina, doña Elena. Pensó en esconderse, pero tocó el timbre y le contó lo ocurrido. Doña Elena, en vez de retarlo, le pidió ayuda para plantar el cardenal en otro macetero. Desde ese día, Vicente la visita cada sábado para regar juntos el jardín.",
+        "enunciado": "Ordena los hechos del relato.",
+        "elementos": [
+          "Vicente rompe el macetero.",
+          "Piensa en esconderse.",
+          "Le cuenta a doña Elena.",
+          "Plantan juntos el cardenal.",
+          "La visita cada sábado."
+        ],
+        "pista": "Sigue el orden en que aparecen en el texto.",
+        "explicacion_error": "Rompe el macetero, piensa en esconderse, lo cuenta, plantan el cardenal y luego la visita los sábados.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "texto": "La casa de mis abuelos en Valparaíso es pequeña como una caja de fósforos, pero está pintada de colores. Desde la ventana, los cerros parecen escaleras gigantes que bajan hasta el mar, y los ascensores suben y bajan como hormigas trabajadoras.",
+        "enunciado": "¿Cuántas comparaciones hay en el texto?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "unidad": "comparaciones",
+        "pista": "Busca «como» y también «parecen».",
+        "explicacion_error": "Hay 3: la casa como una caja de fósforos, los cerros parecen escaleras y los ascensores como hormigas.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Vicente rompió sin querer el macetero de su vecina, doña Elena. Pensó en esconderse, pero tocó el timbre y le contó lo ocurrido. Doña Elena, en vez de retarlo, le pidió ayuda para plantar el cardenal en otro macetero. Desde ese día, Vicente la visita cada sábado para regar juntos el jardín.",
+        "enunciado": "¿Qué consecuencia tuvo la honestidad de Vicente?",
+        "alternativas": [
+          "tuvo que pagar el macetero",
+          "dejó de visitar a su vecina",
+          "se hizo amigo de doña Elena",
+          "doña Elena lo retó"
+        ],
+        "correcta": 2,
+        "pista": "Fíjate en lo que pasa «desde ese día».",
+        "explicacion_error": "Por contar la verdad, terminó visitando a doña Elena cada sábado: se hicieron amigos.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-010",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "texto": "En la pampa, el sol mordía la piel de los mineros. El viejo campamento dormía bajo el polvo, y solo la campana de la oficina salitrera despertaba a las familias al amanecer. Los domingos, todos se reunían en la plaza para escuchar a la banda del pueblo.",
+        "enunciado": "Une cada expresión del texto con lo que quiere decir.",
+        "pares": [
+          [
+            "el sol mordía la piel",
+            "el sol quemaba con fuerza"
+          ],
+          [
+            "el campamento dormía bajo el polvo",
+            "el lugar estaba quieto y polvoriento"
+          ],
+          [
+            "la campana despertaba a las familias",
+            "la campana marcaba el inicio del día"
+          ]
+        ],
+        "pista": "Piensa qué significa cada expresión en la vida real.",
+        "explicacion_error": "El sol «mordía» porque quemaba, el campamento «dormía» porque estaba quieto, y la campana anunciaba el día.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "texto": "En la pampa, el sol mordía la piel de los mineros. El viejo campamento dormía bajo el polvo, y solo la campana de la oficina salitrera despertaba a las familias al amanecer. Los domingos, todos se reunían en la plaza para escuchar a la banda del pueblo.",
+        "enunciado": "¿Describe el ambiente físico o una costumbre?",
+        "categorias": [
+          "Ambiente físico",
+          "Costumbre"
+        ],
+        "elementos": [
+          {
+            "texto": "el sol fuerte de la pampa",
+            "categoria": 0
+          },
+          {
+            "texto": "el polvo sobre el campamento",
+            "categoria": 0
+          },
+          {
+            "texto": "el paisaje de la pampa",
+            "categoria": 0
+          },
+          {
+            "texto": "despertar con la campana",
+            "categoria": 1
+          },
+          {
+            "texto": "reunirse los domingos en la plaza",
+            "categoria": 1
+          },
+          {
+            "texto": "escuchar a la banda del pueblo",
+            "categoria": 1
+          }
+        ],
+        "pista": "Una costumbre es algo que la gente hace habitualmente.",
+        "explicacion_error": "El sol, el polvo y la pampa son el ambiente; la campana, la plaza y la banda son costumbres.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "En la pampa, el sol mordía la piel de los mineros. El viejo campamento dormía bajo el polvo, y solo la campana de la oficina salitrera despertaba a las familias al amanecer. Los domingos, todos se reunían en la plaza para escuchar a la banda del pueblo.",
+        "enunciado": "¿Por qué se dice que el sol «mordía» la piel?",
+        "alternativas": [
+          "para mostrar que los mineros tenían hambre",
+          "para mostrar que el calor era intenso y dañino",
+          "porque el sol era un animal",
+          "para indicar que era de noche"
+        ],
+        "correcta": 1,
+        "pista": "Piensa qué se siente cuando algo muerde.",
+        "explicacion_error": "Es una personificación: el sol hace daño como una mordida, porque el calor era muy fuerte.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Cuando anunciaron que Josefa iría al campeonato regional de ajedrez, Amanda dejó de hablarle. Toda la semana caminó sola en los recreos. El día del torneo, sin embargo, apareció con un cartel que decía: «¡Fuerza, Josefa!». Josefa ganó la primera partida y corrió a abrazarla.",
+        "enunciado": "¿Qué sentía probablemente Amanda al comienzo?",
+        "alternativas": [
+          "aburrimiento",
+          "miedo al ajedrez",
+          "envidia",
+          "alegría"
+        ],
+        "correcta": 2,
+        "pista": "¿Por qué dejaría de hablarle justo cuando Josefa fue elegida?",
+        "explicacion_error": "Dejó de hablarle cuando eligieron a Josefa: sentía envidia.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa4-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Cuando anunciaron que Josefa iría al campeonato regional de ajedrez, Amanda dejó de hablarle. Toda la semana caminó sola en los recreos. El día del torneo, sin embargo, apareció con un cartel que decía: «¡Fuerza, Josefa!». Josefa ganó la primera partida y corrió a abrazarla.",
+        "enunciado": "¿Qué muestra el cartel sobre Amanda?",
+        "alternativas": [
+          "que superó su envidia y decidió apoyar a su amiga",
+          "que seguía enojada con Josefa",
+          "que quería jugar en lugar de Josefa",
+          "que el profesor la obligó a llevarlo"
+        ],
+        "correcta": 0,
+        "pista": "Compara lo que hizo al inicio con lo que hizo el día del torneo.",
+        "explicacion_error": "Al final apoya a Josefa con un cartel: cambió su actitud y dejó atrás la envidia.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "5_basico",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 12: Aplicar estrategias para determinar el significado de palabras nuevas: claves del texto, raíces y afijos, preguntar a otro y consultar diccionarios o internet.",
+    "dificultad": 5,
+    "prerequisitos": [
+      "4_basico.lenguaje.OA10"
+    ],
+    "id_objetivo": "5_basico.lenguaje.OA12",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/5-basico"
+    },
+    "desafios": [
+      {
+        "id": "len5-oa12-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "El pudú es un ciervo diminuto: mide apenas cuarenta centímetros de alto, menos que un perro mediano. Vive escondido en los bosques húmedos del sur de Chile.",
+        "enunciado": "Según el texto, ¿qué significa «diminuto»?",
+        "alternativas": [
+          "muy rápido",
+          "muy pequeño",
+          "muy grande",
+          "muy peludo"
+        ],
+        "correcta": 1,
+        "pista": "Lee lo que viene después de los dos puntos.",
+        "explicacion_error": "Mide apenas cuarenta centímetros: «diminuto» significa muy pequeño.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "Benjamín desarmó su bicicleta para limpiarla. Al terminar, intentó rearmarla, pero le sobraron dos tornillos. Le pareció increíble. Su hermana, que es ciclista, le explicó que eran del timbre.",
+        "enunciado": "«Rearmar» significa armar ___.",
+        "alternativas": [
+          "sin ayuda",
+          "antes",
+          "mal",
+          "otra vez"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en «releer» o «rehacer».",
+        "explicacion_error": "El prefijo re- significa «otra vez»: rearmar es volver a armar.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Al llegar a la cima del cerro, Sofía se sentó a descansar. El viento soplaba fuerte y la vista era espectacular: se veía todo Santiago y, al fondo, la cordillera nevada.",
+        "enunciado": "¿Qué significa «cima» en el texto?",
+        "alternativas": [
+          "la parte más alta",
+          "una casa en el cerro",
+          "la parte más baja",
+          "un camino de tierra"
+        ],
+        "correcta": 0,
+        "pista": "Sofía llegó y desde ahí veía toda la ciudad.",
+        "explicacion_error": "Desde la cima se ve todo: es la parte más alta del cerro.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "El pudú es un ciervo diminuto: mide apenas cuarenta centímetros de alto, menos que un perro mediano. Vive escondido en los bosques húmedos del sur de Chile.",
+        "enunciado": "¿Qué parte del texto es la clave para entender «diminuto»?",
+        "alternativas": [
+          "«vive escondido»",
+          "«mide apenas cuarenta centímetros de alto»",
+          "«del sur de Chile»",
+          "«en los bosques húmedos»"
+        ],
+        "correcta": 1,
+        "pista": "Busca la parte que habla del tamaño.",
+        "explicacion_error": "La medida del pudú explica la palabra: es una clave de contexto.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-004",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "texto": "Benjamín desarmó su bicicleta para limpiarla. Al terminar, intentó rearmarla, pero le sobraron dos tornillos. Le pareció increíble. Su hermana, que es ciclista, le explicó que eran del timbre.",
+        "enunciado": "Une cada prefijo del texto con su significado.",
+        "pares": [
+          [
+            "des- (desarmar)",
+            "acción contraria"
+          ],
+          [
+            "re- (rearmar)",
+            "otra vez"
+          ],
+          [
+            "in- (increíble)",
+            "no"
+          ]
+        ],
+        "pista": "Piensa en «deshacer», «repetir» e «inútil».",
+        "explicacion_error": "des- indica lo contrario, re- repetición e in- negación.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-010",
+        "tipo": "completar",
+        "dificultad": 2,
+        "texto": "banco. 1. Asiento largo donde caben varias personas. 2. Empresa que guarda y presta dinero. 3. Grupo grande de peces que nadan juntos.",
+        "enunciado": "En «Nos sentamos en un banco de la plaza», «banco» tiene el significado número ___.",
+        "alternativas": [
+          "3",
+          "2",
+          "1",
+          "4"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué hay en una plaza para sentarse?",
+        "explicacion_error": "En la plaza, el banco es un asiento: significado 1.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Benjamín desarmó su bicicleta para limpiarla. Al terminar, intentó rearmarla, pero le sobraron dos tornillos. Le pareció increíble. Su hermana, que es ciclista, le explicó que eran del timbre.",
+        "enunciado": "¿Qué significa «increíble» en el texto?",
+        "alternativas": [
+          "que se cree antes",
+          "que se cree con facilidad",
+          "que se cree otra vez",
+          "que no se puede creer"
+        ],
+        "correcta": 3,
+        "pista": "Separa la palabra: in- + creíble.",
+        "explicacion_error": "in- significa «no»: increíble es algo que no se puede creer.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-006",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "texto": "En la caleta de Tongoy, el panadero abre su local muy temprano. Saluda amablemente a los pescadores, que le compran pancitos calientes. Dice que su felicidad es verlos desayunar contentos.",
+        "enunciado": "Une cada palabra del texto con lo que indica su sufijo.",
+        "pares": [
+          [
+            "panadero",
+            "oficio: el que hace pan"
+          ],
+          [
+            "pancitos",
+            "tamaño pequeño o cariño"
+          ],
+          [
+            "amablemente",
+            "de manera amable"
+          ],
+          [
+            "felicidad",
+            "cualidad de ser feliz"
+          ]
+        ],
+        "pista": "Fíjate en el final de cada palabra: -ero, -ito, -mente, -dad.",
+        "explicacion_error": "-ero indica oficio, -ito tamaño o cariño, -mente modo y -dad cualidad.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "En la caleta de Tongoy, el panadero abre su local muy temprano. Saluda amablemente a los pescadores, que le compran pancitos calientes. Dice que su felicidad es verlos desayunar contentos.",
+        "enunciado": "Si el panadero hace pan, ¿qué hace un «carpintero»?",
+        "alternativas": [
+          "arregla zapatos",
+          "vende carpas",
+          "maneja camiones",
+          "trabaja la madera"
+        ],
+        "correcta": 3,
+        "pista": "El sufijo -ero indica oficio; ¿qué material usa?",
+        "explicacion_error": "-ero indica oficio: el carpintero trabaja la madera.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Al llegar a la cima del cerro, Sofía se sentó a descansar. El viento soplaba fuerte y la vista era espectacular: se veía todo Santiago y, al fondo, la cordillera nevada.",
+        "enunciado": "Sofía no conoce la palabra «cordillera» y el texto no da pistas. ¿Qué estrategia le dará el significado más preciso?",
+        "alternativas": [
+          "adivinarla por su primera letra",
+          "saltarse la palabra",
+          "buscarla en un diccionario",
+          "contar sus sílabas"
+        ],
+        "correcta": 2,
+        "pista": "Cuando el contexto no ayuda, ¿dónde se explican las palabras?",
+        "explicacion_error": "Si el contexto no basta, conviene consultar un diccionario (o preguntar a alguien que sepa).",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-011",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "texto": "banco. 1. Asiento largo donde caben varias personas. 2. Empresa que guarda y presta dinero. 3. Grupo grande de peces que nadan juntos.",
+        "enunciado": "¿Qué número de significado corresponde a «Desde el bote vimos un banco de jureles»?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Los jureles son peces.",
+        "explicacion_error": "Un banco de jureles es un grupo de peces: significado 3.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Después de tres días sin agua, las plantas del jardín estaban mustias: sus hojas colgaban sin fuerza y habían perdido su verde brillante. La abuela las regó con cuidado y, al día siguiente, lucían lozanas otra vez.",
+        "enunciado": "¿Qué significa «mustias»?",
+        "alternativas": [
+          "recién plantadas",
+          "mojadas",
+          "llenas de flores",
+          "marchitas, sin fuerza"
+        ],
+        "correcta": 3,
+        "pista": "Lee lo que viene después de los dos puntos.",
+        "explicacion_error": "Las hojas colgaban sin fuerza y sin color: «mustias» significa marchitas.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-015",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Si «historia» es el tiempo con registros escritos, la «prehistoria» es el período ___ a la escritura.",
+        "alternativas": [
+          "contrario",
+          "igual",
+          "anterior",
+          "posterior"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué significa pre- en «prever» o «preparar»?",
+        "explicacion_error": "pre- significa «antes»: la prehistoria es anterior a la escritura.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Después de tres días sin agua, las plantas del jardín estaban mustias: sus hojas colgaban sin fuerza y habían perdido su verde brillante. La abuela las regó con cuidado y, al día siguiente, lucían lozanas otra vez.",
+        "enunciado": "Según el contexto, ¿qué significa «lozanas»?",
+        "alternativas": [
+          "secas y débiles",
+          "frescas y sanas",
+          "cortadas",
+          "pequeñas"
+        ],
+        "correcta": 1,
+        "pista": "Es lo contrario de cómo estaban antes de regarlas.",
+        "explicacion_error": "Después del riego se recuperaron: «lozanas» significa frescas y sanas, lo opuesto a mustias.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-014",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "texto": "Después de tres días sin agua, las plantas del jardín estaban mustias: sus hojas colgaban sin fuerza y habían perdido su verde brillante. La abuela las regó con cuidado y, al día siguiente, lucían lozanas otra vez.",
+        "enunciado": "¿Qué expresiones del texto ayudan a entender «mustias»?",
+        "categorias": [
+          "Ayuda",
+          "No ayuda"
+        ],
+        "elementos": [
+          {
+            "texto": "tres días sin agua",
+            "categoria": 0
+          },
+          {
+            "texto": "colgaban sin fuerza",
+            "categoria": 0
+          },
+          {
+            "texto": "habían perdido su verde brillante",
+            "categoria": 0
+          },
+          {
+            "texto": "la abuela",
+            "categoria": 1
+          },
+          {
+            "texto": "con cuidado",
+            "categoria": 1
+          }
+        ],
+        "pista": "Busca las que describen cómo estaban las plantas.",
+        "explicacion_error": "La falta de agua, las hojas sin fuerza y la pérdida de color son las claves de contexto.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa12-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "«La deslealtad del capitán sorprendió a la tripulación». ¿Qué significa «deslealtad»?",
+        "alternativas": [
+          "lealtad repetida",
+          "exceso de lealtad",
+          "falta de lealtad",
+          "persona muy leal"
+        ],
+        "correcta": 2,
+        "pista": "Separa: des- + leal + -tad. ¿Qué indica des-?",
+        "explicacion_error": "des- indica lo contrario y -tad una cualidad: deslealtad es la falta de lealtad.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "5_basico",
+    "asignatura": "lenguaje",
+    "eje": "Escritura",
+    "objetivo_oficial": "OA 21: Conjugar correctamente los verbos regulares al utilizarlos en sus producciones escritas.",
+    "dificultad": 5,
+    "prerequisitos": [
+      "3_basico.lenguaje.OA20"
+    ],
+    "id_objetivo": "5_basico.lenguaje.OA21",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/5-basico"
+    },
+    "desafios": [
+      {
+        "id": "len5-oa21-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Presente. Yo ___ (cantar) en el coro del colegio.",
+        "alternativas": [
+          "cantaba",
+          "cantaré",
+          "canto",
+          "canté"
+        ],
+        "correcta": 2,
+        "pista": "El presente indica lo que ocurre ahora o habitualmente.",
+        "explicacion_error": "Presente de «cantar» con yo: canto.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿En qué tiempo está «comeremos»?",
+        "alternativas": [
+          "pretérito",
+          "copretérito",
+          "presente",
+          "futuro"
+        ],
+        "correcta": 3,
+        "pista": "Piensa si la acción ya pasó, pasa o pasará.",
+        "explicacion_error": "«Comeremos» es una acción que aún no ocurre: futuro.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿En qué termina cada verbo en infinitivo?",
+        "categorias": [
+          "-ar",
+          "-er",
+          "-ir"
+        ],
+        "elementos": [
+          {
+            "texto": "saltar",
+            "categoria": 0
+          },
+          {
+            "texto": "bailar",
+            "categoria": 0
+          },
+          {
+            "texto": "correr",
+            "categoria": 1
+          },
+          {
+            "texto": "beber",
+            "categoria": 1
+          },
+          {
+            "texto": "vivir",
+            "categoria": 2
+          },
+          {
+            "texto": "escribir",
+            "categoria": 2
+          }
+        ],
+        "pista": "Mira las dos últimas letras.",
+        "explicacion_error": "saltar y bailar terminan en -ar; correr y beber en -er; vivir y escribir en -ir.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Pretérito. Ayer nosotros ___ (correr) en el parque.",
+        "alternativas": [
+          "correremos",
+          "corrimos",
+          "corríamos",
+          "corremos"
+        ],
+        "correcta": 1,
+        "pista": "El pretérito cuenta una acción terminada en el pasado.",
+        "explicacion_error": "Pretérito de «correr» con nosotros: corrimos.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada forma de «bailar» con su tiempo.",
+        "pares": [
+          [
+            "bailo",
+            "presente"
+          ],
+          [
+            "bailé",
+            "pretérito"
+          ],
+          [
+            "bailaba",
+            "copretérito"
+          ],
+          [
+            "bailaré",
+            "futuro"
+          ]
+        ],
+        "pista": "-é es una acción terminada; -aba, una acción que duraba en el pasado.",
+        "explicacion_error": "bailo: presente; bailé: pretérito; bailaba: copretérito; bailaré: futuro.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Futuro. Mañana tú ___ (escribir) la carta.",
+        "alternativas": [
+          "escribes",
+          "escribirás",
+          "escribiste",
+          "escribías"
+        ],
+        "correcta": 1,
+        "pista": "El futuro de tú termina en -ás.",
+        "explicacion_error": "Futuro de «escribir» con tú: escribirás.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Cuando era pequeña, Sofía ___ (vivir) en Arica.",
+        "alternativas": [
+          "vive",
+          "vivía",
+          "vivo",
+          "vivirá"
+        ],
+        "correcta": 1,
+        "pista": "«Cuando era pequeña» habla de algo que duraba en el pasado.",
+        "explicacion_error": "Para una situación que duraba en el pasado se usa el copretérito: vivía.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-008",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Pasado, presente o futuro?",
+        "categorias": [
+          "Pasado",
+          "Presente",
+          "Futuro"
+        ],
+        "elementos": [
+          {
+            "texto": "aprendí",
+            "categoria": 0
+          },
+          {
+            "texto": "leían",
+            "categoria": 0
+          },
+          {
+            "texto": "subes",
+            "categoria": 1
+          },
+          {
+            "texto": "comprendemos",
+            "categoria": 1
+          },
+          {
+            "texto": "abrirán",
+            "categoria": 2
+          },
+          {
+            "texto": "venderé",
+            "categoria": 2
+          }
+        ],
+        "pista": "Fíjate en las terminaciones: -í, -ían, -rán, -ré…",
+        "explicacion_error": "aprendí y leían son pasado; subes y comprendemos, presente; abrirán y venderé, futuro.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué oración tiene el verbo bien conjugado?",
+        "alternativas": [
+          "Ellos bebimos jugo en el almuerzo.",
+          "Ellos bebieron jugo en el almuerzo.",
+          "Ellos bebiste jugo en el almuerzo.",
+          "Ellos bebió jugo en el almuerzo."
+        ],
+        "correcta": 1,
+        "pista": "El verbo debe concordar con «ellos».",
+        "explicacion_error": "Con ellos, el pretérito de «beber» es bebieron.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-010",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Ayer {personaje} ___ (guardar) {los_objetos} en {el_contenedor}.",
+        "alternativas": [
+          "guarda",
+          "guardará",
+          "guardé",
+          "guardó"
+        ],
+        "correcta": 3,
+        "pista": "«Ayer» indica una acción terminada; el sujeto es una sola persona que no eres tú.",
+        "explicacion_error": "Pretérito de «guardar» con él o ella: guardó.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "El año pasado mis primos ___ (viajar) a Chiloé.",
+        "alternativas": [
+          "viajan",
+          "viajamos",
+          "viajarán",
+          "viajaron"
+        ],
+        "correcta": 3,
+        "pista": "Revisa el tiempo («el año pasado») y quién viaja.",
+        "explicacion_error": "Acción terminada y sujeto «mis primos» (ellos): viajaron.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Mientras mamá ___ (barrer) el patio, yo regaba las plantas.",
+        "alternativas": [
+          "barría",
+          "barremos",
+          "barrieron",
+          "barrerá"
+        ],
+        "correcta": 0,
+        "pista": "Las dos acciones ocurrían al mismo tiempo en el pasado.",
+        "explicacion_error": "Con «regaba», la otra acción simultánea va en copretérito: barría.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-013",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada persona con la forma de «partir» en pretérito.",
+        "pares": [
+          [
+            "yo",
+            "partí"
+          ],
+          [
+            "tú",
+            "partiste"
+          ],
+          [
+            "ella",
+            "partió"
+          ],
+          [
+            "nosotros",
+            "partimos"
+          ],
+          [
+            "ellos",
+            "partieron"
+          ]
+        ],
+        "pista": "Piensa en «viví, viviste, vivió…».",
+        "explicacion_error": "partí, partiste, partió, partimos, partieron.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué oración tiene un verbo mal conjugado?",
+        "alternativas": [
+          "Antes comíamos empanadas en la once.",
+          "Mañana comeremos empanadas en la once.",
+          "Ayer tú comistes empanadas en la once.",
+          "Ayer comimos empanadas en la once."
+        ],
+        "correcta": 2,
+        "pista": "Revisa la forma de tú en pretérito.",
+        "explicacion_error": "Con tú, el pretérito es «comiste», sin s final: «comistes» es un error.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-015",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "El próximo verano, Tomás y Amanda ___ (recorrer) el desierto de Atacama.",
+        "alternativas": [
+          "recorrerá",
+          "recorrieron",
+          "recorrerán",
+          "recorrían"
+        ],
+        "correcta": 2,
+        "pista": "Fíjate en cuándo ocurre y en cuántas personas lo hacen.",
+        "explicacion_error": "Es futuro y el sujeto es plural (ellos): recorrerán.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "¿Cuántos verbos en copretérito hay? «Cuando vivía en Valdivia, caminaba por la costanera y miraba los botes. Un día subí a uno.»",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "unidad": "verbos",
+        "pista": "El copretérito de -ar termina en -aba; el de -er e -ir, en -ía.",
+        "explicacion_error": "vivía, caminaba y miraba están en copretérito; «subí» está en pretérito.",
+        "monedas": 10
+      },
+      {
+        "id": "len5-oa21-017",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Si mañana llueve, nosotros ___ (suspender) el paseo.",
+        "alternativas": [
+          "suspendimos",
+          "suspenderemos",
+          "suspendíamos",
+          "suspendieron"
+        ],
+        "correcta": 1,
+        "pista": "La acción depende de algo que pasará mañana.",
+        "explicacion_error": "Es una acción futura con nosotros: suspenderemos.",
+        "monedas": 10
+      }
+    ]
+  }
+]
