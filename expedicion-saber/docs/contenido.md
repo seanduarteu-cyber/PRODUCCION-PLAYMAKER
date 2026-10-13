@@ -82,10 +82,10 @@ las construcciones siempre femeninas. Ejemplo: «{personaje} {junto} 8 {objetos}
 
 | Asignatura | Cursos | OA | Desafíos |
 |---|---|---|---|
-| Matemática | 1° a 8° básico | 25 | 500 |
-| Lenguaje y Comunicación | 1° a 8° básico | 21 | 332 |
-| Ciencias Naturales | 1° a 8° básico | 26 | 419 |
-| Inglés | 1° a 8° básico | 16 | 283 |
+| Matemática | 1° básico a 8° básico | 25 | 500 |
+| Lenguaje y Comunicación | 1° básico a 8° básico | 21 | 332 |
+| Ciencias Naturales | 1° básico a 8° básico | 26 | 419 |
+| Inglés | 1° básico a 8° básico | 16 | 283 |
 
 ### Matemática
 

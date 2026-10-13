@@ -14,6 +14,8 @@ BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 CONTENIDO = os.path.join(BASE, "contenido")
 CORTA = {"matematica": "Mat", "lenguaje": "Len", "ciencias": "Cie", "ingles": "Ing"}
 CODIGO = {"matematica": "MA", "lenguaje": "LE", "ciencias": "CN", "ingles": "EN"}
+# En media, Inglés usa IN y algunas asignaturas cambian de prefijo (se completa al verificar cada código).
+PREFIJO_MEDIO = {("ingles", n): "IN" for n in "1234"}
 # Por qué cada código quedó pendiente (se muestra en docs/contenido.md).
 MOTIVOS = {
     "1_basico.lenguaje.OA4": "aparece en el eje Lectura de 1° básico (texto «Leo Primero»), pero no se pudo confirmar su redacción.",
@@ -26,18 +28,29 @@ MOTIVOS = {
 
 
 def nivel_num(nivel):
-    return int(nivel.split("_")[0])
+    """Posición del curso: 1° a 8° básico = 1 a 8; 1° a 4° medio = 9 a 12."""
+    n, tipo = nivel.split("_")
+    return int(n) + (8 if tipo == "medio" else 0)
+
+
+def nombre_nivel(nivel):
+    n, tipo = nivel.split("_")
+    return f"{n}° {'medio' if tipo == 'medio' else 'básico'}"
 
 
 def etiqueta(oid):
     nivel, asig, oa = oid.split(".")
-    return f"{nivel_num(nivel)}° {CORTA[asig]} OA {oa[2:]}"
+    n, tipo = nivel.split("_")
+    return f"{n}°{'M' if tipo == 'medio' else ''} {CORTA[asig]} OA {oa[2:]}"
 
 
 def codigo_oficial(o):
-    n = nivel_num(o["nivel"])
-    pref = "IN" if o["asignatura"] == "ingles" and n >= 5 else CODIGO[o["asignatura"]]
-    return f"{pref}{n:02d} OA {int(o['id_objetivo'].split('.OA')[1]):02d}"
+    n, tipo = o["nivel"].split("_")
+    num = int(o["id_objetivo"].split(".OA")[1])
+    if tipo == "medio":
+        return f"{PREFIJO_MEDIO.get((o['asignatura'], n), CODIGO[o['asignatura']])}{n}M OA {num:02d}"
+    pref = "IN" if o["asignatura"] == "ingles" and int(n) >= 5 else CODIGO[o["asignatura"]]
+    return f"{pref}{int(n):02d} OA {num:02d}"
 
 
 def reemplazar(ruta, marca, nuevo):
@@ -65,8 +78,8 @@ def main():
         de = [o for o in oas.values() if o["asignatura"] == asig]
         if not de:
             continue
-        cursos = sorted({nivel_num(o["nivel"]) for o in de})
-        lineas.append(f"| {nombre} | {cursos[0]}° a {cursos[-1]}° básico | {len(de)} | {sum(len(o['desafios']) for o in de)} |")
+        cursos = sorted({o["nivel"] for o in de}, key=nivel_num)
+        lineas.append(f"| {nombre} | {nombre_nivel(cursos[0])} a {nombre_nivel(cursos[-1])} | {len(de)} | {sum(len(o['desafios']) for o in de)} |")
     sin_banco = [o["id_objetivo"] for o in OBJETIVOS if o["id_objetivo"] not in oas]
     if sin_banco:
         lineas += ["", f"Registrados en `herramientas/objetivos.py` y aún sin desafíos ({len(sin_banco)}): "
@@ -81,7 +94,7 @@ def main():
             num = o["id_objetivo"].split(".OA")[1]
             cod = "verificado" if o["verificacion"]["codigo"] == "verificado" else "**pendiente**"
             pre = ", ".join(etiqueta(p) for p in o["prerequisitos"]) or "—"
-            lineas.append(f"| {nivel_num(o['nivel'])}° básico | [OA {num}]({o['verificacion']['fuente']}) | {o['eje']} | "
+            lineas.append(f"| {nombre_nivel(o['nivel'])} | [OA {num}]({o['verificacion']['fuente']}) | {o['eje']} | "
                           f"{len(o['desafios'])} | {cod} | {pre} |")
     reemplazar(os.path.join(BASE, "docs", "contenido.md"), "cobertura", "\n".join(lineas))
 

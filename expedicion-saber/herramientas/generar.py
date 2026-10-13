@@ -11,7 +11,8 @@ from objetivos import OBJETIVOS
 
 RAIZ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "contenido")
 NOMBRES_MODULOS = ["matematica_1_2", "matematica_3_4", "matematica_5_8", "lenguaje_1_2", "lenguaje_3_4", "lenguaje_5_8",
-                   "ciencias_1_4", "ciencias_5_8", "ingles_1_4", "ingles_5_8"]
+                   "ciencias_1_4", "ciencias_5_8", "ingles_1_4", "ingles_5_8",
+                   "matematica_medio", "lenguaje_medio", "ciencias_medio", "ingles_medio"]
 MODULOS = []
 for _n in NOMBRES_MODULOS:
     try:
@@ -25,10 +26,19 @@ for _m in MODULOS:
     repetidos = GENERADORES.keys() & _m.GENERADORES.keys()
     assert not repetidos, f"OA con dos generadores: {repetidos}"
     GENERADORES.update(_m.GENERADORES)
-ORDEN_NIVELES = [f"{n}_basico" for n in range(1, 9)]
-NOMBRE_NIVEL = {f"{n}_basico": f"{n}° básico" for n in range(1, 9)}
+ORDEN_NIVELES = [f"{n}_basico" for n in range(1, 9)] + [f"{n}_medio" for n in range(1, 5)]
+NOMBRE_NIVEL = {**{f"{n}_basico": f"{n}° básico" for n in range(1, 9)}, **{f"{n}_medio": f"{n}° medio" for n in range(1, 5)}}
 NOMBRE_ASIG = {"matematica": "Matemática", "lenguaje": "Lenguaje y Comunicación", "ciencias": "Ciencias Naturales",
                "ingles": "Inglés"}
+
+
+def nombre_asig(asig, nivel):
+    """En media, Lenguaje es Lengua y Literatura; en 3° y 4° medio, Ciencias es Ciencias para la Ciudadanía."""
+    if asig == "lenguaje" and nivel.endswith("_medio"):
+        return "Lengua y Literatura"
+    if asig == "ciencias" and nivel in ("3_medio", "4_medio"):
+        return "Ciencias para la Ciudadanía"
+    return NOMBRE_ASIG[asig]
 
 
 def bloque(oa):
@@ -69,7 +79,7 @@ def main():
             archivos.append({"archivo": rel, "nivel": nivel, "asignatura": asig,
                              "objetivos": [o["id_objetivo"] for o in oas],
                              "desafios": sum(len(d["desafios"]) for d in datos)})
-            tramos.append({"id": f"{nivel}.{asig}", "nombre": f"{NOMBRE_ASIG[asig]} {NOMBRE_NIVEL[nivel]}",
+            tramos.append({"id": f"{nivel}.{asig}", "nombre": f"{nombre_asig(asig, nivel)} {NOMBRE_NIVEL[nivel]}",
                            "objetivos": [o["id_objetivo"] for o in oas]})
     indice = {"version": 1, "niveles": ORDEN_NIVELES, "nombres_nivel": NOMBRE_NIVEL, "asignaturas": NOMBRE_ASIG,
               "archivos": archivos, "tramos": tramos}
