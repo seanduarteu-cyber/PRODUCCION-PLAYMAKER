@@ -1,4 +1,4 @@
-OA por tramo (promedio del banco): 3.25
+OA por tramo (promedio del banco): 2.75
 
 ### Juega 7 días por semana (1 sesión por día)
 
@@ -10,7 +10,7 @@ OA por tramo (promedio del banco): 3.25
 | juntar mejora intermedia (400) | 4 ses. | 4 ses. | 3 ses. |
 | juntar nivel 4 (800) | 6 ses. | 6 ses. | 5 ses. |
 | dominar 1 OA | 5 ses. | 4 ses. | 3 ses. |
-| dominar 1 tramo | 22 ses. | 16 ses. | 13 ses. |
+| dominar 1 tramo | 16 ses. | 12 ses. | 10 ses. |
 | juntar mejora final (1800) | 12 ses. | 11 ses. | 10 ses. |
 | avatar completo de un mundo | 94 ses. | 89 ses. | 85 ses. |
 
@@ -24,7 +24,7 @@ OA por tramo (promedio del banco): 3.25
 | juntar mejora intermedia (400) | 4 ses. | 4 ses. | 3 ses. |
 | juntar nivel 4 (800) | 6 ses. | 6 ses. | 6 ses. |
 | dominar 1 OA | 5 ses. | 4 ses. | 3 ses. |
-| dominar 1 tramo | 22 ses. | 16 ses. | 13 ses. |
+| dominar 1 tramo | 16 ses. | 12 ses. | 10 ses. |
 | juntar mejora final (1800) | 13 ses. | 12 ses. | 12 ses. |
 | avatar completo de un mundo | 109 ses. | 103 ses. | 97 ses. |
 

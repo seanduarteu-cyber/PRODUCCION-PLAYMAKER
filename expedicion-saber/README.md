@@ -4,11 +4,10 @@ Videojuego educativo basado en las Bases Curriculares del Mineduc. El jugador re
 gana monedas y las gasta en mejorar su avatar. No hay ranking, ni competencia con otros jugadores, ni tiempo
 que castigue: el refuerzo es ver crecer el avatar.
 
-**Estado:** en ampliación a Matemática, Lenguaje, Ciencias Naturales e Inglés de 1° a 8° básico. Ya están
-Matemática 1° a 8°, Lenguaje 1° a 4°, Ciencias 5° a 8° e Inglés 1° a 4°; faltan Lenguaje 5° a 8°, Ciencias 1° a 4°
-e Inglés 5° a 8° (sus OA ya están registrados en `herramientas/objetivos.py`). Un mundo completo (Valle Bloque, estética voxel).
-Isla Brinco (plataformas) y Ciudad Voltia (héroes) ya tienen su configuración de ambientación y mejoras, pero
-les falta el dibujo del avatar.
+**Estado:** Matemática, Lenguaje, Ciencias Naturales e Inglés de 1° a 8° básico (88 OA, 1.534 desafíos; los de
+Inglés con audio en inglés). Los tres mundos son jugables, cada uno con su avatar de 5 espacios × 5 niveles:
+Valle Bloque (bloques, estética voxel), Isla Brinco (plataformas) y Ciudad Voltia (héroes de cómic, con colores
+del traje a elección).
 
 ## Cómo jugar en local
 
@@ -26,7 +25,7 @@ Se necesita un servidor porque el juego carga los JSON con `fetch`. El progreso 
 contenido/            Banco: un JSON por nivel y asignatura + indice.json (generado, no editar a mano)
 mundos/mundos.json    Tres mundos (tokens de ambientación, espacios y niveles del avatar), economía y progresión
 js/motor.js           Reglas sin interfaz: árbol, dificultad adaptativa, dominio, monedas, racha, mejoras, guardado
-js/avatar_bloques.js  Dibujo voxel del avatar de Valle Bloque (5 espacios × 5 niveles)
+js/avatar_*.js        Dibujo del avatar de cada mundo: bloques, heroes y plataformas (5 espacios × 5 niveles)
 js/ui.js              Perfiles, mundos, base, árbol, taller y resumen de sesión
 js/retos.js           Sesión de 10 desafíos, los 6 tipos de desafío y la voz (español e inglés)
 herramientas/         Generadores del banco, registro de OA, validador y simulación de la economía

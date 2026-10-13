@@ -52,7 +52,7 @@ Y en cuántas sesiones se alcanza cada hito (mediana, jugando a diario):
 | Juntar una mejora intermedia (400) | 4 | 4 | 3 |
 | Juntar un nivel 4 (800) | 6 | 6 | 5 |
 | Dominar un OA | 5 | 4 | 3 |
-| Dominar un tramo | 22 | 16 | 13 |
+| Dominar un tramo | 16 | 12 | 10 |
 | Juntar una mejora final (1.800) | 12 | 11 | 10 |
 | Avatar completo de un mundo | 94 | 89 | 85 |
 
@@ -64,13 +64,14 @@ Cómo cumple cada meta del diseño:
 - **Una mejora intermedia cuesta de 3 a 5 sesiones.** El nivel 3 vale 400 monedas y se junta en 3 a 4 sesiones
   en los tres perfiles. El nivel 2 (150) queda como paso intermedio de una a dos sesiones, para que entre la
   primera mejora y la intermedia siempre haya algo cerca.
-- **Las mejoras finales piden dominar un tramo completo.** Juntar 1.800 monedas toma 10 a 13 sesiones, pero
-  dominar un tramo toma 13 a 22. El requisito de tramo es el que manda: la mejora final llega cuando el jugador
-  domina una asignatura completa de un nivel, y no solo por acumular monedas. Cada mejora final adicional del
-  mismo mundo pide un tramo más.
+- **Las mejoras finales piden dominar un tramo completo.** Juntar 1.800 monedas toma 10 a 12 sesiones, y
+  dominar un tramo (en promedio 2,75 OA) toma 10 a 16. El requisito de tramo manda o empata: la mejora final llega
+  cuando el jugador domina una asignatura completa de un nivel, y no solo por acumular monedas. Cada mejora final
+  adicional del mismo mundo pide un tramo más.
 - **El refuerzo que se ve es el avatar.** No hay ranking ni comparación con otros jugadores, y el avatar está
-  siempre en pantalla, también mientras se resuelven los desafíos. Un mundo completo toma del orden de 90 a 110
-  sesiones, cerca de un año escolar jugando 3 a 4 veces por semana. Así siempre hay una próxima mejora a
+  siempre en pantalla, también mientras se resuelven los desafíos. Un mundo completo toma del orden de 85 a 110
+  sesiones, cerca de un año escolar jugando 3 a 4 veces por semana. Con tres mundos jugables, cada uno con sus
+  propias mejoras, siempre hay otro avatar que empezar. Así siempre hay una próxima mejora a
   pocas sesiones de distancia.
 
 Por qué cada regla de ingreso tiene ese tamaño:
@@ -92,6 +93,7 @@ Por qué cada regla de ingreso tiene ese tamaño:
   resulta demasiado lento, se ajusta en `mundos/mundos.json` (por ejemplo, contar 3 aciertos en dificultad 5
   aunque no sean seguidos), sin cambiar los costos.
 - Los costos están pensados para jugar seguido. Jugando 4 días por semana baja el ingreso por sesión, porque la
-  racha crece menos: los primeros hitos (primera mejora, mejora intermedia, nivel 4) quedan iguales, la mejora
-  final tarda 1 a 3 sesiones más y el avatar completo, unas 12 a 22 sesiones más (97 a 136 en vez de 85 a 113).
+  racha crece menos: los primeros hitos (primera mejora, mejora intermedia, nivel 4) quedan casi iguales, juntar
+  la mejora final tarda 1 a 2 sesiones más y el avatar completo, unas 12 a 15 sesiones más (97 a 109 en vez de
+  85 a 94).
 - Para volver a simular después de cambiar algún valor: `python3 herramientas/simular_economia.py`.

@@ -38,12 +38,19 @@
   ES.aviso = (txt, ms = 2200) => { const a = $('#aviso'); a.textContent = txt; a.hidden = false; clearTimeout(avisoT); avisoT = setTimeout(() => { a.hidden = true; }, ms); };
   let tAnim = 0, celebrarHasta = 0;
   ES.celebrar = (seg = 1.6) => { celebrarHasta = tAnim + seg; };
+  const DIBUJOS = { bloques: () => window.AvatarBloques, heroes: () => window.AvatarHeroes, plataformas: () => window.AvatarPlataformas };
+  ES.estilo = pr => { pr.estilo = pr.estilo || { heroes: 0 }; return pr.estilo; };
   function dibujarAvatares() {
-    const p = perfil(); if (!p) return;
+    const p = perfil();
     const op = { celebrar: tAnim < celebrarHasta };
     $$('canvas[data-avatar]').forEach(c => {
       const pr = c.dataset.avatar === 'activo' ? p : A.estado.perfiles[c.dataset.avatar];
-      if (pr) AvatarBloques.dibujar(c.getContext('2d'), c.width, c.height, pr.avatares.bloques, tAnim, c.dataset.avatar === 'activo' ? op : { quieto: true });
+      if (!pr) return;
+      // data-vista permite mostrar el avatar de otro mundo (vista previa en «Elige tu mundo»)
+      const mundo = c.dataset.vista || pr.mundo || 'bloques', dib = (DIBUJOS[mundo] || DIBUJOS.bloques)();
+      const extra = { colores: ES.estilo(pr).heroes };
+      const opc = c.dataset.avatar === 'activo' && !c.dataset.vista ? { ...op, ...extra } : { quieto: !c.dataset.vista, ...extra };
+      dib.dibujar(c.getContext('2d'), c.width, c.height, (pr.avatares && pr.avatares[mundo]) || {}, tAnim, opc);
     });
   }
   function bucle(ts) { tAnim = ts / 1000; dibujarAvatares(); requestAnimationFrame(bucle); }
@@ -142,6 +149,7 @@
       <p class="nota">Tu avance en ${esc(listaAsig())} es el mismo en todos los mundos. Cada mundo tiene su propio avatar y sus propias mejoras.</p>
       <div class="mundos">${A.datos.mundos.map(m => `
         <article class="bloque mundo ${p.mundo === m.id ? 'activo' : ''}">
+          <canvas class="vista-mundo" width="256" height="224" data-avatar="activo" data-vista="${esc(m.id)}" aria-hidden="true"></canvas>
           <h3>${esc(m.nombre)}</h3>
           <p>${esc(m.estilo)}</p>
           <p class="nota">Guía: ${esc(m.guia)}. ${esc(ej(m))}</p>
@@ -233,9 +241,13 @@
       <div class="fila"><button class="btn chico piedra" type="button" data-ir="base">← Base</button><h1 class="titulo">Taller de ${esc(m.nombre)}</h1></div>
       <div class="bloque taller-escena"><canvas width="512" height="448" data-avatar="activo" aria-label="Tu avatar con sus mejoras"></canvas>
         <p class="nota">Tienes ${monedasHTML(p.monedas)} y ${tramos} tramo${tramos === 1 ? '' : 's'} dominado${tramos === 1 ? '' : 's'}. Las mejoras finales (nivel 5) piden dominar un tramo completo de contenido por cada una.</p></div>
+      ${m.id === 'heroes' && window.AvatarHeroes ? `<article class="bloque"><h3>Colores del traje</h3><p class="nota">Elige los colores de tu héroe. Cambiarlos es gratis.</p>
+        <div class="colores" role="group" aria-label="Colores del traje">${AvatarHeroes.COLORES.map((c, i) => `<button class="color ${ES.estilo(p).heroes === i ? 'sel' : ''}" type="button" data-color="${i}" aria-pressed="${ES.estilo(p).heroes === i}" title="${esc(c.nombre)}"><span style="background:${c.p}"></span><span style="background:${c.s}"></span><b>${esc(c.nombre)}</b></button>`).join('')}</div></article>` : ''}
       <div class="espacios">${m.espacios.map(fila).join('')}</div>
     </section>`;
     main.addEventListener('click', e => {
+      const col = e.target.closest('[data-color]');
+      if (col) { ES.estilo(p).heroes = Number(col.dataset.color); guardar(); ES.celebrar(1); ES.ir('taller'); return; }
       const b = e.target.closest('[data-mejorar]'); if (!b) return;
       const r = Motor.comprarMejora(p, m.id, b.dataset.mejorar, A.datos);
       if (!r.ok) return;

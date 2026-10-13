@@ -149,6 +149,26 @@ async function responder(page, bien = true) {
   console.log('Base de 6° básico:', tarjetas.join(' · '));
   if (tarjetas.length !== 4) throw new Error('la base debía mostrar 4 asignaturas');
   await page.screenshot({ path: path.join(salida, 'base_6basico.png'), fullPage: true });
+  // los tres mundos: cada uno se elige, dibuja su avatar y vende sus propias mejoras
+  await page.evaluate(() => { window.ES.perfil().monedas += 300; window.ES.guardar(); });
+  for (const mundo of ['heroes', 'plataformas']) {
+    await page.evaluate(() => window.ES.ir('mundos'));
+    await page.waitForSelector('canvas.vista-mundo');
+    await page.click(`button[data-mundo="${mundo}"]`);
+    await page.waitForSelector('.asignatura');
+    await page.click('#principal [data-ir="taller"]');
+    await page.waitForSelector('.taller-escena');
+    if (mundo === 'heroes') await page.click('[data-color="0"]');
+    for (let k = 0; k < 2; k++) await page.click('.espacio button[data-mejorar]:not([disabled])');
+    await page.waitForTimeout(300);
+    const estado = await page.evaluate(m => ({ avatar: window.ES.perfil().avatares[m], estilo: window.ES.perfil().estilo }), mundo);
+    if (Object.values(estado.avatar).filter(v => v > 0).length < 1) throw new Error(mundo + ': no se compró ninguna mejora');
+    await page.screenshot({ path: path.join(salida, `taller_${mundo}.png`) });
+    console.log(`✓ mundo ${mundo}: avatar ${JSON.stringify(estado.avatar)}${mundo === 'heroes' ? ', colores ' + estado.estilo.heroes : ''}`);
+  }
+  await page.evaluate(() => window.ES.ir('mundos'));
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: path.join(salida, 'mundos.png'), fullPage: true });
   console.log('Errores de consola:', errores.length ? errores.join('\n') : 'ninguno');
   await browser.close();
   if (errores.length) process.exit(1);

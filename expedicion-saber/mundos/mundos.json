@@ -49,7 +49,7 @@
       "id": "plataformas",
       "nombre": "Isla Brinco",
       "estilo": "Mundo de plataformas: avatares coloridos y accesorios.",
-      "estado": "en_construccion",
+      "estado": "jugable",
       "guia": "Pipo, el saltarín",
       "tokens": {
         "personaje": "Pipo",
@@ -76,7 +76,7 @@
       "id": "heroes",
       "nombre": "Ciudad Voltia",
       "estilo": "Mundo de héroes: estética de cómic, poderes y trajes.",
-      "estado": "en_construccion",
+      "estado": "jugable",
       "guia": "Capitana Chispa",
       "tokens": {
         "personaje": "Capitana Chispa",
