@@ -15,34 +15,85 @@ Los OA de cursos superiores al del jugador no se muestran como disponibles. Los 
 abiertos para **repasar**. El jugador ve el árbol completo de cada asignatura, con el estado de cada nodo y qué
 le falta para abrir los bloqueados.
 
+<!-- inicio:arbol -->
+#### Matemática
+
 ```mermaid
 flowchart LR
-  m1_1["1° Mat OA 1"] --> m1_4["1° Mat OA 4"]
-  m1_1 --> m1_9["1° Mat OA 9"]
-  m1_1 --> m2_1["2° Mat OA 1"]
-  m1_4 --> m2_3["2° Mat OA 3"]
-  m1_9 --> m2_9["2° Mat OA 9"]
-  m2_1 --> m2_11["2° Mat OA 11"]
-  m2_9 --> m2_11
-  m2_9 --> m3_6["3° Mat OA 6"]
-  m2_11 --> m3_8["3° Mat OA 8"]
-  m3_8 --> m3_9["3° Mat OA 9"]
-  m3_9 --> m3_11["3° Mat OA 11"]
-  m3_6 --> m4_3["4° Mat OA 3"]
-  m3_8 --> m4_5["4° Mat OA 5"]
-  m3_9 --> m4_6["4° Mat OA 6"]
-  m3_11 --> m4_8["4° Mat OA 8"]
-  l1_3["1° Len OA 3"] --> l1_4["1° Len OA 4"]
-  l1_4 --> l1_8["1° Len OA 8"]
-  l1_8 --> l2_5["2° Len OA 5"]
-  l1_4 --> l2_21["2° Len OA 21"]
-  l2_5 --> l3_4["3° Len OA 4"]
-  l1_4 --> l3_20["3° Len OA 20"]
-  l2_21 --> l3_22["3° Len OA 22"]
-  l3_4 --> l4_4["4° Len OA 4"]
-  l3_4 --> l4_10["4° Len OA 10"]
-  l3_22 --> l4_21["4° Len OA 21"]
+  1_basico_matematica_OA1["1° Mat OA 1"] --> 1_basico_matematica_OA4["1° Mat OA 4"]
+  1_basico_matematica_OA1["1° Mat OA 1"] --> 1_basico_matematica_OA9["1° Mat OA 9"]
+  1_basico_matematica_OA1["1° Mat OA 1"] --> 2_basico_matematica_OA1["2° Mat OA 1"]
+  1_basico_matematica_OA4["1° Mat OA 4"] --> 2_basico_matematica_OA3["2° Mat OA 3"]
+  1_basico_matematica_OA9["1° Mat OA 9"] --> 2_basico_matematica_OA9["2° Mat OA 9"]
+  2_basico_matematica_OA1["2° Mat OA 1"] --> 2_basico_matematica_OA11["2° Mat OA 11"]
+  2_basico_matematica_OA9["2° Mat OA 9"] --> 2_basico_matematica_OA11["2° Mat OA 11"]
+  2_basico_matematica_OA9["2° Mat OA 9"] --> 3_basico_matematica_OA6["3° Mat OA 6"]
+  2_basico_matematica_OA11["2° Mat OA 11"] --> 3_basico_matematica_OA8["3° Mat OA 8"]
+  3_basico_matematica_OA8["3° Mat OA 8"] --> 3_basico_matematica_OA9["3° Mat OA 9"]
+  3_basico_matematica_OA9["3° Mat OA 9"] --> 3_basico_matematica_OA11["3° Mat OA 11"]
+  3_basico_matematica_OA6["3° Mat OA 6"] --> 4_basico_matematica_OA3["4° Mat OA 3"]
+  3_basico_matematica_OA8["3° Mat OA 8"] --> 4_basico_matematica_OA5["4° Mat OA 5"]
+  3_basico_matematica_OA9["3° Mat OA 9"] --> 4_basico_matematica_OA6["4° Mat OA 6"]
+  3_basico_matematica_OA11["3° Mat OA 11"] --> 4_basico_matematica_OA8["4° Mat OA 8"]
+  4_basico_matematica_OA5["4° Mat OA 5"] --> 5_basico_matematica_OA3["5° Mat OA 3"]
+  4_basico_matematica_OA6["4° Mat OA 6"] --> 5_basico_matematica_OA4["5° Mat OA 4"]
+  4_basico_matematica_OA8["4° Mat OA 8"] --> 5_basico_matematica_OA7["5° Mat OA 7"]
+  5_basico_matematica_OA3["5° Mat OA 3"] --> 6_basico_matematica_OA1["6° Mat OA 1"]
+  5_basico_matematica_OA4["5° Mat OA 4"] --> 6_basico_matematica_OA1["6° Mat OA 1"]
+  5_basico_matematica_OA7["5° Mat OA 7"] --> 6_basico_matematica_OA4["6° Mat OA 4"]
+  4_basico_matematica_OA3["4° Mat OA 3"] --> 7_basico_matematica_OA1["7° Mat OA 1"]
+  6_basico_matematica_OA4["6° Mat OA 4"] --> 7_basico_matematica_OA4["7° Mat OA 4"]
+  7_basico_matematica_OA1["7° Mat OA 1"] --> 8_basico_matematica_OA1["8° Mat OA 1"]
+  5_basico_matematica_OA3["5° Mat OA 3"] --> 8_basico_matematica_OA3["8° Mat OA 3"]
+  8_basico_matematica_OA1["8° Mat OA 1"] --> 8_basico_matematica_OA7["8° Mat OA 7"]
 ```
+
+#### Lenguaje y Comunicación
+
+```mermaid
+flowchart LR
+  1_basico_lenguaje_OA3["1° Len OA 3"] --> 1_basico_lenguaje_OA4["1° Len OA 4"]
+  1_basico_lenguaje_OA4["1° Len OA 4"] --> 1_basico_lenguaje_OA8["1° Len OA 8"]
+  1_basico_lenguaje_OA8["1° Len OA 8"] --> 2_basico_lenguaje_OA5["2° Len OA 5"]
+  1_basico_lenguaje_OA4["1° Len OA 4"] --> 2_basico_lenguaje_OA21["2° Len OA 21"]
+  2_basico_lenguaje_OA5["2° Len OA 5"] --> 3_basico_lenguaje_OA4["3° Len OA 4"]
+  1_basico_lenguaje_OA4["1° Len OA 4"] --> 3_basico_lenguaje_OA20["3° Len OA 20"]
+  2_basico_lenguaje_OA21["2° Len OA 21"] --> 3_basico_lenguaje_OA22["3° Len OA 22"]
+  3_basico_lenguaje_OA4["3° Len OA 4"] --> 4_basico_lenguaje_OA4["4° Len OA 4"]
+  3_basico_lenguaje_OA4["3° Len OA 4"] --> 4_basico_lenguaje_OA10["4° Len OA 10"]
+  3_basico_lenguaje_OA22["3° Len OA 22"] --> 4_basico_lenguaje_OA21["4° Len OA 21"]
+```
+
+#### Ciencias Naturales
+
+```mermaid
+flowchart LR
+  5_basico_ciencias_OA8["5° Cie OA 8"] --> 5_basico_ciencias_OA10["5° Cie OA 10"]
+  5_basico_ciencias_OA8["5° Cie OA 8"] --> 6_basico_ciencias_OA8["6° Cie OA 8"]
+  6_basico_ciencias_OA13["6° Cie OA 13"] --> 7_basico_ciencias_OA13["7° Cie OA 13"]
+  6_basico_ciencias_OA13["6° Cie OA 13"] --> 7_basico_ciencias_OA14["7° Cie OA 14"]
+  5_basico_ciencias_OA10["5° Cie OA 10"] --> 8_basico_ciencias_OA10["8° Cie OA 10"]
+  6_basico_ciencias_OA8["6° Cie OA 8"] --> 8_basico_ciencias_OA11["8° Cie OA 11"]
+  6_basico_ciencias_OA13["6° Cie OA 13"] --> 8_basico_ciencias_OA11["8° Cie OA 11"]
+  7_basico_ciencias_OA14["7° Cie OA 14"] --> 8_basico_ciencias_OA12["8° Cie OA 12"]
+  5_basico_ciencias_OA1["5° Cie OA 1"]
+  6_basico_ciencias_OA1["6° Cie OA 1"]
+  7_basico_ciencias_OA8["7° Cie OA 8"]
+```
+
+#### Inglés
+
+```mermaid
+flowchart LR
+  1_basico_ingles_OA1["1° Ing OA 1"] --> 1_basico_ingles_OA13["1° Ing OA 13"]
+  1_basico_ingles_OA1["1° Ing OA 1"] --> 2_basico_ingles_OA1["2° Ing OA 1"]
+  1_basico_ingles_OA13["1° Ing OA 13"] --> 2_basico_ingles_OA13["2° Ing OA 13"]
+  2_basico_ingles_OA1["2° Ing OA 1"] --> 3_basico_ingles_OA1["3° Ing OA 1"]
+  2_basico_ingles_OA13["2° Ing OA 13"] --> 3_basico_ingles_OA13["3° Ing OA 13"]
+  3_basico_ingles_OA1["3° Ing OA 1"] --> 4_basico_ingles_OA1["4° Ing OA 1"]
+  3_basico_ingles_OA13["3° Ing OA 13"] --> 4_basico_ingles_OA13["4° Ing OA 13"]
+```
+<!-- fin:arbol -->
 
 El validador revisa que cada prerequisito exista, que no apunte a un nivel superior y que no haya ciclos.
 

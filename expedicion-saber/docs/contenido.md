@@ -38,6 +38,7 @@ Campos agregados al esquema pedido:
 | `dificultad` (del OA) | Complejidad relativa del objetivo dentro del árbol (1 = de entrada). |
 | `dificultad` (de cada desafío) | Nivel 1 a 5 que usa la dificultad adaptativa. |
 | `texto` (opcional) | Cuento o lectura que acompaña a un desafío de comprensión. |
+| `audio` (opcional) | `{texto, idioma}`: lo que el juego lee en voz alta, sobre todo en Inglés (`idioma: "en"`). En los desafíos de comprensión oral el texto no se muestra: se escucha con 🔊, se repite más lento con 🐢 y, si el equipo no tiene voz, se puede ver. |
 
 ## Tipos de desafío
 
@@ -51,7 +52,7 @@ primer intento). Cada tipo agrega sus campos:
 | `ordenar_secuencia` | `elementos` en el orden correcto (el juego los desordena) | Tocar en orden | Misma secuencia; se marcan las posiciones malas |
 | `emparejar` | `pares`: `[[izquierda, derecha], …]` | Tocar izquierda y luego derecha | Cada pareja correcta; las malas se deshacen |
 | `arrastrar_categoria` | `categorias`, `elementos`: `[{texto, categoria}]` | Arrastrar o tocar ficha y grupo | Cada ficha en su grupo; las malas vuelven a la bandeja |
-| `respuesta_numerica` | `respuesta`, `tolerancia`, `unidad` (opcional) | Teclado numérico | `|valor − respuesta| ≤ tolerancia` (acepta punto de miles) |
+| `respuesta_numerica` | `respuesta`, `tolerancia`, `unidad` (opcional) | Teclado numérico; si algún desafío del OA tiene respuesta negativa, aparece la tecla «−» en todos los de ese OA | `|valor − respuesta| ≤ tolerancia` (acepta punto de miles) |
 
 Todos se resuelven con pocos toques; ninguno exige escribir texto libre, para que cada desafío tome menos de 30 segundos.
 
@@ -76,51 +77,113 @@ las construcciones siempre femeninas. Ejemplo: «{personaje} {junto} 8 {objetos}
 
 ## Cobertura actual
 
-26 objetivos y 465 desafíos: Matemática y Lenguaje de 1° a 4° básico. Matemática tiene 20 desafíos por OA
-(4 por nivel) y Lenguaje 15 (3 por nivel). Están los seis tipos de desafío.
+<!-- inicio:cobertura -->
+56 objetivos y 1.006 desafíos (82 con audio en inglés). Resumen por asignatura:
 
-| Nivel | Asignatura | OA | Eje | Desafíos | Código | Prerequisitos |
-|---|---|---|---|---|---|---|
-| 1° básico | Matemática | [OA 1](https://www.curriculumnacional.cl/614/w3-article-17473.html) | Números y operaciones | 20 | verificado | — |
-| 1° básico | Matemática | [OA 4](https://curriculumnacional.mineduc.cl/614/w3-propertyvalue-53688.html) | Números y operaciones | 20 | verificado | 1° Mat OA 1 |
-| 1° básico | Matemática | [OA 9](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17481:MA01-OA-09) | Números y operaciones | 20 | verificado | 1° Mat OA 1 |
-| 2° básico | Matemática | [OA 1](https://www.curriculumnacional.cl/614/w3-article-17509.html) | Números y operaciones | 20 | verificado | 1° Mat OA 1 |
-| 2° básico | Matemática | [OA 3](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17511:MA02-OA-03) | Números y operaciones | 20 | verificado | 1° Mat OA 4 |
-| 2° básico | Matemática | [OA 9](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/matematica/2-basico/ma02-oa-09) | Números y operaciones | 20 | verificado | 1° Mat OA 9 |
-| 2° básico | Matemática | [OA 11](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17519:MA02-OA-11) | Números y operaciones | 20 | verificado | 2° Mat OA 1, 2° Mat OA 9 |
-| 3° básico | Matemática | [OA 6](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17551:MA03-OA-06) | Números y operaciones | 20 | verificado | 2° Mat OA 9 |
-| 3° básico | Matemática | [OA 8](https://www.curriculumnacional.cl/docente/629/w3-article-17553.html) | Números y operaciones | 20 | verificado | 2° Mat OA 11 |
-| 3° básico | Matemática | [OA 9](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17554:MA03-OA-09) | Números y operaciones | 20 | verificado | 3° Mat OA 8 |
-| 3° básico | Matemática | [OA 11](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17556:MA03-OA-11) | Números y operaciones | 20 | verificado | 3° Mat OA 9 |
-| 4° básico | Matemática | [OA 3](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17594:MA04-OA-03) | Números y operaciones | 20 | verificado | 3° Mat OA 6 |
-| 4° básico | Matemática | [OA 5](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17596:MA04-OA-05) | Números y operaciones | 20 | verificado | 3° Mat OA 8 |
-| 4° básico | Matemática | [OA 6](https://www.curriculumnacional.cl/614/w3-article-17597.html) | Números y operaciones | 20 | verificado | 3° Mat OA 9 |
-| 4° básico | Matemática | [OA 8](https://www.curriculumnacional.cl/docentes/Educacion-General/Matematica-4-basico/MA04-OA-08/17599:MA04-OA-08) | Números y operaciones | 20 | verificado | 3° Mat OA 11 |
-| 1° básico | Lenguaje | [OA 3](https://www.curriculumnacional.cl/614/w3-article-17116.html) | Lectura | 15 | verificado | — |
-| 1° básico | Lenguaje | [OA 4](https://www.curriculumnacional.cl/recursos/leo-1-basico-texto-estudiante-tomo-1) | Lectura | 15 | **pendiente** | 1° Len OA 3 |
-| 1° básico | Lenguaje | [OA 8](https://www.curriculumnacional.cl/recursos/leo-1-basico-texto-estudiante-tomo-1) | Lectura | 15 | **pendiente** | 1° Len OA 4 |
-| 2° básico | Lenguaje | [OA 5](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/17151:LE02-OA-05) | Lectura | 15 | verificado | 1° Len OA 8 |
-| 2° básico | Lenguaje | [OA 21](https://www.curriculumnacional.cl/portal/Educacion-General/Lenguaje-y-comunicacion-2-basico/LE02-OA-01/131696:Programa-de-apoyo-compartido-Lenguaje-y-Comunicacion-2-basico-Periodo-2) | Escritura | 15 | **pendiente** | 1° Len OA 4 |
-| 3° básico | Lenguaje | [OA 4](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/3-basico) | Lectura | 15 | verificado | 2° Len OA 5 |
-| 3° básico | Lenguaje | [OA 20](https://www.curriculumnacional.cl/614/w3-article-17203.html) | Escritura | 15 | verificado | 1° Len OA 4 |
-| 3° básico | Lenguaje | [OA 22](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Escritura-Produccion/17205:LE03-OA-22) | Escritura | 15 | verificado | 2° Len OA 21 |
-| 4° básico | Lenguaje | [OA 4](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/17225:LE04-OA-04) | Lectura | 15 | verificado | 3° Len OA 4 |
-| 4° básico | Lenguaje | [OA 10](https://www.curriculumnacional.cl/portal/Ejes/Lectura/Vocabulario/17231:LE04-OA-10) | Lectura | 15 | verificado | 3° Len OA 4 |
-| 4° básico | Lenguaje | [OA 21](https://www.curriculumnacional.cl/614/w3-article-17242.html) | Escritura | 15 | verificado | 3° Len OA 22 |
+| Asignatura | Cursos | OA | Desafíos |
+|---|---|---|---|
+| Matemática | 1° a 8° básico | 25 | 500 |
+| Lenguaje y Comunicación | 1° a 4° básico | 11 | 165 |
+| Ciencias Naturales | 5° a 8° básico | 12 | 193 |
+| Inglés | 1° a 4° básico | 8 | 148 |
+
+Registrados en `herramientas/objetivos.py` y aún sin desafíos (32): 5° Len OA 4, 5° Len OA 12, 5° Len OA 21, 5° Len OA 22, 6° Len OA 4, 6° Len OA 21, 7° Len OA 3, 7° Len OA 4, 8° Len OA 3, 8° Len OA 4, 1° Cie OA 1, 1° Cie OA 4, 1° Cie OA 12, 2° Cie OA 1, 2° Cie OA 7, 2° Cie OA 9, 3° Cie OA 1, 3° Cie OA 9, 3° Cie OA 11, 3° Cie OA 12, 4° Cie OA 1, 4° Cie OA 3, 4° Cie OA 5, 4° Cie OA 16, 5° Ing OA 5, 5° Ing OA 14, 6° Ing OA 5, 6° Ing OA 15, 7° Ing OA 9, 7° Ing OA 16, 8° Ing OA 9, 8° Ing OA 16.
+
+### Matemática
+
+| Nivel | OA | Eje | Desafíos | Código | Prerequisitos |
+|---|---|---|---|---|---|
+| 1° básico | [OA 1](https://www.curriculumnacional.cl/614/w3-article-17473.html) | Números y operaciones | 20 | verificado | — |
+| 1° básico | [OA 4](https://curriculumnacional.mineduc.cl/614/w3-propertyvalue-53688.html) | Números y operaciones | 20 | verificado | 1° Mat OA 1 |
+| 1° básico | [OA 9](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17481:MA01-OA-09) | Números y operaciones | 20 | verificado | 1° Mat OA 1 |
+| 2° básico | [OA 1](https://www.curriculumnacional.cl/614/w3-article-17509.html) | Números y operaciones | 20 | verificado | 1° Mat OA 1 |
+| 2° básico | [OA 3](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17511:MA02-OA-03) | Números y operaciones | 20 | verificado | 1° Mat OA 4 |
+| 2° básico | [OA 9](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/matematica/2-basico/ma02-oa-09) | Números y operaciones | 20 | verificado | 1° Mat OA 9 |
+| 2° básico | [OA 11](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17519:MA02-OA-11) | Números y operaciones | 20 | verificado | 2° Mat OA 1, 2° Mat OA 9 |
+| 3° básico | [OA 6](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17551:MA03-OA-06) | Números y operaciones | 20 | verificado | 2° Mat OA 9 |
+| 3° básico | [OA 8](https://www.curriculumnacional.cl/docente/629/w3-article-17553.html) | Números y operaciones | 20 | verificado | 2° Mat OA 11 |
+| 3° básico | [OA 9](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17554:MA03-OA-09) | Números y operaciones | 20 | verificado | 3° Mat OA 8 |
+| 3° básico | [OA 11](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17556:MA03-OA-11) | Números y operaciones | 20 | verificado | 3° Mat OA 9 |
+| 4° básico | [OA 3](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17594:MA04-OA-03) | Números y operaciones | 20 | verificado | 3° Mat OA 6 |
+| 4° básico | [OA 5](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17596:MA04-OA-05) | Números y operaciones | 20 | verificado | 3° Mat OA 8 |
+| 4° básico | [OA 6](https://www.curriculumnacional.cl/614/w3-article-17597.html) | Números y operaciones | 20 | verificado | 3° Mat OA 9 |
+| 4° básico | [OA 8](https://www.curriculumnacional.cl/docentes/Educacion-General/Matematica-4-basico/MA04-OA-08/17599:MA04-OA-08) | Números y operaciones | 20 | verificado | 3° Mat OA 11 |
+| 5° básico | [OA 3](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17641:MA05-OA-03) | Números y operaciones | 20 | verificado | 4° Mat OA 5 |
+| 5° básico | [OA 4](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17642:MA05-OA-04) | Números y operaciones | 20 | verificado | 4° Mat OA 6 |
+| 5° básico | [OA 7](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/matematica/5-basico) | Números y operaciones | 20 | verificado | 4° Mat OA 8 |
+| 6° básico | [OA 1](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17686:MA06-OA-01) | Números y operaciones | 20 | verificado | 5° Mat OA 3, 5° Mat OA 4 |
+| 6° básico | [OA 4](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17689:MA06-OA-04) | Números y operaciones | 20 | verificado | 5° Mat OA 7 |
+| 7° básico | [OA 1](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros/70512:MA07-OA-01) | Números | 20 | verificado | 4° Mat OA 3 |
+| 7° básico | [OA 4](https://www.curriculumnacional.cl/614/w3-article-70515.html) | Números | 20 | verificado | 6° Mat OA 4 |
+| 8° básico | [OA 1](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/matematica/8-basico) | Números | 20 | verificado | 7° Mat OA 1 |
+| 8° básico | [OA 3](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/matematica/8-basico) | Números | 20 | verificado | 5° Mat OA 3 |
+| 8° básico | [OA 7](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/matematica/8-basico) | Álgebra y funciones | 20 | verificado | 8° Mat OA 1 |
+
+### Lenguaje y Comunicación
+
+| Nivel | OA | Eje | Desafíos | Código | Prerequisitos |
+|---|---|---|---|---|---|
+| 1° básico | [OA 3](https://www.curriculumnacional.cl/614/w3-article-17116.html) | Lectura | 15 | verificado | — |
+| 1° básico | [OA 4](https://www.curriculumnacional.cl/recursos/leo-1-basico-texto-estudiante-tomo-1) | Lectura | 15 | **pendiente** | 1° Len OA 3 |
+| 1° básico | [OA 8](https://www.curriculumnacional.cl/recursos/leo-1-basico-texto-estudiante-tomo-1) | Lectura | 15 | **pendiente** | 1° Len OA 4 |
+| 2° básico | [OA 5](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/17151:LE02-OA-05) | Lectura | 15 | verificado | 1° Len OA 8 |
+| 2° básico | [OA 21](https://www.curriculumnacional.cl/portal/Educacion-General/Lenguaje-y-comunicacion-2-basico/LE02-OA-01/131696:Programa-de-apoyo-compartido-Lenguaje-y-Comunicacion-2-basico-Periodo-2) | Escritura | 15 | **pendiente** | 1° Len OA 4 |
+| 3° básico | [OA 4](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/lenguaje-comunicacion/3-basico) | Lectura | 15 | verificado | 2° Len OA 5 |
+| 3° básico | [OA 20](https://www.curriculumnacional.cl/614/w3-article-17203.html) | Escritura | 15 | verificado | 1° Len OA 4 |
+| 3° básico | [OA 22](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Escritura-Produccion/17205:LE03-OA-22) | Escritura | 15 | verificado | 2° Len OA 21 |
+| 4° básico | [OA 4](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/17225:LE04-OA-04) | Lectura | 15 | verificado | 3° Len OA 4 |
+| 4° básico | [OA 10](https://www.curriculumnacional.cl/portal/Ejes/Lectura/Vocabulario/17231:LE04-OA-10) | Lectura | 15 | verificado | 3° Len OA 4 |
+| 4° básico | [OA 21](https://www.curriculumnacional.cl/614/w3-article-17242.html) | Escritura | 15 | verificado | 3° Len OA 22 |
+
+### Ciencias Naturales
+
+| Nivel | OA | Eje | Desafíos | Código | Prerequisitos |
+|---|---|---|---|---|---|
+| 5° básico | [OA 1](https://www.curriculumnacional.cl/614/w3-article-18462.html) | Ciencias de la vida | 16 | verificado | 2° Cie OA 7 |
+| 5° básico | [OA 8](https://www.curriculumnacional.cl/docentes/Educacion-General/Ciencias-Naturales-5-basico/CN05-OA-08/18469:CN05-OA-08) | Ciencias físicas y químicas | 16 | verificado | — |
+| 5° básico | [OA 10](https://www.curriculumnacional.cl/docentes/Educacion-General/Ciencias-Naturales-5-basico/CN05-OA-10/18471:CN05-OA-10) | Ciencias físicas y químicas | 15 | verificado | 5° Cie OA 8 |
+| 6° básico | [OA 1](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/6-basico) | Ciencias de la vida | 16 | verificado | 4° Cie OA 3, 3° Cie OA 1 |
+| 6° básico | [OA 8](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/6-basico) | Ciencias físicas y químicas | 16 | verificado | 5° Cie OA 8 |
+| 6° básico | [OA 13](https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/6-basico) | Ciencias físicas y químicas | 16 | verificado | 2° Cie OA 9 |
+| 7° básico | [OA 8](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/7-basico) | Física | 16 | verificado | — |
+| 7° básico | [OA 13](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/7-basico) | Química | 16 | verificado | 6° Cie OA 13 |
+| 7° básico | [OA 14](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/7-basico) | Química | 16 | verificado | 6° Cie OA 13 |
+| 8° básico | [OA 10](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Fisica/70202:CN08-OA-10) | Física | 17 | verificado | 5° Cie OA 10 |
+| 8° básico | [OA 11](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/8-basico) | Física | 16 | verificado | 6° Cie OA 8, 6° Cie OA 13 |
+| 8° básico | [OA 12](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/8-basico) | Química | 17 | verificado | 7° Cie OA 14 |
+
+### Inglés
+
+| Nivel | OA | Eje | Desafíos | Código | Prerequisitos |
+|---|---|---|---|---|---|
+| 1° básico | [OA 1](https://www.curriculumnacional.cl/614/w3-article-20874.html) | Comprensión oral | 18 | verificado | — |
+| 1° básico | [OA 13](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/20886:EN01-OA-13) | Expresión escrita | 19 | **pendiente** | 1° Ing OA 1 |
+| 2° básico | [OA 1](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Comprension-oral/20893:EN02-OA-01) | Comprensión oral | 19 | verificado | 1° Ing OA 1 |
+| 2° básico | [OA 13](https://www.curriculumnacional.cl/portal/Educacion-General/Ingles-Propuesta-curricular-/Ingles-Propuesta-2-basico/) | Expresión escrita | 18 | **pendiente** | 1° Ing OA 13 |
+| 3° básico | [OA 1](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Comprension-oral/20913:EN03-OA-01) | Comprensión oral | 19 | verificado | 2° Ing OA 1 |
+| 3° básico | [OA 13](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/20924:EN03-OA-13) | Expresión escrita | 19 | verificado | 2° Ing OA 13 |
+| 4° básico | [OA 1](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Comprension-oral/20930:EN04-OA-01) | Comprensión oral | 18 | verificado | 3° Ing OA 1 |
+| 4° básico | [OA 13](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/20942:EN04-OA-13) | Expresión escrita | 18 | verificado | 3° Ing OA 13 |
+<!-- fin:cobertura -->
 
 ### Pendientes de verificación
 
-- **LE01 OA 04** (leer palabras aisladas y en contexto) y **LE01 OA 08** (comprensión de narraciones): ambos
-  códigos aparecen en el eje Lectura de 1° básico (texto «Leo Primero»), pero no se pudo confirmar su redacción.
-- **LE02 OA 21** (ortografía de 2° básico): la lista de contenidos ortográficos apareció junto a otro código en
-  la fuente; falta confirmar que el número sea 21. En 3° básico, por ejemplo, la ortografía es el OA 22 y no el 21.
+<!-- inicio:pendientes -->
+- **LE01 OA 04** (leer palabras aisladas y en contexto, aplicando la correspondencia letra-sonido …): aparece en el eje Lectura de 1° básico (texto «Leo Primero»), pero no se pudo confirmar su redacción.
+- **LE01 OA 08** (demostrar comprensión de narraciones: información explícita, secuencia de accion…): aparece en el eje Lectura de 1° básico (texto «Leo Primero»), pero no se pudo confirmar su redacción.
+- **LE02 OA 21** (escribir correctamente para facilitar la comprensión del lector: ce-ci, que-qui,…): la lista de contenidos ortográficos apareció junto a otro código en la fuente; falta confirmar que el número sea 21.
+- **LE06 OA 21** (utilizar correctamente los participios irregulares (roto, abierto, dicho, escrit…): el número y el tema (participios irregulares) salen de un documento secundario; falta confirmarlos en una página oficial.
+- **EN01 OA 13** (escribir (copiar o completar) palabras y oraciones simples de acuerdo a un model…): las páginas del Mineduc sobre la propuesta curricular de Inglés de 1° básico se contradicen en qué eje corresponde a cada número; conviene revisar el PDF oficial.
+- **EN02 OA 13** (escribir (copiar o completar) palabras y oraciones simples de acuerdo a un model…): no se pudo confirmar su redacción en una página oficial; se supuso igual al OA 13 de 3° y 4° básico, que sí está verificado.
+<!-- fin:pendientes -->
 
 Mientras estén pendientes, el juego los muestra con la etiqueta «Código por verificar» en el árbol.
 
 ### Qué falta para cubrir los cursos completos
 
-Este primer banco cubre los objetivos centrales del eje Números y operaciones (Matemática) y de Lectura y
-Escritura (Lenguaje). Faltan, por ejemplo, Geometría, Medición, Patrones y Datos en Matemática, y Comunicación
-oral y los OA de escritura de textos en Lenguaje. Para agregar un OA: registrarlo en `herramientas/objetivos.py`
-con su código oficial y fuente, escribir su generador (mínimo 15 desafíos, al menos 3 por nivel) y volver a
-correr `generar.py` y `validar.py`.
+El banco cubre objetivos centrales de cada asignatura de 1° a 8° básico: Números (Matemática), Lectura y
+Escritura (Lenguaje), los tres ejes de Ciencias Naturales y Comprensión oral, Comprensión de lectura y Expresión
+escrita (Inglés). Faltan, por ejemplo, Geometría, Medición y Datos en Matemática, Comunicación oral en Lenguaje,
+más OA por curso en Ciencias e Inglés, e Historia. Para agregar un OA: registrarlo en `herramientas/objetivos.py`
+con su código oficial y fuente, escribir su generador (mínimo 15 desafíos, al menos 3 por nivel; `herramientas/autor.py`
+ayuda a escribirlos a mano) y volver a correr `generar.py`, `validar.py` y `documentar.py`.

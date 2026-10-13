@@ -28,7 +28,7 @@ mundos/mundos.json    Tres mundos (tokens de ambientación, espacios y niveles d
 js/motor.js           Reglas sin interfaz: árbol, dificultad adaptativa, dominio, monedas, racha, mejoras, guardado
 js/avatar_bloques.js  Dibujo voxel del avatar de Valle Bloque (5 espacios × 5 niveles)
 js/ui.js              Perfiles, mundos, base, árbol, taller y resumen de sesión
-js/retos.js           Sesión de 10 desafíos y los 6 tipos de desafío
+js/retos.js           Sesión de 10 desafíos, los 6 tipos de desafío y la voz (español e inglés)
 herramientas/         Generadores del banco, registro de OA, validador y simulación de la economía
 pruebas/              Pruebas del motor (Node) y prueba de punta a punta (Playwright)
 docs/                 Contenido, progresión y economía
@@ -39,7 +39,8 @@ docs/                 Contenido, progresión y economía
 ```bash
 python3 herramientas/generar.py            # regenera contenido/ desde los generadores
 python3 herramientas/validar.py            # valida el banco (esquema, ≥15 desafíos por OA, ≥3 por nivel, árbol)
-node pruebas/motor.test.js                 # 11 pruebas del motor
+node pruebas/motor.test.js                 # pruebas del motor
+python3 herramientas/documentar.py         # actualiza cobertura, pendientes y árbol en docs/
 python3 herramientas/simular_economia.py   # simula ingresos y tiempos de cada mejora
 node pruebas/e2e.js                        # juega una sesión completa en el navegador (con el servidor en el puerto 8765)
 ```
@@ -53,9 +54,10 @@ node pruebas/e2e.js                        # juega una sesión completa en el na
 
 ## Precisión curricular
 
-Cada OA lleva su código oficial y la página de curriculumnacional.cl donde se confirmó. Tres códigos de Lenguaje
-(LE01 OA 04, LE01 OA 08 y LE02 OA 21) están marcados como **pendientes de verificación**: no se inventaron, pero
-no se pudo confirmar su redacción. El texto de cada objetivo es un resumen fiel, no una cita literal.
+Cada OA lleva su código oficial y la página de curriculumnacional.cl donde se confirmó. Los códigos que no se
+pudieron confirmar están marcados como **pendientes de verificación**: no se inventaron, pero falta confirmar su
+redacción (la lista y el motivo de cada uno están en [docs/contenido.md](docs/contenido.md)). El texto de cada
+objetivo es un resumen fiel, no una cita literal.
 
 ## Personajes y nombres
 
