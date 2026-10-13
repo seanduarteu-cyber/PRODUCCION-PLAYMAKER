@@ -121,14 +121,14 @@
       <p>Resuelve desafíos de ${esc(listaAsig())}, gana monedas y mejora tu avatar. Equivocarse nunca te quita monedas.</p>
       <form id="form-perfil" class="pantalla" style="gap:12px">
         <label class="campo" for="nombre">Nombre del explorador<input id="nombre" name="nombre" maxlength="20" autocomplete="off" required></label>
-        <label class="campo" for="nivel">Curso<select id="nivel" name="nivel">${Motor.NIVELES_ESCOLARES.map(n => `<option value="${n}" ${n === '3_basico' ? 'selected' : ''}>${nombreNivel(n)}</option>`).join('')}</select></label>
+        <label class="campo" for="nivel">Curso<select id="nivel" name="nivel">${Motor.NIVELES_ESCOLARES.map(n => `<option value="${n}" ${n === '3_basico' ? 'selected' : ''}>${nombreNivel(n)}${Motor.idxNivel(n) > Motor.idxNivel(ultimoNivel()) ? ' (próximamente)' : ''}</option>`).join('')}</select></label>
         <p class="nota" id="nota-nivel"></p>
         <div class="fila"><button class="btn" type="submit">Crear y elegir mundo</button>${primero ? '' : '<button class="btn piedra" type="button" id="btn-volver">Volver</button>'}</div>
       </form></section>`;
     const nota = () => {
       const n = $('#nivel', main).value;
       $('#nota-nivel', main).textContent = Motor.idxNivel(n) > Motor.idxNivel(ultimoNivel())
-        ? `Por ahora el contenido llega hasta ${nombreNivel(ultimoNivel())}. Puedes repasar esos cursos mientras se agrega el tuyo.` : '';
+        ? `Los desafíos de ${nombreNivel(n)} vienen pronto. Por ahora el contenido llega hasta ${nombreNivel(ultimoNivel())}: mientras tanto practicas con ese curso.` : '';
     };
     $('#nivel', main).addEventListener('change', nota); nota();
     const volver = $('#btn-volver', main); if (volver) volver.addEventListener('click', () => ES.ir('perfiles'));
