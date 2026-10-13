@@ -32,25 +32,33 @@ def _ordenar_campos(d, extra):
     return out
 
 
+def _txt(x):
+    """Texto de una alternativa: los negativos llevan signo menos tipográfico y los decimales, coma."""
+    if isinstance(x, bool) or not isinstance(x, (int, float)):
+        return str(x)
+    s = str(x).replace(".", ",")
+    return "−" + s[1:] if x < 0 else s
+
+
 def opcion_multiple(id_, dificultad, enunciado, correcta, distractores, pista, explicacion, rng=None):
     """correcta: texto de la alternativa correcta; distractores: 3 textos distintos."""
     rng = rng or random.Random(id_)  # semilla fija por id: el banco es reproducible
-    alts = [str(correcta)] + [str(d) for d in distractores]
+    alts = [_txt(correcta)] + [_txt(d) for d in distractores]
     assert len(alts) == 4 and len(set(alts)) == 4, (id_, alts)
     rng.shuffle(alts)
     d = _base(id_, "opcion_multiple", dificultad, enunciado, pista, explicacion)
-    return _ordenar_campos(d, {"alternativas": alts, "correcta": alts.index(str(correcta))})
+    return _ordenar_campos(d, {"alternativas": alts, "correcta": alts.index(_txt(correcta))})
 
 
 def completar(id_, dificultad, enunciado, correcta, distractores, pista, explicacion, rng=None):
     """enunciado contiene '___' donde va la alternativa elegida."""
     assert "___" in enunciado, id_
     rng = rng or random.Random(id_)  # semilla fija por id: el banco es reproducible
-    alts = [str(correcta)] + [str(d) for d in distractores]
+    alts = [_txt(correcta)] + [_txt(d) for d in distractores]
     assert len(alts) == 4 and len(set(alts)) == 4, (id_, alts)
     rng.shuffle(alts)
     d = _base(id_, "completar", dificultad, enunciado, pista, explicacion)
-    return _ordenar_campos(d, {"alternativas": alts, "correcta": alts.index(str(correcta))})
+    return _ordenar_campos(d, {"alternativas": alts, "correcta": alts.index(_txt(correcta))})
 
 
 def ordenar(id_, dificultad, enunciado, elementos_en_orden, pista, explicacion):

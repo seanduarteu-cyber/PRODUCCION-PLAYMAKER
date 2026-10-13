@@ -1,0 +1,819 @@
+[
+  {
+    "nivel": "3_basico",
+    "asignatura": "ingles",
+    "eje": "Comprensión oral",
+    "objetivo_oficial": "OA 1: Comprender textos leídos por un adulto o en formato audiovisual, breves y simples, como rimas, chants, canciones, cuentos y diálogos.",
+    "dificultad": 3,
+    "prerequisitos": [
+      "2_basico.ingles.OA1"
+    ],
+    "id_objetivo": "3_basico.ingles.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Comprension-oral/20913:EN03-OA-01"
+    },
+    "desafios": [
+      {
+        "id": "ing3-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿Cómo está el día?",
+        "audio": {
+          "texto": "It's sunny.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "☀️",
+          "💨",
+          "🌧️",
+          "❄️"
+        ],
+        "correcta": 0,
+        "pista": "Escucha con atención y piensa en el cielo.",
+        "explicacion_error": "Escuchaste «It's sunny»: «sunny» significa soleado ☀️.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha y elige la parte del cuerpo.",
+        "audio": {
+          "texto": "arm",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "pie 🦶",
+          "mano ✋",
+          "pierna 🦵",
+          "brazo 💪"
+        ],
+        "correcta": 3,
+        "pista": "Recuerda: «leg» es pierna y «hand» es mano.",
+        "explicacion_error": "Escuchaste «arm», que significa brazo 💪.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿Qué día es?",
+        "audio": {
+          "texto": "Monday",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "lunes",
+          "viernes",
+          "domingo",
+          "martes"
+        ],
+        "correcta": 0,
+        "pista": "Recuerda: «Sunday» es domingo y «Friday» es viernes.",
+        "explicacion_error": "Escuchaste «Monday», que significa lunes.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha y elige el animal.",
+        "audio": {
+          "texto": "frog",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "🐍",
+          "🐸",
+          "🦆",
+          "🐢"
+        ],
+        "correcta": 1,
+        "pista": "Escucha bien: empieza con el sonido /f/.",
+        "explicacion_error": "Escuchaste «frog», que significa rana 🐸.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha a Diego. ¿Qué sabe hacer?",
+        "audio": {
+          "texto": "I can swim.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "volar 🦅",
+          "nadar 🏊",
+          "cantar 🎤",
+          "bailar 💃"
+        ],
+        "correcta": 1,
+        "pista": "Escucha la palabra que va después de «I can».",
+        "explicacion_error": "Diego dice «I can swim»: sabe nadar 🏊.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha. ¿Qué día es?",
+        "audio": {
+          "texto": "Thursday",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "miércoles",
+          "jueves",
+          "martes",
+          "viernes"
+        ],
+        "correcta": 1,
+        "pista": "Escucha con atención: hay dos días que suenan parecido.",
+        "explicacion_error": "Escuchaste «Thursday», que significa jueves. «Tuesday» es martes.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha. ¿Qué hace Martina?",
+        "audio": {
+          "texto": "I brush my teeth.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Toma desayuno.",
+          "Se lava las manos.",
+          "Se peina.",
+          "Se lava los dientes."
+        ],
+        "correcta": 3,
+        "pista": "Fíjate en la última palabra.",
+        "explicacion_error": "Martina dice «I brush my teeth»: «teeth» significa dientes, así que se lava los dientes.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Escucha. ¿Cuántos peces hay?",
+        "audio": {
+          "texto": "There are seven fish in the river.",
+          "idioma": "en"
+        },
+        "respuesta": 7,
+        "tolerancia": 0,
+        "pista": "Escucha el número que va después de «There are».",
+        "explicacion_error": "Dice «There are seven fish»: «seven» es 7.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Escucha cómo está el día. ¿Qué te pones para salir?",
+        "audio": {
+          "texto": "It's rainy and cold today.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "traje de baño",
+          "botas y paraguas ☂️",
+          "sandalias",
+          "lentes de sol 🕶️"
+        ],
+        "correcta": 1,
+        "pista": "Escucha las dos palabras que dicen cómo está el día.",
+        "explicacion_error": "Dice «It's rainy and cold»: está lluvioso y frío, así que necesitas botas y paraguas ☂️.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-010",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Escucha y une cada animal con el lugar donde vive.",
+        "audio": {
+          "texto": "The fish lives in the sea. The monkey lives in the jungle. The camel lives in the desert. The cow lives on the farm.",
+          "idioma": "en"
+        },
+        "pares": [
+          [
+            "🐟",
+            "mar"
+          ],
+          [
+            "🐒",
+            "selva"
+          ],
+          [
+            "🐪",
+            "desierto"
+          ],
+          [
+            "🐄",
+            "granja"
+          ]
+        ],
+        "pista": "Escucha qué lugar nombra después de cada animal.",
+        "explicacion_error": "The fish lives in the sea (mar), the monkey in the jungle (selva), the camel in the desert (desierto) y the cow on the farm (granja).",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-011",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Escucha la mañana de {personaje} y ordena lo que hace.",
+        "audio": {
+          "texto": "I get up. I eat breakfast. I brush my teeth. I go to school.",
+          "idioma": "en"
+        },
+        "elementos": [
+          "Se levanta.",
+          "Toma desayuno.",
+          "Se lava los dientes.",
+          "Va al colegio."
+        ],
+        "pista": "Escucha las acciones una por una.",
+        "explicacion_error": "Dice: I get up (se levanta), I eat breakfast (toma desayuno), I brush my teeth (se lava los dientes) y I go to school (va al colegio).",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-012",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Escucha y completa: «There ___ two dogs in the park.»",
+        "audio": {
+          "texto": "There are two dogs in the park.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "is",
+          "am",
+          "be",
+          "are"
+        ],
+        "correcta": 3,
+        "pista": "Son dos perros: más de uno.",
+        "explicacion_error": "Dice «There are two dogs»: con más de uno se usa «there are» (hay).",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-013",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Escucha y une a cada niño con lo que sabe hacer.",
+        "audio": {
+          "texto": "Diego can swim. Sofia can ride a bike. Amanda can dance.",
+          "idioma": "en"
+        },
+        "pares": [
+          [
+            "Diego",
+            "🏊"
+          ],
+          [
+            "Sofía",
+            "🚲"
+          ],
+          [
+            "Amanda",
+            "💃"
+          ]
+        ],
+        "pista": "Escucha el nombre y lo que dice después de «can».",
+        "explicacion_error": "Diego can swim 🏊 (nadar), Sofia can ride a bike 🚲 (andar en bici) y Amanda can dance 💃 (bailar).",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-014",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Escucha qué hace Benjamín cada día y ordénalo de lunes a miércoles.",
+        "audio": {
+          "texto": "On Monday, I swim. On Tuesday, I dance. On Wednesday, I play soccer.",
+          "idioma": "en"
+        },
+        "elementos": [
+          "nadar 🏊",
+          "bailar 💃",
+          "jugar fútbol ⚽"
+        ],
+        "pista": "Escucha los días: Monday, Tuesday y Wednesday.",
+        "explicacion_error": "El lunes (Monday) nada, el martes (Tuesday) baila y el miércoles (Wednesday) juega fútbol.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Escucha a Tomás. ¿Qué NO puede hacer?",
+        "audio": {
+          "texto": "I can run, but I can't swim.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "saltar",
+          "nadar",
+          "bailar",
+          "correr"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en «can't»: significa no puede.",
+        "explicacion_error": "Tomás dice «I can run, but I can't swim»: puede correr, pero no puede nadar.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "Escucha a Sofía. ¿Qué hay en su pieza?",
+        "audio": {
+          "texto": "In my bedroom, there is a bed and a lamp. There are two chairs.",
+          "idioma": "en"
+        },
+        "categorias": [
+          "Hay",
+          "No hay"
+        ],
+        "elementos": [
+          {
+            "texto": "una cama",
+            "categoria": 0
+          },
+          {
+            "texto": "una lámpara",
+            "categoria": 0
+          },
+          {
+            "texto": "dos sillas",
+            "categoria": 0
+          },
+          {
+            "texto": "un televisor",
+            "categoria": 1
+          },
+          {
+            "texto": "una alfombra",
+            "categoria": 1
+          },
+          {
+            "texto": "un ropero",
+            "categoria": 1
+          }
+        ],
+        "pista": "Escucha lo que dice después de «there is» y «there are».",
+        "explicacion_error": "Sofía dice que hay una cama (a bed), una lámpara (a lamp) y dos sillas (two chairs). No nombra televisor, alfombra ni ropero.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Escucha. ¿Cuántos animales hay en la granja en total?",
+        "audio": {
+          "texto": "There are three cows and four horses on the farm.",
+          "idioma": "en"
+        },
+        "respuesta": 7,
+        "tolerancia": 0,
+        "pista": "Escucha cuántas vacas y cuántos caballos hay, y súmalos.",
+        "explicacion_error": "«Three cows and four horses»: 3 vacas + 4 caballos = 7 animales.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-018",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha. ¿Qué día van a la playa y cómo está el tiempo?",
+        "audio": {
+          "texto": "It's Saturday. It's sunny and hot. Let's go to the beach!",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "El sábado, con sol.",
+          "El lunes, con viento.",
+          "El domingo, con sol.",
+          "El sábado, con lluvia."
+        ],
+        "correcta": 0,
+        "pista": "Escucha el día y el clima.",
+        "explicacion_error": "Dice «It's Saturday. It's sunny and hot»: es sábado y hace sol.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa1-019",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha la adivinanza y elige el animal.",
+        "audio": {
+          "texto": "I live in the jungle. I am brown. I can climb trees. I like bananas.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "🐊",
+          "🐘",
+          "🐒",
+          "🦁"
+        ],
+        "correcta": 2,
+        "pista": "Escucha dónde vive, qué puede hacer y qué le gusta.",
+        "explicacion_error": "«I live in the jungle, I can climb trees and I like bananas»: vive en la selva, trepa árboles y le gustan los plátanos. Es el mono 🐒.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_basico",
+    "asignatura": "ingles",
+    "eje": "Expresión escrita",
+    "objetivo_oficial": "OA 13: Escribir (copiar o completar) palabras y oraciones simples de acuerdo a un modelo, sobre temas conocidos o de otras asignaturas.",
+    "dificultad": 3,
+    "prerequisitos": [
+      "2_basico.ingles.OA13"
+    ],
+    "id_objetivo": "3_basico.ingles.OA13",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/20924:EN03-OA-13"
+    },
+    "desafios": [
+      {
+        "id": "ing3-oa13-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Escucha el modelo y completa la palabra: ar___ 💪",
+        "audio": {
+          "texto": "arm",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "n",
+          "mm",
+          "w",
+          "m"
+        ],
+        "correcta": 3,
+        "pista": "Escucha con atención el último sonido.",
+        "explicacion_error": "Brazo se escribe «arm»: a-r-m.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-002",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada día con su significado.",
+        "pares": [
+          [
+            "Monday",
+            "lunes"
+          ],
+          [
+            "Friday",
+            "viernes"
+          ],
+          [
+            "Sunday",
+            "domingo"
+          ]
+        ],
+        "pista": "Fíjate en cómo empieza cada palabra.",
+        "explicacion_error": "Monday es lunes, Friday es viernes y Sunday es domingo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Copia el modelo «rainy» 🌧️. ¿Qué palabra es igual?",
+        "alternativas": [
+          "rainy",
+          "rainny",
+          "reiny",
+          "rany"
+        ],
+        "correcta": 0,
+        "pista": "Compara letra por letra con el modelo.",
+        "explicacion_error": "Lluvioso se escribe «rainy»: r-a-i-n-y.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-004",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Ayuda a {personaje} a completar: «It's ___.» ☀️",
+        "alternativas": [
+          "windy",
+          "rainy",
+          "suny",
+          "sunny"
+        ],
+        "correcta": 3,
+        "pista": "Mira el dibujo y revisa bien las letras.",
+        "explicacion_error": "☀️ es «sunny» (soleado), con doble n.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Es una parte del cuerpo o un día de la semana?",
+        "categorias": [
+          "Parte del cuerpo",
+          "Día de la semana"
+        ],
+        "elementos": [
+          {
+            "texto": "leg",
+            "categoria": 0
+          },
+          {
+            "texto": "head",
+            "categoria": 0
+          },
+          {
+            "texto": "hand",
+            "categoria": 0
+          },
+          {
+            "texto": "Tuesday",
+            "categoria": 1
+          },
+          {
+            "texto": "Saturday",
+            "categoria": 1
+          },
+          {
+            "texto": "Wednesday",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa qué significa cada palabra.",
+        "explicacion_error": "leg (pierna), head (cabeza) y hand (mano) son partes del cuerpo; Tuesday (martes), Saturday (sábado) y Wednesday (miércoles) son días.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Escucha el modelo y completa: Wedn___sday (miércoles)",
+        "audio": {
+          "texto": "Wednesday",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "i",
+          "a",
+          "e",
+          "s"
+        ],
+        "correcta": 2,
+        "pista": "Ojo: esta palabra no se escribe como suena.",
+        "explicacion_error": "Miércoles se escribe «Wednesday»: W-e-d-n-e-s-d-a-y.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-007",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa: «I ___ swim.» 🏊✅",
+        "alternativas": [
+          "are",
+          "can",
+          "is",
+          "can't"
+        ],
+        "correcta": 1,
+        "pista": "El ✅ dice que sí puedes.",
+        "explicacion_error": "«I can swim» significa sé nadar. «Can» es poder o saber hacer algo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena los días de la semana.",
+        "elementos": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday"
+        ],
+        "pista": "Empieza por el lunes.",
+        "explicacion_error": "Monday (lunes), Tuesday (martes), Wednesday (miércoles) y Thursday (jueves).",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena las palabras para escribir «Me lavo la cara».",
+        "elementos": [
+          "I",
+          "wash",
+          "my",
+          "face."
+        ],
+        "pista": "En inglés se dice «lavo mi cara».",
+        "explicacion_error": "«I wash my face.» significa me lavo la cara.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-010",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Completa: «There ___ three cats.» 🐱🐱🐱",
+        "alternativas": [
+          "are",
+          "is",
+          "am",
+          "be"
+        ],
+        "correcta": 0,
+        "pista": "Son tres gatos: más de uno.",
+        "explicacion_error": "Con más de uno se usa «there are»: «There are three cats» significa hay tres gatos.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-011",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Completa: «A fish lives in the ___.» 🐟🌊",
+        "alternativas": [
+          "see",
+          "sea",
+          "farm",
+          "tree"
+        ],
+        "correcta": 1,
+        "pista": "Ojo: hay dos palabras que suenan igual.",
+        "explicacion_error": "Mar se escribe «sea». «See» suena igual, pero significa ver.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-012",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada oración con su dibujo.",
+        "pares": [
+          [
+            "It's sunny.",
+            "☀️"
+          ],
+          [
+            "It's rainy.",
+            "🌧️"
+          ],
+          [
+            "It's snowy.",
+            "❄️"
+          ],
+          [
+            "It's windy.",
+            "💨"
+          ]
+        ],
+        "pista": "Piensa en «sun» (sol), «rain» (lluvia), «snow» (nieve) y «wind» (viento).",
+        "explicacion_error": "sunny es soleado ☀️, rainy es lluvioso 🌧️, snowy es nevado ❄️ y windy es ventoso 💨.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-013",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Completa: «A bird can ___, but it can't swim.» 🐦",
+        "alternativas": [
+          "fly",
+          "flies",
+          "fli",
+          "swim"
+        ],
+        "correcta": 0,
+        "pista": "Después de «can» va la acción tal cual, sin -s.",
+        "explicacion_error": "«A bird can fly» significa un pájaro puede volar. Después de «can» va «fly», sin -s.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-014",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Escribe en inglés: «Un pez no puede caminar».",
+        "elementos": [
+          "A",
+          "fish",
+          "can't",
+          "walk."
+        ],
+        "pista": "«No puede» se dice «can't».",
+        "explicacion_error": "«A fish can't walk.» significa un pez no puede caminar.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Se usa «There is» o «There are»?",
+        "categorias": [
+          "There is",
+          "There are"
+        ],
+        "elementos": [
+          {
+            "texto": "a dog",
+            "categoria": 0
+          },
+          {
+            "texto": "one tree",
+            "categoria": 0
+          },
+          {
+            "texto": "a cloud",
+            "categoria": 0
+          },
+          {
+            "texto": "two cats",
+            "categoria": 1
+          },
+          {
+            "texto": "five birds",
+            "categoria": 1
+          },
+          {
+            "texto": "many stars",
+            "categoria": 1
+          }
+        ],
+        "pista": "Fíjate si es uno o más de uno.",
+        "explicacion_error": "Con uno se usa «there is» (a dog, one tree, a cloud); con más de uno, «there are» (two cats, five birds, many stars).",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-016",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Completa: «Today is Friday. Tomorrow is ___.»",
+        "alternativas": [
+          "Saturdy",
+          "Thursday",
+          "Saturday",
+          "Sunday"
+        ],
+        "correcta": 2,
+        "pista": "«Tomorrow» es mañana: el día que viene después.",
+        "explicacion_error": "Después de Friday (viernes) viene Saturday (sábado).",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-017",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Sigue el modelo. «A monkey lives in the jungle.» 🐒🌴 → «A camel lives in the ___.» 🐪🏜️",
+        "alternativas": [
+          "sea",
+          "dessert",
+          "desert",
+          "jungle"
+        ],
+        "correcta": 2,
+        "pista": "Ojo con la doble s: cambia el significado.",
+        "explicacion_error": "Desierto se escribe «desert». «Dessert», con doble s, significa postre.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-018",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Escribe en inglés: «Hay dos vacas en la granja».",
+        "elementos": [
+          "There",
+          "are",
+          "two",
+          "cows",
+          "on the farm."
+        ],
+        "pista": "«Hay», con más de uno, se dice «There are».",
+        "explicacion_error": "«There are two cows on the farm.» significa hay dos vacas en la granja.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3-oa13-019",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "{personaje} anota el tiempo. Modelo: «On Monday, it's sunny.» ☀️ Completa sobre el martes: «On ___, it's rainy.» 🌧️",
+        "alternativas": [
+          "Monday",
+          "Thursday",
+          "Tuesday",
+          "Tusday"
+        ],
+        "correcta": 2,
+        "pista": "Martes y jueves se parecen en inglés; revisa bien las letras.",
+        "explicacion_error": "Martes se escribe «Tuesday». «Thursday» es jueves.",
+        "monedas": 10
+      }
+    ]
+  }
+]

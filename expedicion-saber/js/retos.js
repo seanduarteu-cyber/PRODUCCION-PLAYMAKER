@@ -5,14 +5,38 @@
   const barajar = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const barajarDistinto = (a, igual) => { let b = barajar(a); for (let k = 0; k < 8 && igual(b); k++) b = barajar(a); return b; };
 
-  /* ---------- voz (lectura en voz alta en español) y sonidos ---------- */
+  /* ---------- voz (lectura en voz alta en español y en inglés) y sonidos ---------- */
+  const lang = v => (v.lang || '').replace('_', '-');
+  const PRIORIDAD = {
+    es: v => { const l = lang(v); return l.startsWith('es-CL') ? 4 : l.startsWith('es-419') || l.startsWith('es-MX') || l.startsWith('es-US') ? 3 : l.startsWith('es') ? 2 : 0; },
+    en: v => { const l = lang(v); return l.startsWith('en-US') ? 3 : l.startsWith('en-GB') ? 2 : l.startsWith('en') ? 1 : 0; },
+  };
   const Voz = {
-    ok: 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined', v: null,
-    elegir() { try { const vs = speechSynthesis.getVoices(); const p = v => { const l = (v.lang || '').replace('_', '-'); return l.startsWith('es-CL') ? 4 : l.startsWith('es-419') || l.startsWith('es-MX') || l.startsWith('es-US') ? 3 : l.startsWith('es') ? 2 : 0; }; const b = vs.slice().sort((x, y) => p(y) - p(x))[0]; if (b && p(b)) this.v = b; } catch (e) { /* sin voces */ } },
-    decir(t) { if (!this.ok) return; try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'es-CL'; if (this.v) u.voice = this.v; u.rate = 0.92; speechSynthesis.speak(u); } catch (e) { /* ignorar */ } },
+    ok: 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined', v: { es: null, en: null },
+    elegir() {
+      try {
+        const vs = speechSynthesis.getVoices();
+        for (const id in PRIORIDAD) { const p = PRIORIDAD[id], b = vs.slice().sort((x, y) => p(y) - p(x))[0]; this.v[id] = b && p(b) ? b : null; }
+      } catch (e) { /* sin voces */ }
+    },
+    // partes: un texto en español, o una lista de { t, idioma: 'es' | 'en', lento }
+    decir(partes) {
+      if (!this.ok) return;
+      try {
+        speechSynthesis.cancel();
+        (typeof partes === 'string' ? [{ t: partes, idioma: 'es' }] : partes).forEach(({ t, idioma, lento }) => {
+          if (!t) return;
+          const en = idioma === 'en', u = new SpeechSynthesisUtterance(t);
+          u.lang = en ? 'en-US' : 'es-CL'; if (this.v[en ? 'en' : 'es']) u.voice = this.v[en ? 'en' : 'es'];
+          u.rate = lento ? 0.6 : en ? 0.85 : 0.92; speechSynthesis.speak(u);
+        });
+      } catch (e) { /* ignorar */ }
+    },
   };
   if (Voz.ok) { Voz.elegir(); try { speechSynthesis.addEventListener('voiceschanged', () => Voz.elegir()); } catch (e) { /* ignorar */ } }
   ES.detenerVoz = () => { try { if (Voz.ok) speechSynthesis.cancel(); } catch (e) { /* ignorar */ } };
+  // En Inglés, un enunciado sin palabras típicas del español se lee con voz en inglés (7° y 8° traen preguntas en inglés).
+  const idiomaDe = (t, asig) => (asig === 'ingles' && !/[¿¡áéíóúñ]|\b(el|la|los|las|que|de|del|y|un|una|en|elige|lee|une|ordena|completa|escucha|cuál|qué|toca)\b/i.test(t) ? 'en' : 'es');
   const paraVoz = t => t.replace(/\p{Extended_Pictographic}|\u{1F7E9}|⬜|️/gu, '').replace(/_{3}/g, ' espacio en blanco ').replace(/[«»]/g, '').replace(/−/g, ' menos ').replace(/×/g, ' por ').replace(/÷/g, ' dividido en ');
 
   let audio = null;
@@ -49,8 +73,12 @@
     main.innerHTML = `<section class="pantalla"><article class="bloque pantalla reto">
       <div class="reto-cab"><span class="nota"><strong>${ES.NOMBRE_ASIG[s.asig]}</strong> · ${esc(ES.codigoCorto(s.oaId))}</span><span class="nota">Dificultad ${ES.pips(st.nivel)}</span></div>
       <div class="progreso" role="img" aria-label="Desafío ${s.i + 1} de ${s.total}">${Array.from({ length: s.total }, (_, k) => `<i class="${k < s.i ? 'hecho' : k === s.i ? 'actual' : ''}"></i>`).join('')}</div>
-      ${d.texto ? `<div class="texto-lectura">${esc(d.texto)}</div>` : ''}
-      <div class="enunciado"><p id="enunciado">${enun}</p>${Voz.ok ? '<button class="voz" type="button" id="btn-voz" aria-label="Escuchar el desafío">🔊</button>' : ''}</div>
+      ${d.texto ? `<div class="texto-lectura" ${s.asig === 'ingles' ? 'lang="en"' : ''}>${esc(d.texto)}</div>` : ''}
+      <div class="enunciado"><p id="enunciado" ${idiomaDe(d.enunciado, s.asig) === 'en' ? 'lang="en"' : ''}>${enun}</p>${Voz.ok ? '<button class="voz" type="button" id="btn-voz" aria-label="Leer el desafío en voz alta">🔊</button>' : ''}</div>
+      ${d.audio ? `<div class="audio-en">${Voz.ok
+        ? `<button class="btn lumita" type="button" id="btn-audio">🔊 Escuchar</button><button class="btn chico piedra" type="button" id="btn-audio-lento">🐢 Más lento</button><button class="btn chico piedra" type="button" id="btn-audio-ver">Ver texto</button>`
+        : '<span class="nota">Este dispositivo no puede leer en voz alta. Lee el texto:</span>'}
+        <p class="texto-audio" id="texto-audio" lang="${esc(d.audio.idioma)}" ${Voz.ok ? 'hidden' : ''}>${esc(d.audio.texto)}</p></div>` : ''}
       <p class="intento" id="intento"></p>
       <div id="zona"></div>
       <div id="retro" aria-live="polite"></div>
@@ -60,9 +88,19 @@
     actualizarIntento();
     const api = { intentar, comprobar: v => { $('#btn-comprobar').hidden = !v; } };
     WIDGETS[d.tipo](d, $('#zona', main), api);
-    const leer = () => Voz.decir(paraVoz(`${d.texto ? d.texto + '. ' : ''}${d.enunciado}`));
+    const partesEnunciado = () => [{ t: d.texto && paraVoz(d.texto), idioma: s.asig === 'ingles' ? 'en' : 'es' }, { t: paraVoz(d.enunciado), idioma: idiomaDe(d.enunciado, s.asig) }];
+    const oirAudio = (lento = false) => Voz.decir([{ t: d.audio.texto, idioma: d.audio.idioma, lento }]);
+    const leer = () => Voz.decir(partesEnunciado());
     const vb = $('#btn-voz', main); if (vb) vb.addEventListener('click', leer);
-    if (A.estado.ajustes.voz !== false && ['1_basico', '2_basico'].includes(p.nivel_escolar)) setTimeout(leer, 300);
+    if (d.audio && Voz.ok) {
+      $('#btn-audio', main).addEventListener('click', () => oirAudio());
+      $('#btn-audio-lento', main).addEventListener('click', () => oirAudio(true));
+      $('#btn-audio-ver', main).addEventListener('click', e => { $('#texto-audio', main).hidden = false; e.currentTarget.remove(); });
+    }
+    // 1° y 2° básico escuchan el enunciado al aparecer; el audio en inglés suena solo en todos los cursos.
+    const leerSolo = A.estado.ajustes.voz !== false && ['1_basico', '2_basico'].includes(p.nivel_escolar);
+    if (A.estado.ajustes.voz !== false && d.audio) setTimeout(() => Voz.decir([...(leerSolo ? partesEnunciado() : []), { t: d.audio.texto, idioma: d.audio.idioma }]), 300);
+    else if (leerSolo) setTimeout(leer, 300);
     $('#btn-sig', main).addEventListener('click', siguiente);
     $('#btn-salir', main).addEventListener('click', () => {
       $('#salir').innerHTML = '<span class="nota">¿Salir? Las monedas ganadas se guardan, pero no recibes el bono de sesión.</span> <button class="btn chico tierra" type="button" id="si-salir">Salir</button> <button class="btn chico" type="button" id="no-salir">Seguir jugando</button>';
@@ -93,7 +131,7 @@
       case 'ordenar_secuencia': return d.elementos.join(' → ');
       case 'emparejar': return d.pares.map(([a, b]) => `${a} con ${b}`).join('; ');
       case 'arrastrar_categoria': return d.categorias.map((c, i) => `${c}: ${d.elementos.filter(e => e.categoria === i).map(e => e.texto).join(', ')}`).join(' · ');
-      case 'respuesta_numerica': return `${d.tolerancia ? 'cerca de ' : ''}${d.respuesta.toLocaleString('es-CL')}${d.unidad ? ' ' + d.unidad : ''}`;
+      case 'respuesta_numerica': return `${d.tolerancia ? 'cerca de ' : ''}${d.respuesta.toLocaleString('es-CL').replace('-', '−')}${d.unidad ? ' ' + d.unidad : ''}`;
     }
     return '';
   }
@@ -142,7 +180,8 @@
   const WIDGETS = {};
 
   WIDGETS.opcion_multiple = (d, zona, api) => {
-    zona.innerHTML = `<div class="opciones">${d.alternativas.map((a, i) => `<button class="opcion" type="button" data-i="${i}">${esc(a)}</button>`).join('')}</div>`;
+    const soloEmoji = d.alternativas.every(a => /^(\p{Extended_Pictographic}|\p{Emoji_Component}|\u200d|\ufe0f|\s)+$/u.test(a));
+    zona.innerHTML = `<div class="opciones ${soloEmoji ? 'emojis' : ''}">${d.alternativas.map((a, i) => `<button class="opcion" type="button" data-i="${i}">${esc(a)}</button>`).join('')}</div>`;
     zona.addEventListener('click', e => {
       const b = e.target.closest('[data-i]'); if (!b || b.disabled) return;
       const i = Number(b.dataset.i);
@@ -238,17 +277,25 @@
   };
 
   WIDGETS.respuesta_numerica = (d, zona, api) => {
-    let valor = '';
+    let valor = '', neg = false;
+    // La tecla «−» aparece en todo el OA si alguno de sus desafíos tiene respuesta negativa (no delata cuál).
+    const conSigno = A.datos.objetivos[A.ses.oaId].desafios.some(x => x.tipo === 'respuesta_numerica' && x.respuesta < 0);
+    const teclas = conSigno ? ['1', '2', '3', '4', '5', '6', '7', '8', '9', '−', '0', 'borrar'] : ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'borrar', '0'];
+    const nombre = { borrar: 'Borrar', '−': 'Cambiar signo' };
     const dibujar = () => {
-      zona.innerHTML = `<div class="fila"><output class="pantalla-num" id="num" aria-live="polite">${valor ? Number(valor).toLocaleString('es-CL') : '…'}</output>${d.unidad ? `<span>${esc(d.unidad)}</span>` : ''}${d.tolerancia ? '<span class="nota">Basta con una buena estimación.</span>' : ''}</div>
-        <div class="teclado" role="group" aria-label="Teclado numérico">${['1', '2', '3', '4', '5', '6', '7', '8', '9', 'borrar', '0'].map(k => `<button class="tecla" type="button" data-k="${k}" aria-label="${k === 'borrar' ? 'Borrar' : k}">${k === 'borrar' ? '⌫' : k}</button>`).join('')}</div>`;
+      zona.innerHTML = `<div class="fila"><output class="pantalla-num" id="num" aria-live="polite">${neg ? '−' : ''}${valor ? Number(valor).toLocaleString('es-CL') : neg ? '' : '…'}</output>${d.unidad ? `<span>${esc(d.unidad)}</span>` : ''}${d.tolerancia ? '<span class="nota">Basta con una buena estimación.</span>' : ''}</div>
+        <div class="teclado" role="group" aria-label="Teclado numérico">${teclas.map(k => `<button class="tecla" type="button" data-k="${k}" aria-label="${nombre[k] || k}">${k === 'borrar' ? '⌫' : k}</button>`).join('')}</div>`;
       api.comprobar(valor.length > 0 && !A.ses.terminado);
     };
-    const pulsar = k => { if (A.ses.terminado) return; if (k === 'borrar') valor = valor.slice(0, -1); else if (valor.length < 6) valor = (valor + k).replace(/^0+(?=\d)/, ''); dibujar(); };
+    const pulsar = k => {
+      if (A.ses.terminado) return;
+      if (k === 'borrar') { if (valor) valor = valor.slice(0, -1); else neg = false; } else if (k === '−') { if (conSigno) neg = !neg; } else if (valor.length < 6) valor = (valor + k).replace(/^0+(?=\d)/, '');
+      dibujar();
+    };
     zona.addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b) pulsar(b.dataset.k); });
-    const teclas = e => { if (!A.ses || A.ses.d !== d) return document.removeEventListener('keydown', teclas); if (/^\d$/.test(e.key)) pulsar(e.key); else if (e.key === 'Backspace') pulsar('borrar'); };
-    document.addEventListener('keydown', teclas);
-    $('#btn-comprobar').onclick = () => api.intentar(Number(valor), () => { valor = ''; dibujar(); });
+    const teclado = e => { if (!A.ses || A.ses.d !== d) return document.removeEventListener('keydown', teclado); if (/^\d$/.test(e.key)) pulsar(e.key); else if (e.key === '-') pulsar('−'); else if (e.key === 'Backspace') pulsar('borrar'); };
+    document.addEventListener('keydown', teclado);
+    $('#btn-comprobar').onclick = () => api.intentar(Number(valor) * (neg ? -1 : 1), () => { valor = ''; neg = false; dibujar(); });
     dibujar();
   };
 })();

@@ -1,0 +1,1004 @@
+[
+  {
+    "nivel": "5_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la vida",
+    "objetivo_oficial": "OA 1: Reconocer y explicar que los seres vivos están formados por una o más células, que se organizan en tejidos, órganos y sistemas.",
+    "dificultad": 5,
+    "prerequisitos": [
+      "2_basico.ciencias.OA7"
+    ],
+    "id_objetivo": "5_basico.ciencias.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-18462.html"
+    },
+    "desafios": [
+      {
+        "id": "cie5-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es la unidad básica que forma a todos los seres vivos?",
+        "alternativas": [
+          "el órgano",
+          "el tejido",
+          "el sistema",
+          "la célula"
+        ],
+        "correcta": 3,
+        "pista": "Es la parte más pequeña que tiene vida por sí misma.",
+        "explicacion_error": "La célula es la unidad básica de todos los seres vivos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Un ser vivo formado por una sola célula es ___.",
+        "alternativas": [
+          "un órgano",
+          "pluricelular",
+          "unicelular",
+          "un tejido"
+        ],
+        "correcta": 2,
+        "pista": "«Uni» significa uno.",
+        "explicacion_error": "Unicelular: formado por una sola célula.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Unicelular o pluricelular?",
+        "categorias": [
+          "Unicelular",
+          "Pluricelular"
+        ],
+        "elementos": [
+          {
+            "texto": "bacteria",
+            "categoria": 0
+          },
+          {
+            "texto": "ameba",
+            "categoria": 0
+          },
+          {
+            "texto": "levadura",
+            "categoria": 0
+          },
+          {
+            "texto": "pudú",
+            "categoria": 1
+          },
+          {
+            "texto": "copihue",
+            "categoria": 1
+          },
+          {
+            "texto": "ser humano",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los unicelulares solo se ven con microscopio.",
+        "explicacion_error": "Bacteria, ameba y levadura tienen una célula; el pudú, el copihue y tú tienen muchísimas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué instrumento necesitas para observar la mayoría de las células?",
+        "alternativas": [
+          "el microscopio",
+          "el telescopio",
+          "el estetoscopio",
+          "el termómetro"
+        ],
+        "correcta": 0,
+        "pista": "Las células son demasiado pequeñas para verlas a simple vista.",
+        "explicacion_error": "El microscopio aumenta la imagen y permite ver las células.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-005",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena de lo más simple a lo más complejo.",
+        "elementos": [
+          "célula",
+          "tejido",
+          "órgano",
+          "sistema",
+          "organismo"
+        ],
+        "pista": "Las células forman tejidos y así sucesivamente.",
+        "explicacion_error": "Célula → tejido → órgano → sistema → organismo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Un grupo de células parecidas que cumplen la misma función forma un ___.",
+        "alternativas": [
+          "tejido",
+          "organismo",
+          "sistema",
+          "órgano"
+        ],
+        "correcta": 0,
+        "pista": "Es el nivel que sigue a la célula.",
+        "explicacion_error": "Células parecidas que trabajan juntas forman un tejido.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-007",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada nivel con un ejemplo del cuerpo humano.",
+        "pares": [
+          [
+            "célula",
+            "neurona"
+          ],
+          [
+            "tejido",
+            "tejido muscular"
+          ],
+          [
+            "órgano",
+            "corazón"
+          ],
+          [
+            "sistema",
+            "sistema digestivo"
+          ]
+        ],
+        "pista": "Piensa de lo más pequeño a lo más grande.",
+        "explicacion_error": "La neurona es una célula, el músculo es un tejido, el corazón un órgano y el digestivo un sistema.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "El corazón está formado por tejido muscular, tejido nervioso y otros tejidos. Por eso, el corazón es un…",
+        "alternativas": [
+          "tejido",
+          "sistema",
+          "célula",
+          "órgano"
+        ],
+        "correcta": 3,
+        "pista": "Varios tejidos que trabajan juntos forman el siguiente nivel.",
+        "explicacion_error": "Varios tejidos juntos forman un órgano: el corazón es un órgano.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Es una célula o un órgano?",
+        "categorias": [
+          "Célula",
+          "Órgano"
+        ],
+        "elementos": [
+          {
+            "texto": "glóbulo rojo",
+            "categoria": 0
+          },
+          {
+            "texto": "neurona",
+            "categoria": 0
+          },
+          {
+            "texto": "glóbulo blanco",
+            "categoria": 0
+          },
+          {
+            "texto": "corazón",
+            "categoria": 1
+          },
+          {
+            "texto": "riñón",
+            "categoria": 1
+          },
+          {
+            "texto": "estómago",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los órganos están formados por millones de células.",
+        "explicacion_error": "Glóbulos y neuronas son células; corazón, riñón y estómago son órganos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué estructura tienen las células vegetales y NO las animales?",
+        "alternativas": [
+          "pared celular",
+          "citoplasma",
+          "membrana",
+          "núcleo"
+        ],
+        "correcta": 0,
+        "pista": "Es una cubierta rígida por fuera de la membrana.",
+        "explicacion_error": "La pared celular solo está en las células vegetales y les da rigidez.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-011",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada estructura de la célula con su función.",
+        "pares": [
+          [
+            "membrana",
+            "controla lo que entra y sale"
+          ],
+          [
+            "núcleo",
+            "dirige las actividades de la célula"
+          ],
+          [
+            "cloroplasto",
+            "realiza la fotosíntesis"
+          ],
+          [
+            "pared celular",
+            "da rigidez a la célula vegetal"
+          ]
+        ],
+        "pista": "El núcleo es como el centro de control.",
+        "explicacion_error": "Membrana: controla el paso; núcleo: dirige; cloroplasto: fotosíntesis; pared: rigidez.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "El estómago, el intestino y el hígado trabajan juntos y forman el sistema ___.",
+        "alternativas": [
+          "nervioso",
+          "respiratorio",
+          "circulatorio",
+          "digestivo"
+        ],
+        "correcta": 3,
+        "pista": "Todos participan en procesar los alimentos.",
+        "explicacion_error": "Estos órganos procesan el alimento: forman el sistema digestivo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} observa al microscopio agua de un charco y ve un ser que se mueve y se alimenta, formado por una sola célula. ¿Qué puede concluir?",
+        "alternativas": [
+          "Es un tejido de otro animal.",
+          "Es un ser vivo unicelular.",
+          "No es un ser vivo porque tiene una sola célula.",
+          "Es un órgano suelto."
+        ],
+        "correcta": 1,
+        "pista": "¿Una sola célula puede cumplir las funciones de la vida?",
+        "explicacion_error": "Se mueve y se alimenta con una sola célula: es un ser vivo unicelular.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Una bacteria se divide en dos cada 20 minutos. Si {personaje} parte con 1 bacteria, ¿cuántas habrá después de 1 hora?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "unidad": "bacterias",
+        "pista": "En 1 hora hay tres períodos de 20 minutos; en cada uno se duplican.",
+        "explicacion_error": "1 → 2 → 4 → 8: después de 1 hora hay 8 bacterias.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Si se dañan muchas células del tejido muscular del corazón, ¿qué es lo más probable?",
+        "alternativas": [
+          "El sistema digestivo deja de existir.",
+          "El corazón funciona mal y afecta a todo el sistema circulatorio.",
+          "El corazón se transforma en otro órgano.",
+          "Solo se dañan esas células y nada más cambia."
+        ],
+        "correcta": 1,
+        "pista": "Piensa en cómo los niveles dependen unos de otros.",
+        "explicacion_error": "Las células forman el tejido, el tejido al órgano y el órgano al sistema: el daño afecta a todos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa1-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué tiene solo la célula vegetal y qué tienen ambas (animal y vegetal)?",
+        "categorias": [
+          "Solo vegetal",
+          "Ambas"
+        ],
+        "elementos": [
+          {
+            "texto": "pared celular",
+            "categoria": 0
+          },
+          {
+            "texto": "cloroplastos",
+            "categoria": 0
+          },
+          {
+            "texto": "membrana",
+            "categoria": 1
+          },
+          {
+            "texto": "núcleo",
+            "categoria": 1
+          },
+          {
+            "texto": "citoplasma",
+            "categoria": 1
+          }
+        ],
+        "pista": "Las plantas hacen fotosíntesis y tienen una cubierta rígida.",
+        "explicacion_error": "Pared celular y cloroplastos son solo vegetales; membrana, núcleo y citoplasma están en ambas.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "5_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias físicas y químicas",
+    "objetivo_oficial": "OA 8: Explicar que la energía eléctrica se transforma en otras formas de energía (calórica, sonora, lumínica) e identificar aportes de científicos.",
+    "dificultad": 5,
+    "prerequisitos": [],
+    "id_objetivo": "5_basico.ciencias.OA8",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docentes/Educacion-General/Ciencias-Naturales-5-basico/CN05-OA-08/18469:CN05-OA-08"
+    },
+    "desafios": [
+      {
+        "id": "cie5-oa8-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué forma de energía útil entrega una ampolleta?",
+        "alternativas": [
+          "de movimiento",
+          "sonora",
+          "lumínica",
+          "química"
+        ],
+        "correcta": 2,
+        "pista": "¿Para qué enciendes una ampolleta?",
+        "explicacion_error": "La ampolleta transforma la energía eléctrica en energía lumínica (luz).",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué aparato transforma la energía eléctrica principalmente en sonido?",
+        "alternativas": [
+          "🔊 parlante",
+          "🔥 estufa",
+          "💡 ampolleta",
+          "🌀 ventilador"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en el que puedes escuchar.",
+        "explicacion_error": "El parlante transforma la energía eléctrica en energía sonora.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Un ventilador transforma la energía eléctrica principalmente en energía de ___.",
+        "alternativas": [
+          "sonido",
+          "movimiento",
+          "calor",
+          "luz"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué hacen sus aspas?",
+        "explicacion_error": "Las aspas giran: el ventilador entrega energía de movimiento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-004",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada aparato con la energía útil que entrega.",
+        "pares": [
+          [
+            "hervidor",
+            "calórica"
+          ],
+          [
+            "linterna",
+            "lumínica"
+          ],
+          [
+            "timbre",
+            "sonora"
+          ],
+          [
+            "licuadora",
+            "de movimiento"
+          ]
+        ],
+        "pista": "Piensa para qué usas cada aparato.",
+        "explicacion_error": "Hervidor: calor; linterna: luz; timbre: sonido; licuadora: movimiento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Qué energía útil entrega principalmente cada aparato?",
+        "categorias": [
+          "Calórica",
+          "Lumínica",
+          "Sonora"
+        ],
+        "elementos": [
+          {
+            "texto": "plancha",
+            "categoria": 0
+          },
+          {
+            "texto": "estufa eléctrica",
+            "categoria": 0
+          },
+          {
+            "texto": "lámpara",
+            "categoria": 1
+          },
+          {
+            "texto": "semáforo",
+            "categoria": 1
+          },
+          {
+            "texto": "bocina",
+            "categoria": 2
+          },
+          {
+            "texto": "radio",
+            "categoria": 2
+          }
+        ],
+        "pista": "Pregúntate: ¿calienta, ilumina o suena?",
+        "explicacion_error": "Plancha y estufa calientan; lámpara y semáforo iluminan; bocina y radio suenan.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿De dónde obtiene la energía eléctrica una linterna?",
+        "alternativas": [
+          "del aire",
+          "de la ampolleta",
+          "de las pilas",
+          "del interruptor"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué le cambias cuando deja de funcionar?",
+        "explicacion_error": "Las pilas entregan la energía eléctrica a la linterna.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Un hervidor eléctrico calienta el agua. ¿Qué transformación ocurre?",
+        "alternativas": [
+          "eléctrica → calórica",
+          "sonora → eléctrica",
+          "calórica → eléctrica",
+          "lumínica → sonora"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué energía recibe del enchufe y cuál entrega?",
+        "explicacion_error": "Recibe energía eléctrica y la transforma en calórica.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena lo que pasa al encender una linterna.",
+        "elementos": [
+          "Cierras el interruptor.",
+          "La corriente sale de la pila y recorre los cables.",
+          "La corriente atraviesa la ampolleta.",
+          "La ampolleta emite luz y calor."
+        ],
+        "pista": "La corriente necesita un circuito cerrado para circular.",
+        "explicacion_error": "Al cerrar el circuito, la corriente va de la pila a la ampolleta y esta emite luz y calor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Un secador de pelo transforma la energía eléctrica en energía calórica y de ___.",
+        "alternativas": [
+          "lumínica",
+          "nuclear",
+          "química",
+          "movimiento"
+        ],
+        "correcta": 3,
+        "pista": "Además de calentar, sopla aire.",
+        "explicacion_error": "El secador calienta y mueve el aire: calórica y de movimiento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-010",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada científico con su aporte.",
+        "pares": [
+          [
+            "Thomas Edison",
+            "perfeccionó la ampolleta incandescente"
+          ],
+          [
+            "Alessandro Volta",
+            "inventó la pila eléctrica"
+          ],
+          [
+            "Benjamin Franklin",
+            "demostró que el rayo es electricidad"
+          ],
+          [
+            "Michael Faraday",
+            "produjo electricidad con imanes en movimiento"
+          ]
+        ],
+        "pista": "La unidad del voltaje se llama así por uno de ellos.",
+        "explicacion_error": "Edison: ampolleta; Volta: pila; Franklin: el rayo; Faraday: electricidad con imanes.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué demostró Benjamin Franklin con su experimento del volantín en una tormenta?",
+        "alternativas": [
+          "que los rayos son electricidad",
+          "cómo fabricar una pila",
+          "cómo funciona la ampolleta",
+          "que la luz viaja en línea recta"
+        ],
+        "correcta": 0,
+        "pista": "En una tormenta hay rayos.",
+        "explicacion_error": "Franklin mostró que los rayos son descargas eléctricas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué una ampolleta incandescente se pone muy caliente?",
+        "alternativas": [
+          "porque la luz siempre quema",
+          "porque gran parte de la energía eléctrica se transforma en calor",
+          "porque gasta muy poca energía",
+          "porque recibe calor del Sol"
+        ],
+        "correcta": 1,
+        "pista": "La energía eléctrica no se transforma solo en luz.",
+        "explicacion_error": "En la incandescente, la mayor parte de la energía eléctrica se transforma en calor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} lee que una ampolleta recibe 100 unidades de energía eléctrica y entrega 10 como luz. El resto se transforma en calor. ¿Cuántas unidades se transforman en calor?",
+        "respuesta": 90,
+        "tolerancia": 0,
+        "unidad": "unidades",
+        "pista": "La energía no se pierde: se reparte entre luz y calor.",
+        "explicacion_error": "100 − 10 = 90 unidades se transforman en calor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} quiere ahorrar energía. Dos ampolletas dan la misma luz. ¿Cuál conviene?",
+        "alternativas": [
+          "da lo mismo, ambas gastan igual",
+          "la que más se calienta",
+          "la incandescente, porque calienta más",
+          "la LED, porque transforma menos energía en calor"
+        ],
+        "correcta": 3,
+        "pista": "Fíjate en cuánta energía se va en calor.",
+        "explicacion_error": "La LED desperdicia menos energía en calor, así que usa menos electricidad para dar la misma luz.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "En un ventilador y una ampolleta incandescente, ¿la energía es útil o se desperdicia?",
+        "categorias": [
+          "Energía útil",
+          "Energía desperdiciada"
+        ],
+        "elementos": [
+          {
+            "texto": "movimiento de las aspas del ventilador",
+            "categoria": 0
+          },
+          {
+            "texto": "luz de la ampolleta",
+            "categoria": 0
+          },
+          {
+            "texto": "calor de la ampolleta",
+            "categoria": 1
+          },
+          {
+            "texto": "zumbido del ventilador",
+            "categoria": 1
+          }
+        ],
+        "pista": "La útil es la que buscas al usar el aparato.",
+        "explicacion_error": "Buscamos movimiento y luz; el calor de la ampolleta y el zumbido se desperdician.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa8-016",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Cuando la electricidad se convierte en luz, calor y sonido, la energía no se crea ni se destruye: solo se ___.",
+        "alternativas": [
+          "multiplica",
+          "transforma",
+          "crea",
+          "pierde para siempre"
+        ],
+        "correcta": 1,
+        "pista": "Recuerda la conservación de la energía.",
+        "explicacion_error": "La energía se transforma de una forma en otra; no se crea ni se destruye.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "5_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias físicas y químicas",
+    "objetivo_oficial": "OA 10: Observar y distinguir materiales conductores y aisladores de la electricidad.",
+    "dificultad": 5,
+    "prerequisitos": [
+      "5_basico.ciencias.OA8"
+    ],
+    "id_objetivo": "5_basico.ciencias.OA10",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docentes/Educacion-General/Ciencias-Naturales-5-basico/CN05-OA-10/18471:CN05-OA-10"
+    },
+    "desafios": [
+      {
+        "id": "cie5-oa10-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué material deja pasar la corriente eléctrica?",
+        "alternativas": [
+          "goma",
+          "cobre",
+          "plástico",
+          "madera seca"
+        ],
+        "correcta": 1,
+        "pista": "Los metales suelen conducir la electricidad.",
+        "explicacion_error": "El cobre es un metal y conduce muy bien la electricidad.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-002",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Conductor o aislador de la electricidad?",
+        "categorias": [
+          "Conductor",
+          "Aislador"
+        ],
+        "elementos": [
+          {
+            "texto": "clavo de hierro",
+            "categoria": 0
+          },
+          {
+            "texto": "moneda",
+            "categoria": 0
+          },
+          {
+            "texto": "papel de aluminio",
+            "categoria": 0
+          },
+          {
+            "texto": "goma de borrar",
+            "categoria": 1
+          },
+          {
+            "texto": "vaso de vidrio",
+            "categoria": 1
+          },
+          {
+            "texto": "regla de plástico",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los objetos de metal suelen ser conductores.",
+        "explicacion_error": "Clavo, moneda y aluminio son metales: conductores. Goma, vidrio y plástico son aisladores.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Los materiales que NO dejan pasar la corriente eléctrica se llaman ___.",
+        "alternativas": [
+          "aisladores",
+          "conductores",
+          "metales",
+          "imanes"
+        ],
+        "correcta": 0,
+        "pista": "Aíslan, es decir, separan de la corriente.",
+        "explicacion_error": "Los aisladores no dejan pasar la corriente eléctrica.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Por qué los cables eléctricos están cubiertos de plástico?",
+        "alternativas": [
+          "para que la corriente pase más rápido",
+          "porque el plástico es aislador y nos protege",
+          "solo para que se vean bonitos",
+          "porque el plástico es conductor"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué pasaría si tocaras el metal del cable?",
+        "explicacion_error": "El plástico es aislador: evita que la corriente pase a nuestro cuerpo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Por dentro, los cables tienen ___, un metal que conduce muy bien la electricidad.",
+        "alternativas": [
+          "vidrio",
+          "madera",
+          "cobre",
+          "plástico"
+        ],
+        "correcta": 2,
+        "pista": "Es un metal rojizo que Chile produce en grandes cantidades.",
+        "explicacion_error": "Los cables tienen cobre, un excelente conductor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada parte de un enchufe con su función.",
+        "pares": [
+          [
+            "patas metálicas",
+            "conducen la corriente"
+          ],
+          [
+            "cubierta de plástico",
+            "aísla y protege la mano"
+          ],
+          [
+            "cable de cobre",
+            "lleva la corriente al aparato"
+          ]
+        ],
+        "pista": "Las partes de metal conducen; las de plástico aíslan.",
+        "explicacion_error": "Las patas y el cable de cobre conducen; la cubierta plástica aísla.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "{personaje} arma un circuito con pila, cables, una ampolleta y un espacio abierto. Al poner un objeto en el espacio, la ampolleta se enciende. ¿Qué objeto puso?",
+        "alternativas": [
+          "un clip metálico",
+          "un lápiz de cera",
+          "una tapa plástica",
+          "un trozo de cartón"
+        ],
+        "correcta": 0,
+        "pista": "La ampolleta se enciende si el objeto conduce la corriente.",
+        "explicacion_error": "El clip es de metal, conduce la corriente y cierra el circuito.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena los pasos para comprobar si un material es conductor.",
+        "elementos": [
+          "Arma un circuito con pila, cables y ampolleta.",
+          "Deja un espacio abierto en el circuito.",
+          "Pon el material en el espacio.",
+          "Observa si la ampolleta se enciende."
+        ],
+        "pista": "Primero armas el circuito de prueba.",
+        "explicacion_error": "Armas el circuito, dejas un espacio, pones el material y observas la ampolleta.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Si la ampolleta del circuito de prueba NO se enciende, el material es ___.",
+        "alternativas": [
+          "aislador",
+          "magnético",
+          "metálico",
+          "conductor"
+        ],
+        "correcta": 0,
+        "pista": "No dejó pasar la corriente.",
+        "explicacion_error": "Si la ampolleta no se enciende, la corriente no pasó: el material es aislador.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué es peligroso tocar un enchufe con las manos mojadas?",
+        "alternativas": [
+          "porque el agua con sales conduce la corriente hacia el cuerpo",
+          "porque el agua es aisladora",
+          "porque las manos mojadas se enfrían",
+          "porque el agua apaga la corriente"
+        ],
+        "correcta": 0,
+        "pista": "El agua de la llave y el sudor tienen sales disueltas.",
+        "explicacion_error": "El agua con sales conduce la electricidad y puede llevar la corriente a tu cuerpo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "Algunos conductores no son metales. Clasifica.",
+        "categorias": [
+          "Conductor",
+          "Aislador"
+        ],
+        "elementos": [
+          {
+            "texto": "grafito de un lápiz",
+            "categoria": 0
+          },
+          {
+            "texto": "agua con sal",
+            "categoria": 0
+          },
+          {
+            "texto": "cuerpo humano",
+            "categoria": 0
+          },
+          {
+            "texto": "madera seca",
+            "categoria": 1
+          },
+          {
+            "texto": "cerámica",
+            "categoria": 1
+          },
+          {
+            "texto": "guante de goma",
+            "categoria": 1
+          }
+        ],
+        "pista": "El grafito, el agua con sal y tu cuerpo dejan pasar la corriente.",
+        "explicacion_error": "Grafito, agua con sal y el cuerpo conducen; madera seca, cerámica y goma aíslan.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué herramienta es más segura para un electricista?",
+        "alternativas": [
+          "un alicate con mango de goma",
+          "un destornillador mojado",
+          "un alicate de metal sin cubierta",
+          "un alicate con mango de aluminio"
+        ],
+        "correcta": 0,
+        "pista": "Busca el mango que no deje pasar la corriente.",
+        "explicacion_error": "La goma es aisladora: protege la mano del electricista.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Tomás quiere hacer el mango de una herramienta para electricistas. ¿Qué material elige y por qué?",
+        "alternativas": [
+          "goma, porque es aislador",
+          "cobre, porque es conductor",
+          "aluminio, porque es liviano",
+          "hierro, porque es resistente"
+        ],
+        "correcta": 0,
+        "pista": "El mango debe proteger la mano de la corriente.",
+        "explicacion_error": "La goma es aisladora: impide que la corriente llegue a la mano.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-014",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada situación con la conducta segura.",
+        "pares": [
+          [
+            "cable pelado",
+            "no lo toques y avisa a un adulto"
+          ],
+          [
+            "volantín enredado en el tendido eléctrico",
+            "no intentes sacarlo"
+          ],
+          [
+            "manos mojadas",
+            "sécalas antes de usar un aparato"
+          ],
+          [
+            "enchufe con muchos aparatos",
+            "no lo sobrecargues"
+          ]
+        ],
+        "pista": "Piensa en cómo evitar que la corriente pase por tu cuerpo.",
+        "explicacion_error": "Cada conducta evita una descarga o un incendio.",
+        "monedas": 10
+      },
+      {
+        "id": "cie5-oa10-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} prueba en su circuito: una moneda, un clip, una llave, papel de aluminio, un clavo, una goma, un globo, un palo de helado, un vaso de vidrio y una tapa plástica. ¿Con cuántos se enciende la ampolleta?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "unidad": "objetos",
+        "pista": "Cuenta solo los objetos de metal.",
+        "explicacion_error": "Moneda, clip, llave, aluminio y clavo son metales conductores: 5.",
+        "monedas": 10
+      }
+    ]
+  }
+]

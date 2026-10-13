@@ -104,7 +104,15 @@ prueba('árbol de prerequisitos', () => {
   assert.ok(!Motor.disponibilidad(p3, '3_basico.matematica.OA9', datos).ok, 'OA9 necesita avanzar en OA8');
   assert.strictEqual(Motor.recomendar(p3, 'matematica', datos), '3_basico.matematica.OA6');
   assert.strictEqual(Motor.recomendar(p3, 'lenguaje', datos), '3_basico.lenguaje.OA4');
-  assert.strictEqual(Motor.nivelDeTrabajo(nuevo('6_basico'), datos), '4_basico');
+  assert.strictEqual(Motor.nivelDeTrabajo(nuevo('6_basico'), datos), '6_basico');
+  assert.strictEqual(Motor.nivelDeTrabajo(nuevo('2_medio'), datos), '8_basico', 'sin contenido de su curso, el más alto disponible');
+  assert.strictEqual(Motor.nivelDeTrabajo(nuevo('7_basico'), datos, 'ciencias'), '7_basico');
+  const con5 = [...new Set(datos.orden.filter(id => datos.objetivos[id].nivel === '5_basico').map(id => datos.objetivos[id].asignatura))];
+  assert.ok(con5.length >= 2, 'hay contenido de 5° básico en más de una asignatura');
+  for (const asig of con5) {
+    const oa = Motor.recomendar(nuevo('5_basico'), asig, datos);
+    assert.ok(oa && oa.startsWith(`5_basico.${asig}.`), `recomienda ${asig} de 5° básico (${oa})`);
+  }
 });
 
 prueba('elegir desafíos: solo del nivel actual y sin repetir hasta agotarlos', () => {

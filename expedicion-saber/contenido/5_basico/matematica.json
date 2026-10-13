@@ -1,0 +1,1009 @@
+[
+  {
+    "nivel": "5_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 3: Demostrar que comprende la multiplicación de números naturales de dos dígitos por números de dos dígitos, estimando productos y resolviendo problemas.",
+    "dificultad": 5,
+    "prerequisitos": [
+      "4_basico.matematica.OA5"
+    ],
+    "id_objetivo": "5_basico.matematica.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17641:MA05-OA-03"
+    },
+    "desafios": [
+      {
+        "id": "mat5-oa3-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 23 × 10?",
+        "respuesta": 230,
+        "tolerancia": 0,
+        "pista": "Multiplicar por 10 agrega un cero.",
+        "explicacion_error": "23 × 10 = 230.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 40 × 30?",
+        "respuesta": 1200,
+        "tolerancia": 0,
+        "pista": "4 × 3 = 12 y luego agrega los dos ceros.",
+        "explicacion_error": "40 × 30 = 1.200.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 20 × 15?",
+        "alternativas": [
+          "35",
+          "300",
+          "3000",
+          "200"
+        ],
+        "correcta": 1,
+        "pista": "Calcula 2 × 15 y agrega un cero.",
+        "explicacion_error": "20 × 15 = 300.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-004",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 12 × 11?",
+        "respuesta": 132,
+        "tolerancia": 0,
+        "pista": "12 × 10 + 12.",
+        "explicacion_error": "12 × 11 = 120 + 12 = 132.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 14 × 12?",
+        "respuesta": 168,
+        "tolerancia": 0,
+        "pista": "Descompón 12 en 10 + 2.",
+        "explicacion_error": "14 × 12 = 140 + 28 = 168.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 21 × 13?",
+        "respuesta": 273,
+        "tolerancia": 0,
+        "pista": "Descompón 13 en 10 + 3.",
+        "explicacion_error": "21 × 13 = 210 + 63 = 273.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-007",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "16 × 15 = ___",
+        "alternativas": [
+          "240",
+          "256",
+          "160",
+          "225"
+        ],
+        "correcta": 0,
+        "pista": "16 × 10 + 16 × 5.",
+        "explicacion_error": "160 + 80 = 240.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 25 × 12?",
+        "alternativas": [
+          "275",
+          "312",
+          "300",
+          "250"
+        ],
+        "correcta": 2,
+        "pista": "25 × 4 = 100.",
+        "explicacion_error": "25 × 12 = 25 × 4 × 3 = 300.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 47 × 36?",
+        "respuesta": 1692,
+        "tolerancia": 0,
+        "pista": "Multiplica por las unidades y por las decenas, y suma.",
+        "explicacion_error": "47 × 36 = 1.692.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 58 × 24?",
+        "respuesta": 1392,
+        "tolerancia": 0,
+        "pista": "Multiplica por las unidades y por las decenas, y suma.",
+        "explicacion_error": "58 × 24 = 1.392.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 63 × 45?",
+        "alternativas": [
+          "2825",
+          "2835",
+          "2735",
+          "3150"
+        ],
+        "correcta": 1,
+        "pista": "63 × 40 + 63 × 5.",
+        "explicacion_error": "2.520 + 315 = 2.835.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-012",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "39 × 27 = ___",
+        "alternativas": [
+          "1153",
+          "1043",
+          "1053",
+          "954"
+        ],
+        "correcta": 2,
+        "pista": "39 × 20 + 39 × 7.",
+        "explicacion_error": "780 + 273 = 1.053.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Estima 48 × 32 redondeando a la decena. Basta con una buena estimación.",
+        "respuesta": 1500,
+        "tolerancia": 100,
+        "pista": "48 ≈ 50 y 32 ≈ 30.",
+        "explicacion_error": "50 × 30 = 1.500 (exacto: 1.536).",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué cálculo da una buena estimación de 29 × 41?",
+        "alternativas": [
+          "30 × 50",
+          "29 + 41",
+          "30 × 40",
+          "20 × 40"
+        ],
+        "correcta": 2,
+        "pista": "Redondea cada factor a la decena más cercana.",
+        "explicacion_error": "29 ≈ 30 y 41 ≈ 40.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-015",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "23 × 15 = 23 × 10 + 23 × ___",
+        "alternativas": [
+          "15",
+          "5",
+          "3",
+          "1"
+        ],
+        "correcta": 1,
+        "pista": "15 = 10 + 5.",
+        "explicacion_error": "23 × 15 = 230 + 115 = 345.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-016",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada multiplicación con su resultado.",
+        "pares": [
+          [
+            "15 × 15",
+            "225"
+          ],
+          [
+            "24 × 25",
+            "600"
+          ],
+          [
+            "32 × 21",
+            "672"
+          ]
+        ],
+        "pista": "Usa descomposiciones.",
+        "explicacion_error": "15 × 15 = 225, 24 × 25 = 600 y 32 × 21 = 672.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} arma 24 filas de 16 {objetos}. ¿Cuántos {objetos} hay?",
+        "respuesta": 384,
+        "tolerancia": 0,
+        "pista": "24 × 16.",
+        "explicacion_error": "24 × 16 = 384.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-018",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un curso de 36 estudiantes aporta $45 cada uno. ¿Cuánto juntan?",
+        "respuesta": 1620,
+        "tolerancia": 0,
+        "pista": "36 × 45.",
+        "explicacion_error": "36 × 45 = $1.620.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-019",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Cada {contenedor} trae 48 {objetos}. ¿Cuántos hay en 25 {contenedores}?",
+        "alternativas": [
+          "1000",
+          "960",
+          "1240",
+          "1200"
+        ],
+        "correcta": 3,
+        "pista": "48 × 25 = 48 × 100 ÷ 4.",
+        "explicacion_error": "48 × 25 = 1.200.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa3-020",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿El producto es mayor que 1.000?",
+        "categorias": [
+          "1.000 o menos",
+          "Mayor que 1.000"
+        ],
+        "elementos": [
+          {
+            "texto": "31 × 32",
+            "categoria": 0
+          },
+          {
+            "texto": "25 × 40",
+            "categoria": 0
+          },
+          {
+            "texto": "19 × 52",
+            "categoria": 0
+          },
+          {
+            "texto": "33 × 31",
+            "categoria": 1
+          },
+          {
+            "texto": "26 × 40",
+            "categoria": 1
+          },
+          {
+            "texto": "41 × 25",
+            "categoria": 1
+          }
+        ],
+        "pista": "Estima y luego calcula.",
+        "explicacion_error": "31 × 32 = 992, 25 × 40 = 1.000, 19 × 52 = 988; 33 × 31 = 1.023, 26 × 40 = 1.040, 41 × 25 = 1.025.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "5_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 4: Demostrar que comprende la división con dividendos de tres dígitos y divisores de un dígito, interpretando el resto y resolviendo problemas.",
+    "dificultad": 5,
+    "prerequisitos": [
+      "4_basico.matematica.OA6"
+    ],
+    "id_objetivo": "5_basico.matematica.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17642:MA05-OA-04"
+    },
+    "desafios": [
+      {
+        "id": "mat5-oa4-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 360 ÷ 6?",
+        "respuesta": 60,
+        "tolerancia": 0,
+        "pista": "36 ÷ 6 = 6.",
+        "explicacion_error": "360 ÷ 6 = 60.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 248 ÷ 2?",
+        "respuesta": 124,
+        "tolerancia": 0,
+        "pista": "Divide cada cifra por 2.",
+        "explicacion_error": "248 ÷ 2 = 124.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 155 ÷ 5?",
+        "alternativas": [
+          "26",
+          "30",
+          "35",
+          "31"
+        ],
+        "correcta": 3,
+        "pista": "150 ÷ 5 + 5 ÷ 5.",
+        "explicacion_error": "30 + 1 = 31.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-004",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "426 ÷ 3 = ___",
+        "alternativas": [
+          "124",
+          "142",
+          "141",
+          "152"
+        ],
+        "correcta": 1,
+        "pista": "Divide 4, 2 y 6 por 3 con cuidado.",
+        "explicacion_error": "426 ÷ 3 = 142.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 432 ÷ 8?",
+        "respuesta": 54,
+        "tolerancia": 0,
+        "pista": "8 × 50 = 400.",
+        "explicacion_error": "432 = 400 + 32: 50 + 4 = 54.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 315 ÷ 7?",
+        "respuesta": 45,
+        "tolerancia": 0,
+        "pista": "7 × 40 = 280.",
+        "explicacion_error": "315 = 280 + 35: 40 + 5 = 45.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 744 ÷ 6?",
+        "alternativas": [
+          "127",
+          "114",
+          "134",
+          "124"
+        ],
+        "correcta": 3,
+        "pista": "6 × 100 = 600.",
+        "explicacion_error": "744 = 600 + 144: 100 + 24 = 124.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-008",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "567 ÷ 9 = ___",
+        "alternativas": [
+          "57",
+          "73",
+          "62",
+          "63"
+        ],
+        "correcta": 3,
+        "pista": "9 × 60 = 540.",
+        "explicacion_error": "567 = 540 + 27: 60 + 3 = 63.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 347 ÷ 5?",
+        "alternativas": [
+          "cociente 69, resto 0",
+          "cociente 68, resto 7",
+          "cociente 69, resto 2",
+          "cociente 70, resto 3"
+        ],
+        "correcta": 2,
+        "pista": "5 × 69 = 345.",
+        "explicacion_error": "347 = 5 × 69 + 2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuál es el resto de 250 ÷ 7?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "pista": "7 × 35 = 245.",
+        "explicacion_error": "250 = 7 × 35 + 5: el resto es 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-011",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuál es el cociente de 500 ÷ 6?",
+        "respuesta": 83,
+        "tolerancia": 0,
+        "pista": "6 × 80 = 480.",
+        "explicacion_error": "500 = 6 × 83 + 2: el cociente es 83.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 613 ÷ 4?",
+        "alternativas": [
+          "cociente 154, resto 1",
+          "cociente 152, resto 5",
+          "cociente 153, resto 0",
+          "cociente 153, resto 1"
+        ],
+        "correcta": 3,
+        "pista": "4 × 150 = 600.",
+        "explicacion_error": "613 = 4 × 153 + 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "{personaje} reparte 365 {objetos} en 5 {contenedores} iguales. ¿Cuántos van en cada uno?",
+        "respuesta": 73,
+        "tolerancia": 0,
+        "pista": "365 ÷ 5.",
+        "explicacion_error": "365 ÷ 5 = 73.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Se arman grupos de 8 con 456 {objetos}. ¿Cuántos grupos se forman?",
+        "respuesta": 57,
+        "tolerancia": 0,
+        "pista": "456 ÷ 8.",
+        "explicacion_error": "456 ÷ 8 = 57.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "El cociente de 598 ÷ 3 está más cerca de…",
+        "alternativas": [
+          "150",
+          "200",
+          "100",
+          "300"
+        ],
+        "correcta": 1,
+        "pista": "3 × 200 = 600.",
+        "explicacion_error": "598 ÷ 3 ≈ 199.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-016",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada división con su cociente.",
+        "pares": [
+          [
+            "848 ÷ 4",
+            "212"
+          ],
+          [
+            "936 ÷ 9",
+            "104"
+          ],
+          [
+            "725 ÷ 5",
+            "145"
+          ]
+        ],
+        "pista": "Descompón el dividendo.",
+        "explicacion_error": "848 ÷ 4 = 212, 936 ÷ 9 = 104 y 725 ÷ 5 = 145.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} guarda 250 {objetos} en {contenedores} donde caben 8. ¿Cuántos {contenedores} necesita para guardarlos todos?",
+        "respuesta": 32,
+        "tolerancia": 0,
+        "pista": "250 ÷ 8 = 31 y sobran 2.",
+        "explicacion_error": "31 se llenan y 1 más guarda los 2 que sobran: 32.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-018",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Con 250 {objetos} en {contenedores} de 8, ¿cuántos {contenedores} quedan completos?",
+        "respuesta": 31,
+        "tolerancia": 0,
+        "pista": "8 × 31 = 248.",
+        "explicacion_error": "250 = 8 × 31 + 2: 31 completos.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-019",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un bus lleva 9 personas por fila. ¿Cuántas filas completas llena un grupo de 130?",
+        "respuesta": 14,
+        "tolerancia": 0,
+        "pista": "9 × 14 = 126.",
+        "explicacion_error": "130 = 9 × 14 + 4: 14 filas completas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa4-020",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿La división es exacta?",
+        "categorias": [
+          "Exacta",
+          "Con resto"
+        ],
+        "elementos": [
+          {
+            "texto": "378 ÷ 6",
+            "categoria": 0
+          },
+          {
+            "texto": "945 ÷ 9",
+            "categoria": 0
+          },
+          {
+            "texto": "512 ÷ 8",
+            "categoria": 0
+          },
+          {
+            "texto": "500 ÷ 3",
+            "categoria": 1
+          },
+          {
+            "texto": "731 ÷ 4",
+            "categoria": 1
+          },
+          {
+            "texto": "259 ÷ 5",
+            "categoria": 1
+          }
+        ],
+        "pista": "Es exacta si el resto es 0.",
+        "explicacion_error": "378 ÷ 6 = 63, 945 ÷ 9 = 105 y 512 ÷ 8 = 64; las demás tienen resto.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "5_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 7: Demostrar que comprende las fracciones propias: fracciones equivalentes al simplificar y amplificar, y comparación con igual y distinto denominador.",
+    "dificultad": 5,
+    "prerequisitos": [
+      "4_basico.matematica.OA8"
+    ],
+    "id_objetivo": "5_basico.matematica.OA7",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/matematica/5-basico"
+    },
+    "desafios": [
+      {
+        "id": "mat5-oa7-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Si amplificas 2/3 por 4, ¿qué fracción obtienes?",
+        "alternativas": [
+          "8/12",
+          "2/12",
+          "6/7",
+          "8/3"
+        ],
+        "correcta": 0,
+        "pista": "Multiplica numerador y denominador por 4.",
+        "explicacion_error": "2 × 4 = 8 y 3 × 4 = 12.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué fracción es equivalente a 3/5?",
+        "alternativas": [
+          "6/5",
+          "6/10",
+          "5/3",
+          "3/10"
+        ],
+        "correcta": 1,
+        "pista": "Amplifica por 2.",
+        "explicacion_error": "3/5 = 6/10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "1/4 = ___/12",
+        "alternativas": [
+          "3",
+          "6",
+          "2",
+          "4"
+        ],
+        "correcta": 0,
+        "pista": "¿Por cuánto se multiplicó el denominador?",
+        "explicacion_error": "4 × 3 = 12, entonces 1 × 3 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-004",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada fracción con su amplificada por 2.",
+        "pares": [
+          [
+            "1/3",
+            "2/6"
+          ],
+          [
+            "3/4",
+            "6/8"
+          ],
+          [
+            "2/5",
+            "4/10"
+          ]
+        ],
+        "pista": "Multiplica arriba y abajo por 2.",
+        "explicacion_error": "1/3 = 2/6, 3/4 = 6/8 y 2/5 = 4/10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Simplifica 6/8 lo más posible.",
+        "alternativas": [
+          "3/8",
+          "6/4",
+          "2/4",
+          "3/4"
+        ],
+        "correcta": 3,
+        "pista": "Divide arriba y abajo por el mismo número.",
+        "explicacion_error": "6/8 = 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Simplifica 10/15 lo más posible.",
+        "alternativas": [
+          "1/3",
+          "10/5",
+          "5/3",
+          "2/3"
+        ],
+        "correcta": 3,
+        "pista": "Divide arriba y abajo por el mismo número.",
+        "explicacion_error": "10/15 = 2/3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Simplifica 12/16 lo más posible.",
+        "alternativas": [
+          "6/16",
+          "4/3",
+          "2/4",
+          "3/4"
+        ],
+        "correcta": 3,
+        "pista": "Divide arriba y abajo por el mismo número.",
+        "explicacion_error": "12/16 = 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-008",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "9/12 = 3/___",
+        "alternativas": [
+          "3",
+          "9",
+          "4",
+          "6"
+        ],
+        "correcta": 2,
+        "pista": "Divide por 3.",
+        "explicacion_error": "9/12 = 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuál es mayor?",
+        "alternativas": [
+          "4/9",
+          "Son iguales",
+          "5/9",
+          "No se puede saber"
+        ],
+        "correcta": 2,
+        "pista": "Mismo denominador: compara numeradores.",
+        "explicacion_error": "5/9 > 4/9.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuál es mayor?",
+        "alternativas": [
+          "3/8",
+          "No se puede saber",
+          "3/5",
+          "Son iguales"
+        ],
+        "correcta": 2,
+        "pista": "Mismo numerador: menos partes = partes más grandes.",
+        "explicacion_error": "3/5 > 3/8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-011",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "7/10 ___ 9/10",
+        "alternativas": [
+          "=",
+          ">",
+          "+",
+          "<"
+        ],
+        "correcta": 3,
+        "pista": "Compara numeradores.",
+        "explicacion_error": "7/10 < 9/10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "2/7",
+          "3/7",
+          "5/7",
+          "6/7"
+        ],
+        "pista": "Mismo denominador.",
+        "explicacion_error": "2/7 < 3/7 < 5/7 < 6/7.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Cuál es mayor, 2/3 o 3/4?",
+        "alternativas": [
+          "2/3",
+          "Son iguales",
+          "3/4",
+          "No se puede saber"
+        ],
+        "correcta": 2,
+        "pista": "Iguala denominadores: 8/12 y 9/12.",
+        "explicacion_error": "2/3 = 8/12 y 3/4 = 9/12: gana 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Cuál es mayor, 3/5 o 4/7?",
+        "alternativas": [
+          "No se puede saber",
+          "Son iguales",
+          "3/5",
+          "4/7"
+        ],
+        "correcta": 2,
+        "pista": "Denominador común 35.",
+        "explicacion_error": "3/5 = 21/35 y 4/7 = 20/35.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-015",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "5/6 ___ 7/9",
+        "alternativas": [
+          "+",
+          ">",
+          "=",
+          "<"
+        ],
+        "correcta": 1,
+        "pista": "Denominador común 18.",
+        "explicacion_error": "5/6 = 15/18 y 7/9 = 14/18.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-016",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "1/2",
+          "2/3",
+          "3/4"
+        ],
+        "pista": "Usa denominador 12.",
+        "explicacion_error": "6/12 < 8/12 < 9/12.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} usó 3/8 de {los_objetos} y Lía usó 1/4. ¿Quién usó más?",
+        "alternativas": [
+          "Usaron lo mismo",
+          "No se puede saber",
+          "Lía",
+          "{personaje}"
+        ],
+        "correcta": 3,
+        "pista": "1/4 = 2/8.",
+        "explicacion_error": "3/8 > 2/8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-018",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Es mayor o menor que 1/2?",
+        "categorias": [
+          "Menor que 1/2",
+          "Mayor que 1/2"
+        ],
+        "elementos": [
+          {
+            "texto": "2/5",
+            "categoria": 0
+          },
+          {
+            "texto": "3/8",
+            "categoria": 0
+          },
+          {
+            "texto": "4/9",
+            "categoria": 0
+          },
+          {
+            "texto": "4/7",
+            "categoria": 1
+          },
+          {
+            "texto": "5/8",
+            "categoria": 1
+          },
+          {
+            "texto": "7/12",
+            "categoria": 1
+          }
+        ],
+        "pista": "Compara el numerador con la mitad del denominador.",
+        "explicacion_error": "2/5, 3/8 y 4/9 son menores que 1/2; 4/7, 5/8 y 7/12, mayores.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-019",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada fracción con su forma más simple.",
+        "pares": [
+          [
+            "8/12",
+            "2/3"
+          ],
+          [
+            "15/20",
+            "3/4"
+          ],
+          [
+            "10/25",
+            "2/5"
+          ],
+          [
+            "9/27",
+            "1/3"
+          ]
+        ],
+        "pista": "Divide por el máximo factor común.",
+        "explicacion_error": "8/12 = 2/3, 15/20 = 3/4, 10/25 = 2/5 y 9/27 = 1/3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat5-oa7-020",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Una pizza se dividió en 12 partes y quedan 8. ¿Qué fracción queda, simplificada?",
+        "alternativas": [
+          "8/12",
+          "4/3",
+          "2/3",
+          "3/4"
+        ],
+        "correcta": 2,
+        "pista": "Simplifica 8/12.",
+        "explicacion_error": "8/12 = 2/3.",
+        "monedas": 10
+      }
+    ]
+  }
+]

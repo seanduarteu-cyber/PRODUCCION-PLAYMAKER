@@ -1,0 +1,988 @@
+[
+  {
+    "nivel": "6_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias de la vida",
+    "objetivo_oficial": "OA 1: Explicar los requerimientos de agua, dióxido de carbono y energía lumínica para producir azúcar y liberar oxígeno en la fotosíntesis.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "4_basico.ciencias.OA3",
+      "3_basico.ciencias.OA1"
+    ],
+    "id_objetivo": "6_basico.ciencias.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/6-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie6-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué gas liberan las plantas en la fotosíntesis?",
+        "alternativas": [
+          "dióxido de carbono",
+          "humo",
+          "nitrógeno",
+          "oxígeno"
+        ],
+        "correcta": 3,
+        "pista": "Es el gas que tú respiras.",
+        "explicacion_error": "En la fotosíntesis las plantas liberan oxígeno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Las plantas fabrican su propio alimento mediante la ___.",
+        "alternativas": [
+          "evaporación",
+          "fotosíntesis",
+          "digestión",
+          "respiración"
+        ],
+        "correcta": 1,
+        "pista": "«Foto» significa luz.",
+        "explicacion_error": "La fotosíntesis es el proceso con que las plantas fabrican su alimento usando luz.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué parte de la planta realiza principalmente la fotosíntesis?",
+        "alternativas": [
+          "la hoja",
+          "la semilla",
+          "la flor",
+          "la raíz"
+        ],
+        "correcta": 0,
+        "pista": "Es la parte verde que recibe más luz.",
+        "explicacion_error": "Las hojas tienen clorofila y reciben la luz: ahí ocurre la fotosíntesis.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "En la fotosíntesis, ¿qué necesita la planta y qué produce?",
+        "categorias": [
+          "Lo necesita",
+          "Lo produce"
+        ],
+        "elementos": [
+          {
+            "texto": "agua",
+            "categoria": 0
+          },
+          {
+            "texto": "dióxido de carbono",
+            "categoria": 0
+          },
+          {
+            "texto": "luz",
+            "categoria": 0
+          },
+          {
+            "texto": "oxígeno",
+            "categoria": 1
+          },
+          {
+            "texto": "glucosa (azúcar)",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en lo que entra y lo que sale.",
+        "explicacion_error": "Necesita agua, dióxido de carbono y luz; produce glucosa y oxígeno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada requerimiento con cómo llega a la planta.",
+        "pares": [
+          [
+            "agua",
+            "la absorbe la raíz"
+          ],
+          [
+            "dióxido de carbono",
+            "entra por los estomas de las hojas"
+          ],
+          [
+            "luz",
+            "la capta la clorofila de las hojas"
+          ]
+        ],
+        "pista": "Los estomas son pequeños poros de las hojas.",
+        "explicacion_error": "La raíz absorbe agua, el CO₂ entra por los estomas y la clorofila capta la luz.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "El pigmento verde que capta la luz se llama ___.",
+        "alternativas": [
+          "glucosa",
+          "savia",
+          "almidón",
+          "clorofila"
+        ],
+        "correcta": 3,
+        "pista": "Le da el color verde a las hojas.",
+        "explicacion_error": "La clorofila es el pigmento verde que capta la luz.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-007",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena el camino del agua en la fotosíntesis.",
+        "elementos": [
+          "La raíz absorbe agua del suelo.",
+          "El agua sube por el tallo.",
+          "El agua llega a las hojas.",
+          "En las hojas, con luz y CO₂, se forma glucosa."
+        ],
+        "pista": "El agua entra por abajo.",
+        "explicacion_error": "Raíz → tallo → hojas, donde se usa para formar glucosa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué sustancias produce la planta en la fotosíntesis?",
+        "alternativas": [
+          "glucosa y dióxido de carbono",
+          "glucosa y oxígeno",
+          "agua y dióxido de carbono",
+          "oxígeno y agua"
+        ],
+        "correcta": 1,
+        "pista": "Una es alimento y la otra es un gas que respiras.",
+        "explicacion_error": "La planta produce glucosa (alimento) y libera oxígeno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "agua + dióxido de carbono + luz → glucosa + ___",
+        "alternativas": [
+          "dióxido de carbono",
+          "oxígeno",
+          "nitrógeno",
+          "clorofila"
+        ],
+        "correcta": 1,
+        "pista": "Es el gas que se libera.",
+        "explicacion_error": "La fotosíntesis produce glucosa y oxígeno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "{personaje} tapa una hoja de una planta con papel aluminio durante varios días. ¿Qué pasará en esa hoja?",
+        "alternativas": [
+          "producirá más glucosa",
+          "producirá más oxígeno",
+          "no producirá glucosa porque no recibe luz",
+          "hará fotosíntesis igual que las otras"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué requisito de la fotosíntesis le quitaste?",
+        "explicacion_error": "Sin luz no hay fotosíntesis: esa hoja no fabrica glucosa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Una planta acuática bajo una lámpara suelta burbujitas. ¿Qué gas contienen?",
+        "alternativas": [
+          "vapor de agua",
+          "oxígeno",
+          "nitrógeno",
+          "dióxido de carbono"
+        ],
+        "correcta": 1,
+        "pista": "Con luz, la planta hace fotosíntesis.",
+        "explicacion_error": "Las burbujas son oxígeno liberado por la fotosíntesis.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Ocurre la fotosíntesis?",
+        "categorias": [
+          "Sí ocurre",
+          "No ocurre"
+        ],
+        "elementos": [
+          {
+            "texto": "hoja verde al sol",
+            "categoria": 0
+          },
+          {
+            "texto": "tallo verde de un cactus al sol",
+            "categoria": 0
+          },
+          {
+            "texto": "alga verde en agua iluminada",
+            "categoria": 0
+          },
+          {
+            "texto": "raíz bajo tierra",
+            "categoria": 1
+          },
+          {
+            "texto": "hoja dentro de una caja oscura",
+            "categoria": 1
+          },
+          {
+            "texto": "planta en plena noche",
+            "categoria": 1
+          }
+        ],
+        "pista": "Se necesita clorofila y luz al mismo tiempo.",
+        "explicacion_error": "Hay fotosíntesis donde hay partes verdes con luz; en la raíz, la caja oscura y la noche no.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué casi todos los seres vivos dependen de la fotosíntesis?",
+        "alternativas": [
+          "porque las plantas consumen el oxígeno sobrante",
+          "porque los animales también hacen fotosíntesis",
+          "porque la fotosíntesis produce dióxido de carbono",
+          "porque produce el alimento base de las cadenas alimentarias y el oxígeno que respiramos"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en las cadenas alimentarias y en el aire.",
+        "explicacion_error": "Las plantas son productoras: dan alimento a los consumidores y liberan oxígeno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En un invernadero de Atacama hay mucha luz y agua, pero el aire está encerrado y casi sin dióxido de carbono. ¿Qué pasará?",
+        "alternativas": [
+          "liberarán más oxígeno que antes",
+          "no les afectará porque el CO₂ no se necesita",
+          "las plantas harán menos fotosíntesis por falta de CO₂",
+          "harán más fotosíntesis por tener mucha luz"
+        ],
+        "correcta": 2,
+        "pista": "Revisa los tres requisitos de la fotosíntesis.",
+        "explicacion_error": "Sin suficiente dióxido de carbono, la fotosíntesis disminuye aunque haya luz y agua.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-015",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada experimento con lo que demuestra.",
+        "pares": [
+          [
+            "planta en una caja oscura",
+            "la luz es necesaria"
+          ],
+          [
+            "planta sin riego",
+            "el agua es necesaria"
+          ],
+          [
+            "planta en un frasco sin dióxido de carbono",
+            "el CO₂ es necesario"
+          ],
+          [
+            "planta acuática que suelta burbujas con luz",
+            "se libera oxígeno"
+          ]
+        ],
+        "pista": "Cada experimento quita o mide una sola cosa.",
+        "explicacion_error": "Quitar luz, agua o CO₂ muestra que son necesarios; las burbujas muestran que se libera oxígeno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa1-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} cuenta las burbujas de una planta acuática: con poca luz suelta 6 por minuto y con mucha luz, 4 veces más. ¿Cuántas burbujas suelta en 1 minuto con mucha luz?",
+        "respuesta": 24,
+        "tolerancia": 0,
+        "unidad": "burbujas",
+        "pista": "Multiplica las burbujas con poca luz por 4.",
+        "explicacion_error": "6 × 4 = 24 burbujas: más luz, más fotosíntesis.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "6_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias físicas y químicas",
+    "objetivo_oficial": "OA 8: Explicar que la energía es necesaria para que los objetos cambien y los seres vivos realicen sus procesos vitales, y que la mayoría de las fuentes provienen del Sol.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "5_basico.ciencias.OA8"
+    ],
+    "id_objetivo": "6_basico.ciencias.OA8",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/6-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie6-oa8-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿De dónde proviene la mayor parte de la energía que usamos en la Tierra?",
+        "alternativas": [
+          "de la Luna",
+          "del Sol",
+          "del centro de la Tierra",
+          "de las estrellas lejanas"
+        ],
+        "correcta": 1,
+        "pista": "Lo ves en el cielo cada día.",
+        "explicacion_error": "Casi toda la energía de la Tierra viene, directa o indirectamente, del Sol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-002",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Fuente renovable o no renovable?",
+        "categorias": [
+          "Renovable",
+          "No renovable"
+        ],
+        "elementos": [
+          {
+            "texto": "solar",
+            "categoria": 0
+          },
+          {
+            "texto": "eólica (viento)",
+            "categoria": 0
+          },
+          {
+            "texto": "hidráulica (ríos)",
+            "categoria": 0
+          },
+          {
+            "texto": "petróleo",
+            "categoria": 1
+          },
+          {
+            "texto": "carbón",
+            "categoria": 1
+          },
+          {
+            "texto": "gas natural",
+            "categoria": 1
+          }
+        ],
+        "pista": "Las renovables no se agotan.",
+        "explicacion_error": "Sol, viento y ríos se renuevan; petróleo, carbón y gas se agotan.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Los seres vivos necesitan ___ para crecer, moverse y mantenerse vivos.",
+        "alternativas": [
+          "ruido",
+          "plástico",
+          "energía",
+          "oscuridad"
+        ],
+        "correcta": 2,
+        "pista": "La obtienen de los alimentos.",
+        "explicacion_error": "Los seres vivos necesitan energía para todos sus procesos vitales.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Por qué el petróleo es una fuente no renovable?",
+        "alternativas": [
+          "porque se produce cada día",
+          "porque viene del viento",
+          "porque tarda millones de años en formarse",
+          "porque nunca se acaba"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en cuánto tarda en formarse.",
+        "explicacion_error": "El petróleo tarda millones de años en formarse: se agota antes de renovarse.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada central con lo que usa para producir electricidad.",
+        "pares": [
+          [
+            "eólica",
+            "viento"
+          ],
+          [
+            "hidroeléctrica",
+            "agua de los ríos"
+          ],
+          [
+            "solar",
+            "luz del Sol"
+          ],
+          [
+            "geotérmica",
+            "calor del interior de la Tierra"
+          ]
+        ],
+        "pista": "Los nombres dan pistas: «eólica» viene de Eolo, el viento.",
+        "explicacion_error": "Eólica: viento; hidroeléctrica: ríos; solar: luz; geotérmica: calor interno de la Tierra.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué ejemplo muestra que la energía produce cambios en un objeto?",
+        "alternativas": [
+          "una piedra quieta en el suelo",
+          "una mesa sin usar",
+          "un libro guardado en el estante",
+          "el hielo se derrite al recibir calor"
+        ],
+        "correcta": 3,
+        "pista": "Busca algo que cambie.",
+        "explicacion_error": "El hielo cambia de estado porque recibe energía calórica.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-007",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena el camino de la energía hasta que {personaje} corre.",
+        "elementos": [
+          "Sol",
+          "pasto (fotosíntesis)",
+          "vaca",
+          "leche que toma",
+          "músculos al correr"
+        ],
+        "pista": "La energía empieza en el Sol y pasa por la cadena alimentaria.",
+        "explicacion_error": "Sol → pasto → vaca → leche → músculos: la energía viene indirectamente del Sol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "La energía del viento proviene indirectamente del Sol porque…",
+        "alternativas": [
+          "el Sol sopla aire hacia la Tierra",
+          "el Sol calienta el aire de forma desigual y lo pone en movimiento",
+          "la Luna mueve el aire",
+          "el viento se forma en el interior de la Tierra"
+        ],
+        "correcta": 1,
+        "pista": "El aire caliente sube y el frío ocupa su lugar.",
+        "explicacion_error": "El Sol calienta distinto el aire de cada lugar y eso produce el viento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿La energía viene directa o indirectamente del Sol?",
+        "categorias": [
+          "Directamente",
+          "Indirectamente"
+        ],
+        "elementos": [
+          {
+            "texto": "panel solar",
+            "categoria": 0
+          },
+          {
+            "texto": "ropa secándose al sol",
+            "categoria": 0
+          },
+          {
+            "texto": "lagartija calentándose al sol",
+            "categoria": 0
+          },
+          {
+            "texto": "viento",
+            "categoria": 1
+          },
+          {
+            "texto": "leña",
+            "categoria": 1
+          },
+          {
+            "texto": "agua de un embalse",
+            "categoria": 1
+          }
+        ],
+        "pista": "Indirecta: la energía solar pasó antes por otro proceso.",
+        "explicacion_error": "Panel, ropa y lagartija usan la luz solar; viento, leña y embalse la recibieron a través de otros procesos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué se dice que el petróleo guarda energía del Sol?",
+        "alternativas": [
+          "se formó con agua de mar evaporada",
+          "lo fabricaron los seres humanos",
+          "se formó de restos de seres vivos antiguos que obtuvieron energía del Sol",
+          "se formó de rocas calientes de los volcanes"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en de qué está hecho el petróleo.",
+        "explicacion_error": "El petróleo viene de seres vivos antiguos, que obtuvieron su energía de la fotosíntesis.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "En el desierto de Atacama llega muchísima luz solar; por eso conviene instalar centrales de energía ___.",
+        "alternativas": [
+          "a leña",
+          "solar",
+          "a petróleo",
+          "a carbón"
+        ],
+        "correcta": 1,
+        "pista": "Aprovecha lo que más abunda allí.",
+        "explicacion_error": "Atacama tiene una de las radiaciones solares más altas del mundo: ideal para energía solar.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Si el Sol dejara de brillar, ¿qué pasaría primero en un ecosistema?",
+        "alternativas": [
+          "aumentaría la fotosíntesis",
+          "las rocas producirían luz",
+          "las plantas no podrían hacer fotosíntesis y faltaría alimento",
+          "los animales tendrían más alimento"
+        ],
+        "correcta": 2,
+        "pista": "¿Quiénes captan la energía del Sol?",
+        "explicacion_error": "Sin luz, las plantas no fabrican alimento y toda la cadena alimentaria se afecta.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Cuál de estas fuentes de energía NO depende del Sol?",
+        "alternativas": [
+          "geotérmica",
+          "eólica",
+          "hidroeléctrica",
+          "leña"
+        ],
+        "correcta": 0,
+        "pista": "Una usa el calor del interior de la Tierra.",
+        "explicacion_error": "La geotérmica usa el calor interno de la Tierra; las demás dependen del Sol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un auto a bencina y una ciclista suben el mismo cerro. ¿De dónde sale, en último término, la energía de ambos?",
+        "alternativas": [
+          "de la Luna",
+          "del interior de la Tierra",
+          "del motor y de los pedales, que la crean",
+          "del Sol"
+        ],
+        "correcta": 3,
+        "pista": "La bencina viene del petróleo y la ciclista se alimenta.",
+        "explicacion_error": "La bencina viene de seres vivos antiguos y los alimentos de plantas: ambos dependen del Sol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-015",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Si Chile cambia centrales a carbón por centrales solares, disminuye el uso de fuentes ___.",
+        "alternativas": [
+          "eólicas",
+          "renovables",
+          "no renovables",
+          "solares"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué tipo de fuente es el carbón?",
+        "explicacion_error": "El carbón es no renovable; reemplazarlo reduce el uso de fuentes no renovables.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa8-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} visita una región con 12 centrales: 5 solares, 3 eólicas, 1 geotérmica y 3 a carbón. ¿Cuántas usan fuentes renovables?",
+        "respuesta": 9,
+        "tolerancia": 0,
+        "unidad": "centrales",
+        "pista": "Solo el carbón es no renovable.",
+        "explicacion_error": "5 + 3 + 1 = 9 centrales usan fuentes renovables.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "6_basico",
+    "asignatura": "ciencias",
+    "eje": "Ciencias físicas y químicas",
+    "objetivo_oficial": "OA 13: Demostrar los cambios de estado de la materia: fusión, evaporación, ebullición, condensación, solidificación y sublimación.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "2_basico.ciencias.OA9"
+    ],
+    "id_objetivo": "6_basico.ciencias.OA13",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/1o-6o-basico/ciencias-naturales/6-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie6-oa13-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cómo se llama el paso de sólido a líquido?",
+        "alternativas": [
+          "evaporación",
+          "condensación",
+          "solidificación",
+          "fusión"
+        ],
+        "correcta": 3,
+        "pista": "Ocurre cuando un helado se derrite.",
+        "explicacion_error": "El paso de sólido a líquido es la fusión.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "El agua de una cubetera se transforma en hielo en el congelador: es una ___.",
+        "alternativas": [
+          "evaporación",
+          "fusión",
+          "solidificación",
+          "sublimación"
+        ],
+        "correcta": 2,
+        "pista": "Pasa de líquido a sólido.",
+        "explicacion_error": "De líquido a sólido es solidificación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿En qué estado está el agua de un cubo de hielo 🧊?",
+        "alternativas": [
+          "líquido",
+          "gaseoso",
+          "vapor",
+          "sólido"
+        ],
+        "correcta": 3,
+        "pista": "Tiene forma propia.",
+        "explicacion_error": "El hielo es agua en estado sólido.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-004",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada cambio con su nombre.",
+        "pares": [
+          [
+            "sólido → líquido",
+            "fusión"
+          ],
+          [
+            "líquido → sólido",
+            "solidificación"
+          ],
+          [
+            "gas → líquido",
+            "condensación"
+          ],
+          [
+            "sólido → gas",
+            "sublimación"
+          ]
+        ],
+        "pista": "Sublimación es el paso directo, sin ser líquido.",
+        "explicacion_error": "Fusión, solidificación, condensación y sublimación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "En una mañana fría se empañan los vidrios del bus por dentro. ¿Qué cambio de estado ocurre?",
+        "alternativas": [
+          "evaporación",
+          "sublimación",
+          "condensación",
+          "fusión"
+        ],
+        "correcta": 2,
+        "pista": "El vapor del aire toca el vidrio frío.",
+        "explicacion_error": "El vapor de agua se enfría en el vidrio y pasa a líquido: condensación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿A qué temperatura hierve el agua pura al nivel del mar?",
+        "respuesta": 100,
+        "tolerancia": 0,
+        "unidad": "°C",
+        "pista": "Es un número redondo en grados Celsius.",
+        "explicacion_error": "El agua pura hierve a 100 °C al nivel del mar.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-007",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena lo que pasa al calentar un cubo de hielo en una olla hasta que desaparece.",
+        "elementos": [
+          "El hielo está sólido.",
+          "El hielo se funde.",
+          "El agua líquida se calienta.",
+          "El agua hierve y se vuelve vapor."
+        ],
+        "pista": "Primero cambia a líquido y después a gas.",
+        "explicacion_error": "Sólido → fusión → líquido caliente → ebullición.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-008",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Qué cambio de estado ocurre?",
+        "categorias": [
+          "Fusión",
+          "Condensación",
+          "Sublimación"
+        ],
+        "elementos": [
+          {
+            "texto": "helado que se derrite",
+            "categoria": 0
+          },
+          {
+            "texto": "chocolate al sol",
+            "categoria": 0
+          },
+          {
+            "texto": "gotas en una botella fría",
+            "categoria": 1
+          },
+          {
+            "texto": "rocío en el pasto al amanecer",
+            "categoria": 1
+          },
+          {
+            "texto": "naftalina que se achica en el clóset",
+            "categoria": 2
+          },
+          {
+            "texto": "hielo seco que desaparece sin mojar",
+            "categoria": 2
+          }
+        ],
+        "pista": "La sublimación pasa de sólido a gas sin mojar.",
+        "explicacion_error": "Helado y chocolate se funden; gotas y rocío son condensación; naftalina y hielo seco subliman.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "En el ciclo del agua, ¿qué cambio de estado forma las nubes?",
+        "alternativas": [
+          "sublimación del agua de mar",
+          "evaporación del agua de las nubes",
+          "condensación del vapor de agua",
+          "fusión del vapor"
+        ],
+        "correcta": 2,
+        "pista": "El vapor sube y se enfría.",
+        "explicacion_error": "Al subir, el vapor se enfría y se condensa en gotitas que forman las nubes.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿En qué se diferencia la evaporación de la ebullición?",
+        "alternativas": [
+          "la evaporación necesita fuego",
+          "la evaporación ocurre en la superficie a cualquier temperatura; la ebullición, en todo el líquido",
+          "la ebullición ocurre solo en la superficie",
+          "son exactamente lo mismo"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en un charco que se seca y en una olla que burbujea.",
+        "explicacion_error": "El charco se evapora sin hervir; en la ebullición se forman burbujas en todo el líquido.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿El material absorbe o libera calor en este cambio?",
+        "categorias": [
+          "Absorbe calor",
+          "Libera calor"
+        ],
+        "elementos": [
+          {
+            "texto": "fusión",
+            "categoria": 0
+          },
+          {
+            "texto": "evaporación",
+            "categoria": 0
+          },
+          {
+            "texto": "sublimación",
+            "categoria": 0
+          },
+          {
+            "texto": "condensación",
+            "categoria": 1
+          },
+          {
+            "texto": "solidificación",
+            "categoria": 1
+          }
+        ],
+        "pista": "Para separar las partículas se necesita energía.",
+        "explicacion_error": "Fusión, evaporación y sublimación absorben calor; condensación y solidificación lo liberan.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Mientras el hielo se funde, el termómetro marca la misma temperatura aunque sigas calentando. ¿Cuál es esa temperatura?",
+        "respuesta": 0,
+        "tolerancia": 0,
+        "unidad": "°C",
+        "pista": "Es el punto de fusión del agua.",
+        "explicacion_error": "El hielo se funde a 0 °C y se mantiene ahí hasta derretirse por completo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-013",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "La ropa colgada se seca aunque el agua no hierva: el agua de la ropa se ___.",
+        "alternativas": [
+          "solidifica",
+          "evapora",
+          "funde",
+          "condensa"
+        ],
+        "correcta": 1,
+        "pista": "Pasa de líquido a gas desde la superficie.",
+        "explicacion_error": "El agua de la ropa se evapora lentamente sin hervir.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué la ropa tendida se seca más rápido en un día caluroso y con viento?",
+        "alternativas": [
+          "porque el calor hace hervir el agua de la ropa",
+          "porque el calor y el viento aceleran la evaporación",
+          "porque el viento produce condensación",
+          "porque el agua se solidifica"
+        ],
+        "correcta": 1,
+        "pista": "El calor da energía y el viento se lleva el vapor.",
+        "explicacion_error": "Más calor y viento hacen que el agua se evapore más rápido.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-015",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena el ciclo del agua empezando por el mar.",
+        "elementos": [
+          "El agua del mar se evapora.",
+          "El vapor sube y se condensa en nubes.",
+          "Cae lluvia o nieve en la cordillera.",
+          "La nieve se funde y baja por los ríos al mar."
+        ],
+        "pista": "Sigue los cambios: evaporación, condensación, precipitación, fusión.",
+        "explicacion_error": "Evaporación → condensación → precipitación → fusión de la nieve.",
+        "monedas": 10
+      },
+      {
+        "id": "cie6-oa13-016",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada situación de la naturaleza con su cambio de estado.",
+        "pares": [
+          [
+            "glaciar que se derrite",
+            "fusión"
+          ],
+          [
+            "escarcha que desaparece sin mojar",
+            "sublimación"
+          ],
+          [
+            "lava que se enfría y forma roca",
+            "solidificación"
+          ],
+          [
+            "neblina que se forma sobre el mar en la mañana",
+            "condensación"
+          ]
+        ],
+        "pista": "Piensa de qué estado a qué estado pasa cada uno.",
+        "explicacion_error": "Glaciar: fusión; escarcha: sublimación; lava: solidificación; neblina: condensación.",
+        "monedas": 10
+      }
+    ]
+  }
+]

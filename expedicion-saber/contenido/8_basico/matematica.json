@@ -1,0 +1,976 @@
+[
+  {
+    "nivel": "8_basico",
+    "asignatura": "matematica",
+    "eje": "Números",
+    "objetivo_oficial": "OA 1: Mostrar que comprende la multiplicación y la división de números enteros, aplicando la regla de los signos y resolviendo problemas.",
+    "dificultad": 7,
+    "prerequisitos": [
+      "7_basico.matematica.OA1"
+    ],
+    "id_objetivo": "8_basico.matematica.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/matematica/8-basico"
+    },
+    "desafios": [
+      {
+        "id": "mat8-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Un número negativo multiplicado por otro negativo da un resultado…",
+        "alternativas": [
+          "cero",
+          "negativo",
+          "depende",
+          "positivo"
+        ],
+        "correcta": 3,
+        "pista": "Regla de los signos.",
+        "explicacion_error": "(−) × (−) = (+).",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es (−3) × 4?",
+        "respuesta": -12,
+        "tolerancia": 0,
+        "pista": "Distintos signos: negativo.",
+        "explicacion_error": "(−3) × 4 = −12.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Un número positivo dividido por uno negativo da un resultado…",
+        "alternativas": [
+          "cero",
+          "depende",
+          "positivo",
+          "negativo"
+        ],
+        "correcta": 3,
+        "pista": "Distintos signos: negativo.",
+        "explicacion_error": "(+) ÷ (−) = (−).",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-004",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "(−2) × (−5) = ___",
+        "alternativas": [
+          "−7",
+          "7",
+          "10",
+          "−10"
+        ],
+        "correcta": 2,
+        "pista": "Mismo signo: positivo.",
+        "explicacion_error": "(−2) × (−5) = 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es (−6) × (−7)?",
+        "respuesta": 42,
+        "tolerancia": 0,
+        "pista": "Mismo signo: positivo.",
+        "explicacion_error": "(−6) × (−7) = 42.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es (−48) ÷ 6?",
+        "respuesta": -8,
+        "tolerancia": 0,
+        "pista": "Distintos signos.",
+        "explicacion_error": "(−48) ÷ 6 = −8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 9 × (−3)?",
+        "alternativas": [
+          "6",
+          "27",
+          "−27",
+          "−12"
+        ],
+        "correcta": 2,
+        "pista": "Distintos signos.",
+        "explicacion_error": "9 × (−3) = −27.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-008",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "(−35) ÷ (−5) = ___",
+        "alternativas": [
+          "30",
+          "7",
+          "−30",
+          "−7"
+        ],
+        "correcta": 1,
+        "pista": "Mismo signo.",
+        "explicacion_error": "(−35) ÷ (−5) = 7.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es (−72) ÷ (−9)?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "pista": "Mismo signo.",
+        "explicacion_error": "(−72) ÷ (−9) = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 5 × (−9)?",
+        "respuesta": -45,
+        "tolerancia": 0,
+        "pista": "Distintos signos.",
+        "explicacion_error": "5 × (−9) = −45.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 64 ÷ (−8)?",
+        "alternativas": [
+          "−8",
+          "72",
+          "−56",
+          "8"
+        ],
+        "correcta": 0,
+        "pista": "Distintos signos.",
+        "explicacion_error": "64 ÷ (−8) = −8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-012",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "(−11) × (−4) = ___",
+        "alternativas": [
+          "−15",
+          "15",
+          "44",
+          "−44"
+        ],
+        "correcta": 2,
+        "pista": "Mismo signo.",
+        "explicacion_error": "(−11) × (−4) = 44.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuánto es (−2) × 3 × (−4)?",
+        "respuesta": 24,
+        "tolerancia": 0,
+        "pista": "Cuenta los signos negativos: dos.",
+        "explicacion_error": "(−2) × 3 = −6 y (−6) × (−4) = 24.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-014",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿El resultado es positivo o negativo?",
+        "categorias": [
+          "Negativo",
+          "Positivo"
+        ],
+        "elementos": [
+          {
+            "texto": "(−3) × 5",
+            "categoria": 0
+          },
+          {
+            "texto": "(−2) × (−2) × (−2)",
+            "categoria": 0
+          },
+          {
+            "texto": "40 ÷ (−8)",
+            "categoria": 0
+          },
+          {
+            "texto": "(−6) × (−6)",
+            "categoria": 1
+          },
+          {
+            "texto": "(−20) ÷ (−4)",
+            "categoria": 1
+          },
+          {
+            "texto": "(−1) × (−1) × 5",
+            "categoria": 1
+          }
+        ],
+        "pista": "Un número par de signos negativos da positivo.",
+        "explicacion_error": "−15, −8 y −5 son negativos; 36, 5 y 5 son positivos.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuánto es (−36) ÷ 4 × (−2)?",
+        "respuesta": 18,
+        "tolerancia": 0,
+        "pista": "Resuelve de izquierda a derecha.",
+        "explicacion_error": "(−36) ÷ 4 = −9 y (−9) × (−2) = 18.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-016",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada operación con su resultado.",
+        "pares": [
+          [
+            "(−4) × 6",
+            "−24"
+          ],
+          [
+            "(−4) × (−6)",
+            "24"
+          ],
+          [
+            "(−24) ÷ (−6)",
+            "4"
+          ]
+        ],
+        "pista": "Aplica la regla de los signos.",
+        "explicacion_error": "−24, 24 y 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "La temperatura baja 3 °C cada hora durante 5 horas. ¿Cuánto cambió en total?",
+        "respuesta": -15,
+        "tolerancia": 0,
+        "unidad": "°C",
+        "pista": "Bajar es negativo: 5 × (−3).",
+        "explicacion_error": "5 × (−3) = −15.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-018",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "(−36) ÷ ___ = 4",
+        "alternativas": [
+          "32",
+          "9",
+          "−9",
+          "−4"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué número por 4 da −36?",
+        "explicacion_error": "(−36) ÷ (−9) = 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-019",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un submarino desciende 25 m por minuto. ¿A qué profundidad estará tras 4 minutos, si partió en la superficie?",
+        "respuesta": -100,
+        "tolerancia": 0,
+        "unidad": "m",
+        "pista": "4 × (−25).",
+        "explicacion_error": "4 × (−25) = −100.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa1-020",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Una deuda de $12.000 se reparte en partes iguales entre 4 personas. Como entero, ¿cuánto le toca a cada una?",
+        "alternativas": [
+          "−48.000",
+          "3.000",
+          "−3.000",
+          "−4.000"
+        ],
+        "correcta": 2,
+        "pista": "(−12.000) ÷ 4.",
+        "explicacion_error": "(−12.000) ÷ 4 = −3.000.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "8_basico",
+    "asignatura": "matematica",
+    "eje": "Números",
+    "objetivo_oficial": "OA 3: Explicar la multiplicación y la división de potencias y las potencias de potencias, con base natural y exponente natural hasta 3.",
+    "dificultad": 7,
+    "prerequisitos": [
+      "5_basico.matematica.OA3"
+    ],
+    "id_objetivo": "8_basico.matematica.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/matematica/8-basico"
+    },
+    "desafios": [
+      {
+        "id": "mat8-oa3-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 2³?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "pista": "2 × 2 × 2.",
+        "explicacion_error": "2³ = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 5²?",
+        "respuesta": 25,
+        "tolerancia": 0,
+        "pista": "5 × 5.",
+        "explicacion_error": "5² = 25.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 10³?",
+        "alternativas": [
+          "10.000",
+          "30",
+          "1.000",
+          "100"
+        ],
+        "correcta": 2,
+        "pista": "10 × 10 × 10.",
+        "explicacion_error": "10³ = 1.000.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-004",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "4² = ___",
+        "alternativas": [
+          "8",
+          "16",
+          "64",
+          "6"
+        ],
+        "correcta": 1,
+        "pista": "4 × 4.",
+        "explicacion_error": "4² = 16.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "2² · 2³ = 2^___",
+        "alternativas": [
+          "1",
+          "5",
+          "8",
+          "6"
+        ],
+        "correcta": 1,
+        "pista": "Al multiplicar potencias de igual base, se suman los exponentes.",
+        "explicacion_error": "2² · 2³ = 2⁵.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 3² · 3?",
+        "respuesta": 27,
+        "tolerancia": 0,
+        "pista": "3² · 3¹ = 3³.",
+        "explicacion_error": "3³ = 27.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "a² · a³ es igual a…",
+        "alternativas": [
+          "a⁶",
+          "a⁵",
+          "2a⁵",
+          "a¹"
+        ],
+        "correcta": 1,
+        "pista": "Igual base: suma los exponentes.",
+        "explicacion_error": "a² · a³ = a⁵.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 2³ · 2²?",
+        "respuesta": 32,
+        "tolerancia": 0,
+        "pista": "2⁵.",
+        "explicacion_error": "2⁵ = 32.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 5³ : 5²?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "pista": "Al dividir potencias de igual base, se restan los exponentes.",
+        "explicacion_error": "5³ : 5² = 5¹ = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-010",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "3³ : 3 = 3^___",
+        "alternativas": [
+          "2",
+          "3",
+          "4",
+          "1"
+        ],
+        "correcta": 0,
+        "pista": "3³ : 3¹ = 3^(3−1).",
+        "explicacion_error": "3³ : 3 = 3².",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "a³ : a² es igual a…",
+        "alternativas": [
+          "a",
+          "a⁵",
+          "a⁶",
+          "1"
+        ],
+        "correcta": 0,
+        "pista": "Resta los exponentes.",
+        "explicacion_error": "a³ : a² = a¹ = a.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 10³ : 10²?",
+        "respuesta": 10,
+        "tolerancia": 0,
+        "pista": "10^(3−2).",
+        "explicacion_error": "10¹ = 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-013",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "(2²)³ = 2^___",
+        "alternativas": [
+          "8",
+          "6",
+          "9",
+          "5"
+        ],
+        "correcta": 1,
+        "pista": "En una potencia de potencia, se multiplican los exponentes.",
+        "explicacion_error": "(2²)³ = 2⁶.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuánto es (3²)²?",
+        "respuesta": 81,
+        "tolerancia": 0,
+        "pista": "3⁴.",
+        "explicacion_error": "(3²)² = 3⁴ = 81.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "(a³)² es igual a…",
+        "alternativas": [
+          "2a³",
+          "a⁶",
+          "a⁹",
+          "a⁵"
+        ],
+        "correcta": 1,
+        "pista": "Multiplica los exponentes.",
+        "explicacion_error": "(a³)² = a⁶.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuánto es (2³)²?",
+        "respuesta": 64,
+        "tolerancia": 0,
+        "pista": "2⁶.",
+        "explicacion_error": "(2³)² = 2⁶ = 64.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-017",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Es igual a 2⁶?",
+        "categorias": [
+          "Igual a 2⁶",
+          "Distinto"
+        ],
+        "elementos": [
+          {
+            "texto": "2³ · 2³",
+            "categoria": 0
+          },
+          {
+            "texto": "(2²)³",
+            "categoria": 0
+          },
+          {
+            "texto": "64",
+            "categoria": 0
+          },
+          {
+            "texto": "2³ · 2²",
+            "categoria": 1
+          },
+          {
+            "texto": "(2³)³",
+            "categoria": 1
+          },
+          {
+            "texto": "12",
+            "categoria": 1
+          }
+        ],
+        "pista": "2⁶ = 64.",
+        "explicacion_error": "2³ · 2³ = 2⁶, (2²)³ = 2⁶ y 64 = 2⁶.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-018",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada expresión con su valor.",
+        "pares": [
+          [
+            "3² · 3",
+            "27"
+          ],
+          [
+            "4³ : 4",
+            "16"
+          ],
+          [
+            "(5²)¹",
+            "25"
+          ]
+        ],
+        "pista": "Aplica las propiedades y calcula.",
+        "explicacion_error": "3³ = 27, 4² = 16 y 5² = 25.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-019",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "¿Cuál es el volumen, en cm³, de un cubo de 4 cm de arista? (4³)",
+        "respuesta": 64,
+        "tolerancia": 0,
+        "unidad": "cm³",
+        "pista": "4 × 4 × 4.",
+        "explicacion_error": "4³ = 64.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa3-020",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Una bacteria se duplica cada hora. Partiendo de 1, ¿cuántas hay después de 3 horas, como potencia?",
+        "alternativas": [
+          "2 · 3",
+          "3²",
+          "3³",
+          "2³"
+        ],
+        "correcta": 3,
+        "pista": "1 → 2 → 4 → 8.",
+        "explicacion_error": "8 = 2³.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "8_basico",
+    "asignatura": "matematica",
+    "eje": "Álgebra y funciones",
+    "objetivo_oficial": "OA 7: Mostrar que comprende la noción de función por medio de un cambio lineal, usando tablas, reglas entre x e y y gráficos en el plano cartesiano.",
+    "dificultad": 7,
+    "prerequisitos": [
+      "8_basico.matematica.OA1"
+    ],
+    "id_objetivo": "8_basico.matematica.OA7",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/matematica/8-basico"
+    },
+    "desafios": [
+      {
+        "id": "mat8-oa7-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "Si y = 2x, ¿cuánto vale y cuando x = 4?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "pista": "Reemplaza x por 4.",
+        "explicacion_error": "y = 2 · 4 = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "Si f(x) = x + 3, ¿cuánto es f(5)?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "pista": "Reemplaza x por 5.",
+        "explicacion_error": "f(5) = 5 + 3 = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Una máquina recibe un número y le suma 4. Si entra 6, ¿qué sale?",
+        "alternativas": [
+          "10",
+          "24",
+          "2",
+          "64"
+        ],
+        "correcta": 0,
+        "pista": "6 + 4.",
+        "explicacion_error": "Sale 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-004",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Si y = 5x y x = 3, entonces y = ___",
+        "alternativas": [
+          "53",
+          "2",
+          "8",
+          "15"
+        ],
+        "correcta": 3,
+        "pista": "5 · 3.",
+        "explicacion_error": "y = 15.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué regla cumple la tabla? x: 1, 2, 3 → y: 3, 6, 9",
+        "alternativas": [
+          "y = 3x",
+          "y = 2x + 1",
+          "y = x + 2",
+          "y = x + 3"
+        ],
+        "correcta": 0,
+        "pista": "Prueba con todos los pares.",
+        "explicacion_error": "3 · 1 = 3, 3 · 2 = 6, 3 · 3 = 9.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué regla cumple la tabla? x: 0, 1, 2 → y: 5, 6, 7",
+        "alternativas": [
+          "y = 5x",
+          "y = 6x",
+          "y = x + 5",
+          "y = x + 6"
+        ],
+        "correcta": 2,
+        "pista": "Cuando x = 0, y = 5.",
+        "explicacion_error": "Cada y es x + 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Si y = 4x − 1, ¿cuánto vale y cuando x = 3?",
+        "respuesta": 11,
+        "tolerancia": 0,
+        "pista": "4 · 3 − 1.",
+        "explicacion_error": "12 − 1 = 11.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-008",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "En y = 2x + 3, si x = 0 entonces y = ___",
+        "alternativas": [
+          "2",
+          "3",
+          "5",
+          "0"
+        ],
+        "correcta": 1,
+        "pista": "2 · 0 + 3.",
+        "explicacion_error": "y = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Si f(x) = 2x + 1, ¿cuánto es f(−3)?",
+        "respuesta": -5,
+        "tolerancia": 0,
+        "pista": "2 · (−3) + 1.",
+        "explicacion_error": "−6 + 1 = −5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "En y = 2x + 1, ¿qué valor de x da y = 11?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "pista": "2x = 10.",
+        "explicacion_error": "x = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Si f(x) = 3x − 2, ¿cuánto es f(4)?",
+        "alternativas": [
+          "5",
+          "10",
+          "14",
+          "12"
+        ],
+        "correcta": 1,
+        "pista": "3 · 4 − 2.",
+        "explicacion_error": "12 − 2 = 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-012",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Si y = x − 7 y x = 2, entonces y = ___",
+        "alternativas": [
+          "5",
+          "9",
+          "−9",
+          "−5"
+        ],
+        "correcta": 3,
+        "pista": "2 − 7.",
+        "explicacion_error": "y = −5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué punto pertenece a la recta y = x + 2?",
+        "alternativas": [
+          "(3, 1)",
+          "(1, 3)",
+          "(0, 1)",
+          "(2, 2)"
+        ],
+        "correcta": 1,
+        "pista": "Reemplaza x y revisa si da la y.",
+        "explicacion_error": "1 + 2 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Un estanque tiene 10 litros y recibe 4 litros por hora. ¿Qué función da los litros y después de x horas?",
+        "alternativas": [
+          "y = 4x",
+          "y = 10x + 4",
+          "y = 4x + 10",
+          "y = 14x"
+        ],
+        "correcta": 2,
+        "pista": "Parte en 10 y suma 4 cada hora.",
+        "explicacion_error": "y = 4x + 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "En y = 3x, ¿cuánto aumenta y cada vez que x aumenta en 1?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Compara y(1) con y(2).",
+        "explicacion_error": "Aumenta 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-016",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada función con el valor de y cuando x = 2.",
+        "pares": [
+          [
+            "y = 3x",
+            "6"
+          ],
+          [
+            "y = x + 5",
+            "7"
+          ],
+          [
+            "y = 4x − 3",
+            "5"
+          ]
+        ],
+        "pista": "Reemplaza x = 2.",
+        "explicacion_error": "6, 7 y 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un taxi cobra $500 fijos más $300 por kilómetro. ¿Cuánto cuesta un viaje de 6 km?",
+        "respuesta": 2300,
+        "tolerancia": 0,
+        "pista": "500 + 300 · 6.",
+        "explicacion_error": "500 + 1.800 = $2.300.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-018",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Con la misma tarifa ($500 + $300 por km), un viaje costó $3.500. ¿Cuántos km fueron?",
+        "respuesta": 10,
+        "tolerancia": 0,
+        "unidad": "km",
+        "pista": "3.500 − 500 = 3.000.",
+        "explicacion_error": "3.000 ÷ 300 = 10 km.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-019",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿La tabla es una relación lineal (cambio constante)?",
+        "categorias": [
+          "Lineal",
+          "No lineal"
+        ],
+        "elementos": [
+          {
+            "texto": "x: 1, 2, 3 → y: 2, 4, 6",
+            "categoria": 0
+          },
+          {
+            "texto": "x: 1, 2, 3 → y: 5, 8, 11",
+            "categoria": 0
+          },
+          {
+            "texto": "x: 0, 1, 2 → y: 1, 1, 1",
+            "categoria": 0
+          },
+          {
+            "texto": "x: 1, 2, 3 → y: 1, 4, 9",
+            "categoria": 1
+          },
+          {
+            "texto": "x: 1, 2, 3 → y: 2, 4, 8",
+            "categoria": 1
+          }
+        ],
+        "pista": "Revisa si y cambia siempre lo mismo cuando x aumenta en 1.",
+        "explicacion_error": "Las tres primeras cambian de forma constante; 1, 4, 9 y 2, 4, 8 no.",
+        "monedas": 10
+      },
+      {
+        "id": "mat8-oa7-020",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} junta 7 {objetos} por día y ya tiene 20. ¿Cuántos tendrá en 5 días?",
+        "alternativas": [
+          "27",
+          "140",
+          "35",
+          "55"
+        ],
+        "correcta": 3,
+        "pista": "y = 7x + 20 con x = 5.",
+        "explicacion_error": "35 + 20 = 55.",
+        "monedas": 10
+      }
+    ]
+  }
+]

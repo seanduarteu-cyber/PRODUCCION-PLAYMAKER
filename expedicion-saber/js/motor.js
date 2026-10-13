@@ -63,15 +63,16 @@
     return { ok: faltan.length === 0, motivo: faltan.length ? 'prerequisitos' : '', faltan };
   }
 
-  // Nivel con contenido más cercano al del jugador (hoy el banco llega a 4° básico).
-  function nivelDeTrabajo(perfil, datos) {
-    const conContenido = [...new Set(datos.orden.map(id => datos.objetivos[id].nivel))];
+  // Nivel con contenido más cercano al del jugador, sin pasarse de su curso. Con asignatura, mira solo esa asignatura.
+  function nivelDeTrabajo(perfil, datos, asignatura) {
+    const ids = asignatura ? datos.orden.filter(id => datos.objetivos[id].asignatura === asignatura) : datos.orden;
+    const conContenido = [...new Set(ids.map(id => datos.objetivos[id].nivel))];
     const propios = conContenido.filter(n => idxNivel(n) <= idxNivel(perfil.nivel_escolar));
     return propios.length ? propios[propios.length - 1] : conContenido[0];
   }
 
   function recomendar(perfil, asignatura, datos) {
-    const nivel = nivelDeTrabajo(perfil, datos);
+    const nivel = nivelDeTrabajo(perfil, datos, asignatura);
     const candidatos = datos.orden.filter(id => datos.objetivos[id].asignatura === asignatura);
     const delNivel = candidatos.filter(id => datos.objetivos[id].nivel === nivel);
     const libre = lista => lista.find(id => !estadoOA(perfil, id).dominado && disponibilidad(perfil, id, datos).ok);

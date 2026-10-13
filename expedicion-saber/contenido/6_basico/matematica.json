@@ -1,0 +1,680 @@
+[
+  {
+    "nivel": "6_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 1: Demostrar que comprende los factores y múltiplos de números naturales menores que 100, identificando números primos y compuestos y resolviendo problemas.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "5_basico.matematica.OA3",
+      "5_basico.matematica.OA4"
+    ],
+    "id_objetivo": "6_basico.matematica.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17686:MA06-OA-01"
+    },
+    "desafios": [
+      {
+        "id": "mat6-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál de estos números es múltiplo de 6?",
+        "alternativas": [
+          "26",
+          "45",
+          "42",
+          "32"
+        ],
+        "correcta": 2,
+        "pista": "Un múltiplo de 6 se obtiene al multiplicar 6 por un natural.",
+        "explicacion_error": "6 × 7 = 42.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuál de estos números es factor de 24?",
+        "alternativas": [
+          "7",
+          "5",
+          "9",
+          "8"
+        ],
+        "correcta": 3,
+        "pista": "Un factor divide a 24 sin resto.",
+        "explicacion_error": "24 ÷ 8 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-003",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuál es el quinto múltiplo de 7 (7, 14, …)?",
+        "respuesta": 35,
+        "tolerancia": 0,
+        "pista": "Cuenta de 7 en 7.",
+        "explicacion_error": "7 × 5 = 35.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-004",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Los primeros múltiplos de 4 son 4, 8, 12, ___",
+        "alternativas": [
+          "18",
+          "14",
+          "16",
+          "20"
+        ],
+        "correcta": 2,
+        "pista": "Suma 4.",
+        "explicacion_error": "12 + 4 = 16.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuántos factores tiene el número 12?",
+        "respuesta": 6,
+        "tolerancia": 0,
+        "pista": "Busca pares que multiplicados den 12.",
+        "explicacion_error": "1, 2, 3, 4, 6 y 12: 6 factores.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-006",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena de menor a mayor los factores de 18.",
+        "elementos": [
+          "1",
+          "2",
+          "3",
+          "6",
+          "9",
+          "18"
+        ],
+        "pista": "Busca los pares: 1 × 18, 2 × 9, 3 × 6.",
+        "explicacion_error": "1, 2, 3, 6, 9 y 18.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué número NO es factor de 30?",
+        "alternativas": [
+          "4",
+          "5",
+          "10",
+          "6"
+        ],
+        "correcta": 0,
+        "pista": "Divide 30 por cada uno.",
+        "explicacion_error": "30 ÷ 4 no es exacto.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuál es el mayor factor de 45 que es menor que 45?",
+        "respuesta": 15,
+        "tolerancia": 0,
+        "pista": "45 = 3 × 15.",
+        "explicacion_error": "Los factores de 45 son 1, 3, 5, 9, 15 y 45.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Primo o compuesto?",
+        "categorias": [
+          "Primo",
+          "Compuesto"
+        ],
+        "elementos": [
+          {
+            "texto": "13",
+            "categoria": 0
+          },
+          {
+            "texto": "29",
+            "categoria": 0
+          },
+          {
+            "texto": "41",
+            "categoria": 0
+          },
+          {
+            "texto": "21",
+            "categoria": 1
+          },
+          {
+            "texto": "27",
+            "categoria": 1
+          },
+          {
+            "texto": "51",
+            "categoria": 1
+          }
+        ],
+        "pista": "Un primo solo tiene dos factores: 1 y él mismo.",
+        "explicacion_error": "13, 29 y 41 son primos; 21 = 3 × 7, 27 = 3 × 9 y 51 = 3 × 17.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuál de estos números es primo?",
+        "alternativas": [
+          "49",
+          "37",
+          "39",
+          "57"
+        ],
+        "correcta": 1,
+        "pista": "Prueba dividir por 2, 3, 5 y 7.",
+        "explicacion_error": "37 solo es divisible por 1 y por 37.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-011",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuál es el menor número primo mayor que 20?",
+        "respuesta": 23,
+        "tolerancia": 0,
+        "pista": "21 y 22 no son primos.",
+        "explicacion_error": "21 = 3 × 7, 22 = 2 × 11 y 23 es primo.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Por qué el 1 no es primo?",
+        "alternativas": [
+          "porque es par",
+          "porque es muy pequeño",
+          "porque es impar",
+          "porque tiene un solo factor"
+        ],
+        "correcta": 3,
+        "pista": "Un primo tiene exactamente dos factores.",
+        "explicacion_error": "El 1 solo tiene un factor: él mismo.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Un bus pasa cada 6 minutos y otro cada 8. Si salen juntos, ¿en cuántos minutos vuelven a coincidir?",
+        "respuesta": 24,
+        "tolerancia": 0,
+        "pista": "Busca el menor múltiplo común.",
+        "explicacion_error": "Múltiplos de 6: 6, 12, 18, 24. De 8: 8, 16, 24.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuál es el mayor factor común de 18 y 24?",
+        "respuesta": 6,
+        "tolerancia": 0,
+        "pista": "Lista los factores de cada uno.",
+        "explicacion_error": "18: 1, 2, 3, 6, 9, 18. 24: 1, 2, 3, 4, 6, 8, 12, 24.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Cuál es el menor múltiplo común de 4 y 10?",
+        "alternativas": [
+          "20",
+          "14",
+          "40",
+          "10"
+        ],
+        "correcta": 0,
+        "pista": "Múltiplos de 10: 10, 20…",
+        "explicacion_error": "20 es múltiplo de 4 y de 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-016",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada número con su descomposición.",
+        "pares": [
+          [
+            "12",
+            "2 × 2 × 3"
+          ],
+          [
+            "18",
+            "2 × 3 × 3"
+          ],
+          [
+            "20",
+            "2 × 2 × 5"
+          ]
+        ],
+        "pista": "Divide por primos.",
+        "explicacion_error": "12 = 2 × 2 × 3, 18 = 2 × 3 × 3 y 20 = 2 × 2 × 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} tiene 36 {objetos} rojos y 48 azules. Quiere armar grupos iguales con ambos colores, sin que sobre ninguno. ¿Cuántos grupos puede armar como máximo?",
+        "respuesta": 12,
+        "tolerancia": 0,
+        "pista": "Busca el mayor factor común de 36 y 48.",
+        "explicacion_error": "12 divide a 36 y a 48: 12 grupos.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-018",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Una luz parpadea cada 9 segundos y otra cada 12. ¿Cada cuántos segundos parpadean juntas?",
+        "respuesta": 36,
+        "tolerancia": 0,
+        "pista": "Menor múltiplo común de 9 y 12.",
+        "explicacion_error": "9, 18, 27, 36 y 12, 24, 36.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-019",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Es múltiplo de 3 y de 4 a la vez?",
+        "categorias": [
+          "Múltiplo de 3 y de 4",
+          "No"
+        ],
+        "elementos": [
+          {
+            "texto": "12",
+            "categoria": 0
+          },
+          {
+            "texto": "36",
+            "categoria": 0
+          },
+          {
+            "texto": "60",
+            "categoria": 0
+          },
+          {
+            "texto": "18",
+            "categoria": 1
+          },
+          {
+            "texto": "20",
+            "categoria": 1
+          },
+          {
+            "texto": "30",
+            "categoria": 1
+          }
+        ],
+        "pista": "Debe dividirse por 3 y por 4 sin resto.",
+        "explicacion_error": "12, 36 y 60 son múltiplos de 12.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa1-020",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Cuántos números primos hay entre 30 y 40?",
+        "alternativas": [
+          "4",
+          "1",
+          "2",
+          "3"
+        ],
+        "correcta": 2,
+        "pista": "Revisa 31, 33, 35, 37 y 39.",
+        "explicacion_error": "Solo 31 y 37 son primos.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "6_basico",
+    "asignatura": "matematica",
+    "eje": "Números y operaciones",
+    "objetivo_oficial": "OA 4: Demostrar que comprende el concepto de porcentaje de manera concreta, pictórica y simbólica.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "5_basico.matematica.OA7"
+    ],
+    "id_objetivo": "6_basico.matematica.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros-y-operaciones/17689:MA06-OA-04"
+    },
+    "desafios": [
+      {
+        "id": "mat6-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué porcentaje de la barra está pintado? 🟩🟩🟩🟩🟩⬜⬜⬜⬜⬜",
+        "alternativas": [
+          "10%",
+          "50%",
+          "25%",
+          "5%"
+        ],
+        "correcta": 1,
+        "pista": "Son 10 partes iguales; cada una es 10%.",
+        "explicacion_error": "5 de 10 partes = 50%.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "25 de cada 100 es…",
+        "alternativas": [
+          "4%",
+          "75%",
+          "25%",
+          "2,5%"
+        ],
+        "correcta": 2,
+        "pista": "Por ciento significa «de cada 100».",
+        "explicacion_error": "25 de 100 = 25%.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-003",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada porcentaje con su fracción.",
+        "pares": [
+          [
+            "50%",
+            "1/2"
+          ],
+          [
+            "25%",
+            "1/4"
+          ],
+          [
+            "10%",
+            "1/10"
+          ],
+          [
+            "75%",
+            "3/4"
+          ]
+        ],
+        "pista": "Piensa en partes de 100.",
+        "explicacion_error": "50% = 1/2, 25% = 1/4, 10% = 1/10 y 75% = 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué porcentaje de la barra está pintado? 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜",
+        "alternativas": [
+          "20%",
+          "2%",
+          "12%",
+          "80%"
+        ],
+        "correcta": 0,
+        "pista": "Cada parte es 10%.",
+        "explicacion_error": "2 de 10 = 20%.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es el 30% de 100?",
+        "respuesta": 30,
+        "tolerancia": 0,
+        "pista": "30 de cada 100.",
+        "explicacion_error": "30% de 100 = 30.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es el 50% de 80?",
+        "respuesta": 40,
+        "tolerancia": 0,
+        "pista": "50% es la mitad.",
+        "explicacion_error": "80 ÷ 2 = 40.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es el 10% de 70?",
+        "respuesta": 7,
+        "tolerancia": 0,
+        "pista": "10% es dividir por 10.",
+        "explicacion_error": "70 ÷ 10 = 7.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es el 100% de 45?",
+        "alternativas": [
+          "100",
+          "45",
+          "4,5",
+          "145"
+        ],
+        "correcta": 1,
+        "pista": "100% es el total.",
+        "explicacion_error": "100% de 45 = 45.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es el 25% de 60?",
+        "respuesta": 15,
+        "tolerancia": 0,
+        "pista": "25% es dividir por 4.",
+        "explicacion_error": "60 ÷ 4 = 15.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es el 20% de 45?",
+        "respuesta": 9,
+        "tolerancia": 0,
+        "pista": "20% es dividir por 5.",
+        "explicacion_error": "45 ÷ 5 = 9.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-011",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es el 75% de 40?",
+        "respuesta": 30,
+        "tolerancia": 0,
+        "pista": "75% = 3 veces el 25%.",
+        "explicacion_error": "25% de 40 = 10; 75% = 30.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es el 5% de 200?",
+        "alternativas": [
+          "10",
+          "40",
+          "20",
+          "5"
+        ],
+        "correcta": 0,
+        "pista": "5% es la mitad del 10%.",
+        "explicacion_error": "10% de 200 = 20; 5% = 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "0,4 expresado como porcentaje es…",
+        "alternativas": [
+          "400%",
+          "0,4%",
+          "4%",
+          "40%"
+        ],
+        "correcta": 3,
+        "pista": "Multiplica por 100.",
+        "explicacion_error": "0,4 × 100 = 40%.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-014",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Es más o menos de la mitad?",
+        "categorias": [
+          "Menos de 50%",
+          "Más de 50%"
+        ],
+        "elementos": [
+          {
+            "texto": "1/4",
+            "categoria": 0
+          },
+          {
+            "texto": "0,3",
+            "categoria": 0
+          },
+          {
+            "texto": "45%",
+            "categoria": 0
+          },
+          {
+            "texto": "3/4",
+            "categoria": 1
+          },
+          {
+            "texto": "0,6",
+            "categoria": 1
+          },
+          {
+            "texto": "55%",
+            "categoria": 1
+          }
+        ],
+        "pista": "La mitad es 50% = 0,5 = 1/2.",
+        "explicacion_error": "1/4 = 25%, 0,3 = 30% y 45% son menos; 3/4 = 75%, 0,6 = 60% y 55% son más.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-015",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "1/4",
+          "30%",
+          "0,5"
+        ],
+        "pista": "Pasa todo a porcentaje.",
+        "explicacion_error": "25% < 30% < 50%.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué fracción equivale a 20%?",
+        "alternativas": [
+          "1/5",
+          "1/2",
+          "2/5",
+          "1/20"
+        ],
+        "correcta": 0,
+        "pista": "20 de 100, simplificado.",
+        "explicacion_error": "20/100 = 1/5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Hay 200 {objetos} y el 15% son nuevos. ¿Cuántos son nuevos?",
+        "respuesta": 30,
+        "tolerancia": 0,
+        "pista": "10% = 20 y 5% = 10.",
+        "explicacion_error": "15% de 200 = 30.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-018",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} tiene 40 {objetos} y usa el 25%. ¿Cuántos usa?",
+        "respuesta": 10,
+        "tolerancia": 0,
+        "pista": "25% es la cuarta parte.",
+        "explicacion_error": "40 ÷ 4 = 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-019",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un juego cuesta $8.000 y tiene 25% de descuento. ¿Cuántos pesos te descuentan?",
+        "respuesta": 2000,
+        "tolerancia": 0,
+        "pista": "La cuarta parte de 8.000.",
+        "explicacion_error": "25% de 8.000 = $2.000.",
+        "monedas": 10
+      },
+      {
+        "id": "mat6-oa4-020",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En un curso, 18 de 30 estudiantes prefieren fútbol. ¿Qué porcentaje es?",
+        "alternativas": [
+          "50%",
+          "30%",
+          "60%",
+          "18%"
+        ],
+        "correcta": 2,
+        "pista": "18/30 = 6/10.",
+        "explicacion_error": "6/10 = 60%.",
+        "monedas": 10
+      }
+    ]
+  }
+]

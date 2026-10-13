@@ -1,0 +1,997 @@
+[
+  {
+    "nivel": "7_basico",
+    "asignatura": "ciencias",
+    "eje": "Física",
+    "objetivo_oficial": "OA 8: Describir la presión y sus efectos en sólidos (herramientas), líquidos (máquinas hidráulicas) y gases (atmósfera).",
+    "dificultad": 6,
+    "prerequisitos": [],
+    "id_objetivo": "7_basico.ciencias.OA8",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/7-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie7-oa8-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Por qué un cuchillo afilado corta mejor que uno sin filo?",
+        "alternativas": [
+          "porque está más frío",
+          "porque concentra la fuerza en un área más pequeña",
+          "porque es más pesado",
+          "porque tiene más área de contacto"
+        ],
+        "correcta": 1,
+        "pista": "El filo es muy delgado.",
+        "explicacion_error": "Con menos área, la misma fuerza produce más presión.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La presión es la fuerza aplicada sobre una ___.",
+        "alternativas": [
+          "temperatura",
+          "superficie",
+          "masa",
+          "velocidad"
+        ],
+        "correcta": 1,
+        "pista": "P = F ÷ A.",
+        "explicacion_error": "La presión es fuerza dividida por la superficie (área).",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Para qué sirven las raquetas de nieve?",
+        "alternativas": [
+          "para no hundirse, porque reparten el peso en un área mayor",
+          "para caminar más rápido",
+          "para derretir la nieve",
+          "para aumentar la presión sobre la nieve"
+        ],
+        "correcta": 0,
+        "pista": "Son mucho más anchas que un zapato.",
+        "explicacion_error": "Al aumentar el área, disminuye la presión y no te hundes.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿El objeto aumenta o disminuye la presión?",
+        "categorias": [
+          "Aumenta la presión",
+          "Disminuye la presión"
+        ],
+        "elementos": [
+          {
+            "texto": "clavo con punta",
+            "categoria": 0
+          },
+          {
+            "texto": "aguja",
+            "categoria": 0
+          },
+          {
+            "texto": "chinche",
+            "categoria": 0
+          },
+          {
+            "texto": "raquetas de nieve",
+            "categoria": 1
+          },
+          {
+            "texto": "orugas de un tractor",
+            "categoria": 1
+          },
+          {
+            "texto": "mochila con tirantes anchos",
+            "categoria": 1
+          }
+        ],
+        "pista": "Área pequeña: más presión. Área grande: menos presión.",
+        "explicacion_error": "Punta y filo concentran la fuerza; lo ancho la reparte.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué pasa con la presión del agua a medida que bajas en una piscina?",
+        "alternativas": [
+          "se mantiene igual",
+          "desaparece",
+          "disminuye",
+          "aumenta"
+        ],
+        "correcta": 3,
+        "pista": "Mientras más bajas, más agua tienes encima.",
+        "explicacion_error": "La presión del agua aumenta con la profundidad.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Al subir a la cordillera, la presión atmosférica ___.",
+        "alternativas": [
+          "no cambia",
+          "se duplica",
+          "disminuye",
+          "aumenta"
+        ],
+        "correcta": 2,
+        "pista": "Arriba hay menos aire sobre ti.",
+        "explicacion_error": "A mayor altura hay menos aire encima: la presión atmosférica disminuye.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Una caja de 600 N se apoya sobre una superficie de 3 m². ¿Qué presión ejerce?",
+        "respuesta": 200,
+        "tolerancia": 0,
+        "unidad": "Pa",
+        "pista": "P = F ÷ A.",
+        "explicacion_error": "600 N ÷ 3 m² = 200 Pa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Un bidón con agua tiene tres agujeros a distintas alturas. ¿Por cuál sale el chorro más lejos?",
+        "alternativas": [
+          "por el de más abajo",
+          "por el del medio",
+          "todos llegan igual de lejos",
+          "por el de más arriba"
+        ],
+        "correcta": 0,
+        "pista": "¿Dónde hay más agua encima?",
+        "explicacion_error": "Abajo la presión es mayor, por eso el chorro sale con más fuerza.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada objeto con cómo usa la presión.",
+        "pares": [
+          [
+            "chinche",
+            "punta fina: mucha presión"
+          ],
+          [
+            "raqueta de nieve",
+            "base ancha: poca presión"
+          ],
+          [
+            "gata hidráulica",
+            "el líquido transmite la presión"
+          ],
+          [
+            "bombilla para tomar jugo",
+            "la presión del aire empuja el líquido"
+          ]
+        ],
+        "pista": "Fíjate si es sólido, líquido o gas.",
+        "explicacion_error": "Chinche y raqueta usan el área; la gata usa un líquido; la bombilla, la presión atmosférica.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Un bloque de 120 N se apoya sobre una cara de 40 cm² y luego sobre una de 20 cm². ¿Cuántas veces mayor es la presión en la segunda posición?",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "unidad": "veces",
+        "pista": "Con la misma fuerza, si el área baja a la mitad…",
+        "explicacion_error": "120 ÷ 40 = 3 N/cm² y 120 ÷ 20 = 6 N/cm²: el doble.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "En una prensa hidráulica empujas el pistón pequeño con poca fuerza. ¿Qué ocurre en el pistón grande?",
+        "alternativas": [
+          "el líquido se comprime y desaparece",
+          "no se mueve porque los líquidos no transmiten presión",
+          "ejerce menos fuerza",
+          "ejerce una fuerza mayor, porque el líquido transmite la presión por igual"
+        ],
+        "correcta": 3,
+        "pista": "La presión es la misma en todo el líquido; el área no.",
+        "explicacion_error": "Igual presión sobre un área mayor da una fuerza mayor (principio de Pascal).",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Los muros de un embalse son más gruesos en la base porque la presión del agua ___ con la profundidad.",
+        "alternativas": [
+          "disminuye",
+          "no cambia",
+          "aumenta",
+          "desaparece"
+        ],
+        "correcta": 2,
+        "pista": "Abajo hay más agua encima.",
+        "explicacion_error": "La presión aumenta con la profundidad, por eso la base debe ser más resistente.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor presión atmosférica.",
+        "elementos": [
+          "Ojos del Salado (6.893 m)",
+          "Putre (3.500 m)",
+          "Santiago (570 m)",
+          "Valparaíso (0 m)"
+        ],
+        "pista": "A más altura, menos presión.",
+        "explicacion_error": "La presión aumenta al bajar: Ojos del Salado, Putre, Santiago y Valparaíso.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} empuja con 400 N el pistón pequeño de una prensa hidráulica, de 2 cm². El pistón grande mide 20 cm². ¿Qué fuerza ejerce el pistón grande?",
+        "respuesta": 4000,
+        "tolerancia": 0,
+        "unidad": "N",
+        "pista": "Calcula la presión en el pistón pequeño y úsala en el grande.",
+        "explicacion_error": "400 ÷ 2 = 200 N/cm²; 200 × 20 = 4.000 N.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué se te tapan los oídos al subir rápido en auto a la cordillera?",
+        "alternativas": [
+          "porque aumenta la presión exterior al subir",
+          "porque baja la presión del aire exterior y queda distinta a la del oído interno",
+          "porque el auto vibra",
+          "porque hace más frío"
+        ],
+        "correcta": 1,
+        "pista": "Compara la presión dentro y fuera de tu oído.",
+        "explicacion_error": "Al subir, la presión exterior baja y se desequilibra con la del oído interno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa8-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Dónde actúa la presión en cada caso?",
+        "categorias": [
+          "En sólidos",
+          "En líquidos",
+          "En gases"
+        ],
+        "elementos": [
+          {
+            "texto": "una chinche entra fácil en el corcho",
+            "categoria": 0
+          },
+          {
+            "texto": "huellas de un camión en el barro",
+            "categoria": 0
+          },
+          {
+            "texto": "una gata hidráulica levanta un auto",
+            "categoria": 1
+          },
+          {
+            "texto": "un buzo siente más presión al bajar",
+            "categoria": 1
+          },
+          {
+            "texto": "una ventosa se pega a un vidrio",
+            "categoria": 2
+          },
+          {
+            "texto": "un globo se agranda en la cima de un cerro",
+            "categoria": 2
+          }
+        ],
+        "pista": "Pregúntate qué transmite o ejerce la presión.",
+        "explicacion_error": "Chinche y camión: sólidos; gata y buzo: líquidos; ventosa y globo: gases (presión atmosférica).",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "7_basico",
+    "asignatura": "ciencias",
+    "eje": "Química",
+    "objetivo_oficial": "OA 13: Investigar y explicar el comportamiento de los gases en situaciones cotidianas, considerando presión, volumen y temperatura y la teoría cinético-molecular.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "6_basico.ciencias.OA13"
+    ],
+    "id_objetivo": "7_basico.ciencias.OA13",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/7-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie7-oa13-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Según la teoría cinético-molecular, las partículas de un gas…",
+        "alternativas": [
+          "solo se mueven hacia abajo",
+          "están quietas",
+          "están muy juntas y ordenadas",
+          "se mueven rápido y en todas direcciones"
+        ],
+        "correcta": 3,
+        "pista": "Los gases llenan todo el recipiente.",
+        "explicacion_error": "Las partículas de un gas se mueven rápido y en todas direcciones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Si calientas un globo, su volumen ___.",
+        "alternativas": [
+          "desaparece",
+          "aumenta",
+          "no cambia",
+          "disminuye"
+        ],
+        "correcta": 1,
+        "pista": "El calor hace que las partículas se muevan más.",
+        "explicacion_error": "Al calentarse, el gas se expande y el globo se agranda.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué le pasa a un globo inflado si lo metes al congelador?",
+        "alternativas": [
+          "no cambia nada",
+          "se infla más",
+          "explota",
+          "se achica"
+        ],
+        "correcta": 3,
+        "pista": "El frío hace que las partículas se muevan menos.",
+        "explicacion_error": "Al enfriarse, el gas ocupa menos volumen y el globo se achica.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-004",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada ley con lo que relaciona.",
+        "pares": [
+          [
+            "Ley de Boyle",
+            "presión y volumen (temperatura fija)"
+          ],
+          [
+            "Ley de Charles",
+            "volumen y temperatura (presión fija)"
+          ],
+          [
+            "Ley de Gay-Lussac",
+            "presión y temperatura (volumen fijo)"
+          ]
+        ],
+        "pista": "Cada ley mantiene fija una variable.",
+        "explicacion_error": "Boyle: P y V; Charles: V y T; Gay-Lussac: P y T.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Es una propiedad de los gases?",
+        "categorias": [
+          "Sí",
+          "No"
+        ],
+        "elementos": [
+          {
+            "texto": "se comprime fácilmente",
+            "categoria": 0
+          },
+          {
+            "texto": "ocupa todo el recipiente",
+            "categoria": 0
+          },
+          {
+            "texto": "se difunde en el aire",
+            "categoria": 0
+          },
+          {
+            "texto": "tiene forma fija",
+            "categoria": 1
+          },
+          {
+            "texto": "tiene volumen fijo",
+            "categoria": 1
+          },
+          {
+            "texto": "sus partículas están quietas",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en el aire dentro de una jeringa.",
+        "explicacion_error": "Los gases se comprimen, llenan el recipiente y se difunden; no tienen forma ni volumen fijos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Aprietas una jeringa tapada con aire y su volumen baja. ¿Qué pasa con la presión del aire?",
+        "alternativas": [
+          "aumenta",
+          "no cambia",
+          "se vuelve cero",
+          "disminuye"
+        ],
+        "correcta": 0,
+        "pista": "Las mismas partículas en menos espacio chocan más seguido.",
+        "explicacion_error": "Menos volumen, más presión (ley de Boyle).",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Un gas ocupa 6 L a 2 atm. Si la presión sube a 3 atm sin cambiar la temperatura, ¿qué volumen ocupa?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "unidad": "L",
+        "pista": "P × V se mantiene constante.",
+        "explicacion_error": "2 × 6 = 12; 12 ÷ 3 = 4 L.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Por qué aumenta la presión de los neumáticos después de un viaje largo?",
+        "alternativas": [
+          "el aire se calienta y sus partículas chocan más rápido y más seguido contra las paredes",
+          "el neumático se achica por el frío",
+          "las partículas se hacen más grandes",
+          "entra más aire por la válvula"
+        ],
+        "correcta": 0,
+        "pista": "El roce con el camino calienta el neumático.",
+        "explicacion_error": "Más temperatura, más movimiento de partículas y más presión (Gay-Lussac).",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "El olor de un perfume llega a toda la sala porque las partículas del gas se ___.",
+        "alternativas": [
+          "detienen",
+          "funden",
+          "difunden",
+          "condensan"
+        ],
+        "correcta": 2,
+        "pista": "Se mueven y se mezclan con el aire.",
+        "explicacion_error": "Las partículas se mueven y se esparcen: se difunden.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Un globo tiene 3 L. Si su temperatura absoluta (en kelvin) se duplica a presión constante, ¿qué volumen tendrá?",
+        "respuesta": 6,
+        "tolerancia": 0,
+        "unidad": "L",
+        "pista": "Volumen y temperatura absoluta son proporcionales.",
+        "explicacion_error": "Si la temperatura absoluta se duplica, el volumen también: 6 L.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Una lata de aerosol dice «no exponer al calor». ¿Por qué?",
+        "alternativas": [
+          "al calentarse, aumenta la presión del gas dentro y puede explotar",
+          "el gas se enfría y se congela",
+          "el gas se transforma en sólido",
+          "la presión disminuye y la lata se aplasta"
+        ],
+        "correcta": 0,
+        "pista": "La lata no puede cambiar su volumen.",
+        "explicacion_error": "Con volumen fijo, más temperatura significa más presión (Gay-Lussac).",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Qué ley explica cada situación?",
+        "categorias": [
+          "Boyle (P y V)",
+          "Charles (V y T)",
+          "Gay-Lussac (P y T)"
+        ],
+        "elementos": [
+          {
+            "texto": "jeringa tapada que se aprieta",
+            "categoria": 0
+          },
+          {
+            "texto": "bombín que comprime aire",
+            "categoria": 0
+          },
+          {
+            "texto": "globo que se agranda al sol",
+            "categoria": 1
+          },
+          {
+            "texto": "globo que se achica en el refrigerador",
+            "categoria": 1
+          },
+          {
+            "texto": "olla a presión que se calienta",
+            "categoria": 2
+          },
+          {
+            "texto": "lata cerrada que se calienta",
+            "categoria": 2
+          }
+        ],
+        "pista": "Fíjate en qué variable se mantiene fija.",
+        "explicacion_error": "Apretar cambia P y V; globos cambian V con T; recipientes rígidos cambian P con T.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "{personaje} pone un globo en la boca de una botella vacía y la mete en agua caliente. Ordena lo que ocurre.",
+        "elementos": [
+          "La botella se calienta.",
+          "Las partículas de aire se mueven más rápido.",
+          "Las partículas chocan con más fuerza y se separan más.",
+          "El aire ocupa más volumen y el globo se infla."
+        ],
+        "pista": "Primero cambia la temperatura y luego el movimiento de las partículas.",
+        "explicacion_error": "Calor → partículas más rápidas → más separación → más volumen (Charles).",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} cierra una botella plástica vacía en la cumbre de un cerro. Al llegar a la costa, la botella está aplastada. ¿Por qué?",
+        "alternativas": [
+          "la presión exterior aumenta al bajar y comprime el aire de la botella",
+          "el plástico se derritió",
+          "la presión exterior disminuyó al bajar",
+          "el aire de adentro se calentó"
+        ],
+        "correcta": 0,
+        "pista": "Compara la presión del aire arriba y abajo.",
+        "explicacion_error": "Abajo la presión atmosférica es mayor y reduce el volumen del aire encerrado (Boyle).",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un gas ocupa 12 L a 1 atm. Se comprime primero a 6 L y después a 3 L, sin cambiar la temperatura. ¿Cuál es la presión final?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "unidad": "atm",
+        "pista": "Cada vez que el volumen baja a la mitad, la presión se duplica.",
+        "explicacion_error": "12 L → 6 L: 2 atm; 6 L → 3 L: 4 atm.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa13-016",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada observación con su explicación según la teoría cinético-molecular.",
+        "pares": [
+          [
+            "un gas se comprime fácilmente",
+            "hay mucho espacio vacío entre sus partículas"
+          ],
+          [
+            "un gas llena todo el recipiente",
+            "sus partículas se mueven libremente en todas direcciones"
+          ],
+          [
+            "un gas caliente ejerce más presión",
+            "sus partículas chocan más rápido y más seguido"
+          ]
+        ],
+        "pista": "Piensa en el espacio y el movimiento de las partículas.",
+        "explicacion_error": "Espacio vacío permite comprimir; el movimiento libre llena el recipiente; más velocidad, más choques.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "7_basico",
+    "asignatura": "ciencias",
+    "eje": "Química",
+    "objetivo_oficial": "OA 14: Clasificar la materia en sustancias puras y mezclas, y aplicar métodos de separación como decantación, filtración, tamizado y destilación.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "6_basico.ciencias.OA13"
+    ],
+    "id_objetivo": "7_basico.ciencias.OA14",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/7-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie7-oa14-001",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Sustancia pura o mezcla?",
+        "categorias": [
+          "Sustancia pura",
+          "Mezcla"
+        ],
+        "elementos": [
+          {
+            "texto": "agua destilada",
+            "categoria": 0
+          },
+          {
+            "texto": "oro",
+            "categoria": 0
+          },
+          {
+            "texto": "sal de mesa",
+            "categoria": 0
+          },
+          {
+            "texto": "ensalada de frutas",
+            "categoria": 1
+          },
+          {
+            "texto": "agua de mar",
+            "categoria": 1
+          },
+          {
+            "texto": "aire",
+            "categoria": 1
+          }
+        ],
+        "pista": "Una mezcla tiene dos o más sustancias.",
+        "explicacion_error": "Agua destilada, oro y sal son puras; ensalada, agua de mar y aire son mezclas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué método usas para separar piedras de la arena?",
+        "alternativas": [
+          "destilación",
+          "decantación",
+          "evaporación",
+          "tamizado"
+        ],
+        "correcta": 3,
+        "pista": "Se usa un harnero o colador.",
+        "explicacion_error": "El tamiz deja pasar la arena y retiene las piedras.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Una mezcla en la que se distinguen sus componentes a simple vista es ___.",
+        "alternativas": [
+          "heterogénea",
+          "un elemento",
+          "homogénea",
+          "un compuesto"
+        ],
+        "correcta": 0,
+        "pista": "«Hetero» significa distinto.",
+        "explicacion_error": "Si ves sus partes, la mezcla es heterogénea.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Mezcla homogénea o heterogénea?",
+        "categorias": [
+          "Homogénea",
+          "Heterogénea"
+        ],
+        "elementos": [
+          {
+            "texto": "agua con sal disuelta",
+            "categoria": 0
+          },
+          {
+            "texto": "aire limpio",
+            "categoria": 0
+          },
+          {
+            "texto": "té con azúcar disuelta",
+            "categoria": 0
+          },
+          {
+            "texto": "agua con aceite",
+            "categoria": 1
+          },
+          {
+            "texto": "arena con piedras",
+            "categoria": 1
+          },
+          {
+            "texto": "cereal con leche",
+            "categoria": 1
+          }
+        ],
+        "pista": "En la homogénea no distingues sus partes.",
+        "explicacion_error": "Agua salada, aire y té con azúcar se ven uniformes; las otras no.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada mezcla con su método de separación.",
+        "pares": [
+          [
+            "agua y arena",
+            "filtración"
+          ],
+          [
+            "agua y aceite",
+            "decantación"
+          ],
+          [
+            "arena y piedras",
+            "tamizado"
+          ],
+          [
+            "agua y alcohol",
+            "destilación"
+          ]
+        ],
+        "pista": "Piensa si son sólidos, líquidos o ambos.",
+        "explicacion_error": "Filtración retiene sólidos, decantación separa líquidos que no se mezclan, el tamiz separa por tamaño y la destilación usa la ebullición.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué es un elemento?",
+        "alternativas": [
+          "una mezcla de dos sustancias",
+          "una sustancia pura formada por un solo tipo de átomo",
+          "una sustancia formada por varios tipos de átomos unidos",
+          "cualquier líquido"
+        ],
+        "correcta": 1,
+        "pista": "Está en la tabla periódica.",
+        "explicacion_error": "Un elemento es una sustancia pura con un solo tipo de átomo, como el oro o el oxígeno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Elemento o compuesto?",
+        "categorias": [
+          "Elemento",
+          "Compuesto"
+        ],
+        "elementos": [
+          {
+            "texto": "oxígeno (O₂)",
+            "categoria": 0
+          },
+          {
+            "texto": "hierro (Fe)",
+            "categoria": 0
+          },
+          {
+            "texto": "cobre (Cu)",
+            "categoria": 0
+          },
+          {
+            "texto": "agua (H₂O)",
+            "categoria": 1
+          },
+          {
+            "texto": "dióxido de carbono (CO₂)",
+            "categoria": 1
+          },
+          {
+            "texto": "sal de mesa (NaCl)",
+            "categoria": 1
+          }
+        ],
+        "pista": "Mira cuántos tipos de átomo hay en la fórmula.",
+        "explicacion_error": "O₂, Fe y Cu tienen un solo tipo de átomo; H₂O, CO₂ y NaCl tienen dos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Quieres obtener agua para beber a partir de agua de mar, recuperando el agua. ¿Qué método usas?",
+        "alternativas": [
+          "filtración",
+          "tamizado",
+          "destilación",
+          "decantación"
+        ],
+        "correcta": 2,
+        "pista": "La sal está disuelta: no la retiene un filtro.",
+        "explicacion_error": "Al destilar, el agua se evapora, se condensa aparte y la sal queda atrás.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "La destilación separa líquidos aprovechando que tienen distinto punto de ___.",
+        "alternativas": [
+          "masa",
+          "color",
+          "fusión",
+          "ebullición"
+        ],
+        "correcta": 3,
+        "pista": "Uno hierve antes que el otro.",
+        "explicacion_error": "Cada líquido hierve a una temperatura distinta: su punto de ebullición.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena los pasos para separar arena, sal y agua.",
+        "elementos": [
+          "Filtra la mezcla.",
+          "La arena queda en el papel filtro.",
+          "Calienta el agua salada que pasó.",
+          "Al evaporarse el agua, queda la sal."
+        ],
+        "pista": "Primero separa lo que no se disuelve.",
+        "explicacion_error": "Filtrar retiene la arena; después, evaporar el agua deja la sal.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué el agua y el aceite se pueden separar por decantación?",
+        "alternativas": [
+          "porque tienen el mismo color",
+          "porque el aceite se evapora primero",
+          "porque el agua es un elemento",
+          "porque no se mezclan y tienen distinta densidad"
+        ],
+        "correcta": 3,
+        "pista": "El aceite flota sobre el agua.",
+        "explicacion_error": "No se mezclan y el aceite es menos denso: queda arriba y se puede separar.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Una mezcla de arena y sal pesa 500 g. {personaje} la separa y obtiene 120 g de sal. ¿Cuántos gramos de arena había?",
+        "respuesta": 380,
+        "tolerancia": 0,
+        "unidad": "g",
+        "pista": "La masa total es la suma de las partes.",
+        "explicacion_error": "500 − 120 = 380 g de arena.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "El agua de la llave, ¿es una sustancia pura o una mezcla?",
+        "alternativas": [
+          "una mezcla heterogénea, porque se ve igual en todas partes",
+          "una mezcla homogénea, porque tiene sales disueltas",
+          "un elemento, porque es agua",
+          "una sustancia pura, porque es transparente"
+        ],
+        "correcta": 1,
+        "pista": "Que se vea transparente no significa que sea pura.",
+        "explicacion_error": "El agua de la llave tiene sales y gases disueltos: es una mezcla homogénea.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En el norte, algunos buscadores de oro mueven arena con agua en una batea. ¿Qué propiedad aprovechan?",
+        "alternativas": [
+          "el oro se disuelve en el agua",
+          "el oro es más denso y queda en el fondo",
+          "el oro es atraído por un imán",
+          "el oro flota sobre el agua"
+        ],
+        "correcta": 1,
+        "pista": "El oro es muy pesado para su tamaño.",
+        "explicacion_error": "El oro es más denso que la arena: se va al fondo y la arena sale con el agua.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} tiene 300 g de una mezcla de arena, sal y piedras. Con el tamiz saca 100 g de piedras y, al filtrar y evaporar, obtiene 60 g de sal. ¿Cuántos gramos de arena había?",
+        "respuesta": 140,
+        "tolerancia": 0,
+        "unidad": "g",
+        "pista": "Resta las piedras y la sal del total.",
+        "explicacion_error": "300 − 100 − 60 = 140 g de arena.",
+        "monedas": 10
+      },
+      {
+        "id": "cie7-oa14-016",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada material con su clasificación.",
+        "pares": [
+          [
+            "oro",
+            "elemento"
+          ],
+          [
+            "agua destilada",
+            "compuesto"
+          ],
+          [
+            "agua de mar",
+            "mezcla homogénea"
+          ],
+          [
+            "arena con conchitas",
+            "mezcla heterogénea"
+          ]
+        ],
+        "pista": "Primero decide si es pura o mezcla.",
+        "explicacion_error": "Oro: elemento; agua destilada: compuesto; agua de mar: homogénea; arena con conchitas: heterogénea.",
+        "monedas": 10
+      }
+    ]
+  }
+]

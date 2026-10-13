@@ -4,17 +4,27 @@
     "1_basico",
     "2_basico",
     "3_basico",
-    "4_basico"
+    "4_basico",
+    "5_basico",
+    "6_basico",
+    "7_basico",
+    "8_basico"
   ],
   "nombres_nivel": {
     "1_basico": "1° básico",
     "2_basico": "2° básico",
     "3_basico": "3° básico",
-    "4_basico": "4° básico"
+    "4_basico": "4° básico",
+    "5_basico": "5° básico",
+    "6_basico": "6° básico",
+    "7_basico": "7° básico",
+    "8_basico": "8° básico"
   },
   "asignaturas": {
     "matematica": "Matemática",
-    "lenguaje": "Lenguaje y Comunicación"
+    "lenguaje": "Lenguaje y Comunicación",
+    "ciencias": "Ciencias Naturales",
+    "ingles": "Inglés"
   },
   "archivos": [
     {
@@ -40,6 +50,16 @@
       "desafios": 45
     },
     {
+      "archivo": "1_basico/ingles.json",
+      "nivel": "1_basico",
+      "asignatura": "ingles",
+      "objetivos": [
+        "1_basico.ingles.OA1",
+        "1_basico.ingles.OA13"
+      ],
+      "desafios": 37
+    },
+    {
       "archivo": "2_basico/matematica.json",
       "nivel": "2_basico",
       "asignatura": "matematica",
@@ -60,6 +80,16 @@
         "2_basico.lenguaje.OA21"
       ],
       "desafios": 30
+    },
+    {
+      "archivo": "2_basico/ingles.json",
+      "nivel": "2_basico",
+      "asignatura": "ingles",
+      "objetivos": [
+        "2_basico.ingles.OA1",
+        "2_basico.ingles.OA13"
+      ],
+      "desafios": 37
     },
     {
       "archivo": "3_basico/matematica.json",
@@ -85,6 +115,16 @@
       "desafios": 45
     },
     {
+      "archivo": "3_basico/ingles.json",
+      "nivel": "3_basico",
+      "asignatura": "ingles",
+      "objetivos": [
+        "3_basico.ingles.OA1",
+        "3_basico.ingles.OA13"
+      ],
+      "desafios": 38
+    },
+    {
       "archivo": "4_basico/matematica.json",
       "nivel": "4_basico",
       "asignatura": "matematica",
@@ -106,6 +146,102 @@
         "4_basico.lenguaje.OA21"
       ],
       "desafios": 45
+    },
+    {
+      "archivo": "4_basico/ingles.json",
+      "nivel": "4_basico",
+      "asignatura": "ingles",
+      "objetivos": [
+        "4_basico.ingles.OA1",
+        "4_basico.ingles.OA13"
+      ],
+      "desafios": 36
+    },
+    {
+      "archivo": "5_basico/matematica.json",
+      "nivel": "5_basico",
+      "asignatura": "matematica",
+      "objetivos": [
+        "5_basico.matematica.OA3",
+        "5_basico.matematica.OA4",
+        "5_basico.matematica.OA7"
+      ],
+      "desafios": 60
+    },
+    {
+      "archivo": "5_basico/ciencias.json",
+      "nivel": "5_basico",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "5_basico.ciencias.OA1",
+        "5_basico.ciencias.OA8",
+        "5_basico.ciencias.OA10"
+      ],
+      "desafios": 47
+    },
+    {
+      "archivo": "6_basico/matematica.json",
+      "nivel": "6_basico",
+      "asignatura": "matematica",
+      "objetivos": [
+        "6_basico.matematica.OA1",
+        "6_basico.matematica.OA4"
+      ],
+      "desafios": 40
+    },
+    {
+      "archivo": "6_basico/ciencias.json",
+      "nivel": "6_basico",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "6_basico.ciencias.OA1",
+        "6_basico.ciencias.OA8",
+        "6_basico.ciencias.OA13"
+      ],
+      "desafios": 48
+    },
+    {
+      "archivo": "7_basico/matematica.json",
+      "nivel": "7_basico",
+      "asignatura": "matematica",
+      "objetivos": [
+        "7_basico.matematica.OA1",
+        "7_basico.matematica.OA4"
+      ],
+      "desafios": 40
+    },
+    {
+      "archivo": "7_basico/ciencias.json",
+      "nivel": "7_basico",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "7_basico.ciencias.OA8",
+        "7_basico.ciencias.OA13",
+        "7_basico.ciencias.OA14"
+      ],
+      "desafios": 48
+    },
+    {
+      "archivo": "8_basico/matematica.json",
+      "nivel": "8_basico",
+      "asignatura": "matematica",
+      "objetivos": [
+        "8_basico.matematica.OA1",
+        "8_basico.matematica.OA3",
+        "8_basico.matematica.OA7"
+      ],
+      "desafios": 60
+    },
+    {
+      "archivo": "8_basico/ciencias.json",
+      "nivel": "8_basico",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "8_basico.ciencias.OA10",
+        "8_basico.ciencias.OA11",
+        "8_basico.ciencias.OA12"
+      ],
+      "desafios": 50
     }
   ],
   "tramos": [
@@ -128,6 +264,14 @@
       ]
     },
     {
+      "id": "1_basico.ingles",
+      "nombre": "Inglés 1° básico",
+      "objetivos": [
+        "1_basico.ingles.OA1",
+        "1_basico.ingles.OA13"
+      ]
+    },
+    {
       "id": "2_basico.matematica",
       "nombre": "Matemática 2° básico",
       "objetivos": [
@@ -143,6 +287,14 @@
       "objetivos": [
         "2_basico.lenguaje.OA5",
         "2_basico.lenguaje.OA21"
+      ]
+    },
+    {
+      "id": "2_basico.ingles",
+      "nombre": "Inglés 2° básico",
+      "objetivos": [
+        "2_basico.ingles.OA1",
+        "2_basico.ingles.OA13"
       ]
     },
     {
@@ -165,6 +317,14 @@
       ]
     },
     {
+      "id": "3_basico.ingles",
+      "nombre": "Inglés 3° básico",
+      "objetivos": [
+        "3_basico.ingles.OA1",
+        "3_basico.ingles.OA13"
+      ]
+    },
+    {
       "id": "4_basico.matematica",
       "nombre": "Matemática 4° básico",
       "objetivos": [
@@ -181,6 +341,84 @@
         "4_basico.lenguaje.OA4",
         "4_basico.lenguaje.OA10",
         "4_basico.lenguaje.OA21"
+      ]
+    },
+    {
+      "id": "4_basico.ingles",
+      "nombre": "Inglés 4° básico",
+      "objetivos": [
+        "4_basico.ingles.OA1",
+        "4_basico.ingles.OA13"
+      ]
+    },
+    {
+      "id": "5_basico.matematica",
+      "nombre": "Matemática 5° básico",
+      "objetivos": [
+        "5_basico.matematica.OA3",
+        "5_basico.matematica.OA4",
+        "5_basico.matematica.OA7"
+      ]
+    },
+    {
+      "id": "5_basico.ciencias",
+      "nombre": "Ciencias Naturales 5° básico",
+      "objetivos": [
+        "5_basico.ciencias.OA1",
+        "5_basico.ciencias.OA8",
+        "5_basico.ciencias.OA10"
+      ]
+    },
+    {
+      "id": "6_basico.matematica",
+      "nombre": "Matemática 6° básico",
+      "objetivos": [
+        "6_basico.matematica.OA1",
+        "6_basico.matematica.OA4"
+      ]
+    },
+    {
+      "id": "6_basico.ciencias",
+      "nombre": "Ciencias Naturales 6° básico",
+      "objetivos": [
+        "6_basico.ciencias.OA1",
+        "6_basico.ciencias.OA8",
+        "6_basico.ciencias.OA13"
+      ]
+    },
+    {
+      "id": "7_basico.matematica",
+      "nombre": "Matemática 7° básico",
+      "objetivos": [
+        "7_basico.matematica.OA1",
+        "7_basico.matematica.OA4"
+      ]
+    },
+    {
+      "id": "7_basico.ciencias",
+      "nombre": "Ciencias Naturales 7° básico",
+      "objetivos": [
+        "7_basico.ciencias.OA8",
+        "7_basico.ciencias.OA13",
+        "7_basico.ciencias.OA14"
+      ]
+    },
+    {
+      "id": "8_basico.matematica",
+      "nombre": "Matemática 8° básico",
+      "objetivos": [
+        "8_basico.matematica.OA1",
+        "8_basico.matematica.OA3",
+        "8_basico.matematica.OA7"
+      ]
+    },
+    {
+      "id": "8_basico.ciencias",
+      "nombre": "Ciencias Naturales 8° básico",
+      "objetivos": [
+        "8_basico.ciencias.OA10",
+        "8_basico.ciencias.OA11",
+        "8_basico.ciencias.OA12"
       ]
     }
   ]

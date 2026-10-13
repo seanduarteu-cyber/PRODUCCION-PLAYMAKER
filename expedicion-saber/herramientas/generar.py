@@ -3,18 +3,32 @@ más contenido/indice.json con la lista de archivos, objetivos y tramos.
 
 Uso:  python3 herramientas/generar.py
 """
+import importlib
 import json
 import os
 
 from objetivos import OBJETIVOS
-import matematica_1_2, matematica_3_4, lenguaje_1_2, lenguaje_3_4
 
 RAIZ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "contenido")
-GENERADORES = {**matematica_1_2.GENERADORES, **matematica_3_4.GENERADORES,
-               **lenguaje_1_2.GENERADORES, **lenguaje_3_4.GENERADORES}
-ORDEN_NIVELES = ["1_basico", "2_basico", "3_basico", "4_basico"]
-NOMBRE_NIVEL = {"1_basico": "1° básico", "2_basico": "2° básico", "3_basico": "3° básico", "4_basico": "4° básico"}
-NOMBRE_ASIG = {"matematica": "Matemática", "lenguaje": "Lenguaje y Comunicación"}
+NOMBRES_MODULOS = ["matematica_1_2", "matematica_3_4", "matematica_5_8", "lenguaje_1_2", "lenguaje_3_4", "lenguaje_5_8",
+                   "ciencias_1_4", "ciencias_5_8", "ingles_1_4", "ingles_5_8"]
+MODULOS = []
+for _n in NOMBRES_MODULOS:
+    try:
+        MODULOS.append(importlib.import_module(_n))
+    except ModuleNotFoundError as e:
+        if e.name != _n:
+            raise
+        print(f"Aviso: falta el banco {_n}.py; sus OA quedan sin publicar.")
+GENERADORES = {}
+for _m in MODULOS:
+    repetidos = GENERADORES.keys() & _m.GENERADORES.keys()
+    assert not repetidos, f"OA con dos generadores: {repetidos}"
+    GENERADORES.update(_m.GENERADORES)
+ORDEN_NIVELES = [f"{n}_basico" for n in range(1, 9)]
+NOMBRE_NIVEL = {f"{n}_basico": f"{n}° básico" for n in range(1, 9)}
+NOMBRE_ASIG = {"matematica": "Matemática", "lenguaje": "Lenguaje y Comunicación", "ciencias": "Ciencias Naturales",
+               "ingles": "Inglés"}
 
 
 def bloque(oa):
@@ -35,11 +49,14 @@ def bloque(oa):
 
 def main():
     faltan = [o["id_objetivo"] for o in OBJETIVOS if o["id_objetivo"] not in GENERADORES]
-    assert not faltan, f"OA sin generador: {faltan}"
+    sobran = [k for k in GENERADORES if k not in {o["id_objetivo"] for o in OBJETIVOS}]
+    assert not sobran, f"Generadores sin OA registrado en objetivos.py: {sobran}"
+    if faltan:
+        print(f"Aviso: {len(faltan)} OA registrados aún sin desafíos: {', '.join(faltan)}")
     archivos, tramos = [], []
     for nivel in ORDEN_NIVELES:
-        for asig in ("matematica", "lenguaje"):
-            oas = [o for o in OBJETIVOS if o["nivel"] == nivel and o["asignatura"] == asig]
+        for asig in NOMBRE_ASIG:
+            oas = [o for o in OBJETIVOS if o["nivel"] == nivel and o["asignatura"] == asig and o["id_objetivo"] in GENERADORES]
             if not oas:
                 continue
             datos = [bloque(o) for o in oas]

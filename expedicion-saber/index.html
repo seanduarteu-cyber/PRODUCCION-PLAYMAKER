@@ -49,6 +49,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.1;text-wr
 .btn.tierra{background:var(--tierra);box-shadow:inset -4px -4px 0 var(--tierra-osc),inset 4px 4px 0 #b07a45}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .btn.chico{min-height:40px;font-size:1rem;padding:6px 12px}
+.btn.lumita{background:var(--lumita);box-shadow:inset -4px -4px 0 #127282,inset 4px 4px 0 #8fe6f0}
 .fila{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .nota{color:var(--tinta-suave);font-size:.92rem}
 .monedas{font-family:var(--font-display);font-weight:700;font-variant-numeric:tabular-nums}
@@ -112,6 +113,10 @@ main{min-width:0;display:grid;gap:14px;align-content:start}
 .progreso i.actual{background:var(--oro)}
 .texto-lectura{background:var(--blanco);border:3px dashed var(--tierra);padding:12px 14px;font-size:1.1rem;line-height:1.6;max-width:65ch}
 .enunciado{display:flex;gap:10px;align-items:flex-start}
+.opciones.emojis{grid-template-columns:repeat(2,minmax(0,1fr))}
+.opciones.emojis .opcion{font-size:2.6rem;justify-content:center;text-align:center;min-height:88px}
+.audio-en{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.texto-audio{flex-basis:100%;margin:0;background:var(--blanco);border:3px dashed var(--lumita);padding:8px 12px;font-size:1.15rem}
 .enunciado p{margin:0;font-size:1.3rem;font-weight:700;line-height:1.35;flex:1;min-width:0;overflow-wrap:anywhere}
 .voz{width:48px;height:48px;flex-shrink:0;border:3px solid var(--tinta);background:var(--lumita);color:var(--blanco);font-size:1.3rem;box-shadow:inset -3px -3px 0 #127282}
 .intento{font-size:.9rem;font-weight:700;color:var(--tinta-suave)}

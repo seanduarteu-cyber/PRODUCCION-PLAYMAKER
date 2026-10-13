@@ -1,0 +1,779 @@
+[
+  {
+    "nivel": "2_basico",
+    "asignatura": "ingles",
+    "eje": "Comprensión oral",
+    "objetivo_oficial": "OA 1: Comprender textos leídos por un adulto o en formato audiovisual, breves y simples, como rimas, chants, canciones, cuentos y diálogos.",
+    "dificultad": 2,
+    "prerequisitos": [
+      "1_basico.ingles.OA1"
+    ],
+    "id_objetivo": "2_basico.ingles.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Comprension-oral/20893:EN02-OA-01"
+    },
+    "desafios": [
+      {
+        "id": "ing2-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha y elige el juguete.",
+        "audio": {
+          "texto": "ball",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "🚗",
+          "🧸",
+          "🎈",
+          "⚽"
+        ],
+        "correcta": 3,
+        "pista": "Escucha bien: es una palabra muy cortita.",
+        "explicacion_error": "Escuchaste «ball», que significa pelota ⚽.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿Cómo se siente?",
+        "audio": {
+          "texto": "happy",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "😀",
+          "😴",
+          "😠",
+          "😢"
+        ],
+        "correcta": 0,
+        "pista": "Escucha bien: empieza con el sonido /h/.",
+        "explicacion_error": "Escuchaste «happy», que significa feliz 😀.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha y elige la comida.",
+        "audio": {
+          "texto": "banana",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "🧀",
+          "🍞",
+          "🍌",
+          "🍎"
+        ],
+        "correcta": 2,
+        "pista": "Se parece mucho a una palabra en español.",
+        "explicacion_error": "Escuchaste «banana», que significa plátano 🍌.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-004",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "Escucha el número y escríbelo.",
+        "audio": {
+          "texto": "twelve",
+          "idioma": "en"
+        },
+        "respuesta": 12,
+        "tolerancia": 0,
+        "pista": "Es un número entre 10 y 20.",
+        "explicacion_error": "Escuchaste «twelve», que es el 12.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha y elige la ropa.",
+        "audio": {
+          "texto": "T-shirt",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "👖",
+          "👟",
+          "👕",
+          "🧢"
+        ],
+        "correcta": 2,
+        "pista": "Escucha bien: empieza con el sonido de la letra T.",
+        "explicacion_error": "Escuchaste «T-shirt», que significa polera 👕.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Escucha el número y escríbelo.",
+        "audio": {
+          "texto": "fifteen",
+          "idioma": "en"
+        },
+        "respuesta": 15,
+        "tolerancia": 0,
+        "pista": "Termina en «-teen», así que está entre 13 y 19.",
+        "explicacion_error": "Escuchaste «fifteen», que es el 15.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha. ¿Qué parte de la casa es?",
+        "audio": {
+          "texto": "kitchen",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "el dormitorio 🛏️",
+          "la cocina 🍳",
+          "el living 🛋️",
+          "el baño 🛁"
+        ],
+        "correcta": 1,
+        "pista": "Recuerda: «bedroom» es dormitorio y «bathroom» es baño.",
+        "explicacion_error": "Escuchaste «kitchen», que significa cocina 🍳.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha a Diego. ¿Cómo se siente?",
+        "audio": {
+          "texto": "I'm angry!",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "😀",
+          "😠",
+          "😢",
+          "😴"
+        ],
+        "correcta": 1,
+        "pista": "No dice «happy» ni «sad».",
+        "explicacion_error": "Diego dice «I'm angry!», que significa ¡estoy enojado! 😠",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Escucha a {personaje}. ¿Qué le gusta?",
+        "audio": {
+          "texto": "I like apples.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "🥕",
+          "🍇",
+          "🍎",
+          "🍌"
+        ],
+        "correcta": 2,
+        "pista": "Escucha la palabra que va después de «I like».",
+        "explicacion_error": "{personaje} dice «I like apples»: le gustan las manzanas 🍎.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Escucha a Tomás. ¿Qué dice?",
+        "audio": {
+          "texto": "I don't like milk.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Le gusta el jugo.",
+          "Le gusta la leche.",
+          "No le gusta la leche.",
+          "No le gusta el pan."
+        ],
+        "correcta": 2,
+        "pista": "Fíjate si dice «I like» o «I don't like».",
+        "explicacion_error": "Tomás dice «I don't like milk»: no le gusta la leche. «Don't» significa no.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-011",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Escucha a Amanda y completa: «I like ___.»",
+        "audio": {
+          "texto": "I like ice cream.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "ice cream 🍦",
+          "milk 🥛",
+          "cake 🍰",
+          "pizza 🍕"
+        ],
+        "correcta": 0,
+        "pista": "Escucha la comida que nombra al final.",
+        "explicacion_error": "Amanda dice «I like ice cream»: le gusta el helado 🍦.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Escucha y ordena la ropa como la nombran.",
+        "audio": {
+          "texto": "Socks, shoes, cap, dress.",
+          "idioma": "en"
+        },
+        "elementos": [
+          "🧦",
+          "👟",
+          "🧢",
+          "👗"
+        ],
+        "pista": "Escucha una prenda a la vez.",
+        "explicacion_error": "El orden es socks 🧦 (calcetines), shoes 👟 (zapatos), cap 🧢 (jockey) y dress 👗 (vestido).",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-013",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "Escucha a Martina. ¿Qué le gusta y qué no?",
+        "audio": {
+          "texto": "I like pizza. I like cake. I don't like fish. I don't like carrots.",
+          "idioma": "en"
+        },
+        "categorias": [
+          "Le gusta 😀",
+          "No le gusta 😖"
+        ],
+        "elementos": [
+          {
+            "texto": "🍕",
+            "categoria": 0
+          },
+          {
+            "texto": "🍰",
+            "categoria": 0
+          },
+          {
+            "texto": "🐟",
+            "categoria": 1
+          },
+          {
+            "texto": "🥕",
+            "categoria": 1
+          }
+        ],
+        "pista": "Fíjate en «I like» y en «I don't like».",
+        "explicacion_error": "Martina dice «I like pizza, I like cake» (pizza y torta) y «I don't like fish, I don't like carrots» (pescado y zanahorias).",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-014",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Escucha y une a cada niño con cómo se siente.",
+        "audio": {
+          "texto": "Diego is happy. Sofia is sad. Amanda is tired.",
+          "idioma": "en"
+        },
+        "pares": [
+          [
+            "Diego",
+            "😀"
+          ],
+          [
+            "Sofía",
+            "😢"
+          ],
+          [
+            "Amanda",
+            "😴"
+          ]
+        ],
+        "pista": "Escucha primero el nombre y después cómo está.",
+        "explicacion_error": "Diego is happy 😀 (feliz), Sofia is sad 😢 (triste) y Amanda is tired 😴 (cansada).",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Escucha a {personaje}. ¿Cuántos juguetes tiene?",
+        "audio": {
+          "texto": "I have eleven toys.",
+          "idioma": "en"
+        },
+        "respuesta": 11,
+        "tolerancia": 0,
+        "pista": "Escucha bien el número: hay números que suenan parecido.",
+        "explicacion_error": "Dice «I have eleven toys»: «eleven» es 11 (no confundir con «seven», 7).",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Escucha. ¿Dónde está el gato?",
+        "audio": {
+          "texto": "Where is the cat? It's in the bedroom.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "en el baño",
+          "en el jardín",
+          "en el dormitorio",
+          "en la cocina"
+        ],
+        "correcta": 2,
+        "pista": "Escucha la última palabra.",
+        "explicacion_error": "Dice «It's in the bedroom»: «bedroom» significa dormitorio.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha el diálogo. ¿Qué fruta le gusta a Diego?",
+        "audio": {
+          "texto": "Do you like bananas, Diego? No, I don't. I like grapes.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "🍓",
+          "🍌",
+          "🍎",
+          "🍇"
+        ],
+        "correcta": 3,
+        "pista": "Ojo: Diego nombra dos frutas, pero solo una le gusta.",
+        "explicacion_error": "A las bananas dice «No, I don't», y luego «I like grapes»: le gustan las uvas 🍇.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-018",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Escucha. ¿Cuántas pelotas hay en total?",
+        "audio": {
+          "texto": "I have ten red balls and five blue balls.",
+          "idioma": "en"
+        },
+        "respuesta": 15,
+        "tolerancia": 0,
+        "pista": "Escucha cuántas rojas y cuántas azules hay, y súmalas.",
+        "explicacion_error": "«Ten red balls and five blue balls»: 10 + 5 = 15 pelotas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa1-019",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha. ¿Cómo está Sofía y por qué?",
+        "audio": {
+          "texto": "Hi, Sofia! How are you? I'm happy! It's my birthday!",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Feliz, porque tiene un perro.",
+          "Cansada, porque es su cumpleaños.",
+          "Feliz, porque es su cumpleaños.",
+          "Triste, porque es su cumpleaños."
+        ],
+        "correcta": 2,
+        "pista": "Escucha cómo se siente y qué celebra.",
+        "explicacion_error": "Sofía dice «I'm happy! It's my birthday!»: está feliz porque es su cumpleaños.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_basico",
+    "asignatura": "ingles",
+    "eje": "Expresión escrita",
+    "objetivo_oficial": "OA 13: Escribir (copiar o completar) palabras y oraciones simples de acuerdo a un modelo, sobre temas conocidos.",
+    "dificultad": 2,
+    "prerequisitos": [
+      "1_basico.ingles.OA13"
+    ],
+    "id_objetivo": "2_basico.ingles.OA13",
+    "verificacion": {
+      "codigo": "pendiente",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Educacion-General/Ingles-Propuesta-curricular-/Ingles-Propuesta-2-basico/"
+    },
+    "desafios": [
+      {
+        "id": "ing2-oa13-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Escucha el modelo y completa la palabra: c___ke 🍰",
+        "audio": {
+          "texto": "cake",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "a",
+          "o",
+          "e",
+          "u"
+        ],
+        "correcta": 0,
+        "pista": "Escucha el sonido después de la c.",
+        "explicacion_error": "Torta se escribe «cake»: c-a-k-e.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-002",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada palabra con su dibujo.",
+        "pares": [
+          [
+            "ball",
+            "⚽"
+          ],
+          [
+            "car",
+            "🚗"
+          ],
+          [
+            "teddy bear",
+            "🧸"
+          ],
+          [
+            "balloon",
+            "🎈"
+          ]
+        ],
+        "pista": "Piensa en los juguetes que conoces. Ojo: dos empiezan con «ball».",
+        "explicacion_error": "ball es pelota ⚽, car es auto 🚗, teddy bear es oso de peluche 🧸 y balloon es globo 🎈.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "{personaje} escribió el modelo «happy» 😀. ¿Qué palabra es igual?",
+        "alternativas": [
+          "hoppy",
+          "happi",
+          "hapy",
+          "happy"
+        ],
+        "correcta": 3,
+        "pista": "Compara letra por letra con el modelo.",
+        "explicacion_error": "Feliz se escribe «happy»: h-a-p-p-y, con doble p.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa: «I like ___.» 🍕",
+        "alternativas": [
+          "piza",
+          "pizza",
+          "cake",
+          "milk"
+        ],
+        "correcta": 1,
+        "pista": "Mira el dibujo y revisa bien las letras.",
+        "explicacion_error": "🍕 es «pizza», con doble z: «I like pizza» significa me gusta la pizza.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa la serie: «eleven, twelve, ___»",
+        "alternativas": [
+          "threeteen",
+          "thirty",
+          "fourteen",
+          "thirteen"
+        ],
+        "correcta": 3,
+        "pista": "Busca el número que viene después del 12 y revisa sus letras.",
+        "explicacion_error": "13 se escribe «thirteen». «Thirty» es 30.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Es ropa o comida?",
+        "categorias": [
+          "Ropa 👕",
+          "Comida 🍽️"
+        ],
+        "elementos": [
+          {
+            "texto": "shirt",
+            "categoria": 0
+          },
+          {
+            "texto": "socks",
+            "categoria": 0
+          },
+          {
+            "texto": "dress",
+            "categoria": 0
+          },
+          {
+            "texto": "bread",
+            "categoria": 1
+          },
+          {
+            "texto": "cheese",
+            "categoria": 1
+          },
+          {
+            "texto": "apple",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa qué significa cada palabra.",
+        "explicacion_error": "shirt (camisa), socks (calcetines) y dress (vestido) son ropa; bread (pan), cheese (queso) y apple (manzana) son comida.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-007",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada palabra con su significado.",
+        "pares": [
+          [
+            "happy",
+            "feliz"
+          ],
+          [
+            "sad",
+            "triste"
+          ],
+          [
+            "angry",
+            "enojado"
+          ],
+          [
+            "tired",
+            "cansado"
+          ]
+        ],
+        "pista": "Piensa en las caras: 😀 😢 😠 😴.",
+        "explicacion_error": "happy es feliz, sad es triste, angry es enojado y tired es cansado.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena las palabras para escribir «Me gustan las manzanas rojas».",
+        "elementos": [
+          "I",
+          "like",
+          "red",
+          "apples."
+        ],
+        "pista": "En inglés el color va antes de la fruta.",
+        "explicacion_error": "«I like red apples.» significa me gustan las manzanas rojas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Completa: «I am ___.» 😢",
+        "alternativas": [
+          "sadd",
+          "sad",
+          "happy",
+          "angry"
+        ],
+        "correcta": 1,
+        "pista": "Mira la cara: ¿cómo se siente?",
+        "explicacion_error": "😢 es «sad» (triste): «I am sad» significa estoy triste.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-010",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Escucha el modelo y completa la palabra: dre___ 👗",
+        "audio": {
+          "texto": "dress",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "ss",
+          "s",
+          "sh",
+          "z"
+        ],
+        "correcta": 0,
+        "pista": "Escucha la palabra y fíjate cómo termina.",
+        "explicacion_error": "Vestido se escribe «dress», con doble s al final.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-011",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena las letras para escribir «milk» 🥛.",
+        "elementos": [
+          "m",
+          "i",
+          "l",
+          "k"
+        ],
+        "pista": "Empieza con la letra m.",
+        "explicacion_error": "Leche se escribe «milk»: m-i-l-k.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Completa: «I don't ___ carrots.» 🥕😖",
+        "alternativas": [
+          "no",
+          "likes",
+          "like",
+          "liking"
+        ],
+        "correcta": 2,
+        "pista": "Después de «I don't» va la palabra tal como está, sin cambios.",
+        "explicacion_error": "«I don't like carrots» significa no me gustan las zanahorias.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena las palabras para escribir «No me gusta el pescado».",
+        "elementos": [
+          "I",
+          "don't",
+          "like",
+          "fish."
+        ],
+        "pista": "Para decir que no te gusta, usa «don't» antes de «like».",
+        "explicacion_error": "«I don't like fish.» significa no me gusta el pescado.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-014",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Completa: «The bed is in the ___.» 🛏️",
+        "alternativas": [
+          "bedrom",
+          "kitchen",
+          "bathroom",
+          "bedroom"
+        ],
+        "correcta": 3,
+        "pista": "¿En qué parte de la casa duermes? Revisa las letras.",
+        "explicacion_error": "La cama está en el dormitorio: «bedroom», con doble o.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Está bien escrita o mal escrita?",
+        "categorias": [
+          "Bien escrita ✅",
+          "Mal escrita ❌"
+        ],
+        "elementos": [
+          {
+            "texto": "shoes",
+            "categoria": 0
+          },
+          {
+            "texto": "juice",
+            "categoria": 0
+          },
+          {
+            "texto": "doll",
+            "categoria": 0
+          },
+          {
+            "texto": "shose",
+            "categoria": 1
+          },
+          {
+            "texto": "juise",
+            "categoria": 1
+          },
+          {
+            "texto": "dol",
+            "categoria": 1
+          }
+        ],
+        "pista": "Lee cada palabra lento y recuerda cómo se ve.",
+        "explicacion_error": "Se escribe shoes (zapatos), juice (jugo) y doll (muñeca); shose, juise y dol están mal escritas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-016",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Sigue el modelo. «I like dogs.» 🐶😀 → «I ___ cats.» 🐱😖",
+        "alternativas": [
+          "don't like",
+          "not like",
+          "doesn't like",
+          "like"
+        ],
+        "correcta": 0,
+        "pista": "La carita 😖 dice que NO le gustan.",
+        "explicacion_error": "Para decir que no te gusta algo se usa «I don't like»: «I don't like cats».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-017",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Escribe en inglés: «Tengo doce juguetes».",
+        "elementos": [
+          "I",
+          "have",
+          "twelve",
+          "toys."
+        ],
+        "pista": "«Tengo» se dice «I have».",
+        "explicacion_error": "«I have twelve toys.» significa tengo doce juguetes.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2-oa13-018",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Modelo: «My shirt is blue.» 👕💙 Completa: «My ___ is red.» 🧢❤️",
+        "alternativas": [
+          "cap",
+          "shirt",
+          "kap",
+          "shoes"
+        ],
+        "correcta": 0,
+        "pista": "Mira la prenda que va con el corazón rojo.",
+        "explicacion_error": "🧢 es «cap» (jockey): «My cap is red» significa mi jockey es rojo.",
+        "monedas": 10
+      }
+    ]
+  }
+]

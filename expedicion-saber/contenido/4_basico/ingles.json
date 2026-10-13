@@ -1,0 +1,773 @@
+[
+  {
+    "nivel": "4_basico",
+    "asignatura": "ingles",
+    "eje": "Comprensión oral",
+    "objetivo_oficial": "OA 1: Comprender textos leídos por un adulto o en formato audiovisual, breves y simples, como rimas, chants, canciones, cuentos y diálogos.",
+    "dificultad": 4,
+    "prerequisitos": [
+      "3_basico.ingles.OA1"
+    ],
+    "id_objetivo": "4_basico.ingles.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Comprension-oral/20930:EN04-OA-01"
+    },
+    "desafios": [
+      {
+        "id": "ing4-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha y elige la profesión.",
+        "audio": {
+          "texto": "firefighter",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "policía 🚓",
+          "bombero 🚒",
+          "doctor 🏥",
+          "profesor 🏫"
+        ],
+        "correcta": 1,
+        "pista": "Es una palabra larga, formada por dos palabras.",
+        "explicacion_error": "Escuchaste «firefighter», que significa bombero 🚒.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿Qué hora es?",
+        "audio": {
+          "texto": "It's three o'clock.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "10:00",
+          "8:00",
+          "2:00",
+          "3:00"
+        ],
+        "correcta": 3,
+        "pista": "«O'clock» significa en punto.",
+        "explicacion_error": "Escuchaste «It's three o'clock»: son las 3:00.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha y elige el deporte.",
+        "audio": {
+          "texto": "basketball",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "🎾",
+          "⚽",
+          "🏀",
+          "🏐"
+        ],
+        "correcta": 2,
+        "pista": "Ojo: varios deportes terminan en «ball».",
+        "explicacion_error": "Escuchaste «basketball», que significa básquetbol 🏀.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha y elige el lugar.",
+        "audio": {
+          "texto": "park",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "hospital 🏥",
+          "banco 🏦",
+          "parque 🌳",
+          "cine 🎬"
+        ],
+        "correcta": 2,
+        "pista": "Escucha bien: es una palabra muy cortita.",
+        "explicacion_error": "Escuchaste «park», que significa parque 🌳.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha. ¿Qué lugar de la ciudad es?",
+        "audio": {
+          "texto": "library",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "liceo",
+          "laboratorio",
+          "librería",
+          "biblioteca"
+        ],
+        "correcta": 3,
+        "pista": "Ojo: se parece a una palabra en español, pero no significa lo mismo.",
+        "explicacion_error": "«Library» significa biblioteca, no librería (que en inglés es «bookstore»).",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha. ¿Dónde está la pelota?",
+        "audio": {
+          "texto": "The ball is under the table.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "sobre la mesa",
+          "debajo de la mesa",
+          "al lado de la mesa",
+          "dentro de la caja"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en la palabra que va antes de «the table».",
+        "explicacion_error": "Dice «under the table»: «under» significa debajo de.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Escucha a {personaje}. ¿Qué hora es? Escribe solo el número.",
+        "audio": {
+          "texto": "It's ten o'clock.",
+          "idioma": "en"
+        },
+        "respuesta": 10,
+        "tolerancia": 0,
+        "unidad": "en punto",
+        "pista": "«O'clock» significa en punto.",
+        "explicacion_error": "Dice «It's ten o'clock»: son las 10 en punto.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha a Amanda. ¿Qué toma al desayuno?",
+        "audio": {
+          "texto": "I drink orange juice for breakfast.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "leche 🥛",
+          "jugo de naranja 🍊",
+          "agua 💧",
+          "té ☕"
+        ],
+        "correcta": 1,
+        "pista": "Escucha lo que dice después de «I drink».",
+        "explicacion_error": "Amanda dice «I drink orange juice»: toma jugo de naranja 🍊.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Escucha. ¿Qué está haciendo Vicente?",
+        "audio": {
+          "texto": "Look! He is running.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Está leyendo. 📖",
+          "Está nadando. 🏊",
+          "Está durmiendo. 😴",
+          "Está corriendo. 🏃"
+        ],
+        "correcta": 3,
+        "pista": "La acción que termina en «-ing» dice lo que está haciendo ahora.",
+        "explicacion_error": "Dice «He is running»: está corriendo 🏃.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-010",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Escucha y une cada profesión con su lugar de trabajo.",
+        "audio": {
+          "texto": "A teacher works in a school. A doctor works in a hospital. A cook works in a restaurant.",
+          "idioma": "en"
+        },
+        "pares": [
+          [
+            "profesor",
+            "escuela 🏫"
+          ],
+          [
+            "doctor",
+            "hospital 🏥"
+          ],
+          [
+            "cocinero",
+            "restaurante 🍽️"
+          ]
+        ],
+        "pista": "Escucha lo que dice después de «works in».",
+        "explicacion_error": "A teacher (profesor) works in a school (escuela), a doctor works in a hospital y a cook (cocinero) works in a restaurant (restaurante).",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-011",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Escucha y completa: «The cat is ___ the bed.»",
+        "audio": {
+          "texto": "The cat is on the bed.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "at",
+          "on",
+          "in",
+          "under"
+        ],
+        "correcta": 1,
+        "pista": "Escucha la palabra cortita que va antes de «the bed».",
+        "explicacion_error": "Dice «The cat is on the bed»: «on» significa sobre (encima de).",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-012",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Escucha y une a cada niño con la hora en que se levanta.",
+        "audio": {
+          "texto": "Diego gets up at eight. Sofia gets up at six. Amanda gets up at seven.",
+          "idioma": "en"
+        },
+        "pares": [
+          [
+            "Diego",
+            "8:00"
+          ],
+          [
+            "Sofía",
+            "6:00"
+          ],
+          [
+            "Amanda",
+            "7:00"
+          ]
+        ],
+        "pista": "Escucha el nombre y después la hora. «Gets up» significa se levanta.",
+        "explicacion_error": "Diego gets up at eight (8:00), Sofia at six (6:00) y Amanda at seven (7:00).",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Escucha la tarde de Josefa y ordena lo que hace.",
+        "audio": {
+          "texto": "First, I play the guitar. Then, I read a book. Finally, I ride my bike.",
+          "idioma": "en"
+        },
+        "elementos": [
+          "tocar guitarra 🎸",
+          "leer un libro 📖",
+          "andar en bici 🚲"
+        ],
+        "pista": "Escucha «first» (primero), «then» (luego) y «finally» (al final).",
+        "explicacion_error": "Primero (first) toca guitarra, luego (then) lee un libro y al final (finally) anda en bici.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-014",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "Escucha a Diego. ¿Qué le gusta hacer y qué no?",
+        "audio": {
+          "texto": "I like swimming and playing soccer. I don't like dancing or reading.",
+          "idioma": "en"
+        },
+        "categorias": [
+          "Le gusta 😀",
+          "No le gusta 😖"
+        ],
+        "elementos": [
+          {
+            "texto": "nadar 🏊",
+            "categoria": 0
+          },
+          {
+            "texto": "jugar fútbol ⚽",
+            "categoria": 0
+          },
+          {
+            "texto": "bailar 💃",
+            "categoria": 1
+          },
+          {
+            "texto": "leer 📖",
+            "categoria": 1
+          }
+        ],
+        "pista": "Fíjate en «I like» y en «I don't like».",
+        "explicacion_error": "Diego dice que le gusta swimming (nadar) y playing soccer (jugar fútbol), pero no le gusta dancing (bailar) ni reading (leer).",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Escucha. ¿Qué hora es?",
+        "audio": {
+          "texto": "What time is it? It's half past four.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "4:30",
+          "4:15",
+          "3:30",
+          "5:30"
+        ],
+        "correcta": 0,
+        "pista": "«Half» significa media.",
+        "explicacion_error": "Dice «half past four»: las cuatro y media, 4:30.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha. ¿Dónde está la mamá y qué está haciendo?",
+        "audio": {
+          "texto": "Where is Mom? She is in the kitchen. She is cooking.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "En la cocina, lavando platos.",
+          "En el jardín, cocinando.",
+          "En la cocina, cocinando.",
+          "En el comedor, comiendo."
+        ],
+        "correcta": 2,
+        "pista": "Escucha el lugar y la acción que termina en «-ing».",
+        "explicacion_error": "Dice «She is in the kitchen. She is cooking»: está en la cocina, cocinando.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha la adivinanza. ¿Qué profesión es?",
+        "audio": {
+          "texto": "I work with animals. I help sick dogs and cats.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "granjero",
+          "veterinario",
+          "cocinero",
+          "doctor"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate a quién ayuda esta persona.",
+        "explicacion_error": "«I work with animals. I help sick dogs and cats»: ayuda a animales enfermos, así que es veterinario.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa1-018",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Escucha. ¿A qué hora termina la película? Escribe solo el número.",
+        "audio": {
+          "texto": "The movie starts at five o'clock. It is two hours long.",
+          "idioma": "en"
+        },
+        "respuesta": 7,
+        "tolerancia": 0,
+        "unidad": "en punto",
+        "pista": "Escucha a qué hora empieza y cuántas horas dura; luego súmalas.",
+        "explicacion_error": "Empieza «at five o'clock» (5:00) y dura «two hours» (2 horas): 5 + 2 = 7 en punto.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_basico",
+    "asignatura": "ingles",
+    "eje": "Expresión escrita",
+    "objetivo_oficial": "OA 13: Escribir (copiar o completar) palabras y oraciones simples de acuerdo a un modelo, sobre temas conocidos o de otras asignaturas.",
+    "dificultad": 4,
+    "prerequisitos": [
+      "3_basico.ingles.OA13"
+    ],
+    "id_objetivo": "4_basico.ingles.OA13",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/20942:EN04-OA-13"
+    },
+    "desafios": [
+      {
+        "id": "ing4-oa13-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Escucha el modelo y completa la palabra: sch___ol 🏫",
+        "audio": {
+          "texto": "school",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "oo",
+          "o",
+          "a",
+          "u"
+        ],
+        "correcta": 1,
+        "pista": "Revisa el modelo: lleva dos letras iguales seguidas.",
+        "explicacion_error": "Escuela se escribe «school»: s-c-h-o-o-l.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-002",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada profesión con su significado.",
+        "pares": [
+          [
+            "teacher",
+            "profesor"
+          ],
+          [
+            "farmer",
+            "granjero"
+          ],
+          [
+            "firefighter",
+            "bombero"
+          ],
+          [
+            "cook",
+            "cocinero"
+          ]
+        ],
+        "pista": "Piensa en «farm» (granja) y «fire» (fuego).",
+        "explicacion_error": "teacher es profesor, farmer es granjero, firefighter es bombero y cook es cocinero.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Copia el modelo «breakfast» 🍳. ¿Qué palabra es igual?",
+        "alternativas": [
+          "brekfast",
+          "braekfast",
+          "breakfas",
+          "breakfast"
+        ],
+        "correcta": 3,
+        "pista": "Compara letra por letra con el modelo.",
+        "explicacion_error": "Desayuno se escribe «breakfast»: b-r-e-a-k-f-a-s-t.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa: «It's ___ o'clock.» (8:00)",
+        "alternativas": [
+          "seven",
+          "eigth",
+          "ate",
+          "eight"
+        ],
+        "correcta": 3,
+        "pista": "Busca el número 8 y revisa bien sus letras.",
+        "explicacion_error": "8 se escribe «eight»: «It's eight o'clock» significa son las ocho en punto.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Es un deporte o un lugar de la ciudad?",
+        "categorias": [
+          "Deporte",
+          "Lugar"
+        ],
+        "elementos": [
+          {
+            "texto": "tennis",
+            "categoria": 0
+          },
+          {
+            "texto": "volleyball",
+            "categoria": 0
+          },
+          {
+            "texto": "swimming",
+            "categoria": 0
+          },
+          {
+            "texto": "bank",
+            "categoria": 1
+          },
+          {
+            "texto": "museum",
+            "categoria": 1
+          },
+          {
+            "texto": "zoo",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa qué significa cada palabra.",
+        "explicacion_error": "tennis (tenis), volleyball (vóleibol) y swimming (natación) son deportes; bank (banco), museum (museo) y zoo (zoológico) son lugares.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa: «The cat is ___ the box.» (El gato está dentro de la caja.)",
+        "alternativas": [
+          "in",
+          "on",
+          "under",
+          "at"
+        ],
+        "correcta": 0,
+        "pista": "«Dentro de» se dice con una palabra muy corta.",
+        "explicacion_error": "«In» significa dentro de: «The cat is in the box».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-007",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada palabra con su dibujo.",
+        "pares": [
+          [
+            "guitar",
+            "🎸"
+          ],
+          [
+            "bike",
+            "🚲"
+          ],
+          [
+            "camera",
+            "📷"
+          ],
+          [
+            "piano",
+            "🎹"
+          ]
+        ],
+        "pista": "Varias se parecen al español.",
+        "explicacion_error": "guitar es guitarra 🎸, bike es bicicleta 🚲, camera es cámara 📷 y piano es piano 🎹.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Completa: «She is ___.» 🏃‍♀️",
+        "alternativas": [
+          "run",
+          "runs",
+          "running",
+          "runing"
+        ],
+        "correcta": 2,
+        "pista": "Después de «is», la acción termina en -ing. Revisa bien las letras.",
+        "explicacion_error": "«She is running» significa ella está corriendo. «Run» dobla la n: running.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena las palabras para escribir «Mi papá está cocinando».",
+        "elementos": [
+          "My",
+          "dad",
+          "is",
+          "cooking."
+        ],
+        "pista": "«Está cocinando» se dice con «is» y una acción terminada en -ing.",
+        "explicacion_error": "«My dad is cooking.» significa mi papá está cocinando.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-010",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Ayuda a {personaje} a completar: «I have lunch at ___ o'clock.» (1:00)",
+        "alternativas": [
+          "two",
+          "won",
+          "one",
+          "first"
+        ],
+        "correcta": 2,
+        "pista": "Busca cómo se escribe el número 1.",
+        "explicacion_error": "1 se escribe «one». «Won» suena igual, pero significa ganó.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-011",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena las sílabas para escribir «basketball» 🏀.",
+        "elementos": [
+          "bas",
+          "ket",
+          "ball"
+        ],
+        "pista": "Termina con «ball» (pelota).",
+        "explicacion_error": "Básquetbol se escribe «basketball»: bas-ket-ball.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Completa: «The shoes are ___ the bed.» (Los zapatos están debajo de la cama.)",
+        "alternativas": [
+          "in",
+          "under",
+          "on",
+          "onder"
+        ],
+        "correcta": 1,
+        "pista": "Piensa qué significa cada palabra y revisa las letras.",
+        "explicacion_error": "«Under» significa debajo de: «The shoes are under the bed».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Escribe en inglés: «Los niños están jugando fútbol».",
+        "elementos": [
+          "The",
+          "children",
+          "are",
+          "playing",
+          "soccer."
+        ],
+        "pista": "Con varios niños se usa «are», y la acción termina en -ing.",
+        "explicacion_error": "«The children are playing soccer.» significa los niños están jugando fútbol.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-014",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Se completa con «is» o con «are»?",
+        "categorias": [
+          "is",
+          "are"
+        ],
+        "elementos": [
+          {
+            "texto": "She ___ dancing.",
+            "categoria": 0
+          },
+          {
+            "texto": "My dad ___ cooking.",
+            "categoria": 0
+          },
+          {
+            "texto": "The dog ___ sleeping.",
+            "categoria": 0
+          },
+          {
+            "texto": "They ___ swimming.",
+            "categoria": 1
+          },
+          {
+            "texto": "We ___ reading.",
+            "categoria": 1
+          },
+          {
+            "texto": "The girls ___ singing.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Si es uno, va «is»; si son varios, va «are».",
+        "explicacion_error": "She, my dad y the dog son uno: «is». They, we y the girls son varios: «are».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-015",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Completa: «A ___ works in a hospital.» 🏥",
+        "alternativas": [
+          "farmer",
+          "nurce",
+          "nurse",
+          "pilot"
+        ],
+        "correcta": 2,
+        "pista": "¿Quién cuida a los enfermos? Revisa bien las letras.",
+        "explicacion_error": "«Nurse» significa enfermera o enfermero, y trabaja en un hospital.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-016",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Sigue el modelo. «I play tennis.» → «I am playing tennis.» Completa: «I read a book.» → «I am ___ a book.»",
+        "alternativas": [
+          "reading",
+          "reads",
+          "read",
+          "readding"
+        ],
+        "correcta": 0,
+        "pista": "Agrega -ing como en el modelo y revisa si la letra se dobla.",
+        "explicacion_error": "«Read» + -ing = «reading»: «I am reading a book» significa estoy leyendo un libro.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-017",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Escribe en inglés: «El gato está debajo de la silla».",
+        "elementos": [
+          "The cat",
+          "is",
+          "under",
+          "the chair."
+        ],
+        "pista": "Primero quién, después dónde está.",
+        "explicacion_error": "«The cat is under the chair.» significa el gato está debajo de la silla.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4-oa13-018",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Modelo: «A firefighter works in a fire station.» Completa: «A teacher works in a ___.»",
+        "alternativas": [
+          "hospital",
+          "scool",
+          "school",
+          "bank"
+        ],
+        "correcta": 2,
+        "pista": "¿Dónde trabaja un profesor? Revisa bien las letras.",
+        "explicacion_error": "Un profesor (teacher) trabaja en una escuela: «school».",
+        "monedas": 10
+      }
+    ]
+  }
+]

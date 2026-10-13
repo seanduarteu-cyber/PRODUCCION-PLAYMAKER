@@ -4,7 +4,9 @@ Videojuego educativo basado en las Bases Curriculares del Mineduc. El jugador re
 gana monedas y las gasta en mejorar su avatar. No hay ranking, ni competencia con otros jugadores, ni tiempo
 que castigue: el refuerzo es ver crecer el avatar.
 
-**Estado:** Matemática y Lenguaje de 1° a 4° básico, con un mundo completo (Valle Bloque, estética voxel).
+**Estado:** en ampliación a Matemática, Lenguaje, Ciencias Naturales e Inglés de 1° a 8° básico. Ya están
+Matemática 1° a 8°, Lenguaje 1° a 4°, Ciencias 5° a 8° e Inglés 1° a 4°; faltan Lenguaje 5° a 8°, Ciencias 1° a 4°
+e Inglés 5° a 8° (sus OA ya están registrados en `herramientas/objetivos.py`). Un mundo completo (Valle Bloque, estética voxel).
 Isla Brinco (plataformas) y Ciudad Voltia (héroes) ya tienen su configuración de ambientación y mejoras, pero
 les falta el dibujo del avatar.
 

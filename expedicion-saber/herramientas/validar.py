@@ -1,8 +1,9 @@
 """Valida el banco de contenido generado (contenido/**/*.json).
 
-Revisa: esquema de cada OA y de cada tipo de desafío, mínimo 15 desafíos por OA con al menos 3 en
-cada nivel de dificultad 1-5, ids únicos, prerequisitos existentes y sin ciclos, tokens de
-ambientación conocidos y monedas base = 10. Lista los códigos pendientes de verificación.
+Revisa: esquema de cada OA y de cada tipo de desafío (incluido el audio opcional), mínimo 15 desafíos
+por OA con al menos 3 en cada nivel de dificultad 1-5, ids únicos, prerequisitos existentes y sin
+ciclos, tokens de ambientación conocidos y monedas base = 10. Avisa (sin fallar) si un desafío tiene
+tanto texto que no se alcanzaría a resolver en 30 segundos. Lista los códigos pendientes de verificación.
 
 Uso:  python3 herramientas/validar.py      (sale con código 1 si hay errores)
 """
@@ -11,18 +12,22 @@ import os
 import re
 import sys
 
+from objetivos import POR_ID
+
 RAIZ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "contenido")
 TIPOS = {"opcion_multiple", "completar", "ordenar_secuencia", "emparejar", "arrastrar_categoria", "respuesta_numerica"}
 TOKENS = {"personaje", "objeto", "objetos", "un_objeto", "los_objetos", "lugar", "contenedor", "contenedores",
           "el_contenedor", "la_construccion", "junto"}
 CAMPOS_OA = ["nivel", "asignatura", "eje", "objetivo_oficial", "dificultad", "prerequisitos", "id_objetivo", "verificacion", "desafios"]
+LIMITE_PALABRAS = 80  # texto + enunciado; más que esto difícilmente se lee y responde en 30 s
 NIVELES = ["1_basico", "2_basico", "3_basico", "4_basico", "5_basico", "6_basico", "7_basico", "8_basico",
            "1_medio", "2_medio", "3_medio", "4_medio"]
 
 
 def textos(d):
     """Todos los textos visibles de un desafío (para revisar tokens)."""
-    out = [d.get("enunciado", ""), d.get("texto", ""), d.get("pista", ""), d.get("explicacion_error", "")]
+    out = [d.get("enunciado", ""), d.get("texto", ""), d.get("pista", ""), d.get("explicacion_error", ""),
+           (d.get("audio") or {}).get("texto", "")]
     out += [str(x) for x in d.get("alternativas", [])] + [str(x) for x in d.get("elementos", []) if not isinstance(x, dict)]
     out += [e["texto"] for e in d.get("elementos", []) if isinstance(e, dict)]
     out += [x for p in d.get("pares", []) for x in p] + d.get("categorias", [])
@@ -40,6 +45,10 @@ def validar_desafio(d, err):
         err.append(f"{pre}: dificultad fuera de 1-5")
     if d.get("monedas") != 10:
         err.append(f"{pre}: monedas base distinta de 10")
+    if "audio" in d:
+        au = d["audio"]
+        if not isinstance(au, dict) or not str(au.get("texto", "")).strip() or au.get("idioma") not in ("en", "es"):
+            err.append(f"{pre}: 'audio' debe ser {{texto, idioma: en|es}}")
     t = d.get("tipo")
     if t in ("opcion_multiple", "completar"):
         a = d.get("alternativas", [])
@@ -73,7 +82,7 @@ def validar_desafio(d, err):
 
 
 def main():
-    err, ids, oas, pendientes = [], set(), {}, []
+    err, ids, oas, pendientes, largos, sin_contenido = [], set(), {}, [], [], set()
     indice = json.load(open(os.path.join(RAIZ, "indice.json"), encoding="utf-8"))
     for a in indice["archivos"]:
         datos = json.load(open(os.path.join(RAIZ, a["archivo"]), encoding="utf-8"))
@@ -102,11 +111,16 @@ def main():
                     err.append(f"{d.get('id')}: id repetido")
                 ids.add(d.get("id"))
                 validar_desafio(d, err)
+                palabras = len(f"{d.get('texto', '')} {d.get('enunciado', '')}".split())
+                if palabras > LIMITE_PALABRAS:
+                    largos.append(f"{d.get('id')} ({palabras} palabras)")
             oas[oid] = oa
     # prerequisitos: existen, no apuntan a un nivel superior y no forman ciclos
     for oid, oa in oas.items():
         for p in oa["prerequisitos"]:
-            if p not in oas:
+            if p not in oas and p in POR_ID:
+                sin_contenido.add(p)  # registrado en objetivos.py, con su banco aún en preparación
+            elif p not in oas:
                 err.append(f"{oid}: prerequisito inexistente {p}")
             elif NIVELES.index(oas[p]["nivel"]) > NIVELES.index(oa["nivel"]):
                 err.append(f"{oid}: prerequisito {p} es de un nivel superior")
@@ -132,6 +146,10 @@ def main():
     total = sum(len(o["desafios"]) for o in oas.values())
     print(f"Objetivos: {len(oas)} | desafíos: {total} | ids únicos: {len(ids)}")
     print(f"Códigos pendientes de verificación ({len(pendientes)}): {', '.join(pendientes) or 'ninguno'}")
+    if sin_contenido:
+        print(f"Aviso: prerequisitos registrados aún sin desafíos (no bloquean al jugador): {', '.join(sorted(sin_contenido))}")
+    if largos:
+        print(f"Aviso: {len(largos)} desafíos con más de {LIMITE_PALABRAS} palabras de lectura: {', '.join(largos[:20])}")
     if err:
         print(f"\n{len(err)} errores:")
         for e in err[:60]:

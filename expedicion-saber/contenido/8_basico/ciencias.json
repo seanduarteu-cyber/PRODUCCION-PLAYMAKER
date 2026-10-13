@@ -1,0 +1,998 @@
+[
+  {
+    "nivel": "8_basico",
+    "asignatura": "ciencias",
+    "eje": "Física",
+    "objetivo_oficial": "OA 10: Analizar circuitos eléctricos: energía eléctrica, diferencia de potencial, intensidad de corriente, resistencia, potencia y eficiencia energética.",
+    "dificultad": 7,
+    "prerequisitos": [
+      "5_basico.ciencias.OA10"
+    ],
+    "id_objetivo": "8_basico.ciencias.OA10",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Fisica/70202:CN08-OA-10"
+    },
+    "desafios": [
+      {
+        "id": "cie8-oa10-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué instrumento mide la intensidad de corriente?",
+        "alternativas": [
+          "termómetro",
+          "voltímetro",
+          "barómetro",
+          "amperímetro"
+        ],
+        "correcta": 3,
+        "pista": "La corriente se mide en amperes.",
+        "explicacion_error": "El amperímetro mide la intensidad de corriente en amperes.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-002",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada magnitud con su unidad.",
+        "pares": [
+          [
+            "voltaje",
+            "volt (V)"
+          ],
+          [
+            "intensidad de corriente",
+            "ampere (A)"
+          ],
+          [
+            "resistencia",
+            "ohm (Ω)"
+          ],
+          [
+            "potencia",
+            "watt (W)"
+          ]
+        ],
+        "pista": "Cada unidad lleva el nombre de un científico.",
+        "explicacion_error": "Voltaje: V; corriente: A; resistencia: Ω; potencia: W.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "En un circuito en ___, la corriente tiene un solo camino.",
+        "alternativas": [
+          "serie",
+          "abierto",
+          "paralelo",
+          "mixto"
+        ],
+        "correcta": 0,
+        "pista": "Los componentes van uno tras otro.",
+        "explicacion_error": "En serie hay un solo camino para la corriente.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-004",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Si por una resistencia de 6 Ω circulan 2 A, ¿cuál es el voltaje? (V = I · R)",
+        "respuesta": 12,
+        "tolerancia": 0,
+        "unidad": "V",
+        "pista": "Multiplica la intensidad por la resistencia.",
+        "explicacion_error": "V = 2 A · 6 Ω = 12 V.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Los enchufes de una casa están conectados en paralelo. ¿Qué ventaja tiene?",
+        "alternativas": [
+          "la corriente tiene un solo camino",
+          "cada aparato recibe menos voltaje",
+          "todos se apagan juntos",
+          "si un aparato se apaga, los demás siguen funcionando"
+        ],
+        "correcta": 3,
+        "pista": "En paralelo cada aparato tiene su propio camino.",
+        "explicacion_error": "En paralelo, cada aparato funciona aunque otro se desconecte.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Circuito en serie o en paralelo?",
+        "categorias": [
+          "Serie",
+          "Paralelo"
+        ],
+        "elementos": [
+          {
+            "texto": "un solo camino para la corriente",
+            "categoria": 0
+          },
+          {
+            "texto": "si una ampolleta se quema, todas se apagan",
+            "categoria": 0
+          },
+          {
+            "texto": "la misma corriente pasa por todas las ampolletas",
+            "categoria": 0
+          },
+          {
+            "texto": "varios caminos para la corriente",
+            "categoria": 1
+          },
+          {
+            "texto": "cada ampolleta recibe el mismo voltaje",
+            "categoria": 1
+          },
+          {
+            "texto": "los enchufes de una casa",
+            "categoria": 1
+          }
+        ],
+        "pista": "Serie: uno tras otro. Paralelo: ramas.",
+        "explicacion_error": "En serie hay un camino y una sola corriente; en paralelo hay ramas con el mismo voltaje.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Una pila de 9 V se conecta a una resistencia de 3 Ω. ¿Qué intensidad de corriente circula?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "unidad": "A",
+        "pista": "I = V ÷ R.",
+        "explicacion_error": "I = 9 V ÷ 3 Ω = 3 A.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Un hervidor funciona con 220 V y 10 A. ¿Qué potencia tiene? (P = V · I)",
+        "respuesta": 2200,
+        "tolerancia": 0,
+        "unidad": "W",
+        "pista": "Multiplica el voltaje por la intensidad.",
+        "explicacion_error": "P = 220 V · 10 A = 2.200 W.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Si aumentas la resistencia de un circuito sin cambiar el voltaje, ¿qué pasa con la corriente?",
+        "alternativas": [
+          "no cambia",
+          "se duplica",
+          "disminuye",
+          "aumenta"
+        ],
+        "correcta": 2,
+        "pista": "I = V ÷ R: R está dividiendo.",
+        "explicacion_error": "Con el mismo voltaje, más resistencia significa menos corriente.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "{personaje} conecta 3 ampolletas iguales en serie y una se quema. ¿Qué pasa?",
+        "alternativas": [
+          "solo se apaga la quemada",
+          "las otras siguen igual",
+          "las otras brillan más",
+          "todas se apagan, porque se abre el único camino"
+        ],
+        "correcta": 3,
+        "pista": "En serie hay un solo camino.",
+        "explicacion_error": "Al quemarse una, el circuito queda abierto y la corriente deja de circular.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-011",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Dos resistencias de 4 Ω y 8 Ω están en serie con una batería de 24 V. ¿Qué corriente circula?",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "unidad": "A",
+        "pista": "En serie, las resistencias se suman.",
+        "explicacion_error": "R = 4 + 8 = 12 Ω; I = 24 ÷ 12 = 2 A.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Energía eléctrica consumida = potencia × ___.",
+        "alternativas": [
+          "intensidad",
+          "voltaje",
+          "resistencia",
+          "tiempo"
+        ],
+        "correcta": 3,
+        "pista": "Por eso se mide en kilowatt-hora.",
+        "explicacion_error": "La energía es la potencia por el tiempo de uso (kWh).",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor energía consumida en 1 hora.",
+        "elementos": [
+          "ampolleta LED de 9 W",
+          "notebook de 60 W",
+          "televisor de 150 W",
+          "plancha de 1.200 W",
+          "hervidor de 2.000 W"
+        ],
+        "pista": "En el mismo tiempo, más potencia significa más energía.",
+        "explicacion_error": "Con igual tiempo, la energía crece con la potencia: 9, 60, 150, 1.200 y 2.000 W.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} usa una estufa de 2.000 W durante 3 horas. Si 1 kWh cuesta $200, ¿cuánto cuesta ese uso?",
+        "respuesta": 1200,
+        "tolerancia": 0,
+        "unidad": "pesos",
+        "pista": "2.000 W = 2 kW. Calcula los kWh y multiplica por el precio.",
+        "explicacion_error": "2 kW × 3 h = 6 kWh; 6 × $200 = $1.200.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Al conectar muchos aparatos potentes en un mismo enchufe, el automático se corta. ¿Por qué?",
+        "alternativas": [
+          "los aparatos en paralelo se apagan entre sí",
+          "cada aparato en paralelo suma corriente y el total supera el límite",
+          "la resistencia total aumenta mucho",
+          "el voltaje del enchufe sube a 1.000 V"
+        ],
+        "correcta": 1,
+        "pista": "En paralelo, cada rama agrega su propia corriente.",
+        "explicacion_error": "Las corrientes de cada aparato se suman: si superan el límite, el automático se corta para evitar un incendio.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Una ampolleta LED de 10 W da la misma luz que una incandescente de 60 W. ¿Qué afirmación es correcta?",
+        "alternativas": [
+          "ambas son igual de eficientes porque dan la misma luz",
+          "la LED es más eficiente: desperdicia menos energía como calor",
+          "la incandescente es más eficiente porque consume más",
+          "la LED consume 60 W y entrega 10 W"
+        ],
+        "correcta": 1,
+        "pista": "Eficiencia: cuánta energía se convierte en lo que buscas.",
+        "explicacion_error": "La LED usa 10 W para la misma luz: aprovecha mejor la energía.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa10-017",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Ahorra energía o gasta más?",
+        "categorias": [
+          "Ahorra energía",
+          "Gasta más"
+        ],
+        "elementos": [
+          {
+            "texto": "cambiar ampolletas por LED",
+            "categoria": 0
+          },
+          {
+            "texto": "desenchufar cargadores sin uso",
+            "categoria": 0
+          },
+          {
+            "texto": "elegir un refrigerador con etiqueta de eficiencia A",
+            "categoria": 0
+          },
+          {
+            "texto": "dejar el televisor en espera toda la noche",
+            "categoria": 1
+          },
+          {
+            "texto": "abrir seguido la puerta del refrigerador",
+            "categoria": 1
+          },
+          {
+            "texto": "dejar luces encendidas en piezas vacías",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa si se usa energía sin necesidad.",
+        "explicacion_error": "LED, desenchufar y equipos eficientes ahorran; los aparatos en espera, el refrigerador abierto y las luces sin uso gastan.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "8_basico",
+    "asignatura": "ciencias",
+    "eje": "Física",
+    "objetivo_oficial": "OA 11: Explicar el calor como transferencia de energía térmica entre cuerpos a distinta temperatura, por conducción, convección y radiación.",
+    "dificultad": 7,
+    "prerequisitos": [
+      "6_basico.ciencias.OA8",
+      "6_basico.ciencias.OA13"
+    ],
+    "id_objetivo": "8_basico.ciencias.OA11",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/8-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie8-oa11-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cómo se llama la transferencia de calor por contacto directo?",
+        "alternativas": [
+          "conducción",
+          "evaporación",
+          "convección",
+          "radiación"
+        ],
+        "correcta": 0,
+        "pista": "Ocurre cuando dos cuerpos se tocan.",
+        "explicacion_error": "Por contacto directo, el calor se transfiere por conducción.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "El calor siempre pasa del cuerpo más ___ al más frío.",
+        "alternativas": [
+          "grande",
+          "caliente",
+          "frío",
+          "pesado"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en una taza de té que se enfría.",
+        "explicacion_error": "El calor fluye del cuerpo más caliente al más frío.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Con qué instrumento se mide la temperatura?",
+        "alternativas": [
+          "barómetro",
+          "amperímetro",
+          "termómetro",
+          "balanza"
+        ],
+        "correcta": 2,
+        "pista": "«Termo» significa calor.",
+        "explicacion_error": "La temperatura se mide con un termómetro.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-004",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada forma de transferencia de calor con un ejemplo.",
+        "pares": [
+          [
+            "conducción",
+            "una cuchara metálica se calienta en la sopa"
+          ],
+          [
+            "convección",
+            "el agua de la olla circula al calentarse"
+          ],
+          [
+            "radiación",
+            "el Sol calienta tu cara"
+          ]
+        ],
+        "pista": "La radiación no necesita contacto ni un medio.",
+        "explicacion_error": "Cuchara: conducción; agua que circula: convección; Sol: radiación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Buen conductor o buen aislante del calor?",
+        "categorias": [
+          "Buen conductor",
+          "Buen aislante"
+        ],
+        "elementos": [
+          {
+            "texto": "cobre",
+            "categoria": 0
+          },
+          {
+            "texto": "aluminio",
+            "categoria": 0
+          },
+          {
+            "texto": "acero",
+            "categoria": 0
+          },
+          {
+            "texto": "lana",
+            "categoria": 1
+          },
+          {
+            "texto": "madera",
+            "categoria": 1
+          },
+          {
+            "texto": "corcho",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los metales conducen bien el calor.",
+        "explicacion_error": "Cobre, aluminio y acero conducen; lana, madera y corcho aíslan.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Por qué las ollas tienen mangos de madera o plástico?",
+        "alternativas": [
+          "porque son aislantes y no conducen bien el calor a la mano",
+          "porque el metal es aislante",
+          "para que la olla se caliente más rápido",
+          "porque conducen muy bien el calor"
+        ],
+        "correcta": 0,
+        "pista": "El mango es la parte que tomas.",
+        "explicacion_error": "La madera y el plástico son aislantes: protegen tu mano del calor.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué diferencia hay entre calor y temperatura?",
+        "alternativas": [
+          "el calor se mide con termómetro en °C",
+          "el calor es energía que se transfiere; la temperatura mide la agitación de las partículas",
+          "son exactamente lo mismo",
+          "la temperatura es energía que pasa de un cuerpo a otro"
+        ],
+        "correcta": 1,
+        "pista": "Uno es energía en tránsito y el otro una medida.",
+        "explicacion_error": "El calor es energía transferida; la temperatura indica cuánto se agitan las partículas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Sobre una estufa, el aire caliente sube y el aire frío baja: esa circulación es ___.",
+        "alternativas": [
+          "convección",
+          "radiación",
+          "solidificación",
+          "conducción"
+        ],
+        "correcta": 0,
+        "pista": "Ocurre en líquidos y gases que se mueven.",
+        "explicacion_error": "El movimiento de aire caliente y frío es convección.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Conducción, convección o radiación?",
+        "categorias": [
+          "Conducción",
+          "Convección",
+          "Radiación"
+        ],
+        "elementos": [
+          {
+            "texto": "planchar una polera",
+            "categoria": 0
+          },
+          {
+            "texto": "tocar una baranda fría",
+            "categoria": 0
+          },
+          {
+            "texto": "brisa marina en la costa",
+            "categoria": 1
+          },
+          {
+            "texto": "agua que circula al hervir",
+            "categoria": 1
+          },
+          {
+            "texto": "calor del Sol que llega a la Tierra",
+            "categoria": 2
+          },
+          {
+            "texto": "calor de una fogata que sientes a distancia",
+            "categoria": 2
+          }
+        ],
+        "pista": "Contacto, movimiento de un fluido o sin contacto.",
+        "explicacion_error": "Plancha y baranda: conducción; brisa y agua: convección; Sol y fogata: radiación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Mezclas 1 L de agua a 80 °C con 1 L de agua a 20 °C. Sin pérdidas de calor, ¿qué temperatura final alcanzan?",
+        "respuesta": 50,
+        "tolerancia": 0,
+        "unidad": "°C",
+        "pista": "Con cantidades iguales, la temperatura final queda justo al medio.",
+        "explicacion_error": "(80 + 20) ÷ 2 = 50 °C: equilibrio térmico.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Dejas una taza de té a 70 °C en una pieza a 20 °C. ¿Qué pasa después de mucho rato?",
+        "alternativas": [
+          "el té se queda a 70 °C",
+          "la pieza sube a 70 °C",
+          "el té queda a unos 20 °C, igual que la pieza",
+          "el té baja a 0 °C"
+        ],
+        "correcta": 2,
+        "pista": "El calor pasa hasta que no haya diferencia de temperatura.",
+        "explicacion_error": "El té cede calor hasta alcanzar el equilibrio térmico con la pieza.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena lo que pasa al poner una cuchara fría en sopa caliente.",
+        "elementos": [
+          "Pones la cuchara fría en la sopa.",
+          "Las partículas de la sopa chocan con las de la cuchara.",
+          "La cuchara se calienta y la sopa se enfría un poco.",
+          "Ambas llegan a la misma temperatura."
+        ],
+        "pista": "El calor pasa por contacto hasta igualar temperaturas.",
+        "explicacion_error": "Contacto → choques de partículas → transferencia de calor → equilibrio térmico.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "{personaje} mezcla 2 L de agua a 80 °C con 1 L a 20 °C. Sin pérdidas, ¿qué temperatura final alcanzan?",
+        "respuesta": 60,
+        "tolerancia": 0,
+        "unidad": "°C",
+        "pista": "Hay el doble de agua caliente: el resultado queda más cerca de 80.",
+        "explicacion_error": "(2 × 80 + 1 × 20) ÷ 3 = 180 ÷ 3 = 60 °C.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un termo mantiene el café caliente por horas. ¿Cómo lo logra?",
+        "alternativas": [
+          "sus paredes con vacío y superficie plateada reducen conducción, convección y radiación",
+          "su vidrio es buen conductor del calor",
+          "solo evita la radiación",
+          "produce calor con una pila"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en las tres formas de transferencia.",
+        "explicacion_error": "El vacío frena la conducción y la convección; lo plateado refleja la radiación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En una mañana fría tocas una baranda de metal y una banca de madera, ambas a la misma temperatura. El metal se siente más frío. ¿Por qué?",
+        "alternativas": [
+          "el metal conduce más rápido el calor de tu mano",
+          "la madera produce calor",
+          "el frío pasa del metal a tu mano",
+          "el metal está a menor temperatura"
+        ],
+        "correcta": 0,
+        "pista": "Ambas están a la misma temperatura; cambia la rapidez con que sacan calor.",
+        "explicacion_error": "El metal es buen conductor: saca calor de tu mano más rápido y lo sientes más frío.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa11-016",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Para que una casa en Punta Arenas pierda menos calor en invierno, sus muros deben tener un buen material ___.",
+        "alternativas": [
+          "aislante",
+          "transparente",
+          "conductor",
+          "metálico"
+        ],
+        "correcta": 0,
+        "pista": "Se busca frenar la salida del calor.",
+        "explicacion_error": "Un material aislante reduce la conducción de calor hacia afuera.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "8_basico",
+    "asignatura": "ciencias",
+    "eje": "Química",
+    "objetivo_oficial": "OA 12: Investigar la evolución del conocimiento sobre la materia: teoría atómica de Dalton y modelos de Thomson, Rutherford y Bohr.",
+    "dificultad": 7,
+    "prerequisitos": [
+      "7_basico.ciencias.OA14"
+    ],
+    "id_objetivo": "8_basico.ciencias.OA12",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/8-basico"
+    },
+    "desafios": [
+      {
+        "id": "cie8-oa12-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Quién propuso que la materia está formada por átomos indivisibles, como esferas macizas?",
+        "alternativas": [
+          "J. J. Thomson",
+          "John Dalton",
+          "Niels Bohr",
+          "Ernest Rutherford"
+        ],
+        "correcta": 1,
+        "pista": "Fue el primer modelo atómico científico.",
+        "explicacion_error": "Dalton propuso átomos indivisibles, como esferas macizas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué partícula descubrió Thomson?",
+        "alternativas": [
+          "el neutrón",
+          "el protón",
+          "el núcleo",
+          "el electrón"
+        ],
+        "correcta": 3,
+        "pista": "Tiene carga negativa.",
+        "explicacion_error": "Thomson descubrió el electrón, de carga negativa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Thomson imaginó el átomo como un budín con pasas: una esfera positiva con ___ incrustados.",
+        "alternativas": [
+          "protones",
+          "electrones",
+          "neutrones",
+          "núcleos"
+        ],
+        "correcta": 1,
+        "pista": "Las pasas tienen carga negativa.",
+        "explicacion_error": "En el modelo de Thomson, los electrones están incrustados en una esfera positiva.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-004",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena los modelos atómicos del más antiguo al más reciente.",
+        "elementos": [
+          "Dalton",
+          "Thomson",
+          "Rutherford",
+          "Bohr"
+        ],
+        "pista": "El modelo de Bohr corrigió al de Rutherford.",
+        "explicacion_error": "Dalton (1808), Thomson (1904), Rutherford (1911) y Bohr (1913).",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada científico con su modelo.",
+        "pares": [
+          [
+            "Dalton",
+            "esfera maciza e indivisible"
+          ],
+          [
+            "Thomson",
+            "esfera positiva con electrones incrustados"
+          ],
+          [
+            "Rutherford",
+            "núcleo pequeño y positivo con electrones alrededor"
+          ],
+          [
+            "Bohr",
+            "electrones en órbitas de energía definida"
+          ]
+        ],
+        "pista": "Cada modelo agregó una idea nueva.",
+        "explicacion_error": "Dalton: esfera maciza; Thomson: budín con pasas; Rutherford: núcleo; Bohr: órbitas de energía.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué descubrió Rutherford?",
+        "alternativas": [
+          "que los electrones están en niveles de energía fijos",
+          "que el átomo tiene un núcleo pequeño, denso y positivo",
+          "que el átomo es indivisible",
+          "el electrón"
+        ],
+        "correcta": 1,
+        "pista": "Lo descubrió con una lámina de oro.",
+        "explicacion_error": "Rutherford descubrió el núcleo atómico: pequeño, denso y positivo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "En el experimento de Rutherford se lanzaron partículas alfa contra una lámina de oro muy delgada. ¿Qué pasó con la mayoría?",
+        "alternativas": [
+          "se quedaron pegadas al oro",
+          "atravesaron la lámina sin desviarse",
+          "se desviaron todas",
+          "rebotaron todas"
+        ],
+        "correcta": 1,
+        "pista": "El resultado mostró que el átomo es casi vacío.",
+        "explicacion_error": "La mayoría pasó derecho: el átomo es casi todo espacio vacío.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Como la mayoría de las partículas alfa atravesó la lámina, Rutherford concluyó que el átomo es casi todo ___.",
+        "alternativas": [
+          "materia sólida",
+          "espacio vacío",
+          "carga positiva repartida",
+          "electrones"
+        ],
+        "correcta": 1,
+        "pista": "Si casi nada choca, ¿qué hay dentro?",
+        "explicacion_error": "Si casi todas pasan sin chocar, el átomo es casi todo espacio vacío.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Qué científico propuso cada idea?",
+        "categorias": [
+          "Dalton",
+          "Thomson",
+          "Rutherford"
+        ],
+        "elementos": [
+          {
+            "texto": "los átomos de un mismo elemento son iguales",
+            "categoria": 0
+          },
+          {
+            "texto": "los átomos se combinan en proporciones fijas",
+            "categoria": 0
+          },
+          {
+            "texto": "el átomo tiene electrones negativos",
+            "categoria": 1
+          },
+          {
+            "texto": "la carga positiva está repartida en toda la esfera",
+            "categoria": 1
+          },
+          {
+            "texto": "la carga positiva está concentrada en un núcleo",
+            "categoria": 2
+          },
+          {
+            "texto": "el átomo es en su mayor parte vacío",
+            "categoria": 2
+          }
+        ],
+        "pista": "Dalton no conocía partículas dentro del átomo.",
+        "explicacion_error": "Dalton habló de átomos iguales y combinaciones; Thomson, de electrones; Rutherford, del núcleo y el vacío.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué evidencia llevó a Thomson a descubrir el electrón?",
+        "alternativas": [
+          "experimentos con rayos catódicos en tubos de vacío",
+          "los colores de la luz que emite el hidrógeno",
+          "el bombardeo de una lámina de oro",
+          "el peso de los gases al reaccionar"
+        ],
+        "correcta": 0,
+        "pista": "Usó tubos de vidrio con electricidad.",
+        "explicacion_error": "Thomson estudió los rayos catódicos y mostró que eran partículas negativas: electrones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué Bohr modificó el modelo de Rutherford?",
+        "alternativas": [
+          "para explicar la luz que emiten los átomos, con electrones en órbitas de energía fija",
+          "para demostrar que el átomo es indivisible",
+          "porque descubrió que el átomo no tiene electrones",
+          "porque Rutherford negó que existiera el núcleo"
+        ],
+        "correcta": 0,
+        "pista": "Bohr estudió la luz del hidrógeno.",
+        "explicacion_error": "Bohr propuso órbitas con energía definida para explicar los colores de luz que emiten los átomos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-012",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada científico con la evidencia que usó.",
+        "pares": [
+          [
+            "Dalton",
+            "cómo se combinan las sustancias"
+          ],
+          [
+            "Thomson",
+            "rayos catódicos"
+          ],
+          [
+            "Rutherford",
+            "lámina de oro y partículas alfa"
+          ],
+          [
+            "Bohr",
+            "luz emitida por el hidrógeno"
+          ]
+        ],
+        "pista": "Dalton trabajó con reacciones químicas, no con partículas.",
+        "explicacion_error": "Dalton: combinaciones; Thomson: rayos catódicos; Rutherford: lámina de oro; Bohr: luz del hidrógeno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Dalton publicó su teoría atómica en 1808 y Bohr presentó su modelo en 1913. ¿Cuántos años pasaron entre ambos?",
+        "respuesta": 105,
+        "tolerancia": 0,
+        "unidad": "años",
+        "pista": "Resta el año más antiguo al más reciente.",
+        "explicacion_error": "1913 − 1808 = 105 años.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Si el núcleo de un átomo fuera una bolita en el centro de un estadio, ¿dónde estarían los electrones?",
+        "alternativas": [
+          "dentro de la bolita",
+          "repartidos en una esfera maciza",
+          "en las graderías, muy lejos del núcleo",
+          "pegados a la bolita"
+        ],
+        "correcta": 2,
+        "pista": "Recuerda que el átomo es casi todo vacío.",
+        "explicacion_error": "El núcleo es diminuto y los electrones están muy lejos: el átomo es casi todo vacío.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Algunas partículas alfa rebotaron en la lámina de oro. Según el modelo de Thomson, eso no debía pasar. ¿Por qué?",
+        "alternativas": [
+          "porque Thomson no conocía los electrones",
+          "porque el oro no tiene átomos",
+          "porque en ese modelo la carga positiva estaba repartida y no podía desviarlas tanto",
+          "porque Thomson decía que el átomo era vacío"
+        ],
+        "correcta": 2,
+        "pista": "Para que una partícula rebote, debe chocar con algo concentrado.",
+        "explicacion_error": "Una carga positiva repartida no hace rebotar partículas; un núcleo concentrado sí.",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-016",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena cómo cambió la idea de átomo a lo largo del tiempo.",
+        "elementos": [
+          "El átomo es indivisible.",
+          "Se descubre el electrón: el átomo tiene partes.",
+          "Se descubre un núcleo positivo y pequeño.",
+          "Los electrones ocupan niveles de energía."
+        ],
+        "pista": "Cada idea corrigió a la anterior con nueva evidencia.",
+        "explicacion_error": "Dalton → Thomson (electrón) → Rutherford (núcleo) → Bohr (niveles de energía).",
+        "monedas": 10
+      },
+      {
+        "id": "cie8-oa12-017",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "De la teoría de Dalton, ¿qué idea sigue vigente y cuál fue corregida?",
+        "categorias": [
+          "Sigue vigente",
+          "Fue corregida"
+        ],
+        "elementos": [
+          {
+            "texto": "la materia está formada por átomos",
+            "categoria": 0
+          },
+          {
+            "texto": "en una reacción los átomos se reordenan, no se destruyen",
+            "categoria": 0
+          },
+          {
+            "texto": "los átomos se combinan en proporciones definidas",
+            "categoria": 0
+          },
+          {
+            "texto": "el átomo es indivisible",
+            "categoria": 1
+          },
+          {
+            "texto": "el átomo es una esfera maciza sin partes",
+            "categoria": 1
+          }
+        ],
+        "pista": "Thomson y Rutherford encontraron partes dentro del átomo.",
+        "explicacion_error": "Los átomos y sus combinaciones siguen vigentes; la indivisibilidad y la esfera maciza fueron corregidas.",
+        "monedas": 10
+      }
+    ]
+  }
+]

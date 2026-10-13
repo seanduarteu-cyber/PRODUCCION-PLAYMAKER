@@ -1,0 +1,627 @@
+[
+  {
+    "nivel": "7_basico",
+    "asignatura": "matematica",
+    "eje": "Números",
+    "objetivo_oficial": "OA 1: Mostrar que comprende la adición y la sustracción de números enteros, representándolos en la recta numérica y resolviendo problemas cotidianos.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "4_basico.matematica.OA3"
+    ],
+    "id_objetivo": "7_basico.matematica.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros/70512:MA07-OA-01"
+    },
+    "desafios": [
+      {
+        "id": "mat7-oa1-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "La temperatura era −3 °C y subió 5 °C. ¿Qué temperatura hay ahora?",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "unidad": "°C",
+        "pista": "Avanza 5 desde −3 en la recta numérica.",
+        "explicacion_error": "−3 + 5 = 2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es (−4) + 6?",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "pista": "Imagina la recta numérica.",
+        "explicacion_error": "−4 + 6 = 2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué número es mayor?",
+        "alternativas": [
+          "−5",
+          "−9",
+          "−7",
+          "−2"
+        ],
+        "correcta": 3,
+        "pista": "En la recta, el mayor está más a la derecha.",
+        "explicacion_error": "−2 está más cerca del 0.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-004",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "(−1) + 4 = ___",
+        "alternativas": [
+          "−3",
+          "3",
+          "−5",
+          "5"
+        ],
+        "correcta": 1,
+        "pista": "Avanza 4 desde −1.",
+        "explicacion_error": "−1 + 4 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es (−7) + (−5)?",
+        "respuesta": -12,
+        "tolerancia": 0,
+        "pista": "Dos negativos se acumulan.",
+        "explicacion_error": "−7 + −5 = −12.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 3 − 8?",
+        "respuesta": -5,
+        "tolerancia": 0,
+        "pista": "Te pasas del 0.",
+        "explicacion_error": "3 − 8 = −5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es (−9) + 4?",
+        "alternativas": [
+          "−13",
+          "5",
+          "−5",
+          "13"
+        ],
+        "correcta": 2,
+        "pista": "Avanza 4 desde −9 en la recta numérica.",
+        "explicacion_error": "−9 + 4 = −5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-008",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "(−2) + (−6) = ___",
+        "alternativas": [
+          "−4",
+          "8",
+          "−8",
+          "4"
+        ],
+        "correcta": 2,
+        "pista": "Suma las distancias y conserva el signo.",
+        "explicacion_error": "−2 + −6 = −8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es (−6) − (−9)?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Restar un negativo es sumar su opuesto.",
+        "explicacion_error": "−6 + 9 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 5 − (−4)?",
+        "respuesta": 9,
+        "tolerancia": 0,
+        "pista": "Restar −4 es sumar 4.",
+        "explicacion_error": "5 + 4 = 9.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es (−3) − 7?",
+        "alternativas": [
+          "4",
+          "10",
+          "−4",
+          "−10"
+        ],
+        "correcta": 3,
+        "pista": "Restar 7 es retroceder 7.",
+        "explicacion_error": "−3 − 7 = −10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-012",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "(−8) − (−8) = ___",
+        "alternativas": [
+          "8",
+          "16",
+          "−16",
+          "0"
+        ],
+        "correcta": 3,
+        "pista": "Un número menos sí mismo.",
+        "explicacion_error": "−8 + 8 = 0.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "−5",
+          "−2",
+          "0",
+          "3"
+        ],
+        "pista": "Los negativos más lejanos del 0 son menores.",
+        "explicacion_error": "−5 < −2 < 0 < 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-014",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿El resultado es positivo o negativo?",
+        "categorias": [
+          "Negativo",
+          "Positivo"
+        ],
+        "elementos": [
+          {
+            "texto": "4 − 9",
+            "categoria": 0
+          },
+          {
+            "texto": "(−3) + (−2)",
+            "categoria": 0
+          },
+          {
+            "texto": "(−10) + 6",
+            "categoria": 0
+          },
+          {
+            "texto": "(−2) + 7",
+            "categoria": 1
+          },
+          {
+            "texto": "5 − (−1)",
+            "categoria": 1
+          },
+          {
+            "texto": "(−4) − (−6)",
+            "categoria": 1
+          }
+        ],
+        "pista": "Calcula cada operación.",
+        "explicacion_error": "−5, −5 y −4 son negativos; 5, 6 y 2 son positivos.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Un buzo está a −12 m y sube 5 m. ¿A qué profundidad queda?",
+        "respuesta": -7,
+        "tolerancia": 0,
+        "unidad": "m",
+        "pista": "Subir es sumar.",
+        "explicacion_error": "−12 + 5 = −7.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-016",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "En Punta Arenas hay −2 °C y en Arica 21 °C. ¿Cuántos grados de diferencia hay?",
+        "respuesta": 23,
+        "tolerancia": 0,
+        "unidad": "°C",
+        "pista": "Resta: 21 − (−2).",
+        "explicacion_error": "21 + 2 = 23.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Tienes $2.000 en una cuenta, gastas $3.500 y luego depositas $1.000. ¿Cuál es el saldo?",
+        "respuesta": -500,
+        "tolerancia": 0,
+        "pista": "2.000 − 3.500 + 1.000.",
+        "explicacion_error": "−1.500 + 1.000 = −500.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-018",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "(−4) + ___ = 3",
+        "alternativas": [
+          "1",
+          "−7",
+          "−1",
+          "7"
+        ],
+        "correcta": 3,
+        "pista": "¿Cuánto hay que avanzar desde −4 hasta 3?",
+        "explicacion_error": "−4 + 7 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-019",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un ascensor está en el piso −3, sube 8 pisos y baja 2. ¿En qué piso queda?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "−3 + 8 − 2.",
+        "explicacion_error": "−3 + 8 = 5 y 5 − 2 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa1-020",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué operación da −6?",
+        "alternativas": [
+          "(−10) − (−4) − (−10)",
+          "6 − (−6)",
+          "10 − 4",
+          "(−10) + 4"
+        ],
+        "correcta": 3,
+        "pista": "Calcula cada una.",
+        "explicacion_error": "−10 + 4 = −6.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "7_basico",
+    "asignatura": "matematica",
+    "eje": "Números",
+    "objetivo_oficial": "OA 4: Mostrar que comprende el concepto de porcentaje: representarlo, calcularlo de varias maneras y aplicarlo a situaciones sencillas.",
+    "dificultad": 6,
+    "prerequisitos": [
+      "6_basico.matematica.OA4"
+    ],
+    "id_objetivo": "7_basico.matematica.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-70515.html"
+    },
+    "desafios": [
+      {
+        "id": "mat7-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Calcular el 25% de un número es lo mismo que dividirlo por…",
+        "alternativas": [
+          "4",
+          "5",
+          "2",
+          "25"
+        ],
+        "correcta": 0,
+        "pista": "25% = 1/4.",
+        "explicacion_error": "25% = 1/4: se divide por 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es el 50% de 90?",
+        "respuesta": 45,
+        "tolerancia": 0,
+        "pista": "La mitad.",
+        "explicacion_error": "90 ÷ 2 = 45.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-003",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es el 10% de 230?",
+        "respuesta": 23,
+        "tolerancia": 0,
+        "pista": "Divide por 10.",
+        "explicacion_error": "230 ÷ 10 = 23.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Calcular el 20% es lo mismo que dividir por…",
+        "alternativas": [
+          "4",
+          "5",
+          "2",
+          "20"
+        ],
+        "correcta": 1,
+        "pista": "20% = 1/5.",
+        "explicacion_error": "20% = 1/5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es el 35% de 200?",
+        "respuesta": 70,
+        "tolerancia": 0,
+        "pista": "10% = 20; 35% = 3,5 veces.",
+        "explicacion_error": "35% de 200 = 70.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-006",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es el 12% de 50?",
+        "respuesta": 6,
+        "tolerancia": 0,
+        "pista": "1% de 50 = 0,5.",
+        "explicacion_error": "12 × 0,5 = 6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-007",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "El 40% de 150 es ___",
+        "alternativas": [
+          "40",
+          "90",
+          "60",
+          "15"
+        ],
+        "correcta": 2,
+        "pista": "10% de 150 = 15.",
+        "explicacion_error": "4 × 15 = 60.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es el 1% de 3.500?",
+        "alternativas": [
+          "135",
+          "35",
+          "3,5",
+          "350"
+        ],
+        "correcta": 1,
+        "pista": "Divide por 100.",
+        "explicacion_error": "3.500 ÷ 100 = 35.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-009",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Qué porcentaje es 18 de 60?",
+        "respuesta": 30,
+        "tolerancia": 0,
+        "unidad": "%",
+        "pista": "18/60 = 3/10.",
+        "explicacion_error": "3/10 = 30%.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Qué porcentaje es 15 de 75?",
+        "respuesta": 20,
+        "tolerancia": 0,
+        "unidad": "%",
+        "pista": "15/75 = 1/5.",
+        "explicacion_error": "1/5 = 20%.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué porcentaje es 9 de 12?",
+        "alternativas": [
+          "75%",
+          "9%",
+          "25%",
+          "12%"
+        ],
+        "correcta": 0,
+        "pista": "9/12 = 3/4.",
+        "explicacion_error": "3/4 = 75%.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-012",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "7 de 20 es el ___",
+        "alternativas": [
+          "70%",
+          "7%",
+          "20%",
+          "35%"
+        ],
+        "correcta": 3,
+        "pista": "Amplifica a denominador 100.",
+        "explicacion_error": "7/20 = 35/100 = 35%.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Una polera de $12.000 tiene 20% de descuento. ¿Cuánto pagas?",
+        "respuesta": 9600,
+        "tolerancia": 0,
+        "pista": "Descuento: 20% de 12.000 = 2.400.",
+        "explicacion_error": "12.000 − 2.400 = $9.600.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Un pasaje de $5.000 sube un 10%. ¿Cuál es el nuevo precio?",
+        "respuesta": 5500,
+        "tolerancia": 0,
+        "pista": "10% de 5.000 = 500.",
+        "explicacion_error": "5.000 + 500 = $5.500.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Un precio sube 50% y queda en $1.500. ¿Cuál era el precio original?",
+        "alternativas": [
+          "$1.000",
+          "$1.450",
+          "$3.000",
+          "$750"
+        ],
+        "correcta": 0,
+        "pista": "1.500 es el 150% del original.",
+        "explicacion_error": "1.500 ÷ 1,5 = 1.000.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-016",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada cálculo con su resultado.",
+        "pares": [
+          [
+            "15% de 80",
+            "12"
+          ],
+          [
+            "60% de 45",
+            "27"
+          ],
+          [
+            "5% de 300",
+            "15"
+          ]
+        ],
+        "pista": "Usa el 10% y el 5% como ayuda.",
+        "explicacion_error": "15% de 80 = 12, 60% de 45 = 27 y 5% de 300 = 15.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-017",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "En un curso de 40 estudiantes, el 35% prefiere básquetbol. ¿Cuántos son?",
+        "respuesta": 14,
+        "tolerancia": 0,
+        "pista": "10% = 4.",
+        "explicacion_error": "35% de 40 = 14.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-018",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Si el 30% de un grupo son 12 personas, ¿cuántas personas hay en total?",
+        "respuesta": 40,
+        "tolerancia": 0,
+        "pista": "10% = 4.",
+        "explicacion_error": "100% = 40.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-019",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} tenía 80 {objetos} y regaló 20. ¿Qué porcentaje regaló?",
+        "alternativas": [
+          "60%",
+          "20%",
+          "75%",
+          "25%"
+        ],
+        "correcta": 3,
+        "pista": "20/80 = 1/4.",
+        "explicacion_error": "1/4 = 25%.",
+        "monedas": 10
+      },
+      {
+        "id": "mat7-oa4-020",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "Hay dos ofertas. Lleva cada dato a la oferta que le corresponde.",
+        "categorias": [
+          "$10.000 con 30% de descuento",
+          "$9.000 con 20% de descuento"
+        ],
+        "elementos": [
+          {
+            "texto": "Pagas $7.000",
+            "categoria": 0
+          },
+          {
+            "texto": "Ahorras $3.000",
+            "categoria": 0
+          },
+          {
+            "texto": "Pagas $7.200",
+            "categoria": 1
+          },
+          {
+            "texto": "Ahorras $1.800",
+            "categoria": 1
+          }
+        ],
+        "pista": "Calcula el descuento de cada oferta.",
+        "explicacion_error": "30% de 10.000 = 3.000 → pagas $7.000. 20% de 9.000 = 1.800 → pagas $7.200: conviene la primera.",
+        "monedas": 10
+      }
+    ]
+  }
+]

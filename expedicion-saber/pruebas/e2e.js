@@ -37,9 +37,12 @@ async function responder(page, bien = true) {
         await page.click(`#zona .bandeja[data-bandeja="${c}"]`);
       }
       return clic('#btn-comprobar');
-    case 'respuesta_numerica':
-      for (const k of String(bien ? d.respuesta : d.respuesta + d.tolerancia + 1)) await page.click(`#zona [data-k="${k}"]`);
+    case 'respuesta_numerica': {
+      const v = bien ? d.respuesta : d.respuesta + d.tolerancia + 1;
+      if (v < 0) await page.click('#zona [data-k="−"]');
+      for (const k of String(Math.abs(v))) await page.click(`#zona [data-k="${k}"]`);
       return clic('#btn-comprobar');
+    }
   }
   throw new Error('tipo desconocido ' + d.tipo);
 }
@@ -115,6 +118,37 @@ async function responder(page, bien = true) {
     if (ganadas !== 5) throw new Error(`${tipo}: al segundo intento debía dar 5 monedas y dio ${ganadas}`);
     console.log(`✓ ${tipo}: pista tras el error y 5 monedas al segundo intento`);
   }
+  // forzar un desafío elegido por una condición, en su asignatura y OA
+  const forzar = cond => page.evaluate(c => {
+    const z = Object.values(window.ES.A.datos.objetivos).flatMap(o => o.desafios.map(x => ({ x, o }))).find(new Function('z', 'return ' + c));
+    window.__forzado = z.x; window.Motor.elegirDesafio = () => window.__forzado;
+    window.ES.iniciarSesion(z.o.asignatura, z.o.id_objetivo);
+    return z.x;
+  }, cond);
+  // Inglés: el audio se escucha con su botón y el texto se puede ver si la voz falla
+  const conAudio = await forzar("z.x.audio && z.x.tipo === 'opcion_multiple'");
+  await page.waitForSelector('.audio-en');
+  if (await page.locator('#btn-audio-ver').count()) await page.click('#btn-audio-ver');
+  const textoAudio = await page.textContent('#texto-audio');
+  if (textoAudio.trim() !== conAudio.audio.texto) throw new Error('el texto del audio no coincide');
+  await page.screenshot({ path: path.join(salida, 'ingles_audio.png') });
+  await responder(page, true);
+  await page.waitForSelector('#btn-sig:not([hidden])');
+  console.log(`✓ inglés con audio: «${conAudio.audio.texto}» se puede escuchar y ver`);
+  // Números enteros: la tecla «−» permite responder un negativo
+  const negativo = await forzar("z.x.tipo === 'respuesta_numerica' && z.x.respuesta < 0");
+  await page.waitForSelector('#zona [data-k="−"]');
+  await responder(page, true);
+  await page.waitForSelector('#btn-sig:not([hidden])');
+  if (!/Correcto/.test(await page.textContent('#retro'))) throw new Error('no aceptó la respuesta negativa');
+  console.log(`✓ respuesta negativa (${negativo.respuesta}) con la tecla «−»`);
+  // las asignaturas en la base de un perfil de 6° básico
+  await page.evaluate(() => { window.ES.A.ses = null; window.ES.perfil().nivel_escolar = '6_basico'; window.ES.ir('base'); });
+  await page.waitForSelector('.asignatura');
+  const tarjetas = await page.locator('.asignatura h3').allTextContents();
+  console.log('Base de 6° básico:', tarjetas.join(' · '));
+  if (tarjetas.length !== 4) throw new Error('la base debía mostrar 4 asignaturas');
+  await page.screenshot({ path: path.join(salida, 'base_6basico.png'), fullPage: true });
   console.log('Errores de consola:', errores.length ? errores.join('\n') : 'ninguno');
   await browser.close();
   if (errores.length) process.exit(1);

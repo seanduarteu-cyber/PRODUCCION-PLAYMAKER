@@ -1,0 +1,792 @@
+[
+  {
+    "nivel": "1_basico",
+    "asignatura": "ingles",
+    "eje": "Comprensión oral",
+    "objetivo_oficial": "OA 1: Comprender textos leídos por un adulto o en formato audiovisual, breves y simples, como rimas, chants, canciones, cuentos y diálogos.",
+    "dificultad": 1,
+    "prerequisitos": [],
+    "id_objetivo": "1_basico.ingles.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-20874.html"
+    },
+    "desafios": [
+      {
+        "id": "ing1-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha y elige el animal.",
+        "audio": {
+          "texto": "cat",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "🐶",
+          "🐟",
+          "🐦",
+          "🐱"
+        ],
+        "correcta": 3,
+        "pista": "Escucha bien: la palabra empieza con el sonido /k/.",
+        "explicacion_error": "Escuchaste «cat», que significa gato 🐱.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha y elige el color.",
+        "audio": {
+          "texto": "red",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "💚",
+          "💙",
+          "💛",
+          "❤️"
+        ],
+        "correcta": 3,
+        "pista": "Escucha bien: es una palabra muy cortita.",
+        "explicacion_error": "Escuchaste «red», que significa rojo ❤️.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-003",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "Escucha el número y escríbelo.",
+        "audio": {
+          "texto": "three",
+          "idioma": "en"
+        },
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Cuenta en inglés con tus dedos: one, two…",
+        "explicacion_error": "Escuchaste «three», que significa tres: 3.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "{personaje} te saluda. Escucha: ¿qué te dijo?",
+        "audio": {
+          "texto": "Hello!",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "¡Buenas noches!",
+          "¡Gracias!",
+          "¡Hola!",
+          "¡Chao!"
+        ],
+        "correcta": 2,
+        "pista": "Escucha bien: ¿suena a llegada o a despedida?",
+        "explicacion_error": "Escuchaste «Hello!», que significa ¡hola!",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha y elige la parte de la cara.",
+        "audio": {
+          "texto": "nose",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "👃",
+          "👂",
+          "👄",
+          "👁️"
+        ],
+        "correcta": 0,
+        "pista": "Fíjate en el primer sonido: /n/.",
+        "explicacion_error": "Escuchaste «nose», que significa nariz 👃.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha y elige el útil escolar.",
+        "audio": {
+          "texto": "pencil",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "📏",
+          "✏️",
+          "📕",
+          "✂️"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en el primer sonido: /p/.",
+        "explicacion_error": "Escuchaste «pencil», que significa lápiz ✏️.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha. ¿Quién es?",
+        "audio": {
+          "texto": "mother",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "el papá",
+          "el abuelo",
+          "la mamá",
+          "la hermana"
+        ],
+        "correcta": 2,
+        "pista": "Recuerda: «father» es papá y «sister» es hermana.",
+        "explicacion_error": "Escuchaste «mother», que significa mamá.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-008",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Escucha la canción y completa: «One, two, three, ___!»",
+        "audio": {
+          "texto": "One, two, three, four!",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "ten",
+          "four",
+          "two",
+          "five"
+        ],
+        "correcta": 1,
+        "pista": "Escucha con atención el final de la canción.",
+        "explicacion_error": "La canción dice «One, two, three, four!»: después de three (3) viene four (4).",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Escucha y elige.",
+        "audio": {
+          "texto": "a blue bird",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "pájaro azul",
+          "pez azul",
+          "pájaro rojo",
+          "gato azul"
+        ],
+        "correcta": 0,
+        "pista": "Vas a escuchar dos palabras: un color y un animal.",
+        "explicacion_error": "Escuchaste «a blue bird»: «blue» es azul y «bird» es pájaro.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Escucha a Martina. ¿Cuántos lápices tiene?",
+        "audio": {
+          "texto": "I have six pencils.",
+          "idioma": "en"
+        },
+        "respuesta": 6,
+        "tolerancia": 0,
+        "pista": "Escucha el número que dice antes de «pencils».",
+        "explicacion_error": "Martina dice «I have six pencils»: «six» es seis.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-011",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Escucha la canción de los colores y ordénalos como suenan.",
+        "audio": {
+          "texto": "Red, yellow, blue, green.",
+          "idioma": "en"
+        },
+        "elementos": [
+          "❤️",
+          "💛",
+          "💙",
+          "💚"
+        ],
+        "pista": "Escucha un color a la vez y ve poniéndolos en orden.",
+        "explicacion_error": "La canción dice red ❤️ (rojo), yellow 💛 (amarillo), blue 💙 (azul) y green 💚 (verde).",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-012",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Escucha y une cada palabra con su dibujo.",
+        "audio": {
+          "texto": "eye, ear, mouth, nose",
+          "idioma": "en"
+        },
+        "pares": [
+          [
+            "eye",
+            "👁️"
+          ],
+          [
+            "ear",
+            "👂"
+          ],
+          [
+            "mouth",
+            "👄"
+          ],
+          [
+            "nose",
+            "👃"
+          ]
+        ],
+        "pista": "Todas son partes de la cara.",
+        "explicacion_error": "eye es ojo 👁️, ear es oreja 👂, mouth es boca 👄 y nose es nariz 👃.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Escucha a Sofía. ¿Qué le dice a su profesora?",
+        "audio": {
+          "texto": "Good morning, teacher!",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "¡Buenos días, profesora!",
+          "¡Gracias, profesora!",
+          "¡Buenas noches, profesora!",
+          "¡Chao, profesora!"
+        ],
+        "correcta": 0,
+        "pista": "Fíjate en la palabra del medio: ¿habla de la mañana, de la noche o se despide?",
+        "explicacion_error": "Sofía dice «Good morning, teacher!», que significa ¡buenos días, profesora!",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-014",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "Escucha a Diego. ¿Qué tiene en su mochila?",
+        "audio": {
+          "texto": "In my bag, I have a book, a pencil and an eraser.",
+          "idioma": "en"
+        },
+        "categorias": [
+          "Sí tiene",
+          "No tiene"
+        ],
+        "elementos": [
+          {
+            "texto": "libro 📕",
+            "categoria": 0
+          },
+          {
+            "texto": "lápiz ✏️",
+            "categoria": 0
+          },
+          {
+            "texto": "goma",
+            "categoria": 0
+          },
+          {
+            "texto": "regla 📏",
+            "categoria": 1
+          },
+          {
+            "texto": "tijeras ✂️",
+            "categoria": 1
+          }
+        ],
+        "pista": "Diego nombra tres cosas.",
+        "explicacion_error": "Diego dice «a book, a pencil and an eraser»: libro, lápiz y goma. No nombra la regla (ruler) ni las tijeras (scissors).",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-015",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Escucha y une a cada niño con su mascota.",
+        "audio": {
+          "texto": "Diego has a dog. Sofia has a cat. Amanda has a fish.",
+          "idioma": "en"
+        },
+        "pares": [
+          [
+            "Diego",
+            "🐶"
+          ],
+          [
+            "Sofía",
+            "🐱"
+          ],
+          [
+            "Amanda",
+            "🐟"
+          ]
+        ],
+        "pista": "Escucha primero el nombre y después el animal.",
+        "explicacion_error": "Diego has a dog 🐶 (perro), Sofia has a cat 🐱 (gato) y Amanda has a fish 🐟 (pez).",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha a Martina. ¿Qué te pregunta?",
+        "audio": {
+          "texto": "Hi! I'm Martina. What's your name?",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "¿Cómo te llamas?",
+          "¿Dónde vives?",
+          "¿Cómo estás?",
+          "¿Cuántos años tienes?"
+        ],
+        "correcta": 0,
+        "pista": "Fíjate en la última palabra que dice.",
+        "explicacion_error": "Martina pregunta «What's your name?», que significa ¿cómo te llamas?",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha la adivinanza y elige el animal.",
+        "audio": {
+          "texto": "I am an animal. I am black and white. I say moo.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "🐼",
+          "🐷",
+          "🐑",
+          "🐄"
+        ],
+        "correcta": 3,
+        "pista": "Escucha los colores y el sonido que hace.",
+        "explicacion_error": "Es «black and white» (blanco y negro) y dice «moo»: es la vaca 🐄.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa1-018",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Escucha. ¿Cuántos animales hay en total?",
+        "audio": {
+          "texto": "I see two cats and three dogs.",
+          "idioma": "en"
+        },
+        "respuesta": 5,
+        "tolerancia": 0,
+        "pista": "Escucha cuántos gatos y cuántos perros hay, y súmalos.",
+        "explicacion_error": "«Two cats and three dogs»: 2 gatos + 3 perros = 5 animales.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_basico",
+    "asignatura": "ingles",
+    "eje": "Expresión escrita",
+    "objetivo_oficial": "OA 13: Escribir (copiar o completar) palabras y oraciones simples de acuerdo a un modelo, sobre temas conocidos.",
+    "dificultad": 1,
+    "prerequisitos": [
+      "1_basico.ingles.OA1"
+    ],
+    "id_objetivo": "1_basico.ingles.OA13",
+    "verificacion": {
+      "codigo": "pendiente",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/20886:EN01-OA-13"
+    },
+    "desafios": [
+      {
+        "id": "ing1-oa13-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Escucha el modelo y completa la palabra: c___t 🐱",
+        "audio": {
+          "texto": "cat",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "e",
+          "a",
+          "u",
+          "o"
+        ],
+        "correcta": 1,
+        "pista": "Escucha el sonido del medio de la palabra.",
+        "explicacion_error": "Gato se escribe «cat»: c-a-t.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-002",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada palabra con su dibujo.",
+        "pares": [
+          [
+            "dog",
+            "🐶"
+          ],
+          [
+            "cat",
+            "🐱"
+          ],
+          [
+            "fish",
+            "🐟"
+          ]
+        ],
+        "pista": "Fíjate en la primera letra de cada palabra.",
+        "explicacion_error": "dog es perro 🐶, cat es gato 🐱 y fish es pez 🐟.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "{personaje} escribió el modelo «blue» 💙. ¿Qué palabra es igual?",
+        "alternativas": [
+          "blue",
+          "blu",
+          "bule",
+          "bleu"
+        ],
+        "correcta": 0,
+        "pista": "Compara letra por letra con el modelo.",
+        "explicacion_error": "Azul se escribe «blue»: b-l-u-e.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-004",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Escucha el modelo y completa la palabra: r___d ❤️",
+        "audio": {
+          "texto": "red",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "e",
+          "a",
+          "i",
+          "o"
+        ],
+        "correcta": 0,
+        "pista": "Escucha el sonido del medio de la palabra.",
+        "explicacion_error": "Rojo se escribe «red»: r-e-d.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Completa la cuenta: «one, two, ___» 1️⃣ 2️⃣ 3️⃣",
+        "alternativas": [
+          "four",
+          "ten",
+          "tree",
+          "three"
+        ],
+        "correcta": 3,
+        "pista": "Busca cómo se escribe el número 3 en inglés.",
+        "explicacion_error": "3 en inglés es «three». Ojo: «tree» significa árbol.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Escucha el modelo y completa la palabra: p___ncil ✏️",
+        "audio": {
+          "texto": "pencil",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "i",
+          "e",
+          "a",
+          "o"
+        ],
+        "correcta": 1,
+        "pista": "Escucha con atención la primera parte de la palabra.",
+        "explicacion_error": "Lápiz se escribe «pencil»: p-e-n-c-i-l.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-007",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada palabra en inglés con su significado.",
+        "pares": [
+          [
+            "mother",
+            "mamá"
+          ],
+          [
+            "father",
+            "papá"
+          ],
+          [
+            "sister",
+            "hermana"
+          ],
+          [
+            "brother",
+            "hermano"
+          ]
+        ],
+        "pista": "«Mother» y «father» se parecen: fíjate en cómo empiezan.",
+        "explicacion_error": "mother es mamá, father es papá, sister es hermana y brother es hermano.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-008",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Es un color o un animal?",
+        "categorias": [
+          "Color 🎨",
+          "Animal 🐾"
+        ],
+        "elementos": [
+          {
+            "texto": "red",
+            "categoria": 0
+          },
+          {
+            "texto": "blue",
+            "categoria": 0
+          },
+          {
+            "texto": "green",
+            "categoria": 0
+          },
+          {
+            "texto": "dog",
+            "categoria": 1
+          },
+          {
+            "texto": "bird",
+            "categoria": 1
+          },
+          {
+            "texto": "cat",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa qué significa cada palabra.",
+        "explicacion_error": "red, blue y green son colores (rojo, azul, verde); dog, bird y cat son animales (perro, pájaro, gato).",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena las letras para escribir «dog» 🐶.",
+        "elementos": [
+          "d",
+          "o",
+          "g"
+        ],
+        "pista": "Empieza con la letra d.",
+        "explicacion_error": "Perro se escribe «dog»: d-o-g.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-010",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Ayuda a {personaje} a completar: «I have a ___.» 🐶",
+        "alternativas": [
+          "bird",
+          "dig",
+          "dog",
+          "cat"
+        ],
+        "correcta": 2,
+        "pista": "Mira el dibujo: ¿qué animal es?",
+        "explicacion_error": "🐶 es «dog» (perro): «I have a dog» significa tengo un perro.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-011",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena las palabras para escribir «Este es mi papá».",
+        "elementos": [
+          "This",
+          "is",
+          "my",
+          "father."
+        ],
+        "pista": "La oración empieza con mayúscula y termina con punto.",
+        "explicacion_error": "«This is my father.» significa este es mi papá.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-012",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Completa: «It is ___.» 💛",
+        "alternativas": [
+          "yelow",
+          "green",
+          "red",
+          "yellow"
+        ],
+        "correcta": 3,
+        "pista": "Mira el color del corazón y revisa bien cada letra.",
+        "explicacion_error": "💛 es «yellow» (amarillo), que se escribe con doble l.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-013",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "Completa: «I have two ___.» 👀",
+        "alternativas": [
+          "eyes",
+          "eye",
+          "ears",
+          "nose"
+        ],
+        "correcta": 0,
+        "pista": "Mira el dibujo. Como son dos, la palabra termina en -s.",
+        "explicacion_error": "👀 son «eyes» (ojos); como son dos, lleva -s al final.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué palabra está bien escrita? 📕",
+        "alternativas": [
+          "buk",
+          "boock",
+          "bok",
+          "book"
+        ],
+        "correcta": 3,
+        "pista": "Recuerda cómo se ve la palabra «libro» en inglés: es cortita.",
+        "explicacion_error": "Libro se escribe «book»: b-o-o-k.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-015",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena las palabras para escribir «Mi gato es negro».",
+        "elementos": [
+          "My",
+          "cat",
+          "is",
+          "black."
+        ],
+        "pista": "Primero «My cat» (mi gato).",
+        "explicacion_error": "«My cat is black.» significa mi gato es negro.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-016",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Es un útil escolar o una parte de la cara?",
+        "categorias": [
+          "Útil escolar",
+          "Parte de la cara"
+        ],
+        "elementos": [
+          {
+            "texto": "pencil",
+            "categoria": 0
+          },
+          {
+            "texto": "book",
+            "categoria": 0
+          },
+          {
+            "texto": "eraser",
+            "categoria": 0
+          },
+          {
+            "texto": "eye",
+            "categoria": 1
+          },
+          {
+            "texto": "mouth",
+            "categoria": 1
+          },
+          {
+            "texto": "ear",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa qué significa cada palabra.",
+        "explicacion_error": "pencil (lápiz), book (libro) y eraser (goma) son útiles; eye (ojo), mouth (boca) y ear (oreja) son partes de la cara.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-017",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Sigue el modelo. «I am six.» 6️⃣ → «I am ___.» 7️⃣",
+        "alternativas": [
+          "six",
+          "sevn",
+          "seven",
+          "eight"
+        ],
+        "correcta": 2,
+        "pista": "Busca el número 7 y revisa bien sus letras.",
+        "explicacion_error": "7 en inglés es «seven»: «I am seven» significa tengo siete años.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-018",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Mira el modelo «This is my sister.» y escribe «Este es mi hermano».",
+        "elementos": [
+          "This",
+          "is",
+          "my",
+          "brother."
+        ],
+        "pista": "Usa el modelo y cambia solo la última palabra.",
+        "explicacion_error": "«This is my brother.»: «brother» significa hermano.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1-oa13-019",
+        "tipo": "completar",
+        "dificultad": 5,
+        "enunciado": "Modelo: «a red apple» 🍎. Completa: «a ___ frog» 🐸",
+        "alternativas": [
+          "green",
+          "grean",
+          "red",
+          "blue"
+        ],
+        "correcta": 0,
+        "pista": "¿De qué color es la rana? Revisa bien las letras.",
+        "explicacion_error": "La rana es verde: «a green frog». Verde se escribe «green», con doble e.",
+        "monedas": 10
+      }
+    ]
+  }
+]

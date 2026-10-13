@@ -19,8 +19,12 @@
   const nombreNivel = n => Motor.NOMBRE_NIVEL[n] || n;
   const mundoActual = () => A.datos.mundoPorId[(perfil() && perfil().mundo) || 'bloques'];
   ES.mundoActual = mundoActual;
-  const NOMBRE_ASIG = { matematica: 'Matemática', lenguaje: 'Lenguaje' };
+  const NOMBRE_ASIG = { matematica: 'Matemática', lenguaje: 'Lenguaje', ciencias: 'Ciencias Naturales', ingles: 'Inglés' };
   ES.NOMBRE_ASIG = NOMBRE_ASIG;
+  // Asignaturas con contenido, en el orden del índice, y último curso que ya tiene contenido.
+  const asignaturas = () => Object.keys(A.datos.indice.asignaturas).filter(a => A.datos.orden.some(id => A.datos.objetivos[id].asignatura === a));
+  const ultimoNivel = () => A.datos.objetivos[A.datos.orden.reduce((m, id) => (Motor.idxNivel(A.datos.objetivos[id].nivel) > Motor.idxNivel(A.datos.objetivos[m].nivel) ? id : m))].nivel;
+  const listaAsig = () => { const n = asignaturas().map(a => NOMBRE_ASIG[a] || a); return n.length > 1 ? `${n.slice(0, -1).join(', ')} y ${n[n.length - 1]}` : n.join(''); };
   const codigoCorto = oaId => { const o = A.datos.objetivos[oaId]; return `${o.objetivo_oficial.split(':')[0]} · ${nombreNivel(o.nivel)}`; };
   const resumenOA = oaId => A.datos.objetivos[oaId].objetivo_oficial.replace(/^OA \d+:\s*/, '');
   ES.codigoCorto = codigoCorto; ES.resumenOA = resumenOA;
@@ -107,7 +111,7 @@
     A.estado.activo = null;
     main.innerHTML = `<section class="pantalla bloque">
       <h1 class="titulo">${primero ? 'Bienvenido a Expedición Saber' : 'Nuevo explorador'}</h1>
-      <p>Resuelve desafíos de Matemática y Lenguaje, gana monedas y mejora tu avatar. Equivocarse nunca te quita monedas.</p>
+      <p>Resuelve desafíos de ${esc(listaAsig())}, gana monedas y mejora tu avatar. Equivocarse nunca te quita monedas.</p>
       <form id="form-perfil" class="pantalla" style="gap:12px">
         <label class="campo" for="nombre">Nombre del explorador<input id="nombre" name="nombre" maxlength="20" autocomplete="off" required></label>
         <label class="campo" for="nivel">Curso<select id="nivel" name="nivel">${Motor.NIVELES_ESCOLARES.map(n => `<option value="${n}" ${n === '3_basico' ? 'selected' : ''}>${nombreNivel(n)}</option>`).join('')}</select></label>
@@ -116,8 +120,8 @@
       </form></section>`;
     const nota = () => {
       const n = $('#nivel', main).value;
-      $('#nota-nivel', main).textContent = Motor.idxNivel(n) > Motor.idxNivel('4_basico')
-        ? 'Por ahora el contenido llega hasta 4° básico. Puedes repasar esos cursos mientras se agrega el tuyo.' : '';
+      $('#nota-nivel', main).textContent = Motor.idxNivel(n) > Motor.idxNivel(ultimoNivel())
+        ? `Por ahora el contenido llega hasta ${nombreNivel(ultimoNivel())}. Puedes repasar esos cursos mientras se agrega el tuyo.` : '';
     };
     $('#nivel', main).addEventListener('change', nota); nota();
     const volver = $('#btn-volver', main); if (volver) volver.addEventListener('click', () => ES.ir('perfiles'));
@@ -135,7 +139,7 @@
     const p = perfil(), ej = m => Motor.ambientar('Aquí los problemas hablan de {objetos}, de {el_contenedor} y de {la_construccion}.', m.tokens);
     main.innerHTML = `<section class="pantalla">
       <h1 class="titulo">Elige tu mundo</h1>
-      <p class="nota">Tu avance en Matemática y Lenguaje es el mismo en todos los mundos. Cada mundo tiene su propio avatar y sus propias mejoras.</p>
+      <p class="nota">Tu avance en ${esc(listaAsig())} es el mismo en todos los mundos. Cada mundo tiene su propio avatar y sus propias mejoras.</p>
       <div class="mundos">${A.datos.mundos.map(m => `
         <article class="bloque mundo ${p.mundo === m.id ? 'activo' : ''}">
           <h3>${esc(m.nombre)}</h3>
@@ -160,9 +164,11 @@
 
   PANTALLAS.base = main => {
     const p = perfil(), m = mundoActual();
-    const aviso = Motor.idxNivel(p.nivel_escolar) > Motor.idxNivel('4_basico')
-      ? `<p class="nota">Tu curso (${esc(nombreNivel(p.nivel_escolar))}) aún no tiene contenido. Mientras tanto practicas hasta 4° básico.</p>` : '';
+    const aviso = Motor.idxNivel(p.nivel_escolar) > Motor.idxNivel(ultimoNivel())
+      ? `<p class="nota">Tu curso (${esc(nombreNivel(p.nivel_escolar))}) aún no tiene contenido. Mientras tanto practicas hasta ${esc(nombreNivel(ultimoNivel()))}.</p>` : '';
     const tarjeta = asig => {
+      const alcance = A.datos.orden.some(id => A.datos.objetivos[id].asignatura === asig && Motor.idxNivel(A.datos.objetivos[id].nivel) <= Motor.idxNivel(p.nivel_escolar));
+      if (!alcance) return `<article class="bloque asignatura"><h3>${NOMBRE_ASIG[asig]}</h3><p>Los desafíos de tu curso están en preparación. ¡Muy pronto!</p></article>`;
       const oaId = Motor.recomendar(p, asig, A.datos);
       if (!oaId) return `<article class="bloque asignatura"><h3>${NOMBRE_ASIG[asig]}</h3><p>Dominaste todo lo disponible en tu curso. ¡Excelente!</p>
         <button class="btn piedra" type="button" data-arbol="${asig}">Ver el árbol</button></article>`;
@@ -175,7 +181,7 @@
     const barata = m.espacios.map(e => ({ e, info: Motor.infoMejora(p, m.id, e.id, A.datos) })).filter(x => x.info.siguiente).sort((a, b) => a.info.costo - b.info.costo)[0];
     main.innerHTML = `<section class="pantalla">
       <h1 class="titulo">Hola, ${esc(p.nombre)}</h1>${aviso}
-      <div class="asignaturas">${tarjeta('matematica')}${tarjeta('lenguaje')}</div>
+      <div class="asignaturas">${asignaturas().map(tarjeta).join('')}</div>
       <article class="bloque"><h3 class="subtitulo">Taller de ${esc(m.nombre)}</h3>
         <p>${barata ? `Próxima mejora: <strong>${esc(barata.e.niveles[barata.info.siguiente - 1])}</strong> por ${monedasHTML(barata.info.costo)}.` : 'Tu avatar está completo en este mundo.'}</p>
         <div class="fila"><button class="btn tierra" type="button" data-ir="taller">Ir al Taller</button><button class="btn piedra" type="button" data-ir="mundos">Cambiar mundo</button><button class="btn piedra" type="button" data-ir="perfiles">Cambiar explorador</button></div>
