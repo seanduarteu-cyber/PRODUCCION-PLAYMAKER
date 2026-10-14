@@ -1,4 +1,4 @@
-"""Pasa los datos de PMK_Formulario_Receta.pdf (completado) a PMK_Receta_Produccion.xlsx.
+"""Pasa los datos de PMK_Formulario_Receta.pdf (columnas: Precios E=kg/m, F=ancho útil, I=nota; Moldes R=ancho de referencia) (completado) a PMK_Receta_Produccion.xlsx.
 
 Uso: python3 importar_formulario_receta.py formulario.pdf PMK_Receta_Produccion.xlsx salida.xlsx
 Imprime cada cambio hecho. Solo escribe en celdas de entrada (azules); las fórmulas no se tocan.
@@ -49,10 +49,10 @@ for base, d in sorted(grupo('TELA_').items()):
     poner(P, r, 3, num(d.get('neto')), f"$/kg neto {d['nombre']}")
     poner(P, r, 4, num(d.get('coniva')), f"$/kg con IVA {d['nombre']}")
     poner(P, r, 5, num(d.get('kgm')), f"peso 1 m {d['nombre']}")
-    nota = str(P.cell(r, 8).value or '')
+    poner(P, r, 6, num(d.get('ancho')), f"ancho útil {d['nombre']}")
+    nota = str(P.cell(r, 9).value or '')
     if num(d.get('kgm')): nota = nota.replace('Falta pesar 1 metro', '').strip()
-    if d.get('ancho'): nota = re.sub(r'\s*ancho [0-9.,]+ m', '', nota).strip() + f" ancho {d['ancho']} m"
-    poner(P, r, 8, nota.strip() or None, f"nota {d['nombre']}")
+    poner(P, r, 9, nota.strip() or None, f"nota {d['nombre']}")
 # B. Impresión
 for key, row in (('papel_rollo', 5), ('papel_metros', 6), ('tinta_litro', 7), ('tinta_ml', 8), ('proteccion', 9)):
     poner(P, row, 17, num(f.get(f'IMP__{key}')), key)
@@ -75,6 +75,7 @@ for base, d in grupo('MOLDE__').items():
             poner(M, r, ca, m.group(1), f'avío {code}'); poner(M, r, cq, num(m.group(2)), f'cant. avío {code}')
     aj = num(d.get('ajuste'))
     if aj is not None: poner(M, r, 11, aj / 100, f'ajuste real {code}')
+    poner(M, r, 18, num(d.get('ancho_ref')), f'ancho de referencia {code}')
 filas_molde = collections.defaultdict(list)
 for r in range(5, 1005):
     if D.cell(r, 1).value: filas_molde[D.cell(r, 1).value].append(r)
