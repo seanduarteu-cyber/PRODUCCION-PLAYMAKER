@@ -1,0 +1,875 @@
+[
+  {
+    "nivel": "1_medio",
+    "asignatura": "ciencias",
+    "eje": "Biología",
+    "objetivo_oficial": "OA 2: Analizar evidencias de que la diversidad de organismos es resultado de la evolución (registro fósil, estructuras homólogas, embriología, ADN) y explicar la selección natural de Darwin y Wallace.",
+    "dificultad": 8,
+    "prerequisitos": [],
+    "id_objetivo": "1_medio.ciencias.OA2",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-80700.html"
+    },
+    "desafios": [
+      {
+        "id": "cie1m-oa2-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Quiénes propusieron la teoría de la evolución por selección natural?",
+        "alternativas": [
+          "Charles Darwin y Alfred Wallace",
+          "Isaac Newton y Galileo",
+          "Gregor Mendel y Pasteur",
+          "Marie Curie y Bohr"
+        ],
+        "correcta": 0,
+        "pista": "Uno de ellos viajó en el Beagle.",
+        "explicacion_error": "Darwin y Wallace propusieron la selección natural.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Los restos o huellas de organismos antiguos conservados en rocas se llaman ___.",
+        "alternativas": [
+          "fósiles",
+          "minerales",
+          "genes",
+          "células"
+        ],
+        "correcta": 0,
+        "pista": "Son evidencia del pasado.",
+        "explicacion_error": "Los fósiles son evidencia de seres vivos antiguos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué significa que los organismos «evolucionan»?",
+        "alternativas": [
+          "que las poblaciones cambian a lo largo de muchas generaciones",
+          "que los animales eligen cambiar",
+          "que todos los seres vivos son iguales",
+          "que un individuo cambia en un día"
+        ],
+        "correcta": 0,
+        "pista": "La evolución ocurre en poblaciones, no en un individuo.",
+        "explicacion_error": "Las poblaciones cambian a través de generaciones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Es evidencia de la evolución?",
+        "categorias": [
+          "Evidencia de evolución",
+          "No es evidencia"
+        ],
+        "elementos": [
+          {
+            "texto": "registro fósil",
+            "categoria": 0
+          },
+          {
+            "texto": "estructuras homólogas",
+            "categoria": 0
+          },
+          {
+            "texto": "similitudes en el ADN",
+            "categoria": 0
+          },
+          {
+            "texto": "el color favorito de una persona",
+            "categoria": 1
+          },
+          {
+            "texto": "la forma de las nubes",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en lo que muestra un ancestro común.",
+        "explicacion_error": "Fósiles, homologías y ADN son evidencias; los gustos y las nubes no.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "El brazo humano, el ala del murciélago y la aleta de la ballena tienen los mismos huesos básicos. Son estructuras…",
+        "alternativas": [
+          "vestigiales",
+          "artificiales",
+          "homólogas",
+          "análogas"
+        ],
+        "correcta": 2,
+        "pista": "Mismo origen, distinta función.",
+        "explicacion_error": "Tienen el mismo origen evolutivo: son homólogas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "En la selección natural, los individuos con características ___ sobreviven y se reproducen más.",
+        "alternativas": [
+          "inútiles",
+          "dañinas",
+          "ventajosas",
+          "iguales"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en la adaptación al ambiente.",
+        "explicacion_error": "Las características ventajosas aumentan la supervivencia.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-007",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena los pasos de la selección natural.",
+        "elementos": [
+          "Hay variación entre individuos.",
+          "Algunas variantes sobreviven mejor.",
+          "Esos individuos se reproducen más.",
+          "La característica se vuelve más común en la población."
+        ],
+        "pista": "Variación → supervivencia → reproducción → cambio en la población.",
+        "explicacion_error": "Así cambia la frecuencia de una característica.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Por qué el uso excesivo de antibióticos genera bacterias resistentes?",
+        "alternativas": [
+          "porque sobreviven y se reproducen las bacterias que ya eran resistentes",
+          "porque los antibióticos crean bacterias nuevas",
+          "porque las bacterias se vuelven más grandes",
+          "porque los antibióticos enseñan a las bacterias"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en selección natural.",
+        "explicacion_error": "El antibiótico elimina a las sensibles y deja a las resistentes.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada término con su definición.",
+        "pares": [
+          [
+            "adaptación",
+            "característica que aumenta la supervivencia"
+          ],
+          [
+            "especie",
+            "grupo que puede reproducirse y tener descendencia fértil"
+          ],
+          [
+            "mutación",
+            "cambio en el ADN"
+          ]
+        ],
+        "pista": "Vocabulario de evolución.",
+        "explicacion_error": "Adaptación, especie y mutación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Las polillas oscuras aumentaron en Inglaterra cuando el hollín oscureció los árboles. ¿Por qué?",
+        "alternativas": [
+          "las polillas claras se volvieron oscuras",
+          "el hollín pintó a las polillas",
+          "las aves preferían las polillas claras por su sabor",
+          "las aves veían menos a las polillas oscuras sobre los troncos"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en el camuflaje.",
+        "explicacion_error": "Las oscuras se camuflaban mejor y sobrevivían más.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué diferencia a Darwin de Lamarck?",
+        "alternativas": [
+          "Darwin creía que las especies no cambian",
+          "Darwin explicó el cambio por selección natural; Lamarck, por uso y herencia de lo adquirido",
+          "Lamarck descubrió el ADN",
+          "No hay diferencia"
+        ],
+        "correcta": 1,
+        "pista": "Lamarck pensaba que el cuello de la jirafa se alargaba por estirarlo.",
+        "explicacion_error": "Lamarck: herencia de caracteres adquiridos; Darwin: selección natural.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Explicación de Darwin o de Lamarck?",
+        "categorias": [
+          "Darwin",
+          "Lamarck"
+        ],
+        "elementos": [
+          {
+            "texto": "Las jirafas de cuello largo alcanzaban más alimento y dejaban más crías.",
+            "categoria": 0
+          },
+          {
+            "texto": "Hay variación y el ambiente selecciona.",
+            "categoria": 0
+          },
+          {
+            "texto": "La jirafa estiró su cuello y se lo heredó a sus crías.",
+            "categoria": 1
+          },
+          {
+            "texto": "El uso desarrolla un órgano y ese cambio se hereda.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Lamarck habla de uso y desuso.",
+        "explicacion_error": "Selección de variantes: Darwin; uso y herencia de lo adquirido: Lamarck.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En las islas Galápagos, los pinzones tienen picos distintos según su alimento. ¿Qué explica mejor esto?",
+        "alternativas": [
+          "cada pinzón eligió su pico",
+          "los picos cambian cada semana",
+          "poblaciones de un ancestro común se adaptaron a recursos diferentes",
+          "son aves sin relación entre sí"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en ancestro común y ambientes distintos.",
+        "explicacion_error": "Un ancestro común dio origen a especies adaptadas a cada alimento.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Si dos especies tienen ADN muy parecido, lo más probable es que…",
+        "alternativas": [
+          "compartan un ancestro común reciente",
+          "vivan en el mismo país",
+          "tengan el mismo tamaño",
+          "no estén emparentadas"
+        ],
+        "correcta": 0,
+        "pista": "El ADN funciona como un registro del parentesco.",
+        "explicacion_error": "Más similitud genética indica parentesco más cercano.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa2-015",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena del más antiguo al más reciente según el registro fósil.",
+        "elementos": [
+          "bacterias",
+          "peces",
+          "reptiles",
+          "mamíferos"
+        ],
+        "pista": "Las formas simples aparecen primero.",
+        "explicacion_error": "Bacterias, peces, reptiles y mamíferos, en ese orden.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_medio",
+    "asignatura": "ciencias",
+    "eje": "Física",
+    "objetivo_oficial": "OA 9: Explicar que las ondas transmiten energía y pueden reflejarse, refractarse y absorberse, describiendo amplitud, frecuencia, longitud de onda y rapidez, y clasificándolas en mecánicas o electromagnéticas y transversales o longitudinales.",
+    "dificultad": 8,
+    "prerequisitos": [],
+    "id_objetivo": "1_medio.ciencias.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Fisica/80707:CN1M-OA-09"
+    },
+    "desafios": [
+      {
+        "id": "cie1m-oa9-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué transportan las ondas?",
+        "alternativas": [
+          "agua siempre",
+          "materia",
+          "aire siempre",
+          "energía"
+        ],
+        "correcta": 3,
+        "pista": "Las ondas no trasladan la materia de un lugar a otro.",
+        "explicacion_error": "Las ondas transportan energía, no materia.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La cantidad de oscilaciones por segundo se llama ___.",
+        "alternativas": [
+          "longitud de onda",
+          "rapidez",
+          "frecuencia",
+          "amplitud"
+        ],
+        "correcta": 2,
+        "pista": "Se mide en hertz (Hz).",
+        "explicacion_error": "La frecuencia se mide en Hz.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Onda mecánica o electromagnética?",
+        "categorias": [
+          "Mecánica",
+          "Electromagnética"
+        ],
+        "elementos": [
+          {
+            "texto": "sonido",
+            "categoria": 0
+          },
+          {
+            "texto": "ola del mar",
+            "categoria": 0
+          },
+          {
+            "texto": "onda sísmica",
+            "categoria": 0
+          },
+          {
+            "texto": "luz",
+            "categoria": 1
+          },
+          {
+            "texto": "ondas de radio",
+            "categoria": 1
+          },
+          {
+            "texto": "rayos X",
+            "categoria": 1
+          }
+        ],
+        "pista": "Las mecánicas necesitan un medio; las electromagnéticas viajan en el vacío.",
+        "explicacion_error": "Sonido, olas y sismos son mecánicas; luz, radio y rayos X, electromagnéticas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "La distancia entre dos crestas consecutivas es la…",
+        "alternativas": [
+          "frecuencia",
+          "longitud de onda",
+          "amplitud",
+          "rapidez"
+        ],
+        "correcta": 1,
+        "pista": "Se representa con λ.",
+        "explicacion_error": "Es la longitud de onda (λ).",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "En el espacio no se escucha el sonido porque…",
+        "alternativas": [
+          "hace mucho frío",
+          "no hay luz",
+          "el sonido necesita un medio material para propagarse",
+          "el sonido es muy rápido"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué tipo de onda es el sonido?",
+        "explicacion_error": "Es una onda mecánica: en el vacío no se propaga.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada fenómeno con su nombre.",
+        "pares": [
+          [
+            "el eco",
+            "reflexión"
+          ],
+          [
+            "un lápiz que parece quebrado en el agua",
+            "refracción"
+          ],
+          [
+            "una cortina que reduce el ruido",
+            "absorción"
+          ]
+        ],
+        "pista": "Piensa qué le pasa a la onda en cada caso.",
+        "explicacion_error": "Rebotar es reflexión; cambiar de medio, refracción; quedar retenida, absorción.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Una onda tiene frecuencia 4 Hz y longitud de onda 3 m. ¿Cuál es su rapidez, en m/s? (v = λ · f)",
+        "respuesta": 12,
+        "tolerancia": 0,
+        "unidad": "m/s",
+        "pista": "Multiplica λ por f.",
+        "explicacion_error": "v = 3 · 4 = 12 m/s.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Una onda viaja a 20 m/s con frecuencia 5 Hz. ¿Cuánto mide su longitud de onda, en metros?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "unidad": "m",
+        "pista": "λ = v ÷ f.",
+        "explicacion_error": "λ = 20 ÷ 5 = 4 m.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Un sonido más agudo tiene…",
+        "alternativas": [
+          "menor frecuencia",
+          "menor rapidez siempre",
+          "mayor amplitud",
+          "mayor frecuencia"
+        ],
+        "correcta": 3,
+        "pista": "El tono depende de la frecuencia.",
+        "explicacion_error": "Los sonidos agudos tienen mayor frecuencia.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-010",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Onda transversal o longitudinal?",
+        "categorias": [
+          "Transversal",
+          "Longitudinal"
+        ],
+        "elementos": [
+          {
+            "texto": "una cuerda que se agita hacia arriba y abajo",
+            "categoria": 0
+          },
+          {
+            "texto": "la luz",
+            "categoria": 0
+          },
+          {
+            "texto": "el sonido en el aire",
+            "categoria": 1
+          },
+          {
+            "texto": "un resorte que se comprime y se estira",
+            "categoria": 1
+          }
+        ],
+        "pista": "Transversal: vibra perpendicular a la dirección de avance; longitudinal: en la misma dirección.",
+        "explicacion_error": "Cuerda y luz son transversales; sonido y resorte, longitudinales.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Si subes el volumen de un parlante, cambia principalmente la…",
+        "alternativas": [
+          "rapidez del sonido",
+          "amplitud",
+          "frecuencia",
+          "longitud de onda"
+        ],
+        "correcta": 1,
+        "pista": "El volumen se relaciona con la energía de la onda.",
+        "explicacion_error": "Más volumen es más amplitud.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Un murciélago emite un sonido que vuelve en 0,2 s. Si el sonido viaja a 340 m/s, ¿a cuántos metros está el obstáculo?",
+        "respuesta": 34,
+        "tolerancia": 0,
+        "unidad": "m",
+        "pista": "El sonido va y vuelve: la distancia es la mitad del recorrido.",
+        "explicacion_error": "340 · 0,2 = 68 m de ida y vuelta: el obstáculo está a 34 m.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En un sismo llegan primero las ondas P y luego las S. ¿Qué indica la diferencia de tiempo?",
+        "alternativas": [
+          "la hora del día",
+          "la profundidad del mar",
+          "la temperatura del suelo",
+          "la distancia al epicentro"
+        ],
+        "correcta": 3,
+        "pista": "Viajan a distinta rapidez.",
+        "explicacion_error": "Mientras más tiempo entre P y S, más lejos está el epicentro.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "La luz pasa del aire al agua y se desvía. ¿Por qué?",
+        "alternativas": [
+          "la luz rebota en el agua",
+          "el agua absorbe toda la luz",
+          "cambia su rapidez al cambiar de medio",
+          "la frecuencia se duplica"
+        ],
+        "correcta": 2,
+        "pista": "Así funciona la refracción.",
+        "explicacion_error": "Al cambiar de medio cambia la rapidez y la luz se desvía.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa9-015",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 5,
+        "enunciado": "Ordena de menor a mayor frecuencia.",
+        "elementos": [
+          "ondas de radio",
+          "microondas",
+          "luz visible",
+          "rayos X"
+        ],
+        "pista": "Piensa en el espectro electromagnético.",
+        "explicacion_error": "Radio < microondas < luz visible < rayos X.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_medio",
+    "asignatura": "ciencias",
+    "eje": "Química",
+    "objetivo_oficial": "OA 18: Explicar con modelos que en una reacción química el número total de átomos no varía y la masa se conserva, aplicando la ley de conservación de la materia a ecuaciones químicas.",
+    "dificultad": 8,
+    "prerequisitos": [
+      "8_basico.ciencias.OA12"
+    ],
+    "id_objetivo": "1_medio.ciencias.OA18",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Quimica/Reacciones-quimicas/80716:CN1M-OA-18"
+    },
+    "desafios": [
+      {
+        "id": "cie1m-oa18-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué dice la ley de conservación de la masa?",
+        "alternativas": [
+          "la masa siempre aumenta",
+          "la masa desaparece al quemar algo",
+          "en una reacción química la masa total no cambia",
+          "solo se conserva el agua"
+        ],
+        "correcta": 2,
+        "pista": "Lavoisier: «nada se pierde, nada se crea…».",
+        "explicacion_error": "La masa de los reactivos es igual a la de los productos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Las sustancias que reaccionan se llaman ___.",
+        "alternativas": [
+          "reactivos",
+          "catalizadores",
+          "soluciones",
+          "productos"
+        ],
+        "correcta": 0,
+        "pista": "Están a la izquierda de la flecha.",
+        "explicacion_error": "Los reactivos están antes de la flecha.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Quién formuló la ley de conservación de la masa?",
+        "alternativas": [
+          "Charles Darwin",
+          "Gregor Mendel",
+          "Isaac Newton",
+          "Antoine Lavoisier"
+        ],
+        "correcta": 3,
+        "pista": "Químico francés del siglo XVIII.",
+        "explicacion_error": "Fue Lavoisier.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Cambio químico o físico?",
+        "categorias": [
+          "Cambio químico",
+          "Cambio físico"
+        ],
+        "elementos": [
+          {
+            "texto": "quemar papel",
+            "categoria": 0
+          },
+          {
+            "texto": "oxidarse un clavo",
+            "categoria": 0
+          },
+          {
+            "texto": "cocinar un huevo",
+            "categoria": 0
+          },
+          {
+            "texto": "derretir hielo",
+            "categoria": 1
+          },
+          {
+            "texto": "cortar madera",
+            "categoria": 1
+          },
+          {
+            "texto": "disolver azúcar",
+            "categoria": 1
+          }
+        ],
+        "pista": "En un cambio químico se forman sustancias nuevas.",
+        "explicacion_error": "Quemar, oxidar y cocinar forman sustancias nuevas; los otros solo cambian forma o estado.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Reaccionan 10 g de una sustancia con 6 g de otra y se forma un solo producto. ¿Cuántos gramos de producto se forman?",
+        "respuesta": 16,
+        "tolerancia": 0,
+        "unidad": "g",
+        "pista": "La masa se conserva.",
+        "explicacion_error": "10 + 6 = 16 g.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "En la ecuación 2 H₂ + O₂ → 2 H₂O, ¿cuántos átomos de hidrógeno hay en los reactivos?",
+        "alternativas": [
+          "2",
+          "4",
+          "8",
+          "6"
+        ],
+        "correcta": 1,
+        "pista": "2 moléculas de H₂ tienen 2 átomos cada una.",
+        "explicacion_error": "2 · 2 = 4 átomos de hidrógeno.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Para balancear H₂ + Cl₂ → ___ HCl, el coeficiente del HCl es…",
+        "alternativas": [
+          "2",
+          "3",
+          "4",
+          "1"
+        ],
+        "correcta": 0,
+        "pista": "Cuenta los átomos de H y de Cl a cada lado.",
+        "explicacion_error": "H₂ + Cl₂ → 2 HCl: 2 H y 2 Cl a cada lado.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Al quemar 12 g de carbono con 32 g de oxígeno se forma dióxido de carbono. ¿Cuántos gramos de CO₂ se forman?",
+        "respuesta": 44,
+        "tolerancia": 0,
+        "unidad": "g",
+        "pista": "Suma las masas de los reactivos.",
+        "explicacion_error": "12 + 32 = 44 g de CO₂.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Un trozo de leña pesa 2 kg y las cenizas, 0,1 kg. ¿Por qué no se cumple aparentemente la ley?",
+        "alternativas": [
+          "porque se liberaron gases como CO₂ y vapor de agua que no se pesaron",
+          "porque la masa se destruyó",
+          "porque el fuego crea masa",
+          "porque la balanza estaba mala"
+        ],
+        "correcta": 0,
+        "pista": "En un sistema abierto se escapan gases.",
+        "explicacion_error": "La masa faltante salió como gases.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-010",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada grupo de reactivos con sus productos balanceados.",
+        "pares": [
+          [
+            "N₂ + 3 H₂ →",
+            "2 NH₃"
+          ],
+          [
+            "2 Na + Cl₂ →",
+            "2 NaCl"
+          ],
+          [
+            "C + O₂ →",
+            "CO₂"
+          ]
+        ],
+        "pista": "Cuenta los átomos a cada lado.",
+        "explicacion_error": "N₂ + 3 H₂ → 2 NH₃; 2 Na + Cl₂ → 2 NaCl; C + O₂ → CO₂.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué ecuación está balanceada?",
+        "alternativas": [
+          "CH₄ + O₂ → CO₂ + H₂O",
+          "CH₄ + O₂ → 2 CO₂ + 2 H₂O",
+          "CH₄ + 2 O₂ → CO₂ + 2 H₂O",
+          "CH₄ + 2 O₂ → CO₂ + H₂O"
+        ],
+        "correcta": 2,
+        "pista": "Cuenta C, H y O en cada lado.",
+        "explicacion_error": "1 C, 4 H y 4 O a cada lado.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena los pasos para balancear una ecuación.",
+        "elementos": [
+          "Escribir reactivos y productos.",
+          "Contar los átomos de cada elemento.",
+          "Ajustar coeficientes.",
+          "Verificar que los átomos sean iguales a cada lado."
+        ],
+        "pista": "Primero escribir, luego contar, ajustar y comprobar.",
+        "explicacion_error": "Ese es el procedimiento para balancear.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "En un frasco cerrado se mezclan 50 g de vinagre y 5 g de bicarbonato. La reacción produce gas que queda dentro. ¿Cuánto pesa el frasco con su contenido, si vacío pesa 200 g?",
+        "respuesta": 255,
+        "tolerancia": 0,
+        "unidad": "g",
+        "pista": "En un sistema cerrado la masa total no cambia.",
+        "explicacion_error": "200 + 50 + 5 = 255 g.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué Lavoisier realizaba sus experimentos en recipientes cerrados?",
+        "alternativas": [
+          "para que no los vieran otros científicos",
+          "para no perder gases y medir toda la masa",
+          "para que fueran más rápidos",
+          "para que no entrara luz"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué se escapa en un recipiente abierto?",
+        "explicacion_error": "Así incluía los gases en la medición de la masa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie1m-oa18-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "En 2 H₂O → 2 H₂ + O₂, ¿cuántos átomos hay de cada elemento en los productos?",
+        "categorias": [
+          "4 átomos",
+          "2 átomos"
+        ],
+        "elementos": [
+          {
+            "texto": "hidrógeno",
+            "categoria": 0
+          },
+          {
+            "texto": "oxígeno",
+            "categoria": 1
+          },
+          {
+            "texto": "hidrógeno en los reactivos",
+            "categoria": 0
+          },
+          {
+            "texto": "oxígeno en los reactivos",
+            "categoria": 1
+          }
+        ],
+        "pista": "Multiplica coeficiente por subíndice.",
+        "explicacion_error": "Hay 4 H y 2 O a cada lado: la ecuación está balanceada.",
+        "monedas": 10
+      }
+    ]
+  }
+]

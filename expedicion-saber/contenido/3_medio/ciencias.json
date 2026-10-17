@@ -1,0 +1,896 @@
+[
+  {
+    "nivel": "3_medio",
+    "asignatura": "ciencias",
+    "eje": "Bienestar y salud",
+    "objetivo_oficial": "FG-CIBS-3y4-OAC-01: Analizar cómo factores biológicos, ambientales y sociales influyen en la salud humana: nutrición, actividad física, estrés, consumo de alcohol y drogas, y exposición a radiación UV, plaguicidas, patógenos y contaminantes.",
+    "dificultad": 10,
+    "prerequisitos": [],
+    "id_objetivo": "3_medio.ciencias.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-91029.html",
+      "codigo_oficial": "FG-CIBS-3y4-OAC-01"
+    },
+    "desafios": [
+      {
+        "id": "cie3m-oa1-001",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Favorece o perjudica la salud?",
+        "categorias": [
+          "Favorece",
+          "Perjudica"
+        ],
+        "elementos": [
+          {
+            "texto": "dormir 8 a 9 horas",
+            "categoria": 0
+          },
+          {
+            "texto": "hacer actividad física",
+            "categoria": 0
+          },
+          {
+            "texto": "comer frutas y verduras",
+            "categoria": 0
+          },
+          {
+            "texto": "fumar",
+            "categoria": 1
+          },
+          {
+            "texto": "tomar sol sin protección",
+            "categoria": 1
+          },
+          {
+            "texto": "dormir 4 horas por jugar",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en hábitos saludables y de riesgo.",
+        "explicacion_error": "Dormir bien, moverse y comer frutas favorecen la salud; fumar, el sol sin protección y dormir poco la perjudican.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué protege la piel de la radiación ultravioleta?",
+        "alternativas": [
+          "tomar agua fría",
+          "usar ropa oscura de noche",
+          "usar bloqueador solar y sombrero",
+          "comer chocolate"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en lo que usas en la playa.",
+        "explicacion_error": "El bloqueador y el sombrero reducen la exposición a los rayos UV.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La práctica regular de ejercicio ayuda a reducir el ___.",
+        "alternativas": [
+          "estrés",
+          "hambre siempre",
+          "sueño",
+          "crecimiento"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en cómo te sientes después de hacer deporte.",
+        "explicacion_error": "La actividad física ayuda a manejar el estrés.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué factor de la salud es ambiental?",
+        "alternativas": [
+          "la contaminación del aire",
+          "la edad",
+          "el grupo sanguíneo",
+          "los genes heredados"
+        ],
+        "correcta": 0,
+        "pista": "Los factores ambientales vienen del entorno.",
+        "explicacion_error": "La contaminación del aire es un factor ambiental.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada factor con su tipo.",
+        "pares": [
+          [
+            "la herencia genética",
+            "biológico"
+          ],
+          [
+            "el smog de la ciudad",
+            "ambiental"
+          ],
+          [
+            "el acceso a la salud",
+            "social"
+          ]
+        ],
+        "pista": "Biológico: del cuerpo; ambiental: del entorno; social: de la sociedad.",
+        "explicacion_error": "Genes: biológico; smog: ambiental; acceso a la salud: social.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "El índice UV en el norte de Chile en verano puede ser «extremo». ¿Qué significa?",
+        "alternativas": [
+          "que lloverá",
+          "que el riesgo de daño en la piel es muy alto",
+          "que hará mucho frío",
+          "que no hay sol"
+        ],
+        "correcta": 1,
+        "pista": "El índice UV mide la intensidad de la radiación solar.",
+        "explicacion_error": "Un índice extremo indica alto riesgo de quemaduras.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Por qué el consumo de alcohol es especialmente dañino en la adolescencia?",
+        "alternativas": [
+          "porque no afecta a los adultos",
+          "porque el alcohol es más caro",
+          "porque el cerebro todavía está en desarrollo",
+          "porque los adolescentes son más altos"
+        ],
+        "correcta": 2,
+        "pista": "El cerebro madura hasta cerca de los 25 años.",
+        "explicacion_error": "El cerebro en desarrollo es más vulnerable al alcohol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-008",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Es un factor de riesgo o de protección frente al estrés?",
+        "categorias": [
+          "Protección",
+          "Riesgo"
+        ],
+        "elementos": [
+          {
+            "texto": "tener amigos con quienes conversar",
+            "categoria": 0
+          },
+          {
+            "texto": "dormir bien",
+            "categoria": 0
+          },
+          {
+            "texto": "dormir con el celular encendido",
+            "categoria": 1
+          },
+          {
+            "texto": "acumular tareas hasta el último día",
+            "categoria": 1
+          }
+        ],
+        "pista": "La protección reduce el estrés; el riesgo lo aumenta.",
+        "explicacion_error": "El apoyo social y el sueño protegen; el celular de noche y postergar aumentan el estrés.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "En el sur de Chile, en invierno, aumentan las enfermedades respiratorias. ¿Qué factor ambiental influye?",
+        "alternativas": [
+          "el exceso de sol",
+          "el agua de mar",
+          "el humo de la calefacción a leña",
+          "la falta de árboles"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en el aire de Temuco u Osorno en invierno.",
+        "explicacion_error": "El humo de la leña contamina el aire y afecta los pulmones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor riesgo para la piel.",
+        "elementos": [
+          "quedarse bajo techo",
+          "estar a la sombra con bloqueador",
+          "tomar sol con bloqueador al mediodía",
+          "tomar sol sin protección al mediodía"
+        ],
+        "pista": "Piensa en la exposición al sol.",
+        "explicacion_error": "El riesgo aumenta con más exposición y menos protección.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Un estudio muestra que quienes duermen menos tienen peores notas. ¿Qué conclusión es más prudente?",
+        "alternativas": [
+          "dormir poco siempre causa malas notas",
+          "las notas no dependen de nada",
+          "hay una relación, pero se necesitan más datos para afirmar que una causa la otra",
+          "estudiar de noche es mejor"
+        ],
+        "correcta": 2,
+        "pista": "Correlación no siempre es causalidad.",
+        "explicacion_error": "Una asociación no prueba por sí sola que una cosa cause la otra.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Una persona duerme 6 horas en vez de las 9 recomendadas para su edad. ¿Cuántas horas de sueño le faltan en una semana de 5 días de clases?",
+        "respuesta": 15,
+        "tolerancia": 0,
+        "unidad": "horas",
+        "pista": "Calcula la diferencia por día y multiplica.",
+        "explicacion_error": "3 horas × 5 días = 15 horas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué los plaguicidas pueden afectar la salud de quienes viven cerca de cultivos?",
+        "alternativas": [
+          "mejoran el sistema inmune",
+          "desaparecen al instante",
+          "solo afectan a los insectos",
+          "pueden llegar al aire, el agua y los alimentos"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en cómo se dispersan.",
+        "explicacion_error": "Pueden contaminar aire, agua y alimentos si no se usan bien.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué medida pública reduce más los efectos del smog en la salud?",
+        "alternativas": [
+          "cerrar los parques",
+          "prohibir el ejercicio al aire libre siempre",
+          "restringir la leña húmeda y mejorar el transporte público",
+          "aumentar los autos"
+        ],
+        "correcta": 2,
+        "pista": "Ataca las fuentes de contaminación.",
+        "explicacion_error": "Reducir las fuentes de emisión mejora la calidad del aire.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa1-015",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada problema de salud con un factor que lo favorece.",
+        "pares": [
+          [
+            "cáncer de piel",
+            "radiación UV"
+          ],
+          [
+            "obesidad",
+            "sedentarismo"
+          ],
+          [
+            "asma",
+            "contaminación del aire"
+          ]
+        ],
+        "pista": "Relaciona causa y efecto.",
+        "explicacion_error": "UV, sedentarismo y contaminación favorecen esos problemas.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_medio",
+    "asignatura": "ciencias",
+    "eje": "Tecnología y sociedad",
+    "objetivo_oficial": "FG-CITS-3y4-OAC-02: Explicar cómo avances tecnológicos en robótica, telecomunicaciones, astronomía o física cuántica han ampliado las capacidades sensoriales humanas y la comprensión de la materia, los seres vivos y el entorno.",
+    "dificultad": 10,
+    "prerequisitos": [
+      "1_medio.ciencias.OA9"
+    ],
+    "id_objetivo": "3_medio.ciencias.OA2",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docentes/Formacion-General/Tecnologia-y-sociedad/FG-CITS-3y4-OAC-02/91045:FG-CITS-3y4-OAC-02",
+      "codigo_oficial": "FG-CITS-3y4-OAC-02"
+    },
+    "desafios": [
+      {
+        "id": "cie3m-oa2-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué instrumento amplió la capacidad de ver objetos muy lejanos?",
+        "alternativas": [
+          "el microscopio",
+          "el telescopio",
+          "el termómetro",
+          "el estetoscopio"
+        ],
+        "correcta": 1,
+        "pista": "Galileo lo usó para observar Júpiter.",
+        "explicacion_error": "El telescopio permite observar astros lejanos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "El ___ permite ver células y microorganismos.",
+        "alternativas": [
+          "radar",
+          "satélite",
+          "telescopio",
+          "microscopio"
+        ],
+        "correcta": 3,
+        "pista": "Amplía objetos muy pequeños.",
+        "explicacion_error": "El microscopio amplía lo muy pequeño.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-003",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "enunciado": "Une cada tecnología con el sentido que amplía.",
+        "pares": [
+          [
+            "telescopio",
+            "vista a gran distancia"
+          ],
+          [
+            "audífono",
+            "audición"
+          ],
+          [
+            "cámara térmica",
+            "ver el calor"
+          ]
+        ],
+        "pista": "Piensa en qué percibe cada una.",
+        "explicacion_error": "Telescopio, audífono y cámara térmica amplían distintos sentidos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Por qué el norte de Chile tiene grandes observatorios astronómicos?",
+        "alternativas": [
+          "porque hace mucho frío",
+          "porque hay muchas ciudades",
+          "porque está más cerca de las estrellas",
+          "por sus cielos despejados, secos y con poca contaminación lumínica"
+        ],
+        "correcta": 3,
+        "pista": "Atacama tiene cielos muy limpios.",
+        "explicacion_error": "El cielo seco y oscuro de Atacama es ideal para observar.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué hace un satélite de telecomunicaciones?",
+        "alternativas": [
+          "produce lluvia",
+          "mide la temperatura del cuerpo",
+          "fabrica alimentos",
+          "transmite señales de teléfono, internet o televisión"
+        ],
+        "correcta": 3,
+        "pista": "Está en órbita alrededor de la Tierra.",
+        "explicacion_error": "Retransmite señales de comunicación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Robótica o telecomunicaciones?",
+        "categorias": [
+          "Robótica",
+          "Telecomunicaciones"
+        ],
+        "elementos": [
+          {
+            "texto": "brazo robótico en una fábrica",
+            "categoria": 0
+          },
+          {
+            "texto": "robot explorador en Marte",
+            "categoria": 0
+          },
+          {
+            "texto": "fibra óptica",
+            "categoria": 1
+          },
+          {
+            "texto": "antenas de telefonía 5G",
+            "categoria": 1
+          }
+        ],
+        "pista": "Robótica: máquinas que actúan; telecomunicaciones: transmitir información.",
+        "explicacion_error": "Brazos y rovers son robótica; fibra y antenas, telecomunicaciones.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Un robot explorador en Marte permite a los científicos…",
+        "alternativas": [
+          "fabricar oxígeno en la Tierra",
+          "controlar el clima de la Tierra",
+          "estudiar un lugar donde las personas aún no pueden ir",
+          "vivir en Marte"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en los rovers.",
+        "explicacion_error": "Los robots exploran lugares inaccesibles para las personas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Los radiotelescopios como ALMA captan ondas ___, invisibles para el ojo humano.",
+        "alternativas": [
+          "de agua",
+          "sonoras",
+          "sísmicas",
+          "de radio"
+        ],
+        "correcta": 3,
+        "pista": "Su nombre da la pista.",
+        "explicacion_error": "Captan ondas de radio del universo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué ventaja tiene la fibra óptica frente al cable de cobre?",
+        "alternativas": [
+          "es más pesada",
+          "no necesita instalación",
+          "transmite más información y más rápido usando luz",
+          "funciona sin luz"
+        ],
+        "correcta": 2,
+        "pista": "La información viaja como pulsos de luz.",
+        "explicacion_error": "Transmite datos con luz a gran velocidad.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena cronológicamente estos avances.",
+        "elementos": [
+          "telescopio de Galileo (siglo XVII)",
+          "radio (fines del siglo XIX)",
+          "primer satélite artificial (1957)",
+          "internet móvil 5G (siglo XXI)"
+        ],
+        "pista": "Del más antiguo al más reciente.",
+        "explicacion_error": "Telescopio, radio, satélite y 5G, en ese orden.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "La física cuántica permitió desarrollar…",
+        "alternativas": [
+          "los transistores de los computadores y celulares",
+          "la imprenta",
+          "la rueda",
+          "el fuego"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en la electrónica moderna.",
+        "explicacion_error": "Los transistores se basan en la física cuántica.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué riesgo ético se discute con la robótica y la inteligencia artificial?",
+        "alternativas": [
+          "que los planetas se acerquen",
+          "la pérdida de algunos empleos y el uso de datos personales",
+          "que los robots tengan hambre",
+          "que la luz se apague"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en el trabajo y la privacidad.",
+        "explicacion_error": "Se debate sobre el empleo y la privacidad de los datos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un médico usa un estetoscopio digital que envía sonidos del corazón a otro hospital. ¿Qué tecnologías combina?",
+        "alternativas": [
+          "amplificación de sentidos y telecomunicaciones",
+          "robótica y astronomía",
+          "solo astronomía",
+          "ninguna tecnología"
+        ],
+        "correcta": 0,
+        "pista": "Amplifica la audición y transmite datos.",
+        "explicacion_error": "Amplía la audición y transmite la información a distancia.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-014",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué amplía cada tecnología?",
+        "categorias": [
+          "Percepción humana",
+          "Comprensión de la materia"
+        ],
+        "elementos": [
+          {
+            "texto": "telescopio espacial",
+            "categoria": 0
+          },
+          {
+            "texto": "lentes de visión nocturna",
+            "categoria": 0
+          },
+          {
+            "texto": "acelerador de partículas",
+            "categoria": 1
+          },
+          {
+            "texto": "microscopio electrónico de átomos",
+            "categoria": 1
+          }
+        ],
+        "pista": "Unas amplían los sentidos; otras permiten entender la materia.",
+        "explicacion_error": "Telescopio y visión nocturna amplían la percepción; acelerador y microscopio atómico estudian la materia.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa2-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué los datos de ALMA son útiles para científicos de todo el mundo?",
+        "alternativas": [
+          "porque miden sismos",
+          "porque observan cómo se forman estrellas y planetas",
+          "porque predicen el clima de mañana",
+          "porque cuentan la población"
+        ],
+        "correcta": 1,
+        "pista": "ALMA observa el universo frío y lejano.",
+        "explicacion_error": "Estudia la formación de estrellas, planetas y galaxias.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_medio",
+    "asignatura": "ciencias",
+    "eje": "Bienestar y salud",
+    "objetivo_oficial": "FG-CIBS-3y4-OAC-03: Analizar con evidencias cómo se transmiten agentes infecciosos a nivel nacional y mundial, y evaluar medidas de prevención como las vacunas.",
+    "dificultad": 10,
+    "prerequisitos": [
+      "3_medio.ciencias.OA1"
+    ],
+    "id_objetivo": "3_medio.ciencias.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-para-la-ciudadania/Bienestar-y-salud/91031:FG-CIBS-3y4-OAC-03",
+      "codigo_oficial": "FG-CIBS-3y4-OAC-03"
+    },
+    "desafios": [
+      {
+        "id": "cie3m-oa3-001",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Es un agente infeccioso?",
+        "categorias": [
+          "Agente infeccioso",
+          "No es agente infeccioso"
+        ],
+        "elementos": [
+          {
+            "texto": "virus",
+            "categoria": 0
+          },
+          {
+            "texto": "bacteria",
+            "categoria": 0
+          },
+          {
+            "texto": "hongo",
+            "categoria": 0
+          },
+          {
+            "texto": "vitamina",
+            "categoria": 1
+          },
+          {
+            "texto": "glóbulo rojo",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los agentes infecciosos causan enfermedades transmisibles.",
+        "explicacion_error": "Virus, bacterias y hongos pueden causar infecciones; las vitaminas y los glóbulos rojos no.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué medida reduce el contagio de enfermedades respiratorias?",
+        "alternativas": [
+          "toser sobre la mano y no lavarla",
+          "lavarse las manos y ventilar los espacios",
+          "compartir botellas",
+          "cerrar todas las ventanas"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en cómo se transmiten los virus.",
+        "explicacion_error": "El lavado de manos y la ventilación reducen el contagio.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Las ___ preparan al sistema inmune para reconocer un agente infeccioso.",
+        "alternativas": [
+          "vitaminas",
+          "radiografías",
+          "bebidas",
+          "vacunas"
+        ],
+        "correcta": 3,
+        "pista": "Se aplican en campañas de inmunización.",
+        "explicacion_error": "Las vacunas entrenan al sistema inmune.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-004",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada enfermedad con su forma principal de transmisión.",
+        "pares": [
+          [
+            "influenza",
+            "gotitas respiratorias"
+          ],
+          [
+            "hepatitis A",
+            "agua o alimentos contaminados"
+          ],
+          [
+            "dengue",
+            "picadura de mosquito"
+          ]
+        ],
+        "pista": "Cada agente usa una vía distinta.",
+        "explicacion_error": "La influenza es respiratoria; la hepatitis A, por agua o alimentos; el dengue, por mosquito.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Por qué los antibióticos no sirven contra la gripe?",
+        "alternativas": [
+          "porque la gripe la causa un virus y los antibióticos actúan contra bacterias",
+          "porque la gripe la causa un hongo",
+          "porque la gripe no es una enfermedad",
+          "porque los antibióticos son vitaminas"
+        ],
+        "correcta": 0,
+        "pista": "Diferencia virus y bacterias.",
+        "explicacion_error": "Los antibióticos atacan bacterias, no virus.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-006",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Cuando una enfermedad se extiende por varios países y continentes, se llama ___.",
+        "alternativas": [
+          "pandemia",
+          "inmunidad",
+          "alergia",
+          "epidemia local"
+        ],
+        "correcta": 0,
+        "pista": "La COVID-19 fue un ejemplo.",
+        "explicacion_error": "Una pandemia afecta a muchos países.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué es la inmunidad de grupo (o de rebaño)?",
+        "alternativas": [
+          "cuando todos se enferman a la vez",
+          "cuando muchas personas están inmunes, el agente circula menos y protege a quienes no pueden vacunarse",
+          "cuando no existe ningún virus",
+          "cuando solo los animales se vacunan"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en bebés o personas que no pueden vacunarse.",
+        "explicacion_error": "Una alta cobertura de vacunación frena la transmisión.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena cómo actúa una vacuna.",
+        "elementos": [
+          "Se aplica la vacuna.",
+          "El sistema inmune reconoce el antígeno.",
+          "Se generan anticuerpos y células de memoria.",
+          "Ante el agente real, la defensa es más rápida."
+        ],
+        "pista": "Aplicación, reconocimiento, memoria y protección.",
+        "explicacion_error": "Así una vacuna genera protección.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Por qué la vacuna contra la influenza se aplica todos los años en otoño?",
+        "alternativas": [
+          "porque en verano no hay virus nunca",
+          "porque el virus cambia y antes del invierno aumentan los contagios",
+          "porque es obligatoria cada mes",
+          "porque la vacuna dura un día"
+        ],
+        "correcta": 1,
+        "pista": "El virus de la influenza muta y circula más en invierno.",
+        "explicacion_error": "Cada año cambian las cepas y en invierno hay más contagios.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Una persona contagia en promedio a 3 personas. Si cada una contagia a otras 3, ¿cuántas personas nuevas se contagian en la segunda ronda?",
+        "respuesta": 9,
+        "tolerancia": 0,
+        "unidad": "personas",
+        "pista": "3 × 3.",
+        "explicacion_error": "En la segunda ronda se contagian 3 × 3 = 9 personas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Un titular dice: «Remedio casero cura todas las infecciones». ¿Qué es lo más prudente?",
+        "alternativas": [
+          "creerlo porque tiene muchos likes",
+          "buscar evidencia en fuentes científicas confiables antes de creerlo",
+          "compartirlo de inmediato",
+          "dejar de vacunarse"
+        ],
+        "correcta": 1,
+        "pista": "Las afirmaciones extraordinarias requieren evidencia.",
+        "explicacion_error": "Hay que verificar en fuentes confiables.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Prevención eficaz o mito?",
+        "categorias": [
+          "Prevención eficaz",
+          "Mito"
+        ],
+        "elementos": [
+          {
+            "texto": "vacunarse según el calendario",
+            "categoria": 0
+          },
+          {
+            "texto": "lavarse las manos con jabón",
+            "categoria": 0
+          },
+          {
+            "texto": "tomar antibióticos para un resfrío",
+            "categoria": 1
+          },
+          {
+            "texto": "las vacunas no funcionan nunca",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en la evidencia científica.",
+        "explicacion_error": "Vacunarse y lavarse las manos funcionan; los antibióticos para virus y negar las vacunas son mitos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Viajas a una zona tropical con dengue. ¿Qué medida tiene mejor evidencia?",
+        "alternativas": [
+          "usar repelente y evitar el agua estancada",
+          "dormir sin mosquitero",
+          "no tomar agua",
+          "tomar antibióticos antes de viajar"
+        ],
+        "correcta": 0,
+        "pista": "El dengue lo transmite un mosquito.",
+        "explicacion_error": "Evitar las picaduras y los criaderos de mosquitos previene el dengue.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué es importante terminar un tratamiento antibiótico indicado por el médico?",
+        "alternativas": [
+          "para ganar peso",
+          "para curar virus",
+          "para no dejar bacterias vivas que puedan volverse resistentes",
+          "porque sabe bien"
+        ],
+        "correcta": 2,
+        "pista": "Relaciona con la selección natural.",
+        "explicacion_error": "Cortarlo antes puede favorecer bacterias resistentes.",
+        "monedas": 10
+      },
+      {
+        "id": "cie3m-oa3-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué dato permite comparar mejor un brote entre dos ciudades de distinto tamaño?",
+        "alternativas": [
+          "la cantidad de hospitales privados",
+          "el nombre de la ciudad",
+          "los casos por cada 100.000 habitantes",
+          "el número total de casos"
+        ],
+        "correcta": 2,
+        "pista": "Hay que considerar la población.",
+        "explicacion_error": "La tasa por habitante permite comparar ciudades de distinto tamaño.",
+        "monedas": 10
+      }
+    ]
+  }
+]

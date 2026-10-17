@@ -100,9 +100,20 @@ flowchart LR
   6_basico_ciencias_OA8["6° Cie OA 8"] --> 8_basico_ciencias_OA11["8° Cie OA 11"]
   6_basico_ciencias_OA13["6° Cie OA 13"] --> 8_basico_ciencias_OA11["8° Cie OA 11"]
   7_basico_ciencias_OA14["7° Cie OA 14"] --> 8_basico_ciencias_OA12["8° Cie OA 12"]
+  8_basico_ciencias_OA12["8° Cie OA 12"] --> 1_medio_ciencias_OA18["1°M Cie OA 18"]
+  1_medio_ciencias_OA2["1°M Cie OA 2"] --> 2_medio_ciencias_OA7["2°M Cie OA 7"]
+  1_medio_ciencias_OA18["1°M Cie OA 18"] --> 2_medio_ciencias_OA15["2°M Cie OA 15"]
+  1_medio_ciencias_OA9["1°M Cie OA 9"] --> 3_medio_ciencias_OA2["3°M Cie CITS OAC 02"]
+  3_medio_ciencias_OA1["3°M Cie CIBS OAC 01"] --> 3_medio_ciencias_OA3["3°M Cie CIBS OAC 03"]
+  2_medio_ciencias_OA15["2°M Cie OA 15"] --> 4_medio_ciencias_OA1["4°M Cie CISA OAC 01"]
+  1_medio_ciencias_OA18["1°M Cie OA 18"] --> 4_medio_ciencias_OA1["4°M Cie CISA OAC 01"]
+  8_basico_ciencias_OA10["8° Cie OA 10"] --> 4_medio_ciencias_OA2["4°M Cie CISA OAC 02"]
+  8_basico_ciencias_OA11["8° Cie OA 11"] --> 4_medio_ciencias_OA2["4°M Cie CISA OAC 02"]
+  8_basico_ciencias_OA11["8° Cie OA 11"] --> 4_medio_ciencias_OA3["4°M Cie CIAS OAC 03"]
   3_basico_ciencias_OA9["3° Cie OA 9"]
   4_basico_ciencias_OA16["4° Cie OA 16"]
   7_basico_ciencias_OA8["7° Cie OA 8"]
+  2_medio_ciencias_OA9["2°M Cie OA 9"]
 ```
 
 #### Inglés

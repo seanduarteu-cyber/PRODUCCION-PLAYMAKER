@@ -78,16 +78,16 @@ las construcciones siempre femeninas. Ejemplo: «{personaje} {junto} 8 {objetos}
 ## Cobertura actual
 
 <!-- inicio:cobertura -->
-100 objetivos y 1.714 desafíos (115 con audio en inglés). Resumen por asignatura:
+112 objetivos y 1.894 desafíos (115 con audio en inglés). Resumen por asignatura:
 
 | Asignatura | Cursos | OA | Desafíos |
 |---|---|---|---|
 | Matemática | 1° básico a 8° básico | 25 | 500 |
 | Lenguaje y Comunicación | 1° básico a 8° básico | 21 | 332 |
-| Ciencias Naturales | 1° básico a 8° básico | 26 | 419 |
+| Ciencias Naturales | 1° básico a 4° medio | 38 | 599 |
 | Inglés | 1° básico a 4° medio | 28 | 463 |
 
-Registrados en `herramientas/objetivos.py` y aún sin desafíos (36): 1°M Mat OA 1, 1°M Mat OA 4, 1°M Mat OA 14, 2°M Mat OA 2, 2°M Mat OA 4, 2°M Mat OA 11, 3°M Mat MATE OAC 01, 3°M Mat MATE OAC 02, 3°M Mat MATE OAC 03, 4°M Mat MATE OAC 01, 4°M Mat MATE OAC 02, 4°M Mat MATE OAC 03, 1°M Len OA 3, 1°M Len OA 4, 1°M Len OA 9, 2°M Len OA 3, 2°M Len OA 9, 2°M Len OA 18, 3°M Len LELI OAC 01, 3°M Len LELI OAC 03, 3°M Len LELI OAC 05, 4°M Len LELI OAC 01, 4°M Len LELI OAC 03, 4°M Len LELI OAC 04, 1°M Cie OA 2, 1°M Cie OA 9, 1°M Cie OA 18, 2°M Cie OA 7, 2°M Cie OA 9, 2°M Cie OA 15, 3°M Cie CIBS OAC 01, 3°M Cie CITS OAC 02, 3°M Cie CIBS OAC 03, 4°M Cie CISA OAC 01, 4°M Cie CISA OAC 02, 4°M Cie CIAS OAC 03.
+Registrados en `herramientas/objetivos.py` y aún sin desafíos (24): 1°M Mat OA 1, 1°M Mat OA 4, 1°M Mat OA 14, 2°M Mat OA 2, 2°M Mat OA 4, 2°M Mat OA 11, 3°M Mat MATE OAC 01, 3°M Mat MATE OAC 02, 3°M Mat MATE OAC 03, 4°M Mat MATE OAC 01, 4°M Mat MATE OAC 02, 4°M Mat MATE OAC 03, 1°M Len OA 3, 1°M Len OA 4, 1°M Len OA 9, 2°M Len OA 3, 2°M Len OA 9, 2°M Len OA 18, 3°M Len LELI OAC 01, 3°M Len LELI OAC 03, 3°M Len LELI OAC 05, 4°M Len LELI OAC 01, 4°M Len LELI OAC 03, 4°M Len LELI OAC 04.
 
 ### Matemática
 
@@ -175,6 +175,18 @@ Registrados en `herramientas/objetivos.py` y aún sin desafíos (36): 1°M Mat O
 | 8° básico | [OA 10](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Fisica/70202:CN08-OA-10) | Física | 17 | verificado | 5° Cie OA 10 |
 | 8° básico | [OA 11](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/8-basico) | Física | 16 | verificado | 6° Cie OA 8, 6° Cie OA 13 |
 | 8° básico | [OA 12](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ciencias-naturales/8-basico) | Química | 17 | verificado | 7° Cie OA 14 |
+| 1° medio | [OA 2](https://www.curriculumnacional.cl/614/w3-article-80700.html) | Biología | 15 | verificado | — |
+| 1° medio | [OA 9](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Fisica/80707:CN1M-OA-09) | Física | 15 | verificado | — |
+| 1° medio | [OA 18](https://www.curriculumnacional.cl/portal/Ejes/Quimica/Reacciones-quimicas/80716:CN1M-OA-18) | Química | 15 | verificado | 8° Cie OA 12 |
+| 2° medio | [OA 7](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Biologia/80746:CN2M-OA-07) | Biología | 15 | verificado | 1°M Cie OA 2 |
+| 2° medio | [OA 9](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Fisica/80748:CN2M-OA-09) | Física | 15 | verificado | — |
+| 2° medio | [OA 15](https://www.curriculumnacional.cl/614/w3-article-80754.html) | Química | 15 | verificado | 1°M Cie OA 18 |
+| 3° medio | [FG-CIBS-3y4-OAC-01](https://www.curriculumnacional.cl/614/w3-article-91029.html) | Bienestar y salud | 15 | verificado | — |
+| 3° medio | [FG-CITS-3y4-OAC-02](https://www.curriculumnacional.cl/docentes/Formacion-General/Tecnologia-y-sociedad/FG-CITS-3y4-OAC-02/91045:FG-CITS-3y4-OAC-02) | Tecnología y sociedad | 15 | verificado | 1°M Cie OA 9 |
+| 3° medio | [FG-CIBS-3y4-OAC-03](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-para-la-ciudadania/Bienestar-y-salud/91031:FG-CIBS-3y4-OAC-03) | Bienestar y salud | 15 | verificado | 3°M Cie CIBS OAC 01 |
+| 4° medio | [FG-CISA-3y4-OAC-01](https://www.curriculumnacional.cl/docentes/Formacion-General/Seguridad-prevencion-y-autocuidado/FG-CISA-3y4-OAC-01/91041:FG-CISA-3y4-OAC-01) | Seguridad, prevención y autocuidado | 15 | verificado | 2°M Cie OA 15, 1°M Cie OA 18 |
+| 4° medio | [FG-CISA-3y4-OAC-02](https://www.curriculumnacional.cl/portal/Curso/Educacion-General/3-Medio-FG/144973:Unidad-2-Modulo-Seguridad-prevencion-y-autocuidado-Amenazas-y-riesgos-cerca-de-nosotros-Estoy-actuando-responsablemente) | Seguridad, prevención y autocuidado | 15 | verificado | 8° Cie OA 10, 8° Cie OA 11 |
+| 4° medio | [FG-CIAS-3y4-OAC-03](https://www.curriculumnacional.cl/portal/Ejes/Ciencias-para-la-ciudadania/Ambiente-y-sostenibilidad/91028:FG-CIAS-3y4-OAC-03) | Ambiente y sostenibilidad | 15 | verificado | 8° Cie OA 11 |
 
 ### Inglés
 

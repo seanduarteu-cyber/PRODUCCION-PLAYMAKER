@@ -1,0 +1,896 @@
+[
+  {
+    "nivel": "4_medio",
+    "asignatura": "ciencias",
+    "eje": "Seguridad, prevención y autocuidado",
+    "objetivo_oficial": "FG-CISA-3y4-OAC-01: Reconocer en sustancias químicas de uso cotidiano (medicamentos, detergentes, plaguicidas) su composición, reactividad y riesgos, y las medidas seguras para manipularlas, almacenarlas y eliminarlas.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "2_medio.ciencias.OA15",
+      "1_medio.ciencias.OA18"
+    ],
+    "id_objetivo": "4_medio.ciencias.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docentes/Formacion-General/Seguridad-prevencion-y-autocuidado/FG-CISA-3y4-OAC-01/91041:FG-CISA-3y4-OAC-01",
+      "codigo_oficial": "FG-CISA-3y4-OAC-01"
+    },
+    "desafios": [
+      {
+        "id": "cie4m-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué significa el pictograma de calavera en un envase?",
+        "alternativas": [
+          "que el producto es tóxico",
+          "que es comestible",
+          "que es para niños",
+          "que es reciclable"
+        ],
+        "correcta": 0,
+        "pista": "Es un símbolo de peligro.",
+        "explicacion_error": "La calavera indica toxicidad.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-002",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Dónde guardar estos productos?",
+        "categorias": [
+          "Lejos del alcance de niños",
+          "Puede estar a la mano"
+        ],
+        "elementos": [
+          {
+            "texto": "cloro",
+            "categoria": 0
+          },
+          {
+            "texto": "medicamentos",
+            "categoria": 0
+          },
+          {
+            "texto": "destapador de cañerías",
+            "categoria": 0
+          },
+          {
+            "texto": "agua embotellada",
+            "categoria": 1
+          },
+          {
+            "texto": "fruta",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los químicos y medicamentos se guardan en altura o bajo llave.",
+        "explicacion_error": "Cloro, medicamentos y destapadores deben estar fuera del alcance de los niños.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Antes de usar un producto de limpieza hay que leer su ___.",
+        "alternativas": [
+          "etiqueta",
+          "color",
+          "precio",
+          "marca solamente"
+        ],
+        "correcta": 0,
+        "pista": "Ahí están las instrucciones y advertencias.",
+        "explicacion_error": "La etiqueta indica el uso seguro y los riesgos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Por qué nunca se debe mezclar cloro con productos que contienen amoníaco?",
+        "alternativas": [
+          "porque se vuelven agua",
+          "porque cambian de color",
+          "porque se liberan gases tóxicos",
+          "porque pierden el olor"
+        ],
+        "correcta": 2,
+        "pista": "La mezcla genera gases peligrosos.",
+        "explicacion_error": "Al mezclarlos se liberan gases tóxicos que dañan las vías respiratorias.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada pictograma con su significado.",
+        "pares": [
+          [
+            "llama",
+            "inflamable"
+          ],
+          [
+            "corrosión (gotas sobre una mano)",
+            "corrosivo"
+          ],
+          [
+            "signo de exclamación",
+            "irritante o nocivo"
+          ]
+        ],
+        "pista": "Son pictogramas del sistema internacional.",
+        "explicacion_error": "La llama indica inflamable; las gotas, corrosivo; la exclamación, irritante.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué hacer con medicamentos vencidos?",
+        "alternativas": [
+          "quemarlos en casa",
+          "llevarlos a un punto de recolección en farmacias",
+          "botarlos al inodoro",
+          "guardarlos para otra vez"
+        ],
+        "correcta": 1,
+        "pista": "Hay programas de recolección.",
+        "explicacion_error": "Los puntos de recolección evitan contaminar el agua.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Si un producto químico salpica los ojos, lo primero es…",
+        "alternativas": [
+          "frotar fuerte",
+          "aplicar otro químico",
+          "esperar a que pase",
+          "lavar con abundante agua y consultar a un centro de salud"
+        ],
+        "correcta": 3,
+        "pista": "Primeros auxilios básicos.",
+        "explicacion_error": "Lavar con mucha agua y pedir ayuda médica.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-008",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Uso seguro o inseguro?",
+        "categorias": [
+          "Seguro",
+          "Inseguro"
+        ],
+        "elementos": [
+          {
+            "texto": "usar guantes al limpiar con cloro",
+            "categoria": 0
+          },
+          {
+            "texto": "ventilar al usar productos fuertes",
+            "categoria": 0
+          },
+          {
+            "texto": "guardar químicos en botellas de bebida",
+            "categoria": 1
+          },
+          {
+            "texto": "mezclar productos para que limpien más",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en evitar intoxicaciones y confusiones.",
+        "explicacion_error": "Guantes y ventilación son seguros; reenvasar en botellas de bebida y mezclar productos es peligroso.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Por qué no se debe guardar un químico en una botella de bebida?",
+        "alternativas": [
+          "porque pierde el color",
+          "porque alguien puede confundirlo y tomarlo",
+          "porque el plástico se derrite siempre",
+          "porque es ilegal tener botellas"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en niños y adultos distraídos.",
+        "explicacion_error": "El reenvasado causa intoxicaciones por confusión.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Un medicamento dice «tomar cada 8 horas». ¿Cuántas dosis son al día?",
+        "alternativas": [
+          "8",
+          "3",
+          "4",
+          "2"
+        ],
+        "correcta": 1,
+        "pista": "24 ÷ 8.",
+        "explicacion_error": "24 ÷ 8 = 3 dosis al día.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué indica la «fecha de vencimiento» de un medicamento?",
+        "alternativas": [
+          "hasta cuándo el fabricante garantiza su eficacia y seguridad",
+          "el precio del producto",
+          "el día en que se fabricó",
+          "cuándo se puede regalar"
+        ],
+        "correcta": 0,
+        "pista": "Después de esa fecha puede no funcionar bien.",
+        "explicacion_error": "Garantiza su efecto y seguridad hasta esa fecha.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena qué hacer ante una posible intoxicación en casa.",
+        "elementos": [
+          "Alejar a la persona del producto.",
+          "Revisar la etiqueta del envase.",
+          "Llamar a un centro de información toxicológica o de emergencias.",
+          "Seguir las indicaciones recibidas."
+        ],
+        "pista": "Proteger, identificar, llamar y seguir instrucciones.",
+        "explicacion_error": "Primero alejar, luego identificar el producto y pedir ayuda.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué los detergentes con fosfatos pueden dañar lagos y ríos?",
+        "alternativas": [
+          "porque la vuelven salada",
+          "porque enfrían el agua",
+          "porque favorecen el crecimiento excesivo de algas y reducen el oxígeno",
+          "porque matan solo a los peces grandes"
+        ],
+        "correcta": 2,
+        "pista": "Los fosfatos son nutrientes para las algas.",
+        "explicacion_error": "El exceso de algas consume el oxígeno: eutrofización.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un plaguicida dice «no aplicar con viento». ¿Por qué?",
+        "alternativas": [
+          "porque mancha la ropa",
+          "porque se evapora y desaparece sin efecto",
+          "porque el viento puede llevarlo a personas, casas o fuentes de agua",
+          "porque se vuelve más fuerte"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en la deriva del producto.",
+        "explicacion_error": "El viento dispersa el plaguicida fuera del área de aplicación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa1-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué riesgo principal tiene cada producto?",
+        "categorias": [
+          "Corrosivo",
+          "Inflamable"
+        ],
+        "elementos": [
+          {
+            "texto": "ácido de baterías",
+            "categoria": 0
+          },
+          {
+            "texto": "soda cáustica",
+            "categoria": 0
+          },
+          {
+            "texto": "bencina",
+            "categoria": 1
+          },
+          {
+            "texto": "alcohol de quemar",
+            "categoria": 1
+          }
+        ],
+        "pista": "Corrosivo daña la piel; inflamable se enciende.",
+        "explicacion_error": "Ácidos y soda son corrosivos; bencina y alcohol, inflamables.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_medio",
+    "asignatura": "ciencias",
+    "eje": "Seguridad, prevención y autocuidado",
+    "objetivo_oficial": "FG-CISA-3y4-OAC-02: Evaluar y proponer soluciones para reducir amenazas en el hogar y el trabajo, como riesgos de las instalaciones eléctricas, de los sistemas de calefacción y de la exposición a radiaciones.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "8_basico.ciencias.OA10",
+      "8_basico.ciencias.OA11"
+    ],
+    "id_objetivo": "4_medio.ciencias.OA2",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Curso/Educacion-General/3-Medio-FG/144973:Unidad-2-Modulo-Seguridad-prevencion-y-autocuidado-Amenazas-y-riesgos-cerca-de-nosotros-Estoy-actuando-responsablemente",
+      "codigo_oficial": "FG-CISA-3y4-OAC-02"
+    },
+    "desafios": [
+      {
+        "id": "cie4m-oa2-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué hacer si un enchufe se calienta mucho?",
+        "alternativas": [
+          "mojarlo para enfriarlo",
+          "dejar de usarlo y revisar la instalación",
+          "conectar más aparatos",
+          "taparlo con un paño"
+        ],
+        "correcta": 1,
+        "pista": "El calor indica sobrecarga o falla.",
+        "explicacion_error": "Un enchufe caliente puede provocar un incendio.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-002",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Seguro o peligroso?",
+        "categorias": [
+          "Seguro",
+          "Peligroso"
+        ],
+        "elementos": [
+          {
+            "texto": "desenchufar tirando del enchufe, no del cable",
+            "categoria": 0
+          },
+          {
+            "texto": "tener detector de monóxido de carbono",
+            "categoria": 0
+          },
+          {
+            "texto": "usar un alargador con muchos aparatos",
+            "categoria": 1
+          },
+          {
+            "texto": "tocar enchufes con las manos mojadas",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en sobrecargas y en el agua.",
+        "explicacion_error": "Desenchufar bien y usar detectores es seguro; sobrecargar y tocar con las manos mojadas es peligroso.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "El ___ es un gas sin olor que puede producirse con estufas mal ventiladas.",
+        "alternativas": [
+          "vapor de agua",
+          "monóxido de carbono",
+          "oxígeno",
+          "nitrógeno"
+        ],
+        "correcta": 1,
+        "pista": "Es un gas tóxico.",
+        "explicacion_error": "El monóxido de carbono (CO) es tóxico e inodoro.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Por qué una estufa a gas o a parafina necesita ventilación?",
+        "alternativas": [
+          "para ahorrar gas",
+          "para que caliente menos",
+          "para que no se apague con el viento",
+          "para evitar la acumulación de monóxido de carbono"
+        ],
+        "correcta": 3,
+        "pista": "La combustión incompleta produce CO.",
+        "explicacion_error": "La ventilación evita intoxicaciones por CO.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada riesgo con una medida de prevención.",
+        "pares": [
+          [
+            "sobrecarga eléctrica",
+            "no usar alargadores en cadena"
+          ],
+          [
+            "intoxicación por CO",
+            "ventilar y revisar las estufas"
+          ],
+          [
+            "quemadura solar en el trabajo",
+            "usar bloqueador y ropa adecuada"
+          ]
+        ],
+        "pista": "Cada riesgo tiene su medida.",
+        "explicacion_error": "Prevenir sobrecargas, ventilar y protegerse del sol.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué dispositivo corta la corriente si alguien recibe una descarga?",
+        "alternativas": [
+          "el enchufe triple",
+          "el interruptor diferencial",
+          "el medidor de agua",
+          "el foco LED"
+        ],
+        "correcta": 1,
+        "pista": "Protege a las personas de las descargas.",
+        "explicacion_error": "El diferencial corta la corriente ante una fuga a tierra.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Por qué no se debe usar un secador de pelo cerca de la tina con agua?",
+        "alternativas": [
+          "porque el secador se ensucia",
+          "porque el agua se enfría",
+          "porque el agua conduce la electricidad y puede causar una descarga",
+          "porque gasta más luz"
+        ],
+        "correcta": 2,
+        "pista": "El agua con sales es conductora.",
+        "explicacion_error": "Si cae al agua, la corriente puede pasar por el cuerpo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Un hervidor de 2.000 W se usa 15 minutos al día. ¿Cuántos Wh consume al día?",
+        "respuesta": 500,
+        "tolerancia": 0,
+        "unidad": "Wh",
+        "pista": "15 minutos es un cuarto de hora.",
+        "explicacion_error": "2.000 W × 0,25 h = 500 Wh.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué tipo de radiación es más peligrosa para el ADN?",
+        "alternativas": [
+          "la radiación ionizante, como los rayos X en exceso",
+          "las ondas de radio FM",
+          "la luz de una vela",
+          "la luz de una linterna"
+        ],
+        "correcta": 0,
+        "pista": "La radiación ionizante tiene mucha energía.",
+        "explicacion_error": "Los rayos X y gamma pueden dañar el ADN si hay sobreexposición.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena qué hacer ante un amago de incendio eléctrico.",
+        "elementos": [
+          "Cortar la electricidad en el tablero.",
+          "Usar un extintor adecuado (nunca agua).",
+          "Evacuar si el fuego no se controla.",
+          "Llamar a bomberos (132)."
+        ],
+        "pista": "Primero cortar la energía.",
+        "explicacion_error": "Cortar la corriente, extinguir sin agua, evacuar y llamar al 132.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué no se apaga con agua un incendio eléctrico?",
+        "alternativas": [
+          "porque el agua aviva el fuego eléctrico siempre",
+          "porque el agua conduce la corriente y puede electrocutar",
+          "porque se evapora antes",
+          "porque el agua es cara"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en la conductividad.",
+        "explicacion_error": "El agua puede conducir la electricidad hacia la persona.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-012",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Radiación ionizante o no ionizante?",
+        "categorias": [
+          "Ionizante",
+          "No ionizante"
+        ],
+        "elementos": [
+          {
+            "texto": "rayos X",
+            "categoria": 0
+          },
+          {
+            "texto": "rayos gamma",
+            "categoria": 0
+          },
+          {
+            "texto": "ondas de radio",
+            "categoria": 1
+          },
+          {
+            "texto": "microondas",
+            "categoria": 1
+          }
+        ],
+        "pista": "La ionizante tiene energía suficiente para arrancar electrones.",
+        "explicacion_error": "Los rayos X y gamma son ionizantes; la radio y las microondas no lo son.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En un taller, ¿qué solución reduce mejor el riesgo eléctrico?",
+        "alternativas": [
+          "desconectar la luz de emergencia",
+          "usar alargadores en cadena",
+          "trabajar más rápido",
+          "instalar diferenciales, revisar cables y capacitar al personal"
+        ],
+        "correcta": 3,
+        "pista": "Combina medidas técnicas y de capacitación.",
+        "explicacion_error": "Las medidas técnicas y la capacitación previenen accidentes.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Una familia en Coyhaique usa leña húmeda y su casa se llena de humo. ¿Qué propuesta es más completa?",
+        "alternativas": [
+          "quemar plástico para que prenda",
+          "cerrar todas las ventanas",
+          "usar más leña húmeda",
+          "usar leña seca certificada, revisar el cañón y ventilar"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en la combustión y la ventilación.",
+        "explicacion_error": "La leña seca contamina menos y la ventilación evita la acumulación de gases.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa2-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Cambias 5 ampolletas de 60 W por LED de 10 W. ¿Cuántos watts ahorras cuando todas están encendidas?",
+        "respuesta": 250,
+        "tolerancia": 0,
+        "unidad": "W",
+        "pista": "Ahorro por ampolleta: 60 − 10.",
+        "explicacion_error": "50 W × 5 = 250 W.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_medio",
+    "asignatura": "ciencias",
+    "eje": "Ambiente y sostenibilidad",
+    "objetivo_oficial": "FG-CIAS-3y4-OAC-03: Modelar los efectos del cambio climático sobre los ecosistemas y sus componentes biológicos, físicos y químicos, y evaluar soluciones para mitigarlo.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "8_basico.ciencias.OA11"
+    ],
+    "id_objetivo": "4_medio.ciencias.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-para-la-ciudadania/Ambiente-y-sostenibilidad/91028:FG-CIAS-3y4-OAC-03",
+      "codigo_oficial": "FG-CIAS-3y4-OAC-03"
+    },
+    "desafios": [
+      {
+        "id": "cie4m-oa3-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué gas es uno de los principales responsables del calentamiento global?",
+        "alternativas": [
+          "oxígeno (O₂)",
+          "nitrógeno (N₂)",
+          "helio (He)",
+          "dióxido de carbono (CO₂)"
+        ],
+        "correcta": 3,
+        "pista": "Se libera al quemar combustibles fósiles.",
+        "explicacion_error": "El CO₂ intensifica el efecto invernadero.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "El aumento del promedio de la temperatura del planeta se llama calentamiento ___.",
+        "alternativas": [
+          "polar solamente",
+          "nocturno",
+          "local",
+          "global"
+        ],
+        "correcta": 3,
+        "pista": "Afecta a todo el planeta.",
+        "explicacion_error": "Se llama calentamiento global.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Aumenta o reduce las emisiones de CO₂?",
+        "categorias": [
+          "Aumenta",
+          "Reduce"
+        ],
+        "elementos": [
+          {
+            "texto": "quemar carbón para producir electricidad",
+            "categoria": 0
+          },
+          {
+            "texto": "deforestar bosques",
+            "categoria": 0
+          },
+          {
+            "texto": "usar energía solar",
+            "categoria": 1
+          },
+          {
+            "texto": "plantar árboles nativos",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en qué emite o absorbe CO₂.",
+        "explicacion_error": "Quemar carbón y deforestar aumentan el CO₂; la energía solar y la reforestación lo reducen.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué efecto del cambio climático ya se observa en Chile?",
+        "alternativas": [
+          "sequías más prolongadas en la zona central",
+          "desaparición del océano",
+          "más nieve todo el año en Santiago",
+          "ningún cambio"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en la «megasequía».",
+        "explicacion_error": "La zona central enfrenta una sequía prolongada.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada efecto del cambio climático con su consecuencia.",
+        "pares": [
+          [
+            "retroceso de glaciares",
+            "menos agua en los ríos en verano"
+          ],
+          [
+            "aumento del nivel del mar",
+            "riesgo para zonas costeras"
+          ],
+          [
+            "olas de calor",
+            "más incendios forestales"
+          ]
+        ],
+        "pista": "Relaciona causa y consecuencia.",
+        "explicacion_error": "Glaciares, nivel del mar y olas de calor tienen esas consecuencias.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué es el efecto invernadero natural?",
+        "alternativas": [
+          "un daño causado solo por los invernaderos",
+          "la lluvia ácida",
+          "la retención de parte del calor por gases de la atmósfera, que permite la vida",
+          "el frío del invierno"
+        ],
+        "correcta": 2,
+        "pista": "Sin él, la Tierra sería mucho más fría.",
+        "explicacion_error": "Es natural y necesario; el problema es su intensificación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Por qué el océano se acidifica con más CO₂ en la atmósfera?",
+        "alternativas": [
+          "porque los peces liberan ácido",
+          "porque el océano absorbe CO₂ y se forma ácido carbónico",
+          "porque el agua se calienta y hierve",
+          "porque llueve más sal"
+        ],
+        "correcta": 1,
+        "pista": "El CO₂ se disuelve en el agua.",
+        "explicacion_error": "El CO₂ disuelto forma ácido carbónico y baja el pH.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena la cadena de causas.",
+        "elementos": [
+          "Se queman combustibles fósiles.",
+          "Aumenta el CO₂ en la atmósfera.",
+          "Se retiene más calor.",
+          "Sube la temperatura promedio."
+        ],
+        "pista": "De la causa humana al efecto global.",
+        "explicacion_error": "Emisiones, más CO₂, más calor retenido y aumento de temperatura.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cómo afecta la acidificación a los moluscos como los choritos?",
+        "alternativas": [
+          "cambian de color a verde",
+          "no les afecta en nada",
+          "crecen más rápido",
+          "les cuesta formar sus conchas de carbonato de calcio"
+        ],
+        "correcta": 3,
+        "pista": "El ácido disuelve el carbonato de calcio.",
+        "explicacion_error": "Un agua más ácida dificulta la formación de conchas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-010",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Mitigación o adaptación?",
+        "categorias": [
+          "Mitigación (reducir emisiones)",
+          "Adaptación (prepararse a los efectos)"
+        ],
+        "elementos": [
+          {
+            "texto": "instalar paneles solares",
+            "categoria": 0
+          },
+          {
+            "texto": "usar transporte público eléctrico",
+            "categoria": 0
+          },
+          {
+            "texto": "construir embalses para la sequía",
+            "categoria": 1
+          },
+          {
+            "texto": "plantar cultivos resistentes a la sequía",
+            "categoria": 1
+          }
+        ],
+        "pista": "Mitigar ataca la causa; adaptarse prepara para los efectos.",
+        "explicacion_error": "Energía solar y transporte eléctrico mitigan; embalses y cultivos resistentes adaptan.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Por qué los bosques ayudan a mitigar el cambio climático?",
+        "alternativas": [
+          "porque producen CO₂ de día",
+          "porque generan petróleo",
+          "porque enfrían el Sol",
+          "porque absorben CO₂ en la fotosíntesis y lo almacenan"
+        ],
+        "correcta": 3,
+        "pista": "Recuerda la fotosíntesis.",
+        "explicacion_error": "Los árboles capturan CO₂ y lo almacenan en su biomasa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Un auto emite 2 kg de CO₂ cada 10 km. ¿Cuántos kg emite en un viaje de 150 km?",
+        "respuesta": 30,
+        "tolerancia": 0,
+        "unidad": "kg",
+        "pista": "Calcula cuántos tramos de 10 km hay.",
+        "explicacion_error": "150 ÷ 10 = 15 tramos; 15 × 2 = 30 kg.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un municipio de la zona central quiere enfrentar la sequía. ¿Qué propuesta combina mitigación y adaptación?",
+        "alternativas": [
+          "regar con más agua potable",
+          "talar bosques para tener más espacio",
+          "prohibir la lluvia artificial",
+          "reutilizar aguas grises para riego e instalar energía solar en edificios públicos"
+        ],
+        "correcta": 3,
+        "pista": "Busca una que ahorre agua y reduzca emisiones.",
+        "explicacion_error": "Reutilizar agua es adaptación; la energía solar es mitigación.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un gráfico muestra que el CO₂ atmosférico pasó de unas 280 ppm (año 1800) a más de 400 ppm (hoy). ¿Qué conclusión es correcta?",
+        "alternativas": [
+          "el CO₂ disminuyó",
+          "la concentración de CO₂ aumentó mucho desde la Revolución Industrial",
+          "el CO₂ solo cambia por los volcanes",
+          "no hubo cambios"
+        ],
+        "correcta": 1,
+        "pista": "Compara los dos valores.",
+        "explicacion_error": "El aumento coincide con el uso masivo de combustibles fósiles.",
+        "monedas": 10
+      },
+      {
+        "id": "cie4m-oa3-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Cuál es el mejor argumento para proteger los glaciares andinos?",
+        "alternativas": [
+          "son reservas de agua dulce para ciudades y cultivos en épocas secas",
+          "sirven para patinar",
+          "son bonitos en las fotos",
+          "no tienen ninguna importancia"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en el agua en verano.",
+        "explicacion_error": "Los glaciares liberan agua en verano y en sequías.",
+        "monedas": 10
+      }
+    ]
+  }
+]

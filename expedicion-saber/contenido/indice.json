@@ -380,6 +380,17 @@
       "desafios": 34
     },
     {
+      "archivo": "1_medio/ciencias.json",
+      "nivel": "1_medio",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "1_medio.ciencias.OA2",
+        "1_medio.ciencias.OA9",
+        "1_medio.ciencias.OA18"
+      ],
+      "desafios": 45
+    },
+    {
       "archivo": "1_medio/ingles.json",
       "nivel": "1_medio",
       "asignatura": "ingles",
@@ -387,6 +398,17 @@
         "1_medio.ingles.OA9",
         "1_medio.ingles.OA10",
         "1_medio.ingles.OA16"
+      ],
+      "desafios": 45
+    },
+    {
+      "archivo": "2_medio/ciencias.json",
+      "nivel": "2_medio",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "2_medio.ciencias.OA7",
+        "2_medio.ciencias.OA9",
+        "2_medio.ciencias.OA15"
       ],
       "desafios": 45
     },
@@ -402,6 +424,17 @@
       "desafios": 45
     },
     {
+      "archivo": "3_medio/ciencias.json",
+      "nivel": "3_medio",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "3_medio.ciencias.OA1",
+        "3_medio.ciencias.OA2",
+        "3_medio.ciencias.OA3"
+      ],
+      "desafios": 45
+    },
+    {
       "archivo": "3_medio/ingles.json",
       "nivel": "3_medio",
       "asignatura": "ingles",
@@ -409,6 +442,17 @@
         "3_medio.ingles.OA1",
         "3_medio.ingles.OA2",
         "3_medio.ingles.OA3"
+      ],
+      "desafios": 45
+    },
+    {
+      "archivo": "4_medio/ciencias.json",
+      "nivel": "4_medio",
+      "asignatura": "ciencias",
+      "objetivos": [
+        "4_medio.ciencias.OA1",
+        "4_medio.ciencias.OA2",
+        "4_medio.ciencias.OA3"
       ],
       "desafios": 45
     },
@@ -706,12 +750,30 @@
       ]
     },
     {
+      "id": "1_medio.ciencias",
+      "nombre": "Ciencias Naturales 1° medio",
+      "objetivos": [
+        "1_medio.ciencias.OA2",
+        "1_medio.ciencias.OA9",
+        "1_medio.ciencias.OA18"
+      ]
+    },
+    {
       "id": "1_medio.ingles",
       "nombre": "Inglés 1° medio",
       "objetivos": [
         "1_medio.ingles.OA9",
         "1_medio.ingles.OA10",
         "1_medio.ingles.OA16"
+      ]
+    },
+    {
+      "id": "2_medio.ciencias",
+      "nombre": "Ciencias Naturales 2° medio",
+      "objetivos": [
+        "2_medio.ciencias.OA7",
+        "2_medio.ciencias.OA9",
+        "2_medio.ciencias.OA15"
       ]
     },
     {
@@ -724,12 +786,30 @@
       ]
     },
     {
+      "id": "3_medio.ciencias",
+      "nombre": "Ciencias para la Ciudadanía 3° medio",
+      "objetivos": [
+        "3_medio.ciencias.OA1",
+        "3_medio.ciencias.OA2",
+        "3_medio.ciencias.OA3"
+      ]
+    },
+    {
       "id": "3_medio.ingles",
       "nombre": "Inglés 3° medio",
       "objetivos": [
         "3_medio.ingles.OA1",
         "3_medio.ingles.OA2",
         "3_medio.ingles.OA3"
+      ]
+    },
+    {
+      "id": "4_medio.ciencias",
+      "nombre": "Ciencias para la Ciudadanía 4° medio",
+      "objetivos": [
+        "4_medio.ciencias.OA1",
+        "4_medio.ciencias.OA2",
+        "4_medio.ciencias.OA3"
       ]
     },
     {

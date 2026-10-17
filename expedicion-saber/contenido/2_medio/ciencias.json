@@ -1,0 +1,806 @@
+[
+  {
+    "nivel": "2_medio",
+    "asignatura": "ciencias",
+    "eje": "Biología",
+    "objetivo_oficial": "OA 7: Explicar la herencia genética en plantas y animales aplicando los principios de Mendel, incluyendo problemas de monohibridismo y dihibridismo.",
+    "dificultad": 9,
+    "prerequisitos": [
+      "1_medio.ciencias.OA2"
+    ],
+    "id_objetivo": "2_medio.ciencias.OA7",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Biologia/80746:CN2M-OA-07"
+    },
+    "desafios": [
+      {
+        "id": "cie2m-oa7-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Quién es considerado el padre de la genética?",
+        "alternativas": [
+          "Charles Darwin",
+          "Gregor Mendel",
+          "Robert Hooke",
+          "Louis Pasteur"
+        ],
+        "correcta": 1,
+        "pista": "Experimentó con arvejas.",
+        "explicacion_error": "Mendel estudió la herencia en arvejas.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Las distintas formas de un mismo gen se llaman ___.",
+        "alternativas": [
+          "células",
+          "cromosomas",
+          "proteínas",
+          "alelos"
+        ],
+        "correcta": 3,
+        "pista": "Por ejemplo, A y a.",
+        "explicacion_error": "A y a son alelos de un gen.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Homocigoto o heterocigoto?",
+        "categorias": [
+          "Homocigoto",
+          "Heterocigoto"
+        ],
+        "elementos": [
+          {
+            "texto": "AA",
+            "categoria": 0
+          },
+          {
+            "texto": "aa",
+            "categoria": 0
+          },
+          {
+            "texto": "BB",
+            "categoria": 0
+          },
+          {
+            "texto": "Aa",
+            "categoria": 1
+          },
+          {
+            "texto": "Bb",
+            "categoria": 1
+          }
+        ],
+        "pista": "Homocigoto: dos alelos iguales.",
+        "explicacion_error": "AA, aa y BB son homocigotos; Aa y Bb, heterocigotos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Si A (semilla amarilla) es dominante sobre a (verde), ¿de qué color es una planta Aa?",
+        "alternativas": [
+          "amarilla y verde a rayas",
+          "blanca",
+          "verde",
+          "amarilla"
+        ],
+        "correcta": 3,
+        "pista": "El alelo dominante se expresa.",
+        "explicacion_error": "Aa muestra el rasgo dominante: amarilla.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada término con su definición.",
+        "pares": [
+          [
+            "genotipo",
+            "combinación de alelos"
+          ],
+          [
+            "fenotipo",
+            "característica observable"
+          ],
+          [
+            "dominante",
+            "alelo que se expresa en el heterocigoto"
+          ]
+        ],
+        "pista": "Genotipo: letras; fenotipo: lo que se ve.",
+        "explicacion_error": "Genotipo, fenotipo y dominante.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué genotipo tiene una planta de semilla verde si verde es recesivo (a)?",
+        "alternativas": [
+          "Aa",
+          "aA",
+          "aa",
+          "AA"
+        ],
+        "correcta": 2,
+        "pista": "Un rasgo recesivo solo aparece con dos alelos recesivos.",
+        "explicacion_error": "Solo aa muestra el rasgo recesivo.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Cruzas Aa × Aa. De cada 4 descendientes, en promedio, ¿cuántos muestran el rasgo dominante?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Haz un cuadro de Punnett: AA, Aa, Aa, aa.",
+        "explicacion_error": "3 de 4 tienen al menos una A: proporción 3:1.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "En el cruce Aa × aa, ¿qué proporción de la descendencia es aa?",
+        "alternativas": [
+          "1/2",
+          "3/4",
+          "1/4",
+          "0"
+        ],
+        "correcta": 0,
+        "pista": "Cuadro de Punnett: Aa, Aa, aa, aa.",
+        "explicacion_error": "2 de 4 son aa: la mitad.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Al cruzar AA × aa, todos los hijos son ___.",
+        "alternativas": [
+          "Aa",
+          "AA",
+          "aa",
+          "AA y aa"
+        ],
+        "correcta": 0,
+        "pista": "Cada padre aporta un alelo.",
+        "explicacion_error": "Uno aporta A y el otro a: todos son Aa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena los pasos para resolver un cruce con un cuadro de Punnett.",
+        "elementos": [
+          "Escribir el genotipo de los padres.",
+          "Separar los gametos de cada padre.",
+          "Combinar los gametos en el cuadro.",
+          "Contar las proporciones de genotipos y fenotipos."
+        ],
+        "pista": "Padres, gametos, cuadro y conteo.",
+        "explicacion_error": "Ese es el procedimiento del cuadro de Punnett.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Dos padres de ojos cafés (dominante) tienen un hijo de ojos azules (recesivo). ¿Cuál es el genotipo de los padres?",
+        "alternativas": [
+          "uno CC y otro cc",
+          "ambos cc",
+          "ambos heterocigotos (Cc)",
+          "ambos CC"
+        ],
+        "correcta": 2,
+        "pista": "El hijo cc recibió un alelo c de cada padre.",
+        "explicacion_error": "Ambos deben portar el alelo c: son Cc.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "En un cruce dihíbrido AaBb × AaBb, de 16 descendientes, ¿cuántos muestran ambos rasgos dominantes?",
+        "respuesta": 9,
+        "tolerancia": 0,
+        "pista": "Proporción 9:3:3:1.",
+        "explicacion_error": "9 de 16 muestran ambos rasgos dominantes.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué proporción fenotípica se espera en un cruce AaBb × AaBb?",
+        "alternativas": [
+          "9:3:3:1",
+          "1:1",
+          "3:1",
+          "1:2:1"
+        ],
+        "correcta": 0,
+        "pista": "Es un cruce dihíbrido.",
+        "explicacion_error": "Mendel obtuvo 9:3:3:1 en cruces dihíbridos.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Una planta de flor morada puede ser MM o Mm. ¿Qué cruce te permite saber su genotipo?",
+        "alternativas": [
+          "cruzarla con otra MM",
+          "mirarla con lupa",
+          "cruzarla con una planta mm (cruce de prueba)",
+          "regarla más"
+        ],
+        "correcta": 2,
+        "pista": "Si aparece un hijo mm, era Mm.",
+        "explicacion_error": "El cruce de prueba con mm revela si hay un alelo recesivo oculto.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa7-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué principio de Mendel describe cada idea?",
+        "categorias": [
+          "Segregación",
+          "Distribución independiente"
+        ],
+        "elementos": [
+          {
+            "texto": "Los dos alelos de un gen se separan al formar gametos.",
+            "categoria": 0
+          },
+          {
+            "texto": "Cada gameto lleva un solo alelo de cada gen.",
+            "categoria": 0
+          },
+          {
+            "texto": "El color de la semilla se hereda sin depender de su forma.",
+            "categoria": 1
+          },
+          {
+            "texto": "Genes de rasgos distintos se combinan al azar.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Segregación: un gen; distribución independiente: varios genes.",
+        "explicacion_error": "Las dos primeras hablan de un gen; las otras, de genes distintos.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_medio",
+    "asignatura": "ciencias",
+    "eje": "Física",
+    "objetivo_oficial": "OA 9: Analizar el movimiento rectilíneo uniforme y acelerado de un objeto respecto de un sistema de referencia, usando posición, desplazamiento, velocidad y aceleración.",
+    "dificultad": 9,
+    "prerequisitos": [],
+    "id_objetivo": "2_medio.ciencias.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ciencias-Naturales/Fisica/80748:CN2M-OA-09"
+    },
+    "desafios": [
+      {
+        "id": "cie2m-oa9-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué es un sistema de referencia?",
+        "alternativas": [
+          "la velocidad máxima de un auto",
+          "el peso de un objeto",
+          "un tipo de energía",
+          "el punto desde el cual se describe un movimiento"
+        ],
+        "correcta": 3,
+        "pista": "El movimiento depende de quién lo observa.",
+        "explicacion_error": "Es el punto o lugar desde donde se mide la posición.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "En el movimiento rectilíneo uniforme (MRU), la velocidad es ___.",
+        "alternativas": [
+          "cada vez mayor",
+          "cero siempre",
+          "constante",
+          "negativa siempre"
+        ],
+        "correcta": 2,
+        "pista": "Uniforme significa sin cambios.",
+        "explicacion_error": "En el MRU la velocidad no cambia.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-003",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "Un ciclista recorre 30 m en 6 s con velocidad constante. ¿Cuál es su rapidez, en m/s?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "unidad": "m/s",
+        "pista": "v = d ÷ t.",
+        "explicacion_error": "30 ÷ 6 = 5 m/s.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Vas sentado en un bus en movimiento. Respecto de tu asiento, tú estás…",
+        "alternativas": [
+          "en reposo",
+          "acelerando siempre",
+          "moviéndote rápido",
+          "cayendo"
+        ],
+        "correcta": 0,
+        "pista": "Depende del sistema de referencia.",
+        "explicacion_error": "Respecto del asiento no cambias de posición.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Un auto viaja a 20 m/s durante 10 s. ¿Cuántos metros recorre?",
+        "respuesta": 200,
+        "tolerancia": 0,
+        "unidad": "m",
+        "pista": "d = v · t.",
+        "explicacion_error": "20 · 10 = 200 m.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada magnitud con su unidad en el SI.",
+        "pares": [
+          [
+            "posición",
+            "m"
+          ],
+          [
+            "velocidad",
+            "m/s"
+          ],
+          [
+            "aceleración",
+            "m/s²"
+          ]
+        ],
+        "pista": "Piensa en cómo se calcula cada una.",
+        "explicacion_error": "Posición en metros, velocidad en m/s y aceleración en m/s².",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Un auto pasa de 0 a 20 m/s en 4 s. ¿Cuál es su aceleración, en m/s²?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "unidad": "m/s²",
+        "pista": "a = Δv ÷ Δt.",
+        "explicacion_error": "(20 − 0) ÷ 4 = 5 m/s².",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuál es la diferencia entre distancia y desplazamiento?",
+        "alternativas": [
+          "el desplazamiento siempre es mayor",
+          "son exactamente lo mismo",
+          "la distancia tiene dirección",
+          "la distancia es el camino total; el desplazamiento es el cambio de posición"
+        ],
+        "correcta": 3,
+        "pista": "Si das una vuelta completa, ¿cuánto te desplazaste?",
+        "explicacion_error": "Una vuelta completa tiene distancia, pero desplazamiento cero.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿MRU o MRUA?",
+        "categorias": [
+          "MRU (velocidad constante)",
+          "MRUA (velocidad que cambia)"
+        ],
+        "elementos": [
+          {
+            "texto": "un tren a 80 km/h constantes",
+            "categoria": 0
+          },
+          {
+            "texto": "una persona que camina siempre igual",
+            "categoria": 0
+          },
+          {
+            "texto": "un auto que frena en un semáforo",
+            "categoria": 1
+          },
+          {
+            "texto": "una pelota que cae",
+            "categoria": 1
+          }
+        ],
+        "pista": "¿La velocidad cambia o no?",
+        "explicacion_error": "Velocidad constante: MRU; si acelera o frena: MRUA.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Una corredora da una vuelta completa a una pista de 400 m y vuelve al punto de partida. ¿Cuál es su desplazamiento, en metros?",
+        "respuesta": 0,
+        "tolerancia": 0,
+        "unidad": "m",
+        "pista": "Compara la posición inicial con la final.",
+        "explicacion_error": "Termina donde empezó: el desplazamiento es 0 m.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Un auto frena de 30 m/s a 10 m/s en 5 s. ¿Cuál es su aceleración?",
+        "alternativas": [
+          "8 m/s²",
+          "4 m/s²",
+          "−8 m/s²",
+          "−4 m/s²"
+        ],
+        "correcta": 3,
+        "pista": "a = (v final − v inicial) ÷ t.",
+        "explicacion_error": "(10 − 30) ÷ 5 = −4 m/s²: va frenando.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor rapidez.",
+        "elementos": [
+          "una persona caminando (1,5 m/s)",
+          "un ciclista (6 m/s)",
+          "un auto en la ciudad (14 m/s)",
+          "un avión (250 m/s)"
+        ],
+        "pista": "Compara los números en m/s.",
+        "explicacion_error": "1,5 < 6 < 14 < 250 m/s.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un bus parte del reposo con aceleración 2 m/s². ¿Qué velocidad tiene después de 7 s, en m/s?",
+        "respuesta": 14,
+        "tolerancia": 0,
+        "unidad": "m/s",
+        "pista": "v = v₀ + a · t.",
+        "explicacion_error": "0 + 2 · 7 = 14 m/s.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un objeto parte del reposo y acelera a 2 m/s² durante 5 s. ¿Qué distancia recorre, en metros? (d = a · t² ÷ 2)",
+        "respuesta": 25,
+        "tolerancia": 0,
+        "unidad": "m",
+        "pista": "t² = 25.",
+        "explicacion_error": "2 · 25 ÷ 2 = 25 m.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa9-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En un gráfico posición-tiempo, una recta horizontal indica que el objeto…",
+        "alternativas": [
+          "está detenido",
+          "acelera",
+          "se mueve con rapidez constante",
+          "va cada vez más rápido"
+        ],
+        "correcta": 0,
+        "pista": "La posición no cambia con el tiempo.",
+        "explicacion_error": "Si la posición no cambia, está en reposo.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_medio",
+    "asignatura": "ciencias",
+    "eje": "Química",
+    "objetivo_oficial": "OA 15: Explicar las propiedades de las soluciones (componentes, estado físico, cantidad de soluto) y calcular concentraciones y diluciones.",
+    "dificultad": 9,
+    "prerequisitos": [
+      "1_medio.ciencias.OA18"
+    ],
+    "id_objetivo": "2_medio.ciencias.OA15",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-80754.html"
+    },
+    "desafios": [
+      {
+        "id": "cie2m-oa15-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "En una solución de agua con sal, ¿cuál es el soluto?",
+        "alternativas": [
+          "el vaso",
+          "el agua",
+          "la sal",
+          "el aire"
+        ],
+        "correcta": 2,
+        "pista": "El soluto está en menor cantidad y se disuelve.",
+        "explicacion_error": "La sal es el soluto; el agua, el solvente.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La sustancia que disuelve y está en mayor cantidad se llama ___.",
+        "alternativas": [
+          "precipitado",
+          "soluto",
+          "solvente",
+          "catalizador"
+        ],
+        "correcta": 2,
+        "pista": "El agua suele cumplir este papel.",
+        "explicacion_error": "El solvente disuelve al soluto.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Es una solución (mezcla homogénea)?",
+        "categorias": [
+          "Solución",
+          "No es solución"
+        ],
+        "elementos": [
+          {
+            "texto": "agua con azúcar disuelta",
+            "categoria": 0
+          },
+          {
+            "texto": "aire",
+            "categoria": 0
+          },
+          {
+            "texto": "bebida gaseosa",
+            "categoria": 0
+          },
+          {
+            "texto": "agua con arena",
+            "categoria": 1
+          },
+          {
+            "texto": "ensalada",
+            "categoria": 1
+          }
+        ],
+        "pista": "En una solución no se distinguen sus componentes.",
+        "explicacion_error": "Agua azucarada, aire y bebida son soluciones; agua con arena y ensalada, no.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué es una solución saturada?",
+        "alternativas": [
+          "la que ya no puede disolver más soluto a esa temperatura",
+          "la que no tiene solvente",
+          "la que tiene poco soluto",
+          "la que es de color oscuro"
+        ],
+        "correcta": 0,
+        "pista": "Si agregas más, se queda en el fondo.",
+        "explicacion_error": "Ya contiene el máximo de soluto que puede disolver.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-005",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada solución con su estado físico.",
+        "pares": [
+          [
+            "aire",
+            "gaseosa"
+          ],
+          [
+            "agua de mar",
+            "líquida"
+          ],
+          [
+            "bronce (aleación)",
+            "sólida"
+          ]
+        ],
+        "pista": "Las soluciones pueden ser sólidas, líquidas o gaseosas.",
+        "explicacion_error": "Aire: gas; agua de mar: líquida; bronce: sólida.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Si aumentas la temperatura del agua, generalmente puedes disolver…",
+        "alternativas": [
+          "nada de azúcar",
+          "menos azúcar",
+          "la misma cantidad siempre",
+          "más azúcar"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en preparar té con azúcar.",
+        "explicacion_error": "La solubilidad de muchos sólidos aumenta con la temperatura.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Se disuelven 20 g de sal en 80 g de agua. ¿Cuál es el % m/m de la solución?",
+        "respuesta": 20,
+        "tolerancia": 0,
+        "unidad": "%",
+        "pista": "% m/m = masa de soluto ÷ masa de solución · 100. La solución pesa 100 g.",
+        "explicacion_error": "20 ÷ 100 · 100 = 20 %.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuántos gramos de azúcar hay en 200 g de una solución al 10 % m/m?",
+        "respuesta": 20,
+        "tolerancia": 0,
+        "unidad": "g",
+        "pista": "10 % de 200.",
+        "explicacion_error": "0,10 · 200 = 20 g.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-009",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Diluir una solución significa agregar más ___.",
+        "alternativas": [
+          "soluto",
+          "solvente",
+          "calor",
+          "sal"
+        ],
+        "correcta": 1,
+        "pista": "Diluir baja la concentración.",
+        "explicacion_error": "Se agrega solvente y la concentración baja.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Tienes 100 mL de jugo concentrado al 40 % y agregas agua hasta 200 mL. ¿Cuál es la nueva concentración, en %?",
+        "respuesta": 20,
+        "tolerancia": 0,
+        "unidad": "%",
+        "pista": "La cantidad de soluto no cambia: el volumen se duplica.",
+        "explicacion_error": "Al duplicar el volumen, la concentración baja a la mitad: 20 %.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué solución está más concentrada?",
+        "alternativas": [
+          "5 g de sal en 100 mL",
+          "10 g de sal en 50 mL",
+          "10 g de sal en 100 mL",
+          "10 g de sal en 500 mL"
+        ],
+        "correcta": 1,
+        "pista": "Compara la cantidad de soluto por volumen.",
+        "explicacion_error": "10 g en 50 mL equivalen a 20 g por cada 100 mL: la mayor concentración.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de más diluida a más concentrada.",
+        "elementos": [
+          "2 g en 100 mL",
+          "5 g en 100 mL",
+          "10 g en 100 mL",
+          "20 g en 100 mL"
+        ],
+        "pista": "Mismo volumen: compara gramos.",
+        "explicacion_error": "2 < 5 < 10 < 20 g por cada 100 mL.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Necesitas 500 mL de suero al 1 % m/v. ¿Cuántos gramos de soluto necesitas?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "unidad": "g",
+        "pista": "1 % m/v = 1 g por cada 100 mL.",
+        "explicacion_error": "500 mL · 1 g/100 mL = 5 g.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Al abrir una bebida gaseosa tibia sale más gas que de una fría. ¿Por qué?",
+        "alternativas": [
+          "la bebida fría no tiene gas",
+          "el plástico absorbe el gas",
+          "el calor crea más gas",
+          "los gases son menos solubles en líquidos a mayor temperatura"
+        ],
+        "correcta": 3,
+        "pista": "Con los gases ocurre lo contrario que con muchos sólidos.",
+        "explicacion_error": "A mayor temperatura, el gas se disuelve menos y escapa.",
+        "monedas": 10
+      },
+      {
+        "id": "cie2m-oa15-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Una solución de 300 mL contiene 60 g de soluto. ¿Cuántos gramos de soluto hay en 50 mL de ella?",
+        "respuesta": 10,
+        "tolerancia": 0,
+        "unidad": "g",
+        "pista": "Calcula cuánto soluto hay por mL.",
+        "explicacion_error": "60 ÷ 300 = 0,2 g/mL; 0,2 · 50 = 10 g.",
+        "monedas": 10
+      }
+    ]
+  }
+]
