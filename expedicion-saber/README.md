@@ -10,6 +10,19 @@ mundos son jugables, cada uno con su avatar de 5 espacios × 5 niveles: Valle Bl
 Isla Brinco (plataformas) y Ciudad Voltia (héroes de cómic, con colores del traje a elección, cuerda gancho y
 balanceo entre edificios).
 
+## Instalar en el celular (app sin tienda)
+
+El juego es una app web instalable (PWA): se instala desde el navegador, queda con ícono en la pantalla de inicio,
+se abre a pantalla completa y funciona sin internet después de la primera visita (`manifest.webmanifest`, `sw.js`,
+`iconos/`). Necesita estar publicado en una dirección https, por ejemplo GitHub Pages
+(`https://seanduarteu-cyber.github.io/PRODUCCION-PLAYMAKER/expedicion-saber/`).
+
+- **Android (Chrome):** abrir el link → menú ⋮ → «Instalar app» o «Agregar a la pantalla principal».
+- **iPhone (Safari):** abrir el link → botón Compartir → «Agregar a pantalla de inicio».
+
+Para publicarla en Google Play se puede generar un paquete Android desde la misma dirección con PWABuilder
+(pwabuilder.com); requiere una cuenta de desarrollador de Google Play.
+
 ## Cómo jugar en local
 
 ```bash

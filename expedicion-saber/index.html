@@ -1,6 +1,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Expedición Saber</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#4f9a32">
+<link rel="icon" type="image/png" href="iconos/icono-192.png">
+<link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Expedición">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Pixelify+Sans:wght@500;700&display=swap">
@@ -194,3 +200,9 @@ main{min-width:0;display:grid;gap:14px;align-content:start}
 <script src="js/avatar_plataformas.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/retos.js"></script>
+<script>
+/* App instalable: el service worker guarda el juego para jugar sin internet (solo cuando se sirve por http/https). */
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => { /* sin modo sin conexión */ }); });
+}
+</script>

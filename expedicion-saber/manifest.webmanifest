@@ -1,0 +1,17 @@
+{
+  "name": "Expedición Saber",
+  "short_name": "Expedición",
+  "description": "Desafíos de Matemática, Lenguaje, Ciencias e Inglés de 1° básico a 4° medio. Gana monedas y mejora tu avatar.",
+  "lang": "es-CL",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#8ecdf2",
+  "theme_color": "#4f9a32",
+  "icons": [
+    { "src": "iconos/icono-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "iconos/icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "iconos/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
