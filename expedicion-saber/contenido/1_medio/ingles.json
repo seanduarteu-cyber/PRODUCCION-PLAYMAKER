@@ -1,0 +1,922 @@
+[
+  {
+    "nivel": "1_medio",
+    "asignatura": "ingles",
+    "eje": "Comprensión de lectura",
+    "objetivo_oficial": "OA 9: Comprender ideas generales e información explícita en textos adaptados y auténticos simples, impresos o digitales, sobre temas variados.",
+    "dificultad": 8,
+    "prerequisitos": [
+      "8_basico.ingles.OA9"
+    ],
+    "id_objetivo": "1_medio.ingles.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docentes/Educacion-General/Ingles-1-medio/IN1M-OA-09/80907:IN1M-OA-09"
+    },
+    "desafios": [
+      {
+        "id": "ing1m-oa9-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Valparaíso is famous for its colourful houses on the hills. Visitors ride old funiculars called «ascensores» to go up. Many artists paint murals on the walls, so the city looks like an open-air museum.",
+        "enunciado": "¿Por qué es famosa Valparaíso según el texto?",
+        "alternativas": [
+          "por su clima frío",
+          "por sus edificios muy altos",
+          "por sus casas de colores en los cerros",
+          "por sus playas de arena blanca"
+        ],
+        "correcta": 2,
+        "pista": "Busca «famous for».",
+        "explicacion_error": "«Famous for its colourful houses on the hills».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Hi Tomás! I'm in Puerto Natales with my family. Yesterday we visited Torres del Paine. It was windy and cold, but the mountains were amazing. Tomorrow we're taking a boat to see a glacier. See you next week! – Sofía",
+        "enunciado": "¿Dónde está Sofía?",
+        "alternativas": [
+          "en Santiago",
+          "en Arica",
+          "en Puerto Natales",
+          "en Valparaíso"
+        ],
+        "correcta": 2,
+        "pista": "Lee la segunda oración.",
+        "explicacion_error": "«I'm in Puerto Natales with my family».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿Qué día es el examen?",
+        "audio": {
+          "texto": "Remember, the English test is on Friday.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "el lunes",
+          "el domingo",
+          "el miércoles",
+          "el viernes"
+        ],
+        "correcta": 3,
+        "pista": "Escucha el día de la semana.",
+        "explicacion_error": "Dice: «The English test is on Friday».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-002",
+        "tipo": "completar",
+        "dificultad": 2,
+        "texto": "Valparaíso is famous for its colourful houses on the hills. Visitors ride old funiculars called «ascensores» to go up. Many artists paint murals on the walls, so the city looks like an open-air museum.",
+        "enunciado": "Visitors use old ___ to go up the hills.",
+        "alternativas": [
+          "funiculars",
+          "boats",
+          "bicycles",
+          "buses"
+        ],
+        "correcta": 0,
+        "pista": "Busca «ride».",
+        "explicacion_error": "«Visitors ride old funiculars called ascensores».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "Hi Tomás! I'm in Puerto Natales with my family. Yesterday we visited Torres del Paine. It was windy and cold, but the mountains were amazing. Tomorrow we're taking a boat to see a glacier. See you next week! – Sofía",
+        "enunciado": "¿Verdadero, falso o no se menciona?",
+        "categorias": [
+          "True",
+          "False",
+          "Not mentioned"
+        ],
+        "elementos": [
+          {
+            "texto": "They visited Torres del Paine yesterday.",
+            "categoria": 0
+          },
+          {
+            "texto": "The weather was hot.",
+            "categoria": 1
+          },
+          {
+            "texto": "Sofía travelled by plane.",
+            "categoria": 2
+          },
+          {
+            "texto": "They will see a glacier.",
+            "categoria": 0
+          }
+        ],
+        "pista": "Busca cada dato en el texto.",
+        "explicacion_error": "Visitaron Torres del Paine y verán un glaciar; hacía frío (no calor); no dice cómo viajaron.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha. ¿Qué necesita llevar el curso?",
+        "audio": {
+          "texto": "For tomorrow's class, please bring a dictionary.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "un computador",
+          "una calculadora",
+          "un libro de cuentos",
+          "un diccionario"
+        ],
+        "correcta": 3,
+        "pista": "Escucha qué deben llevar.",
+        "explicacion_error": "Dice: «bring a dictionary».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Valparaíso is famous for its colourful houses on the hills. Visitors ride old funiculars called «ascensores» to go up. Many artists paint murals on the walls, so the city looks like an open-air museum.",
+        "enunciado": "¿Por qué la ciudad parece «an open-air museum»?",
+        "alternativas": [
+          "porque las casas son antiguas",
+          "porque no se permite pintar",
+          "porque hay muchos murales en las paredes",
+          "porque tiene muchos museos cerrados"
+        ],
+        "correcta": 2,
+        "pista": "Mira la palabra «so».",
+        "explicacion_error": "Los artistas pintan murales; por eso parece un museo al aire libre.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-006",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "texto": "Hi Tomás! I'm in Puerto Natales with my family. Yesterday we visited Torres del Paine. It was windy and cold, but the mountains were amazing. Tomorrow we're taking a boat to see a glacier. See you next week! – Sofía",
+        "enunciado": "Ordena lo que hace Sofía.",
+        "elementos": [
+          "visit Torres del Paine",
+          "write to Tomás",
+          "take a boat to a glacier",
+          "see Tomás"
+        ],
+        "pista": "Fíjate en yesterday, now, tomorrow y next week.",
+        "explicacion_error": "Ayer el parque, hoy escribe, mañana el bote y la próxima semana ve a Tomás.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Escucha el aviso. ¿Por qué se suspende la salida?",
+        "audio": {
+          "texto": "The school trip is cancelled because of the heavy rain.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "por la lluvia",
+          "porque el bus está lleno",
+          "por el calor",
+          "por un paro"
+        ],
+        "correcta": 0,
+        "pista": "Escucha «because of».",
+        "explicacion_error": "Dice: «because of the heavy rain».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Many teenagers sleep less than eight hours a night. Experts say this affects their memory and mood. Phones are part of the problem: the blue light from screens tells the brain that it is still daytime. A simple tip is to leave the phone outside the bedroom.",
+        "enunciado": "What is the main idea of the text?",
+        "alternativas": [
+          "Blue light is good for memory.",
+          "Teenagers don't sleep enough, and phones are part of the problem.",
+          "Phones help teenagers sleep better.",
+          "Experts sleep more than eight hours."
+        ],
+        "correcta": 1,
+        "pista": "La idea principal resume todo el texto, no un detalle.",
+        "explicacion_error": "El texto habla de que los adolescentes duermen poco y del papel de los celulares.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-008",
+        "tipo": "completar",
+        "dificultad": 4,
+        "texto": "Many teenagers sleep less than eight hours a night. Experts say this affects their memory and mood. Phones are part of the problem: the blue light from screens tells the brain that it is still daytime. A simple tip is to leave the phone outside the bedroom.",
+        "enunciado": "Blue light tells the brain that it is still ___.",
+        "alternativas": [
+          "night",
+          "daytime",
+          "winter",
+          "asleep"
+        ],
+        "correcta": 1,
+        "pista": "Busca «blue light».",
+        "explicacion_error": "«Tells the brain that it is still daytime».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-009",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "texto": "Many teenagers sleep less than eight hours a night. Experts say this affects their memory and mood. Phones are part of the problem: the blue light from screens tells the brain that it is still daytime. A simple tip is to leave the phone outside the bedroom.",
+        "enunciado": "Une cada parte del texto con su función.",
+        "pares": [
+          [
+            "Many teenagers sleep less than eight hours.",
+            "problema"
+          ],
+          [
+            "It affects memory and mood.",
+            "consecuencia"
+          ],
+          [
+            "Leave the phone outside the bedroom.",
+            "solución"
+          ]
+        ],
+        "pista": "Piensa en problema, consecuencia y solución.",
+        "explicacion_error": "Primero el problema, luego su efecto y al final un consejo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "The Atacama Desert is one of the driest places on Earth. Some areas haven't had rain for years. However, after a rare rainy winter, the desert can bloom with thousands of purple and pink flowers. People call this event «desierto florido».",
+        "enunciado": "¿Qué palabra muestra un contraste en el texto?",
+        "alternativas": [
+          "thousands",
+          "people",
+          "However",
+          "after"
+        ],
+        "correcta": 2,
+        "pista": "Busca un conector que cambie la idea.",
+        "explicacion_error": "«However» contrasta la sequía con la floración.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "The Atacama Desert is one of the driest places on Earth. Some areas haven't had rain for years. However, after a rare rainy winter, the desert can bloom with thousands of purple and pink flowers. People call this event «desierto florido».",
+        "enunciado": "What can we infer about «desierto florido»?",
+        "alternativas": [
+          "It doesn't happen every year.",
+          "It only has white flowers.",
+          "It happens in the south of Chile.",
+          "It happens every summer."
+        ],
+        "correcta": 0,
+        "pista": "«Rare rainy winter»: ¿es algo frecuente?",
+        "explicacion_error": "Ocurre tras un invierno lluvioso poco común, así que no es todos los años.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa9-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "The Atacama Desert is one of the driest places on Earth. Some areas haven't had rain for years. However, after a rare rainy winter, the desert can bloom with thousands of purple and pink flowers. People call this event «desierto florido».",
+        "enunciado": "¿Cuál es el propósito del texto?",
+        "alternativas": [
+          "dar una opinión sobre el clima",
+          "contar un cuento",
+          "informar sobre un fenómeno natural",
+          "vender un viaje"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué hace el texto: informa, convence o narra?",
+        "explicacion_error": "Explica qué es el desierto florido: informa.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_medio",
+    "asignatura": "ingles",
+    "eje": "Comprensión de lectura",
+    "objetivo_oficial": "OA 10: Comprender textos no literarios (artículos, avisos, emails, páginas web, biografías, noticias) identificando propósito, idea principal, detalles, relaciones de contraste y problema-solución y vocabulario clave.",
+    "dificultad": 8,
+    "prerequisitos": [
+      "8_basico.ingles.OA9"
+    ],
+    "id_objetivo": "1_medio.ingles.OA10",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Comprension-de-lectura/"
+    },
+    "desafios": [
+      {
+        "id": "ing1m-oa10-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "LOST DOG – Have you seen Toby? He is a small brown dog with a red collar. He got lost near Plaza Ñuñoa on Saturday. If you find him, please call 9 1234 5678. Reward!",
+        "enunciado": "What kind of text is this?",
+        "alternativas": [
+          "a notice",
+          "a biography",
+          "a poem",
+          "a recipe"
+        ],
+        "correcta": 0,
+        "pista": "Mira el título en mayúsculas y el teléfono.",
+        "explicacion_error": "Es un aviso (notice) de perro perdido.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "LOST DOG – Have you seen Toby? He is a small brown dog with a red collar. He got lost near Plaza Ñuñoa on Saturday. If you find him, please call 9 1234 5678. Reward!",
+        "enunciado": "Toby has a red ___.",
+        "alternativas": [
+          "bed",
+          "hat",
+          "collar",
+          "ball"
+        ],
+        "correcta": 2,
+        "pista": "Busca la descripción del perro.",
+        "explicacion_error": "«A small brown dog with a red collar».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 1,
+        "texto": "Violeta Parra (1917–1967) was a Chilean singer, composer and artist. She travelled around Chile collecting traditional songs. She also made colourful embroidered pictures called «arpilleras». Her song «Gracias a la vida» is known around the world.",
+        "enunciado": "Ordena las palabras para formar la pregunta.",
+        "elementos": [
+          "What",
+          "did",
+          "Violeta",
+          "Parra",
+          "collect?"
+        ],
+        "pista": "Pregunta en pasado: What + did + sujeto + verbo.",
+        "explicacion_error": "What did Violeta Parra collect?",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "LOST DOG – Have you seen Toby? He is a small brown dog with a red collar. He got lost near Plaza Ñuñoa on Saturday. If you find him, please call 9 1234 5678. Reward!",
+        "enunciado": "¿Cuál es el propósito del aviso?",
+        "alternativas": [
+          "pedir ayuda para encontrar al perro",
+          "invitar a una fiesta",
+          "vender un perro",
+          "informar el clima"
+        ],
+        "correcta": 0,
+        "pista": "¿Para qué se escribe un «LOST DOG»?",
+        "explicacion_error": "Pide ayuda para encontrar a Toby.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "From: Diego  To: Ms. Rojas  Subject: Homework\nDear Ms. Rojas, I couldn't send my essay yesterday because the internet was down at home. I have attached it now. I'm sorry for the delay. Best regards, Diego",
+        "enunciado": "Why did Diego write the email?",
+        "alternativas": [
+          "to complain about the teacher",
+          "to send his essay late and apologise",
+          "to invite Ms. Rojas",
+          "to ask for more homework"
+        ],
+        "correcta": 1,
+        "pista": "Lee la razón y lo que adjunta.",
+        "explicacion_error": "Envía su ensayo atrasado y se disculpa.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "From: Diego  To: Ms. Rojas  Subject: Homework\nDear Ms. Rojas, I couldn't send my essay yesterday because the internet was down at home. I have attached it now. I'm sorry for the delay. Best regards, Diego",
+        "enunciado": "¿Verdadero, falso o no se menciona?",
+        "categorias": [
+          "True",
+          "False",
+          "Not mentioned"
+        ],
+        "elementos": [
+          {
+            "texto": "The internet was down.",
+            "categoria": 0
+          },
+          {
+            "texto": "Diego sent the essay on time.",
+            "categoria": 1
+          },
+          {
+            "texto": "The essay is about Chile.",
+            "categoria": 2
+          },
+          {
+            "texto": "Diego apologises.",
+            "categoria": 0
+          }
+        ],
+        "pista": "Revisa cada dato.",
+        "explicacion_error": "Se cayó internet y se disculpa; no lo envió a tiempo; no dice el tema.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-006",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "texto": "From: Diego  To: Ms. Rojas  Subject: Homework\nDear Ms. Rojas, I couldn't send my essay yesterday because the internet was down at home. I have attached it now. I'm sorry for the delay. Best regards, Diego",
+        "enunciado": "Une cada expresión con su función en el email.",
+        "pares": [
+          [
+            "Dear Ms. Rojas",
+            "saludo"
+          ],
+          [
+            "because the internet was down",
+            "causa"
+          ],
+          [
+            "I'm sorry for the delay",
+            "disculpa"
+          ],
+          [
+            "Best regards",
+            "despedida"
+          ]
+        ],
+        "pista": "Piensa en la estructura de un email formal.",
+        "explicacion_error": "Saludo, causa, disculpa y despedida.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Plastic bags take hundreds of years to break down. In 2018, Chile became the first country in Latin America to ban plastic bags in shops. As a result, people now bring their own reusable bags. Some shoppers complained at first, but most got used to it.",
+        "enunciado": "What was the result of the ban?",
+        "alternativas": [
+          "People bring reusable bags.",
+          "People stopped shopping.",
+          "Shops sell more plastic bags.",
+          "Plastic now breaks down fast."
+        ],
+        "correcta": 0,
+        "pista": "Busca «as a result».",
+        "explicacion_error": "«As a result, people now bring their own reusable bags».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-014",
+        "tipo": "completar",
+        "dificultad": 3,
+        "texto": "Violeta Parra (1917–1967) was a Chilean singer, composer and artist. She travelled around Chile collecting traditional songs. She also made colourful embroidered pictures called «arpilleras». Her song «Gracias a la vida» is known around the world.",
+        "enunciado": "Violeta Parra was a singer, composer ___ artist.",
+        "alternativas": [
+          "but",
+          "because",
+          "and",
+          "so"
+        ],
+        "correcta": 2,
+        "pista": "Es una lista.",
+        "explicacion_error": "Las listas se unen con «and».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Plastic bags take hundreds of years to break down. In 2018, Chile became the first country in Latin America to ban plastic bags in shops. As a result, people now bring their own reusable bags. Some shoppers complained at first, but most got used to it.",
+        "enunciado": "¿Qué relación muestra «Some shoppers complained at first, but most got used to it»?",
+        "alternativas": [
+          "causa",
+          "contraste",
+          "ejemplo",
+          "secuencia"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en «but».",
+        "explicacion_error": "«But» opone dos ideas: contraste.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Plastic bags take hundreds of years to break down. In 2018, Chile became the first country in Latin America to ban plastic bags in shops. As a result, people now bring their own reusable bags. Some shoppers complained at first, but most got used to it.",
+        "enunciado": "In the text, «ban» means…",
+        "alternativas": [
+          "reciclar",
+          "vender",
+          "regalar",
+          "prohibir"
+        ],
+        "correcta": 3,
+        "pista": "Si se prohíben, la gente trae sus propias bolsas.",
+        "explicacion_error": "«Ban» es prohibir.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-010",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "texto": "Problem: many students arrive late because buses are full in the morning. Solution: our school will start classes 30 minutes later on Mondays, when traffic is worse. We will check the results in June.",
+        "enunciado": "Une cada parte con su contenido.",
+        "pares": [
+          [
+            "Problem",
+            "buses are full in the morning"
+          ],
+          [
+            "Solution",
+            "start 30 minutes later on Mondays"
+          ],
+          [
+            "Next step",
+            "check the results in June"
+          ]
+        ],
+        "pista": "El texto usa la estructura problema–solución.",
+        "explicacion_error": "Problema: buses llenos; solución: empezar más tarde; después: revisar en junio.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Problem: many students arrive late because buses are full in the morning. Solution: our school will start classes 30 minutes later on Mondays, when traffic is worse. We will check the results in June.",
+        "enunciado": "¿Por qué la solución se aplica solo los lunes?",
+        "alternativas": [
+          "porque no hay clases los lunes",
+          "porque el tráfico es peor ese día",
+          "porque los buses son gratis",
+          "porque lo pidió el profesor"
+        ],
+        "correcta": 1,
+        "pista": "Busca «when traffic is worse».",
+        "explicacion_error": "Los lunes el tráfico es peor.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Problem: many students arrive late because buses are full in the morning. Solution: our school will start classes 30 minutes later on Mondays, when traffic is worse. We will check the results in June.",
+        "enunciado": "What can we infer about the plan?",
+        "alternativas": [
+          "The plan has already failed.",
+          "Classes will start earlier.",
+          "Students don't like buses.",
+          "The school is not sure yet if it will work."
+        ],
+        "correcta": 3,
+        "pista": "¿Por qué revisarán los resultados?",
+        "explicacion_error": "Si van a revisar los resultados, aún no saben si funciona.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa10-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Violeta Parra (1917–1967) was a Chilean singer, composer and artist. She travelled around Chile collecting traditional songs. She also made colourful embroidered pictures called «arpilleras». Her song «Gracias a la vida» is known around the world.",
+        "enunciado": "What is the purpose of this text?",
+        "alternativas": [
+          "to tell a funny story",
+          "to explain how to make arpilleras",
+          "to give basic facts about a person's life",
+          "to persuade people to sing"
+        ],
+        "correcta": 2,
+        "pista": "Es una biografía breve.",
+        "explicacion_error": "Entrega datos de su vida: es una biografía.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_medio",
+    "asignatura": "ingles",
+    "eje": "Expresión escrita",
+    "objetivo_oficial": "OA 16: Escribir usando funciones del nivel: hábitos pasados (used to), acciones pasadas que continúan en el presente (present perfect), cláusulas relativas, voz pasiva y conectores como although o so that.",
+    "dificultad": 8,
+    "prerequisitos": [
+      "8_basico.ingles.OA16"
+    ],
+    "id_objetivo": "1_medio.ingles.OA16",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/80914:IN1M-OA-16"
+    },
+    "desafios": [
+      {
+        "id": "ing1m-oa16-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "When I was a child, I ___ play in the park every day.",
+        "alternativas": [
+          "am used",
+          "used to",
+          "use to",
+          "using to"
+        ],
+        "correcta": 1,
+        "pista": "Hábito pasado: used to + verbo.",
+        "explicacion_error": "«I used to play» expresa un hábito pasado.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "She has ___ in Concepción since 2020.",
+        "alternativas": [
+          "lives",
+          "live",
+          "lived",
+          "living"
+        ],
+        "correcta": 2,
+        "pista": "Present perfect: has + participio.",
+        "explicacion_error": "«She has lived» (present perfect).",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué oración describe un hábito del pasado?",
+        "alternativas": [
+          "My grandfather used to ride a horse to school.",
+          "My grandfather is riding a horse.",
+          "My grandfather will ride a horse.",
+          "My grandfather rides a horse now."
+        ],
+        "correcta": 0,
+        "pista": "Busca «used to».",
+        "explicacion_error": "«Used to» indica algo que se hacía antes.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "The girl ___ won the contest is my cousin.",
+        "alternativas": [
+          "where",
+          "which",
+          "when",
+          "who"
+        ],
+        "correcta": 3,
+        "pista": "Para personas se usa «who».",
+        "explicacion_error": "«The girl who won…»: relativo para personas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "This is the house ___ I was born.",
+        "alternativas": [
+          "who",
+          "when",
+          "which",
+          "where"
+        ],
+        "correcta": 3,
+        "pista": "Para lugares se usa «where».",
+        "explicacion_error": "«The house where I was born».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Present perfect o pasado simple?",
+        "categorias": [
+          "Present perfect",
+          "Past simple"
+        ],
+        "elementos": [
+          {
+            "texto": "I have visited Chiloé.",
+            "categoria": 0
+          },
+          {
+            "texto": "She has finished her homework.",
+            "categoria": 0
+          },
+          {
+            "texto": "We went to Arica last year.",
+            "categoria": 1
+          },
+          {
+            "texto": "They saw a whale yesterday.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Las marcas de tiempo definido (yesterday, last year) van con pasado simple.",
+        "explicacion_error": "Have/has + participio es present perfect; went y saw, pasado simple.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Empanadas ___ in many Chilean homes on September 18th.",
+        "alternativas": [
+          "are eaten",
+          "eat",
+          "are eating",
+          "ate"
+        ],
+        "correcta": 0,
+        "pista": "Voz pasiva: be + participio.",
+        "explicacion_error": "«Empanadas are eaten»: voz pasiva en presente.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena la oración en voz pasiva.",
+        "elementos": [
+          "The",
+          "bridge",
+          "was",
+          "built",
+          "in",
+          "1990."
+        ],
+        "pista": "Sujeto + was + participio.",
+        "explicacion_error": "The bridge was built in 1990.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada inicio con su final.",
+        "pares": [
+          [
+            "I have known Ana",
+            "since we were six."
+          ],
+          [
+            "The book which you lent me",
+            "was great."
+          ],
+          [
+            "Copper is exported",
+            "to many countries."
+          ]
+        ],
+        "pista": "Revisa el sentido y la gramática.",
+        "explicacion_error": "since + punto de partida; relativo «which» para cosas; voz pasiva «is exported».",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-010",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "___ it was raining, we went to the beach.",
+        "alternativas": [
+          "Because",
+          "So that",
+          "Unless",
+          "Although"
+        ],
+        "correcta": 3,
+        "pista": "Une dos ideas opuestas.",
+        "explicacion_error": "«Although» introduce un contraste: llovía, pero fuimos.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-011",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "I'm saving money so ___ I can buy a bike.",
+        "alternativas": [
+          "because",
+          "what",
+          "which",
+          "that"
+        ],
+        "correcta": 3,
+        "pista": "Expresa propósito: so that.",
+        "explicacion_error": "«So that» expresa finalidad.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué oración está bien escrita?",
+        "alternativas": [
+          "I not have seen that film yet.",
+          "I haven't saw that film yet.",
+          "I haven't seen that film yet.",
+          "I didn't seen that film yet."
+        ],
+        "correcta": 2,
+        "pista": "Present perfect negativo: haven't + participio.",
+        "explicacion_error": "«Haven't seen» es la forma correcta.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Elige la mejor forma de unir: «The museum is in Santiago. It has a famous painting.»",
+        "alternativas": [
+          "The museum where is in Santiago has a famous painting.",
+          "The museum, it is in Santiago, has a famous painting.",
+          "The museum who is in Santiago has a famous painting.",
+          "The museum, which is in Santiago, has a famous painting."
+        ],
+        "correcta": 3,
+        "pista": "Para cosas se usa «which».",
+        "explicacion_error": "«Which» introduce información adicional sobre el museo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha y elige la oración que oíste.",
+        "audio": {
+          "texto": "The new library was opened last month.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "The new library opened me last month.",
+          "The new library has been closed.",
+          "The new library is opening next month.",
+          "The new library was opened last month."
+        ],
+        "correcta": 3,
+        "pista": "Fíjate en el tiempo verbal.",
+        "explicacion_error": "Dice «was opened last month»: voz pasiva en pasado.",
+        "monedas": 10
+      },
+      {
+        "id": "ing1m-oa16-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué función cumple cada oración?",
+        "categorias": [
+          "Hábito pasado",
+          "Experiencia hasta hoy",
+          "Proceso (voz pasiva)"
+        ],
+        "elementos": [
+          {
+            "texto": "We used to live in Temuco.",
+            "categoria": 0
+          },
+          {
+            "texto": "I used to hate vegetables.",
+            "categoria": 0
+          },
+          {
+            "texto": "She has climbed a volcano.",
+            "categoria": 1
+          },
+          {
+            "texto": "We have never seen snow.",
+            "categoria": 1
+          },
+          {
+            "texto": "Wine is made from grapes.",
+            "categoria": 2
+          },
+          {
+            "texto": "The letters were sent by post.",
+            "categoria": 2
+          }
+        ],
+        "pista": "used to / have + participio / be + participio.",
+        "explicacion_error": "Used to: hábitos; present perfect: experiencias; be + participio: procesos.",
+        "monedas": 10
+      }
+    ]
+  }
+]

@@ -378,6 +378,28 @@
         "8_basico.ingles.OA16"
       ],
       "desafios": 34
+    },
+    {
+      "archivo": "1_medio/ingles.json",
+      "nivel": "1_medio",
+      "asignatura": "ingles",
+      "objetivos": [
+        "1_medio.ingles.OA9",
+        "1_medio.ingles.OA10",
+        "1_medio.ingles.OA16"
+      ],
+      "desafios": 45
+    },
+    {
+      "archivo": "2_medio/ingles.json",
+      "nivel": "2_medio",
+      "asignatura": "ingles",
+      "objetivos": [
+        "2_medio.ingles.OA10",
+        "2_medio.ingles.OA11",
+        "2_medio.ingles.OA16"
+      ],
+      "desafios": 45
     }
   ],
   "tramos": [
@@ -659,6 +681,24 @@
       "objetivos": [
         "8_basico.ingles.OA9",
         "8_basico.ingles.OA16"
+      ]
+    },
+    {
+      "id": "1_medio.ingles",
+      "nombre": "Inglés 1° medio",
+      "objetivos": [
+        "1_medio.ingles.OA9",
+        "1_medio.ingles.OA10",
+        "1_medio.ingles.OA16"
+      ]
+    },
+    {
+      "id": "2_medio.ingles",
+      "nombre": "Inglés 2° medio",
+      "objetivos": [
+        "2_medio.ingles.OA10",
+        "2_medio.ingles.OA11",
+        "2_medio.ingles.OA16"
       ]
     }
   ]

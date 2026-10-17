@@ -1,0 +1,922 @@
+[
+  {
+    "nivel": "2_medio",
+    "asignatura": "ingles",
+    "eje": "Comprensión de lectura",
+    "objetivo_oficial": "OA 10: Comprender textos no literarios identificando propósito, idea principal, información específica, relaciones de importancia y problema-solución, y expresiones y conectores clave.",
+    "dificultad": 9,
+    "prerequisitos": [
+      "1_medio.ingles.OA10"
+    ],
+    "id_objetivo": "2_medio.ingles.OA10",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Innovacion/Lineas-de-Innovacion/Modernizacion-de-Textos-escolares-2020/140095:Textos-Escolares-Reimpresos-Ingles-2-medio"
+    },
+    "desafios": [
+      {
+        "id": "ing2m-oa10-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "SUMMER JOB! The Valdivia Aquarium is looking for students aged 16–18 to help with school visits in January. You must be friendly and speak some English. Send your CV to jobs@aquarium.cl before December 1st.",
+        "enunciado": "What is the text about?",
+        "alternativas": [
+          "a new fish species",
+          "a swimming class",
+          "a school trip to Valdivia",
+          "a summer job for students"
+        ],
+        "correcta": 3,
+        "pista": "Mira el título.",
+        "explicacion_error": "Es un aviso de trabajo de verano.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "SUMMER JOB! The Valdivia Aquarium is looking for students aged 16–18 to help with school visits in January. You must be friendly and speak some English. Send your CV to jobs@aquarium.cl before December 1st.",
+        "enunciado": "Applicants must be friendly and speak some ___.",
+        "alternativas": [
+          "Mapudungun",
+          "Chinese",
+          "French",
+          "English"
+        ],
+        "correcta": 3,
+        "pista": "Busca «You must…».",
+        "explicacion_error": "«Speak some English».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿A qué hora parte el bus?",
+        "audio": {
+          "texto": "The bus leaves at seven thirty, so don't be late.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "a las 7:00",
+          "a las 7:30",
+          "a las 8:30",
+          "a las 6:30"
+        ],
+        "correcta": 1,
+        "pista": "Escucha la hora.",
+        "explicacion_error": "Dice «at seven thirty».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "SUMMER JOB! The Valdivia Aquarium is looking for students aged 16–18 to help with school visits in January. You must be friendly and speak some English. Send your CV to jobs@aquarium.cl before December 1st.",
+        "enunciado": "¿Verdadero, falso o no se menciona?",
+        "categorias": [
+          "True",
+          "False",
+          "Not mentioned"
+        ],
+        "elementos": [
+          {
+            "texto": "The job is in January.",
+            "categoria": 0
+          },
+          {
+            "texto": "You must be over 20.",
+            "categoria": 1
+          },
+          {
+            "texto": "The job pays very well.",
+            "categoria": 2
+          },
+          {
+            "texto": "You send a CV by email.",
+            "categoria": 0
+          }
+        ],
+        "pista": "Revisa edad, fecha y sueldo.",
+        "explicacion_error": "Enero y CV por email: verdadero; edad 16–18: falso; sueldo: no se menciona.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Fast fashion means cheap clothes produced very quickly. The problem is that it creates huge amounts of waste: in the Atacama Desert there are mountains of old clothes from other countries. One solution is to buy second-hand clothes or to repair the ones we have.",
+        "enunciado": "What is the main problem described?",
+        "alternativas": [
+          "The desert is too hot.",
+          "Fast fashion creates a lot of waste.",
+          "Clothes are too expensive.",
+          "People don't buy clothes."
+        ],
+        "correcta": 1,
+        "pista": "Busca «The problem is…».",
+        "explicacion_error": "El problema es la enorme cantidad de desechos.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha el aviso. ¿Dónde es la reunión?",
+        "audio": {
+          "texto": "The student council meeting will be in the library after lunch.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "en la sala 12",
+          "en el gimnasio",
+          "en el patio",
+          "en la biblioteca"
+        ],
+        "correcta": 3,
+        "pista": "Escucha el lugar.",
+        "explicacion_error": "Dice «in the library».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-005",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "texto": "Fast fashion means cheap clothes produced very quickly. The problem is that it creates huge amounts of waste: in the Atacama Desert there are mountains of old clothes from other countries. One solution is to buy second-hand clothes or to repair the ones we have.",
+        "enunciado": "Une cada parte con su función.",
+        "pares": [
+          [
+            "Fast fashion means cheap clothes…",
+            "definición"
+          ],
+          [
+            "mountains of old clothes in Atacama",
+            "ejemplo"
+          ],
+          [
+            "buy second-hand or repair",
+            "solución"
+          ]
+        ],
+        "pista": "Definición, ejemplo y solución.",
+        "explicacion_error": "Primero define, luego da un ejemplo del problema y al final propone soluciones.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Fast fashion means cheap clothes produced very quickly. The problem is that it creates huge amounts of waste: in the Atacama Desert there are mountains of old clothes from other countries. One solution is to buy second-hand clothes or to repair the ones we have.",
+        "enunciado": "In the text, «second-hand» clothes are…",
+        "alternativas": [
+          "clothes made by hand",
+          "clothes for sports",
+          "very expensive clothes",
+          "clothes that someone used before"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en «de segunda mano».",
+        "explicacion_error": "«Second-hand» es usado, de segunda mano.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Escucha. ¿Cuál es el problema?",
+        "audio": {
+          "texto": "I can't connect. I forgot the wifi password.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Se le olvidó la clave del wifi.",
+          "No tiene celular.",
+          "El computador está roto.",
+          "Llegó tarde a clases."
+        ],
+        "correcta": 0,
+        "pista": "Escucha «forgot».",
+        "explicacion_error": "Dice que olvidó la contraseña del wifi.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Most important rule at the pool: always take a shower before swimming. Also, children under 12 must be with an adult. Running is not allowed, and food must stay outside the pool area.",
+        "enunciado": "According to the text, what is the MOST important rule?",
+        "alternativas": [
+          "don't run",
+          "come with friends",
+          "eat outside",
+          "take a shower before swimming"
+        ],
+        "correcta": 3,
+        "pista": "Busca «most important».",
+        "explicacion_error": "La regla más importante es ducharse antes de nadar.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-008",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "texto": "Most important rule at the pool: always take a shower before swimming. Also, children under 12 must be with an adult. Running is not allowed, and food must stay outside the pool area.",
+        "enunciado": "¿Está permitido o prohibido?",
+        "categorias": [
+          "Allowed / required",
+          "Not allowed"
+        ],
+        "elementos": [
+          {
+            "texto": "Showering before swimming",
+            "categoria": 0
+          },
+          {
+            "texto": "A child of 8 with his mother",
+            "categoria": 0
+          },
+          {
+            "texto": "Running near the pool",
+            "categoria": 1
+          },
+          {
+            "texto": "Eating by the water",
+            "categoria": 1
+          }
+        ],
+        "pista": "Lee las reglas una por una.",
+        "explicacion_error": "Ducharse y niños con adulto: sí; correr y comer en la piscina: no.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Most important rule at the pool: always take a shower before swimming. Also, children under 12 must be with an adult. Running is not allowed, and food must stay outside the pool area.",
+        "enunciado": "¿Qué conector agrega una regla más?",
+        "alternativas": [
+          "Also",
+          "before",
+          "under",
+          "but"
+        ],
+        "correcta": 0,
+        "pista": "Busca una palabra que sume información.",
+        "explicacion_error": "«Also» agrega información.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Some people think homework should be banned. They say students need time to rest and do sports. Others argue that homework helps students practise and become responsible. Perhaps the answer is less homework, but better homework.",
+        "enunciado": "What is the purpose of the last sentence?",
+        "alternativas": [
+          "to give an example",
+          "to describe a sport",
+          "to suggest a middle position",
+          "to support banning homework"
+        ],
+        "correcta": 2,
+        "pista": "Compara la última oración con las dos posturas.",
+        "explicacion_error": "Propone un punto intermedio: menos tareas, pero mejores.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Some people think homework should be banned. They say students need time to rest and do sports. Others argue that homework helps students practise and become responsible. Perhaps the answer is less homework, but better homework.",
+        "enunciado": "¿Qué conector introduce la postura contraria?",
+        "alternativas": [
+          "Perhaps",
+          "They say",
+          "Some people think",
+          "Others argue that"
+        ],
+        "correcta": 3,
+        "pista": "Busca dónde cambia la opinión.",
+        "explicacion_error": "«Others argue that» presenta la postura opuesta.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa10-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha. ¿Qué quiere decir la persona?",
+        "audio": {
+          "texto": "Thanks for the invitation, but I'm really tired. I'd rather stay at home tonight.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Está enojada con su amiga.",
+          "Quiere salir a correr.",
+          "Prefiere quedarse en casa porque está cansada.",
+          "Tiene hambre."
+        ],
+        "correcta": 2,
+        "pista": "Escucha «I'd rather» y «tired».",
+        "explicacion_error": "Dice que está cansada y prefiere quedarse en casa.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_medio",
+    "asignatura": "ingles",
+    "eje": "Comprensión de lectura",
+    "objetivo_oficial": "OA 11: Comprender textos literarios (canciones, poemas, tiras cómicas, cuentos, novelas adaptadas, mitos) identificando tema, personajes, ambiente, trama y conflicto.",
+    "dificultad": 9,
+    "prerequisitos": [
+      "1_medio.ingles.OA9"
+    ],
+    "id_objetivo": "2_medio.ingles.OA11",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Innovacion/Lineas-de-Innovacion/Modernizacion-de-Textos-escolares-2020/140095:Textos-Escolares-Reimpresos-Ingles-2-medio"
+    },
+    "desafios": [
+      {
+        "id": "ing2m-oa11-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Every night, old Pedro walked to the lighthouse to turn on the light. One stormy night he was too ill to go. His granddaughter Ema, who was afraid of the dark, took his lantern and climbed the hill alone. The ships passed safely.",
+        "enunciado": "Who is the main character who solves the problem?",
+        "alternativas": [
+          "Ema",
+          "a sailor",
+          "a ship",
+          "Pedro"
+        ],
+        "correcta": 0,
+        "pista": "¿Quién sube al faro?",
+        "explicacion_error": "Ema toma la linterna y sube sola.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-007",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "Long ago, the Mapuche say, two giant snakes fought: Kai Kai, who lived in the sea, made the water rise. Tren Tren, who lived in the mountains, raised the hills higher and higher to save the people. That is why Chile has so many mountains.",
+        "enunciado": "This text is a ___: it explains the origin of something with fantastic creatures.",
+        "alternativas": [
+          "myth",
+          "biography",
+          "recipe",
+          "news report"
+        ],
+        "correcta": 0,
+        "pista": "Seres fantásticos que explican el origen de algo.",
+        "explicacion_error": "Es un mito: explica el origen de las montañas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿Cómo empieza la historia?",
+        "audio": {
+          "texto": "Once upon a time, there was a very poor king.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "La historia termina bien.",
+          "El rey era un niño.",
+          "Había una vez una reina muy rica.",
+          "Había una vez un rey muy pobre."
+        ],
+        "correcta": 3,
+        "pista": "Escucha «poor king».",
+        "explicacion_error": "Dice «a very poor king».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Every night, old Pedro walked to the lighthouse to turn on the light. One stormy night he was too ill to go. His granddaughter Ema, who was afraid of the dark, took his lantern and climbed the hill alone. The ships passed safely.",
+        "enunciado": "What is the conflict of the story?",
+        "alternativas": [
+          "Ema loses her lantern.",
+          "A ship sinks.",
+          "Pedro is afraid of the dark.",
+          "Pedro is ill and can't turn on the light."
+        ],
+        "correcta": 3,
+        "pista": "¿Qué problema aparece?",
+        "explicacion_error": "El abuelo está enfermo y nadie enciende el faro.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "The wind sings / through the empty streets, / the moon is a silver coin / that nobody can spend.",
+        "enunciado": "¿Qué figura es «the moon is a silver coin»?",
+        "alternativas": [
+          "rima",
+          "pregunta",
+          "comparación con «like»",
+          "metáfora"
+        ],
+        "correcta": 3,
+        "pista": "Dice que la luna ES una moneda, sin «like».",
+        "explicacion_error": "Es una metáfora.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "texto": "Sam's phone buzzed: «Meet me at the old station at midnight.» No name. Sam looked out of the window. The streets were dark and wet. He put on his jacket, then stopped. «What if it's a trap?» he whispered.",
+        "enunciado": "Ordena lo que pasa en la historia.",
+        "elementos": [
+          "Sam gets a message.",
+          "He looks out of the window.",
+          "He puts on his jacket.",
+          "He stops and doubts."
+        ],
+        "pista": "Sigue el orden del texto.",
+        "explicacion_error": "Mensaje, ventana, chaqueta y duda.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "The wind sings / through the empty streets, / the moon is a silver coin / that nobody can spend.",
+        "enunciado": "«The wind sings» is an example of…",
+        "alternativas": [
+          "alliteration",
+          "rhyme",
+          "personification",
+          "simile"
+        ],
+        "correcta": 2,
+        "pista": "El viento hace algo humano.",
+        "explicacion_error": "Cantar es humano: personificación.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-008",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "texto": "Long ago, the Mapuche say, two giant snakes fought: Kai Kai, who lived in the sea, made the water rise. Tren Tren, who lived in the mountains, raised the hills higher and higher to save the people. That is why Chile has so many mountains.",
+        "enunciado": "Une cada personaje con lo que hace.",
+        "pares": [
+          [
+            "Kai Kai",
+            "makes the water rise"
+          ],
+          [
+            "Tren Tren",
+            "raises the hills"
+          ],
+          [
+            "the people",
+            "are saved"
+          ]
+        ],
+        "pista": "Busca qué hace cada uno.",
+        "explicacion_error": "Kai Kai sube el agua; Tren Tren eleva los cerros y salva a la gente.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Sam's phone buzzed: «Meet me at the old station at midnight.» No name. Sam looked out of the window. The streets were dark and wet. He put on his jacket, then stopped. «What if it's a trap?» he whispered.",
+        "enunciado": "Where does the story take place?",
+        "alternativas": [
+          "in a school in the morning",
+          "on a sunny beach",
+          "in the countryside at noon",
+          "in a dark, rainy town at night"
+        ],
+        "correcta": 3,
+        "pista": "Busca pistas del ambiente.",
+        "explicacion_error": "Calles oscuras y mojadas, a medianoche.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Every night, old Pedro walked to the lighthouse to turn on the light. One stormy night he was too ill to go. His granddaughter Ema, who was afraid of the dark, took his lantern and climbed the hill alone. The ships passed safely.",
+        "enunciado": "What does Ema's action show about her?",
+        "alternativas": [
+          "She is brave.",
+          "She is lazy.",
+          "She is rude.",
+          "She is always calm."
+        ],
+        "correcta": 0,
+        "pista": "Ema tenía miedo a la oscuridad, pero igual fue.",
+        "explicacion_error": "Vence su miedo para ayudar: es valiente.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Long ago, the Mapuche say, two giant snakes fought: Kai Kai, who lived in the sea, made the water rise. Tren Tren, who lived in the mountains, raised the hills higher and higher to save the people. That is why Chile has so many mountains.",
+        "enunciado": "What does the myth explain?",
+        "alternativas": [
+          "why it rains in winter",
+          "how to build a house",
+          "why Chile has many mountains",
+          "why snakes live in the sea"
+        ],
+        "correcta": 2,
+        "pista": "Lee la última oración.",
+        "explicacion_error": "«That is why Chile has so many mountains».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-013",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "texto": "In the song, the singer remembers summers at her grandmother's house in Chiloé: the smell of bread, the rain on the roof and the warmth of the fire. «Those days are gone,» she sings, «but they live in me.»",
+        "enunciado": "Une cada imagen de la canción con el sentido que evoca.",
+        "pares": [
+          [
+            "the smell of bread",
+            "olfato"
+          ],
+          [
+            "the rain on the roof",
+            "oído"
+          ],
+          [
+            "the warmth of the fire",
+            "tacto"
+          ]
+        ],
+        "pista": "Piensa con qué sentido se percibe cada cosa.",
+        "explicacion_error": "El pan se huele, la lluvia se escucha y el calor del fuego se siente.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "The wind sings / through the empty streets, / the moon is a silver coin / that nobody can spend.",
+        "enunciado": "What is the mood of the poem?",
+        "alternativas": [
+          "funny",
+          "angry and violent",
+          "quiet and lonely",
+          "happy and noisy"
+        ],
+        "correcta": 2,
+        "pista": "Fíjate en «empty streets» y «nobody».",
+        "explicacion_error": "Calles vacías y nadie: ambiente solitario y tranquilo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Sam's phone buzzed: «Meet me at the old station at midnight.» No name. Sam looked out of the window. The streets were dark and wet. He put on his jacket, then stopped. «What if it's a trap?» he whispered.",
+        "enunciado": "What is the effect of the ending?",
+        "alternativas": [
+          "It creates suspense.",
+          "It makes the story funny.",
+          "It solves the mystery.",
+          "It describes the station."
+        ],
+        "correcta": 0,
+        "pista": "La historia termina con una pregunta.",
+        "explicacion_error": "Termina sin resolver, con una duda: crea suspenso.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa11-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "In the song, the singer remembers summers at her grandmother's house in Chiloé: the smell of bread, the rain on the roof and the warmth of the fire. «Those days are gone,» she sings, «but they live in me.»",
+        "enunciado": "What is the theme of the song?",
+        "alternativas": [
+          "a trip to the city",
+          "how to bake bread",
+          "memories of childhood and family",
+          "the dangers of rain"
+        ],
+        "correcta": 2,
+        "pista": "¿De qué trata en el fondo?",
+        "explicacion_error": "Recuerda los veranos con su abuela: memoria y familia.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_medio",
+    "asignatura": "ingles",
+    "eje": "Expresión escrita",
+    "objetivo_oficial": "OA 16: Escribir usando funciones del nivel: narrar acciones pasadas ordenadas en el tiempo, reportar lo que otros dijeron, plantear situaciones hipotéticas y dar consejos.",
+    "dificultad": 9,
+    "prerequisitos": [
+      "1_medio.ingles.OA16"
+    ],
+    "id_objetivo": "2_medio.ingles.OA16",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/80935:IN2M-OA-16"
+    },
+    "desafios": [
+      {
+        "id": "ing2m-oa16-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "First, we packed our bags. ___, we drove to the coast.",
+        "alternativas": [
+          "Then",
+          "Although",
+          "Because",
+          "Unless"
+        ],
+        "correcta": 0,
+        "pista": "Conector de secuencia.",
+        "explicacion_error": "«Then» indica lo que pasó después.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "If I ___ you, I would study for the test.",
+        "alternativas": [
+          "am",
+          "being",
+          "will be",
+          "were"
+        ],
+        "correcta": 3,
+        "pista": "Situación hipotética: If I were…",
+        "explicacion_error": "Con situaciones hipotéticas se usa «If I were».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué oración da un consejo?",
+        "alternativas": [
+          "You are drinking water.",
+          "You drank more water.",
+          "You should drink more water.",
+          "You have drunk water."
+        ],
+        "correcta": 2,
+        "pista": "Los consejos usan «should».",
+        "explicacion_error": "«You should…» da un consejo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "She said that she ___ tired.",
+        "alternativas": [
+          "was",
+          "will",
+          "be",
+          "is being"
+        ],
+        "correcta": 0,
+        "pista": "Estilo indirecto: el presente pasa a pasado.",
+        "explicacion_error": "«I am tired» → «She said that she was tired».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-005",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena el consejo.",
+        "elementos": [
+          "You",
+          "shouldn't",
+          "stay",
+          "up",
+          "so",
+          "late."
+        ],
+        "pista": "Sujeto + shouldn't + verbo.",
+        "explicacion_error": "You shouldn't stay up so late.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Qué expresa cada oración?",
+        "categorias": [
+          "Consejo",
+          "Situación hipotética"
+        ],
+        "elementos": [
+          {
+            "texto": "You ought to see a doctor.",
+            "categoria": 0
+          },
+          {
+            "texto": "Why don't you call her?",
+            "categoria": 0
+          },
+          {
+            "texto": "If I won the lottery, I'd travel.",
+            "categoria": 1
+          },
+          {
+            "texto": "If we lived by the sea, we'd surf.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Should/ought to/why don't you dan consejos; if + pasado imagina.",
+        "explicacion_error": "Los consejos sugieren; las hipotéticas imaginan algo irreal.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "He told me that he ___ the film the day before.",
+        "alternativas": [
+          "sees",
+          "had seen",
+          "will see",
+          "has seen"
+        ],
+        "correcta": 1,
+        "pista": "Estilo indirecto: el pasado pasa a past perfect.",
+        "explicacion_error": "«I saw the film yesterday» → «he had seen the film the day before».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "If it rains tomorrow, we ___ the match.",
+        "alternativas": [
+          "will cancel",
+          "cancelling",
+          "cancelled",
+          "would cancel"
+        ],
+        "correcta": 0,
+        "pista": "Condicional real: if + presente, will + verbo.",
+        "explicacion_error": "Es posible que llueva: «we will cancel».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une la frase directa con su versión indirecta.",
+        "pares": [
+          [
+            "«I'm hungry.»",
+            "She said she was hungry."
+          ],
+          [
+            "«I can swim.»",
+            "He said he could swim."
+          ],
+          [
+            "«We will help.»",
+            "They said they would help."
+          ]
+        ],
+        "pista": "Cada verbo retrocede un tiempo.",
+        "explicacion_error": "am → was, can → could, will → would.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena el relato en el tiempo.",
+        "elementos": [
+          "We woke up early.",
+          "After breakfast, we took the bus.",
+          "When we arrived, it started to rain.",
+          "Finally, we went back home."
+        ],
+        "pista": "Busca los conectores de secuencia.",
+        "explicacion_error": "Despertar, desayuno y bus, llegada con lluvia y regreso.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué oración está bien escrita?",
+        "alternativas": [
+          "If I had more time, I would learn to play the guitar.",
+          "If I would have time, I learn the guitar.",
+          "If I had more time, I will learning the guitar.",
+          "If I have more time, I would learned the guitar."
+        ],
+        "correcta": 0,
+        "pista": "Segundo condicional: if + pasado, would + verbo.",
+        "explicacion_error": "«If I had…, I would learn…» es la estructura correcta.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "The teacher asked us ___ we had finished.",
+        "alternativas": [
+          "so",
+          "what",
+          "if",
+          "that"
+        ],
+        "correcta": 2,
+        "pista": "Pregunta de sí o no en estilo indirecto.",
+        "explicacion_error": "«Have you finished?» → «asked us if we had finished».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Tu amigo dice: «I always feel tired in class.» ¿Qué consejo es más adecuado?",
+        "alternativas": [
+          "You must to sleep in class.",
+          "Maybe you should go to bed earlier.",
+          "If you go to bed, I am tired.",
+          "You went to bed earlier."
+        ],
+        "correcta": 1,
+        "pista": "Busca un consejo amable y bien escrito.",
+        "explicacion_error": "«Maybe you should…» es un consejo correcto y respetuoso.",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha y elige lo que la persona dijo, en estilo indirecto.",
+        "audio": {
+          "texto": "I'll call you later.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "She says she will never call.",
+          "She said she calls me now.",
+          "She said she had called me yesterday.",
+          "She said she would call me later."
+        ],
+        "correcta": 3,
+        "pista": "«I'll call you later» → would call… later.",
+        "explicacion_error": "«I'll call you later» pasa a «she would call me later».",
+        "monedas": 10
+      },
+      {
+        "id": "ing2m-oa16-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Qué conector usarías?",
+        "categorias": [
+          "Secuencia",
+          "Contraste",
+          "Causa"
+        ],
+        "elementos": [
+          {
+            "texto": "first / then / finally",
+            "categoria": 0
+          },
+          {
+            "texto": "after that",
+            "categoria": 0
+          },
+          {
+            "texto": "however",
+            "categoria": 1
+          },
+          {
+            "texto": "although",
+            "categoria": 1
+          },
+          {
+            "texto": "because",
+            "categoria": 2
+          },
+          {
+            "texto": "since",
+            "categoria": 2
+          }
+        ],
+        "pista": "Piensa en la función de cada conector.",
+        "explicacion_error": "Secuencia ordena, contraste opone y causa explica por qué.",
+        "monedas": 10
+      }
+    ]
+  }
+]
