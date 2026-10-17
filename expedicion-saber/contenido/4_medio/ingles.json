@@ -1,0 +1,902 @@
+[
+  {
+    "nivel": "4_medio",
+    "asignatura": "ingles",
+    "eje": "Comprensión",
+    "objetivo_oficial": "FG-INGL-4M-OAC-01: Comprender información relevante para un propósito específico en textos orales y escritos sobre temas de interés, para conocer cómo otras culturas los abordan.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "3_medio.ingles.OA1"
+    ],
+    "id_objetivo": "4_medio.ingles.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/3o-4o-medio/ingles-4o-medio/4-medio-fg",
+      "codigo_oficial": "FG-INGL-4M-OAC-01"
+    },
+    "desafios": [
+      {
+        "id": "ing4m-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "JOB OFFER – Junior Graphic Designer. Remote work, 30 hours a week. Requirements: portfolio with at least five projects, intermediate English, knowledge of design software. Applications close on March 15th. Interviews will be online.",
+        "enunciado": "How many hours a week is the job?",
+        "alternativas": [
+          "5",
+          "30",
+          "15",
+          "40"
+        ],
+        "correcta": 1,
+        "pista": "Busca «hours a week».",
+        "explicacion_error": "«30 hours a week».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Hostel Patagonia: Breakfast 7–10 a.m. Kitchen open until 10 p.m. Quiet hours from 11 p.m. Lockers available at reception (bring your own padlock). Free bikes for guests; return them before sunset.",
+        "enunciado": "Until what time can guests use the kitchen?",
+        "alternativas": [
+          "10 p.m.",
+          "sunset",
+          "11 p.m.",
+          "7 a.m."
+        ],
+        "correcta": 0,
+        "pista": "Busca «Kitchen».",
+        "explicacion_error": "«Kitchen open until 10 p.m.».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿Cuánto cuesta la entrada?",
+        "audio": {
+          "texto": "Entrance to the museum is five dollars for students.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "es gratis",
+          "50 dólares",
+          "15 dólares",
+          "5 dólares"
+        ],
+        "correcta": 3,
+        "pista": "Escucha el precio.",
+        "explicacion_error": "Dice «five dollars».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-002",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "JOB OFFER – Junior Graphic Designer. Remote work, 30 hours a week. Requirements: portfolio with at least five projects, intermediate English, knowledge of design software. Applications close on March 15th. Interviews will be online.",
+        "enunciado": "¿Es un requisito del trabajo?",
+        "categorias": [
+          "Required",
+          "Not mentioned"
+        ],
+        "elementos": [
+          {
+            "texto": "a portfolio with five projects",
+            "categoria": 0
+          },
+          {
+            "texto": "intermediate English",
+            "categoria": 0
+          },
+          {
+            "texto": "a driving licence",
+            "categoria": 1
+          },
+          {
+            "texto": "a university degree",
+            "categoria": 1
+          }
+        ],
+        "pista": "Lee la lista de «Requirements».",
+        "explicacion_error": "Portafolio e inglés intermedio se piden; licencia y título no se mencionan.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "texto": "A recent survey of 2,000 Chilean teenagers found that 68% use their phones for more than five hours a day. However, 54% said they would like to spend less time online. Researchers recommend digital breaks and offline hobbies.",
+        "enunciado": "What percentage of teenagers would like to spend less time online?",
+        "respuesta": 54,
+        "tolerancia": 0,
+        "unidad": "%",
+        "pista": "Busca «would like to spend less».",
+        "explicacion_error": "«54% said they would like to spend less time online».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-011",
+        "tipo": "completar",
+        "dificultad": 2,
+        "texto": "JOB OFFER – Junior Graphic Designer. Remote work, 30 hours a week. Requirements: portfolio with at least five projects, intermediate English, knowledge of design software. Applications close on March 15th. Interviews will be online.",
+        "enunciado": "The interviews will be ___, so you don't need to travel.",
+        "alternativas": [
+          "online",
+          "in person",
+          "outdoors",
+          "cancelled"
+        ],
+        "correcta": 0,
+        "pista": "Relee el aviso de trabajo.",
+        "explicacion_error": "«Interviews will be online».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "JOB OFFER – Junior Graphic Designer. Remote work, 30 hours a week. Requirements: portfolio with at least five projects, intermediate English, knowledge of design software. Applications close on March 15th. Interviews will be online.",
+        "enunciado": "You want to apply. What do you need to do first, according to the ad?",
+        "alternativas": [
+          "wait until April",
+          "buy design software",
+          "prepare a portfolio with at least five projects",
+          "travel to the office"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en el propósito: postular.",
+        "explicacion_error": "Necesitas un portafolio antes del 15 de marzo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Hostel Patagonia: Breakfast 7–10 a.m. Kitchen open until 10 p.m. Quiet hours from 11 p.m. Lockers available at reception (bring your own padlock). Free bikes for guests; return them before sunset.",
+        "enunciado": "You want to keep your passport safe. What should you bring?",
+        "alternativas": [
+          "a padlock",
+          "a key card",
+          "breakfast",
+          "a bike"
+        ],
+        "correcta": 0,
+        "pista": "Busca «Lockers».",
+        "explicacion_error": "Hay casilleros, pero debes traer tu propio candado.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-012",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada necesidad con el texto donde buscarías.",
+        "pares": [
+          [
+            "find a job",
+            "a job offer"
+          ],
+          [
+            "book a bed",
+            "a hostel website"
+          ],
+          [
+            "learn about teen habits",
+            "a survey report"
+          ]
+        ],
+        "pista": "Piensa en el propósito de cada texto.",
+        "explicacion_error": "Cada propósito se resuelve con un tipo de texto.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Hostel Patagonia: Breakfast 7–10 a.m. Kitchen open until 10 p.m. Quiet hours from 11 p.m. Lockers available at reception (bring your own padlock). Free bikes for guests; return them before sunset.",
+        "enunciado": "A guest borrows a bike at 6 p.m. in winter. What could be a problem?",
+        "alternativas": [
+          "The kitchen is closed.",
+          "Breakfast ends at 10.",
+          "Sunset is early, so there is little time to return it.",
+          "Bikes are not free."
+        ],
+        "correcta": 2,
+        "pista": "Relaciona «before sunset» con el invierno.",
+        "explicacion_error": "En invierno oscurece temprano y hay que devolverla antes.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "A recent survey of 2,000 Chilean teenagers found that 68% use their phones for more than five hours a day. However, 54% said they would like to spend less time online. Researchers recommend digital breaks and offline hobbies.",
+        "enunciado": "Which sentence best summarises the survey?",
+        "alternativas": [
+          "Only 54 teens answered.",
+          "Teens never use their phones.",
+          "Most teens use phones a lot, but many want to use them less.",
+          "Researchers want teens online more."
+        ],
+        "correcta": 2,
+        "pista": "Une los dos datos principales.",
+        "explicacion_error": "Muchos lo usan bastante, pero más de la mitad quiere usarlo menos.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Escucha el pronóstico. ¿Qué conviene llevar el sábado?",
+        "audio": {
+          "texto": "Expect sunny skies on Friday, but heavy rain on Saturday.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "traje de baño",
+          "paraguas",
+          "lentes de sol",
+          "nada especial"
+        ],
+        "correcta": 1,
+        "pista": "Escucha «heavy rain on Saturday».",
+        "explicacion_error": "Anuncia lluvia intensa el sábado.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "A recent survey of 2,000 Chilean teenagers found that 68% use their phones for more than five hours a day. However, 54% said they would like to spend less time online. Researchers recommend digital breaks and offline hobbies.",
+        "enunciado": "What can we infer from the survey?",
+        "alternativas": [
+          "Researchers use phones five hours a day.",
+          "Phones are banned in Chile.",
+          "Teens don't care about screen time.",
+          "Many teens are aware that they use their phones too much."
+        ],
+        "correcta": 3,
+        "pista": "Relaciona el 68% con el 54%.",
+        "explicacion_error": "Más de la mitad quiere usarlo menos: muchos reconocen que lo usan demasiado.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "A recent survey of 2,000 Chilean teenagers found that 68% use their phones for more than five hours a day. However, 54% said they would like to spend less time online. Researchers recommend digital breaks and offline hobbies.",
+        "enunciado": "What is the purpose of the last sentence?",
+        "alternativas": [
+          "to criticise researchers",
+          "to give more statistics",
+          "to describe a hobby in detail",
+          "to suggest solutions"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué hacen los investigadores?",
+        "explicacion_error": "Recomiendan pausas digitales: proponen soluciones.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha el mensaje. ¿Qué debe hacer el pasajero?",
+        "audio": {
+          "texto": "Attention, passengers on flight LA 800 to Lima: your flight is now departing from gate 12.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "ir a la puerta 12 porque cambió",
+          "salir del aeropuerto",
+          "comprar otro pasaje",
+          "esperar en la puerta 4"
+        ],
+        "correcta": 0,
+        "pista": "Escucha «now departing from gate 12».",
+        "explicacion_error": "El vuelo ahora sale por la puerta 12.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_medio",
+    "asignatura": "ingles",
+    "eje": "Producción",
+    "objetivo_oficial": "FG-INGL-4M-OAC-02: Producir textos orales y escritos claros sobre temas de interés para expresar una postura personal crítica que respete otras posturas.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "3_medio.ingles.OA2"
+    ],
+    "id_objetivo": "4_medio.ingles.OA2",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/curriculum/3o-4o-medio/ingles-4o-medio/4-medio-fg/fg-ingl-4m-oac-02",
+      "codigo_oficial": "FG-INGL-4M-OAC-02"
+    },
+    "desafios": [
+      {
+        "id": "ing4m-oa2-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "I'm ___ favour of a four-day school week.",
+        "alternativas": [
+          "on",
+          "for",
+          "at",
+          "in"
+        ],
+        "correcta": 3,
+        "pista": "Expresión fija: in favour of.",
+        "explicacion_error": "«In favour of» = a favor de.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "I'm against this idea ___ it could increase inequality.",
+        "alternativas": [
+          "although",
+          "unless",
+          "whereas",
+          "because"
+        ],
+        "correcta": 3,
+        "pista": "Justifica la postura.",
+        "explicacion_error": "«Because» introduce la razón.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué expresión muestra acuerdo total?",
+        "alternativas": [
+          "I couldn't agree more.",
+          "I totally disagree.",
+          "I'm not so sure.",
+          "That's not the point."
+        ],
+        "correcta": 0,
+        "pista": "«No podría estar más de acuerdo».",
+        "explicacion_error": "«I couldn't agree more» expresa acuerdo total.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Acuerdo o desacuerdo?",
+        "categorias": [
+          "Agree",
+          "Disagree"
+        ],
+        "elementos": [
+          {
+            "texto": "Absolutely.",
+            "categoria": 0
+          },
+          {
+            "texto": "That's exactly what I think.",
+            "categoria": 0
+          },
+          {
+            "texto": "I'm afraid I don't share that view.",
+            "categoria": 1
+          },
+          {
+            "texto": "I see it quite differently.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Fíjate en el sentido de cada frase.",
+        "explicacion_error": "Absolutely y exactly expresan acuerdo; las otras, desacuerdo cortés.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "___ is no doubt that recycling helps the environment.",
+        "alternativas": [
+          "There",
+          "This",
+          "They",
+          "It"
+        ],
+        "correcta": 0,
+        "pista": "Expresión fija: There is no doubt that…",
+        "explicacion_error": "«There is no doubt that…».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-006",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena la oración.",
+        "elementos": [
+          "It",
+          "is",
+          "widely",
+          "believed",
+          "that",
+          "exercise helps."
+        ],
+        "pista": "Expresión impersonal: It is believed that…",
+        "explicacion_error": "It is widely believed that exercise helps.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué oración presenta una postura con matices?",
+        "alternativas": [
+          "Tourism is the worst thing ever.",
+          "I went on holiday last year.",
+          "While tourism brings jobs, it can also damage fragile ecosystems.",
+          "Tourism is perfect."
+        ],
+        "correcta": 2,
+        "pista": "Busca la que considera dos lados.",
+        "explicacion_error": "«While…, it can also…» reconoce ventajas y riesgos.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Some people say the law is unfair. ___, others believe it protects consumers.",
+        "alternativas": [
+          "On the other hand",
+          "Firstly",
+          "For example",
+          "As a result"
+        ],
+        "correcta": 0,
+        "pista": "Presenta la otra postura.",
+        "explicacion_error": "«On the other hand» introduce la postura contraria.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada tipo de argumento con su ejemplo.",
+        "pares": [
+          [
+            "Dato",
+            "70% of students support the change."
+          ],
+          [
+            "Ejemplo",
+            "In Iceland, a similar plan worked."
+          ],
+          [
+            "Experiencia",
+            "When I tried it, I slept better."
+          ]
+        ],
+        "pista": "Un buen texto usa distintos tipos de evidencia.",
+        "explicacion_error": "Datos, ejemplos y experiencia personal apoyan una postura.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena el párrafo argumentativo.",
+        "elementos": [
+          "Public transport should be free for students.",
+          "This would reduce costs for families.",
+          "It could also reduce traffic and pollution.",
+          "Therefore, the government should fund it."
+        ],
+        "pista": "Tesis, argumentos y conclusión.",
+        "explicacion_error": "Postura, dos argumentos y una conclusión con «Therefore».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué oración contiene una generalización que debilita el argumento?",
+        "alternativas": [
+          "All teenagers are addicted to their phones.",
+          "A survey shows phone use is increasing.",
+          "Some students use apps to study.",
+          "Many teenagers spend over five hours online."
+        ],
+        "correcta": 0,
+        "pista": "Busca palabras absolutas como «all».",
+        "explicacion_error": "«All» exagera: no todos los adolescentes son adictos.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "We need stricter rules; ___, accidents will keep happening.",
+        "alternativas": [
+          "although",
+          "otherwise",
+          "moreover",
+          "because"
+        ],
+        "correcta": 1,
+        "pista": "«De lo contrario».",
+        "explicacion_error": "«Otherwise» expresa lo que pasaría si no.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Elige la respuesta más crítica y respetuosa a: «Climate change is not real.»",
+        "alternativas": [
+          "I understand doubts exist, but most scientific studies show clear evidence of it.",
+          "OK, whatever you say.",
+          "That's ridiculous, you know nothing.",
+          "Climate change is boring."
+        ],
+        "correcta": 0,
+        "pista": "Debe dar evidencia y no ofender.",
+        "explicacion_error": "Reconoce la duda y responde con evidencia, sin descalificar.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha. ¿Qué postura defiende la persona?",
+        "audio": {
+          "texto": "Online classes shouldn't replace school, but they work well as a complement.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "A favor de las clases en línea como complemento.",
+          "Contra toda clase en línea.",
+          "Indiferente.",
+          "A favor de cerrar los colegios."
+        ],
+        "correcta": 0,
+        "pista": "Escucha «as a complement».",
+        "explicacion_error": "Defiende las clases en línea como complemento, no como reemplazo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa2-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Es un argumento sólido o una falacia?",
+        "categorias": [
+          "Argumento sólido",
+          "Falacia"
+        ],
+        "elementos": [
+          {
+            "texto": "Studies show sleep improves memory.",
+            "categoria": 0
+          },
+          {
+            "texto": "Our city reduced traffic by 20% with bike lanes.",
+            "categoria": 0
+          },
+          {
+            "texto": "He's wrong because he's young.",
+            "categoria": 1
+          },
+          {
+            "texto": "Everyone does it, so it must be right.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Las falacias atacan a la persona o apelan a «todos lo hacen».",
+        "explicacion_error": "Los datos son argumentos; atacar a la persona y el «todos lo hacen» son falacias.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_medio",
+    "asignatura": "ingles",
+    "eje": "Comprensión y producción",
+    "objetivo_oficial": "FG-INGL-4M-OAC-03: Usar el conocimiento del inglés para comprender y producir textos orales y escritos claros que construyan una postura personal crítica sobre temas de interés.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "3_medio.ingles.OA3"
+    ],
+    "id_objetivo": "4_medio.ingles.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Formacion-General/Ingles/Ingles-4-medio/145048:Unidad-3-It-s-business-time",
+      "codigo_oficial": "FG-INGL-4M-OAC-03"
+    },
+    "desafios": [
+      {
+        "id": "ing4m-oa3-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Fast delivery apps have changed how we shop. You can get food or groceries in minutes. However, many delivery riders work long hours without health insurance. As consumers, we could choose apps that treat workers fairly and tip when possible.",
+        "enunciado": "What has changed, according to the text?",
+        "alternativas": [
+          "how we shop",
+          "how we travel",
+          "how we cook",
+          "how we study"
+        ],
+        "correcta": 0,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "«Delivery apps have changed how we shop».",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-007",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Recycling is important. ___, it is not enough to solve pollution.",
+        "alternativas": [
+          "Because",
+          "However",
+          "Therefore",
+          "For instance"
+        ],
+        "correcta": 1,
+        "pista": "Contraste entre dos ideas.",
+        "explicacion_error": "«However» introduce un contraste.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿Qué tema se discute?",
+        "audio": {
+          "texto": "Today's debate: should phones be allowed in class?",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "cómo reparar un celular",
+          "la historia del teléfono",
+          "si los celulares deberían permitirse en clases",
+          "el precio de los celulares"
+        ],
+        "correcta": 2,
+        "pista": "Escucha «phones in class».",
+        "explicacion_error": "Pregunta si los celulares deberían permitirse en clases.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "Some argue that tourists should pay a fee to visit Easter Island (Rapa Nui), because the island's ecosystem and archaeological sites are fragile. Others fear that a high fee would make it a destination only for the rich. A possible compromise is a fee that funds conservation, with discounts for students.",
+        "enunciado": "¿Qué postura apoya cada idea?",
+        "categorias": [
+          "A favor de la tarifa",
+          "En contra de una tarifa alta"
+        ],
+        "elementos": [
+          {
+            "texto": "protects fragile sites",
+            "categoria": 0
+          },
+          {
+            "texto": "funds conservation",
+            "categoria": 0
+          },
+          {
+            "texto": "only rich people could go",
+            "categoria": 1
+          },
+          {
+            "texto": "excludes students and families",
+            "categoria": 1
+          }
+        ],
+        "pista": "Separa los argumentos de cada lado.",
+        "explicacion_error": "Proteger y financiar apoyan la tarifa; excluir a quienes tienen menos dinero va en contra.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-008",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena la oración.",
+        "elementos": [
+          "I",
+          "would",
+          "rather",
+          "walk",
+          "than",
+          "drive."
+        ],
+        "pista": "I would rather + verbo + than + verbo.",
+        "explicacion_error": "I would rather walk than drive.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-009",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada inicio con su final.",
+        "pares": [
+          [
+            "If more people cycled,",
+            "there would be less traffic."
+          ],
+          [
+            "Unless we act now,",
+            "it will be too late."
+          ],
+          [
+            "Not only is it cheap,",
+            "but it is also healthy."
+          ]
+        ],
+        "pista": "Revisa la estructura de cada oración.",
+        "explicacion_error": "Segundo condicional, unless y not only… but also.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Fast delivery apps have changed how we shop. You can get food or groceries in minutes. However, many delivery riders work long hours without health insurance. As consumers, we could choose apps that treat workers fairly and tip when possible.",
+        "enunciado": "What problem does the writer point out?",
+        "alternativas": [
+          "There are not enough restaurants.",
+          "Riders often work long hours without insurance.",
+          "Food arrives cold.",
+          "Apps are too expensive."
+        ],
+        "correcta": 1,
+        "pista": "Busca «However…».",
+        "explicacion_error": "Muchos repartidores trabajan muchas horas sin seguro de salud.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-006",
+        "tipo": "completar",
+        "dificultad": 3,
+        "texto": "Some argue that tourists should pay a fee to visit Easter Island (Rapa Nui), because the island's ecosystem and archaeological sites are fragile. Others fear that a high fee would make it a destination only for the rich. A possible compromise is a fee that funds conservation, with discounts for students.",
+        "enunciado": "A «compromise» is a solution where both sides ___ something.",
+        "alternativas": [
+          "win",
+          "destroy",
+          "ignore",
+          "give up"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en un acuerdo intermedio.",
+        "explicacion_error": "En un compromiso ambas partes ceden algo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué oración expresa una postura crítica con evidencia?",
+        "alternativas": [
+          "Bottled water is unnecessary in Chile's cities, since tap water is safe and much cheaper.",
+          "Water is wet.",
+          "I like my bottle.",
+          "Bottled water is nice."
+        ],
+        "correcta": 0,
+        "pista": "Busca opinión + razón.",
+        "explicacion_error": "Da una postura y la justifica con evidencia.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Some argue that tourists should pay a fee to visit Easter Island (Rapa Nui), because the island's ecosystem and archaeological sites are fragile. Others fear that a high fee would make it a destination only for the rich. A possible compromise is a fee that funds conservation, with discounts for students.",
+        "enunciado": "What is the «compromise» proposed?",
+        "alternativas": [
+          "a fee that funds conservation, with student discounts",
+          "closing the island",
+          "no fee at all",
+          "a very high fee for everyone"
+        ],
+        "correcta": 0,
+        "pista": "Busca «A possible compromise is…».",
+        "explicacion_error": "Una tarifa para conservar, con descuento para estudiantes.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Escucha. ¿Qué piensa la persona de la inteligencia artificial?",
+        "audio": {
+          "texto": "Artificial intelligence can be very useful if we use it responsibly.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Que reemplazará a todos los profesores.",
+          "Que es peligrosa y hay que prohibirla.",
+          "Que es útil, pero hay que usarla con responsabilidad.",
+          "Que no sirve para nada."
+        ],
+        "correcta": 2,
+        "pista": "Escucha «useful» y «responsibly».",
+        "explicacion_error": "Dice que es útil si se usa con responsabilidad.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué conector usarías para dar un ejemplo?",
+        "alternativas": [
+          "In conclusion,",
+          "For instance,",
+          "Nevertheless,",
+          "Otherwise,"
+        ],
+        "correcta": 1,
+        "pista": "«Por ejemplo».",
+        "explicacion_error": "«For instance» introduce un ejemplo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Fast delivery apps have changed how we shop. You can get food or groceries in minutes. However, many delivery riders work long hours without health insurance. As consumers, we could choose apps that treat workers fairly and tip when possible.",
+        "enunciado": "What kind of action does the writer suggest?",
+        "alternativas": [
+          "working as a rider",
+          "banning all apps",
+          "responsible choices as consumers",
+          "never ordering food"
+        ],
+        "correcta": 2,
+        "pista": "Lee la última oración.",
+        "explicacion_error": "Propone elegir apps justas y dar propina: consumo responsable.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Elige el mejor resumen de tu postura sobre el trabajo remoto.",
+        "alternativas": [
+          "I don't know what remote work is.",
+          "Remote work is the best and has no problems.",
+          "Everyone hates remote work.",
+          "Remote work offers flexibility, but companies should make sure employees don't feel isolated."
+        ],
+        "correcta": 3,
+        "pista": "Un buen resumen es claro y considera matices.",
+        "explicacion_error": "Presenta una ventaja y una condición razonable.",
+        "monedas": 10
+      },
+      {
+        "id": "ing4m-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha y elige la respuesta más respetuosa.",
+        "audio": {
+          "texto": "In my opinion, homework should be completely banned.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Stop talking.",
+          "I respect your view, although I think there's another side to consider.",
+          "You're totally wrong.",
+          "That's a silly idea."
+        ],
+        "correcta": 1,
+        "pista": "Responde a una opinión con la que no estás de acuerdo.",
+        "explicacion_error": "Respeta la opinión y ofrece otra mirada.",
+        "monedas": 10
+      }
+    ]
+  }
+]

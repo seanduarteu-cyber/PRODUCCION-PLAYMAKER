@@ -1,0 +1,921 @@
+[
+  {
+    "nivel": "3_medio",
+    "asignatura": "ingles",
+    "eje": "Comprensión",
+    "objetivo_oficial": "FG-INGL-3M-OAC-01: Comprender la información central de textos orales y escritos sobre temas de interés, para conocer cómo otras culturas abordan esos contextos.",
+    "dificultad": 10,
+    "prerequisitos": [
+      "2_medio.ingles.OA10",
+      "2_medio.ingles.OA11"
+    ],
+    "id_objetivo": "3_medio.ingles.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Ingles/91128:FG-INGL-3M-OAC-01",
+      "codigo_oficial": "FG-INGL-3M-OAC-01"
+    },
+    "desafios": [
+      {
+        "id": "ing3m-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "In Japan, students clean their classrooms every day. There are no cleaning staff in many schools. Teachers say this teaches responsibility and respect for shared spaces. Some foreign visitors are surprised, but students see it as normal.",
+        "enunciado": "What do Japanese students do every day, according to the text?",
+        "alternativas": [
+          "cook lunch for teachers",
+          "clean their classrooms",
+          "work in shops",
+          "paint the school"
+        ],
+        "correcta": 1,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "«Students clean their classrooms every day».",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-010",
+        "tipo": "emparejar",
+        "dificultad": 1,
+        "texto": "Around the world, people greet each other differently. In Chile, friends often kiss on one cheek. In Japan, people usually bow. In Thailand, they press their hands together. In the United States, a handshake or a hug is common.",
+        "enunciado": "Une cada país con su saludo.",
+        "pares": [
+          [
+            "Chile",
+            "one kiss on the cheek"
+          ],
+          [
+            "Japan",
+            "a bow"
+          ],
+          [
+            "Thailand",
+            "hands pressed together"
+          ]
+        ],
+        "pista": "Busca cada país en el texto.",
+        "explicacion_error": "Chile: un beso; Japón: reverencia; Tailandia: manos juntas.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿Qué celebra la persona?",
+        "audio": {
+          "texto": "In my family we celebrate the Lunar New Year with a big dinner.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "su cumpleaños",
+          "Navidad",
+          "el Año Nuevo Lunar",
+          "Fiestas Patrias"
+        ],
+        "correcta": 2,
+        "pista": "Escucha «Lunar New Year».",
+        "explicacion_error": "Dice «we celebrate the Lunar New Year».",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "In Finland, many families leave babies to nap outside in their prams, even in winter. Parents believe fresh air helps children sleep better and stay healthy. For many people from warmer countries, this looks dangerous, but Finnish doctors say it is safe if the baby is dressed properly.",
+        "enunciado": "¿Verdadero, falso o no se menciona?",
+        "categorias": [
+          "True",
+          "False",
+          "Not mentioned"
+        ],
+        "elementos": [
+          {
+            "texto": "Babies nap outside in winter.",
+            "categoria": 0
+          },
+          {
+            "texto": "Finnish doctors say it is always dangerous.",
+            "categoria": 1
+          },
+          {
+            "texto": "Parents believe fresh air helps sleep.",
+            "categoria": 0
+          },
+          {
+            "texto": "Most Finnish babies are born in summer.",
+            "categoria": 2
+          }
+        ],
+        "pista": "Revisa cada afirmación.",
+        "explicacion_error": "Duermen afuera y los padres creen que ayuda: verdadero; los médicos dicen que es seguro: falso; los nacimientos: no se mencionan.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "texto": "In Finland, many families leave babies to nap outside in their prams, even in winter. Parents believe fresh air helps children sleep better and stay healthy. For many people from warmer countries, this looks dangerous, but Finnish doctors say it is safe if the baby is dressed properly.",
+        "enunciado": "Finnish doctors say it is safe if the baby is ___ properly.",
+        "alternativas": [
+          "washed",
+          "carried",
+          "dressed",
+          "fed"
+        ],
+        "correcta": 2,
+        "pista": "Busca la condición al final.",
+        "explicacion_error": "«If the baby is dressed properly».",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Around the world, people greet each other differently. In Chile, friends often kiss on one cheek. In Japan, people usually bow. In Thailand, they press their hands together. In the United States, a handshake or a hug is common.",
+        "enunciado": "What is the text mainly about?",
+        "alternativas": [
+          "how to travel to Japan",
+          "why Chileans kiss",
+          "different ways of greeting around the world",
+          "the history of handshakes"
+        ],
+        "correcta": 2,
+        "pista": "¿Qué tienen en común todos los ejemplos?",
+        "explicacion_error": "Compara saludos en distintos países.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "In Japan, students clean their classrooms every day. There are no cleaning staff in many schools. Teachers say this teaches responsibility and respect for shared spaces. Some foreign visitors are surprised, but students see it as normal.",
+        "enunciado": "Why do teachers support this practice?",
+        "alternativas": [
+          "Students enjoy it a lot.",
+          "It is a new law.",
+          "It saves time for lessons.",
+          "It teaches responsibility and respect."
+        ],
+        "correcta": 3,
+        "pista": "Busca «Teachers say…».",
+        "explicacion_error": "Dicen que enseña responsabilidad y respeto por los espacios compartidos.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Podcast transcript: «Hi, I'm Marta from Colombia. Here we say 'ahorita' a lot. It can mean 'right now', but sometimes it means 'later' or even 'maybe never'! Foreigners get confused, so ask: 'ahorita ahorita?'»",
+        "enunciado": "Why do foreigners get confused?",
+        "alternativas": [
+          "because «ahorita» is a rude word",
+          "because Marta speaks too fast",
+          "because Colombia has many languages",
+          "because «ahorita» can mean different times"
+        ],
+        "correcta": 3,
+        "pista": "Busca «It can mean…, but sometimes…».",
+        "explicacion_error": "La palabra puede significar ahora, más tarde o nunca.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Escucha la opinión. ¿Qué piensa la persona del intercambio?",
+        "audio": {
+          "texto": "My exchange year in Canada changed the way I see the world.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Le cambió la forma de ver el mundo.",
+          "Fue muy caro.",
+          "Fue aburrido.",
+          "No aprendió nada."
+        ],
+        "correcta": 0,
+        "pista": "Escucha «changed the way I see».",
+        "explicacion_error": "Dice que el intercambio cambió su forma de ver el mundo.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "In Finland, many families leave babies to nap outside in their prams, even in winter. Parents believe fresh air helps children sleep better and stay healthy. For many people from warmer countries, this looks dangerous, but Finnish doctors say it is safe if the baby is dressed properly.",
+        "enunciado": "What is the writer's attitude?",
+        "alternativas": [
+          "angry with Finnish parents",
+          "funny and sarcastic",
+          "neutral: the writer explains different views",
+          "worried about babies"
+        ],
+        "correcta": 2,
+        "pista": "¿El autor critica o explica?",
+        "explicacion_error": "Presenta la costumbre y las distintas miradas sin juzgar.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Podcast transcript: «Hi, I'm Marta from Colombia. Here we say 'ahorita' a lot. It can mean 'right now', but sometimes it means 'later' or even 'maybe never'! Foreigners get confused, so ask: 'ahorita ahorita?'»",
+        "enunciado": "What is Marta's advice?",
+        "alternativas": [
+          "to learn Spanish in a week",
+          "to ask again to check the meaning",
+          "to wait patiently forever",
+          "to stop using the word"
+        ],
+        "correcta": 1,
+        "pista": "Lee el final.",
+        "explicacion_error": "Recomienda preguntar «¿ahorita ahorita?» para confirmar.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Escucha. ¿Qué no se debe hacer en ese país?",
+        "audio": {
+          "texto": "In Japan, leaving a tip can be seen as rude.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "dejar propina",
+          "saludar con la mano",
+          "comer con palillos",
+          "sacar fotos"
+        ],
+        "correcta": 0,
+        "pista": "Escucha «tip».",
+        "explicacion_error": "Dice que dejar propina puede ser mal visto.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "In Japan, students clean their classrooms every day. There are no cleaning staff in many schools. Teachers say this teaches responsibility and respect for shared spaces. Some foreign visitors are surprised, but students see it as normal.",
+        "enunciado": "¿Qué muestra el texto sobre otras culturas?",
+        "alternativas": [
+          "que todas las escuelas son iguales",
+          "que los visitantes deben limpiar",
+          "que en Japón no hay profesores",
+          "que una costumbre normal en un país puede sorprender en otro"
+        ],
+        "correcta": 3,
+        "pista": "Mira la última oración.",
+        "explicacion_error": "A los visitantes les sorprende lo que para los estudiantes es normal.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Podcast transcript: «Hi, I'm Marta from Colombia. Here we say 'ahorita' a lot. It can mean 'right now', but sometimes it means 'later' or even 'maybe never'! Foreigners get confused, so ask: 'ahorita ahorita?'»",
+        "enunciado": "What is the main purpose of the podcast segment?",
+        "alternativas": [
+          "to sell a Spanish course",
+          "to describe Colombian food",
+          "to complain about foreigners",
+          "to explain a cultural use of language"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué enseña Marta?",
+        "explicacion_error": "Explica cómo se usa una palabra en su cultura.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa1-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Around the world, people greet each other differently. In Chile, friends often kiss on one cheek. In Japan, people usually bow. In Thailand, they press their hands together. In the United States, a handshake or a hug is common.",
+        "enunciado": "A Chilean student greets a Japanese host with a kiss on the cheek. Why might the host feel uncomfortable?",
+        "alternativas": [
+          "because in Japan people usually bow instead",
+          "because kisses are only for children in Chile",
+          "because handshakes are illegal in Japan",
+          "because Japanese people never greet"
+        ],
+        "correcta": 0,
+        "pista": "Compara las costumbres de ambos países.",
+        "explicacion_error": "En Japón se saluda con una reverencia; un beso puede resultar inesperado.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_medio",
+    "asignatura": "ingles",
+    "eje": "Producción",
+    "objetivo_oficial": "FG-INGL-3M-OAC-02: Producir textos orales y escritos breves y claros sobre temas de interés para expresar una postura personal crítica que respete otras posturas.",
+    "dificultad": 10,
+    "prerequisitos": [
+      "2_medio.ingles.OA16"
+    ],
+    "id_objetivo": "3_medio.ingles.OA2",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docentes/Formacion-General/Ingles-3-medio/FG-INGL-3M-OAC-02/91129:FG-INGL-3M-OAC-02",
+      "codigo_oficial": "FG-INGL-3M-OAC-02"
+    },
+    "desafios": [
+      {
+        "id": "ing3m-oa2-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "In my ___, social media can be harmful for teenagers.",
+        "alternativas": [
+          "opinion",
+          "opinionated",
+          "opinions",
+          "opine"
+        ],
+        "correcta": 0,
+        "pista": "Expresión fija para opinar: In my…",
+        "explicacion_error": "«In my opinion» introduce una opinión.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "I ___ that cities should have more bike lanes.",
+        "alternativas": [
+          "believe",
+          "believing",
+          "believes",
+          "am believe"
+        ],
+        "correcta": 0,
+        "pista": "Sujeto I + verbo en presente.",
+        "explicacion_error": "«I believe that…».",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué frase introduce una opinión personal?",
+        "alternativas": [
+          "From my point of view,",
+          "According to the data,",
+          "First of all, the map shows",
+          "In 1990,"
+        ],
+        "correcta": 0,
+        "pista": "Busca la que expresa tu punto de vista.",
+        "explicacion_error": "«From my point of view» introduce una opinión.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "I see your point, ___ I don't completely agree.",
+        "alternativas": [
+          "because",
+          "but",
+          "and then",
+          "so"
+        ],
+        "correcta": 1,
+        "pista": "Expresa contraste respetuoso.",
+        "explicacion_error": "«I see your point, but…» discrepa con respeto.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Opinión o hecho?",
+        "categorias": [
+          "Opinion",
+          "Fact"
+        ],
+        "elementos": [
+          {
+            "texto": "Online classes are boring.",
+            "categoria": 0
+          },
+          {
+            "texto": "Football is the best sport.",
+            "categoria": 0
+          },
+          {
+            "texto": "Chile has 16 regions.",
+            "categoria": 1
+          },
+          {
+            "texto": "Water boils at 100 °C at sea level.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Un hecho se puede comprobar; una opinión no.",
+        "explicacion_error": "Aburrido y el mejor son opiniones; las regiones y la ebullición se comprueban.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-006",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena la oración.",
+        "elementos": [
+          "I",
+          "strongly",
+          "agree",
+          "with",
+          "this",
+          "idea."
+        ],
+        "pista": "Sujeto + adverbio + verbo.",
+        "explicacion_error": "I strongly agree with this idea.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué respuesta expresa desacuerdo respetuoso?",
+        "alternativas": [
+          "That's an interesting point, but I see it differently.",
+          "Whatever.",
+          "Nobody cares about your opinion.",
+          "You're wrong and that's stupid."
+        ],
+        "correcta": 0,
+        "pista": "Respetar otras posturas también es parte del objetivo.",
+        "explicacion_error": "Reconoce la idea del otro y luego discrepa con respeto.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Uniforms are useful ___ they reduce pressure about clothes.",
+        "alternativas": [
+          "however",
+          "because",
+          "although",
+          "unless"
+        ],
+        "correcta": 1,
+        "pista": "Justifica la opinión.",
+        "explicacion_error": "«Because» introduce la razón.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada función con su expresión.",
+        "pares": [
+          [
+            "Dar una opinión",
+            "I think that…"
+          ],
+          [
+            "Agregar un argumento",
+            "Moreover,…"
+          ],
+          [
+            "Conceder",
+            "It is true that…, but…"
+          ],
+          [
+            "Concluir",
+            "To sum up,…"
+          ]
+        ],
+        "pista": "Piensa en la estructura de un texto de opinión.",
+        "explicacion_error": "Opinar, agregar, conceder y concluir.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena el párrafo de opinión.",
+        "elementos": [
+          "In my opinion, schools should start later.",
+          "Firstly, teenagers need more sleep.",
+          "Moreover, students would concentrate better.",
+          "To sum up, a later start would help everyone."
+        ],
+        "pista": "Opinión, argumentos y conclusión.",
+        "explicacion_error": "Primero la postura, luego los argumentos y al final la conclusión.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué oración tiene mejor argumento para «We should reduce plastic»?",
+        "alternativas": [
+          "Plastic is ugly.",
+          "I don't like plastic.",
+          "Plastic takes hundreds of years to break down and pollutes the ocean.",
+          "Everybody says so."
+        ],
+        "correcta": 2,
+        "pista": "Un buen argumento entrega una razón o evidencia.",
+        "explicacion_error": "Da una razón comprobable, no solo un gusto.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-012",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "___ some people prefer cars, public transport is better for the environment.",
+        "alternativas": [
+          "So",
+          "Moreover",
+          "Although",
+          "Because"
+        ],
+        "correcta": 2,
+        "pista": "Concede una idea opuesta.",
+        "explicacion_error": "«Although» introduce una concesión.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Elige la mejor conclusión para un texto a favor de prohibir celulares en clases.",
+        "alternativas": [
+          "To conclude, phones are bad and teachers are always right.",
+          "To conclude, limiting phones in class can help students focus, while allowing them in emergencies.",
+          "To conclude, some students like music.",
+          "To conclude, I have a new phone."
+        ],
+        "correcta": 1,
+        "pista": "Una buena conclusión resume la postura y considera matices.",
+        "explicacion_error": "Resume la postura y considera una excepción razonable.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha la opinión. ¿Qué postura tiene la persona?",
+        "audio": {
+          "texto": "I support electric cars, but they are still too expensive for most families.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Habla de otro tema.",
+          "Está a favor de los autos eléctricos, con reparos.",
+          "No tiene opinión.",
+          "Está totalmente en contra."
+        ],
+        "correcta": 1,
+        "pista": "Escucha «I support… but…».",
+        "explicacion_error": "Apoya los autos eléctricos, pero menciona el problema del precio.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa2-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿El conector agrega, contrasta o concluye?",
+        "categorias": [
+          "Agregar",
+          "Contrastar",
+          "Concluir"
+        ],
+        "elementos": [
+          {
+            "texto": "Furthermore",
+            "categoria": 0
+          },
+          {
+            "texto": "In addition",
+            "categoria": 0
+          },
+          {
+            "texto": "On the other hand",
+            "categoria": 1
+          },
+          {
+            "texto": "Nevertheless",
+            "categoria": 1
+          },
+          {
+            "texto": "In conclusion",
+            "categoria": 2
+          },
+          {
+            "texto": "All in all",
+            "categoria": 2
+          }
+        ],
+        "pista": "Piensa en la función de cada conector.",
+        "explicacion_error": "Furthermore e in addition suman; on the other hand y nevertheless contrastan; in conclusion y all in all cierran.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_medio",
+    "asignatura": "ingles",
+    "eje": "Comprensión y producción",
+    "objetivo_oficial": "FG-INGL-3M-OAC-03: Usar el conocimiento del inglés para comprender y producir textos breves y claros que construyan una postura personal crítica sobre temas de interés.",
+    "dificultad": 10,
+    "prerequisitos": [
+      "3_medio.ingles.OA1",
+      "3_medio.ingles.OA2"
+    ],
+    "id_objetivo": "3_medio.ingles.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Formacion-General/Ingles/Ingles-3-medio/145038:Unidad-2-My-Reflections-on-Global-Issues",
+      "codigo_oficial": "FG-INGL-3M-OAC-03"
+    },
+    "desafios": [
+      {
+        "id": "ing3m-oa3-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Should video games be considered a sport? Supporters say e-sports require strategy, teamwork and quick reflexes, just like football. Critics argue that sports must involve physical effort. Personally, I think e-sports are a different kind of competition, and they deserve respect, even if they are not 'sports'.",
+        "enunciado": "What is the topic of the text?",
+        "alternativas": [
+          "whether video games are a sport",
+          "the history of video games",
+          "how to play football",
+          "why reflexes are important"
+        ],
+        "correcta": 0,
+        "pista": "Lee la pregunta inicial.",
+        "explicacion_error": "Discute si los videojuegos son un deporte.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-007",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "A ___ source is one you can trust.",
+        "alternativas": [
+          "fake",
+          "shocking",
+          "reliable",
+          "funny"
+        ],
+        "correcta": 2,
+        "pista": "Fuente confiable.",
+        "explicacion_error": "«Reliable» significa confiable.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Escucha. ¿De qué tema habla?",
+        "audio": {
+          "texto": "Climate change is the biggest challenge of our generation.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "de un partido de fútbol",
+          "de un viaje a la playa",
+          "de una receta",
+          "del cambio climático"
+        ],
+        "correcta": 3,
+        "pista": "Escucha «climate change».",
+        "explicacion_error": "Dice «climate change».",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Should video games be considered a sport? Supporters say e-sports require strategy, teamwork and quick reflexes, just like football. Critics argue that sports must involve physical effort. Personally, I think e-sports are a different kind of competition, and they deserve respect, even if they are not 'sports'.",
+        "enunciado": "What do critics think?",
+        "alternativas": [
+          "Players should get paid more.",
+          "Video games are better than football.",
+          "E-sports need teamwork.",
+          "Sports must involve physical effort."
+        ],
+        "correcta": 3,
+        "pista": "Busca «Critics argue…».",
+        "explicacion_error": "Los críticos dicen que el deporte requiere esfuerzo físico.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Many people share news on social media without checking it. A false story can reach millions of people in hours. Before sharing, ask yourself: Who wrote this? Is there a reliable source? Does the headline sound too shocking to be true?",
+        "enunciado": "What is the main advice of the text?",
+        "alternativas": [
+          "Only read headlines.",
+          "Share news quickly.",
+          "Check information before sharing it.",
+          "Never use social media."
+        ],
+        "correcta": 2,
+        "pista": "Busca el consejo «Before sharing…».",
+        "explicacion_error": "Recomienda verificar antes de compartir.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Escucha. ¿Qué propone la persona?",
+        "audio": {
+          "texto": "I think we should use public transport more often.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "no salir de casa",
+          "comprar más autos",
+          "usar más transporte público",
+          "viajar en avión"
+        ],
+        "correcta": 2,
+        "pista": "Escucha «public transport».",
+        "explicacion_error": "Propone usar más transporte público.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "texto": "Many people share news on social media without checking it. A false story can reach millions of people in hours. Before sharing, ask yourself: Who wrote this? Is there a reliable source? Does the headline sound too shocking to be true?",
+        "enunciado": "¿Es una buena pregunta para verificar una noticia?",
+        "categorias": [
+          "Useful question",
+          "Not useful"
+        ],
+        "elementos": [
+          {
+            "texto": "Who wrote this?",
+            "categoria": 0
+          },
+          {
+            "texto": "Is there a reliable source?",
+            "categoria": 0
+          },
+          {
+            "texto": "Does it have many likes?",
+            "categoria": 1
+          },
+          {
+            "texto": "Is the picture pretty?",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en qué ayuda a saber si algo es verdad.",
+        "explicacion_error": "Autor y fuente ayudan a verificar; los likes y la foto no.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-008",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "The story spread quickly; ___, many people believed it.",
+        "alternativas": [
+          "in contrast",
+          "unless",
+          "as a result",
+          "although"
+        ],
+        "correcta": 2,
+        "pista": "Conector de consecuencia.",
+        "explicacion_error": "«As a result» introduce una consecuencia.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada expresión con su significado.",
+        "pares": [
+          [
+            "to go viral",
+            "difundirse muy rápido"
+          ],
+          [
+            "a headline",
+            "titular"
+          ],
+          [
+            "to fact-check",
+            "verificar datos"
+          ]
+        ],
+        "pista": "Vocabulario de medios.",
+        "explicacion_error": "Viral, titular y verificar datos.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Should video games be considered a sport? Supporters say e-sports require strategy, teamwork and quick reflexes, just like football. Critics argue that sports must involve physical effort. Personally, I think e-sports are a different kind of competition, and they deserve respect, even if they are not 'sports'.",
+        "enunciado": "What is the writer's personal position?",
+        "alternativas": [
+          "Video games should be banned.",
+          "The writer has no opinion.",
+          "E-sports deserve respect, even if they are not sports.",
+          "E-sports are exactly like football."
+        ],
+        "correcta": 2,
+        "pista": "Busca «Personally, I think…».",
+        "explicacion_error": "Cree que merecen respeto aunque no sean un deporte.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena la respuesta de opinión.",
+        "elementos": [
+          "I partly agree with the article.",
+          "It's true that games can be addictive.",
+          "However, they can also teach teamwork.",
+          "So, the key is balance."
+        ],
+        "pista": "Postura, concesión, contraste y conclusión.",
+        "explicacion_error": "Primero la postura, luego concede, contrasta y concluye.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué oración usa correctamente un conector de concesión?",
+        "alternativas": [
+          "I enjoy even though social media.",
+          "Even though because I enjoy social media.",
+          "Even though I enjoy social media, I try to limit my screen time.",
+          "Even though I enjoy social media, so I use it."
+        ],
+        "correcta": 2,
+        "pista": "Even though + idea, idea opuesta.",
+        "explicacion_error": "La primera concede algo y luego presenta lo contrario.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Many people share news on social media without checking it. A false story can reach millions of people in hours. Before sharing, ask yourself: Who wrote this? Is there a reliable source? Does the headline sound too shocking to be true?",
+        "enunciado": "Which sentence best expresses a critical but respectful reply to a friend who shared fake news?",
+        "alternativas": [
+          "Thanks, I'll share it too!",
+          "You're so stupid for sharing this.",
+          "I think this might not be true; I couldn't find it on any reliable site.",
+          "Fake news is always funny."
+        ],
+        "correcta": 2,
+        "pista": "Crítica con respeto: da una razón y no ofende.",
+        "explicacion_error": "Duda con un argumento y sin insultar.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Escucha. ¿Qué opina la persona sobre trabajar desde casa?",
+        "audio": {
+          "texto": "Working from home saves me time, but I really miss my colleagues.",
+          "idioma": "en"
+        },
+        "alternativas": [
+          "Lo odia completamente.",
+          "Ve ventajas, pero extraña a sus compañeros.",
+          "Prefiere trabajar de noche.",
+          "No ha trabajado nunca."
+        ],
+        "correcta": 1,
+        "pista": "Escucha «but I miss».",
+        "explicacion_error": "Menciona ventajas, pero extraña a sus compañeros.",
+        "monedas": 10
+      },
+      {
+        "id": "ing3m-oa3-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué título resume mejor un texto que compara ventajas y desventajas de la inteligencia artificial en la escuela?",
+        "alternativas": [
+          "AI in the Classroom: Helpful Tool or Shortcut?",
+          "AI Is Always Bad",
+          "How to Build a Robot",
+          "My Favourite Teacher"
+        ],
+        "correcta": 0,
+        "pista": "Busca un título que muestre ambas caras.",
+        "explicacion_error": "La pregunta del título refleja ventajas y desventajas.",
+        "monedas": 10
+      }
+    ]
+  }
+]

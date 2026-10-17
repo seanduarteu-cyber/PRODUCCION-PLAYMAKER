@@ -166,7 +166,156 @@ def in2m_oa16():
     return b.items
 
 
+# ---------------- 3° medio ----------------
+def in3m_oa1():
+    b = Autor("ing", "3m", 1)
+    T1 = "In Japan, students clean their classrooms every day. There are no cleaning staff in many schools. Teachers say this teaches responsibility and respect for shared spaces. Some foreign visitors are surprised, but students see it as normal."
+    b.om(1, "What do Japanese students do every day, according to the text?", "clean their classrooms", ["cook lunch for teachers", "work in shops", "paint the school"], "Lee la primera oración.", "«Students clean their classrooms every day».", texto=T1)
+    b.om(3, "Why do teachers support this practice?", "It teaches responsibility and respect.", ["It saves time for lessons.", "Students enjoy it a lot.", "It is a new law."], "Busca «Teachers say…».", "Dicen que enseña responsabilidad y respeto por los espacios compartidos.", texto=T1)
+    b.om(5, "¿Qué muestra el texto sobre otras culturas?", "que una costumbre normal en un país puede sorprender en otro", ["que en Japón no hay profesores", "que los visitantes deben limpiar", "que todas las escuelas son iguales"], "Mira la última oración.", "A los visitantes les sorprende lo que para los estudiantes es normal.", texto=T1)
+    T2 = "In Finland, many families leave babies to nap outside in their prams, even in winter. Parents believe fresh air helps children sleep better and stay healthy. For many people from warmer countries, this looks dangerous, but Finnish doctors say it is safe if the baby is dressed properly."
+    b.cat(2, "¿Verdadero, falso o no se menciona?", V_F, [("Babies nap outside in winter.", 0), ("Finnish doctors say it is always dangerous.", 1), ("Parents believe fresh air helps sleep.", 0), ("Most Finnish babies are born in summer.", 2)],
+          "Revisa cada afirmación.", "Duermen afuera y los padres creen que ayuda: verdadero; los médicos dicen que es seguro: falso; los nacimientos: no se mencionan.", texto=T2)
+    b.co(2, "Finnish doctors say it is safe if the baby is ___ properly.", "dressed", ["fed", "washed", "carried"], "Busca la condición al final.", "«If the baby is dressed properly».", texto=T2)
+    b.om(4, "What is the writer's attitude?", "neutral: the writer explains different views", ["angry with Finnish parents", "worried about babies", "funny and sarcastic"], "¿El autor critica o explica?", "Presenta la costumbre y las distintas miradas sin juzgar.", texto=T2)
+    T3 = "Podcast transcript: «Hi, I'm Marta from Colombia. Here we say 'ahorita' a lot. It can mean 'right now', but sometimes it means 'later' or even 'maybe never'! Foreigners get confused, so ask: 'ahorita ahorita?'»"
+    b.om(3, "Why do foreigners get confused?", "because «ahorita» can mean different times", ["because Marta speaks too fast", "because Colombia has many languages", "because «ahorita» is a rude word"], "Busca «It can mean…, but sometimes…».", "La palabra puede significar ahora, más tarde o nunca.", texto=T3)
+    b.om(4, "What is Marta's advice?", "to ask again to check the meaning", ["to stop using the word", "to learn Spanish in a week", "to wait patiently forever"], "Lee el final.", "Recomienda preguntar «¿ahorita ahorita?» para confirmar.", texto=T3)
+    b.om(5, "What is the main purpose of the podcast segment?", "to explain a cultural use of language", ["to sell a Spanish course", "to complain about foreigners", "to describe Colombian food"], "¿Qué enseña Marta?", "Explica cómo se usa una palabra en su cultura.", texto=T3)
+    T4 = "Around the world, people greet each other differently. In Chile, friends often kiss on one cheek. In Japan, people usually bow. In Thailand, they press their hands together. In the United States, a handshake or a hug is common."
+    b.em(1, "Une cada país con su saludo.", [["Chile", "one kiss on the cheek"], ["Japan", "a bow"], ["Thailand", "hands pressed together"]], "Busca cada país en el texto.", "Chile: un beso; Japón: reverencia; Tailandia: manos juntas.", texto=T4)
+    b.om(2, "What is the text mainly about?", "different ways of greeting around the world", ["how to travel to Japan", "the history of handshakes", "why Chileans kiss"], "¿Qué tienen en común todos los ejemplos?", "Compara saludos en distintos países.", texto=T4)
+    b.om(5, "A Chilean student greets a Japanese host with a kiss on the cheek. Why might the host feel uncomfortable?", "because in Japan people usually bow instead", ["because Japanese people never greet", "because kisses are only for children in Chile", "because handshakes are illegal in Japan"],
+         "Compara las costumbres de ambos países.", "En Japón se saluda con una reverencia; un beso puede resultar inesperado.", texto=T4)
+    b.om(1, "Escucha. ¿Qué celebra la persona?", "el Año Nuevo Lunar", ["Navidad", "Fiestas Patrias", "su cumpleaños"], "Escucha «Lunar New Year».", "Dice «we celebrate the Lunar New Year».", audio="In my family we celebrate the Lunar New Year with a big dinner.")
+    b.om(4, "Escucha. ¿Qué no se debe hacer en ese país?", "dejar propina", ["sacar fotos", "saludar con la mano", "comer con palillos"], "Escucha «tip».", "Dice que dejar propina puede ser mal visto.", audio="In Japan, leaving a tip can be seen as rude.")
+    b.om(3, "Escucha la opinión. ¿Qué piensa la persona del intercambio?", "Le cambió la forma de ver el mundo.", ["Fue aburrido.", "Fue muy caro.", "No aprendió nada."], "Escucha «changed the way I see».", "Dice que el intercambio cambió su forma de ver el mundo.", audio="My exchange year in Canada changed the way I see the world.")
+    return b.items
+
+
+def in3m_oa2():
+    b = Autor("ing", "3m", 2)
+    b.co(1, "In my ___, social media can be harmful for teenagers.", "opinion", ["opinions", "opine", "opinionated"], "Expresión fija para opinar: In my…", "«In my opinion» introduce una opinión.")
+    b.co(1, "I ___ that cities should have more bike lanes.", "believe", ["believes", "believing", "am believe"], "Sujeto I + verbo en presente.", "«I believe that…».")
+    b.om(1, "¿Qué frase introduce una opinión personal?", "From my point of view,", ["According to the data,", "In 1990,", "First of all, the map shows"], "Busca la que expresa tu punto de vista.", "«From my point of view» introduce una opinión.")
+    b.co(2, "I see your point, ___ I don't completely agree.", "but", ["so", "because", "and then"], "Expresa contraste respetuoso.", "«I see your point, but…» discrepa con respeto.")
+    b.cat(2, "¿Opinión o hecho?", ["Opinion", "Fact"], [("Online classes are boring.", 0), ("Football is the best sport.", 0), ("Chile has 16 regions.", 1), ("Water boils at 100 °C at sea level.", 1)],
+          "Un hecho se puede comprobar; una opinión no.", "Aburrido y el mejor son opiniones; las regiones y la ebullición se comprueban.")
+    b.ord(2, "Ordena la oración.", ["I", "strongly", "agree", "with", "this", "idea."], "Sujeto + adverbio + verbo.", "I strongly agree with this idea.")
+    b.om(3, "¿Qué respuesta expresa desacuerdo respetuoso?", "That's an interesting point, but I see it differently.", ["You're wrong and that's stupid.", "Whatever.", "Nobody cares about your opinion."], "Respetar otras posturas también es parte del objetivo.", "Reconoce la idea del otro y luego discrepa con respeto.")
+    b.co(3, "Uniforms are useful ___ they reduce pressure about clothes.", "because", ["although", "unless", "however"], "Justifica la opinión.", "«Because» introduce la razón.")
+    b.em(3, "Une cada función con su expresión.", [["Dar una opinión", "I think that…"], ["Agregar un argumento", "Moreover,…"], ["Conceder", "It is true that…, but…"], ["Concluir", "To sum up,…"]],
+         "Piensa en la estructura de un texto de opinión.", "Opinar, agregar, conceder y concluir.")
+    b.ord(4, "Ordena el párrafo de opinión.", ["In my opinion, schools should start later.", "Firstly, teenagers need more sleep.", "Moreover, students would concentrate better.", "To sum up, a later start would help everyone."], "Opinión, argumentos y conclusión.", "Primero la postura, luego los argumentos y al final la conclusión.")
+    b.om(4, "¿Qué oración tiene mejor argumento para «We should reduce plastic»?", "Plastic takes hundreds of years to break down and pollutes the ocean.", ["Plastic is ugly.", "I don't like plastic.", "Everybody says so."], "Un buen argumento entrega una razón o evidencia.", "Da una razón comprobable, no solo un gusto.")
+    b.co(4, "___ some people prefer cars, public transport is better for the environment.", "Although", ["Because", "So", "Moreover"], "Concede una idea opuesta.", "«Although» introduce una concesión.")
+    b.om(5, "Elige la mejor conclusión para un texto a favor de prohibir celulares en clases.", "To conclude, limiting phones in class can help students focus, while allowing them in emergencies.", ["To conclude, phones are bad and teachers are always right.", "To conclude, I have a new phone.", "To conclude, some students like music."],
+         "Una buena conclusión resume la postura y considera matices.", "Resume la postura y considera una excepción razonable.")
+    b.om(5, "Escucha la opinión. ¿Qué postura tiene la persona?", "Está a favor de los autos eléctricos, con reparos.", ["Está totalmente en contra.", "No tiene opinión.", "Habla de otro tema."], "Escucha «I support… but…».", "Apoya los autos eléctricos, pero menciona el problema del precio.", audio="I support electric cars, but they are still too expensive for most families.")
+    b.cat(5, "¿El conector agrega, contrasta o concluye?", ["Agregar", "Contrastar", "Concluir"], [("Furthermore", 0), ("In addition", 0), ("On the other hand", 1), ("Nevertheless", 1), ("In conclusion", 2), ("All in all", 2)],
+          "Piensa en la función de cada conector.", "Furthermore e in addition suman; on the other hand y nevertheless contrastan; in conclusion y all in all cierran.")
+    return b.items
+
+
+def in3m_oa3():
+    b = Autor("ing", "3m", 3)
+    T1 = "Should video games be considered a sport? Supporters say e-sports require strategy, teamwork and quick reflexes, just like football. Critics argue that sports must involve physical effort. Personally, I think e-sports are a different kind of competition, and they deserve respect, even if they are not 'sports'."
+    b.om(1, "What is the topic of the text?", "whether video games are a sport", ["how to play football", "the history of video games", "why reflexes are important"], "Lee la pregunta inicial.", "Discute si los videojuegos son un deporte.", texto=T1)
+    b.om(2, "What do critics think?", "Sports must involve physical effort.", ["E-sports need teamwork.", "Video games are better than football.", "Players should get paid more."], "Busca «Critics argue…».", "Los críticos dicen que el deporte requiere esfuerzo físico.", texto=T1)
+    b.om(4, "What is the writer's personal position?", "E-sports deserve respect, even if they are not sports.", ["E-sports are exactly like football.", "Video games should be banned.", "The writer has no opinion."], "Busca «Personally, I think…».", "Cree que merecen respeto aunque no sean un deporte.", texto=T1)
+    T2 = "Many people share news on social media without checking it. A false story can reach millions of people in hours. Before sharing, ask yourself: Who wrote this? Is there a reliable source? Does the headline sound too shocking to be true?"
+    b.om(2, "What is the main advice of the text?", "Check information before sharing it.", ["Never use social media.", "Share news quickly.", "Only read headlines."], "Busca el consejo «Before sharing…».", "Recomienda verificar antes de compartir.", texto=T2)
+    b.cat(3, "¿Es una buena pregunta para verificar una noticia?", ["Useful question", "Not useful"], [("Who wrote this?", 0), ("Is there a reliable source?", 0), ("Does it have many likes?", 1), ("Is the picture pretty?", 1)],
+          "Piensa en qué ayuda a saber si algo es verdad.", "Autor y fuente ayudan a verificar; los likes y la foto no.", texto=T2)
+    b.om(5, "Which sentence best expresses a critical but respectful reply to a friend who shared fake news?", "I think this might not be true; I couldn't find it on any reliable site.", ["You're so stupid for sharing this.", "Thanks, I'll share it too!", "Fake news is always funny."],
+         "Crítica con respeto: da una razón y no ofende.", "Duda con un argumento y sin insultar.", texto=T2)
+    b.co(1, "A ___ source is one you can trust.", "reliable", ["shocking", "fake", "funny"], "Fuente confiable.", "«Reliable» significa confiable.")
+    b.co(3, "The story spread quickly; ___, many people believed it.", "as a result", ["although", "unless", "in contrast"], "Conector de consecuencia.", "«As a result» introduce una consecuencia.")
+    b.em(3, "Une cada expresión con su significado.", [["to go viral", "difundirse muy rápido"], ["a headline", "titular"], ["to fact-check", "verificar datos"]], "Vocabulario de medios.", "Viral, titular y verificar datos.")
+    b.ord(4, "Ordena la respuesta de opinión.", ["I partly agree with the article.", "It's true that games can be addictive.", "However, they can also teach teamwork.", "So, the key is balance."], "Postura, concesión, contraste y conclusión.", "Primero la postura, luego concede, contrasta y concluye.")
+    b.om(4, "¿Qué oración usa correctamente un conector de concesión?", "Even though I enjoy social media, I try to limit my screen time.", ["Even though I enjoy social media, so I use it.", "Even though because I enjoy social media.", "I enjoy even though social media."], "Even though + idea, idea opuesta.", "La primera concede algo y luego presenta lo contrario.")
+    b.om(5, "Escucha. ¿Qué opina la persona sobre trabajar desde casa?", "Ve ventajas, pero extraña a sus compañeros.", ["Lo odia completamente.", "Prefiere trabajar de noche.", "No ha trabajado nunca."], "Escucha «but I miss».", "Menciona ventajas, pero extraña a sus compañeros.", audio="Working from home saves me time, but I really miss my colleagues.")
+    b.om(5, "¿Qué título resume mejor un texto que compara ventajas y desventajas de la inteligencia artificial en la escuela?", "AI in the Classroom: Helpful Tool or Shortcut?", ["AI Is Always Bad", "My Favourite Teacher", "How to Build a Robot"], "Busca un título que muestre ambas caras.", "La pregunta del título refleja ventajas y desventajas.")
+    b.om(1, "Escucha. ¿De qué tema habla?", "del cambio climático", ["de un partido de fútbol", "de una receta", "de un viaje a la playa"], "Escucha «climate change».", "Dice «climate change».", audio="Climate change is the biggest challenge of our generation.")
+    b.om(2, "Escucha. ¿Qué propone la persona?", "usar más transporte público", ["comprar más autos", "viajar en avión", "no salir de casa"], "Escucha «public transport».", "Propone usar más transporte público.", audio="I think we should use public transport more often.")
+    return b.items
+
+
+# ---------------- 4° medio ----------------
+def in4m_oa1():
+    b = Autor("ing", "4m", 1)
+    T1 = "JOB OFFER – Junior Graphic Designer. Remote work, 30 hours a week. Requirements: portfolio with at least five projects, intermediate English, knowledge of design software. Applications close on March 15th. Interviews will be online."
+    b.om(1, "How many hours a week is the job?", "30", ["15", "40", "5"], "Busca «hours a week».", "«30 hours a week».", texto=T1)
+    b.cat(2, "¿Es un requisito del trabajo?", ["Required", "Not mentioned"], [("a portfolio with five projects", 0), ("intermediate English", 0), ("a driving licence", 1), ("a university degree", 1)],
+          "Lee la lista de «Requirements».", "Portafolio e inglés intermedio se piden; licencia y título no se mencionan.", texto=T1)
+    b.om(3, "You want to apply. What do you need to do first, according to the ad?", "prepare a portfolio with at least five projects", ["travel to the office", "buy design software", "wait until April"], "Piensa en el propósito: postular.", "Necesitas un portafolio antes del 15 de marzo.", texto=T1)
+    T2 = "Hostel Patagonia: Breakfast 7–10 a.m. Kitchen open until 10 p.m. Quiet hours from 11 p.m. Lockers available at reception (bring your own padlock). Free bikes for guests; return them before sunset."
+    b.om(1, "Until what time can guests use the kitchen?", "10 p.m.", ["11 p.m.", "7 a.m.", "sunset"], "Busca «Kitchen».", "«Kitchen open until 10 p.m.».", texto=T2)
+    b.om(3, "You want to keep your passport safe. What should you bring?", "a padlock", ["a bike", "a key card", "breakfast"], "Busca «Lockers».", "Hay casilleros, pero debes traer tu propio candado.", texto=T2)
+    b.om(4, "A guest borrows a bike at 6 p.m. in winter. What could be a problem?", "Sunset is early, so there is little time to return it.", ["Bikes are not free.", "Breakfast ends at 10.", "The kitchen is closed."], "Relaciona «before sunset» con el invierno.", "En invierno oscurece temprano y hay que devolverla antes.", texto=T2)
+    T3 = "A recent survey of 2,000 Chilean teenagers found that 68% use their phones for more than five hours a day. However, 54% said they would like to spend less time online. Researchers recommend digital breaks and offline hobbies."
+    b.nu(2, "What percentage of teenagers would like to spend less time online?", 54, "Busca «would like to spend less».", "«54% said they would like to spend less time online».", unidad="%", texto=T3)
+    b.om(4, "Which sentence best summarises the survey?", "Most teens use phones a lot, but many want to use them less.", ["Teens never use their phones.", "Researchers want teens online more.", "Only 54 teens answered."], "Une los dos datos principales.", "Muchos lo usan bastante, pero más de la mitad quiere usarlo menos.", texto=T3)
+    b.om(5, "What can we infer from the survey?", "Many teens are aware that they use their phones too much.", ["Teens don't care about screen time.", "Phones are banned in Chile.", "Researchers use phones five hours a day."],
+         "Relaciona el 68% con el 54%.", "Más de la mitad quiere usarlo menos: muchos reconocen que lo usan demasiado.", texto=T3)
+    b.om(5, "What is the purpose of the last sentence?", "to suggest solutions", ["to give more statistics", "to criticise researchers", "to describe a hobby in detail"], "¿Qué hacen los investigadores?", "Recomiendan pausas digitales: proponen soluciones.", texto=T3)
+    b.co(2, "The interviews will be ___, so you don't need to travel.", "online", ["in person", "outdoors", "cancelled"], "Relee el aviso de trabajo.", "«Interviews will be online».", texto=T1)
+    b.em(3, "Une cada necesidad con el texto donde buscarías.", [["find a job", "a job offer"], ["book a bed", "a hostel website"], ["learn about teen habits", "a survey report"]], "Piensa en el propósito de cada texto.", "Cada propósito se resuelve con un tipo de texto.")
+    b.om(5, "Escucha el mensaje. ¿Qué debe hacer el pasajero?", "ir a la puerta 12 porque cambió", ["esperar en la puerta 4", "salir del aeropuerto", "comprar otro pasaje"], "Escucha «now departing from gate 12».", "El vuelo ahora sale por la puerta 12.", audio="Attention, passengers on flight LA 800 to Lima: your flight is now departing from gate 12.")
+    b.om(1, "Escucha. ¿Cuánto cuesta la entrada?", "5 dólares", ["15 dólares", "50 dólares", "es gratis"], "Escucha el precio.", "Dice «five dollars».", audio="Entrance to the museum is five dollars for students.")
+    b.om(4, "Escucha el pronóstico. ¿Qué conviene llevar el sábado?", "paraguas", ["traje de baño", "lentes de sol", "nada especial"], "Escucha «heavy rain on Saturday».", "Anuncia lluvia intensa el sábado.", audio="Expect sunny skies on Friday, but heavy rain on Saturday.")
+    return b.items
+
+
+def in4m_oa2():
+    b = Autor("ing", "4m", 2)
+    b.co(1, "I'm ___ favour of a four-day school week.", "in", ["on", "at", "for"], "Expresión fija: in favour of.", "«In favour of» = a favor de.")
+    b.co(1, "I'm against this idea ___ it could increase inequality.", "because", ["although", "unless", "whereas"], "Justifica la postura.", "«Because» introduce la razón.")
+    b.om(1, "¿Qué expresión muestra acuerdo total?", "I couldn't agree more.", ["I'm not so sure.", "I totally disagree.", "That's not the point."], "«No podría estar más de acuerdo».", "«I couldn't agree more» expresa acuerdo total.")
+    b.cat(2, "¿Acuerdo o desacuerdo?", ["Agree", "Disagree"], [("Absolutely.", 0), ("That's exactly what I think.", 0), ("I'm afraid I don't share that view.", 1), ("I see it quite differently.", 1)],
+          "Fíjate en el sentido de cada frase.", "Absolutely y exactly expresan acuerdo; las otras, desacuerdo cortés.")
+    b.co(2, "___ is no doubt that recycling helps the environment.", "There", ["It", "This", "They"], "Expresión fija: There is no doubt that…", "«There is no doubt that…».")
+    b.ord(2, "Ordena la oración.", ["It", "is", "widely", "believed", "that", "exercise helps."], "Expresión impersonal: It is believed that…", "It is widely believed that exercise helps.")
+    b.om(3, "¿Qué oración presenta una postura con matices?", "While tourism brings jobs, it can also damage fragile ecosystems.", ["Tourism is perfect.", "Tourism is the worst thing ever.", "I went on holiday last year."], "Busca la que considera dos lados.", "«While…, it can also…» reconoce ventajas y riesgos.")
+    b.co(3, "Some people say the law is unfair. ___, others believe it protects consumers.", "On the other hand", ["As a result", "For example", "Firstly"], "Presenta la otra postura.", "«On the other hand» introduce la postura contraria.")
+    b.em(3, "Une cada tipo de argumento con su ejemplo.", [["Dato", "70% of students support the change."], ["Ejemplo", "In Iceland, a similar plan worked."], ["Experiencia", "When I tried it, I slept better."]],
+         "Un buen texto usa distintos tipos de evidencia.", "Datos, ejemplos y experiencia personal apoyan una postura.")
+    b.ord(4, "Ordena el párrafo argumentativo.", ["Public transport should be free for students.", "This would reduce costs for families.", "It could also reduce traffic and pollution.", "Therefore, the government should fund it."], "Tesis, argumentos y conclusión.", "Postura, dos argumentos y una conclusión con «Therefore».")
+    b.om(4, "¿Qué oración contiene una generalización que debilita el argumento?", "All teenagers are addicted to their phones.", ["Many teenagers spend over five hours online.", "A survey shows phone use is increasing.", "Some students use apps to study."], "Busca palabras absolutas como «all».", "«All» exagera: no todos los adolescentes son adictos.")
+    b.co(4, "We need stricter rules; ___, accidents will keep happening.", "otherwise", ["moreover", "although", "because"], "«De lo contrario».", "«Otherwise» expresa lo que pasaría si no.")
+    b.om(5, "Elige la respuesta más crítica y respetuosa a: «Climate change is not real.»", "I understand doubts exist, but most scientific studies show clear evidence of it.", ["That's ridiculous, you know nothing.", "OK, whatever you say.", "Climate change is boring."], "Debe dar evidencia y no ofender.", "Reconoce la duda y responde con evidencia, sin descalificar.")
+    b.om(5, "Escucha. ¿Qué postura defiende la persona?", "A favor de las clases en línea como complemento.", ["Contra toda clase en línea.", "A favor de cerrar los colegios.", "Indiferente."], "Escucha «as a complement».", "Defiende las clases en línea como complemento, no como reemplazo.", audio="Online classes shouldn't replace school, but they work well as a complement.")
+    b.cat(5, "¿Es un argumento sólido o una falacia?", ["Argumento sólido", "Falacia"], [("Studies show sleep improves memory.", 0), ("Our city reduced traffic by 20% with bike lanes.", 0), ("He's wrong because he's young.", 1), ("Everyone does it, so it must be right.", 1)],
+          "Las falacias atacan a la persona o apelan a «todos lo hacen».", "Los datos son argumentos; atacar a la persona y el «todos lo hacen» son falacias.")
+    return b.items
+
+
+def in4m_oa3():
+    b = Autor("ing", "4m", 3)
+    T1 = "Fast delivery apps have changed how we shop. You can get food or groceries in minutes. However, many delivery riders work long hours without health insurance. As consumers, we could choose apps that treat workers fairly and tip when possible."
+    b.om(1, "What has changed, according to the text?", "how we shop", ["how we cook", "how we travel", "how we study"], "Lee la primera oración.", "«Delivery apps have changed how we shop».", texto=T1)
+    b.om(3, "What problem does the writer point out?", "Riders often work long hours without insurance.", ["Food arrives cold.", "Apps are too expensive.", "There are not enough restaurants."], "Busca «However…».", "Muchos repartidores trabajan muchas horas sin seguro de salud.", texto=T1)
+    b.om(5, "What kind of action does the writer suggest?", "responsible choices as consumers", ["banning all apps", "never ordering food", "working as a rider"], "Lee la última oración.", "Propone elegir apps justas y dar propina: consumo responsable.", texto=T1)
+    T2 = "Some argue that tourists should pay a fee to visit Easter Island (Rapa Nui), because the island's ecosystem and archaeological sites are fragile. Others fear that a high fee would make it a destination only for the rich. A possible compromise is a fee that funds conservation, with discounts for students."
+    b.cat(2, "¿Qué postura apoya cada idea?", ["A favor de la tarifa", "En contra de una tarifa alta"], [("protects fragile sites", 0), ("funds conservation", 0), ("only rich people could go", 1), ("excludes students and families", 1)],
+          "Separa los argumentos de cada lado.", "Proteger y financiar apoyan la tarifa; excluir a quienes tienen menos dinero va en contra.", texto=T2)
+    b.om(4, "What is the «compromise» proposed?", "a fee that funds conservation, with student discounts", ["no fee at all", "closing the island", "a very high fee for everyone"], "Busca «A possible compromise is…».", "Una tarifa para conservar, con descuento para estudiantes.", texto=T2)
+    b.co(3, "A «compromise» is a solution where both sides ___ something.", "give up", ["win", "destroy", "ignore"], "Piensa en un acuerdo intermedio.", "En un compromiso ambas partes ceden algo.", texto=T2)
+    b.co(1, "Recycling is important. ___, it is not enough to solve pollution.", "However", ["Therefore", "Because", "For instance"], "Contraste entre dos ideas.", "«However» introduce un contraste.")
+    b.ord(2, "Ordena la oración.", ["I", "would", "rather", "walk", "than", "drive."], "I would rather + verbo + than + verbo.", "I would rather walk than drive.")
+    b.em(2, "Une cada inicio con su final.", [["If more people cycled,", "there would be less traffic."], ["Unless we act now,", "it will be too late."], ["Not only is it cheap,", "but it is also healthy."]], "Revisa la estructura de cada oración.", "Segundo condicional, unless y not only… but also.")
+    b.om(3, "¿Qué oración expresa una postura crítica con evidencia?", "Bottled water is unnecessary in Chile's cities, since tap water is safe and much cheaper.", ["Bottled water is nice.", "I like my bottle.", "Water is wet."], "Busca opinión + razón.", "Da una postura y la justifica con evidencia.")
+    b.om(4, "Escucha. ¿Qué piensa la persona de la inteligencia artificial?", "Que es útil, pero hay que usarla con responsabilidad.", ["Que es peligrosa y hay que prohibirla.", "Que no sirve para nada.", "Que reemplazará a todos los profesores."], "Escucha «useful» y «responsibly».", "Dice que es útil si se usa con responsabilidad.", audio="Artificial intelligence can be very useful if we use it responsibly.")
+    b.om(4, "¿Qué conector usarías para dar un ejemplo?", "For instance,", ["Nevertheless,", "In conclusion,", "Otherwise,"], "«Por ejemplo».", "«For instance» introduce un ejemplo.")
+    b.om(5, "Elige el mejor resumen de tu postura sobre el trabajo remoto.", "Remote work offers flexibility, but companies should make sure employees don't feel isolated.", ["Remote work is the best and has no problems.", "I don't know what remote work is.", "Everyone hates remote work."], "Un buen resumen es claro y considera matices.", "Presenta una ventaja y una condición razonable.")
+    b.om(5, "Escucha y elige la respuesta más respetuosa.", "I respect your view, although I think there's another side to consider.", ["You're totally wrong.", "Stop talking.", "That's a silly idea."], "Responde a una opinión con la que no estás de acuerdo.", "Respeta la opinión y ofrece otra mirada.", audio="In my opinion, homework should be completely banned.")
+    b.om(1, "Escucha. ¿Qué tema se discute?", "si los celulares deberían permitirse en clases", ["el precio de los celulares", "cómo reparar un celular", "la historia del teléfono"], "Escucha «phones in class».", "Pregunta si los celulares deberían permitirse en clases.", audio="Today's debate: should phones be allowed in class?")
+    return b.items
+
+
 GENERADORES = {
     "1_medio.ingles.OA9": in1m_oa9, "1_medio.ingles.OA10": in1m_oa10, "1_medio.ingles.OA16": in1m_oa16,
     "2_medio.ingles.OA10": in2m_oa10, "2_medio.ingles.OA11": in2m_oa11, "2_medio.ingles.OA16": in2m_oa16,
+    "3_medio.ingles.OA1": in3m_oa1, "3_medio.ingles.OA2": in3m_oa2, "3_medio.ingles.OA3": in3m_oa3,
+    "4_medio.ingles.OA1": in4m_oa1, "4_medio.ingles.OA2": in4m_oa2, "4_medio.ingles.OA3": in4m_oa3,
 }

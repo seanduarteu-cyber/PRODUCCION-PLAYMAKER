@@ -78,16 +78,16 @@ las construcciones siempre femeninas. Ejemplo: «{personaje} {junto} 8 {objetos}
 ## Cobertura actual
 
 <!-- inicio:cobertura -->
-88 objetivos y 1.534 desafíos (91 con audio en inglés). Resumen por asignatura:
+100 objetivos y 1.714 desafíos (115 con audio en inglés). Resumen por asignatura:
 
 | Asignatura | Cursos | OA | Desafíos |
 |---|---|---|---|
 | Matemática | 1° básico a 8° básico | 25 | 500 |
 | Lenguaje y Comunicación | 1° básico a 8° básico | 21 | 332 |
 | Ciencias Naturales | 1° básico a 8° básico | 26 | 419 |
-| Inglés | 1° básico a 8° básico | 16 | 283 |
+| Inglés | 1° básico a 4° medio | 28 | 463 |
 
-Registrados en `herramientas/objetivos.py` y aún sin desafíos (48): 1°M Mat OA 1, 1°M Mat OA 4, 1°M Mat OA 14, 2°M Mat OA 2, 2°M Mat OA 4, 2°M Mat OA 11, 3°M Mat MATE OAC 01, 3°M Mat MATE OAC 02, 3°M Mat MATE OAC 03, 4°M Mat MATE OAC 01, 4°M Mat MATE OAC 02, 4°M Mat MATE OAC 03, 1°M Len OA 3, 1°M Len OA 4, 1°M Len OA 9, 2°M Len OA 3, 2°M Len OA 9, 2°M Len OA 18, 3°M Len LELI OAC 01, 3°M Len LELI OAC 03, 3°M Len LELI OAC 05, 4°M Len LELI OAC 01, 4°M Len LELI OAC 03, 4°M Len LELI OAC 04, 1°M Cie OA 2, 1°M Cie OA 9, 1°M Cie OA 18, 2°M Cie OA 7, 2°M Cie OA 9, 2°M Cie OA 15, 3°M Cie CIBS OAC 01, 3°M Cie CITS OAC 02, 3°M Cie CIBS OAC 03, 4°M Cie CISA OAC 01, 4°M Cie CISA OAC 02, 4°M Cie CIAS OAC 03, 1°M Ing OA 9, 1°M Ing OA 10, 1°M Ing OA 16, 2°M Ing OA 10, 2°M Ing OA 11, 2°M Ing OA 16, 3°M Ing INGL OAC 01, 3°M Ing INGL OAC 02, 3°M Ing INGL OAC 03, 4°M Ing INGL OAC 01, 4°M Ing INGL OAC 02, 4°M Ing INGL OAC 03.
+Registrados en `herramientas/objetivos.py` y aún sin desafíos (36): 1°M Mat OA 1, 1°M Mat OA 4, 1°M Mat OA 14, 2°M Mat OA 2, 2°M Mat OA 4, 2°M Mat OA 11, 3°M Mat MATE OAC 01, 3°M Mat MATE OAC 02, 3°M Mat MATE OAC 03, 4°M Mat MATE OAC 01, 4°M Mat MATE OAC 02, 4°M Mat MATE OAC 03, 1°M Len OA 3, 1°M Len OA 4, 1°M Len OA 9, 2°M Len OA 3, 2°M Len OA 9, 2°M Len OA 18, 3°M Len LELI OAC 01, 3°M Len LELI OAC 03, 3°M Len LELI OAC 05, 4°M Len LELI OAC 01, 4°M Len LELI OAC 03, 4°M Len LELI OAC 04, 1°M Cie OA 2, 1°M Cie OA 9, 1°M Cie OA 18, 2°M Cie OA 7, 2°M Cie OA 9, 2°M Cie OA 15, 3°M Cie CIBS OAC 01, 3°M Cie CITS OAC 02, 3°M Cie CIBS OAC 03, 4°M Cie CISA OAC 01, 4°M Cie CISA OAC 02, 4°M Cie CIAS OAC 03.
 
 ### Matemática
 
@@ -196,6 +196,18 @@ Registrados en `herramientas/objetivos.py` y aún sin desafíos (48): 1°M Mat O
 | 7° básico | [OA 16](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/70353:IN07-OA-16) | Expresión escrita | 17 | verificado | 6° Ing OA 15 |
 | 8° básico | [OA 9](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/ingles/8-basico) | Comprensión de lectura | 17 | verificado | 7° Ing OA 9 |
 | 8° básico | [OA 16](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/70374:IN08-OA-16) | Expresión escrita | 17 | verificado | 7° Ing OA 16 |
+| 1° medio | [OA 9](https://www.curriculumnacional.cl/docentes/Educacion-General/Ingles-1-medio/IN1M-OA-09/80907:IN1M-OA-09) | Comprensión de lectura | 15 | verificado | 8° Ing OA 9 |
+| 1° medio | [OA 10](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Comprension-de-lectura/) | Comprensión de lectura | 15 | verificado | 8° Ing OA 9 |
+| 1° medio | [OA 16](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/80914:IN1M-OA-16) | Expresión escrita | 15 | verificado | 8° Ing OA 16 |
+| 2° medio | [OA 10](https://www.curriculumnacional.cl/portal/Innovacion/Lineas-de-Innovacion/Modernizacion-de-Textos-escolares-2020/140095:Textos-Escolares-Reimpresos-Ingles-2-medio) | Comprensión de lectura | 15 | verificado | 1°M Ing OA 10 |
+| 2° medio | [OA 11](https://www.curriculumnacional.cl/portal/Innovacion/Lineas-de-Innovacion/Modernizacion-de-Textos-escolares-2020/140095:Textos-Escolares-Reimpresos-Ingles-2-medio) | Comprensión de lectura | 15 | verificado | 1°M Ing OA 9 |
+| 2° medio | [OA 16](https://www.curriculumnacional.cl/portal/Ejes/Ingles/Expresion-escrita/80935:IN2M-OA-16) | Expresión escrita | 15 | verificado | 1°M Ing OA 16 |
+| 3° medio | [FG-INGL-3M-OAC-01](https://www.curriculumnacional.cl/portal/Ejes/Ingles/91128:FG-INGL-3M-OAC-01) | Comprensión | 15 | verificado | 2°M Ing OA 10, 2°M Ing OA 11 |
+| 3° medio | [FG-INGL-3M-OAC-02](https://www.curriculumnacional.cl/docentes/Formacion-General/Ingles-3-medio/FG-INGL-3M-OAC-02/91129:FG-INGL-3M-OAC-02) | Producción | 15 | verificado | 2°M Ing OA 16 |
+| 3° medio | [FG-INGL-3M-OAC-03](https://www.curriculumnacional.cl/portal/Formacion-General/Ingles/Ingles-3-medio/145038:Unidad-2-My-Reflections-on-Global-Issues) | Comprensión y producción | 15 | verificado | 3°M Ing INGL OAC 01, 3°M Ing INGL OAC 02 |
+| 4° medio | [FG-INGL-4M-OAC-01](https://www.curriculumnacional.cl/curriculum/3o-4o-medio/ingles-4o-medio/4-medio-fg) | Comprensión | 15 | verificado | 3°M Ing INGL OAC 01 |
+| 4° medio | [FG-INGL-4M-OAC-02](https://www.curriculumnacional.cl/curriculum/3o-4o-medio/ingles-4o-medio/4-medio-fg/fg-ingl-4m-oac-02) | Producción | 15 | verificado | 3°M Ing INGL OAC 02 |
+| 4° medio | [FG-INGL-4M-OAC-03](https://www.curriculumnacional.cl/portal/Formacion-General/Ingles/Ingles-4-medio/145048:Unidad-3-It-s-business-time) | Comprensión y producción | 15 | verificado | 3°M Ing INGL OAC 03 |
 <!-- fin:cobertura -->
 
 ### Pendientes de verificación

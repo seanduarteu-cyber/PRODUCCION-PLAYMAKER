@@ -124,6 +124,20 @@ flowchart LR
   6_basico_ingles_OA15["6° Ing OA 15"] --> 7_basico_ingles_OA16["7° Ing OA 16"]
   7_basico_ingles_OA9["7° Ing OA 9"] --> 8_basico_ingles_OA9["8° Ing OA 9"]
   7_basico_ingles_OA16["7° Ing OA 16"] --> 8_basico_ingles_OA16["8° Ing OA 16"]
+  8_basico_ingles_OA9["8° Ing OA 9"] --> 1_medio_ingles_OA9["1°M Ing OA 9"]
+  8_basico_ingles_OA9["8° Ing OA 9"] --> 1_medio_ingles_OA10["1°M Ing OA 10"]
+  8_basico_ingles_OA16["8° Ing OA 16"] --> 1_medio_ingles_OA16["1°M Ing OA 16"]
+  1_medio_ingles_OA10["1°M Ing OA 10"] --> 2_medio_ingles_OA10["2°M Ing OA 10"]
+  1_medio_ingles_OA9["1°M Ing OA 9"] --> 2_medio_ingles_OA11["2°M Ing OA 11"]
+  1_medio_ingles_OA16["1°M Ing OA 16"] --> 2_medio_ingles_OA16["2°M Ing OA 16"]
+  2_medio_ingles_OA10["2°M Ing OA 10"] --> 3_medio_ingles_OA1["3°M Ing INGL OAC 01"]
+  2_medio_ingles_OA11["2°M Ing OA 11"] --> 3_medio_ingles_OA1["3°M Ing INGL OAC 01"]
+  2_medio_ingles_OA16["2°M Ing OA 16"] --> 3_medio_ingles_OA2["3°M Ing INGL OAC 02"]
+  3_medio_ingles_OA1["3°M Ing INGL OAC 01"] --> 3_medio_ingles_OA3["3°M Ing INGL OAC 03"]
+  3_medio_ingles_OA2["3°M Ing INGL OAC 02"] --> 3_medio_ingles_OA3["3°M Ing INGL OAC 03"]
+  3_medio_ingles_OA1["3°M Ing INGL OAC 01"] --> 4_medio_ingles_OA1["4°M Ing INGL OAC 01"]
+  3_medio_ingles_OA2["3°M Ing INGL OAC 02"] --> 4_medio_ingles_OA2["4°M Ing INGL OAC 02"]
+  3_medio_ingles_OA3["3°M Ing INGL OAC 03"] --> 4_medio_ingles_OA3["4°M Ing INGL OAC 03"]
 ```
 <!-- fin:arbol -->
 
