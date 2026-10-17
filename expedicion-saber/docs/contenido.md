@@ -78,16 +78,14 @@ las construcciones siempre femeninas. Ejemplo: «{personaje} {junto} 8 {objetos}
 ## Cobertura actual
 
 <!-- inicio:cobertura -->
-124 objetivos y 2.074 desafíos (115 con audio en inglés). Resumen por asignatura:
+136 objetivos y 2.256 desafíos (115 con audio en inglés). Resumen por asignatura:
 
 | Asignatura | Cursos | OA | Desafíos |
 |---|---|---|---|
 | Matemática | 1° básico a 4° medio | 37 | 680 |
-| Lenguaje y Comunicación | 1° básico a 8° básico | 21 | 332 |
+| Lenguaje y Comunicación | 1° básico a 4° medio | 33 | 514 |
 | Ciencias Naturales | 1° básico a 4° medio | 38 | 599 |
 | Inglés | 1° básico a 4° medio | 28 | 463 |
-
-Registrados en `herramientas/objetivos.py` y aún sin desafíos (12): 1°M Len OA 3, 1°M Len OA 4, 1°M Len OA 9, 2°M Len OA 3, 2°M Len OA 9, 2°M Len OA 18, 3°M Len LELI OAC 01, 3°M Len LELI OAC 03, 3°M Len LELI OAC 05, 4°M Len LELI OAC 01, 4°M Len LELI OAC 03, 4°M Len LELI OAC 04.
 
 ### Matemática
 
@@ -156,6 +154,18 @@ Registrados en `herramientas/objetivos.py` y aún sin desafíos (12): 1°M Len O
 | 7° básico | [OA 4](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/70383:LE07-OA-04) | Lectura | 16 | verificado | 5° Len OA 4 |
 | 8° básico | [OA 3](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/lengua-literatura/8-basico) | Lectura | 17 | verificado | 7° Len OA 3 |
 | 8° básico | [OA 4](https://www.curriculumnacional.cl/614/w3-article-70416.html) | Lectura | 17 | verificado | 7° Len OA 4 |
+| 1° medio | [OA 3](https://www.curriculumnacional.cl/614/w3-article-80943.html) | Lectura | 15 | verificado | 8° Len OA 3 |
+| 1° medio | [OA 4](https://www.curriculumnacional.cl/614/w3-article-80944.html) | Lectura | 15 | verificado | 8° Len OA 4 |
+| 1° medio | [OA 9](https://www.curriculumnacional.cl/614/w3-article-80949.html) | Lectura | 15 | verificado | — |
+| 2° medio | [OA 3](https://www.curriculumnacional.cl/docentes/Educacion-General/Lengua-y-literatura-2-Medio/LE2M-OA-03/80975:LE2M-OA-03) | Lectura | 15 | verificado | 1°M Len OA 3 |
+| 2° medio | [OA 9](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/80981:LE2M-OA-09) | Lectura | 15 | verificado | 1°M Len OA 9 |
+| 2° medio | [OA 18](https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Escritura-Produccion/80990:LE2M-OA-18) | Escritura | 15 | verificado | — |
+| 3° medio | [FG-LELI-3M-OAC-01](https://www.curriculumnacional.cl/portal/Ejes/Lengua-y-literatura/Comprension/91136:FG-LELI-3M-OAC-01) | Comprensión | 15 | verificado | 2°M Len OA 3, 1°M Len OA 4 |
+| 3° medio | [FG-LELI-3M-OAC-03](https://www.curriculumnacional.cl/614/w3-article-91138.html) | Comprensión | 15 | verificado | 2°M Len OA 9 |
+| 3° medio | [FG-LELI-3M-OAC-05](https://www.curriculumnacional.cl/614/w3-article-91140.html) | Comprensión | 15 | verificado | 2°M Len OA 18, 2°M Len OA 9 |
+| 4° medio | [FG-LELI-4M-OAC-01](https://www.curriculumnacional.cl/614/w3-article-91145.html) | Comprensión | 15 | verificado | 3°M Len LELI OAC 01 |
+| 4° medio | [FG-LELI-4M-OAC-03](https://www.curriculumnacional.cl/docentes/Formacion-General/Lengua-y-literatura-4-medio/FG-LELI-4M-OAC-03/91147:FG-LELI-4M-OAC-03) | Comprensión | 15 | verificado | 3°M Len LELI OAC 03 |
+| 4° medio | [FG-LELI-4M-OAC-04](https://www.curriculumnacional.cl/portal/Formacion-General/Lengua-y-literatura-4-medio/FG-LELI-4M-OAC-04/224056:Lengua-y-Literatura-Recursos-ling-isticos-lexico-valorativo-deicticos-verbos-construcciones-oracionales-puntuacion-entre-otras-y-no-ling-isticos-orientados-a-la-coherencia-y-cohesion-textual) | Comprensión | 17 | verificado | 3°M Len LELI OAC 05 |
 
 ### Ciencias Naturales
 
@@ -249,7 +259,7 @@ Mientras estén pendientes, el juego los muestra con la etiqueta «Código por v
 
 ### Qué falta para cubrir los cursos completos
 
-El banco cubre objetivos centrales de cada asignatura de 1° a 8° básico: Números (Matemática), Lectura y
+El banco cubre objetivos centrales de cada asignatura de 1° básico a 4° medio (en 3° y 4° medio, los códigos de las Bases 2019 con formato FG-…-OAC-0n; en Ciencias para la Ciudadanía los módulos son comunes a ambos cursos y aquí se repartieron entre 3° y 4°): Números (Matemática), Lectura y
 Escritura (Lenguaje), los tres ejes de Ciencias Naturales y Comprensión oral, Comprensión de lectura y Expresión
 escrita (Inglés). Faltan, por ejemplo, Geometría, Medición y Datos en Matemática, Comunicación oral en Lenguaje,
 más OA por curso en Ciencias e Inglés, e Historia. Para agregar un OA: registrarlo en `herramientas/objetivos.py`

@@ -391,6 +391,17 @@
       "desafios": 45
     },
     {
+      "archivo": "1_medio/lenguaje.json",
+      "nivel": "1_medio",
+      "asignatura": "lenguaje",
+      "objetivos": [
+        "1_medio.lenguaje.OA3",
+        "1_medio.lenguaje.OA4",
+        "1_medio.lenguaje.OA9"
+      ],
+      "desafios": 45
+    },
+    {
       "archivo": "1_medio/ciencias.json",
       "nivel": "1_medio",
       "asignatura": "ciencias",
@@ -420,6 +431,17 @@
         "2_medio.matematica.OA2",
         "2_medio.matematica.OA4",
         "2_medio.matematica.OA11"
+      ],
+      "desafios": 45
+    },
+    {
+      "archivo": "2_medio/lenguaje.json",
+      "nivel": "2_medio",
+      "asignatura": "lenguaje",
+      "objetivos": [
+        "2_medio.lenguaje.OA3",
+        "2_medio.lenguaje.OA9",
+        "2_medio.lenguaje.OA18"
       ],
       "desafios": 45
     },
@@ -457,6 +479,17 @@
       "desafios": 45
     },
     {
+      "archivo": "3_medio/lenguaje.json",
+      "nivel": "3_medio",
+      "asignatura": "lenguaje",
+      "objetivos": [
+        "3_medio.lenguaje.OA1",
+        "3_medio.lenguaje.OA3",
+        "3_medio.lenguaje.OA5"
+      ],
+      "desafios": 45
+    },
+    {
       "archivo": "3_medio/ciencias.json",
       "nivel": "3_medio",
       "asignatura": "ciencias",
@@ -488,6 +521,17 @@
         "4_medio.matematica.OA3"
       ],
       "desafios": 45
+    },
+    {
+      "archivo": "4_medio/lenguaje.json",
+      "nivel": "4_medio",
+      "asignatura": "lenguaje",
+      "objetivos": [
+        "4_medio.lenguaje.OA1",
+        "4_medio.lenguaje.OA3",
+        "4_medio.lenguaje.OA4"
+      ],
+      "desafios": 47
     },
     {
       "archivo": "4_medio/ciencias.json",
@@ -803,6 +847,15 @@
       ]
     },
     {
+      "id": "1_medio.lenguaje",
+      "nombre": "Lengua y Literatura 1° medio",
+      "objetivos": [
+        "1_medio.lenguaje.OA3",
+        "1_medio.lenguaje.OA4",
+        "1_medio.lenguaje.OA9"
+      ]
+    },
+    {
       "id": "1_medio.ciencias",
       "nombre": "Ciencias Naturales 1° medio",
       "objetivos": [
@@ -827,6 +880,15 @@
         "2_medio.matematica.OA2",
         "2_medio.matematica.OA4",
         "2_medio.matematica.OA11"
+      ]
+    },
+    {
+      "id": "2_medio.lenguaje",
+      "nombre": "Lengua y Literatura 2° medio",
+      "objetivos": [
+        "2_medio.lenguaje.OA3",
+        "2_medio.lenguaje.OA9",
+        "2_medio.lenguaje.OA18"
       ]
     },
     {
@@ -857,6 +919,15 @@
       ]
     },
     {
+      "id": "3_medio.lenguaje",
+      "nombre": "Lengua y Literatura 3° medio",
+      "objetivos": [
+        "3_medio.lenguaje.OA1",
+        "3_medio.lenguaje.OA3",
+        "3_medio.lenguaje.OA5"
+      ]
+    },
+    {
       "id": "3_medio.ciencias",
       "nombre": "Ciencias para la Ciudadanía 3° medio",
       "objetivos": [
@@ -881,6 +952,15 @@
         "4_medio.matematica.OA1",
         "4_medio.matematica.OA2",
         "4_medio.matematica.OA3"
+      ]
+    },
+    {
+      "id": "4_medio.lenguaje",
+      "nombre": "Lengua y Literatura 4° medio",
+      "objetivos": [
+        "4_medio.lenguaje.OA1",
+        "4_medio.lenguaje.OA3",
+        "4_medio.lenguaje.OA4"
       ]
     },
     {

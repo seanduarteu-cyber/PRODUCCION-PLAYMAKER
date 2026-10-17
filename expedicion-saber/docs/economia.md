@@ -65,7 +65,7 @@ Cómo cumple cada meta del diseño:
   en los tres perfiles. El nivel 2 (150) queda como paso intermedio de una a dos sesiones, para que entre la
   primera mejora y la intermedia siempre haya algo cerca.
 - **Las mejoras finales piden dominar un tramo completo.** Juntar 1.800 monedas toma 10 a 12 sesiones, y
-  dominar un tramo (en promedio 2,75 OA) toma 10 a 16. El requisito de tramo manda o empata: la mejora final llega
+  dominar un tramo (en promedio 2,8 OA) toma 10 a 16. El requisito de tramo manda o empata: la mejora final llega
   cuando el jugador domina una asignatura completa de un nivel, y no solo por acumular monedas. Cada mejora final
   adicional del mismo mundo pide un tramo más.
 - **El refuerzo que se ve es el avatar.** No hay ranking ni comparación con otros jugadores, y el avatar está

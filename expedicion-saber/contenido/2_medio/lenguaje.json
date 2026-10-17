@@ -1,0 +1,933 @@
+[
+  {
+    "nivel": "2_medio",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 3: Analizar narraciones considerando conflictos, personajes tipo, símbolos y tópicos literarios, creencias o estereotipos del relato y el efecto de recursos como el flashback o la historia dentro de otra historia.",
+    "dificultad": 9,
+    "prerequisitos": [
+      "1_medio.lenguaje.OA3"
+    ],
+    "id_objetivo": "2_medio.lenguaje.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docentes/Educacion-General/Lengua-y-literatura-2-Medio/LE2M-OA-03/80975:LE2M-OA-03"
+    },
+    "desafios": [
+      {
+        "id": "len2m-oa3-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "texto": "El viejo marinero contaba cada noche la misma historia en el bar del puerto. Pero esa noche, mientras hablaba, recordó de pronto la tormenta de 1970: el mástil partido, el grito de su hermano, el agua helada. Entonces calló, y por primera vez nadie le pidió que siguiera.",
+        "enunciado": "El lugar donde ocurre la historia es el bar del ___.",
+        "alternativas": [
+          "puerto",
+          "campo",
+          "hospital",
+          "colegio"
+        ],
+        "correcta": 0,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "Ocurre en un bar del puerto.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "En la novela, el personaje del abuelo sabio siempre tiene un consejo justo; la madrastra es cruel con la protagonista, y el príncipe llega a tiempo para salvarla.",
+        "enunciado": "¿Qué es un personaje tipo?",
+        "alternativas": [
+          "un personaje sin nombre",
+          "un personaje con rasgos fijos y reconocibles en muchas obras",
+          "el autor de la obra",
+          "un personaje que cambia mucho"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en la madrastra cruel o el príncipe salvador.",
+        "explicacion_error": "Son modelos repetidos con rasgos predecibles.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué es un flashback?",
+        "alternativas": [
+          "el título de un cuento",
+          "un tipo de narrador",
+          "un salto al pasado dentro del relato",
+          "un salto al futuro"
+        ],
+        "correcta": 2,
+        "pista": "Viene del inglés: destello hacia atrás.",
+        "explicacion_error": "Es una retrospección.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "El viejo marinero contaba cada noche la misma historia en el bar del puerto. Pero esa noche, mientras hablaba, recordó de pronto la tormenta de 1970: el mástil partido, el grito de su hermano, el agua helada. Entonces calló, y por primera vez nadie le pidió que siguiera.",
+        "enunciado": "¿Qué recurso narrativo aparece cuando el marinero recuerda la tormenta de 1970?",
+        "alternativas": [
+          "un monólogo teatral",
+          "un flashback o retrospección",
+          "un diálogo",
+          "una carta"
+        ],
+        "correcta": 1,
+        "pista": "La historia salta al pasado.",
+        "explicacion_error": "Recordar un hecho anterior es una retrospección.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-005",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "En la novela, el personaje del abuelo sabio siempre tiene un consejo justo; la madrastra es cruel con la protagonista, y el príncipe llega a tiempo para salvarla.",
+        "enunciado": "¿Es un personaje tipo?",
+        "categorias": [
+          "Personaje tipo",
+          "No necesariamente"
+        ],
+        "elementos": [
+          {
+            "texto": "la madrastra cruel",
+            "categoria": 0
+          },
+          {
+            "texto": "el príncipe salvador",
+            "categoria": 0
+          },
+          {
+            "texto": "el abuelo sabio",
+            "categoria": 0
+          },
+          {
+            "texto": "una vecina con dudas y contradicciones",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los personajes tipo son predecibles.",
+        "explicacion_error": "Madrastra, príncipe y abuelo sabio son tipos; la vecina compleja no.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "En «el mástil partido, el grito de su hermano, el agua helada», ¿qué recurso se usa?",
+        "alternativas": [
+          "diálogo",
+          "enumeración de imágenes",
+          "rima",
+          "pregunta retórica"
+        ],
+        "correcta": 1,
+        "pista": "Hay una serie de elementos separados por comas.",
+        "explicacion_error": "Es una enumeración que reconstruye el recuerdo.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Mientras esperaba el tren, Lucía abrió un libro. En él, un joven escribía cartas a una mujer que nunca respondía. Al final del libro, Lucía encontró una carta escrita a mano, con su propio nombre.",
+        "enunciado": "¿Qué recurso aparece en el cuento?",
+        "alternativas": [
+          "una noticia",
+          "una receta",
+          "una historia dentro de otra historia (relato enmarcado)",
+          "un poema"
+        ],
+        "correcta": 2,
+        "pista": "Lucía lee una historia mientras vive la suya.",
+        "explicacion_error": "La historia del libro está dentro de la de Lucía.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada tópico literario con su idea.",
+        "pares": [
+          [
+            "carpe diem",
+            "aprovechar el momento presente"
+          ],
+          [
+            "tempus fugit",
+            "el tiempo pasa rápido"
+          ],
+          [
+            "ubi sunt",
+            "¿dónde están los que ya no están?"
+          ]
+        ],
+        "pista": "Tópicos clásicos de la literatura.",
+        "explicacion_error": "Carpe diem, tempus fugit y ubi sunt.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-013",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Una creencia simplificada y generalizada sobre un grupo de personas es un ___.",
+        "alternativas": [
+          "flashback",
+          "símbolo",
+          "tópico",
+          "estereotipo"
+        ],
+        "correcta": 3,
+        "pista": "Ej.: «todos los … son …».",
+        "explicacion_error": "Es un estereotipo.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "El viejo marinero contaba cada noche la misma historia en el bar del puerto. Pero esa noche, mientras hablaba, recordó de pronto la tormenta de 1970: el mástil partido, el grito de su hermano, el agua helada. Entonces calló, y por primera vez nadie le pidió que siguiera.",
+        "enunciado": "¿Qué efecto produce el silencio final?",
+        "alternativas": [
+          "muestra que olvidó la historia",
+          "crea humor",
+          "indica que el bar cerró",
+          "sugiere un dolor profundo que el marinero no puede contar"
+        ],
+        "correcta": 3,
+        "pista": "Relaciona el recuerdo con el silencio.",
+        "explicacion_error": "El recuerdo doloroso lo deja sin palabras.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "En un cuento, una llave aparece siempre que la protagonista toma una decisión importante. La llave funciona como…",
+        "alternativas": [
+          "personaje secundario",
+          "símbolo de oportunidad o de cambio",
+          "ambiente físico",
+          "narrador"
+        ],
+        "correcta": 1,
+        "pista": "Un objeto que representa una idea.",
+        "explicacion_error": "La llave simboliza abrir nuevas posibilidades.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-011",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena cronológicamente los hechos del marinero, aunque el relato no siga ese orden.",
+        "elementos": [
+          "La tormenta de 1970.",
+          "Cuenta historias en el bar durante años.",
+          "Esa noche recuerda la tormenta.",
+          "Calla y nadie le pide seguir."
+        ],
+        "pista": "Distingue el orden del relato del orden de los hechos.",
+        "explicacion_error": "Primero la tormenta; luego años de historias, el recuerdo y el silencio.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "En la novela, el personaje del abuelo sabio siempre tiene un consejo justo; la madrastra es cruel con la protagonista, y el príncipe llega a tiempo para salvarla.",
+        "enunciado": "¿Qué estereotipo de género podría cuestionarse en ese relato?",
+        "alternativas": [
+          "que exista una novela",
+          "que la protagonista necesite ser salvada por un príncipe",
+          "que el abuelo dé consejos",
+          "que haya personajes"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en roles fijos por género.",
+        "explicacion_error": "La mujer pasiva salvada por un hombre es un estereotipo.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Mientras esperaba el tren, Lucía abrió un libro. En él, un joven escribía cartas a una mujer que nunca respondía. Al final del libro, Lucía encontró una carta escrita a mano, con su propio nombre.",
+        "enunciado": "¿Qué efecto produce el final?",
+        "alternativas": [
+          "cambia el tema a deportes",
+          "explica todo el misterio",
+          "mezcla la historia leída con la vida de Lucía y genera misterio",
+          "aburre al lector"
+        ],
+        "correcta": 2,
+        "pista": "La carta tiene el nombre de Lucía.",
+        "explicacion_error": "Las dos historias se cruzan y surge el misterio.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "El viejo marinero contaba cada noche la misma historia en el bar del puerto. Pero esa noche, mientras hablaba, recordó de pronto la tormenta de 1970: el mástil partido, el grito de su hermano, el agua helada. Entonces calló, y por primera vez nadie le pidió que siguiera.",
+        "enunciado": "¿Por qué el recuerdo de 1970 aparece justo mientras el marinero cuenta su historia de siempre?",
+        "alternativas": [
+          "para revelar el origen de su dolor y cambiar el sentido de la escena",
+          "para describir el bar",
+          "para presentar a un personaje nuevo",
+          "para hacer reír a los oyentes"
+        ],
+        "correcta": 0,
+        "pista": "Compara la historia repetida con el recuerdo que lo silencia.",
+        "explicacion_error": "El flashback muestra lo que la historia repetida ocultaba.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_medio",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 9: Analizar y evaluar textos argumentativos identificando tesis y argumentos, recursos emocionales, modalizadores y fallas como generalizaciones, estereotipos o descalificaciones personales.",
+    "dificultad": 9,
+    "prerequisitos": [
+      "1_medio.lenguaje.OA9"
+    ],
+    "id_objetivo": "2_medio.lenguaje.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Lectura-Comprension/80981:LE2M-OA-09"
+    },
+    "desafios": [
+      {
+        "id": "len2m-oa9-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Recurso racional o emocional?",
+        "categorias": [
+          "Racional",
+          "Emocional"
+        ],
+        "elementos": [
+          {
+            "texto": "un dato estadístico",
+            "categoria": 0
+          },
+          {
+            "texto": "una cita de un experto",
+            "categoria": 0
+          },
+          {
+            "texto": "una historia conmovedora",
+            "categoria": 1
+          },
+          {
+            "texto": "una imagen de un niño triste",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los racionales apelan a la razón; los emocionales, a los sentimientos.",
+        "explicacion_error": "Datos y expertos son racionales; historias e imágenes que conmueven, emocionales.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-008",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Las palabras que muestran la actitud del emisor, como «quizás» o «sin duda», se llaman ___.",
+        "alternativas": [
+          "modalizadores",
+          "sustantivos",
+          "pronombres",
+          "conectores temporales"
+        ],
+        "correcta": 0,
+        "pista": "Modalizan el enunciado.",
+        "explicacion_error": "Son modalizadores.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-015",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Cuando se presentan solo dos opciones extremas habiendo más, se comete un falso ___.",
+        "alternativas": [
+          "hecho",
+          "símbolo",
+          "dilema",
+          "argumento"
+        ],
+        "correcta": 2,
+        "pista": "«O esto, o aquello».",
+        "explicacion_error": "Es un falso dilema.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-001",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "texto": "Quizás algunos piensen que prohibir los celulares en clases es exagerado. Sin embargo, es indudable que su uso constante afecta la concentración. ¿Acaso queremos generaciones incapaces de prestar atención?",
+        "enunciado": "¿Es un modalizador?",
+        "categorias": [
+          "Modalizador",
+          "No es modalizador"
+        ],
+        "elementos": [
+          {
+            "texto": "quizás",
+            "categoria": 0
+          },
+          {
+            "texto": "es indudable que",
+            "categoria": 0
+          },
+          {
+            "texto": "acaso",
+            "categoria": 0
+          },
+          {
+            "texto": "celulares",
+            "categoria": 1
+          },
+          {
+            "texto": "clases",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los modalizadores muestran la actitud del emisor (certeza, duda).",
+        "explicacion_error": "Quizás, es indudable y acaso muestran actitud; celulares y clases no.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "El concejal propone más ciclovías. Pero claro, ¿qué va a saber de transporte alguien que nunca ha tomado una micro?",
+        "enunciado": "¿Qué falacia aparece?",
+        "alternativas": [
+          "generalización apresurada",
+          "falso dilema",
+          "ad hominem: ataca a la persona y no la propuesta",
+          "apelación a la autoridad"
+        ],
+        "correcta": 2,
+        "pista": "¿Se discuten las ciclovías o al concejal?",
+        "explicacion_error": "Desacredita a la persona en vez de discutir la idea.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-009",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada falacia con su ejemplo.",
+        "pares": [
+          [
+            "generalización apresurada",
+            "Un taxista fue grosero: todos lo son."
+          ],
+          [
+            "apelación a la mayoría",
+            "Millones lo compran: debe ser bueno."
+          ],
+          [
+            "ad hominem",
+            "No le creas, es de otra ciudad."
+          ]
+        ],
+        "pista": "Identifica el error de cada razonamiento.",
+        "explicacion_error": "Generalizar, apelar a la mayoría y atacar a la persona.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Quizás algunos piensen que prohibir los celulares en clases es exagerado. Sin embargo, es indudable que su uso constante afecta la concentración. ¿Acaso queremos generaciones incapaces de prestar atención?",
+        "enunciado": "¿Qué recurso es «¿Acaso queremos generaciones incapaces de prestar atención?»?",
+        "alternativas": [
+          "pregunta retórica con apelación emocional",
+          "definición",
+          "cita de autoridad",
+          "dato estadístico"
+        ],
+        "correcta": 0,
+        "pista": "No espera respuesta; busca conmover.",
+        "explicacion_error": "Es una pregunta retórica que apela a la emoción.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "O apoyamos el nuevo estadio, o la ciudad quedará estancada para siempre.",
+        "enunciado": "¿Qué falacia contiene?",
+        "alternativas": [
+          "pregunta retórica",
+          "falso dilema",
+          "ad hominem",
+          "apelación a la tradición"
+        ],
+        "correcta": 1,
+        "pista": "Presenta solo dos opciones extremas.",
+        "explicacion_error": "Reduce el problema a dos opciones cuando existen más.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena los pasos para evaluar un texto argumentativo.",
+        "elementos": [
+          "Identificar la tesis.",
+          "Reconocer los argumentos.",
+          "Evaluar si la evidencia es suficiente.",
+          "Detectar falacias o recursos emocionales."
+        ],
+        "pista": "De lo general a la evaluación crítica.",
+        "explicacion_error": "Así se evalúa un texto argumentativo.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Quizás algunos piensen que prohibir los celulares en clases es exagerado. Sin embargo, es indudable que su uso constante afecta la concentración. ¿Acaso queremos generaciones incapaces de prestar atención?",
+        "enunciado": "¿Qué expresa «es indudable que»?",
+        "alternativas": [
+          "certeza fuerte del emisor",
+          "humor",
+          "un dato comprobado",
+          "duda"
+        ],
+        "correcta": 0,
+        "pista": "Es un modalizador.",
+        "explicacion_error": "Muestra seguridad, aunque no aporta evidencia.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "«Todos los expertos coinciden en que…», sin nombrar a ninguno. ¿Qué problema tiene?",
+        "alternativas": [
+          "apela a una autoridad vaga e imposible de verificar",
+          "es una pregunta retórica",
+          "es un dato preciso",
+          "no tiene ningún problema"
+        ],
+        "correcta": 0,
+        "pista": "¿Quiénes son esos expertos?",
+        "explicacion_error": "Una autoridad sin identificar no se puede comprobar.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué publicidad usa principalmente un recurso emocional?",
+        "alternativas": [
+          "«Contiene 30 % menos de azúcar»",
+          "«Precio: $1.990»",
+          "«Dale a tu familia la felicidad que merece»",
+          "«Disponible desde el lunes»"
+        ],
+        "correcta": 2,
+        "pista": "Busca la que apela a sentimientos.",
+        "explicacion_error": "Apela al cariño por la familia, no a datos.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "El concejal propone más ciclovías. Pero claro, ¿qué va a saber de transporte alguien que nunca ha tomado una micro?",
+        "enunciado": "¿Cómo se podría reformular para argumentar de manera válida?",
+        "alternativas": [
+          "cambiando de tema",
+          "discutiendo datos sobre si las ciclovías mejoran el transporte",
+          "insultando al concejal con más fuerza",
+          "apoyando sin razones"
+        ],
+        "correcta": 1,
+        "pista": "Enfócate en la propuesta.",
+        "explicacion_error": "Un argumento válido evalúa la propuesta con evidencia.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué modalizador expresa duda y deja abierta la discusión?",
+        "alternativas": [
+          "Evidentemente",
+          "Indiscutiblemente",
+          "Posiblemente",
+          "Sin duda"
+        ],
+        "correcta": 2,
+        "pista": "Busca uno que no sea tajante.",
+        "explicacion_error": "«Posiblemente» expresa duda.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa9-014",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Certeza o duda?",
+        "categorias": [
+          "Certeza",
+          "Duda"
+        ],
+        "elementos": [
+          {
+            "texto": "es evidente que",
+            "categoria": 0
+          },
+          {
+            "texto": "sin lugar a dudas",
+            "categoria": 0
+          },
+          {
+            "texto": "tal vez",
+            "categoria": 1
+          },
+          {
+            "texto": "podría ser que",
+            "categoria": 1
+          }
+        ],
+        "pista": "Fíjate en qué tan seguro está el emisor.",
+        "explicacion_error": "Evidente y sin lugar a dudas expresan certeza; tal vez y podría, duda.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_medio",
+    "asignatura": "lenguaje",
+    "eje": "Escritura",
+    "objetivo_oficial": "OA 18: Escribir correctamente aplicando las reglas de ortografía literal, acentual y puntual (punto, coma, punto y coma, raya, dos puntos, paréntesis, puntos suspensivos y comillas).",
+    "dificultad": 9,
+    "prerequisitos": [],
+    "id_objetivo": "2_medio.lenguaje.OA18",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Lenguaje-y-Comunicacion/Escritura-Produccion/80990:LE2M-OA-18"
+    },
+    "desafios": [
+      {
+        "id": "len2m-oa18-001",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "___ vienes a la fiesta?",
+        "alternativas": [
+          "Cuándo",
+          "¿Cuándo",
+          "Cuando",
+          "¿Cuando"
+        ],
+        "correcta": 1,
+        "pista": "Las palabras interrogativas llevan tilde y signos de apertura.",
+        "explicacion_error": "Se escribe «¿Cuándo vienes…?».",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué oración usa bien la coma vocativa?",
+        "alternativas": [
+          "Martina ven, a almorzar.",
+          "Martina, ven a almorzar.",
+          "Martina ven a, almorzar.",
+          "Martina ven a almorzar,"
+        ],
+        "correcta": 1,
+        "pista": "El vocativo se separa con coma.",
+        "explicacion_error": "«Martina» es vocativo: va separado por coma.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Lleva tilde?",
+        "categorias": [
+          "Lleva tilde",
+          "No lleva tilde"
+        ],
+        "elementos": [
+          {
+            "texto": "canción",
+            "categoria": 0
+          },
+          {
+            "texto": "árbol",
+            "categoria": 0
+          },
+          {
+            "texto": "lápiz",
+            "categoria": 0
+          },
+          {
+            "texto": "examen",
+            "categoria": 1
+          },
+          {
+            "texto": "reloj",
+            "categoria": 1
+          },
+          {
+            "texto": "ciudad",
+            "categoria": 1
+          }
+        ],
+        "pista": "Aguda en n, s o vocal; grave en otra consonante.",
+        "explicacion_error": "Canción (aguda en n), árbol y lápiz (graves en l/z) llevan; examen, reloj y ciudad no.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-004",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Compré tres cosas___ pan, leche y huevos.",
+        "alternativas": [
+          ".",
+          ";",
+          ":",
+          ","
+        ],
+        "correcta": 2,
+        "pista": "Antes de una enumeración anunciada.",
+        "explicacion_error": "Los dos puntos anuncian la enumeración.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Dónde corresponde el punto y coma?",
+        "alternativas": [
+          "Llovía mucho sin embargo; salimos.",
+          "Llovía mucho sin; embargo salimos.",
+          "Llovía; mucho sin embargo, salimos.",
+          "Llovía mucho; sin embargo, salimos."
+        ],
+        "correcta": 3,
+        "pista": "Va antes de conectores como «sin embargo» entre oraciones.",
+        "explicacion_error": "Punto y coma antes de «sin embargo» y coma después.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada signo con su uso.",
+        "pares": [
+          [
+            "comillas",
+            "citar palabras textuales"
+          ],
+          [
+            "paréntesis",
+            "agregar información aclaratoria"
+          ],
+          [
+            "puntos suspensivos",
+            "dejar una idea incompleta o en suspenso"
+          ]
+        ],
+        "pista": "Repasa los signos de puntuación.",
+        "explicacion_error": "Comillas, paréntesis y puntos suspensivos.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué oración cita correctamente las palabras de Ana?",
+        "alternativas": [
+          "Ana dijo, mañana llego temprano».",
+          "Ana dijo: «Mañana llego temprano».",
+          "Ana dijo; Mañana llego temprano.",
+          "Ana dijo (Mañana llego temprano)."
+        ],
+        "correcta": 1,
+        "pista": "Las palabras textuales van entre comillas, tras dos puntos.",
+        "explicacion_error": "Se usan dos puntos y comillas para citar textualmente.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-008",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Correcta o incorrecta?",
+        "categorias": [
+          "Correcta",
+          "Incorrecta"
+        ],
+        "elementos": [
+          {
+            "texto": "Ojalá venga mañana.",
+            "categoria": 0
+          },
+          {
+            "texto": "Él compró té para mí.",
+            "categoria": 0
+          },
+          {
+            "texto": "El llegó tarde.",
+            "categoria": 1
+          },
+          {
+            "texto": "Quiero un te caliente.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Revisa las tildes diacríticas.",
+        "explicacion_error": "«Él» (pronombre) y «té» (bebida) llevan tilde.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué oración tiene la puntuación correcta?",
+        "alternativas": [
+          "Santiago la capital, de Chile tiene muchos cerros.",
+          "Santiago, la capital de Chile tiene, muchos cerros.",
+          "Santiago, la capital de Chile, tiene muchos cerros.",
+          "Santiago la capital de Chile, tiene muchos cerros."
+        ],
+        "correcta": 2,
+        "pista": "La aposición explicativa va entre comas.",
+        "explicacion_error": "«La capital de Chile» explica a Santiago: va entre comas.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-010",
+        "tipo": "completar",
+        "dificultad": 4,
+        "enunciado": "—¿Vienes? ___preguntó Ana.",
+        "alternativas": [
+          "—",
+          "«",
+          ";",
+          "("
+        ],
+        "correcta": 0,
+        "pista": "En los diálogos, la raya introduce el comentario del narrador.",
+        "explicacion_error": "Se usa raya: «—¿Vienes? —preguntó Ana.».",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué palabra está mal escrita?",
+        "alternativas": [
+          "exhibición",
+          "exuberante",
+          "exhuberante",
+          "hierba"
+        ],
+        "correcta": 2,
+        "pista": "Una de ellas lleva una h que no corresponde.",
+        "explicacion_error": "Lo correcto es «exuberante», sin h.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena las palabras para formar una oración con buena puntuación.",
+        "elementos": [
+          "Sin embargo,",
+          "decidimos",
+          "seguir",
+          "caminando."
+        ],
+        "pista": "El conector va al inicio, seguido de coma.",
+        "explicacion_error": "«Sin embargo, decidimos seguir caminando.»",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué lleva tilde «río» si es una palabra grave terminada en vocal?",
+        "alternativas": [
+          "por el hiato: la vocal cerrada tónica lleva tilde",
+          "no debería llevarla",
+          "porque es esdrújula",
+          "porque es aguda"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en las vocales i/o separadas.",
+        "explicacion_error": "Ri-o: hiato con vocal cerrada tónica, lleva tilde.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Cambia el sentido «No, espera» frente a «No espera»?",
+        "alternativas": [
+          "no, significan lo mismo",
+          "solo cambia el tono",
+          "ninguna es correcta",
+          "sí: con coma es una negación seguida de una orden; sin coma dice que alguien no espera"
+        ],
+        "correcta": 3,
+        "pista": "La coma puede cambiar el significado.",
+        "explicacion_error": "La coma separa la negación de la orden y cambia el sentido.",
+        "monedas": 10
+      },
+      {
+        "id": "len2m-oa18-015",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Aguda, grave o esdrújula?",
+        "categorias": [
+          "Aguda",
+          "Grave",
+          "Esdrújula"
+        ],
+        "elementos": [
+          {
+            "texto": "canción",
+            "categoria": 0
+          },
+          {
+            "texto": "reloj",
+            "categoria": 0
+          },
+          {
+            "texto": "lápiz",
+            "categoria": 1
+          },
+          {
+            "texto": "casa",
+            "categoria": 1
+          },
+          {
+            "texto": "rápido",
+            "categoria": 2
+          },
+          {
+            "texto": "música",
+            "categoria": 2
+          }
+        ],
+        "pista": "Busca la sílaba tónica.",
+        "explicacion_error": "Canción y reloj son agudas; lápiz y casa, graves; rápido y música, esdrújulas.",
+        "monedas": 10
+      }
+    ]
+  }
+]

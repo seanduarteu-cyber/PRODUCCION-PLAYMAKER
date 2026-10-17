@@ -84,6 +84,18 @@ flowchart LR
   5_basico_lenguaje_OA4["5° Len OA 4"] --> 7_basico_lenguaje_OA4["7° Len OA 4"]
   7_basico_lenguaje_OA3["7° Len OA 3"] --> 8_basico_lenguaje_OA3["8° Len OA 3"]
   7_basico_lenguaje_OA4["7° Len OA 4"] --> 8_basico_lenguaje_OA4["8° Len OA 4"]
+  8_basico_lenguaje_OA3["8° Len OA 3"] --> 1_medio_lenguaje_OA3["1°M Len OA 3"]
+  8_basico_lenguaje_OA4["8° Len OA 4"] --> 1_medio_lenguaje_OA4["1°M Len OA 4"]
+  1_medio_lenguaje_OA3["1°M Len OA 3"] --> 2_medio_lenguaje_OA3["2°M Len OA 3"]
+  1_medio_lenguaje_OA9["1°M Len OA 9"] --> 2_medio_lenguaje_OA9["2°M Len OA 9"]
+  2_medio_lenguaje_OA3["2°M Len OA 3"] --> 3_medio_lenguaje_OA1["3°M Len LELI OAC 01"]
+  1_medio_lenguaje_OA4["1°M Len OA 4"] --> 3_medio_lenguaje_OA1["3°M Len LELI OAC 01"]
+  2_medio_lenguaje_OA9["2°M Len OA 9"] --> 3_medio_lenguaje_OA3["3°M Len LELI OAC 03"]
+  2_medio_lenguaje_OA18["2°M Len OA 18"] --> 3_medio_lenguaje_OA5["3°M Len LELI OAC 05"]
+  2_medio_lenguaje_OA9["2°M Len OA 9"] --> 3_medio_lenguaje_OA5["3°M Len LELI OAC 05"]
+  3_medio_lenguaje_OA1["3°M Len LELI OAC 01"] --> 4_medio_lenguaje_OA1["4°M Len LELI OAC 01"]
+  3_medio_lenguaje_OA3["3°M Len LELI OAC 03"] --> 4_medio_lenguaje_OA3["4°M Len LELI OAC 03"]
+  3_medio_lenguaje_OA5["3°M Len LELI OAC 05"] --> 4_medio_lenguaje_OA4["4°M Len LELI OAC 04"]
 ```
 
 #### Ciencias Naturales

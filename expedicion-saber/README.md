@@ -4,10 +4,11 @@ Videojuego educativo basado en las Bases Curriculares del Mineduc. El jugador re
 gana monedas y las gasta en mejorar su avatar. No hay ranking, ni competencia con otros jugadores, ni tiempo
 que castigue: el refuerzo es ver crecer el avatar.
 
-**Estado:** Matemática, Lenguaje, Ciencias Naturales e Inglés de 1° a 8° básico (88 OA, 1.534 desafíos; los de
-Inglés con audio en inglés). Los tres mundos son jugables, cada uno con su avatar de 5 espacios × 5 niveles:
-Valle Bloque (bloques, estética voxel), Isla Brinco (plataformas) y Ciudad Voltia (héroes de cómic, con colores
-del traje a elección).
+**Estado:** Matemática, Lenguaje (Lengua y Literatura en media), Ciencias (Ciencias para la Ciudadanía en 3° y 4°
+medio) e Inglés de 1° básico a 4° medio: 136 OA y 2.256 desafíos, los de Inglés con audio en inglés. Los tres
+mundos son jugables, cada uno con su avatar de 5 espacios × 5 niveles: Valle Bloque (bloques, estética voxel),
+Isla Brinco (plataformas) y Ciudad Voltia (héroes de cómic, con colores del traje a elección, cuerda gancho y
+balanceo entre edificios).
 
 ## Cómo jugar en local
 

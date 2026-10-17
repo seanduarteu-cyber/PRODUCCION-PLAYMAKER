@@ -1,0 +1,881 @@
+[
+  {
+    "nivel": "1_medio",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 3: Analizar narraciones considerando el conflicto, los personajes y sus relaciones, la relación de un fragmento con la obra y el efecto de narrar en primera o tercera persona.",
+    "dificultad": 8,
+    "prerequisitos": [
+      "8_basico.lenguaje.OA3"
+    ],
+    "id_objetivo": "1_medio.lenguaje.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-80943.html"
+    },
+    "desafios": [
+      {
+        "id": "len1m-oa3-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Desde que cerraron la mina, mi padre se sienta cada tarde frente a la ventana. No habla. Yo le llevo el té y él me da las gracias con un gesto. Mi madre dice que está pensando; yo creo que está esperando algo que ya no va a volver.",
+        "enunciado": "¿En qué persona está narrado el texto?",
+        "alternativas": [
+          "primera persona",
+          "no tiene narrador",
+          "tercera persona",
+          "segunda persona"
+        ],
+        "correcta": 0,
+        "pista": "Fíjate en «mi padre», «yo le llevo».",
+        "explicacion_error": "El narrador participa y dice «yo»: primera persona.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Clara y su hermana Inés no se hablaban desde el funeral de su abuela. Cuando el notario leyó el testamento, ambas descubrieron que la casa del lago quedaba para las dos, con una condición: debían pasar juntas un verano entero allí.",
+        "enunciado": "¿Quiénes son los personajes principales?",
+        "alternativas": [
+          "Clara e Inés",
+          "Clara y el notario",
+          "Inés y su madre",
+          "el notario y la abuela"
+        ],
+        "correcta": 0,
+        "pista": "Busca a quienes vive el conflicto.",
+        "explicacion_error": "Las hermanas Clara e Inés.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-015",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "El narrador que cuenta la historia como uno de sus personajes es un narrador ___.",
+        "alternativas": [
+          "omnisciente",
+          "protagonista",
+          "ausente",
+          "objetivo"
+        ],
+        "correcta": 1,
+        "pista": "Narra en primera persona su propia historia.",
+        "explicacion_error": "Es narrador protagonista.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Desde que cerraron la mina, mi padre se sienta cada tarde frente a la ventana. No habla. Yo le llevo el té y él me da las gracias con un gesto. Mi madre dice que está pensando; yo creo que está esperando algo que ya no va a volver.",
+        "enunciado": "¿Cuál es el conflicto principal?",
+        "alternativas": [
+          "el padre no logra superar el cierre de la mina",
+          "el narrador no quiere llevar el té",
+          "la madre quiere mudarse",
+          "la ventana está rota"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué cambió en la vida del padre?",
+        "explicacion_error": "El cierre de la mina afecta profundamente al padre.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "texto": "Clara y su hermana Inés no se hablaban desde el funeral de su abuela. Cuando el notario leyó el testamento, ambas descubrieron que la casa del lago quedaba para las dos, con una condición: debían pasar juntas un verano entero allí.",
+        "enunciado": "La relación entre las hermanas al comienzo es de ___.",
+        "alternativas": [
+          "complicidad",
+          "distanciamiento",
+          "admiración",
+          "alegría"
+        ],
+        "correcta": 1,
+        "pista": "«No se hablaban».",
+        "explicacion_error": "No se hablaban: hay distanciamiento.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "El inspector Rojas observó la habitación: la ventana abierta, el reloj detenido a las tres y una taza de café todavía tibia. Nadie había entrado ni salido, según el portero. Rojas sonrió: el portero mentía.",
+        "enunciado": "¿Qué tipo de narrador tiene este fragmento?",
+        "alternativas": [
+          "primera persona protagonista",
+          "tercera persona",
+          "segunda persona",
+          "primera persona testigo"
+        ],
+        "correcta": 1,
+        "pista": "El narrador habla de «Rojas».",
+        "explicacion_error": "Narra desde fuera: tercera persona.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Clara y su hermana Inés no se hablaban desde el funeral de su abuela. Cuando el notario leyó el testamento, ambas descubrieron que la casa del lago quedaba para las dos, con una condición: debían pasar juntas un verano entero allí.",
+        "enunciado": "¿Qué función cumple la condición del testamento en la historia?",
+        "alternativas": [
+          "obliga a las hermanas a enfrentar su conflicto",
+          "resuelve el conflicto de inmediato",
+          "describe el lago",
+          "presenta a un nuevo personaje"
+        ],
+        "correcta": 0,
+        "pista": "¿Qué provocará pasar un verano juntas?",
+        "explicacion_error": "La condición las obliga a convivir y enfrentar su distancia.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Clara y su hermana Inés no se hablaban desde el funeral de su abuela. Cuando el notario leyó el testamento, ambas descubrieron que la casa del lago quedaba para las dos, con una condición: debían pasar juntas un verano entero allí.",
+        "enunciado": "¿Qué tipo de conflicto viven Clara e Inés?",
+        "alternativas": [
+          "un conflicto con la tecnología",
+          "un conflicto con la naturaleza",
+          "un conflicto entre personajes",
+          "no hay conflicto"
+        ],
+        "correcta": 2,
+        "pista": "El problema está en la relación entre ellas.",
+        "explicacion_error": "Es un conflicto interpersonal, entre las hermanas.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "texto": "El inspector Rojas observó la habitación: la ventana abierta, el reloj detenido a las tres y una taza de café todavía tibia. Nadie había entrado ni salido, según el portero. Rojas sonrió: el portero mentía.",
+        "enunciado": "¿Es un indicio para el inspector o no?",
+        "categorias": [
+          "Indicio",
+          "Dato sin importancia aparente"
+        ],
+        "elementos": [
+          {
+            "texto": "la taza de café tibia",
+            "categoria": 0
+          },
+          {
+            "texto": "el reloj detenido a las tres",
+            "categoria": 0
+          },
+          {
+            "texto": "la ventana abierta",
+            "categoria": 0
+          },
+          {
+            "texto": "el nombre del inspector",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los indicios ayudan a resolver el misterio.",
+        "explicacion_error": "La taza tibia, el reloj y la ventana son indicios; el nombre no.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Desde que cerraron la mina, mi padre se sienta cada tarde frente a la ventana. No habla. Yo le llevo el té y él me da las gracias con un gesto. Mi madre dice que está pensando; yo creo que está esperando algo que ya no va a volver.",
+        "enunciado": "¿Qué efecto produce narrar en primera persona en este relato?",
+        "alternativas": [
+          "hace el relato más objetivo",
+          "permite conocer los pensamientos del padre",
+          "elimina las emociones",
+          "transmite la mirada íntima y la preocupación del hijo"
+        ],
+        "correcta": 3,
+        "pista": "El narrador interpreta lo que ve.",
+        "explicacion_error": "La primera persona muestra la interpretación emocional del hijo.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Este fragmento pertenece al capítulo final de una novela. Tomás, el protagonista que había huido de su pueblo al comienzo, vuelve y encuentra la plaza vacía. «Todo es igual», piensa, «solo yo cambié».",
+        "enunciado": "¿Qué revela la frase «solo yo cambié» en relación con la obra completa?",
+        "alternativas": [
+          "que la novela empieza ahí",
+          "que Tomás nunca salió",
+          "la transformación del protagonista a lo largo de la novela",
+          "que el pueblo se modernizó"
+        ],
+        "correcta": 2,
+        "pista": "Relaciona el final con el comienzo (la huida).",
+        "explicacion_error": "El fragmento final muestra cómo cambió Tomás desde su huida.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "texto": "Este fragmento pertenece al capítulo final de una novela. Tomás, el protagonista que había huido de su pueblo al comienzo, vuelve y encuentra la plaza vacía. «Todo es igual», piensa, «solo yo cambié».",
+        "enunciado": "Ordena los momentos de la historia de Tomás.",
+        "elementos": [
+          "Tomás huye de su pueblo.",
+          "Vive fuera mucho tiempo.",
+          "Vuelve al pueblo.",
+          "Reconoce que él cambió."
+        ],
+        "pista": "El fragmento alude al comienzo y al final.",
+        "explicacion_error": "Huida, ausencia, regreso y reconocimiento.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "El inspector Rojas observó la habitación: la ventana abierta, el reloj detenido a las tres y una taza de café todavía tibia. Nadie había entrado ni salido, según el portero. Rojas sonrió: el portero mentía.",
+        "enunciado": "¿Por qué Rojas concluye que el portero mentía?",
+        "alternativas": [
+          "porque el reloj funcionaba",
+          "porque el café tibio muestra que alguien estuvo ahí hace poco",
+          "porque el portero sonrió",
+          "porque la ventana estaba cerrada"
+        ],
+        "correcta": 1,
+        "pista": "Relaciona la taza tibia con «nadie había entrado».",
+        "explicacion_error": "Si el café seguía tibio, alguien había estado recién.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-013",
+        "tipo": "emparejar",
+        "dificultad": 5,
+        "enunciado": "Une cada elemento narrativo con su ejemplo de los textos.",
+        "pares": [
+          [
+            "conflicto interno",
+            "el padre que espera algo que no volverá"
+          ],
+          [
+            "conflicto entre personajes",
+            "las hermanas que no se hablan"
+          ],
+          [
+            "indicio",
+            "el café todavía tibio"
+          ]
+        ],
+        "pista": "Repasa los tres primeros textos.",
+        "explicacion_error": "Conflicto interno, entre personajes e indicio.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Si el texto de la mina estuviera narrado por un narrador omnisciente, ¿qué podría agregar?",
+        "alternativas": [
+          "nada, sería idéntico",
+          "lo que piensa y siente el padre por dentro",
+          "solo los diálogos",
+          "la opinión del lector"
+        ],
+        "correcta": 1,
+        "pista": "El omnisciente conoce los pensamientos de todos.",
+        "explicacion_error": "Podría revelar la interioridad del padre.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_medio",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 4: Analizar poemas considerando sus símbolos, la actitud del hablante, el efecto del lenguaje figurado y la relación entre forma y significado.",
+    "dificultad": 8,
+    "prerequisitos": [
+      "8_basico.lenguaje.OA4"
+    ],
+    "id_objetivo": "1_medio.lenguaje.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-80944.html"
+    },
+    "desafios": [
+      {
+        "id": "len1m-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Mi casa es un barco / anclado en la ladera, / cuando sopla el viento / sueña que navega.",
+        "enunciado": "¿Qué figura literaria hay en «Mi casa es un barco»?",
+        "alternativas": [
+          "metáfora",
+          "comparación",
+          "anáfora",
+          "hipérbole"
+        ],
+        "correcta": 0,
+        "pista": "Identifica dos cosas sin «como».",
+        "explicacion_error": "Identifica casa y barco sin nexo: metáfora.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Comparación o metáfora?",
+        "categorias": [
+          "Comparación",
+          "Metáfora"
+        ],
+        "elementos": [
+          {
+            "texto": "tus ojos son como luceros",
+            "categoria": 0
+          },
+          {
+            "texto": "ligero como una pluma",
+            "categoria": 0
+          },
+          {
+            "texto": "tus ojos son luceros",
+            "categoria": 1
+          },
+          {
+            "texto": "la vida es un río",
+            "categoria": 1
+          }
+        ],
+        "pista": "La comparación usa «como».",
+        "explicacion_error": "Con «como» es comparación; sin nexo, metáfora.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-014",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La persona que «habla» en un poema se llama hablante ___.",
+        "alternativas": [
+          "lírico",
+          "narrador",
+          "dramático",
+          "omnisciente"
+        ],
+        "correcta": 0,
+        "pista": "No es el autor.",
+        "explicacion_error": "Es el hablante lírico.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Mi casa es un barco / anclado en la ladera, / cuando sopla el viento / sueña que navega.",
+        "enunciado": "«Sueña que navega» atribuye a la casa una acción humana. Es una…",
+        "alternativas": [
+          "personificación",
+          "hipérbole",
+          "antítesis",
+          "aliteración"
+        ],
+        "correcta": 0,
+        "pista": "Soñar es propio de seres vivos.",
+        "explicacion_error": "Dar cualidades humanas a un objeto es personificar.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Cayó la última hoja / del aromo del patio, / y mi abuela, en silencio, / guardó su delantal.",
+        "enunciado": "¿Qué podría simbolizar «la última hoja» del árbol?",
+        "alternativas": [
+          "el comienzo de la primavera",
+          "el final de una etapa o de una vida",
+          "un día de sol",
+          "la alegría de una fiesta"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en el otoño y en la abuela.",
+        "explicacion_error": "La última hoja sugiere un final, un cierre.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-013",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 2,
+        "enunciado": "Ordena los versos para reconstruir la estrofa.",
+        "elementos": [
+          "Mi casa es un barco",
+          "anclado en la ladera,",
+          "cuando sopla el viento",
+          "sueña que navega."
+        ],
+        "pista": "Sigue el sentido del poema.",
+        "explicacion_error": "Así se lee la estrofa original.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-005",
+        "tipo": "completar",
+        "dificultad": 3,
+        "texto": "Cayó la última hoja / del aromo del patio, / y mi abuela, en silencio, / guardó su delantal.",
+        "enunciado": "El hablante lírico del poema observa a su ___.",
+        "alternativas": [
+          "hermana",
+          "abuela",
+          "madre",
+          "vecina"
+        ],
+        "correcta": 1,
+        "pista": "Busca el personaje mencionado.",
+        "explicacion_error": "El hablante observa a su abuela.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Ruge el río, ronco y rojo, / rompe rocas sin reposo.",
+        "enunciado": "¿Qué recurso sonoro predomina?",
+        "alternativas": [
+          "pregunta retórica",
+          "aliteración (repetición del sonido r)",
+          "rima asonante en a",
+          "anáfora"
+        ],
+        "correcta": 1,
+        "pista": "Escucha qué sonido se repite.",
+        "explicacion_error": "La repetición de la r imita la fuerza del río.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "No quiero tu oro, / no quiero tu plata, / quiero tu risa / cuando el día acaba.",
+        "enunciado": "¿Qué figura se repite al inicio de los versos «No quiero…»?",
+        "alternativas": [
+          "hipérbole",
+          "onomatopeya",
+          "anáfora",
+          "metáfora"
+        ],
+        "correcta": 2,
+        "pista": "Repetición al comienzo de versos.",
+        "explicacion_error": "Repetir al inicio de versos es anáfora.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Mi casa es un barco / anclado en la ladera, / cuando sopla el viento / sueña que navega.",
+        "enunciado": "¿Qué actitud tiene el hablante hacia su casa?",
+        "alternativas": [
+          "de miedo",
+          "afectiva e imaginativa: la ve como algo vivo que desea viajar",
+          "indiferente",
+          "de rechazo"
+        ],
+        "correcta": 1,
+        "pista": "Fíjate en cómo la describe.",
+        "explicacion_error": "La personifica con cariño y fantasía.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Ruge el río, ronco y rojo, / rompe rocas sin reposo.",
+        "enunciado": "¿Qué efecto produce ese recurso sonoro?",
+        "alternativas": [
+          "imita el ruido fuerte y violento del río",
+          "crea humor",
+          "describe colores suaves",
+          "hace el poema más silencioso"
+        ],
+        "correcta": 0,
+        "pista": "Relaciona forma y significado.",
+        "explicacion_error": "La r repetida suena áspera, como el río.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-012",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada elemento del poema con su función.",
+        "pares": [
+          [
+            "hablante lírico",
+            "voz que expresa el poema"
+          ],
+          [
+            "objeto lírico",
+            "aquello sobre lo que habla"
+          ],
+          [
+            "temple de ánimo",
+            "estado emocional del hablante"
+          ]
+        ],
+        "pista": "Conceptos de la poesía.",
+        "explicacion_error": "Hablante, objeto y temple de ánimo.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Cayó la última hoja / del aromo del patio, / y mi abuela, en silencio, / guardó su delantal.",
+        "enunciado": "¿Qué relación hay entre la hoja que cae y el gesto de la abuela?",
+        "alternativas": [
+          "la abuela barre la hoja",
+          "no tienen relación",
+          "ambos sugieren un cierre o despedida silenciosa",
+          "la hoja cae sobre el delantal"
+        ],
+        "correcta": 2,
+        "pista": "Busca un paralelo entre naturaleza y persona.",
+        "explicacion_error": "Los dos versos finales reflejan el mismo sentido de final.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "No quiero tu oro, / no quiero tu plata, / quiero tu risa / cuando el día acaba.",
+        "enunciado": "¿Qué valor expresa el hablante?",
+        "alternativas": [
+          "le gusta la noche",
+          "prefiere el oro",
+          "valora más el afecto que la riqueza",
+          "no quiere a nadie"
+        ],
+        "correcta": 2,
+        "pista": "Contrasta lo que no quiere con lo que sí.",
+        "explicacion_error": "Rechaza el oro y la plata y prefiere la risa del otro.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa4-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué decimos que la forma de P3 («Ruge el río…») refuerza su significado?",
+        "alternativas": [
+          "porque no tiene verbos",
+          "porque los sonidos repetidos imitan lo que describen",
+          "porque es muy largo",
+          "porque rima con el título"
+        ],
+        "correcta": 1,
+        "pista": "Forma = sonidos; significado = un río violento.",
+        "explicacion_error": "Los sonidos ásperos reproducen la fuerza del río.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_medio",
+    "asignatura": "lenguaje",
+    "eje": "Lectura",
+    "objetivo_oficial": "OA 9: Analizar y evaluar textos argumentativos (columnas, cartas, discursos, ensayos): tesis, argumentos que la sostienen, diferencia entre hecho y opinión y suficiencia de la evidencia.",
+    "dificultad": 8,
+    "prerequisitos": [],
+    "id_objetivo": "1_medio.lenguaje.OA9",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-80949.html"
+    },
+    "desafios": [
+      {
+        "id": "len1m-oa9-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Los colegios deberían tener más áreas verdes. Diversos estudios muestran que el contacto con la naturaleza reduce el estrés y mejora la concentración. Además, los patios de cemento se calientan demasiado en verano. Invertir en árboles es invertir en aprendizaje.",
+        "enunciado": "¿Cuál es la tesis del texto?",
+        "alternativas": [
+          "Los estudios son aburridos.",
+          "Los colegios deberían tener más áreas verdes.",
+          "En verano hace calor.",
+          "Los patios de cemento son baratos."
+        ],
+        "correcta": 1,
+        "pista": "La tesis es la postura que se defiende.",
+        "explicacion_error": "La primera oración plantea la postura.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Hecho u opinión?",
+        "categorias": [
+          "Hecho",
+          "Opinión"
+        ],
+        "elementos": [
+          {
+            "texto": "Chile tiene 16 regiones.",
+            "categoria": 0
+          },
+          {
+            "texto": "El agua hierve a 100 °C a nivel del mar.",
+            "categoria": 0
+          },
+          {
+            "texto": "El invierno es la mejor estación.",
+            "categoria": 1
+          },
+          {
+            "texto": "Las series de hoy son aburridas.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Un hecho se puede comprobar.",
+        "explicacion_error": "Las regiones y la ebullición se comprueban; lo demás es opinión.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-008",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La idea que un texto argumentativo defiende se llama ___.",
+        "alternativas": [
+          "ejemplo",
+          "conclusión",
+          "título",
+          "tesis"
+        ],
+        "correcta": 3,
+        "pista": "Es la postura del emisor.",
+        "explicacion_error": "La postura central es la tesis.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Los colegios deberían tener más áreas verdes. Diversos estudios muestran que el contacto con la naturaleza reduce el estrés y mejora la concentración. Además, los patios de cemento se calientan demasiado en verano. Invertir en árboles es invertir en aprendizaje.",
+        "enunciado": "¿Qué argumento usa el autor?",
+        "alternativas": [
+          "el contacto con la naturaleza reduce el estrés",
+          "los colegios son grandes",
+          "los árboles son caros",
+          "a los alumnos les gusta el cemento"
+        ],
+        "correcta": 0,
+        "pista": "Busca las razones que apoyan la tesis.",
+        "explicacion_error": "Cita estudios sobre el estrés y la concentración.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Los colegios deberían tener más áreas verdes. Diversos estudios muestran que el contacto con la naturaleza reduce el estrés y mejora la concentración. Además, los patios de cemento se calientan demasiado en verano. Invertir en árboles es invertir en aprendizaje.",
+        "enunciado": "¿Qué conector usa el autor para agregar un argumento?",
+        "alternativas": [
+          "Por lo tanto",
+          "Aunque",
+          "Además",
+          "Sin embargo"
+        ],
+        "correcta": 2,
+        "pista": "Busca una palabra que sume ideas.",
+        "explicacion_error": "«Además» agrega un nuevo argumento.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Los colegios deberían tener más áreas verdes. Diversos estudios muestran que el contacto con la naturaleza reduce el estrés y mejora la concentración. Además, los patios de cemento se calientan demasiado en verano. Invertir en árboles es invertir en aprendizaje.",
+        "enunciado": "¿Cuál es la conclusión del texto sobre las áreas verdes?",
+        "alternativas": [
+          "Los patios de cemento son útiles.",
+          "El verano es largo.",
+          "Los estudios son caros.",
+          "Invertir en árboles es invertir en aprendizaje."
+        ],
+        "correcta": 3,
+        "pista": "Busca la última oración.",
+        "explicacion_error": "Cierra relacionando árboles y aprendizaje.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Los colegios deberían tener más áreas verdes. Diversos estudios muestran que el contacto con la naturaleza reduce el estrés y mejora la concentración. Además, los patios de cemento se calientan demasiado en verano. Invertir en árboles es invertir en aprendizaje.",
+        "enunciado": "¿Qué tipo de argumento es «diversos estudios muestran…»?",
+        "alternativas": [
+          "de autoridad o evidencia científica",
+          "emocional",
+          "de analogía",
+          "de experiencia personal"
+        ],
+        "correcta": 0,
+        "pista": "Se apoya en investigaciones.",
+        "explicacion_error": "Recurre a estudios como evidencia.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada texto argumentativo con su característica.",
+        "pares": [
+          [
+            "columna de opinión",
+            "texto firmado en un diario"
+          ],
+          [
+            "carta al director",
+            "lector que opina en un medio"
+          ],
+          [
+            "discurso",
+            "texto oral ante un público"
+          ]
+        ],
+        "pista": "Géneros argumentativos.",
+        "explicacion_error": "Columna, carta al director y discurso.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena la estructura de un texto argumentativo.",
+        "elementos": [
+          "Introducción con la tesis",
+          "Argumentos que la sostienen",
+          "Contraargumento y respuesta",
+          "Conclusión"
+        ],
+        "pista": "Primero la postura y al final el cierre.",
+        "explicacion_error": "Introducción, argumentos, contraargumento y conclusión.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Mi vecino dice que el reciclaje no sirve porque todo termina en el mismo camión. Yo lo vi una vez, así que debe ser verdad en todas las comunas.",
+        "enunciado": "¿Cuál es el problema de este razonamiento?",
+        "alternativas": [
+          "no tiene opinión",
+          "cita a un experto",
+          "generaliza a partir de un solo caso",
+          "usa demasiadas estadísticas"
+        ],
+        "correcta": 2,
+        "pista": "¿Una sola observación prueba algo para todas las comunas?",
+        "explicacion_error": "Es una generalización apresurada: un caso no basta.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué conector introduce un contraargumento?",
+        "alternativas": [
+          "Por lo tanto,",
+          "Además,",
+          "En primer lugar,",
+          "Sin embargo, algunos sostienen que…"
+        ],
+        "correcta": 3,
+        "pista": "Busca un conector de oposición.",
+        "explicacion_error": "«Sin embargo» introduce una idea contraria.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué argumento es más suficiente para defender que «el uniforme reduce la discriminación»?",
+        "alternativas": [
+          "mi amigo cree que es así",
+          "a mí me gusta el uniforme",
+          "los uniformes son azules",
+          "un estudio en 50 colegios que compara casos antes y después del uniforme"
+        ],
+        "correcta": 3,
+        "pista": "Busca evidencia amplia.",
+        "explicacion_error": "Un estudio comparativo es evidencia más suficiente.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Mi vecino dice que el reciclaje no sirve porque todo termina en el mismo camión. Yo lo vi una vez, así que debe ser verdad en todas las comunas.",
+        "enunciado": "¿Qué evidencia haría más sólida la opinión del vecino?",
+        "alternativas": [
+          "repetir la idea más fuerte",
+          "una foto de un camión",
+          "datos oficiales sobre el destino del reciclaje en varias comunas",
+          "que más vecinos opinen lo mismo"
+        ],
+        "correcta": 2,
+        "pista": "Busca evidencia suficiente y confiable.",
+        "explicacion_error": "Se necesitan datos amplios y confiables.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En «Es evidente que todos los jóvenes prefieren las redes sociales a los libros», ¿qué palabra debilita el argumento?",
+        "alternativas": [
+          "jóvenes",
+          "libros",
+          "todos",
+          "redes"
+        ],
+        "correcta": 2,
+        "pista": "Busca una generalización.",
+        "explicacion_error": "«Todos» generaliza sin evidencia.",
+        "monedas": 10
+      },
+      {
+        "id": "len1m-oa9-014",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 5,
+        "enunciado": "¿Argumento válido o falacia?",
+        "categorias": [
+          "Argumento válido",
+          "Falacia"
+        ],
+        "elementos": [
+          {
+            "texto": "Según el INE, el desempleo bajó 2 puntos.",
+            "categoria": 0
+          },
+          {
+            "texto": "La medida redujo los accidentes en un 30 %.",
+            "categoria": 0
+          },
+          {
+            "texto": "No le creas: es muy joven.",
+            "categoria": 1
+          },
+          {
+            "texto": "Si todos lo hacen, debe estar bien.",
+            "categoria": 1
+          }
+        ],
+        "pista": "Las falacias atacan a la persona o apelan a la mayoría.",
+        "explicacion_error": "Los datos son argumentos; atacar al hablante o apelar a «todos» son falacias.",
+        "monedas": 10
+      }
+    ]
+  }
+]

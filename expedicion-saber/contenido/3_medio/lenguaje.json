@@ -1,0 +1,894 @@
+[
+  {
+    "nivel": "3_medio",
+    "asignatura": "lenguaje",
+    "eje": "Comprensión",
+    "objetivo_oficial": "FG-LELI-3M-OAC-01: Formular interpretaciones literarias considerando cómo los recursos literarios (narrador, personajes, tópicos, figuras) construyen el sentido de la obra y sus relaciones intertextuales.",
+    "dificultad": 10,
+    "prerequisitos": [
+      "2_medio.lenguaje.OA3",
+      "1_medio.lenguaje.OA4"
+    ],
+    "id_objetivo": "3_medio.lenguaje.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Lengua-y-literatura/Comprension/91136:FG-LELI-3M-OAC-01",
+      "codigo_oficial": "FG-LELI-3M-OAC-01"
+    },
+    "desafios": [
+      {
+        "id": "len3m-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Cada noche, la tejedora deshacía lo que había tejido durante el día. Los pretendientes esperaban en el salón, impacientes. Ella sonreía: mientras el manto no estuviera terminado, nadie podría obligarla a elegir.",
+        "enunciado": "¿Qué hace la tejedora cada noche?",
+        "alternativas": [
+          "vende el manto",
+          "teje más rápido",
+          "deshace lo que tejió durante el día",
+          "invita a los pretendientes"
+        ],
+        "correcta": 2,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "Deshace su tejido cada noche.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "El reloj de la estación marcaba siempre las seis y diez. Nadie lo arreglaba. Los viajeros lo miraban por costumbre y luego miraban sus teléfonos. Solo el viejo jefe de estación seguía creyendo que, algún día, la hora volvería a ser verdad.",
+        "enunciado": "¿Qué hora marca siempre el reloj?",
+        "alternativas": [
+          "las seis y diez",
+          "ninguna",
+          "las doce",
+          "las tres y media"
+        ],
+        "correcta": 0,
+        "pista": "Busca la primera oración.",
+        "explicacion_error": "Marca las seis y diez.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué es un símbolo en literatura?",
+        "alternativas": [
+          "el nombre del autor",
+          "el título de un libro",
+          "un elemento concreto que representa una idea abstracta",
+          "un tipo de rima"
+        ],
+        "correcta": 2,
+        "pista": "Ej.: una paloma representa la paz.",
+        "explicacion_error": "Un símbolo representa una idea.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-007",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Recurso narrativo o recurso lírico?",
+        "categorias": [
+          "Narrativo",
+          "Lírico"
+        ],
+        "elementos": [
+          {
+            "texto": "narrador",
+            "categoria": 0
+          },
+          {
+            "texto": "personajes",
+            "categoria": 0
+          },
+          {
+            "texto": "tiempo del relato",
+            "categoria": 0
+          },
+          {
+            "texto": "hablante lírico",
+            "categoria": 1
+          },
+          {
+            "texto": "verso y rima",
+            "categoria": 1
+          }
+        ],
+        "pista": "Narrativa: narrador y personajes; lírica: hablante y verso.",
+        "explicacion_error": "Narrador, personajes y tiempo son narrativos; hablante y verso, líricos.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-008",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "La relación de un texto con otros textos se llama ___.",
+        "alternativas": [
+          "polisemia",
+          "intertextualidad",
+          "narración",
+          "rima"
+        ],
+        "correcta": 1,
+        "pista": "Inter-texto.",
+        "explicacion_error": "Es la intertextualidad.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-009",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada tópico literario con un ejemplo.",
+        "pares": [
+          [
+            "amor imposible",
+            "dos amantes de familias enemigas"
+          ],
+          [
+            "viaje del héroe",
+            "un joven que sale de casa y vuelve transformado"
+          ],
+          [
+            "locus amoenus",
+            "un paisaje idealizado y tranquilo"
+          ]
+        ],
+        "pista": "Tópicos frecuentes de la literatura.",
+        "explicacion_error": "Amor imposible, viaje del héroe y lugar ameno.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Cada noche, la tejedora deshacía lo que había tejido durante el día. Los pretendientes esperaban en el salón, impacientes. Ella sonreía: mientras el manto no estuviera terminado, nadie podría obligarla a elegir.",
+        "enunciado": "¿Con qué obra clásica dialoga este relato (intertextualidad)?",
+        "alternativas": [
+          "Caperucita Roja",
+          "la Odisea, por Penélope que teje y desteje esperando a Ulises",
+          "el Quijote",
+          "Romeo y Julieta"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en una esposa que espera y engaña a sus pretendientes.",
+        "explicacion_error": "Retoma el episodio de Penélope en la Odisea.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "El reloj de la estación marcaba siempre las seis y diez. Nadie lo arreglaba. Los viajeros lo miraban por costumbre y luego miraban sus teléfonos. Solo el viejo jefe de estación seguía creyendo que, algún día, la hora volvería a ser verdad.",
+        "enunciado": "¿Qué podría simbolizar el reloj detenido?",
+        "alternativas": [
+          "la alegría de viajar",
+          "un tiempo pasado que se resiste a desaparecer",
+          "la puntualidad de los trenes",
+          "la modernidad"
+        ],
+        "correcta": 1,
+        "pista": "Relaciona el reloj con el jefe de estación.",
+        "explicacion_error": "El reloj simboliza un pasado detenido que el jefe aún espera.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Si una novela retoma el mito de Ícaro (quien vuela demasiado alto y cae), ¿qué idea podría querer transmitir?",
+        "alternativas": [
+          "la importancia del deporte",
+          "los riesgos de la ambición desmedida",
+          "la vida en el campo",
+          "las ventajas de volar en avión"
+        ],
+        "correcta": 1,
+        "pista": "Recuerda qué le pasó a Ícaro.",
+        "explicacion_error": "El mito de Ícaro advierte sobre la ambición excesiva.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "El reloj de la estación marcaba siempre las seis y diez. Nadie lo arreglaba. Los viajeros lo miraban por costumbre y luego miraban sus teléfonos. Solo el viejo jefe de estación seguía creyendo que, algún día, la hora volvería a ser verdad.",
+        "enunciado": "¿Qué contraste construye el texto?",
+        "alternativas": [
+          "entre el campo y la ciudad",
+          "entre el día y la noche",
+          "entre los viajeros que viven en el presente y el jefe que se aferra al pasado",
+          "entre dos relojes"
+        ],
+        "correcta": 2,
+        "pista": "Compara a los viajeros con el jefe de estación.",
+        "explicacion_error": "Los teléfonos representan el presente; el jefe, la nostalgia.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena los pasos para formular una interpretación literaria.",
+        "elementos": [
+          "Leer y comprender el sentido literal.",
+          "Identificar recursos (narrador, símbolos, figuras).",
+          "Proponer una interpretación.",
+          "Fundamentarla con citas del texto."
+        ],
+        "pista": "De la comprensión a la argumentación.",
+        "explicacion_error": "Comprender, analizar, interpretar y fundamentar.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "El reloj de la estación marcaba siempre las seis y diez. Nadie lo arreglaba. Los viajeros lo miraban por costumbre y luego miraban sus teléfonos. Solo el viejo jefe de estación seguía creyendo que, algún día, la hora volvería a ser verdad.",
+        "enunciado": "¿Qué cita del texto del reloj apoya mejor la idea de nostalgia?",
+        "alternativas": [
+          "«la hora volvería a ser verdad»",
+          "«Nadie lo arreglaba»",
+          "«de la estación»",
+          "«miraban sus teléfonos»"
+        ],
+        "correcta": 0,
+        "pista": "Busca la expresión de esperanza en el pasado.",
+        "explicacion_error": "Esa frase muestra el deseo de que vuelva el tiempo pasado.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Cada noche, la tejedora deshacía lo que había tejido durante el día. Los pretendientes esperaban en el salón, impacientes. Ella sonreía: mientras el manto no estuviera terminado, nadie podría obligarla a elegir.",
+        "enunciado": "¿Qué interpretación sostiene mejor el texto?",
+        "alternativas": [
+          "la tejedora no sabe tejer",
+          "el tejido es una estrategia de resistencia para conservar su libertad de decidir",
+          "el manto es un regalo para el rey",
+          "a la tejedora le gustan los pretendientes"
+        ],
+        "correcta": 1,
+        "pista": "¿Para qué deshace el tejido?",
+        "explicacion_error": "Deshacer el manto le permite no ser obligada a elegir.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Volveré, dijo el mar a la orilla, / y la orilla aprendió a esperar / con la paciencia de la arena.",
+        "enunciado": "¿Qué figura predomina en el poema?",
+        "alternativas": [
+          "aliteración en r",
+          "personificación del mar y de la orilla",
+          "pregunta retórica",
+          "hipérbole"
+        ],
+        "correcta": 1,
+        "pista": "El mar habla y la orilla aprende.",
+        "explicacion_error": "Mar y orilla actúan como personas.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Volveré, dijo el mar a la orilla, / y la orilla aprendió a esperar / con la paciencia de la arena.",
+        "enunciado": "¿Qué tema desarrolla el poema?",
+        "alternativas": [
+          "la contaminación del mar",
+          "la pesca",
+          "la espera paciente de un regreso",
+          "la construcción de puertos"
+        ],
+        "correcta": 2,
+        "pista": "Fíjate en «volveré» y «esperar».",
+        "explicacion_error": "El poema trata la espera de un regreso.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_medio",
+    "asignatura": "lenguaje",
+    "eje": "Comprensión",
+    "objetivo_oficial": "FG-LELI-3M-OAC-03: Analizar críticamente textos no literarios considerando el contexto de enunciador y audiencia, el género discursivo, cómo se relacionan las ideas para razonar y la veracidad de la información.",
+    "dificultad": 10,
+    "prerequisitos": [
+      "2_medio.lenguaje.OA9"
+    ],
+    "id_objetivo": "3_medio.lenguaje.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-91138.html",
+      "codigo_oficial": "FG-LELI-3M-OAC-03"
+    },
+    "desafios": [
+      {
+        "id": "len3m-oa3-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "AVISO PAGADO. ¡El nuevo yogur NutriMax fortalece tus defensas! Recomendado por miles de familias chilenas. Cómpralo hoy con 30 % de descuento.",
+        "enunciado": "¿Cuál es el propósito principal del texto?",
+        "alternativas": [
+          "persuadir para comprar un producto",
+          "narrar una historia",
+          "explicar un experimento",
+          "informar una noticia"
+        ],
+        "correcta": 0,
+        "pista": "Mira «AVISO PAGADO» y «Cómpralo hoy».",
+        "explicacion_error": "Es publicidad: busca vender.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Estimados vecinos: la Junta de Vecinos informa que el corte de agua será el martes de 9:00 a 14:00 por trabajos de mantención. Les pedimos guardar agua el día anterior.",
+        "enunciado": "¿Quién es el enunciador del texto?",
+        "alternativas": [
+          "la Junta de Vecinos",
+          "el alcalde",
+          "los vecinos",
+          "la empresa de agua"
+        ],
+        "correcta": 0,
+        "pista": "Busca quién informa.",
+        "explicacion_error": "Escribe la Junta de Vecinos.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-013",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Quien emite un texto se llama ___.",
+        "alternativas": [
+          "audiencia",
+          "receptor",
+          "referente",
+          "enunciador"
+        ],
+        "correcta": 3,
+        "pista": "Es quien produce el discurso.",
+        "explicacion_error": "Es el enunciador (emisor).",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Estimados vecinos: la Junta de Vecinos informa que el corte de agua será el martes de 9:00 a 14:00 por trabajos de mantención. Les pedimos guardar agua el día anterior.",
+        "enunciado": "¿Quién es la audiencia del texto?",
+        "alternativas": [
+          "los periodistas",
+          "los turistas",
+          "los estudiantes de un colegio",
+          "los vecinos del sector"
+        ],
+        "correcta": 3,
+        "pista": "Busca a quién se dirige.",
+        "explicacion_error": "Se dirige a los vecinos.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Texto literario o no literario?",
+        "categorias": [
+          "No literario",
+          "Literario"
+        ],
+        "elementos": [
+          {
+            "texto": "aviso de corte de agua",
+            "categoria": 0
+          },
+          {
+            "texto": "noticia",
+            "categoria": 0
+          },
+          {
+            "texto": "columna de opinión",
+            "categoria": 0
+          },
+          {
+            "texto": "cuento",
+            "categoria": 1
+          },
+          {
+            "texto": "poema",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los no literarios cumplen funciones prácticas.",
+        "explicacion_error": "Aviso, noticia y columna son no literarios; cuento y poema, literarios.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Qué tipo de texto es una carta al director?",
+        "alternativas": [
+          "un cuento",
+          "un texto de opinión de un lector en un medio",
+          "un manual de instrucciones",
+          "una receta"
+        ],
+        "correcta": 1,
+        "pista": "Se publica en diarios.",
+        "explicacion_error": "Un lector opina en un medio de comunicación.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "AVISO PAGADO. ¡El nuevo yogur NutriMax fortalece tus defensas! Recomendado por miles de familias chilenas. Cómpralo hoy con 30 % de descuento.",
+        "enunciado": "¿Qué afirmación del aviso requiere más evidencia?",
+        "alternativas": [
+          "que tiene 30 % de descuento",
+          "que es un aviso pagado",
+          "que es un yogur",
+          "que fortalece tus defensas"
+        ],
+        "correcta": 3,
+        "pista": "¿Qué dato no se puede comprobar con el aviso?",
+        "explicacion_error": "La afirmación sobre la salud necesita respaldo científico.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Un estudio de una universidad chilena con 1.200 estudiantes encontró que quienes duermen menos de 6 horas obtienen, en promedio, notas más bajas. Los autores advierten que se necesitan más estudios para afirmar que una cosa causa la otra.",
+        "enunciado": "¿Por qué este texto es más confiable que un rumor en redes?",
+        "alternativas": [
+          "porque tiene una foto",
+          "porque es más largo",
+          "porque indica la fuente, el tamaño de la muestra y los límites del estudio",
+          "porque usa muchas exclamaciones"
+        ],
+        "correcta": 2,
+        "pista": "Busca fuente, datos y prudencia.",
+        "explicacion_error": "Entrega fuente, muestra y advertencias.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-014",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Un texto que relaciona causa y consecuencia usa conectores como ___.",
+        "alternativas": [
+          "por ejemplo",
+          "sin embargo",
+          "en cambio",
+          "por lo tanto"
+        ],
+        "correcta": 3,
+        "pista": "Indica consecuencia.",
+        "explicacion_error": "«Por lo tanto» introduce una consecuencia.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Un estudio de una universidad chilena con 1.200 estudiantes encontró que quienes duermen menos de 6 horas obtienen, en promedio, notas más bajas. Los autores advierten que se necesitan más estudios para afirmar que una cosa causa la otra.",
+        "enunciado": "¿Qué conclusión NO se puede sacar del estudio?",
+        "alternativas": [
+          "Se necesitan más estudios.",
+          "Hay una relación entre dormir poco y notas más bajas.",
+          "El estudio tuvo 1.200 participantes.",
+          "Dormir poco causa con certeza las malas notas."
+        ],
+        "correcta": 3,
+        "pista": "Los autores distinguen relación de causa.",
+        "explicacion_error": "Una correlación no prueba causalidad.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-009",
+        "tipo": "emparejar",
+        "dificultad": 4,
+        "enunciado": "Une cada género discursivo con su propósito.",
+        "pares": [
+          [
+            "noticia",
+            "informar hechos recientes"
+          ],
+          [
+            "editorial",
+            "expresar la opinión del medio"
+          ],
+          [
+            "infografía",
+            "explicar datos de manera visual"
+          ]
+        ],
+        "pista": "Géneros del discurso periodístico.",
+        "explicacion_error": "Noticia, editorial e infografía.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-010",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena los pasos para verificar una información.",
+        "elementos": [
+          "Identificar quién la publica.",
+          "Buscar la fuente original.",
+          "Contrastar con otros medios confiables.",
+          "Decidir si es verosímil."
+        ],
+        "pista": "De la fuente a la evaluación.",
+        "explicacion_error": "Así se verifica una información.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "AVISO PAGADO. ¡El nuevo yogur NutriMax fortalece tus defensas! Recomendado por miles de familias chilenas. Cómpralo hoy con 30 % de descuento.",
+        "enunciado": "«Recomendado por miles de familias» es un argumento…",
+        "alternativas": [
+          "estadístico preciso",
+          "de autoridad médica",
+          "científico muy sólido",
+          "de apelación a la mayoría, que no prueba que el producto funcione"
+        ],
+        "correcta": 3,
+        "pista": "Que muchos lo usen no prueba su efecto.",
+        "explicacion_error": "Apelar a la mayoría no demuestra eficacia.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué pregunta ayuda más a evaluar la veracidad de un titular impactante?",
+        "alternativas": [
+          "¿Qué fuente respalda el dato y qué dicen otros medios?",
+          "¿Es corto?",
+          "¿Me gusta el titular?",
+          "¿Cuántos likes tiene?"
+        ],
+        "correcta": 0,
+        "pista": "La veracidad se verifica con fuentes.",
+        "explicacion_error": "Contrastar fuentes permite evaluar la veracidad.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa3-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un video viral muestra a una autoridad diciendo algo polémico, pero el audio no coincide con el movimiento de los labios. ¿Qué es lo más razonable?",
+        "alternativas": [
+          "compartirlo de inmediato",
+          "ignorar todos los videos para siempre",
+          "creerlo porque es un video",
+          "sospechar que puede estar manipulado y buscar la fuente original"
+        ],
+        "correcta": 3,
+        "pista": "Los videos también se pueden manipular.",
+        "explicacion_error": "Las inconsistencias indican posible manipulación: hay que verificar.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "3_medio",
+    "asignatura": "lenguaje",
+    "eje": "Comprensión",
+    "objetivo_oficial": "FG-LELI-3M-OAC-05: Evaluar recursos lingüísticos (léxico valorativo, deícticos, verbos, construcciones oracionales, puntuación) y no lingüísticos de un texto y su efecto en la postura del enunciador y en la audiencia.",
+    "dificultad": 10,
+    "prerequisitos": [
+      "2_medio.lenguaje.OA18",
+      "2_medio.lenguaje.OA9"
+    ],
+    "id_objetivo": "3_medio.lenguaje.OA5",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-91140.html",
+      "codigo_oficial": "FG-LELI-3M-OAC-05"
+    },
+    "desafios": [
+      {
+        "id": "len3m-oa5-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué palabra tiene léxico valorativo (expresa juicio)?",
+        "alternativas": [
+          "martes",
+          "kilómetro",
+          "vergonzoso",
+          "edificio"
+        ],
+        "correcta": 2,
+        "pista": "Busca una que evalúe.",
+        "explicacion_error": "«Vergonzoso» expresa una valoración negativa.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Las palabras como «aquí», «ahora» o «yo», que dependen del contexto, se llaman ___.",
+        "alternativas": [
+          "deícticos",
+          "conectores",
+          "sinónimos",
+          "adjetivos calificativos"
+        ],
+        "correcta": 0,
+        "pista": "Señalan persona, lugar o tiempo.",
+        "explicacion_error": "Son deícticos.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Léxico valorativo o neutro?",
+        "categorias": [
+          "Valorativo",
+          "Neutro"
+        ],
+        "elementos": [
+          {
+            "texto": "brillante",
+            "categoria": 0
+          },
+          {
+            "texto": "lamentable",
+            "categoria": 0
+          },
+          {
+            "texto": "heroico",
+            "categoria": 0
+          },
+          {
+            "texto": "mesa",
+            "categoria": 1
+          },
+          {
+            "texto": "año",
+            "categoria": 1
+          }
+        ],
+        "pista": "Valorativo: expresa juicio o emoción.",
+        "explicacion_error": "Brillante, lamentable y heroico valoran; mesa y año son neutros.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Ayer, el alcalde inauguró con bombos y platillos una plaza a medio terminar. Los vecinos, cansados de promesas, observaron en silencio.",
+        "enunciado": "¿Qué expresión muestra una postura crítica del enunciador?",
+        "alternativas": [
+          "«con bombos y platillos» y «a medio terminar»",
+          "«una plaza»",
+          "«Ayer»",
+          "«los vecinos»"
+        ],
+        "correcta": 0,
+        "pista": "Busca palabras que evalúan.",
+        "explicacion_error": "Esas expresiones ironizan sobre la inauguración.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Ayer, el alcalde inauguró con bombos y platillos una plaza a medio terminar. Los vecinos, cansados de promesas, observaron en silencio.",
+        "enunciado": "En el texto, «ayer» es un deíctico de…",
+        "alternativas": [
+          "lugar",
+          "tiempo",
+          "cantidad",
+          "persona"
+        ],
+        "correcta": 1,
+        "pista": "Señala cuándo.",
+        "explicacion_error": "«Ayer» depende del momento en que se habla: tiempo.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-015",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "En «Lamentablemente, el proyecto fracasó», la palabra «lamentablemente» es un ___.",
+        "alternativas": [
+          "modalizador",
+          "deíctico",
+          "sustantivo",
+          "conector temporal"
+        ],
+        "correcta": 0,
+        "pista": "Muestra la actitud del enunciador.",
+        "explicacion_error": "Expresa la valoración del enunciador.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Ayer, el alcalde inauguró con bombos y platillos una plaza a medio terminar. Los vecinos, cansados de promesas, observaron en silencio.",
+        "enunciado": "¿Qué efecto busca «cansados de promesas»?",
+        "alternativas": [
+          "elogiar al alcalde",
+          "describir la plaza",
+          "que la audiencia simpatice con los vecinos y desconfíe del alcalde",
+          "informar con neutralidad"
+        ],
+        "correcta": 2,
+        "pista": "Piensa en la emoción que transmite.",
+        "explicacion_error": "Genera empatía con los vecinos.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-007",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada verbo con la actitud que comunica.",
+        "pares": [
+          [
+            "afirmó",
+            "neutral"
+          ],
+          [
+            "admitió",
+            "reconoce algo a regañadientes"
+          ],
+          [
+            "denunció",
+            "acusa algo grave"
+          ]
+        ],
+        "pista": "Los verbos de habla no son neutros.",
+        "explicacion_error": "Afirmar es neutro; admitir implica reconocer; denunciar, acusar.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué oración usa la voz pasiva para ocultar a quien realizó la acción?",
+        "alternativas": [
+          "Yo cometí un error.",
+          "El ministro cometió errores.",
+          "Los errores los cometió el equipo.",
+          "Se cometieron errores en el proceso."
+        ],
+        "correcta": 3,
+        "pista": "La pasiva con «se» omite al agente.",
+        "explicacion_error": "No dice quién cometió los errores.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de más neutral a más valorativo.",
+        "elementos": [
+          "La medida fue aprobada.",
+          "La medida fue cuestionada.",
+          "La medida fue duramente criticada.",
+          "La medida fue un escándalo vergonzoso."
+        ],
+        "pista": "Observa la carga de cada expresión.",
+        "explicacion_error": "La valoración aumenta en cada oración.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué efecto tienen los signos de exclamación en «¡Esto no puede seguir así!»?",
+        "alternativas": [
+          "citan a otra persona",
+          "suavizan la crítica",
+          "indican una pregunta",
+          "intensifican la emoción y la urgencia"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en el tono.",
+        "explicacion_error": "La exclamación refuerza la intensidad.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Recurso lingüístico o no lingüístico?",
+        "categorias": [
+          "Lingüístico",
+          "No lingüístico"
+        ],
+        "elementos": [
+          {
+            "texto": "adjetivos valorativos",
+            "categoria": 0
+          },
+          {
+            "texto": "verbos de habla",
+            "categoria": 0
+          },
+          {
+            "texto": "una fotografía impactante",
+            "categoria": 1
+          },
+          {
+            "texto": "colores llamativos",
+            "categoria": 1
+          },
+          {
+            "texto": "tipografía grande",
+            "categoria": 1
+          }
+        ],
+        "pista": "Los lingüísticos son palabras; los no lingüísticos, imágenes y diseño.",
+        "explicacion_error": "Adjetivos y verbos son lingüísticos; foto, colores y tipografía, no lingüísticos.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Compara: «Estudiantes protestaron» vs. «Vándalos desordenaron». ¿Qué cambia?",
+        "alternativas": [
+          "la cantidad de personas",
+          "la valoración: la segunda descalifica a los participantes",
+          "el lugar de los hechos",
+          "nada, significan lo mismo"
+        ],
+        "correcta": 1,
+        "pista": "Mira la elección de palabras.",
+        "explicacion_error": "«Vándalos» carga negativamente el mismo hecho.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué un medio podría usar «nosotros» en una columna («nosotros los chilenos»)?",
+        "alternativas": [
+          "para crear cercanía e incluir a la audiencia en su postura",
+          "por error gramatical",
+          "para hablar solo del autor",
+          "para excluir a los lectores"
+        ],
+        "correcta": 0,
+        "pista": "Es un deíctico de persona inclusivo.",
+        "explicacion_error": "El «nosotros» inclusivo busca adhesión.",
+        "monedas": 10
+      },
+      {
+        "id": "len3m-oa5-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En una infografía, ¿qué recurso no lingüístico puede influir en la interpretación de los datos?",
+        "alternativas": [
+          "el uso de tildes",
+          "un gráfico con el eje cortado que exagera las diferencias",
+          "un punto final",
+          "un título con sustantivos"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en cómo se presentan visualmente los datos.",
+        "explicacion_error": "Un eje manipulado puede exagerar diferencias.",
+        "monedas": 10
+      }
+    ]
+  }
+]

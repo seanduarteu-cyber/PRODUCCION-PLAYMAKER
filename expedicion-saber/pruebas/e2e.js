@@ -149,6 +149,22 @@ async function responder(page, bien = true) {
   console.log('Base de 6° básico:', tarjetas.join(' · '));
   if (tarjetas.length !== 4) throw new Error('la base debía mostrar 4 asignaturas');
   await page.screenshot({ path: path.join(salida, 'base_6basico.png'), fullPage: true });
+  // un perfil de 4° medio ve sus cuatro asignaturas con objetivos de su curso
+  await page.evaluate(() => { window.ES.A.ses = null; window.ES.guardar(); });
+  await page.reload(); // deja el motor sin los desafíos forzados de las pruebas anteriores
+  await page.waitForSelector('.asignatura');
+  await page.evaluate(() => { window.ES.perfil().nivel_escolar = '4_medio'; window.ES.ir('base'); });
+  await page.waitForSelector('.asignatura');
+  const medio = await page.locator('.asignatura').evaluateAll(els => els.map(e => `${e.querySelector('h3').textContent} (${(e.querySelector('.oa strong') || {}).textContent || '-'})`));
+  console.log('Base de 4° medio:', medio.join(' · '));
+  if (medio.length !== 4 || medio.some(t => !/4° medio/.test(t))) throw new Error('la base de 4° medio debía mostrar objetivos de 4° medio en las 4 asignaturas');
+  if (!medio.some(t => t.startsWith('Lengua y Literatura')) || !medio.some(t => t.startsWith('Ciencias para la Ciudadanía'))) throw new Error('faltan los nombres de asignatura de media');
+  await page.click('[data-jugar="matematica"]');
+  await page.waitForSelector('#zona');
+  await responder(page, true);
+  await page.waitForSelector('#btn-sig:not([hidden])');
+  console.log('✓ desafío de 4° medio:', await page.textContent('.reto-cab .nota'));
+  await page.evaluate(() => { window.ES.A.ses = null; window.ES.perfil().nivel_escolar = '6_basico'; });
   // los tres mundos: cada uno se elige, dibuja su avatar y vende sus propias mejoras
   await page.evaluate(() => { window.ES.perfil().monedas += 300; window.ES.guardar(); });
   for (const mundo of ['heroes', 'plataformas']) {

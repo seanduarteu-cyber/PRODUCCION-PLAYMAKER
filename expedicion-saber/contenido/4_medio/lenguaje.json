@@ -1,0 +1,906 @@
+[
+  {
+    "nivel": "4_medio",
+    "asignatura": "lenguaje",
+    "eje": "Comprensión",
+    "objetivo_oficial": "FG-LELI-4M-OAC-01: Formular interpretaciones de obras que abordan un mismo tema comparando su relación con los contextos de producción y recepción, la perspectiva adoptada y el efecto estético.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "3_medio.lenguaje.OA1"
+    ],
+    "id_objetivo": "4_medio.lenguaje.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-91145.html",
+      "codigo_oficial": "FG-LELI-4M-OAC-01"
+    },
+    "desafios": [
+      {
+        "id": "len4m-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Dos poemas hablan del mar. El primero, escrito en 1890 por un poeta romántico, lo describe como un dios furioso que castiga a los hombres. El segundo, escrito en 2020, lo describe como un enfermo lleno de plástico.",
+        "enunciado": "¿Qué tema comparten los dos poemas?",
+        "alternativas": [
+          "la guerra",
+          "el mar",
+          "la ciudad",
+          "el amor"
+        ],
+        "correcta": 1,
+        "pista": "Lee la primera oración.",
+        "explicacion_error": "Ambos hablan del mar.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué es el contexto de producción de una obra?",
+        "alternativas": [
+          "el número de páginas",
+          "las circunstancias históricas, sociales y culturales en que fue creada",
+          "la opinión de los lectores hoy",
+          "el lugar donde se vende"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en la época del autor.",
+        "explicacion_error": "Es el momento y las condiciones en que se escribió.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué es el «efecto estético» de una obra?",
+        "alternativas": [
+          "el precio del libro",
+          "la editorial",
+          "la cantidad de capítulos",
+          "la impresión o experiencia que produce en el lector por su forma y contenido"
+        ],
+        "correcta": 3,
+        "pista": "Se relaciona con la belleza y la emoción.",
+        "explicacion_error": "Es la experiencia que la obra provoca.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-004",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Contexto de producción o de recepción?",
+        "categorias": [
+          "Producción",
+          "Recepción"
+        ],
+        "elementos": [
+          {
+            "texto": "la época en que vivió el autor",
+            "categoria": 0
+          },
+          {
+            "texto": "los hechos históricos cuando se escribió",
+            "categoria": 0
+          },
+          {
+            "texto": "cómo lo lee un estudiante hoy",
+            "categoria": 1
+          },
+          {
+            "texto": "las preocupaciones del lector actual",
+            "categoria": 1
+          }
+        ],
+        "pista": "Producción: cuando se escribió; recepción: cuando se lee.",
+        "explicacion_error": "La época del autor es producción; la lectura actual, recepción.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-005",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "El punto de vista desde el cual una obra presenta un tema se llama ___.",
+        "alternativas": [
+          "estrofa",
+          "rima",
+          "título",
+          "perspectiva"
+        ],
+        "correcta": 3,
+        "pista": "También se le dice enfoque.",
+        "explicacion_error": "Es la perspectiva.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada movimiento con un rasgo típico.",
+        "pares": [
+          [
+            "Romanticismo",
+            "exaltación de la emoción y la naturaleza"
+          ],
+          [
+            "Realismo",
+            "retrato fiel de la sociedad"
+          ],
+          [
+            "Vanguardias",
+            "experimentación con la forma"
+          ]
+        ],
+        "pista": "Movimientos literarios.",
+        "explicacion_error": "Romanticismo, Realismo y Vanguardias.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Dos poemas hablan del mar. El primero, escrito en 1890 por un poeta romántico, lo describe como un dios furioso que castiga a los hombres. El segundo, escrito en 2020, lo describe como un enfermo lleno de plástico.",
+        "enunciado": "¿Qué explica mejor la diferencia entre ambas miradas?",
+        "alternativas": [
+          "el contexto de producción: la naturaleza poderosa en el siglo XIX y la crisis ambiental hoy",
+          "que el mar cambió de color",
+          "que los poetas no conocían el mar",
+          "que uno es más largo"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en la época de cada poema.",
+        "explicacion_error": "Cada época ve el mar desde sus preocupaciones.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Una novela de 1950 presenta a la protagonista como una esposa feliz que solo espera a su marido. Una lectora de hoy la critica por mostrar a la mujer sin proyectos propios.",
+        "enunciado": "¿Qué muestra la crítica de la lectora actual?",
+        "alternativas": [
+          "que el contexto de recepción cambia la interpretación de una obra",
+          "que la novela está mal escrita",
+          "que en 1950 no había novelas",
+          "que la lectora no leyó el libro"
+        ],
+        "correcta": 0,
+        "pista": "Compara la época de la novela con la de la lectora.",
+        "explicacion_error": "Los valores de hoy permiten otra lectura.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-015",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Cuando una obra se lee de forma distinta según la época, decimos que cambia su contexto de ___.",
+        "alternativas": [
+          "recepción",
+          "producción",
+          "impresión",
+          "edición"
+        ],
+        "correcta": 0,
+        "pista": "Se refiere a quien lee.",
+        "explicacion_error": "Cambia el contexto de recepción.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Una novela de 1950 presenta a la protagonista como una esposa feliz que solo espera a su marido. Una lectora de hoy la critica por mostrar a la mujer sin proyectos propios.",
+        "enunciado": "¿Qué interpretación es más fundamentada?",
+        "alternativas": [
+          "la novela es actual y no tiene época",
+          "la protagonista es una heroína moderna",
+          "la novela trata de deportes",
+          "la novela refleja los roles de género de su época, que hoy se cuestionan"
+        ],
+        "correcta": 3,
+        "pista": "Considera ambos contextos.",
+        "explicacion_error": "Relaciona la obra con su contexto y con la lectura actual.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena los pasos para comparar dos obras sobre un mismo tema.",
+        "elementos": [
+          "Identificar el tema común.",
+          "Analizar la perspectiva de cada obra.",
+          "Relacionar cada una con su contexto.",
+          "Concluir sobre semejanzas y diferencias."
+        ],
+        "pista": "De lo común al análisis y la conclusión.",
+        "explicacion_error": "Así se construye una interpretación comparada.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Dos canciones hablan de migrar: una con nostalgia por la tierra dejada y otra con esperanza por el nuevo lugar. ¿Qué las diferencia?",
+        "alternativas": [
+          "la perspectiva sobre la experiencia de migrar",
+          "el tema",
+          "que una no es canción",
+          "el idioma obligatoriamente"
+        ],
+        "correcta": 0,
+        "pista": "Mismo tema, distinta mirada.",
+        "explicacion_error": "Difieren en la perspectiva: nostalgia y esperanza.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Dos poemas hablan del mar. El primero, escrito en 1890 por un poeta romántico, lo describe como un dios furioso que castiga a los hombres. El segundo, escrito en 2020, lo describe como un enfermo lleno de plástico.",
+        "enunciado": "¿Qué efecto estético produce describir el mar como «un enfermo»?",
+        "alternativas": [
+          "invierte la imagen del mar poderoso y genera compasión y conciencia",
+          "hace reír al lector",
+          "describe técnicamente el agua",
+          "no produce ningún efecto"
+        ],
+        "correcta": 0,
+        "pista": "Compara con «dios furioso».",
+        "explicacion_error": "De dios temible pasa a víctima vulnerable: conmueve y alerta.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué una obra antigua puede seguir siendo valiosa hoy?",
+        "alternativas": [
+          "porque es corta",
+          "porque es antigua",
+          "porque todos la conocen",
+          "porque plantea preguntas humanas que siguen vigentes en otros contextos"
+        ],
+        "correcta": 3,
+        "pista": "Piensa en los temas universales.",
+        "explicacion_error": "Sus temas universales dialogan con lectores de distintas épocas.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa1-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un cuento distópico de 1960 imaginó pantallas que vigilan a las personas. ¿Cómo podría leerse hoy?",
+        "alternativas": [
+          "como un texto sin relación con el presente",
+          "como una noticia real de 1960",
+          "como una advertencia que dialoga con debates actuales sobre privacidad y tecnología",
+          "como una receta de cocina"
+        ],
+        "correcta": 2,
+        "pista": "Relaciona el tema con el presente.",
+        "explicacion_error": "El contexto de recepción actual le da nuevos sentidos.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_medio",
+    "asignatura": "lenguaje",
+    "eje": "Comprensión",
+    "objetivo_oficial": "FG-LELI-4M-OAC-03: Evaluar críticamente textos no literarios analizando intenciones explícitas e implícitas, veracidad de la información, ideologías y creencias, y el posicionamiento del enunciador.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "3_medio.lenguaje.OA3"
+    ],
+    "id_objetivo": "4_medio.lenguaje.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/docentes/Formacion-General/Lengua-y-literatura-4-medio/FG-LELI-4M-OAC-03/91147:FG-LELI-4M-OAC-03",
+      "codigo_oficial": "FG-LELI-4M-OAC-03"
+    },
+    "desafios": [
+      {
+        "id": "len4m-oa3-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "texto": "Columna: «El país necesita más autopistas. Quien se oponga, simplemente no quiere que Chile progrese». Firma: presidente de la Asociación de Concesionarias Viales.",
+        "enunciado": "¿Cuál es la tesis de la columna?",
+        "alternativas": [
+          "Chile no debe progresar",
+          "el transporte público es mejor",
+          "las autopistas contaminan",
+          "el país necesita más autopistas"
+        ],
+        "correcta": 3,
+        "pista": "Busca la postura que se defiende.",
+        "explicacion_error": "Defiende la construcción de más autopistas.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-007",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Un conjunto de ideas y creencias que orienta la manera de ver la sociedad se llama ___.",
+        "alternativas": [
+          "gramática",
+          "ideología",
+          "tipografía",
+          "metáfora"
+        ],
+        "correcta": 1,
+        "pista": "Influye en cómo se presentan los hechos.",
+        "explicacion_error": "Es una ideología.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué es una intención implícita?",
+        "alternativas": [
+          "un propósito que se dice claramente",
+          "el título del texto",
+          "un propósito que no se dice directamente, pero se puede inferir",
+          "la firma del autor"
+        ],
+        "correcta": 2,
+        "pista": "Se infiere del texto y su contexto.",
+        "explicacion_error": "No se declara, pero se deduce.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Titular A: «Gobierno reduce el desempleo a 8 %». Titular B: «Medio millón de chilenos sigue sin trabajo».",
+        "enunciado": "¿Qué muestran estos dos titulares sobre el mismo dato?",
+        "alternativas": [
+          "que uno de ellos es falso",
+          "que hablan de países distintos",
+          "que no tienen relación",
+          "que se puede destacar un aspecto u otro según la postura del medio"
+        ],
+        "correcta": 3,
+        "pista": "Mismo hecho, distinto énfasis.",
+        "explicacion_error": "El encuadre cambia la impresión del lector.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Intención explícita o implícita?",
+        "categorias": [
+          "Explícita",
+          "Implícita"
+        ],
+        "elementos": [
+          {
+            "texto": "«Te invitamos a votar por el candidato X»",
+            "categoria": 0
+          },
+          {
+            "texto": "«Compra hoy con descuento»",
+            "categoria": 0
+          },
+          {
+            "texto": "una noticia que solo entrevista a un sector",
+            "categoria": 1
+          },
+          {
+            "texto": "una foto elegida para que alguien se vea mal",
+            "categoria": 1
+          }
+        ],
+        "pista": "Explícita: se dice directamente; implícita: se sugiere.",
+        "explicacion_error": "Invitar o vender abiertamente es explícito; elegir fuentes o fotos sesgadas, implícito.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-014",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "Cuando un medio enfoca un hecho desde un ángulo particular, se habla de ___.",
+        "alternativas": [
+          "encuadre",
+          "estrofa",
+          "rima",
+          "prólogo"
+        ],
+        "correcta": 0,
+        "pista": "En inglés se dice «framing».",
+        "explicacion_error": "Es el encuadre de la noticia.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Columna: «El país necesita más autopistas. Quien se oponga, simplemente no quiere que Chile progrese». Firma: presidente de la Asociación de Concesionarias Viales.",
+        "enunciado": "¿Qué intención implícita podría tener el enunciador?",
+        "alternativas": [
+          "proteger el medio ambiente",
+          "defender a los ciclistas",
+          "beneficiar a las empresas que construyen y administran autopistas",
+          "reducir el uso del auto"
+        ],
+        "correcta": 2,
+        "pista": "Mira quién firma.",
+        "explicacion_error": "El autor representa a las concesionarias: tiene un interés económico.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-008",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada estrategia con su efecto.",
+        "pares": [
+          [
+            "omitir datos que contradicen la postura",
+            "dar una visión parcial"
+          ],
+          [
+            "usar solo fuentes de un sector",
+            "sesgar la información"
+          ],
+          [
+            "incluir voces diversas",
+            "dar una visión más equilibrada"
+          ]
+        ],
+        "pista": "Piensa en la selección de información.",
+        "explicacion_error": "Omitir y elegir fuentes sesga; incluir voces diversas equilibra.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué es el «posicionamiento» del enunciador?",
+        "alternativas": [
+          "la fecha del texto",
+          "la cantidad de lectores",
+          "el lugar donde vive",
+          "la postura que adopta frente al tema"
+        ],
+        "correcta": 3,
+        "pista": "Se refiere a su postura.",
+        "explicacion_error": "Es la postura del enunciador ante el tema.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "texto": "Titular A: «Gobierno reduce el desempleo a 8 %». Titular B: «Medio millón de chilenos sigue sin trabajo».",
+        "enunciado": "¿Qué titular tiene un encuadre más favorable al gobierno?",
+        "alternativas": [
+          "el titular A",
+          "ambos por igual",
+          "ninguno",
+          "el titular B"
+        ],
+        "correcta": 0,
+        "pista": "¿Cuál destaca un logro?",
+        "explicacion_error": "A destaca la reducción como un logro del gobierno.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena los pasos para evaluar críticamente una noticia.",
+        "elementos": [
+          "Identificar al enunciador y su posible interés.",
+          "Distinguir hechos de opiniones.",
+          "Revisar las fuentes citadas.",
+          "Contrastar con otros medios."
+        ],
+        "pista": "Del autor a la comparación.",
+        "explicacion_error": "Así se evalúa críticamente una noticia.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Un reportaje sobre la minería solo entrevista a gerentes de empresas. ¿Qué falta?",
+        "alternativas": [
+          "más publicidad",
+          "las voces de comunidades, trabajadores y especialistas ambientales",
+          "fotos de los gerentes",
+          "un título más largo"
+        ],
+        "correcta": 1,
+        "pista": "¿Qué perspectivas no aparecen?",
+        "explicacion_error": "Faltan voces diversas para una visión equilibrada.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "texto": "Columna: «El país necesita más autopistas. Quien se oponga, simplemente no quiere que Chile progrese». Firma: presidente de la Asociación de Concesionarias Viales.",
+        "enunciado": "¿Qué problema argumentativo tiene «quien se oponga no quiere que Chile progrese»?",
+        "alternativas": [
+          "es una pregunta abierta",
+          "es un dato estadístico",
+          "descalifica a quienes opinan distinto en lugar de responder sus argumentos",
+          "es una cita de autoridad"
+        ],
+        "correcta": 2,
+        "pista": "¿Discute ideas o descalifica personas?",
+        "explicacion_error": "Es una falacia que descalifica a los opositores.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué lectura es más crítica frente a un reportaje patrocinado por una empresa?",
+        "alternativas": [
+          "considerar quién financia el contenido y contrastarlo con otras fuentes",
+          "rechazarlo sin leerlo",
+          "compartirlo sin revisar",
+          "creerle todo porque es largo"
+        ],
+        "correcta": 0,
+        "pista": "La crítica no es aceptar ni rechazar a ciegas.",
+        "explicacion_error": "Hay que considerar el interés del patrocinador y contrastar.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa3-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Cuál de estas afirmaciones es verificable?",
+        "alternativas": [
+          "Todos saben que esto es así.",
+          "Este gobierno es el peor de la historia.",
+          "La tasa de desempleo fue de 8 % según el INE en marzo.",
+          "La gente está harta."
+        ],
+        "correcta": 2,
+        "pista": "Una afirmación verificable se puede comprobar con datos.",
+        "explicacion_error": "Tiene fuente, cifra y fecha: se puede verificar.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_medio",
+    "asignatura": "lenguaje",
+    "eje": "Comprensión",
+    "objetivo_oficial": "FG-LELI-4M-OAC-04: Evaluar cómo los recursos lingüísticos y no lingüísticos de un texto inciden en el posicionamiento frente al tema, en los roles asumidos ante la audiencia y en la construcción del sentido.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "3_medio.lenguaje.OA5"
+    ],
+    "id_objetivo": "4_medio.lenguaje.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Formacion-General/Lengua-y-literatura-4-medio/FG-LELI-4M-OAC-04/224056:Lengua-y-Literatura-Recursos-ling-isticos-lexico-valorativo-deicticos-verbos-construcciones-oracionales-puntuacion-entre-otras-y-no-ling-isticos-orientados-a-la-coherencia-y-cohesion-textual",
+      "codigo_oficial": "FG-LELI-4M-OAC-04"
+    },
+    "desafios": [
+      {
+        "id": "len4m-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué rol asume un enunciador que escribe «Como médico, les recomiendo…»?",
+        "alternativas": [
+          "el de experto que aconseja",
+          "el de víctima",
+          "el de vendedor",
+          "el de humorista"
+        ],
+        "correcta": 0,
+        "pista": "Fíjate en «como médico».",
+        "explicacion_error": "Se presenta como autoridad experta.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Los recursos como imágenes, colores o tipografía son recursos ___.",
+        "alternativas": [
+          "no lingüísticos",
+          "lingüísticos",
+          "gramaticales",
+          "fonéticos"
+        ],
+        "correcta": 0,
+        "pista": "No son palabras.",
+        "explicacion_error": "Son recursos no lingüísticos.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-003",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 1,
+        "enunciado": "¿Lingüístico o no lingüístico?",
+        "categorias": [
+          "Lingüístico",
+          "No lingüístico"
+        ],
+        "elementos": [
+          {
+            "texto": "pronombre «nosotros»",
+            "categoria": 0
+          },
+          {
+            "texto": "adjetivo «increíble»",
+            "categoria": 0
+          },
+          {
+            "texto": "una foto de un niño",
+            "categoria": 1
+          },
+          {
+            "texto": "música de fondo",
+            "categoria": 1
+          },
+          {
+            "texto": "un logo",
+            "categoria": 1
+          }
+        ],
+        "pista": "Lingüístico = palabras.",
+        "explicacion_error": "Pronombre y adjetivo son lingüísticos; foto, música y logo, no lingüísticos.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-016",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué es la audiencia de un texto?",
+        "alternativas": [
+          "las personas a quienes se dirige",
+          "la imprenta",
+          "el autor",
+          "el título"
+        ],
+        "correcta": 0,
+        "pista": "Es el destinatario.",
+        "explicacion_error": "Es el público destinatario.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Querida comunidad: hoy, juntos, podemos cambiar nuestro barrio. No necesitamos esperar a nadie. Los invito a la plaza este sábado: traigan guantes, ganas y a sus vecinos.",
+        "enunciado": "¿Qué efecto tiene el uso de «juntos» y «podemos»?",
+        "alternativas": [
+          "incluir a la audiencia y motivarla a actuar",
+          "informar con neutralidad",
+          "criticar al municipio",
+          "alejar a los vecinos"
+        ],
+        "correcta": 0,
+        "pista": "Es un «nosotros» inclusivo.",
+        "explicacion_error": "Integra al lector en la acción colectiva.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "texto": "Querida comunidad: hoy, juntos, podemos cambiar nuestro barrio. No necesitamos esperar a nadie. Los invito a la plaza este sábado: traigan guantes, ganas y a sus vecinos.",
+        "enunciado": "¿Qué rol asume el enunciador ante su audiencia?",
+        "alternativas": [
+          "el de un vendedor",
+          "el de un científico",
+          "el de un vecino que convoca y motiva",
+          "el de un juez"
+        ],
+        "correcta": 2,
+        "pista": "Mira «Querida comunidad» y «Los invito».",
+        "explicacion_error": "Se presenta como par que convoca.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-015",
+        "tipo": "completar",
+        "dificultad": 2,
+        "enunciado": "El enunciador que usa «nosotros» para incluir al lector emplea un nosotros ___.",
+        "alternativas": [
+          "plural mayestático",
+          "formal",
+          "exclusivo",
+          "inclusivo"
+        ],
+        "correcta": 3,
+        "pista": "Incluye a quien lee.",
+        "explicacion_error": "Es un nosotros inclusivo.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-006",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "texto": "Querida comunidad: hoy, juntos, podemos cambiar nuestro barrio. No necesitamos esperar a nadie. Los invito a la plaza este sábado: traigan guantes, ganas y a sus vecinos.",
+        "enunciado": "¿Qué recurso aparece en «traigan guantes, ganas y a sus vecinos»?",
+        "alternativas": [
+          "un dato estadístico",
+          "una pregunta retórica",
+          "una enumeración que mezcla objetos y actitudes para dar cercanía",
+          "una cita"
+        ],
+        "correcta": 2,
+        "pista": "Une cosas concretas y abstractas.",
+        "explicacion_error": "La enumeración humaniza y da tono cercano.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-007",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada recurso con su efecto en la audiencia.",
+        "pares": [
+          [
+            "pregunta retórica",
+            "invita a reflexionar"
+          ],
+          [
+            "dato estadístico",
+            "da credibilidad"
+          ],
+          [
+            "anécdota personal",
+            "genera empatía"
+          ]
+        ],
+        "pista": "Cada recurso busca algo distinto.",
+        "explicacion_error": "Reflexión, credibilidad y empatía.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "En un afiche contra el bullying, ¿qué recurso no lingüístico refuerza el mensaje?",
+        "alternativas": [
+          "un código postal",
+          "una imagen de un estudiante solo en un rincón",
+          "una tabla de precios",
+          "el número de página"
+        ],
+        "correcta": 1,
+        "pista": "Busca uno que conmueva.",
+        "explicacion_error": "La imagen genera empatía con la víctima.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor implicación del enunciador.",
+        "elementos": [
+          "Se informa que la plaza será remodelada.",
+          "La municipalidad informa la remodelación.",
+          "Creemos que la remodelación es necesaria.",
+          "Yo mismo lucharé para que la plaza se remodele."
+        ],
+        "pista": "De lo impersonal a lo personal.",
+        "explicacion_error": "La implicación aumenta del «se» al «yo».",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué cambia entre «Se tomó la decisión» y «Yo tomé la decisión»?",
+        "alternativas": [
+          "la primera es más personal",
+          "nada, es idéntico",
+          "la segunda oculta al responsable",
+          "en la segunda el enunciador asume la responsabilidad"
+        ],
+        "correcta": 3,
+        "pista": "La construcción impersonal oculta al agente.",
+        "explicacion_error": "Con «yo» el enunciador se hace responsable.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Busca cercanía o distancia con la audiencia?",
+        "categorias": [
+          "Cercanía",
+          "Distancia"
+        ],
+        "elementos": [
+          {
+            "texto": "«Querida comunidad»",
+            "categoria": 0
+          },
+          {
+            "texto": "tutear al lector",
+            "categoria": 0
+          },
+          {
+            "texto": "«Se informa a los usuarios»",
+            "categoria": 1
+          },
+          {
+            "texto": "lenguaje técnico y formal",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en el tono.",
+        "explicacion_error": "Saludos afectuosos y el tuteo acercan; lo impersonal y técnico distancia.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-017",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué efecto tiene que un aviso de salud use el tuteo («Cuida tu corazón»)?",
+        "alternativas": [
+          "acerca el mensaje y lo hace más personal",
+          "no tiene efecto",
+          "lo hace más distante",
+          "lo vuelve más técnico"
+        ],
+        "correcta": 0,
+        "pista": "Piensa en cómo se siente el lector.",
+        "explicacion_error": "El tuteo genera cercanía.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un candidato dice «yo, como ustedes, tomo micro todos los días». ¿Qué busca?",
+        "alternativas": [
+          "identificarse con la audiencia para ganar su confianza",
+          "informar el horario de las micros",
+          "criticar el transporte",
+          "presentarse como experto en buses"
+        ],
+        "correcta": 0,
+        "pista": "Fíjate en «como ustedes».",
+        "explicacion_error": "Construye un rol de igual para generar adhesión.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué el mismo dato puede presentarse con un gráfico de barras grande y rojo, o pequeño y gris?",
+        "alternativas": [
+          "porque el diseño influye en la importancia y la emoción que el lector le asigna",
+          "porque el rojo es obligatorio",
+          "porque los datos cambian",
+          "porque el gris es más preciso"
+        ],
+        "correcta": 0,
+        "pista": "El diseño también comunica.",
+        "explicacion_error": "Los recursos visuales orientan la interpretación.",
+        "monedas": 10
+      },
+      {
+        "id": "len4m-oa4-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué combinación de recursos construye mejor una postura de autoridad en un texto sobre salud?",
+        "alternativas": [
+          "muchos signos de exclamación",
+          "emojis y abreviaturas",
+          "insultos a quienes opinan distinto",
+          "datos de fuentes oficiales, léxico técnico preciso y el rol de especialista"
+        ],
+        "correcta": 3,
+        "pista": "La autoridad se construye con credibilidad.",
+        "explicacion_error": "Datos, precisión y experticia construyen autoridad.",
+        "monedas": 10
+      }
+    ]
+  }
+]
