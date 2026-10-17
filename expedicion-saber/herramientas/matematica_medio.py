@@ -131,7 +131,136 @@ def ma2m_oa11():
     return b.items
 
 
+# ---------------- 3° medio (FG-MATE-3M) ----------------
+def ma3m_oac1():
+    b = Autor("mat", "3m", 1)
+    b.om(1, "¿Cuánto es i², donde i es la unidad imaginaria?", "−1", ["1", "i", "0"], "Por definición, i = √−1.", "i² = −1.")
+    b.co(1, "En el complejo 3 + 4i, la parte real es ___.", "3", ["4", "4i", "7"], "La parte real no lleva i.", "Parte real 3, parte imaginaria 4.")
+    b.om(1, "¿Cuánto es (2 + 3i) + (1 + 2i)?", "3 + 5i", ["3 + 6i", "2 + 6i", "5 + 3i"], "Suma reales con reales e imaginarios con imaginarios.", "(2 + 1) + (3 + 2)i = 3 + 5i.")
+    b.om(2, "¿Cuánto es (5 + 2i) − (3 + 6i)?", "2 − 4i", ["2 + 4i", "8 − 4i", "2 + 8i"], "Resta parte por parte.", "(5 − 3) + (2 − 6)i = 2 − 4i.")
+    b.om(2, "¿Cuánto es √−9?", "3i", ["−3", "9i", "3"], "√−9 = √9 · √−1.", "√−9 = 3i.")
+    b.em(2, "Une cada complejo con su conjugado.", [["2 + 3i", "2 − 3i"], ["−1 − i", "−1 + i"], ["4i", "−4i"]], "El conjugado cambia el signo de la parte imaginaria.", "Se cambia el signo de la parte imaginaria.")
+    b.om(3, "¿Cuánto es (1 + i)(1 − i)?", "2", ["0", "1 − i²", "2i"], "Usa (a + b)(a − b) = a² − b².", "1 − i² = 1 − (−1) = 2.")
+    b.om(3, "¿Cuánto es 2i · 3i?", "−6", ["6", "6i", "5i"], "i · i = i² = −1.", "6i² = −6.")
+    b.cat(3, "¿Número real o imaginario puro?", ["Real", "Imaginario puro"], [("i²", 0), ("(1 + i)(1 − i)", 0), ("√16", 0), ("5i", 1), ("√−4", 1), ("i³ · i⁻²", 1)],
+          "Calcula cada expresión.", "i² = −1, (1 + i)(1 − i) = 2 y √16 = 4 son reales; 5i, 2i e i son imaginarios puros.")
+    b.om(4, "¿Cuánto es (2 + i)²?", "3 + 4i", ["4 + i²", "5 + 4i", "4 + 4i"], "(a + b)² = a² + 2ab + b².", "4 + 4i + i² = 4 + 4i − 1 = 3 + 4i.")
+    b.ord(4, "Ordena las potencias de i según su valor, empezando por i¹.", ["i", "−1", "−i", "1"], "i¹, i², i³, i⁴.", "i¹ = i, i² = −1, i³ = −i, i⁴ = 1.")
+    b.nu(4, "¿Cuál es el módulo de 3 + 4i? (|a + bi| = √(a² + b²))", 5, "√(9 + 16).", "√25 = 5.")
+    b.om(5, "¿Cuánto es (4 + 2i) ÷ (1 + i)? (multiplica por el conjugado)", "3 − i", ["4 + 2i", "2 + i", "3 + i"], "Multiplica arriba y abajo por (1 − i).", "(4 + 2i)(1 − i) = 4 − 4i + 2i − 2i² = 6 − 2i; ÷ 2 = 3 − i.")
+    b.om(5, "¿Cuánto es i^23?", "−i", ["i", "1", "−1"], "Las potencias de i se repiten cada 4.", "23 = 4 · 5 + 3, así que i^23 = i³ = −i.")
+    b.om(5, "En el plano complejo, ¿dónde se ubica el punto que representa −2 + 3i?", "en el segundo cuadrante", ["en el primer cuadrante", "en el tercer cuadrante", "en el eje real"], "Parte real negativa, parte imaginaria positiva.", "x = −2 e y = 3: segundo cuadrante.")
+    return b.items
+
+
+def ma3m_oac2():
+    b = Autor("mat", "3m", 2)
+    b.nu(1, "¿Cuál es el rango de los datos 4, 9, 2, 7, 5?", 7, "Rango = máximo − mínimo.", "9 − 2 = 7.")
+    b.om(1, "¿Qué mide la desviación estándar?", "qué tan dispersos están los datos respecto de la media", ["el dato más repetido", "el valor central", "la cantidad de datos"], "Es una medida de dispersión.", "Indica cuánto se alejan los datos del promedio.")
+    b.co(1, "La probabilidad de A dado B se escribe P(A ___ B).", "|", ["+", "·", "−"], "Se lee «A dado B».", "Se escribe P(A | B).")
+    b.om(2, "Dos cursos tienen promedio 5,5. El curso A tiene notas entre 5,0 y 6,0; el B, entre 3,0 y 7,0. ¿Cuál tiene mayor dispersión?", "el curso B", ["el curso A", "son iguales", "no se puede saber nada"], "Compara el rango de cada curso.", "El curso B tiene un rango mayor: más dispersión.")
+    b.nu(2, "La media de 2, 4, 6, 8 es 5. ¿Cuál es la suma de las distancias absolutas de cada dato a la media?", 8, "|2 − 5| + |4 − 5| + |6 − 5| + |8 − 5|.", "3 + 1 + 1 + 3 = 8.")
+    b.em(2, "Une cada medida con lo que describe.", [["media", "tendencia central"], ["rango", "dispersión"], ["P(A | B)", "probabilidad condicional"]], "Separa centro, dispersión y probabilidad.", "La media es centro; el rango, dispersión; P(A|B), probabilidad condicional.")
+    b.om(3, "En un curso de 30 estudiantes, 12 son mujeres y 6 de ellas usan lentes. ¿Cuál es P(lentes | mujer)?", "1/2", ["1/5", "6/30", "12/30"], "Solo se consideran las mujeres.", "6 de 12 = 1/2.")
+    b.om(3, "Se saca una carta de un naipe de 52. Sabiendo que es roja, ¿cuál es la probabilidad de que sea corazón?", "1/2", ["1/4", "1/13", "1/26"], "Hay 26 rojas: 13 corazones y 13 diamantes.", "13 de 26 = 1/2.")
+    b.cat(3, "¿Mayor o menor dispersión?", ["Menor dispersión", "Mayor dispersión"], [("10, 10, 11, 9, 10", 0), ("50, 51, 49, 50", 0), ("1, 20, 5, 40", 1), ("3, 15, 30, 8", 1)],
+          "Compara qué tan separados están los datos.", "Los primeros grupos están muy juntos; los otros, muy separados.")
+    b.om(4, "Tabla: de 100 personas, 40 hacen deporte; de ellas, 30 duermen bien. De las 60 que no hacen deporte, 24 duermen bien. ¿P(duerme bien | hace deporte)?", "3/4", ["3/10", "2/5", "54/100"], "Divide por quienes hacen deporte.", "30 de 40 = 3/4.")
+    b.om(4, "Con la misma tabla, ¿P(duerme bien | no hace deporte)?", "2/5", ["24/100", "3/4", "1/2"], "Divide por quienes no hacen deporte.", "24 de 60 = 2/5.")
+    b.ord(4, "Ordena los pasos para calcular P(A | B) desde una tabla.", ["Identificar el grupo B.", "Contar los casos de B.", "Contar los casos que son A y B.", "Dividir los casos de A y B por los casos de B."], "La condición reduce el espacio muestral.", "P(A | B) = casos (A y B) ÷ casos de B.")
+    b.om(5, "Un test detecta una enfermedad. ¿Por qué no basta con mirar el porcentaje de aciertos para decidir?", "porque si la enfermedad es rara, muchos positivos pueden ser falsos", ["porque los tests nunca fallan", "porque la media siempre es 50%", "porque la probabilidad no se usa en salud"], "Piensa en la probabilidad condicional y en lo poco frecuente.", "Con enfermedades raras, P(enfermo | positivo) puede ser baja.")
+    b.om(5, "Dos inversiones tienen la misma ganancia promedio; A varía poco y B varía mucho. ¿Qué decisión es razonable para alguien que no quiere arriesgar?", "elegir A, por su menor dispersión", ["elegir B, por su mayor dispersión", "da lo mismo siempre", "no invertir nunca en nada"], "Más dispersión significa más incertidumbre.", "Menor dispersión es menor riesgo.")
+    b.nu(5, "En una urna hay 5 bolitas rojas y 3 azules. Se saca una roja y no se devuelve. ¿Cuántas bolitas rojas quedan para la segunda extracción?", 4, "Se sacó una roja.", "5 − 1 = 4 rojas de 7 bolitas en total.")
+    return b.items
+
+
+def ma3m_oac3():
+    b = Autor("mat", "3m", 3)
+    b.om(1, "¿Qué función modela algo que se duplica cada período?", "exponencial", ["lineal", "constante", "cuadrática"], "Multiplica por 2 cada vez.", "Duplicar es crecer en forma exponencial.")
+    b.nu(1, "Si f(x) = 2^x, ¿cuánto es f(4)?", 16, "2 · 2 · 2 · 2.", "2^4 = 16.")
+    b.co(1, "En f(x) = 3 · 2^x, el valor inicial f(0) es ___.", "3", ["2", "6", "1"], "2^0 = 1.", "3 · 1 = 3.")
+    b.om(2, "¿Cuál de estas funciones es decreciente?", "f(x) = (1/2)^x", ["f(x) = 2^x", "f(x) = 3^x", "f(x) = x + 5"], "Base entre 0 y 1: decrece.", "Con base 1/2 la función decrece.")
+    b.nu(2, "Una población de 100 bacterias se triplica cada hora. ¿Cuántas habrá en 2 horas?", 900, "100 · 3².", "100 · 9 = 900.", unidad="bacterias")
+    b.em(2, "Une cada situación con su modelo.", [["un ahorro que gana 5 % anual compuesto", "exponencial creciente"], ["un medicamento que se elimina a la mitad cada 6 horas", "exponencial decreciente"], ["un taxi: $500 fijo más $300 por km", "lineal"]], "¿Se multiplica o se suma en cada paso?", "Multiplicar: exponencial; sumar: lineal.")
+    b.nu(3, "Un auto de $10.000.000 pierde la mitad de su valor cada 5 años. ¿Cuánto vale en millones después de 10 años?", 2, "Dos períodos de 5 años: se divide por 2 dos veces. Hay un decimal en el camino.", "10 → 5 → 2,5 millones; la respuesta más cercana como entero es 2 (2,5 millones).", tol=1, unidad="millones")
+    b.nu(3, "¿Cuántos años tarda en duplicarse un capital que crece según 2^(t/7)?", 7, "2^(t/7) = 2 cuando t/7 = 1.", "t = 7 años.", unidad="años")
+    b.om(3, "La función inversa de f(x) = 10^x es…", "log₁₀ x", ["x/10", "x^10", "10x"], "El logaritmo deshace la potencia.", "log₁₀(10^x) = x.")
+    b.om(4, "Se usa la función logarítmica para medir…", "la intensidad de los sismos (Richter) y del sonido (decibeles)", ["el área de un rectángulo", "la velocidad de un auto", "el número de alumnos"], "Son escalas que crecen por potencias de 10.", "Richter y decibeles son escalas logarítmicas.")
+    b.nu(4, "Un sonido de 60 dB y otro de 80 dB: cada 10 dB la intensidad se multiplica por 10. ¿Cuántas veces más intenso es el de 80 dB?", 100, "Son 20 dB más: dos veces ×10.", "10 · 10 = 100 veces.", unidad="veces")
+    b.ord(4, "Ordena de menor a mayor para x = 3.", ["log₂ x · 0 + 1", "2x", "x²", "2^x"], "Calcula: 1, 6, 9 y 8… revisa con cuidado.", "Para x = 3: 1, 6, 8 (2³) y 9 (3²). Ojo: 2^x = 8 < x² = 9.")
+    b.nu(5, "Si la población de una ciudad crece 10 % al año, partiendo de 1.000 personas, ¿cuántas habrá en 2 años?", 1210, "1.000 · 1,1².", "1.000 · 1,21 = 1.210 personas.", unidad="personas")
+    b.om(5, "El carbono-14 se reduce a la mitad cada 5.730 años. Un fósil tiene 1/4 del C-14 original. ¿Qué edad aproximada tiene?", "11.460 años", ["5.730 años", "2.865 años", "22.920 años"], "1/4 = dos semividas.", "2 · 5.730 = 11.460 años.")
+    b.om(5, "¿Cuál es la solución de 2^x = 50?", "x = log₂ 50 (entre 5 y 6)", ["x = 25", "x = 50/2", "x = 7"], "2^5 = 32 y 2^6 = 64.", "x = log₂ 50, un valor entre 5 y 6.")
+    return b.items
+
+
+# ---------------- 4° medio (FG-MATE-4M) ----------------
+def ma4m_oac1():
+    b = Autor("mat", "4m", 1)
+    b.nu(1, "¿Cuánto es el 15 % de $20.000?", 3000, "10 % = 2.000 y 5 % = 1.000.", "2.000 + 1.000 = $3.000.", unidad="$")
+    b.om(1, "¿Qué es la tasa de interés?", "el porcentaje que se paga o se gana por un dinero en un período", ["el precio de un producto", "el sueldo mínimo", "un impuesto fijo"], "Se aplica a créditos y ahorros.", "Es el costo o la ganancia por usar dinero en el tiempo.")
+    b.co(1, "El IPC mide la variación de los ___ de una canasta de bienes y servicios.", "precios", ["sueldos", "impuestos", "intereses"], "Se usa para medir la inflación.", "El IPC mide cómo cambian los precios.")
+    b.nu(2, "Ahorras $100.000 al 5 % de interés simple anual. ¿Cuánto interés ganas en 1 año?", 5000, "5 % de 100.000.", "$5.000.", unidad="$")
+    b.nu(2, "Un producto de $40.000 sube 10 %. ¿Cuál es su nuevo precio?", 44000, "Calcula el 10 % y súmalo.", "40.000 + 4.000 = $44.000.", unidad="$")
+    b.em(2, "Une cada concepto con su definición.", [["inflación", "aumento general de los precios"], ["crédito", "dinero prestado que se devuelve con interés"], ["UF", "unidad que se reajusta según la inflación"]], "Vocabulario financiero chileno.", "Inflación, crédito y UF.")
+    b.nu(3, "Con interés compuesto del 10 % anual, ¿cuánto tendrás al cabo de 2 años si depositas $100.000?", 121000, "100.000 · 1,1².", "100.000 · 1,21 = $121.000.", unidad="$")
+    b.om(3, "¿Por qué un crédito con CAE más baja suele ser mejor?", "porque refleja un costo total menor del crédito", ["porque te prestan más dinero siempre", "porque no hay que pagarlo", "porque dura menos días"], "La CAE incluye intereses y gastos.", "La Carga Anual Equivalente resume el costo total: menor es más barato.")
+    b.cat(3, "¿Interés simple o compuesto?", ["Simple", "Compuesto"], [("el interés se calcula siempre sobre el capital inicial", 0), ("se gana lo mismo cada año", 0), ("el interés se suma al capital y genera más interés", 1), ("el crecimiento es exponencial", 1)],
+          "En el compuesto, los intereses generan intereses.", "Simple: siempre sobre el capital inicial; compuesto: interés sobre interés.")
+    b.om(4, "Una tienda ofrece pagar $120.000 en 12 cuotas de $12.000. ¿Cuánto pagas de más?", "$24.000", ["$12.000", "$0", "$144.000"], "12 · 12.000 = 144.000.", "144.000 − 120.000 = $24.000 extra.")
+    b.nu(4, "Si la inflación anual es 4 % y tu sueldo de $500.000 sube 4 %, ¿cuál es tu nuevo sueldo?", 520000, "4 % de 500.000.", "500.000 + 20.000 = $520.000 (mantiene el poder de compra).", unidad="$")
+    b.ord(4, "Ordena los pasos para comparar dos créditos.", ["Revisar el monto y el plazo.", "Comparar la CAE de cada uno.", "Calcular el costo total (cuota × número de cuotas).", "Elegir el de menor costo total que puedas pagar."], "Monto, CAE, costo total y decisión.", "Así se toma una decisión financiera informada.")
+    b.om(5, "Un precio baja 20 % y luego sube 20 %. Respecto del precio original, queda…", "4 % más bajo", ["igual", "4 % más alto", "20 % más bajo"], "Prueba con $100.", "100 → 80 → 96: queda 4 % más bajo.")
+    b.om(5, "La UF subió de 36.000 a 37.800 pesos en un año. ¿Cuál fue su variación porcentual?", "5 %", ["1,8 %", "18 %", "50 %"], "(37.800 − 36.000) ÷ 36.000.", "1.800 ÷ 36.000 = 0,05 = 5 %.")
+    b.om(5, "¿Qué opción conviene más para un ahorro a 3 años?", "interés compuesto del 6 % anual", ["interés simple del 6 % anual", "guardar el dinero en casa", "un crédito del 6 %"], "El compuesto genera interés sobre interés.", "Con la misma tasa, el compuesto da más que el simple.")
+    return b.items
+
+
+def ma4m_oac2():
+    b = Autor("mat", "4m", 2)
+    b.om(1, "¿Qué forma tiene la curva de la distribución normal?", "de campana, simétrica", ["una recta creciente", "una U", "escalones"], "Se la conoce como campana de Gauss.", "Es una campana simétrica alrededor de la media.")
+    b.co(1, "En la distribución normal, la media, la mediana y la moda son ___.", "iguales", ["distintas siempre", "cero", "negativas"], "La curva es simétrica.", "En una normal coinciden las tres.")
+    b.om(1, "Un experimento binomial tiene…", "dos resultados posibles en cada intento (éxito o fracaso)", ["infinitos resultados", "resultados que dependen unos de otros", "un solo intento siempre"], "Por ejemplo, cara o sello.", "Cada intento es éxito o fracaso, con probabilidad constante.")
+    b.om(2, "Se lanza una moneda 3 veces. ¿Probabilidad de obtener exactamente 3 caras?", "1/8", ["1/3", "3/8", "1/2"], "(1/2)³.", "(1/2)³ = 1/8.")
+    b.nu(2, "Un jugador encesta 80 % de sus tiros. En 10 tiros, ¿cuántos encestes se esperan? (n · p)", 8, "Esperanza = n · p.", "10 · 0,8 = 8 encestes.", unidad="encestes")
+    b.em(2, "Une cada intervalo de la normal con su porcentaje aproximado.", [["media ± 1 desviación estándar", "68 %"], ["media ± 2 desviaciones estándar", "95 %"], ["media ± 3 desviaciones estándar", "99,7 %"]], "Es la regla empírica.", "68 %, 95 % y 99,7 %.")
+    b.om(3, "Se lanza una moneda 3 veces. ¿Probabilidad de obtener exactamente 2 caras?", "3/8", ["1/8", "2/3", "1/2"], "Hay 3 formas: CCS, CSC, SCC.", "3 · (1/2)³ = 3/8.")
+    b.om(3, "Estaturas con media 160 cm y desviación estándar 10 cm (distribución normal). ¿Qué porcentaje mide entre 150 y 170 cm?", "aproximadamente 68 %", ["50 %", "95 %", "100 %"], "Es la media ± 1 desviación estándar.", "Entre 150 y 170 está el 68 % aproximado.")
+    b.cat(3, "¿Sigue un modelo binomial?", ["Binomial", "No binomial"], [("número de caras en 10 lanzamientos", 0), ("número de penales convertidos de 5", 0), ("la estatura de un estudiante", 1), ("el tiempo que tarda un bus", 1)],
+          "Binomial: contar éxitos en n intentos independientes.", "Contar caras o penales es binomial; estatura y tiempo son variables continuas.")
+    b.om(4, "Puntajes con media 500 y desviación estándar 100. ¿Qué porcentaje aproximado obtiene más de 700?", "2,5 %", ["5 %", "16 %", "0,15 %"], "700 es media + 2 desviaciones; fuera del 95 % central, la mitad está arriba.", "(100 − 95) ÷ 2 = 2,5 %.")
+    b.nu(4, "En un examen de 20 preguntas de verdadero o falso respondidas al azar, ¿cuántas correctas se esperan?", 10, "n · p con p = 1/2.", "20 · 0,5 = 10.")
+    b.ord(4, "Ordena de menor a mayor probabilidad (moneda lanzada 4 veces).", ["4 caras", "3 caras", "2 caras"], "Cuenta cuántas formas hay de cada resultado: 1, 4 y 6.", "P(4) = 1/16 < P(3) = 4/16 < P(2) = 6/16.")
+    b.om(5, "Un medio dice: «Un estudiante sacó 750 puntos (media 500, desviación 100), un resultado imposible». ¿Qué responderías?", "Es poco frecuente (2,5 desviaciones sobre la media), pero no imposible.", ["Tiene razón: es imposible.", "Es el resultado más común.", "La normal no tiene valores altos."], "En la normal, los valores extremos son raros, no imposibles.", "Está fuera del 95 % central: es poco frecuente, pero posible.")
+    b.om(5, "Una fábrica dice que solo 2 % de sus ampolletas fallan. En una caja de 50, ¿cuántas se espera que fallen?", "1", ["2", "5", "10"], "n · p = 50 · 0,02.", "50 · 0,02 = 1 ampolleta.")
+    b.om(5, "¿Por qué un estudio con 10 personas es menos confiable que uno con 1.000 para estimar un promedio?", "porque con más datos la estimación varía menos", ["porque 10 es un número impar", "porque las muestras grandes siempre mienten", "porque el promedio no cambia nunca"], "Piensa en la variabilidad de las muestras.", "Las muestras grandes dan estimaciones más estables.")
+    return b.items
+
+
+def ma4m_oac3():
+    b = Autor("mat", "4m", 3)
+    b.nu(1, "Si f(x) = x³, ¿cuánto es f(2)?", 8, "2 · 2 · 2.", "2³ = 8.")
+    b.nu(1, "¿Cuánto es sen(90°)?", 1, "En el círculo unitario, 90° está arriba.", "sen 90° = 1.")
+    b.co(1, "La función cos(x) es ___, porque sus valores se repiten cada 360°.", "periódica", ["lineal", "constante", "creciente siempre"], "Se repite en ciclos.", "Seno y coseno son periódicas.")
+    b.om(2, "¿Cuál es el valor máximo de f(x) = sen(x)?", "1", ["0", "360", "−1"], "Oscila entre −1 y 1.", "El máximo de sen x es 1.")
+    b.nu(2, "¿Cuánto es cos(0°)?", 1, "En 0° el punto del círculo unitario es (1, 0).", "cos 0° = 1.")
+    b.em(2, "Une cada función con su gráfico típico.", [["f(x) = x²", "parábola en forma de U"], ["f(x) = x³", "curva creciente en forma de S"], ["f(x) = sen x", "onda que se repite"]], "Piensa en la forma de cada curva.", "Parábola, cúbica y onda periódica.")
+    b.om(3, "¿Cuál es el período de f(x) = sen(x), en grados?", "360°", ["90°", "180°", "720°"], "Una vuelta completa.", "Seno se repite cada 360°.")
+    b.om(3, "¿Qué función tiene simetría respecto del eje y (es par)?", "f(x) = x²", ["f(x) = x³", "f(x) = sen x", "f(x) = x"], "f(−x) = f(x).", "(−x)² = x²: es par.")
+    b.cat(3, "¿Crece siempre o no?", ["Crece siempre", "No crece siempre"], [("f(x) = x³", 0), ("f(x) = x", 0), ("f(x) = x²", 1), ("f(x) = sen x", 1)],
+          "Piensa en todo el dominio de los números reales.", "x³ y x crecen siempre; x² baja y luego sube; sen x oscila.")
+    b.om(4, "La marea en un puerto sube y baja cada 12 horas aproximadamente. ¿Qué función la modela mejor?", "una función seno o coseno", ["una función lineal", "una función cúbica", "una función constante"], "Es un fenómeno periódico.", "Lo periódico se modela con seno o coseno.")
+    b.om(4, "¿Qué amplitud tiene f(x) = 3 sen(x)?", "3", ["1", "6", "1/3"], "La amplitud multiplica la altura de la onda.", "Oscila entre −3 y 3: amplitud 3.")
+    b.ord(4, "Ordena de menor a mayor para x = 2.", ["x", "x²", "x³", "x⁴"], "Calcula 2, 4, 8 y 16.", "2 < 4 < 8 < 16.")
+    b.om(5, "El volumen de un cubo de arista a es V = a³. Si la arista se duplica, el volumen…", "se multiplica por 8", ["se duplica", "se multiplica por 4", "se triplica"], "(2a)³ = 8a³.", "Al duplicar la arista, el volumen se multiplica por 2³ = 8.")
+    b.om(5, "Una rueda de la fortuna tiene la altura h(t) = 20 + 15 sen(t). ¿Cuál es la altura máxima?", "35 m", ["20 m", "15 m", "5 m"], "sen(t) vale como máximo 1.", "20 + 15 · 1 = 35 m.")
+    b.om(5, "¿Cuál es la altura mínima de esa misma rueda?", "5 m", ["0 m", "15 m", "20 m"], "sen(t) vale como mínimo −1.", "20 + 15 · (−1) = 5 m.")
+    return b.items
+
+
 GENERADORES = {
     "1_medio.matematica.OA1": ma1m_oa1, "1_medio.matematica.OA4": ma1m_oa4, "1_medio.matematica.OA14": ma1m_oa14,
     "2_medio.matematica.OA2": ma2m_oa2, "2_medio.matematica.OA4": ma2m_oa4, "2_medio.matematica.OA11": ma2m_oa11,
+    "3_medio.matematica.OA1": ma3m_oac1, "3_medio.matematica.OA2": ma3m_oac2, "3_medio.matematica.OA3": ma3m_oac3,
+    "4_medio.matematica.OA1": ma4m_oac1, "4_medio.matematica.OA2": ma4m_oac2, "4_medio.matematica.OA3": ma4m_oac3,
 }

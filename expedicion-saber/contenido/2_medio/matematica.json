@@ -1,0 +1,761 @@
+[
+  {
+    "nivel": "2_medio",
+    "asignatura": "matematica",
+    "eje": "Números",
+    "objetivo_oficial": "OA 2: Relacionar potencias de exponente racional, raíces enésimas y logaritmos, convirtiendo de una representación a otra (a^x = P equivale a log_a P = x).",
+    "dificultad": 9,
+    "prerequisitos": [
+      "1_medio.matematica.OA1",
+      "8_basico.matematica.OA3"
+    ],
+    "id_objetivo": "2_medio.matematica.OA2",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros/81042:MA2M-OA-02"
+    },
+    "desafios": [
+      {
+        "id": "mat2m-oa2-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es √49?",
+        "respuesta": 7,
+        "tolerancia": 0,
+        "pista": "¿Qué número al cuadrado da 49?",
+        "explicacion_error": "7² = 49.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es ∛8?",
+        "respuesta": 2,
+        "tolerancia": 0,
+        "pista": "¿Qué número al cubo da 8?",
+        "explicacion_error": "2³ = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-003",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es log₂ 8?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "¿A qué exponente hay que elevar 2 para obtener 8?",
+        "explicacion_error": "2³ = 8, entonces log₂ 8 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "a^(1/2) es lo mismo que…",
+        "alternativas": [
+          "√a",
+          "a/2",
+          "2a",
+          "a²"
+        ],
+        "correcta": 0,
+        "pista": "Exponente 1/2 es raíz cuadrada.",
+        "explicacion_error": "a^(1/2) = √a.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 16^(1/2)?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "pista": "Es √16.",
+        "explicacion_error": "√16 = 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada logaritmo con su valor.",
+        "pares": [
+          [
+            "log₁₀ 100",
+            "2"
+          ],
+          [
+            "log₃ 27",
+            "3"
+          ],
+          [
+            "log₅ 1",
+            "0"
+          ]
+        ],
+        "pista": "Pregúntate a qué exponente hay que elevar la base.",
+        "explicacion_error": "10² = 100, 3³ = 27, 5⁰ = 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-007",
+        "tipo": "completar",
+        "dificultad": 3,
+        "enunciado": "Si 2^x = 32, entonces x = log₂ 32 = ___",
+        "alternativas": [
+          "4",
+          "16",
+          "6",
+          "5"
+        ],
+        "correcta": 3,
+        "pista": "2^5 = 32.",
+        "explicacion_error": "2^5 = 32, entonces x = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 8^(2/3)?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "pista": "Primero la raíz cúbica, luego el cuadrado.",
+        "explicacion_error": "∛8 = 2; 2² = 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "log_a P = x es equivalente a…",
+        "alternativas": [
+          "P^x = a",
+          "x^a = P",
+          "a · x = P",
+          "a^x = P"
+        ],
+        "correcta": 3,
+        "pista": "Un logaritmo es un exponente.",
+        "explicacion_error": "log_a P = x ⇔ a^x = P.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Calcula log₂ 4 + log₂ 8.",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "pista": "log₂ 4 = 2 y log₂ 8 = 3.",
+        "explicacion_error": "2 + 3 = 5 (es igual a log₂ 32).",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Cuál es el valor de 27^(−1/3)?",
+        "alternativas": [
+          "−3",
+          "3",
+          "1/3",
+          "−1/3"
+        ],
+        "correcta": 2,
+        "pista": "Exponente negativo: inverso. Exponente 1/3: raíz cúbica.",
+        "explicacion_error": "27^(1/3) = 3; inverso: 1/3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "log₂ 2",
+          "√9",
+          "log₁₀ 10.000",
+          "2^3"
+        ],
+        "pista": "Calcula cada valor.",
+        "explicacion_error": "1 < 3 < 4 < 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Una bacteria se duplica cada hora. ¿Cuántas horas pasan para que 1 bacteria se convierta en 1.024? (2^x = 1.024)",
+        "respuesta": 10,
+        "tolerancia": 0,
+        "unidad": "horas",
+        "pista": "x = log₂ 1.024.",
+        "explicacion_error": "2^10 = 1.024: 10 horas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué expresión es igual a √(a³)?",
+        "alternativas": [
+          "3a/2",
+          "a^(2/3)",
+          "a^6",
+          "a^(3/2)"
+        ],
+        "correcta": 3,
+        "pista": "Raíz cuadrada: exponente 1/2.",
+        "explicacion_error": "√(a³) = (a³)^(1/2) = a^(3/2).",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa2-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "La escala de Richter es logarítmica: cada punto más es 10 veces más amplitud. ¿Cuántas veces mayor es la amplitud de un sismo 8 que la de uno 6?",
+        "respuesta": 100,
+        "tolerancia": 0,
+        "unidad": "veces",
+        "pista": "Diferencia de 2 puntos: 10².",
+        "explicacion_error": "10² = 100 veces.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_medio",
+    "asignatura": "matematica",
+    "eje": "Álgebra y funciones",
+    "objetivo_oficial": "OA 4: Resolver ecuaciones cuadráticas de las formas ax² = b, (ax + b)² = c, ax² + bx = 0 y ax² + bx = c, por factorización, completación del cuadrado, fórmula o gráficamente.",
+    "dificultad": 9,
+    "prerequisitos": [
+      "1_medio.matematica.OA4"
+    ],
+    "id_objetivo": "2_medio.matematica.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Algebra-y-funciones/81044:MA2M-OA-04"
+    },
+    "desafios": [
+      {
+        "id": "mat2m-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuáles son las soluciones de x² = 25?",
+        "alternativas": [
+          "x = 25",
+          "x = 12,5",
+          "x = 5 y x = −5",
+          "solo x = 5"
+        ],
+        "correcta": 2,
+        "pista": "Hay dos números que al cuadrado dan 25.",
+        "explicacion_error": "5² = 25 y (−5)² = 25.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "Resuelve 2x² = 18. ¿Cuál es la solución positiva?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "x² = 9.",
+        "explicacion_error": "x² = 9 → x = ±3; la positiva es 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "En x² + 5x + 6 = 0, el término independiente es ___.",
+        "alternativas": [
+          "5",
+          "0",
+          "6",
+          "1"
+        ],
+        "correcta": 2,
+        "pista": "Es el número sin x.",
+        "explicacion_error": "El término independiente es 6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuáles son las soluciones de x² − 4x = 0?",
+        "alternativas": [
+          "x = −4 y x = 0",
+          "x = 0 y x = 4",
+          "x = 4 solamente",
+          "x = 2"
+        ],
+        "correcta": 1,
+        "pista": "Factoriza: x(x − 4) = 0.",
+        "explicacion_error": "x = 0 o x − 4 = 0 → x = 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Factoriza x² + 5x + 6.",
+        "alternativas": [
+          "(x + 5)(x + 1)",
+          "(x + 1)(x + 6)",
+          "(x + 2)(x + 3)",
+          "(x − 2)(x − 3)"
+        ],
+        "correcta": 2,
+        "pista": "Busca dos números que sumen 5 y multipliquen 6.",
+        "explicacion_error": "2 + 3 = 5 y 2 · 3 = 6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Qué tipo de ecuación es?",
+        "categorias": [
+          "Cuadrática",
+          "No cuadrática"
+        ],
+        "elementos": [
+          {
+            "texto": "x² − 9 = 0",
+            "categoria": 0
+          },
+          {
+            "texto": "3x² + x = 2",
+            "categoria": 0
+          },
+          {
+            "texto": "(x + 1)² = 4",
+            "categoria": 0
+          },
+          {
+            "texto": "2x + 3 = 7",
+            "categoria": 1
+          },
+          {
+            "texto": "x³ = 8",
+            "categoria": 1
+          }
+        ],
+        "pista": "Una ecuación cuadrática tiene grado 2.",
+        "explicacion_error": "Las que tienen x² como mayor potencia son cuadráticas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuáles son las soluciones de x² − 5x + 6 = 0?",
+        "alternativas": [
+          "x = 5 y x = 6",
+          "x = 1 y x = 6",
+          "x = 2 y x = 3",
+          "x = −2 y x = −3"
+        ],
+        "correcta": 2,
+        "pista": "Factoriza: (x − 2)(x − 3).",
+        "explicacion_error": "x = 2 o x = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Resuelve (x − 1)² = 16.",
+        "alternativas": [
+          "x = 5 solamente",
+          "x = 17",
+          "x = 5 y x = −3",
+          "x = 4 y x = −4"
+        ],
+        "correcta": 2,
+        "pista": "x − 1 = ±4.",
+        "explicacion_error": "x − 1 = 4 → 5; x − 1 = −4 → −3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-009",
+        "tipo": "emparejar",
+        "dificultad": 3,
+        "enunciado": "Une cada ecuación con sus soluciones.",
+        "pares": [
+          [
+            "x² = 36",
+            "6 y −6"
+          ],
+          [
+            "x² − 7x = 0",
+            "0 y 7"
+          ],
+          [
+            "x² − 1 = 0",
+            "1 y −1"
+          ]
+        ],
+        "pista": "Despeja o factoriza.",
+        "explicacion_error": "x = ±6; x(x − 7) = 0; x = ±1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Con la fórmula general, ¿cuánto vale el discriminante de x² + 2x − 3 = 0?",
+        "alternativas": [
+          "16",
+          "8",
+          "4",
+          "−8"
+        ],
+        "correcta": 0,
+        "pista": "Δ = b² − 4ac.",
+        "explicacion_error": "4 − 4·1·(−3) = 4 + 12 = 16.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-011",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Cuántas soluciones reales tiene?",
+        "categorias": [
+          "Dos soluciones",
+          "Una solución",
+          "Ninguna real"
+        ],
+        "elementos": [
+          {
+            "texto": "x² − 9 = 0",
+            "categoria": 0
+          },
+          {
+            "texto": "x² − 5x + 4 = 0",
+            "categoria": 0
+          },
+          {
+            "texto": "x² − 6x + 9 = 0",
+            "categoria": 1
+          },
+          {
+            "texto": "x² + 4x + 4 = 0",
+            "categoria": 1
+          },
+          {
+            "texto": "x² + 1 = 0",
+            "categoria": 2
+          },
+          {
+            "texto": "x² + x + 5 = 0",
+            "categoria": 2
+          }
+        ],
+        "pista": "Mira el discriminante Δ = b² − 4ac.",
+        "explicacion_error": "Δ > 0: dos; Δ = 0: una; Δ < 0: ninguna real.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena los pasos para completar el cuadrado en x² + 6x = 7.",
+        "elementos": [
+          "Sumar 9 a ambos lados.",
+          "Escribir (x + 3)² = 16.",
+          "Sacar raíz: x + 3 = ±4.",
+          "Obtener x = 1 o x = −7."
+        ],
+        "pista": "La mitad de 6 es 3, y 3² = 9.",
+        "explicacion_error": "x² + 6x + 9 = 16 → (x + 3)² = 16 → x = 1 o x = −7.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un terreno rectangular mide x metros de ancho y (x + 3) de largo. Su área es 40 m². ¿Cuánto mide el ancho?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "unidad": "m",
+        "pista": "x(x + 3) = 40 → x² + 3x − 40 = 0.",
+        "explicacion_error": "(x + 8)(x − 5) = 0 → x = 5 (el ancho no puede ser negativo).",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un número positivo multiplicado por sí mismo menos el doble del número da 15. ¿Cuál es el número?",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "pista": "x² − 2x = 15 → x² − 2x − 15 = 0.",
+        "explicacion_error": "(x − 5)(x + 3) = 0 → x = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa4-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Una pelota se lanza y su altura es h = −t² + 6t. ¿En qué tiempos está en el suelo (h = 0)?",
+        "alternativas": [
+          "t = 3 solamente",
+          "t = 6 solamente",
+          "t = −6 y t = 0",
+          "t = 0 y t = 6"
+        ],
+        "correcta": 3,
+        "pista": "Factoriza: −t(t − 6) = 0.",
+        "explicacion_error": "Está en el suelo al lanzarla (t = 0) y al caer (t = 6).",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "2_medio",
+    "asignatura": "matematica",
+    "eje": "Probabilidad y estadística",
+    "objetivo_oficial": "OA 11: Usar permutaciones, factoriales y combinatoria sencilla para contar casos y calcular probabilidades de eventos.",
+    "dificultad": 9,
+    "prerequisitos": [
+      "1_medio.matematica.OA14"
+    ],
+    "id_objetivo": "2_medio.matematica.OA11",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Probabilidad-y-estadistica/81051:MA2M-OA-11"
+    },
+    "desafios": [
+      {
+        "id": "mat2m-oa11-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 4! (4 factorial)?",
+        "respuesta": 24,
+        "tolerancia": 0,
+        "pista": "4 · 3 · 2 · 1.",
+        "explicacion_error": "4! = 24.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿De cuántas formas se pueden ordenar 3 libros en una repisa?",
+        "respuesta": 6,
+        "tolerancia": 0,
+        "unidad": "formas",
+        "pista": "3 · 2 · 1.",
+        "explicacion_error": "3! = 6 formas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "0! = ___",
+        "alternativas": [
+          "−1",
+          "0",
+          "1",
+          "no existe"
+        ],
+        "correcta": 2,
+        "pista": "Es una convención matemática.",
+        "explicacion_error": "Por definición, 0! = 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-004",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Tienes 3 poleras y 4 pantalones. ¿Cuántas combinaciones de ropa puedes formar?",
+        "respuesta": 12,
+        "tolerancia": 0,
+        "unidad": "combinaciones",
+        "pista": "Principio multiplicativo.",
+        "explicacion_error": "3 · 4 = 12 combinaciones.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿De cuántas formas pueden llegar 5 corredores a la meta (sin empates)?",
+        "respuesta": 120,
+        "tolerancia": 0,
+        "unidad": "formas",
+        "pista": "5!.",
+        "explicacion_error": "5! = 120 formas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Importa el orden?",
+        "categorias": [
+          "Importa (permutación)",
+          "No importa (combinación)"
+        ],
+        "elementos": [
+          {
+            "texto": "podio de oro, plata y bronce",
+            "categoria": 0
+          },
+          {
+            "texto": "clave de 4 dígitos",
+            "categoria": 0
+          },
+          {
+            "texto": "elegir 3 integrantes de un comité",
+            "categoria": 1
+          },
+          {
+            "texto": "elegir 2 sabores de helado",
+            "categoria": 1
+          }
+        ],
+        "pista": "Si cambiar el orden cambia el resultado, importa.",
+        "explicacion_error": "Podio y clave dependen del orden; comité y sabores no.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿Cuántas claves de 3 dígitos distintos se forman con los dígitos 1, 2, 3, 4 y 5?",
+        "respuesta": 60,
+        "tolerancia": 0,
+        "unidad": "claves",
+        "pista": "5 · 4 · 3.",
+        "explicacion_error": "5 · 4 · 3 = 60 claves.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "¿De cuántas formas se elige un presidente y un secretario entre 6 personas?",
+        "respuesta": 30,
+        "tolerancia": 0,
+        "unidad": "formas",
+        "pista": "6 opciones para el primer cargo y 5 para el segundo.",
+        "explicacion_error": "6 · 5 = 30 formas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 6!/4!?",
+        "alternativas": [
+          "30",
+          "2",
+          "720",
+          "24"
+        ],
+        "correcta": 0,
+        "pista": "Simplifica: 6 · 5 · 4!/4!.",
+        "explicacion_error": "6!/4! = 6 · 5 = 30.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuántos equipos de 2 personas se forman con 5 personas? (el orden no importa)",
+        "respuesta": 10,
+        "tolerancia": 0,
+        "unidad": "equipos",
+        "pista": "C(5, 2) = 5 · 4 / 2.",
+        "explicacion_error": "20 ÷ 2 = 10 equipos.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Se ordenan al azar las letras A, B y C. ¿Cuál es la probabilidad de obtener «ABC»?",
+        "alternativas": [
+          "1/2",
+          "1/3",
+          "1/9",
+          "1/6"
+        ],
+        "correcta": 3,
+        "pista": "Hay 3! = 6 ordenamientos posibles.",
+        "explicacion_error": "1 caso de 6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "3!",
+          "C(5, 2)",
+          "4!",
+          "5!"
+        ],
+        "pista": "Calcula: 6, 10, 24 y 120.",
+        "explicacion_error": "6 < 10 < 24 < 120.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "¿Cuántas formas hay de elegir 3 estudiantes de un grupo de 6 para una delegación?",
+        "respuesta": 20,
+        "tolerancia": 0,
+        "unidad": "formas",
+        "pista": "C(6, 3) = 6 · 5 · 4 / 3!.",
+        "explicacion_error": "120 ÷ 6 = 20 formas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En un sorteo eliges 2 números distintos del 1 al 10 (sin orden). ¿Probabilidad de acertar el par ganador?",
+        "alternativas": [
+          "1/10",
+          "1/20",
+          "1/45",
+          "1/90"
+        ],
+        "correcta": 2,
+        "pista": "C(10, 2) = 45 pares posibles.",
+        "explicacion_error": "Hay 45 pares: la probabilidad es 1/45.",
+        "monedas": 10
+      },
+      {
+        "id": "mat2m-oa11-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Se sientan 4 amigos en fila al azar. ¿Probabilidad de que Ana y Beto queden juntos?",
+        "alternativas": [
+          "1/6",
+          "1/4",
+          "1/2",
+          "1/3"
+        ],
+        "correcta": 2,
+        "pista": "Trata a Ana y Beto como un bloque: 3! · 2 casos de 4!.",
+        "explicacion_error": "12 de 24 casos: 1/2.",
+        "monedas": 10
+      }
+    ]
+  }
+]

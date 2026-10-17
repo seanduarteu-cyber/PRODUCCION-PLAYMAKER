@@ -1,0 +1,797 @@
+[
+  {
+    "nivel": "4_medio",
+    "asignatura": "matematica",
+    "eje": "Números",
+    "objetivo_oficial": "FG-MATE-4M-OAC-01: Fundamentar decisiones financieras personales o comunitarias con modelos que usan porcentajes, tasas de interés e índices económicos.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "3_medio.matematica.OA3"
+    ],
+    "id_objetivo": "4_medio.matematica.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/91169:FG-MATE-4M-OAC-01",
+      "codigo_oficial": "FG-MATE-4M-OAC-01"
+    },
+    "desafios": [
+      {
+        "id": "mat4m-oa1-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es el 15 % de $20.000?",
+        "respuesta": 3000,
+        "tolerancia": 0,
+        "unidad": "$",
+        "pista": "10 % = 2.000 y 5 % = 1.000.",
+        "explicacion_error": "2.000 + 1.000 = $3.000.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué es la tasa de interés?",
+        "alternativas": [
+          "un impuesto fijo",
+          "el precio de un producto",
+          "el porcentaje que se paga o se gana por un dinero en un período",
+          "el sueldo mínimo"
+        ],
+        "correcta": 2,
+        "pista": "Se aplica a créditos y ahorros.",
+        "explicacion_error": "Es el costo o la ganancia por usar dinero en el tiempo.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "El IPC mide la variación de los ___ de una canasta de bienes y servicios.",
+        "alternativas": [
+          "precios",
+          "impuestos",
+          "sueldos",
+          "intereses"
+        ],
+        "correcta": 0,
+        "pista": "Se usa para medir la inflación.",
+        "explicacion_error": "El IPC mide cómo cambian los precios.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-004",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Ahorras $100.000 al 5 % de interés simple anual. ¿Cuánto interés ganas en 1 año?",
+        "respuesta": 5000,
+        "tolerancia": 0,
+        "unidad": "$",
+        "pista": "5 % de 100.000.",
+        "explicacion_error": "$5.000.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Un producto de $40.000 sube 10 %. ¿Cuál es su nuevo precio?",
+        "respuesta": 44000,
+        "tolerancia": 0,
+        "unidad": "$",
+        "pista": "Calcula el 10 % y súmalo.",
+        "explicacion_error": "40.000 + 4.000 = $44.000.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada concepto con su definición.",
+        "pares": [
+          [
+            "inflación",
+            "aumento general de los precios"
+          ],
+          [
+            "crédito",
+            "dinero prestado que se devuelve con interés"
+          ],
+          [
+            "UF",
+            "unidad que se reajusta según la inflación"
+          ]
+        ],
+        "pista": "Vocabulario financiero chileno.",
+        "explicacion_error": "Inflación, crédito y UF.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Con interés compuesto del 10 % anual, ¿cuánto tendrás al cabo de 2 años si depositas $100.000?",
+        "respuesta": 121000,
+        "tolerancia": 0,
+        "unidad": "$",
+        "pista": "100.000 · 1,1².",
+        "explicacion_error": "100.000 · 1,21 = $121.000.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Por qué un crédito con CAE más baja suele ser mejor?",
+        "alternativas": [
+          "porque te prestan más dinero siempre",
+          "porque refleja un costo total menor del crédito",
+          "porque no hay que pagarlo",
+          "porque dura menos días"
+        ],
+        "correcta": 1,
+        "pista": "La CAE incluye intereses y gastos.",
+        "explicacion_error": "La Carga Anual Equivalente resume el costo total: menor es más barato.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Interés simple o compuesto?",
+        "categorias": [
+          "Simple",
+          "Compuesto"
+        ],
+        "elementos": [
+          {
+            "texto": "el interés se calcula siempre sobre el capital inicial",
+            "categoria": 0
+          },
+          {
+            "texto": "se gana lo mismo cada año",
+            "categoria": 0
+          },
+          {
+            "texto": "el interés se suma al capital y genera más interés",
+            "categoria": 1
+          },
+          {
+            "texto": "el crecimiento es exponencial",
+            "categoria": 1
+          }
+        ],
+        "pista": "En el compuesto, los intereses generan intereses.",
+        "explicacion_error": "Simple: siempre sobre el capital inicial; compuesto: interés sobre interés.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Una tienda ofrece pagar $120.000 en 12 cuotas de $12.000. ¿Cuánto pagas de más?",
+        "alternativas": [
+          "$0",
+          "$12.000",
+          "$144.000",
+          "$24.000"
+        ],
+        "correcta": 3,
+        "pista": "12 · 12.000 = 144.000.",
+        "explicacion_error": "144.000 − 120.000 = $24.000 extra.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-011",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Si la inflación anual es 4 % y tu sueldo de $500.000 sube 4 %, ¿cuál es tu nuevo sueldo?",
+        "respuesta": 520000,
+        "tolerancia": 0,
+        "unidad": "$",
+        "pista": "4 % de 500.000.",
+        "explicacion_error": "500.000 + 20.000 = $520.000 (mantiene el poder de compra).",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena los pasos para comparar dos créditos.",
+        "elementos": [
+          "Revisar el monto y el plazo.",
+          "Comparar la CAE de cada uno.",
+          "Calcular el costo total (cuota × número de cuotas).",
+          "Elegir el de menor costo total que puedas pagar."
+        ],
+        "pista": "Monto, CAE, costo total y decisión.",
+        "explicacion_error": "Así se toma una decisión financiera informada.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un precio baja 20 % y luego sube 20 %. Respecto del precio original, queda…",
+        "alternativas": [
+          "4 % más bajo",
+          "4 % más alto",
+          "20 % más bajo",
+          "igual"
+        ],
+        "correcta": 0,
+        "pista": "Prueba con $100.",
+        "explicacion_error": "100 → 80 → 96: queda 4 % más bajo.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "La UF subió de 36.000 a 37.800 pesos en un año. ¿Cuál fue su variación porcentual?",
+        "alternativas": [
+          "18 %",
+          "5 %",
+          "1,8 %",
+          "50 %"
+        ],
+        "correcta": 1,
+        "pista": "(37.800 − 36.000) ÷ 36.000.",
+        "explicacion_error": "1.800 ÷ 36.000 = 0,05 = 5 %.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa1-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Qué opción conviene más para un ahorro a 3 años?",
+        "alternativas": [
+          "interés compuesto del 6 % anual",
+          "interés simple del 6 % anual",
+          "un crédito del 6 %",
+          "guardar el dinero en casa"
+        ],
+        "correcta": 0,
+        "pista": "El compuesto genera interés sobre interés.",
+        "explicacion_error": "Con la misma tasa, el compuesto da más que el simple.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_medio",
+    "asignatura": "matematica",
+    "eje": "Probabilidad y estadística",
+    "objetivo_oficial": "FG-MATE-4M-OAC-02: Fundamentar decisiones en situaciones de incerteza analizando críticamente datos estadísticos con los modelos binomial y normal.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "3_medio.matematica.OA2"
+    ],
+    "id_objetivo": "4_medio.matematica.OA2",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/91170:FG-MATE-4M-OAC-02",
+      "codigo_oficial": "FG-MATE-4M-OAC-02"
+    },
+    "desafios": [
+      {
+        "id": "mat4m-oa2-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué forma tiene la curva de la distribución normal?",
+        "alternativas": [
+          "de campana, simétrica",
+          "una recta creciente",
+          "una U",
+          "escalones"
+        ],
+        "correcta": 0,
+        "pista": "Se la conoce como campana de Gauss.",
+        "explicacion_error": "Es una campana simétrica alrededor de la media.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-002",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "En la distribución normal, la media, la mediana y la moda son ___.",
+        "alternativas": [
+          "iguales",
+          "cero",
+          "negativas",
+          "distintas siempre"
+        ],
+        "correcta": 0,
+        "pista": "La curva es simétrica.",
+        "explicacion_error": "En una normal coinciden las tres.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-003",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Un experimento binomial tiene…",
+        "alternativas": [
+          "resultados que dependen unos de otros",
+          "infinitos resultados",
+          "dos resultados posibles en cada intento (éxito o fracaso)",
+          "un solo intento siempre"
+        ],
+        "correcta": 2,
+        "pista": "Por ejemplo, cara o sello.",
+        "explicacion_error": "Cada intento es éxito o fracaso, con probabilidad constante.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Se lanza una moneda 3 veces. ¿Probabilidad de obtener exactamente 3 caras?",
+        "alternativas": [
+          "1/2",
+          "1/8",
+          "3/8",
+          "1/3"
+        ],
+        "correcta": 1,
+        "pista": "(1/2)³.",
+        "explicacion_error": "(1/2)³ = 1/8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Un jugador encesta 80 % de sus tiros. En 10 tiros, ¿cuántos encestes se esperan? (n · p)",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "unidad": "encestes",
+        "pista": "Esperanza = n · p.",
+        "explicacion_error": "10 · 0,8 = 8 encestes.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada intervalo de la normal con su porcentaje aproximado.",
+        "pares": [
+          [
+            "media ± 1 desviación estándar",
+            "68 %"
+          ],
+          [
+            "media ± 2 desviaciones estándar",
+            "95 %"
+          ],
+          [
+            "media ± 3 desviaciones estándar",
+            "99,7 %"
+          ]
+        ],
+        "pista": "Es la regla empírica.",
+        "explicacion_error": "68 %, 95 % y 99,7 %.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Se lanza una moneda 3 veces. ¿Probabilidad de obtener exactamente 2 caras?",
+        "alternativas": [
+          "3/8",
+          "1/8",
+          "1/2",
+          "2/3"
+        ],
+        "correcta": 0,
+        "pista": "Hay 3 formas: CCS, CSC, SCC.",
+        "explicacion_error": "3 · (1/2)³ = 3/8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Estaturas con media 160 cm y desviación estándar 10 cm (distribución normal). ¿Qué porcentaje mide entre 150 y 170 cm?",
+        "alternativas": [
+          "100 %",
+          "95 %",
+          "aproximadamente 68 %",
+          "50 %"
+        ],
+        "correcta": 2,
+        "pista": "Es la media ± 1 desviación estándar.",
+        "explicacion_error": "Entre 150 y 170 está el 68 % aproximado.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Sigue un modelo binomial?",
+        "categorias": [
+          "Binomial",
+          "No binomial"
+        ],
+        "elementos": [
+          {
+            "texto": "número de caras en 10 lanzamientos",
+            "categoria": 0
+          },
+          {
+            "texto": "número de penales convertidos de 5",
+            "categoria": 0
+          },
+          {
+            "texto": "la estatura de un estudiante",
+            "categoria": 1
+          },
+          {
+            "texto": "el tiempo que tarda un bus",
+            "categoria": 1
+          }
+        ],
+        "pista": "Binomial: contar éxitos en n intentos independientes.",
+        "explicacion_error": "Contar caras o penales es binomial; estatura y tiempo son variables continuas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Puntajes con media 500 y desviación estándar 100. ¿Qué porcentaje aproximado obtiene más de 700?",
+        "alternativas": [
+          "5 %",
+          "0,15 %",
+          "2,5 %",
+          "16 %"
+        ],
+        "correcta": 2,
+        "pista": "700 es media + 2 desviaciones; fuera del 95 % central, la mitad está arriba.",
+        "explicacion_error": "(100 − 95) ÷ 2 = 2,5 %.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-011",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "En un examen de 20 preguntas de verdadero o falso respondidas al azar, ¿cuántas correctas se esperan?",
+        "respuesta": 10,
+        "tolerancia": 0,
+        "pista": "n · p con p = 1/2.",
+        "explicacion_error": "20 · 0,5 = 10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor probabilidad (moneda lanzada 4 veces).",
+        "elementos": [
+          "4 caras",
+          "3 caras",
+          "2 caras"
+        ],
+        "pista": "Cuenta cuántas formas hay de cada resultado: 1, 4 y 6.",
+        "explicacion_error": "P(4) = 1/16 < P(3) = 4/16 < P(2) = 6/16.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un medio dice: «Un estudiante sacó 750 puntos (media 500, desviación 100), un resultado imposible». ¿Qué responderías?",
+        "alternativas": [
+          "La normal no tiene valores altos.",
+          "Es el resultado más común.",
+          "Tiene razón: es imposible.",
+          "Es poco frecuente (2,5 desviaciones sobre la media), pero no imposible."
+        ],
+        "correcta": 3,
+        "pista": "En la normal, los valores extremos son raros, no imposibles.",
+        "explicacion_error": "Está fuera del 95 % central: es poco frecuente, pero posible.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Una fábrica dice que solo 2 % de sus ampolletas fallan. En una caja de 50, ¿cuántas se espera que fallen?",
+        "alternativas": [
+          "5",
+          "10",
+          "2",
+          "1"
+        ],
+        "correcta": 3,
+        "pista": "n · p = 50 · 0,02.",
+        "explicacion_error": "50 · 0,02 = 1 ampolleta.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa2-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Por qué un estudio con 10 personas es menos confiable que uno con 1.000 para estimar un promedio?",
+        "alternativas": [
+          "porque 10 es un número impar",
+          "porque con más datos la estimación varía menos",
+          "porque las muestras grandes siempre mienten",
+          "porque el promedio no cambia nunca"
+        ],
+        "correcta": 1,
+        "pista": "Piensa en la variabilidad de las muestras.",
+        "explicacion_error": "Las muestras grandes dan estimaciones más estables.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "4_medio",
+    "asignatura": "matematica",
+    "eje": "Álgebra y funciones",
+    "objetivo_oficial": "FG-MATE-4M-OAC-03: Modelar fenómenos de crecimiento, decrecimiento y periódicos con funciones potencia de exponente entero y con las funciones seno y coseno.",
+    "dificultad": 11,
+    "prerequisitos": [
+      "3_medio.matematica.OA3"
+    ],
+    "id_objetivo": "4_medio.matematica.OA3",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Formacion-General/Matematica/Matematica-4-medio/145083:Unidad-3-Funciones-potencias-y-trigonometricas",
+      "codigo_oficial": "FG-MATE-4M-OAC-03"
+    },
+    "desafios": [
+      {
+        "id": "mat4m-oa3-001",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "Si f(x) = x³, ¿cuánto es f(2)?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "pista": "2 · 2 · 2.",
+        "explicacion_error": "2³ = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es sen(90°)?",
+        "respuesta": 1,
+        "tolerancia": 0,
+        "pista": "En el círculo unitario, 90° está arriba.",
+        "explicacion_error": "sen 90° = 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La función cos(x) es ___, porque sus valores se repiten cada 360°.",
+        "alternativas": [
+          "creciente siempre",
+          "periódica",
+          "lineal",
+          "constante"
+        ],
+        "correcta": 1,
+        "pista": "Se repite en ciclos.",
+        "explicacion_error": "Seno y coseno son periódicas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuál es el valor máximo de f(x) = sen(x)?",
+        "alternativas": [
+          "−1",
+          "0",
+          "1",
+          "360"
+        ],
+        "correcta": 2,
+        "pista": "Oscila entre −1 y 1.",
+        "explicacion_error": "El máximo de sen x es 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es cos(0°)?",
+        "respuesta": 1,
+        "tolerancia": 0,
+        "pista": "En 0° el punto del círculo unitario es (1, 0).",
+        "explicacion_error": "cos 0° = 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada función con su gráfico típico.",
+        "pares": [
+          [
+            "f(x) = x²",
+            "parábola en forma de U"
+          ],
+          [
+            "f(x) = x³",
+            "curva creciente en forma de S"
+          ],
+          [
+            "f(x) = sen x",
+            "onda que se repite"
+          ]
+        ],
+        "pista": "Piensa en la forma de cada curva.",
+        "explicacion_error": "Parábola, cúbica y onda periódica.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuál es el período de f(x) = sen(x), en grados?",
+        "alternativas": [
+          "720°",
+          "90°",
+          "180°",
+          "360°"
+        ],
+        "correcta": 3,
+        "pista": "Una vuelta completa.",
+        "explicacion_error": "Seno se repite cada 360°.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Qué función tiene simetría respecto del eje y (es par)?",
+        "alternativas": [
+          "f(x) = x",
+          "f(x) = x²",
+          "f(x) = x³",
+          "f(x) = sen x"
+        ],
+        "correcta": 1,
+        "pista": "f(−x) = f(x).",
+        "explicacion_error": "(−x)² = x²: es par.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-009",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 3,
+        "enunciado": "¿Crece siempre o no?",
+        "categorias": [
+          "Crece siempre",
+          "No crece siempre"
+        ],
+        "elementos": [
+          {
+            "texto": "f(x) = x³",
+            "categoria": 0
+          },
+          {
+            "texto": "f(x) = x",
+            "categoria": 0
+          },
+          {
+            "texto": "f(x) = x²",
+            "categoria": 1
+          },
+          {
+            "texto": "f(x) = sen x",
+            "categoria": 1
+          }
+        ],
+        "pista": "Piensa en todo el dominio de los números reales.",
+        "explicacion_error": "x³ y x crecen siempre; x² baja y luego sube; sen x oscila.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "La marea en un puerto sube y baja cada 12 horas aproximadamente. ¿Qué función la modela mejor?",
+        "alternativas": [
+          "una función seno o coseno",
+          "una función cúbica",
+          "una función constante",
+          "una función lineal"
+        ],
+        "correcta": 0,
+        "pista": "Es un fenómeno periódico.",
+        "explicacion_error": "Lo periódico se modela con seno o coseno.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Qué amplitud tiene f(x) = 3 sen(x)?",
+        "alternativas": [
+          "6",
+          "1/3",
+          "3",
+          "1"
+        ],
+        "correcta": 2,
+        "pista": "La amplitud multiplica la altura de la onda.",
+        "explicacion_error": "Oscila entre −3 y 3: amplitud 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-012",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor para x = 2.",
+        "elementos": [
+          "x",
+          "x²",
+          "x³",
+          "x⁴"
+        ],
+        "pista": "Calcula 2, 4, 8 y 16.",
+        "explicacion_error": "2 < 4 < 8 < 16.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "El volumen de un cubo de arista a es V = a³. Si la arista se duplica, el volumen…",
+        "alternativas": [
+          "se multiplica por 4",
+          "se multiplica por 8",
+          "se triplica",
+          "se duplica"
+        ],
+        "correcta": 1,
+        "pista": "(2a)³ = 8a³.",
+        "explicacion_error": "Al duplicar la arista, el volumen se multiplica por 2³ = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Una rueda de la fortuna tiene la altura h(t) = 20 + 15 sen(t). ¿Cuál es la altura máxima?",
+        "alternativas": [
+          "35 m",
+          "15 m",
+          "5 m",
+          "20 m"
+        ],
+        "correcta": 0,
+        "pista": "sen(t) vale como máximo 1.",
+        "explicacion_error": "20 + 15 · 1 = 35 m.",
+        "monedas": 10
+      },
+      {
+        "id": "mat4m-oa3-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "¿Cuál es la altura mínima de esa misma rueda?",
+        "alternativas": [
+          "5 m",
+          "20 m",
+          "0 m",
+          "15 m"
+        ],
+        "correcta": 0,
+        "pista": "sen(t) vale como mínimo −1.",
+        "explicacion_error": "20 + 15 · (−1) = 5 m.",
+        "monedas": 10
+      }
+    ]
+  }
+]

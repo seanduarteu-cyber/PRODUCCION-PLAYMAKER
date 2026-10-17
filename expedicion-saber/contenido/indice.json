@@ -380,6 +380,17 @@
       "desafios": 34
     },
     {
+      "archivo": "1_medio/matematica.json",
+      "nivel": "1_medio",
+      "asignatura": "matematica",
+      "objetivos": [
+        "1_medio.matematica.OA1",
+        "1_medio.matematica.OA4",
+        "1_medio.matematica.OA14"
+      ],
+      "desafios": 45
+    },
+    {
       "archivo": "1_medio/ciencias.json",
       "nivel": "1_medio",
       "asignatura": "ciencias",
@@ -398,6 +409,17 @@
         "1_medio.ingles.OA9",
         "1_medio.ingles.OA10",
         "1_medio.ingles.OA16"
+      ],
+      "desafios": 45
+    },
+    {
+      "archivo": "2_medio/matematica.json",
+      "nivel": "2_medio",
+      "asignatura": "matematica",
+      "objetivos": [
+        "2_medio.matematica.OA2",
+        "2_medio.matematica.OA4",
+        "2_medio.matematica.OA11"
       ],
       "desafios": 45
     },
@@ -424,6 +446,17 @@
       "desafios": 45
     },
     {
+      "archivo": "3_medio/matematica.json",
+      "nivel": "3_medio",
+      "asignatura": "matematica",
+      "objetivos": [
+        "3_medio.matematica.OA1",
+        "3_medio.matematica.OA2",
+        "3_medio.matematica.OA3"
+      ],
+      "desafios": 45
+    },
+    {
       "archivo": "3_medio/ciencias.json",
       "nivel": "3_medio",
       "asignatura": "ciencias",
@@ -442,6 +475,17 @@
         "3_medio.ingles.OA1",
         "3_medio.ingles.OA2",
         "3_medio.ingles.OA3"
+      ],
+      "desafios": 45
+    },
+    {
+      "archivo": "4_medio/matematica.json",
+      "nivel": "4_medio",
+      "asignatura": "matematica",
+      "objetivos": [
+        "4_medio.matematica.OA1",
+        "4_medio.matematica.OA2",
+        "4_medio.matematica.OA3"
       ],
       "desafios": 45
     },
@@ -750,6 +794,15 @@
       ]
     },
     {
+      "id": "1_medio.matematica",
+      "nombre": "Matemática 1° medio",
+      "objetivos": [
+        "1_medio.matematica.OA1",
+        "1_medio.matematica.OA4",
+        "1_medio.matematica.OA14"
+      ]
+    },
+    {
       "id": "1_medio.ciencias",
       "nombre": "Ciencias Naturales 1° medio",
       "objetivos": [
@@ -765,6 +818,15 @@
         "1_medio.ingles.OA9",
         "1_medio.ingles.OA10",
         "1_medio.ingles.OA16"
+      ]
+    },
+    {
+      "id": "2_medio.matematica",
+      "nombre": "Matemática 2° medio",
+      "objetivos": [
+        "2_medio.matematica.OA2",
+        "2_medio.matematica.OA4",
+        "2_medio.matematica.OA11"
       ]
     },
     {
@@ -786,6 +848,15 @@
       ]
     },
     {
+      "id": "3_medio.matematica",
+      "nombre": "Matemática 3° medio",
+      "objetivos": [
+        "3_medio.matematica.OA1",
+        "3_medio.matematica.OA2",
+        "3_medio.matematica.OA3"
+      ]
+    },
+    {
       "id": "3_medio.ciencias",
       "nombre": "Ciencias para la Ciudadanía 3° medio",
       "objetivos": [
@@ -801,6 +872,15 @@
         "3_medio.ingles.OA1",
         "3_medio.ingles.OA2",
         "3_medio.ingles.OA3"
+      ]
+    },
+    {
+      "id": "4_medio.matematica",
+      "nombre": "Matemática 4° medio",
+      "objetivos": [
+        "4_medio.matematica.OA1",
+        "4_medio.matematica.OA2",
+        "4_medio.matematica.OA3"
       ]
     },
     {

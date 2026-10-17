@@ -78,16 +78,16 @@ las construcciones siempre femeninas. Ejemplo: «{personaje} {junto} 8 {objetos}
 ## Cobertura actual
 
 <!-- inicio:cobertura -->
-112 objetivos y 1.894 desafíos (115 con audio en inglés). Resumen por asignatura:
+124 objetivos y 2.074 desafíos (115 con audio en inglés). Resumen por asignatura:
 
 | Asignatura | Cursos | OA | Desafíos |
 |---|---|---|---|
-| Matemática | 1° básico a 8° básico | 25 | 500 |
+| Matemática | 1° básico a 4° medio | 37 | 680 |
 | Lenguaje y Comunicación | 1° básico a 8° básico | 21 | 332 |
 | Ciencias Naturales | 1° básico a 4° medio | 38 | 599 |
 | Inglés | 1° básico a 4° medio | 28 | 463 |
 
-Registrados en `herramientas/objetivos.py` y aún sin desafíos (24): 1°M Mat OA 1, 1°M Mat OA 4, 1°M Mat OA 14, 2°M Mat OA 2, 2°M Mat OA 4, 2°M Mat OA 11, 3°M Mat MATE OAC 01, 3°M Mat MATE OAC 02, 3°M Mat MATE OAC 03, 4°M Mat MATE OAC 01, 4°M Mat MATE OAC 02, 4°M Mat MATE OAC 03, 1°M Len OA 3, 1°M Len OA 4, 1°M Len OA 9, 2°M Len OA 3, 2°M Len OA 9, 2°M Len OA 18, 3°M Len LELI OAC 01, 3°M Len LELI OAC 03, 3°M Len LELI OAC 05, 4°M Len LELI OAC 01, 4°M Len LELI OAC 03, 4°M Len LELI OAC 04.
+Registrados en `herramientas/objetivos.py` y aún sin desafíos (12): 1°M Len OA 3, 1°M Len OA 4, 1°M Len OA 9, 2°M Len OA 3, 2°M Len OA 9, 2°M Len OA 18, 3°M Len LELI OAC 01, 3°M Len LELI OAC 03, 3°M Len LELI OAC 05, 4°M Len LELI OAC 01, 4°M Len LELI OAC 03, 4°M Len LELI OAC 04.
 
 ### Matemática
 
@@ -118,6 +118,18 @@ Registrados en `herramientas/objetivos.py` y aún sin desafíos (24): 1°M Mat O
 | 8° básico | [OA 1](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/matematica/8-basico) | Números | 20 | verificado | 7° Mat OA 1 |
 | 8° básico | [OA 3](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/matematica/8-basico) | Números | 20 | verificado | 5° Mat OA 3 |
 | 8° básico | [OA 7](https://www.curriculumnacional.cl/curriculum/7o-basico-2o-medio/matematica/8-basico) | Álgebra y funciones | 20 | verificado | 8° Mat OA 1 |
+| 1° medio | [OA 1](https://www.curriculumnacional.cl/614/w3-article-81005.html) | Números | 15 | verificado | 8° Mat OA 1 |
+| 1° medio | [OA 4](https://www.curriculumnacional.cl/614/w3-article-81008.html) | Álgebra y funciones | 15 | verificado | 8° Mat OA 7 |
+| 1° medio | [OA 14](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Probabilidad-y-estadistica/81018:MA1M-OA-14) | Probabilidad y estadística | 15 | verificado | — |
+| 2° medio | [OA 2](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Numeros/81042:MA2M-OA-02) | Números | 15 | verificado | 1°M Mat OA 1, 8° Mat OA 3 |
+| 2° medio | [OA 4](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Algebra-y-funciones/81044:MA2M-OA-04) | Álgebra y funciones | 15 | verificado | 1°M Mat OA 4 |
+| 2° medio | [OA 11](https://www.curriculumnacional.cl/portal/Ejes/Matematica/Probabilidad-y-estadistica/81051:MA2M-OA-11) | Probabilidad y estadística | 15 | verificado | 1°M Mat OA 14 |
+| 3° medio | [FG-MATE-3M-OAC-01](https://www.curriculumnacional.cl/curriculum/3o-4o-medio/matematica-3o-medio/3-medio-fg) | Números | 15 | verificado | 2°M Mat OA 2 |
+| 3° medio | [FG-MATE-3M-OAC-02](https://www.curriculumnacional.cl/portal/Ejes/Matematica/91154:FG-MATE-3M-OAC-02) | Probabilidad y estadística | 15 | verificado | 2°M Mat OA 11 |
+| 3° medio | [FG-MATE-3M-OAC-03](https://www.curriculumnacional.cl/docentes/Formacion-General/Matematica-3-medio/FG-MATE-3M-OAC-03/91155:FG-MATE-3M-OAC-03) | Álgebra y funciones | 15 | verificado | 2°M Mat OA 2 |
+| 4° medio | [FG-MATE-4M-OAC-01](https://www.curriculumnacional.cl/portal/Ejes/Matematica/91169:FG-MATE-4M-OAC-01) | Números | 15 | verificado | 3°M Mat MATE OAC 03 |
+| 4° medio | [FG-MATE-4M-OAC-02](https://www.curriculumnacional.cl/portal/Ejes/Matematica/91170:FG-MATE-4M-OAC-02) | Probabilidad y estadística | 15 | verificado | 3°M Mat MATE OAC 02 |
+| 4° medio | [FG-MATE-4M-OAC-03](https://www.curriculumnacional.cl/portal/Formacion-General/Matematica/Matematica-4-medio/145083:Unidad-3-Funciones-potencias-y-trigonometricas) | Álgebra y funciones | 15 | verificado | 3°M Mat MATE OAC 03 |
 
 ### Lenguaje y Comunicación
 

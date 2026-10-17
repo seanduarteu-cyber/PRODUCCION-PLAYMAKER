@@ -1,0 +1,784 @@
+[
+  {
+    "nivel": "1_medio",
+    "asignatura": "matematica",
+    "eje": "Números",
+    "objetivo_oficial": "OA 1: Resolver operaciones combinadas con números racionales en forma simbólica, respetando la prioridad de las operaciones y los paréntesis.",
+    "dificultad": 8,
+    "prerequisitos": [
+      "8_basico.matematica.OA1"
+    ],
+    "id_objetivo": "1_medio.matematica.OA1",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-81005.html"
+    },
+    "desafios": [
+      {
+        "id": "mat1m-oa1-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 1/2 + 1/4?",
+        "alternativas": [
+          "1/6",
+          "3/4",
+          "2/6",
+          "2/4"
+        ],
+        "correcta": 1,
+        "pista": "Usa denominador común 4.",
+        "explicacion_error": "1/2 = 2/4; 2/4 + 1/4 = 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Cuánto es 0,5 · 4?",
+        "alternativas": [
+          "0,2",
+          "2",
+          "20",
+          "4,5"
+        ],
+        "correcta": 1,
+        "pista": "La mitad de 4.",
+        "explicacion_error": "0,5 · 4 = 2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "2/3 · 3/4 = ___",
+        "alternativas": [
+          "1/2",
+          "6/7",
+          "5/7",
+          "8/9"
+        ],
+        "correcta": 0,
+        "pista": "Multiplica numeradores y denominadores y simplifica.",
+        "explicacion_error": "6/12 = 1/2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es 3/5 − 1/10?",
+        "alternativas": [
+          "1/5",
+          "2/5",
+          "2/10",
+          "1/2"
+        ],
+        "correcta": 3,
+        "pista": "Denominador común 10.",
+        "explicacion_error": "6/10 − 1/10 = 5/10 = 1/2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "¿Cuánto es (−2/3) · (9/4)?",
+        "alternativas": [
+          "3/2",
+          "−2/3",
+          "−6/7",
+          "−3/2"
+        ],
+        "correcta": 3,
+        "pista": "Distintos signos: negativo. Simplifica.",
+        "explicacion_error": "−18/12 = −3/2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Resultado mayor o menor que 1?",
+        "categorias": [
+          "Menor que 1",
+          "Mayor que 1"
+        ],
+        "elementos": [
+          {
+            "texto": "1/2 + 1/3",
+            "categoria": 0
+          },
+          {
+            "texto": "0,4 · 2",
+            "categoria": 0
+          },
+          {
+            "texto": "3/4 · 1/2",
+            "categoria": 0
+          },
+          {
+            "texto": "1/2 + 3/4",
+            "categoria": 1
+          },
+          {
+            "texto": "1,5 · 2",
+            "categoria": 1
+          },
+          {
+            "texto": "5/4 ÷ 1/2",
+            "categoria": 1
+          }
+        ],
+        "pista": "Calcula o estima cada operación.",
+        "explicacion_error": "5/6, 0,8 y 3/8 son menores que 1; 5/4, 3 y 5/2 son mayores.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 3/4 ÷ 3/8?",
+        "alternativas": [
+          "6/12",
+          "1/2",
+          "2",
+          "9/32"
+        ],
+        "correcta": 2,
+        "pista": "Dividir es multiplicar por el inverso.",
+        "explicacion_error": "3/4 · 8/3 = 24/12 = 2.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-008",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Calcula 2 + 3 · (1/3).",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Primero la multiplicación.",
+        "explicacion_error": "3 · 1/3 = 1; 2 + 1 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-009",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "¿Cuánto es 1/2 + 1/2 · 1/2?",
+        "alternativas": [
+          "1/8",
+          "1",
+          "3/4",
+          "1/2"
+        ],
+        "correcta": 2,
+        "pista": "Primero la multiplicación.",
+        "explicacion_error": "1/2 · 1/2 = 1/4; 1/2 + 1/4 = 3/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-010",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Calcula (1/2 + 1/3) · 6.",
+        "respuesta": 5,
+        "tolerancia": 0,
+        "pista": "Resuelve el paréntesis primero.",
+        "explicacion_error": "1/2 + 1/3 = 5/6; 5/6 · 6 = 5.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-011",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 4,
+        "enunciado": "Ordena de menor a mayor.",
+        "elementos": [
+          "−3/4",
+          "−0,5",
+          "1/3",
+          "0,4"
+        ],
+        "pista": "Pasa todo a decimal.",
+        "explicacion_error": "−0,75 < −0,5 < 0,33… < 0,4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-012",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "¿Cuál es el valor de 0,2 + 1/5 · 2?",
+        "alternativas": [
+          "0,8",
+          "1,2",
+          "0,4",
+          "0,6"
+        ],
+        "correcta": 3,
+        "pista": "1/5 = 0,2; primero multiplica.",
+        "explicacion_error": "0,2 · 2 = 0,4; 0,2 + 0,4 = 0,6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Una receta usa 3/4 de taza de harina por porción. ¿Cuántas tazas se necesitan para 8 porciones?",
+        "respuesta": 6,
+        "tolerancia": 0,
+        "unidad": "tazas",
+        "pista": "Multiplica 3/4 por 8.",
+        "explicacion_error": "3/4 · 8 = 24/4 = 6 tazas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "{personaje} gastó 1/3 de sus {objetos} el lunes y 1/4 del total el martes. ¿Qué fracción le queda?",
+        "alternativas": [
+          "1/12",
+          "5/12",
+          "2/7",
+          "7/12"
+        ],
+        "correcta": 1,
+        "pista": "Suma lo gastado y réstalo de 1.",
+        "explicacion_error": "1/3 + 1/4 = 7/12; 1 − 7/12 = 5/12.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa1-015",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "Un estanque de 240 litros está lleno en sus 5/8. ¿Cuántos litros faltan para llenarlo?",
+        "respuesta": 90,
+        "tolerancia": 0,
+        "unidad": "L",
+        "pista": "Calcula los 3/8 que faltan.",
+        "explicacion_error": "3/8 · 240 = 90 litros.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_medio",
+    "asignatura": "matematica",
+    "eje": "Álgebra y funciones",
+    "objetivo_oficial": "OA 4: Resolver sistemas de ecuaciones lineales 2x2 asociados a problemas cotidianos, por métodos gráficos y algebraicos (sustitución, igualación, reducción), distinguiendo si tienen solución única, infinitas o ninguna.",
+    "dificultad": 8,
+    "prerequisitos": [
+      "8_basico.matematica.OA7"
+    ],
+    "id_objetivo": "1_medio.matematica.OA4",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/614/w3-article-81008.html"
+    },
+    "desafios": [
+      {
+        "id": "mat1m-oa4-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "¿Qué par (x, y) es solución de x + y = 5 y x − y = 1?",
+        "alternativas": [
+          "(5, 0)",
+          "(2, 3)",
+          "(4, 1)",
+          "(3, 2)"
+        ],
+        "correcta": 3,
+        "pista": "Reemplaza en ambas ecuaciones.",
+        "explicacion_error": "3 + 2 = 5 y 3 − 2 = 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-002",
+        "tipo": "respuesta_numerica",
+        "dificultad": 1,
+        "enunciado": "Si x + y = 10 e y = 4, ¿cuánto vale x?",
+        "respuesta": 6,
+        "tolerancia": 0,
+        "pista": "Reemplaza y.",
+        "explicacion_error": "x = 10 − 4 = 6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "Un sistema 2x2 tiene ___ ecuaciones y dos incógnitas.",
+        "alternativas": [
+          "una",
+          "tres",
+          "cuatro",
+          "dos"
+        ],
+        "correcta": 3,
+        "pista": "2x2: dos por dos.",
+        "explicacion_error": "Tiene dos ecuaciones y dos incógnitas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-004",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "Resuelve: x + y = 12, x − y = 4. ¿Cuánto vale x?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "pista": "Suma las ecuaciones: 2x = 16.",
+        "explicacion_error": "2x = 16 → x = 8.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-005",
+        "tipo": "respuesta_numerica",
+        "dificultad": 2,
+        "enunciado": "En el sistema y = 2x, x + y = 9, ¿cuánto vale x?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Sustituye y = 2x.",
+        "explicacion_error": "x + 2x = 9 → x = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-006",
+        "tipo": "emparejar",
+        "dificultad": 2,
+        "enunciado": "Une cada método con su idea.",
+        "pares": [
+          [
+            "sustitución",
+            "despejar una incógnita y reemplazarla"
+          ],
+          [
+            "igualación",
+            "despejar la misma incógnita en ambas e igualar"
+          ],
+          [
+            "reducción",
+            "sumar o restar ecuaciones para eliminar una incógnita"
+          ]
+        ],
+        "pista": "Recuerda los tres métodos.",
+        "explicacion_error": "Sustitución, igualación y reducción.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-007",
+        "tipo": "respuesta_numerica",
+        "dificultad": 3,
+        "enunciado": "Resuelve: 2x + y = 11, x − y = 1. ¿Cuánto vale y?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "Suma: 3x = 12, x = 4.",
+        "explicacion_error": "x = 4; y = 4 − 1 = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Gráficamente, la solución de un sistema 2x2 es…",
+        "alternativas": [
+          "la pendiente de una recta",
+          "el origen siempre",
+          "el área entre las rectas",
+          "el punto donde se cortan las dos rectas"
+        ],
+        "correcta": 3,
+        "pista": "Cada ecuación es una recta.",
+        "explicacion_error": "La solución es el punto de intersección.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena los pasos del método de sustitución.",
+        "elementos": [
+          "Despejar una incógnita en una ecuación.",
+          "Reemplazarla en la otra ecuación.",
+          "Resolver la ecuación con una incógnita.",
+          "Calcular la otra incógnita."
+        ],
+        "pista": "Despejar, reemplazar, resolver y completar.",
+        "explicacion_error": "Así se aplica la sustitución.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-010",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 4,
+        "enunciado": "¿Cuántas soluciones tiene el sistema?",
+        "categorias": [
+          "Una solución",
+          "Ninguna",
+          "Infinitas"
+        ],
+        "elementos": [
+          {
+            "texto": "x + y = 4 ; x − y = 2",
+            "categoria": 0
+          },
+          {
+            "texto": "y = 2x ; y = x + 1",
+            "categoria": 0
+          },
+          {
+            "texto": "x + y = 3 ; x + y = 5",
+            "categoria": 1
+          },
+          {
+            "texto": "y = x + 1 ; y = x − 2",
+            "categoria": 1
+          },
+          {
+            "texto": "x + y = 2 ; 2x + 2y = 4",
+            "categoria": 2
+          },
+          {
+            "texto": "y = 3x ; 2y = 6x",
+            "categoria": 2
+          }
+        ],
+        "pista": "Rectas que se cortan, paralelas o iguales.",
+        "explicacion_error": "Distinta pendiente: una solución; paralelas: ninguna; la misma recta: infinitas.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Las rectas y = 2x + 1 e y = 2x − 3 son paralelas. El sistema…",
+        "alternativas": [
+          "tiene una solución",
+          "tiene dos soluciones",
+          "no tiene solución",
+          "tiene infinitas soluciones"
+        ],
+        "correcta": 2,
+        "pista": "Misma pendiente, distinta posición.",
+        "explicacion_error": "Las rectas paralelas no se cortan.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "Entradas: adulto $3.000 y niño $2.000. Un grupo de 7 personas pagó $17.000. ¿Cuántos adultos había?",
+        "respuesta": 3,
+        "tolerancia": 0,
+        "pista": "a + n = 7 ; 3.000a + 2.000n = 17.000.",
+        "explicacion_error": "Si n = 7 − a: 3.000a + 14.000 − 2.000a = 17.000 → a = 3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-013",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "En un corral hay gallinas y conejos: 10 cabezas y 28 patas. ¿Cuántos conejos hay?",
+        "respuesta": 4,
+        "tolerancia": 0,
+        "unidad": "conejos",
+        "pista": "g + c = 10 ; 2g + 4c = 28.",
+        "explicacion_error": "2(10 − c) + 4c = 28 → 2c = 8 → c = 4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-014",
+        "tipo": "respuesta_numerica",
+        "dificultad": 5,
+        "enunciado": "La suma de dos números es 50 y su diferencia es 14. ¿Cuál es el número mayor?",
+        "respuesta": 32,
+        "tolerancia": 0,
+        "pista": "x + y = 50 ; x − y = 14.",
+        "explicacion_error": "2x = 64 → x = 32.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa4-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Un plan cobra $5.000 más $100 por minuto; otro, $8.000 más $50 por minuto. ¿Con cuántos minutos cuestan lo mismo?",
+        "alternativas": [
+          "30",
+          "80",
+          "50",
+          "60"
+        ],
+        "correcta": 3,
+        "pista": "Iguala 5.000 + 100m = 8.000 + 50m.",
+        "explicacion_error": "50m = 3.000 → m = 60 minutos.",
+        "monedas": 10
+      }
+    ]
+  },
+  {
+    "nivel": "1_medio",
+    "asignatura": "matematica",
+    "eje": "Probabilidad y estadística",
+    "objetivo_oficial": "OA 14: Calcular probabilidades de eventos compuestos con la regla aditiva, la regla multiplicativa y su combinación, apoyándose en diagramas de árbol.",
+    "dificultad": 8,
+    "prerequisitos": [],
+    "id_objetivo": "1_medio.matematica.OA14",
+    "verificacion": {
+      "codigo": "verificado",
+      "texto": "resumen",
+      "fuente": "https://www.curriculumnacional.cl/portal/Ejes/Matematica/Probabilidad-y-estadistica/81018:MA1M-OA-14"
+    },
+    "desafios": [
+      {
+        "id": "mat1m-oa14-001",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Al lanzar un dado, ¿cuál es la probabilidad de obtener un 6?",
+        "alternativas": [
+          "1/2",
+          "6",
+          "1/3",
+          "1/6"
+        ],
+        "correcta": 3,
+        "pista": "Casos favorables ÷ casos posibles.",
+        "explicacion_error": "1 caso favorable de 6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-002",
+        "tipo": "opcion_multiple",
+        "dificultad": 1,
+        "enunciado": "Al lanzar una moneda dos veces, ¿cuántos resultados posibles hay?",
+        "alternativas": [
+          "4",
+          "2",
+          "6",
+          "3"
+        ],
+        "correcta": 0,
+        "pista": "CC, CS, SC, SS.",
+        "explicacion_error": "Hay 4 resultados posibles.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-003",
+        "tipo": "completar",
+        "dificultad": 1,
+        "enunciado": "La probabilidad de un suceso imposible es ___.",
+        "alternativas": [
+          "1/2",
+          "0",
+          "1",
+          "−1"
+        ],
+        "correcta": 1,
+        "pista": "No puede ocurrir nunca.",
+        "explicacion_error": "Un suceso imposible tiene probabilidad 0.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-004",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Al lanzar un dado, ¿cuál es la probabilidad de obtener un número par o un 5? (regla aditiva)",
+        "alternativas": [
+          "1/2",
+          "2/3",
+          "1/6",
+          "5/6"
+        ],
+        "correcta": 1,
+        "pista": "Par: 3 casos; el 5: 1 caso. No se superponen.",
+        "explicacion_error": "3/6 + 1/6 = 4/6 = 2/3.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-005",
+        "tipo": "opcion_multiple",
+        "dificultad": 2,
+        "enunciado": "Se lanzan dos monedas. ¿Cuál es la probabilidad de obtener dos caras? (regla multiplicativa)",
+        "alternativas": [
+          "2/4",
+          "1/2",
+          "1/3",
+          "1/4"
+        ],
+        "correcta": 3,
+        "pista": "Multiplica las probabilidades.",
+        "explicacion_error": "1/2 · 1/2 = 1/4.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-006",
+        "tipo": "arrastrar_categoria",
+        "dificultad": 2,
+        "enunciado": "¿Se suman o se multiplican las probabilidades?",
+        "categorias": [
+          "Se suman («o», excluyentes)",
+          "Se multiplican («y», independientes)"
+        ],
+        "elementos": [
+          {
+            "texto": "sacar un 1 o un 2 en un dado",
+            "categoria": 0
+          },
+          {
+            "texto": "que salga rojo o azul en una ruleta",
+            "categoria": 0
+          },
+          {
+            "texto": "cara en una moneda y 6 en un dado",
+            "categoria": 1
+          },
+          {
+            "texto": "dos caras seguidas",
+            "categoria": 1
+          }
+        ],
+        "pista": "«O» con sucesos excluyentes suma; «y» con independientes multiplica.",
+        "explicacion_error": "O excluyente: suma; y independiente: multiplica.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-007",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Una bolsa tiene 3 bolitas rojas y 2 azules. Sacas una, la devuelves y sacas otra. ¿Cuál es la probabilidad de que ambas sean rojas?",
+        "alternativas": [
+          "3/5",
+          "9/10",
+          "6/25",
+          "9/25"
+        ],
+        "correcta": 3,
+        "pista": "Con reposición: 3/5 · 3/5.",
+        "explicacion_error": "3/5 · 3/5 = 9/25.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-008",
+        "tipo": "opcion_multiple",
+        "dificultad": 3,
+        "enunciado": "Se lanza un dado y una moneda. ¿Probabilidad de obtener un número mayor que 4 y cara?",
+        "alternativas": [
+          "1/6",
+          "1/3",
+          "2/3",
+          "1/2"
+        ],
+        "correcta": 0,
+        "pista": "Mayor que 4: {5, 6}.",
+        "explicacion_error": "2/6 · 1/2 = 1/6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-009",
+        "tipo": "ordenar_secuencia",
+        "dificultad": 3,
+        "enunciado": "Ordena de menor a mayor probabilidad (un dado).",
+        "elementos": [
+          "sacar un 7",
+          "sacar un 6",
+          "sacar un par",
+          "sacar un número menor que 7"
+        ],
+        "pista": "Imposible, 1/6, 1/2 y seguro.",
+        "explicacion_error": "0 < 1/6 < 1/2 < 1.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-010",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "Misma bolsa (3 rojas y 2 azules), sin devolver la primera. ¿Probabilidad de que ambas sean rojas?",
+        "alternativas": [
+          "3/10",
+          "9/25",
+          "3/5",
+          "6/25"
+        ],
+        "correcta": 0,
+        "pista": "Sin reposición: 3/5 · 2/4.",
+        "explicacion_error": "3/5 · 2/4 = 6/20 = 3/10.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-011",
+        "tipo": "opcion_multiple",
+        "dificultad": 4,
+        "enunciado": "En un curso, 60% practica fútbol, 30% básquetbol y 10% ambos. ¿Probabilidad de que un estudiante practique fútbol o básquetbol?",
+        "alternativas": [
+          "70%",
+          "80%",
+          "90%",
+          "100%"
+        ],
+        "correcta": 1,
+        "pista": "P(A o B) = P(A) + P(B) − P(A y B).",
+        "explicacion_error": "60 + 30 − 10 = 80 %.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-012",
+        "tipo": "respuesta_numerica",
+        "dificultad": 4,
+        "enunciado": "¿Cuántos caminos tiene un diagrama de árbol al lanzar 3 monedas?",
+        "respuesta": 8,
+        "tolerancia": 0,
+        "unidad": "caminos",
+        "pista": "2 · 2 · 2.",
+        "explicacion_error": "2³ = 8 caminos.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-013",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "Se lanzan dos dados. ¿Cuál es la probabilidad de que la suma sea 7?",
+        "alternativas": [
+          "7/36",
+          "1/6",
+          "1/7",
+          "1/12"
+        ],
+        "correcta": 1,
+        "pista": "Cuenta los pares que suman 7: (1,6), (2,5)… de 36.",
+        "explicacion_error": "Hay 6 pares de 36: 6/36 = 1/6.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-014",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "La probabilidad de lluvia el sábado es 0,3 y el domingo 0,4, de forma independiente. ¿Probabilidad de que no llueva ningún día?",
+        "alternativas": [
+          "0,12",
+          "0,7",
+          "0,58",
+          "0,42"
+        ],
+        "correcta": 3,
+        "pista": "No llueve: 0,7 y 0,6.",
+        "explicacion_error": "0,7 · 0,6 = 0,42.",
+        "monedas": 10
+      },
+      {
+        "id": "mat1m-oa14-015",
+        "tipo": "opcion_multiple",
+        "dificultad": 5,
+        "enunciado": "En un diagrama de árbol de 2 lanzamientos de moneda, ¿qué probabilidad tiene obtener al menos una cara?",
+        "alternativas": [
+          "1/4",
+          "1",
+          "1/2",
+          "3/4"
+        ],
+        "correcta": 3,
+        "pista": "Lo contrario de «al menos una cara» es «ninguna cara».",
+        "explicacion_error": "1 − P(SS) = 1 − 1/4 = 3/4.",
+        "monedas": 10
+      }
+    ]
+  }
+]

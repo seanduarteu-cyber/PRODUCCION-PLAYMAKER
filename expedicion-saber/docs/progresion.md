@@ -46,6 +46,18 @@ flowchart LR
   7_basico_matematica_OA1["7° Mat OA 1"] --> 8_basico_matematica_OA1["8° Mat OA 1"]
   5_basico_matematica_OA3["5° Mat OA 3"] --> 8_basico_matematica_OA3["8° Mat OA 3"]
   8_basico_matematica_OA1["8° Mat OA 1"] --> 8_basico_matematica_OA7["8° Mat OA 7"]
+  8_basico_matematica_OA1["8° Mat OA 1"] --> 1_medio_matematica_OA1["1°M Mat OA 1"]
+  8_basico_matematica_OA7["8° Mat OA 7"] --> 1_medio_matematica_OA4["1°M Mat OA 4"]
+  1_medio_matematica_OA1["1°M Mat OA 1"] --> 2_medio_matematica_OA2["2°M Mat OA 2"]
+  8_basico_matematica_OA3["8° Mat OA 3"] --> 2_medio_matematica_OA2["2°M Mat OA 2"]
+  1_medio_matematica_OA4["1°M Mat OA 4"] --> 2_medio_matematica_OA4["2°M Mat OA 4"]
+  1_medio_matematica_OA14["1°M Mat OA 14"] --> 2_medio_matematica_OA11["2°M Mat OA 11"]
+  2_medio_matematica_OA2["2°M Mat OA 2"] --> 3_medio_matematica_OA1["3°M Mat MATE OAC 01"]
+  2_medio_matematica_OA11["2°M Mat OA 11"] --> 3_medio_matematica_OA2["3°M Mat MATE OAC 02"]
+  2_medio_matematica_OA2["2°M Mat OA 2"] --> 3_medio_matematica_OA3["3°M Mat MATE OAC 03"]
+  3_medio_matematica_OA3["3°M Mat MATE OAC 03"] --> 4_medio_matematica_OA1["4°M Mat MATE OAC 01"]
+  3_medio_matematica_OA2["3°M Mat MATE OAC 02"] --> 4_medio_matematica_OA2["4°M Mat MATE OAC 02"]
+  3_medio_matematica_OA3["3°M Mat MATE OAC 03"] --> 4_medio_matematica_OA3["4°M Mat MATE OAC 03"]
 ```
 
 #### Lenguaje y Comunicación
