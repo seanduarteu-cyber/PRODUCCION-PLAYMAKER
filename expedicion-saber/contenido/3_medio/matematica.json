@@ -182,12 +182,12 @@
             "categoria": 1
           },
           {
-            "texto": "i³ · i⁻²",
+            "texto": "−2i",
             "categoria": 1
           }
         ],
         "pista": "Calcula cada expresión.",
-        "explicacion_error": "i² = −1, (1 + i)(1 − i) = 2 y √16 = 4 son reales; 5i, 2i e i son imaginarios puros.",
+        "explicacion_error": "i² = −1, (1 + i)(1 − i) = 2 y √16 = 4 son reales; 5i, √−4 = 2i y −2i son imaginarios puros.",
         "monedas": 10
       },
       {
@@ -662,12 +662,12 @@
         "id": "mat3m-oa3-007",
         "tipo": "respuesta_numerica",
         "dificultad": 3,
-        "enunciado": "Un auto de $10.000.000 pierde la mitad de su valor cada 5 años. ¿Cuánto vale en millones después de 10 años?",
-        "respuesta": 2,
-        "tolerancia": 1,
+        "enunciado": "Un auto de $16.000.000 pierde la mitad de su valor cada 5 años. ¿Cuántos millones vale después de 10 años?",
+        "respuesta": 4,
+        "tolerancia": 0,
         "unidad": "millones",
-        "pista": "Dos períodos de 5 años: se divide por 2 dos veces. Hay un decimal en el camino.",
-        "explicacion_error": "10 → 5 → 2,5 millones; la respuesta más cercana como entero es 2 (2,5 millones).",
+        "pista": "Son dos períodos de 5 años: divide por 2 dos veces.",
+        "explicacion_error": "16 → 8 → 4 millones.",
         "monedas": 10
       },
       {
@@ -732,13 +732,13 @@
         "dificultad": 4,
         "enunciado": "Ordena de menor a mayor para x = 3.",
         "elementos": [
-          "log₂ x · 0 + 1",
+          "x",
           "2x",
-          "x²",
-          "2^x"
+          "2^x",
+          "x²"
         ],
-        "pista": "Calcula: 1, 6, 9 y 8… revisa con cuidado.",
-        "explicacion_error": "Para x = 3: 1, 6, 8 (2³) y 9 (3²). Ojo: 2^x = 8 < x² = 9.",
+        "pista": "Calcula cada expresión con x = 3.",
+        "explicacion_error": "3 < 6 < 8 (2³) < 9 (3²).",
         "monedas": 10
       },
       {
