@@ -9,10 +9,11 @@ from reportlab.lib.colors import HexColor, black, white
 SRC, DST = sys.argv[1], sys.argv[2]
 wb = load_workbook(SRC)
 P, M, D = wb['Precios'], wb['Moldes'], wb['Despiece']
-telas = [(r, P.cell(r, 1).value, P.cell(r, 2).value, P.cell(r, 3).value, P.cell(r, 4).value, P.cell(r, 5).value, P.cell(r, 6).value) for r in range(5, 125) if P.cell(r, 1).value]
-conf = [(r, P.cell(r, 10).value, P.cell(r, 11).value) for r in range(5, 85) if P.cell(r, 10).value]
-avios = [(r, P.cell(r, 13).value, P.cell(r, 14).value) for r in range(5, 65) if P.cell(r, 13).value]
-par = {k: P.cell(r, 17).value for k, r in (('papel_rollo', 5), ('papel_metros', 6), ('tinta_litro', 7), ('tinta_ml', 8), ('proteccion', 9), ('merma', 12), ('gg', 14), ('meta', 15))}
+# Precios: telas A=tela B=tipo D=se compra en E=precio actual F=IVA G=kg/m H=ancho; confección N:O; avíos Q:R; parámetros U
+telas = [(r, P.cell(r, 1).value, P.cell(r, 2).value, P.cell(r, 4).value, P.cell(r, 5).value, P.cell(r, 6).value, P.cell(r, 7).value, P.cell(r, 8).value) for r in range(5, 125) if P.cell(r, 1).value]
+conf = [(r, P.cell(r, 14).value, P.cell(r, 15).value) for r in range(5, 85) if P.cell(r, 14).value]
+avios = [(r, P.cell(r, 17).value, P.cell(r, 18).value) for r in range(5, 65) if P.cell(r, 17).value]
+par = {k: P.cell(r, 21).value for k, r in (('papel_rollo', 5), ('papel_metros', 6), ('tinta_litro', 7), ('tinta_ml', 8), ('proteccion', 9), ('merma', 12), ('gg', 14), ('meta', 15))}
 moldes = [(r, [M.cell(r, c).value for c in range(1, 19)]) for r in range(5, 155) if M.cell(r, 1).value]
 piezas = {}
 for r in range(5, 1005):
@@ -68,7 +69,7 @@ y = texto(y, ['Como usar este formulario:',
               '4. Guarda el PDF (o escanealo) y subelo al chat: con eso se actualiza el archivo PMK_Receta_Produccion.xlsx.',
               '',
               'Secciones:',
-              '   A. Telas (Compras) ........................ precio por kg y PESO DE 1 METRO (cortar 1 m de ancho completo y pesarlo)',
+              '   A. Telas (Compras) ........................ como se compra (kg o metro), precio actual, IVA, KILOS POR METRO y ancho util',
               '   B. Impresion (Sublimacion) ................ metros del rollo de papel y ml de tinta por metro impreso',
               '   C. Confeccion (Talleres) .................. precio por prenda a trato (factura: sin IVA; boleta: monto completo)',
               '   D. Avios (Compras) ........................ precio neto por unidad',
@@ -76,18 +77,18 @@ y = texto(y, ['Como usar este formulario:',
               '   F. Cortes reales (Corte) .................. tela, prendas cortadas y kg usados en cada corte medido'], 8.5, black)
 
 # ---------------------------------------------------------------- A. Telas
-cols = [(X0 + 2, 'Tela'), (X0 + 190, 'Tipo (Nac/Pro/Imp)'), (X0 + 268, '$/kg NETO'), (X0 + 330, 'o $/kg CON IVA'), (X0 + 400, 'Kg por metro'), (X0 + 465, 'Ancho util (m)')]
+cols = [(X0 + 2, 'Tela'), (X0 + 155, 'Tipo'), (X0 + 208, 'Se compra'), (X0 + 256, 'Precio actual'), (X0 + 319, 'IVA'), (X0 + 352, 'Kg por metro'), (X0 + 410, 'Ancho util (m)')]
 def tabla_telas(y):
     return encabezado(y, cols)
 y = nueva('A. TELAS - Compras / administracion', 'Kg por metro: cortar 1 m lineal de orilla a orilla y pesarlo (3 decimales). Ancho util: sin los orillos que no se pueden cortar.')
 y = responsable(y, 'A'); y = tabla_telas(y)
-filas = [t for t in telas] + [(None, '', '', '', '', '', '')] * 8
-for i, (r, n, tp, pn, pi, kg, an) in enumerate(filas):
+filas = [t for t in telas] + [(None, '', '', '', '', '', '', '')] * 8
+for i, (r, n, tp, un, pr, iv, kg, an) in enumerate(filas):
     if y < 50: y = nueva('A. TELAS (continuacion)', ''); y = tabla_telas(y)
     k = f'TELA_{i+1:03d}'
-    campo(f'{k}__nombre', X0, y, 185, n); campo(f'{k}__tipo', X0 + 188, y, 75, tp)
-    campo(f'{k}__neto', X0 + 266, y, 60, num(pn)); campo(f'{k}__coniva', X0 + 329, y, 66, num(pi))
-    campo(f'{k}__kgm', X0 + 398, y, 62, num(kg)); campo(f'{k}__ancho', X0 + 463, y, 50, num(an))
+    campo(f'{k}__nombre', X0, y, 152, n); campo(f'{k}__tipo', X0 + 154, y, 50, tp); campo(f'{k}__unidad', X0 + 206, y, 46, un)
+    campo(f'{k}__precio', X0 + 254, y, 61, num(pr)); campo(f'{k}__iva', X0 + 317, y, 31, iv)
+    campo(f'{k}__kgm', X0 + 350, y, 56, num(kg)); campo(f'{k}__ancho', X0 + 408, y, 56, num(an))
     y -= 16
 
 # ---------------------------------------------------------------- B. Impresión

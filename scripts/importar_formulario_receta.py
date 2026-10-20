@@ -1,4 +1,4 @@
-"""Pasa los datos de PMK_Formulario_Receta.pdf (columnas: Precios E=kg/m, F=ancho útil, I=nota; Moldes R=ancho de referencia) (completado) a PMK_Receta_Produccion.xlsx.
+"""Pasa los datos de PMK_Formulario_Receta.pdf (Precios: telas A-L con D=se compra en, E=precio, F=IVA, G=kg/m, H=ancho; confección N:O; avíos Q:R; parámetros U. Moldes R=ancho de referencia) (completado) a PMK_Receta_Produccion.xlsx.
 
 Uso: python3 importar_formulario_receta.py formulario.pdf PMK_Receta_Produccion.xlsx salida.xlsx
 Imprime cada cambio hecho. Solo escribe en celdas de entrada (azules); las fórmulas no se tocan.
@@ -46,22 +46,20 @@ for base, d in sorted(grupo('TELA_').items()):
     r = fila_de(P, 1, d['nombre'], 5, 125)
     poner(P, r, 1, d['nombre'].strip(), 'tela')
     if d.get('tipo'): poner(P, r, 2, d['tipo'].strip().capitalize(), f"tipo {d['nombre']}")
-    poner(P, r, 3, num(d.get('neto')), f"$/kg neto {d['nombre']}")
-    poner(P, r, 4, num(d.get('coniva')), f"$/kg con IVA {d['nombre']}")
-    poner(P, r, 5, num(d.get('kgm')), f"peso 1 m {d['nombre']}")
-    poner(P, r, 6, num(d.get('ancho')), f"ancho útil {d['nombre']}")
-    nota = str(P.cell(r, 9).value or '')
-    if num(d.get('kgm')): nota = nota.replace('Falta pesar 1 metro', '').strip()
-    poner(P, r, 9, nota.strip() or None, f"nota {d['nombre']}")
+    if d.get('unidad'): poner(P, r, 4, 'metro' if d['unidad'].strip().upper().startswith('M') else 'kg', f"se compra en {d['nombre']}")
+    poner(P, r, 5, num(d.get('precio')), f"precio actual {d['nombre']}")
+    if d.get('iva'): poner(P, r, 6, 'Sí' if d['iva'].strip().upper().startswith('S') else 'No', f"IVA {d['nombre']}")
+    poner(P, r, 7, num(d.get('kgm')), f"kilos por metro {d['nombre']}")
+    poner(P, r, 8, num(d.get('ancho')), f"ancho útil {d['nombre']}")
 # B. Impresión
 for key, row in (('papel_rollo', 5), ('papel_metros', 6), ('tinta_litro', 7), ('tinta_ml', 8), ('proteccion', 9)):
-    poner(P, row, 17, num(f.get(f'IMP__{key}')), key)
+    poner(P, row, 21, num(f.get(f'IMP__{key}')), key)
 # C. Confección
 for base, d in sorted(grupo('CONF_').items()):
-    if d.get('tipo'): r = fila_de(P, 10, d['tipo'], 5, 85); poner(P, r, 10, d['tipo'].strip(), 'confección'); poner(P, r, 11, num(d.get('precio')), f"$ {d['tipo']}")
+    if d.get('tipo'): r = fila_de(P, 14, d['tipo'], 5, 85); poner(P, r, 14, d['tipo'].strip(), 'confección'); poner(P, r, 15, num(d.get('precio')), f"$ {d['tipo']}")
 # D. Avíos
 for base, d in sorted(grupo('AVIO_').items()):
-    if d.get('nombre'): r = fila_de(P, 13, d['nombre'], 5, 65); poner(P, r, 13, d['nombre'].strip(), 'avío'); poner(P, r, 14, num(d.get('precio')), f"$ {d['nombre']}")
+    if d.get('nombre'): r = fila_de(P, 17, d['nombre'], 5, 65); poner(P, r, 17, d['nombre'].strip(), 'avío'); poner(P, r, 18, num(d.get('precio')), f"$ {d['nombre']}")
 # E. Moldes y despiece
 codigos = {san(M.cell(r, 1).value): (r, M.cell(r, 1).value) for r in range(5, 155) if M.cell(r, 1).value}
 for base, d in grupo('MOLDE__').items():
@@ -91,7 +89,7 @@ for base, d in sorted(grupo('PZA__').items()):
     poner(D, r, 4, num(d.get('metros')), f"metros {code} {d['pieza']}"); poner(D, r, 5, d.get('tela'), f"tela {code} {d['pieza']}")
     if d.get('sublima'): poner(D, r, 6, 'Sí' if d['sublima'].strip().upper().startswith('S') else 'No', f"sublima {code} {d['pieza']}")
 # F. Cortes reales -> ajuste por molde (si no se escribió a mano)
-kgm = {str(P.cell(r, 1).value).strip().upper(): P.cell(r, 5).value for r in range(5, 125) if P.cell(r, 1).value}
+kgm = {str(P.cell(r, 1).value).strip().upper(): P.cell(r, 7).value for r in range(5, 125) if P.cell(r, 1).value}
 ajustes = collections.defaultdict(list)
 for base, d in sorted(grupo('CORTE_').items()):
     if not (d.get('molde') and d.get('tela') and num(d.get('prendas')) and num(d.get('kg'))): continue
