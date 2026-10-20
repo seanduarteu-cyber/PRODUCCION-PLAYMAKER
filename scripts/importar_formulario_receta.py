@@ -61,6 +61,7 @@ for base, d in sorted(grupo('CONF_').items()):
 for base, d in sorted(grupo('AVIO_').items()):
     if d.get('nombre'): r = fila_de(P, 17, d['nombre'], 5, 65); poner(P, r, 17, d['nombre'].strip(), 'avío'); poner(P, r, 18, num(d.get('precio')), f"$ {d['nombre']}")
 # E. Moldes y despiece
+MARCADAS = {}
 codigos = {san(M.cell(r, 1).value): (r, M.cell(r, 1).value) for r in range(5, 155) if M.cell(r, 1).value}
 # Moldes nuevos (hojas de despiece): se agregan a Moldes y sus piezas quedan ligadas al número de la hoja
 for base, d in grupo('MOLDENUEVO_').items():
@@ -81,7 +82,11 @@ for base, d in grupo('MOLDE__').items():
         for (ca, cq), m in zip(((6, 7), (8, 9)), [p for p in partes if p]):
             poner(M, r, ca, m.group(1), f'avío {code}'); poner(M, r, cq, num(m.group(2)), f'cant. avío {code}')
     marc = [f"{k} {d[k]}" for k in ('marcada_tela', 'marcada_metros', 'marcada_prendas', 'aprovechamiento', 'talla', 'suma_piezas', 'obs') if d.get(k)]
-    if any(d.get(k) for k in ('marcada_metros', 'marcada_prendas', 'aprovechamiento', 'suma_piezas', 'obs')):
+    for n in (1, 2, 3):   # marcadas por tela (hojas de despiece)
+        mm = [f"{k} {d[f'm{n}_{k}']}" for k in ('tela', 'ancho', 'metros', 'prendas', 'aprov') if d.get(f'm{n}_{k}')]
+        if any(d.get(f'm{n}_{k}') for k in ('ancho', 'metros', 'prendas', 'aprov')): marc.append(f'marcada {n}: ' + ' '.join(mm))
+        MARCADAS[(code, n)] = (d.get(f'm{n}_tela'), num(d.get(f'm{n}_ancho')))
+    if any(d.get(k) for k in ('marcada_metros', 'marcada_prendas', 'aprovechamiento', 'suma_piezas', 'obs')) or any(x.startswith('marcada ') and ':' in x for x in marc):
         nota = 'Marcada ' + (d.get('fecha') or '') + ': ' + ', '.join(marc).replace('marcada_', '').replace('_', ' ')
         old = str(M.cell(r, 17).value or '')
         if nota not in old: poner(M, r, 17, (old + ' | ' if old else '') + nota, f'nota marcada {code}')
@@ -93,6 +98,7 @@ for r in range(5, 1005):
     if D.cell(r, 1).value: filas_molde[D.cell(r, 1).value].append(r)
 libres = [r for r in range(5, 1005) if not D.cell(r, 1).value]
 for base, d in sorted(grupo('PZA__').items()):
+    mn = int(num(d.get('marcada')) or 0)
     _, s, j = base.split('__'); j = int(j)
     if s not in codigos or not d.get('pieza'): continue
     code = codigos[s][1]; fm = filas_molde[code]
@@ -101,6 +107,9 @@ for base, d in sorted(grupo('PZA__').items()):
         r = libres.pop(0); poner(D, r, 1, code, 'molde nuevo en despiece'); fm.append(r)
     poner(D, r, 2, d['pieza'].strip(), f'pieza {code}'); poner(D, r, 3, num(d.get('cant')), f"cant. {code} {d['pieza']}")
     poner(D, r, 4, num(d.get('metros')), f"metros {code} {d['pieza']}"); poner(D, r, 5, d.get('tela'), f"tela {code} {d['pieza']}")
+    mt, ma = MARCADAS.get((code, mn), (None, None))
+    if mt and not d.get('tela'): poner(D, r, 5, mt.strip(), f"tela {code} {d['pieza']} (de la marcada {mn})")
+    poner(D, r, 9, num(d.get('ancho')) or ma, f"ancho de la marcada {code} {d['pieza']}")
     if d.get('sublima'): poner(D, r, 6, 'Sí' if d['sublima'].strip().upper().startswith('S') else 'No', f"sublima {code} {d['pieza']}")
 # F. Cortes reales -> ajuste por molde (si no se escribió a mano)
 kgm = {str(P.cell(r, 1).value).strip().upper(): P.cell(r, 7).value for r in range(5, 125) if P.cell(r, 1).value}

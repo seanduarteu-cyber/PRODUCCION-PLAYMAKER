@@ -160,7 +160,7 @@ def piezas(code, desc, prenda):
 
 wd = wb.create_sheet('Despiece')
 titulo(wd, 'DESPIECE — piezas de cada molde', 'Metros por prenda de cada pieza (de la marcada del plotter). Los metros NO cambian con la tela. "Tela por defecto" es la que usa la Ficha si no eliges otra.')
-enc(wd, 4, 1, ['Molde', 'Pieza', 'Cant.', 'METROS\npor prenda\n(en el ancho\nde referencia)', 'Tela por defecto', '¿Se\nsublima?', '$ tela + impresión\n(con tela por defecto)', 'clave'], [24, 24, 7, 11, 30, 8, 16, 6])
+enc(wd, 4, 1, ['Molde', 'Pieza', 'Cant.', 'METROS\npor prenda', 'Tela por defecto', '¿Se\nsublima?', '$ tela + impresión\n(con tela por defecto)', 'clave', 'ANCHO ÚTIL de la\nmarcada en que se\nmidió esta pieza (m)'], [24, 24, 7, 11, 30, 8, 16, 6, 16])
 fila = F0
 for x in rec6:
     code, t1, t2 = x[0], x[5], x[8]
@@ -170,10 +170,11 @@ for x in rec6:
         wd.cell(fila, 6, 'No' if code.startswith(('SM-02', 'SM-04')) else 'Sí')
         fila += 1
 for r in range(F0, F0 + ND):
-    for c in range(1, 7): wd.cell(r, c).fill = AZUL
+    for c in (1, 2, 3, 4, 5, 6, 9): wd.cell(r, c).fill = AZUL
+    wd.cell(r, 9).number_format = '0.00'
     wd.cell(r, 4).number_format = M3
     aj = f'(1+IFERROR(IF(ISNUMBER(INDEX(Moldes!$K${F0}:$K${F0+NM-1},MATCH(A{r},Moldes!$A${F0}:$A${F0+NM-1},0))),INDEX(Moldes!$K${F0}:$K${F0+NM-1},MATCH(A{r},Moldes!$A${F0}:$A${F0+NM-1},0)),{MERMA}),{MERMA}))'
-    ref = f'INDEX(Moldes!$R${F0}:$R${F0+NM-1},MATCH(A{r},Moldes!$A${F0}:$A${F0+NM-1},0))'
+    ref = f'IF(N(I{r})>0,I{r},INDEX(Moldes!$R${F0}:$R${F0+NM-1},MATCH(A{r},Moldes!$A${F0}:$A${F0+NM-1},0)))'
     fac = f'IFERROR(IF(AND(N({ref})>0,N(INDEX({TAN},MATCH(E{r},{TN},0)))>0),{ref}/INDEX({TAN},MATCH(E{r},{TN},0)),1),1)'
     c = wd.cell(r, 7, f'=IF(OR(A{r}="",N(D{r})=0),"",IFERROR(D{r}*{aj}*(INDEX({TPM},MATCH(E{r},{TN},0))*{fac}+IF(F{r}="Sí",{IMP},0)),"falta $ tela"))')
     c.number_format = MONEY; c.fill = GRIS
@@ -182,13 +183,13 @@ lista(wd, f'=Moldes!$A${F0}:$A${F0+NM-1}', f'A{F0}:A{F0+ND-1}')
 lista(wd, f'={TN}', f'E{F0}:E{F0+ND-1}')
 lista(wd, '"Sí,No"', f'F{F0}:F{F0+ND-1}')
 wd.freeze_panes = 'C5'; wd.auto_filter.ref = f'A4:G{F0+ND-1}'
-DA, DB_, DC, DD, DE, DF, DG, DK = (f'Despiece!${c}${F0}:${c}${F0+ND-1}' for c in 'ABCDEFGH')
+DA, DB_, DC, DD, DE, DF, DG, DK, DI = (f'Despiece!${c}${F0}:${c}${F0+ND-1}' for c in 'ABCDEFGHI')
 
 # ================================================================ MOLDES
 wm = wb.create_sheet('Moldes')
 titulo(wm, 'MOLDES — catálogo con su costo de producción (telas por defecto)', 'Una fila por molde. Lo que va por prenda y no depende de la tela: confección y avíos. Para probar otras telas, usa la Ficha.')
 enc(wm, 4, 1, ['Molde', 'Descripción', 'Prenda', 'Calce', 'Tipo de confección', 'Avío 1', 'Cant.', 'Avío 2', 'Cant.', 'Piezas\nen despiece',
-               'Ajuste por consumo\nreal (%) — vacío =\nmerma general', '$ Tela +\nimpresión', '$ Confección', '$ Avíos', 'COSTO DE\nPRODUCCIÓN', 'Qué falta', 'Notas', 'Ancho de la tela\ncon que se midió\nel despiece (m)'],
+               'Ajuste por consumo\nreal (%) — vacío =\nmerma general', '$ Tela +\nimpresión', '$ Confección', '$ Avíos', 'COSTO DE\nPRODUCCIÓN', 'Qué falta', 'Notas', 'Ancho general (m)\nsolo si TODAS las\npiezas son de una\nmisma marcada'],
     [24, 30, 9, 15, 30, 13, 6, 13, 6, 9, 16, 12, 12, 10, 13, 40, 60])
 NOTAS_MED = {'04 · FUTINHOMU01': 'Corte OT 2369: 0,0375 kg Cire + 0,024 kg Mesh por prenda.', '13 · FUTMUJU01PRO': 'Corte OT 2257: 0,1225 kg Montesimone por prenda.',
              '14 · FUTHOMU01PRO': 'Corte OT 2547: 0,12 kg Montesimone + 0,0775 kg Mesh por prenda.', '30 · BKHOMU03': 'Corte OT 2425: 0,2029 kg Quickdry por prenda.',
@@ -233,7 +234,7 @@ wf['B4'] = 'MOLDE ▶'; wf['B4'].font = Font(bold=True, size=13, color='1F3864')
 wf.merge_cells('C4:E4'); c = wf['C4']; c.value = '14 · FUTHOMU01PRO'; c.fill = AZUL; c.font = Font(bold=True, size=13)
 lista(wf, f'={MA}', 'C4')
 wf['F4'] = f'=IFERROR({MX("B")}&"  ·  "&{MX("C")}&" "&{MX("D")},"← elige un molde")'; wf['F4'].font = Font(italic=True, color='595959')
-wf['B5'] = f'=IFERROR(IF(N({MX("R")})>0,"Despiece medido en tela de "&TEXT({MX("R")},"0.00")&" m de ancho: los metros se ajustan al ancho de cada tela.  ","Sin ancho de referencia (Moldes): los metros no se ajustan por ancho.  ")&"Consumo: despiece + "&TEXT(IF(ISNUMBER({MX("K")}),{MX("K")},{MERMA}),"0%")&IF(ISNUMBER({MX("K")})," (ajuste por consumo real de este molde)"," (merma general)"),"")'
+wf['B5'] = f'=IFERROR("Cada pieza se ajusta al ancho de la tela elegida, desde el ancho de la marcada en que se midió (Despiece).  "&"Consumo: despiece + "&TEXT(IF(ISNUMBER({MX("K")}),{MX("K")},{MERMA}),"0%")&IF(ISNUMBER({MX("K")})," (ajuste por consumo real de este molde)"," (merma general)"),"")'
 wf['B5'].font = Font(italic=True, color='595959', size=9)
 wf['B3'] = 'Al cambiar de molde, borra las telas elegidas (columna azul) para volver a las de siempre.'; wf['B3'].font = Font(italic=True, color='C00000', size=9)
 H0, NP = 7, 16
@@ -246,7 +247,8 @@ for i in range(NP):
     wf[f'A{r}'] = f'=IF(B{r}="","",{i+1})'
     wf[f'B{r}'] = f'=IFERROR(INDEX({DB_},{idx}),"")'
     wf[f'C{r}'] = f'=IF(B{r}="","",INDEX({DC},{idx}))'
-    fac = f'IFERROR(IF(AND(N({MX("R")})>0,N(INDEX({TAN},MATCH(F{r},{TN},0)))>0),{MX("R")}/INDEX({TAN},MATCH(F{r},{TN},0)),1),1)'
+    refp = f'IF(N(INDEX({DI},{idx}))>0,INDEX({DI},{idx}),{MX("R")})'
+    fac = f'IFERROR(IF(AND(N({refp})>0,N(INDEX({TAN},MATCH(F{r},{TN},0)))>0),{refp}/INDEX({TAN},MATCH(F{r},{TN},0)),1),1)'
     wf[f'D{r}'] = f'=IF(B{r}="","",IF(N(INDEX({DD},{idx}))>0,INDEX({DD},{idx})*{AJ}*{fac},""))'
     wf[f'E{r}'].fill = AZUL
     wf[f'F{r}'] = f'=IF(B{r}="","",IF(E{r}<>"",E{r},INDEX({DE},{idx})&""))'

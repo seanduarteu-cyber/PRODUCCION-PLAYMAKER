@@ -50,24 +50,30 @@ for num_m in PEDIDOS:
     txt(X0, y, 'Responsable:', 8.5); campo(f'{mk}__responsable', X0 + 62, y, 150); txt(X0 + 225, y, 'Fecha:', 8.5); campo(f'{mk}__fecha', X0 + 255, y, 80)
     txt(X0 + 350, y, 'Talla base:', 8.5); campo(f'{mk}__talla', X0 + 400, y, 50, 'M'); y -= 26
 
-    y = sec(y, '1. MARCADA EN EL PLOTTER (talla base)')
-    txt(X0, y, 'Tela de la marcada:', 8.5); campo(f'{mk}__marcada_tela', X0 + 85, y, 200, (piezas.get(code) or [[None] * 5])[0][4] if code else '')
-    txt(X0 + 300, y, 'Ancho util de esa tela (m):', 8.5); campo(f'{mk}__ancho_ref', X0 + 410, y, 60, num(v[17]) if v else ''); y -= 20
-    txt(X0, y, 'Metros de la marcada:', 8.5); campo(f'{mk}__marcada_metros', X0 + 95, y, 60)
-    txt(X0 + 170, y, 'Prendas en la marcada:', 8.5); campo(f'{mk}__marcada_prendas', X0 + 270, y, 45)
-    txt(X0 + 330, y, 'Aprovechamiento (%) del programa:', 8.5); campo(f'{mk}__aprovechamiento', X0 + 480, y, 60); y -= 16
-    txt(X0, y, 'Metros por prenda = metros de la marcada / prendas. El aprovechamiento lo entrega el programa de marcada (area de piezas / area de tela).', 7.5, False, GRIS); y -= 22
-
-    y = sec(y, '2. PIEZAS - metros por prenda de cada fila (ya sumando la cantidad), en el ancho de arriba')
-    for x, t in ((X0 + 2, 'Pieza'), (X0 + 172, 'Cant.'), (X0 + 210, 'Metros por prenda'), (X0 + 300, 'Tela por defecto'), (X0 + 490, 'Sublima')): txt(x, y, t, 7.5, True)
-    y -= 15
+    y = sec(y, '1. MARCADAS EN EL PLOTTER (talla base) - una por cada tela del molde')
     lst = (piezas.get(code) or []) if code else []
+    tl = []
+    for p in lst:
+        if p[4] and p[4] not in tl: tl.append(p[4])
+    for x, t in ((X0 + 2, 'N°'), (X0 + 22, 'Tela de la marcada'), (X0 + 222, 'Ancho util (m)'), (X0 + 292, 'Metros marcada'), (X0 + 362, 'Prendas'), (X0 + 412, 'Aprovechamiento (%)')): txt(x, y, t, 7.5, True)
+    y -= 15
+    for n in (1, 2, 3):
+        txt(X0 + 6, y, str(n), 9, True)
+        campo(f'{mk}__m{n}_tela', X0 + 20, y, 196, tl[n - 1] if len(tl) >= n else ''); campo(f'{mk}__m{n}_ancho', X0 + 220, y, 66)
+        campo(f'{mk}__m{n}_metros', X0 + 290, y, 66); campo(f'{mk}__m{n}_prendas', X0 + 360, y, 46); campo(f'{mk}__m{n}_aprov', X0 + 410, y, 70)
+        y -= 17
+    txt(X0, y, 'Cada tela se marca por separado y tiene su propio ancho util. Metros por prenda = metros de la marcada / prendas.', 7.5, False, GRIS); y -= 20
+
+    y = sec(y, '2. PIEZAS - metros por prenda de cada fila (ya sumando la cantidad), medidos en su marcada')
+    for x, t in ((X0 + 2, 'Pieza'), (X0 + 152, 'Cant.'), (X0 + 186, 'Marcada N°'), (X0 + 236, 'Metros por prenda'), (X0 + 316, 'Tela por defecto'), (X0 + 492, 'Sublima')): txt(x, y, t, 7.5, True)
+    y -= 15
     for j, p in enumerate(lst + [[None, '', '', '', '', '']] * (10 - len(lst) if len(lst) < 10 else 2)):
         k = f'PZA__{key}__{j+1:02d}'
-        campo(f'{k}__pieza', X0, y, 165, p[1]); campo(f'{k}__cant', X0 + 170, y, 34, p[2]); campo(f'{k}__metros', X0 + 208, y, 85, num(p[3]))
-        campo(f'{k}__tela', X0 + 298, y, 186, p[4]); campo(f'{k}__sublima', X0 + 488, y, 52, p[5] or ('Sí' if not code else ''))
+        mnum = (tl.index(p[4]) + 1) if (p[4] and p[4] in tl) else (1 if p[1] else '')
+        campo(f'{k}__pieza', X0, y, 148, p[1]); campo(f'{k}__cant', X0 + 150, y, 32, p[2]); campo(f'{k}__marcada', X0 + 186, y, 44, mnum)
+        campo(f'{k}__metros', X0 + 234, y, 76, num(p[3])); campo(f'{k}__tela', X0 + 314, y, 172, p[4]); campo(f'{k}__sublima', X0 + 490, y, 50, p[5] or ('Sí' if not code else ''))
         y -= 17
-    txt(X0, y, 'Suma de metros de todas las piezas (control):', 8.5, True); campo(f'{mk}__suma_piezas', X0 + 205, y, 85); txt(X0 + 300, y, 'Debe ser parecida a metros de la marcada / prendas.', 7.5, False, GRIS); y -= 26
+    txt(X0, y, 'Suma de metros por marcada (control): debe parecerse a metros de la marcada / prendas.', 7.5, False, GRIS); y -= 24
 
     y = sec(y, '3. CORTE REAL (opcional, para ajustar la merma) - pesando la tela antes y despues')
     for x, t in ((X0 + 2, 'Fecha'), (X0 + 62, 'OT'), (X0 + 120, 'Tela cortada'), (X0 + 330, 'Prendas'), (X0 + 385, 'Kg antes'), (X0 + 440, 'Kg despues'), (X0 + 495, 'Kg usados')): txt(x, y, t, 7.5, True)

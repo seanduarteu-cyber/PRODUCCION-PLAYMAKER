@@ -17,7 +17,7 @@ par = {k: P.cell(r, 21).value for k, r in (('papel_rollo', 5), ('papel_metros', 
 moldes = [(r, [M.cell(r, c).value for c in range(1, 19)]) for r in range(5, 155) if M.cell(r, 1).value]
 piezas = {}
 for r in range(5, 1005):
-    if D.cell(r, 1).value: piezas.setdefault(D.cell(r, 1).value, []).append((r, D.cell(r, 2).value, D.cell(r, 3).value, D.cell(r, 4).value, D.cell(r, 5).value, D.cell(r, 6).value))
+    if D.cell(r, 1).value: piezas.setdefault(D.cell(r, 1).value, []).append((r, D.cell(r, 2).value, D.cell(r, 3).value, D.cell(r, 4).value, D.cell(r, 5).value, D.cell(r, 6).value, D.cell(r, 9).value))
 
 AZUL = HexColor('#1F3864'); GRIS = HexColor('#595959'); FONDO = HexColor('#EAF1FB'); LINEA = HexColor('#BFBFBF')
 W, H = letter; X0, X1 = 36, W - 36
@@ -119,8 +119,8 @@ for i, (r, n, v) in enumerate(avios + [(None, '', '')] * 8):
     y -= 16
 
 # ---------------------------------------------------------------- E. Despiece
-SUB = 'Metros por prenda de cada fila (ya sumando la cantidad), talla base, desde la marcada. Tela por defecto: la que lleva normalmente. Sublima: Si / No.'
-def enc_desp(y): return encabezado(y, [(X0 + 2, 'Pieza'), (X0 + 160, 'Cant.'), (X0 + 196, 'METROS por prenda'), (X0 + 290, 'Tela por defecto'), (X0 + 480, 'Sublima')])
+SUB = 'Metros por prenda de cada fila (ya sumando la cantidad), talla base, desde la marcada de SU tela. Ancho marcada: ancho util de esa tela. Sublima: Si / No.'
+def enc_desp(y): return encabezado(y, [(X0 + 2, 'Pieza'), (X0 + 150, 'Cant.'), (X0 + 182, 'METROS x prenda'), (X0 + 255, 'Ancho marcada'), (X0 + 320, 'Tela por defecto'), (X0 + 486, 'Sublima')])
 y = nueva('E. DESPIECE POR MOLDE - Diseno / moldaje / ploteo', SUB); y = responsable(y, 'E')
 for r, v in moldes:
     code = v[0]; pz = piezas.get(code, [])
@@ -134,10 +134,10 @@ for r, v in moldes:
     c.drawString(X0 + 432, y, 'Ajuste real %:'); campo(f'{mk}__ajuste', X0 + 488, y, 52, num(v[10] * 100) if isinstance(v[10], (int, float)) else '')
     y -= 16; c.drawString(X0, y, 'Ancho de la tela con que se midio el despiece (m):'); campo(f'{mk}__ancho_ref', X0 + 190, y, 50, num(v[17]))
     y -= 18; y = enc_desp(y)
-    for j, (dr, pzn, q, mt, tl, sb) in enumerate(pz + [(None, '', '', '', '', '')] * 2):
+    for j, (dr, pzn, q, mt, tl, sb, an) in enumerate(pz + [(None, '', '', '', '', '', '')] * 2):
         k = f'PZA__{san(code)}__{j+1:02d}'
-        campo(f'{k}__pieza', X0, y, 152, pzn); campo(f'{k}__cant', X0 + 158, y, 30, q); campo(f'{k}__metros', X0 + 194, y, 85, num(mt))
-        campo(f'{k}__tela', X0 + 286, y, 186, tl); campo(f'{k}__sublima', X0 + 478, y, 40, sb)
+        campo(f'{k}__pieza', X0, y, 146, pzn); campo(f'{k}__cant', X0 + 148, y, 30, q); campo(f'{k}__metros', X0 + 180, y, 70, num(mt))
+        campo(f'{k}__ancho', X0 + 253, y, 62, num(an)); campo(f'{k}__tela', X0 + 318, y, 164, tl); campo(f'{k}__sublima', X0 + 484, y, 40, sb)
         y -= 16
     y -= 8
 
