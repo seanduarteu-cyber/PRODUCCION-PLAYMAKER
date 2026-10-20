@@ -35,6 +35,37 @@ for r in v6['Precios'].iter_rows(min_row=5, max_row=120, max_col=8, values_only=
     if r[0]: (telas6 if r[1] == 'Tela' else avios6).append(r)
 conf6 = [r for r in v6['Confeccion'].iter_rows(min_row=5, max_row=100, max_col=2, values_only=True) if r[0]]
 rec6 = [r for r in v6['Recetas'].iter_rows(min_row=5, max_row=84, max_col=17, values_only=True) if r[0] and not str(r[0]).startswith('PRENDAS SIN')]
+# Moldes del catálogo vigente (CATALOGO_MOLDES_VIGENTES_INDEXADO_2.pdf) que no estaban: 55-65 y especiales E01-E09.
+# Piezas sugeridas según el dibujo de cada guía de tallas: revisar en la marcada.
+SM_, RG, CC, TAP, CU = ('Ribete cuello y sisas', 1), ('Manga raglán', 2), ('Cuello camisero', 1), ('Tapeta', 1), ('Tira de cuello', 1)
+DE, ES, MA, PL = ('Delantero', 1), ('Espalda', 1), ('Manga', 2), ('Paneles laterales', 2)
+NUEVOS = [  # código, descripción, deporte, prenda, calce, confección, piezas
+ ('55 · VOMUJV03', 'Vóley, sin mangas, cuello v', 'Vóley', 'Camiseta', 'Femenino', 'Camiseta Voley', [DE, ES, SM_]),
+ ('56 · VOMUJMAV03', 'Vóley, pro, sin mangas, cuello v', 'Vóley', 'Camiseta', 'Femenino', 'Camiseta Voley', [DE, ES, SM_]),
+ ('57 · VOMUJVCC03', 'Vóley, pro, sin mangas, cuello v con cuello', 'Vóley', 'Camiseta', 'Femenino', 'Camiseta Voley', [DE, ES, SM_, CC]),
+ ('58 · RB-HOMU02', 'Rugby, raglán, cuello redondo', 'Rugby', 'Camiseta', 'Masculino', 'Camiseta De Rugby Básica', [DE, ES, RG, CU]),
+ ('59 · RB-MUJU02', 'Rugby, raglán, cuello redondo', 'Rugby', 'Camiseta', 'Femenino', 'Camiseta De Rugby Básica', [DE, ES, RG, CU]),
+ ('60 · RBHOMCC02', 'Rugby, raglán, cuello camisero', 'Rugby', 'Camiseta', 'Masculino', 'Camiseta Rugby Con Cuello', [DE, ES, RG, CC, TAP]),
+ ('61 · RBMUJCC02', 'Rugby, raglán, cuello camisero, cortes laterales', 'Rugby', 'Camiseta', 'Femenino', 'Camiseta Rugby Con Cuello', [DE, ES, RG, PL, CC, TAP]),
+ ('62 · RB-HOMCL02', 'Rugby, clásica, cuello camisero', 'Rugby', 'Camiseta', 'Masculino', 'Camiseta Rugby Con Cuello', [DE, ES, MA, CC, TAP]),
+ ('63 · RBMUJCL02', 'Rugby, clásica, cuello camisero', 'Rugby', 'Camiseta', 'Femenino', 'Camiseta Rugby Con Cuello', [DE, ES, MA, CC, TAP]),
+ ('64 · HO-MUJ03', 'Hockey, sin mangas, cuello redondo', 'Hockey', 'Camiseta', 'Femenino', 'Camiseta De Hockey', [DE, ES, SM_]),
+ ('65 · HO-MUJCC03', 'Hockey, sin mangas, cuello camisero', 'Hockey', 'Camiseta', 'Femenino', 'Camiseta De Hockey', [DE, ES, SM_, CC, TAP]),
+ ('E01 · RB-HOMUCC02', 'Especial rugby, manga corta, cortes laterales', 'Rugby', 'Camiseta', 'Masculino', 'Camiseta De Rugby Básica', [DE, ES, MA, PL, CU]),
+ ('E02 · RB-HOMUCC02 SM', 'Especial rugby, sin mangas, cortes laterales', 'Rugby', 'Camiseta', 'Masculino', 'Camiseta De Rugby Básica', [DE, ES, PL, SM_]),
+ ('E03 · RBHOMMA02', 'Especial rugby, raglán, cuello con tapeta', 'Rugby', 'Camiseta', 'Masculino', 'Camiseta Rugby Con Cuello', [DE, ES, RG, CU, TAP]),
+ ('E04 · FUTHOMMA01', 'Especial fútbol, cuello con tapeta', 'Fútbol', 'Camiseta', 'Masculino', 'Camiseta De Futbol', [DE, ES, MA, CU, TAP]),
+ ('E05 · CA-MUJ', 'Calza corta', 'Varios', 'Calza', 'Femenino', 'Calza', [('Pierna', 2), ('Pretina', 1)]),
+ ('E06 · C-FALDA TUBO', 'Calza-falda tubo', 'Varios', 'Falda', 'Femenino', 'Calza-Falda', [('Falda delantero', 1), ('Falda trasero', 1), ('Calza pierna', 2), ('Pretina', 1)]),
+ ('E07 · C-FALDA CRUZADA', 'Calza-falda cruzada', 'Varios', 'Falda', 'Femenino', 'Calza-Falda', [('Falda delantero cruzado', 2), ('Falda trasero', 1), ('Calza pierna', 2), ('Pretina', 1)]),
+ ('E08 · C-FALDA CON COSTADO', 'Calza-falda con costado', 'Varios', 'Falda', 'Femenino', 'Calza-Falda', [('Falda delantero', 1), ('Falda trasero', 1), ('Costados', 2), ('Calza pierna', 2), ('Pretina', 1)]),
+ ('E09 · C-FALDA CON TAJALÍ', 'Calza-falda con tajalí', 'Varios', 'Falda', 'Femenino', 'Calza-Falda', [('Falda delantero', 1), ('Falda trasero', 1), ('Calza pierna', 2), ('Pretina', 1)]),
+]
+PZ_NUEVAS = {n[0]: n[6] for n in NUEVOS}
+_sm = [x for x in rec6 if str(x[0]).startswith('SM-')]
+rec6 = [x for x in rec6 if not str(x[0]).startswith('SM-')] + \
+       [(c, d, dep, pr, ca, None, None, None, None, None, None, None, cf, None, None, 'Por confirmar', 'Agregado desde el catálogo vigente: piezas sugeridas, revisar en la marcada.')
+        for c, d, dep, pr, ca, cf, _ in NUEVOS] + _sm
 p6 = v6['Parametros']
 
 F0 = 5                      # primera fila de datos (encabezado en la fila 4)
@@ -133,7 +164,7 @@ enc(wd, 4, 1, ['Molde', 'Pieza', 'Cant.', 'METROS\npor prenda\n(en el ancho\nde 
 fila = F0
 for x in rec6:
     code, t1, t2 = x[0], x[5], x[8]
-    for n, q in piezas(code, x[1] or '', x[3] or ''):
+    for n, q in (PZ_NUEVAS.get(code) or piezas(code, x[1] or '', x[3] or '')):
         wd.cell(fila, 1, code); wd.cell(fila, 2, n); wd.cell(fila, 3, q)
         wd.cell(fila, 5, t2 if (n == 'Paneles laterales' and t2) else t1)
         wd.cell(fila, 6, 'No' if code.startswith(('SM-02', 'SM-04')) else 'Sí')
