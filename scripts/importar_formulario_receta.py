@@ -62,6 +62,15 @@ for base, d in sorted(grupo('AVIO_').items()):
     if d.get('nombre'): r = fila_de(P, 17, d['nombre'], 5, 65); poner(P, r, 17, d['nombre'].strip(), 'avío'); poner(P, r, 18, num(d.get('precio')), f"$ {d['nombre']}")
 # E. Moldes y despiece
 codigos = {san(M.cell(r, 1).value): (r, M.cell(r, 1).value) for r in range(5, 155) if M.cell(r, 1).value}
+# Moldes nuevos (hojas de despiece): se agregan a Moldes y sus piezas quedan ligadas al número de la hoja
+for base, d in grupo('MOLDENUEVO_').items():
+    numero = base.split('_', 1)[1]; cod = (d.get('codigo') or '').strip()
+    if not cod or cod.rstrip(' ·') == numero: continue
+    if san(cod) in codigos: codigos[numero] = codigos[san(cod)]; continue
+    r = fila_de(M, 1, cod, 5, 155)
+    poner(M, r, 1, cod, 'molde nuevo'); poner(M, r, 2, d.get('descripcion'), f'descripción {cod}')
+    poner(M, r, 3, d.get('prenda'), f'prenda {cod}'); poner(M, r, 4, d.get('calce'), f'calce {cod}')
+    codigos[san(cod)] = codigos[numero] = (r, cod)
 for base, d in grupo('MOLDE__').items():
     s = base.split('__', 1)[1]
     if s not in codigos: continue
@@ -71,6 +80,11 @@ for base, d in grupo('MOLDE__').items():
         partes = [re.match(r'\s*(.+?)\s*[xX*]\s*([0-9.,]+)\s*$', p) for p in d['avios'].split('+')]
         for (ca, cq), m in zip(((6, 7), (8, 9)), [p for p in partes if p]):
             poner(M, r, ca, m.group(1), f'avío {code}'); poner(M, r, cq, num(m.group(2)), f'cant. avío {code}')
+    marc = [f"{k} {d[k]}" for k in ('marcada_tela', 'marcada_metros', 'marcada_prendas', 'aprovechamiento', 'talla', 'suma_piezas', 'obs') if d.get(k)]
+    if any(d.get(k) for k in ('marcada_metros', 'marcada_prendas', 'aprovechamiento', 'suma_piezas', 'obs')):
+        nota = 'Marcada ' + (d.get('fecha') or '') + ': ' + ', '.join(marc).replace('marcada_', '').replace('_', ' ')
+        old = str(M.cell(r, 17).value or '')
+        if nota not in old: poner(M, r, 17, (old + ' | ' if old else '') + nota, f'nota marcada {code}')
     aj = num(d.get('ajuste'))
     if aj is not None: poner(M, r, 11, aj / 100, f'ajuste real {code}')
     poner(M, r, 18, num(d.get('ancho_ref')), f'ancho de referencia {code}')
@@ -92,6 +106,8 @@ for base, d in sorted(grupo('PZA__').items()):
 kgm = {str(P.cell(r, 1).value).strip().upper(): P.cell(r, 7).value for r in range(5, 125) if P.cell(r, 1).value}
 ajustes = collections.defaultdict(list)
 for base, d in sorted(grupo('CORTE_').items()):
+    if not num(d.get('kg')) and num(d.get('kg_antes')) and num(d.get('kg_despues')) is not None:
+        d['kg'] = str(num(d['kg_antes']) - num(d['kg_despues'])).replace('.', ',')
     if not (d.get('molde') and d.get('tela') and num(d.get('prendas')) and num(d.get('kg'))): continue
     code = next((c for _, c in codigos.values() if c.upper().startswith(d['molde'].strip().upper()) or d['molde'].strip().upper() in c.upper()), None)
     k = kgm.get(d['tela'].strip().upper())
