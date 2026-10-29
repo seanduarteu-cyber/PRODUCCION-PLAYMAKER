@@ -124,6 +124,9 @@
       detalle: ["Espalda microperforada para mejor respirabilidad"],
       chips: ["ANTIBACTERIANA", "PROTECCIÓN UV 50+", "ANTIMANCHAS DE SUDOR"] },
   ];
+  const TECNOLOGIA_COMUN = "SPECIAL DRY · SECADO RÁPIDO";  // va en todos los niveles
+  NIVELES.forEach(n => n.chips = [TECNOLOGIA_COMUN, ...(n.chips || [])]);
+
   const FORMATOS = [
     { nombre: "Camiseta", incluye: "Solo camiseta",             precios: [16900, 18900, 20900, 22900] },
     { nombre: "Duo Pack", incluye: "Camiseta + short", precios: [24900, 26900, 29200, 33200] },
