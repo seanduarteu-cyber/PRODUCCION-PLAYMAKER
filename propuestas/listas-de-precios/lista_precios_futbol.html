@@ -39,14 +39,12 @@
   .grilla { display: grid; grid-template-columns: 250px repeat(4, 1fr); gap: 12px; }
 
   /* encabezados de nivel */
-  .nivel { background: var(--blanco); border: 1px solid var(--linea); position: relative; padding: 26px 22px 20px; min-height: 196px; }
+  .nivel { background: var(--blanco); border: 1px solid var(--linea); position: relative; padding: 26px 22px 20px; min-height: 128px; }
   .nivel::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 7px; background: var(--metal); }
   .nivel .num { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: var(--gris); }
-  .nivel .nombre { display: flex; align-items: center; gap: 12px; margin: 8px 0 12px; }
+  .nivel .nombre { display: flex; align-items: center; gap: 12px; margin: 10px 0 4px; }
   .nivel .nombre i { width: 26px; height: 26px; border-radius: 50%; background: var(--metal); box-shadow: inset 0 0 0 2px rgba(255,255,255,.55); flex: none; }
   .nivel .nombre b { font-family: "Playfair"; font-size: 32px; color: var(--navy); line-height: 1; }
-  .nivel p { font-size: 13.5px; line-height: 1.45; color: #3A3F52; }
-  .nivel p em { font-style: normal; font-weight: 600; color: var(--navy); }
 
   .bronce   { --metal: linear-gradient(135deg, #7A4A22, #C98A4B 50%, #8C5A2B); }
   .plata    { --metal: linear-gradient(135deg, #8E949A, #E3E6E9 50%, #A3A8AD); }
@@ -55,13 +53,12 @@
 
   .esquina { display: flex; flex-direction: column; justify-content: flex-end; padding: 0 4px 20px; }
   .esquina .kicker { color: var(--oro-marca); letter-spacing: 3px; font-size: 12px; }
-  .esquina p { font-size: 13px; color: var(--gris); margin-top: 8px; line-height: 1.45; }
 
   /* filas de formato */
   .formato { background: var(--navy-2); color: var(--marfil); padding: 22px 22px; display: flex; flex-direction: column; justify-content: center; }
   .formato b { font-family: "Playfair"; font-size: 30px; line-height: 1.05; }
   .formato span { font-size: 13px; color: rgba(247, 243, 231, .75); margin-top: 6px; }
-  .precio { background: var(--blanco); border: 1px solid var(--linea); display: flex; align-items: center; justify-content: center; min-height: 128px; }
+  .precio { background: var(--blanco); border: 1px solid var(--linea); display: flex; align-items: center; justify-content: center; min-height: 158px; }
   .precio strong { font-weight: 600; font-size: 40px; color: var(--navy); letter-spacing: -.5px; }
   .precio strong small { font-size: 22px; vertical-align: 12px; margin-right: 2px; font-weight: 600; }
 
@@ -86,7 +83,7 @@
   <div class="izq">
     <div class="kicker">LISTA DE PRECIOS</div>
     <h1>Fútbol</h1>
-    <div class="bajada">Cuatro niveles de tela y tres formatos: camiseta, Duo Pack o Kit completo.</div>
+    <div class="bajada">Cuatro niveles y tres formatos: camiseta, Duo Pack o Kit completo.</div>
   </div>
   <div class="der">
     <img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker">
@@ -100,7 +97,6 @@
 
 <footer>
   <ul>
-    <li>Short full sublimado en tela ciré (Duo Pack y Kit)</li>
     <li>Medias incluidas solo en el Kit</li>
     <li>Valores en pesos chilenos, por conjunto</li>
   </ul>
@@ -110,10 +106,10 @@
 <script>
   // ---------------- datos
   const NIVELES = [
-    { clase: "bronce",   nombre: "Bronce",   camiseta: "Full sublimada en <em>tela ciré</em> (frente, mangas y espalda)." },
-    { clase: "plata",    nombre: "Plata",    camiseta: "Frente y mangas en <em>tela ciré</em>, espalda mesh." },
-    { clase: "oro",      nombre: "Oro",      camiseta: "Frente y mangas en <em>tela importada de Perú</em>, espalda mesh." },
-    { clase: "diamante", nombre: "Diamante", camiseta: "Frente y mangas en <em>tela importada de Colombia</em>, espalda mesh." },
+    { clase: "bronce",   nombre: "Bronce" },
+    { clase: "plata",    nombre: "Plata" },
+    { clase: "oro",      nombre: "Oro" },
+    { clase: "diamante", nombre: "Diamante" },
   ];
   const FORMATOS = [
     { nombre: "Camiseta", incluye: "Solo camiseta",             precios: [16900, 18900, 20900, 22900] },
@@ -125,11 +121,10 @@
   const g = document.getElementById("grilla");
   const fmt = n => n.toLocaleString("es-CL").replace(/,/g, ".");
   g.insertAdjacentHTML("beforeend",
-    `<div class="esquina"><div class="kicker">NIVEL DE LA CAMISETA</div>
-     <p>El nivel define la tela de la camiseta. El short es el mismo en todos los niveles.</p></div>`);
+    `<div class="esquina"><div class="kicker">FORMATO / NIVEL</div></div>`);
   NIVELES.forEach((n, i) => g.insertAdjacentHTML("beforeend",
     `<div class="nivel ${n.clase}"><div class="num">NIVEL ${i + 1}</div>
-     <div class="nombre"><i></i><b>${n.nombre}</b></div><p>${n.camiseta}</p></div>`));
+     <div class="nombre"><i></i><b>${n.nombre}</b></div></div>`));
   FORMATOS.forEach(f => {
     const d = f.destacado ? " destacado" : "";
     g.insertAdjacentHTML("beforeend",
