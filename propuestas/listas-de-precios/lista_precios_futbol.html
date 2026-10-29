@@ -1,0 +1,143 @@
+<!doctype html>
+<!--
+  Lista de precios Fútbol (Playmaker) para exportar como imagen.
+  Regenerar:  bash propuestas/listas-de-precios/exportar.sh
+  Precios y textos: editar la sección "datos" al final del archivo.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Lista de precios · Fútbol</title>
+<style>
+  @font-face { font-family: "Poppins"; font-weight: 400; src: url("../_recursos/fonts/Poppins-Regular.ttf"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; src: url("../_recursos/fonts/Poppins-SemiBold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 700; src: url("../_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+  :root {
+    --navy: #141E3C; --navy-2: #1F2B50; --oro-marca: #B1A542; --marfil: #F7F3E7;
+    --texto: #0B1226; --gris: #6E7280; --linea: #DCD8CB; --blanco: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 1000px; background: var(--marfil); }
+  body { font-family: "Poppins", sans-serif; color: var(--texto); position: relative; overflow: hidden; }
+  .marco { position: absolute; inset: 18px; border: 1.5px solid var(--oro-marca); pointer-events: none; z-index: 5; }
+
+  header {
+    height: 200px; background: var(--navy); color: var(--marfil);
+    display: flex; align-items: center; justify-content: space-between; padding: 0 76px;
+  }
+  header .izq { display: flex; flex-direction: column; gap: 8px; }
+  .kicker { font-weight: 600; font-size: 13px; letter-spacing: 5px; color: var(--oro-marca); }
+  h1 { font-family: "Playfair"; font-weight: 700; font-size: 62px; line-height: 1; }
+  .bajada { font-size: 16px; color: rgba(247, 243, 231, .72); }
+  header .der { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  header .der img { height: 46px; }
+  header .der span { font-size: 11px; letter-spacing: 4px; color: var(--oro-marca); font-weight: 600; }
+
+  main { padding: 40px 76px 0; }
+  .grilla { display: grid; grid-template-columns: 250px repeat(4, 1fr); gap: 12px; }
+
+  /* encabezados de nivel */
+  .nivel { background: var(--blanco); border: 1px solid var(--linea); position: relative; padding: 26px 22px 20px; min-height: 196px; }
+  .nivel::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 7px; background: var(--metal); }
+  .nivel .num { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: var(--gris); }
+  .nivel .nombre { display: flex; align-items: center; gap: 12px; margin: 8px 0 12px; }
+  .nivel .nombre i { width: 26px; height: 26px; border-radius: 50%; background: var(--metal); box-shadow: inset 0 0 0 2px rgba(255,255,255,.55); flex: none; }
+  .nivel .nombre b { font-family: "Playfair"; font-size: 32px; color: var(--navy); line-height: 1; }
+  .nivel p { font-size: 13.5px; line-height: 1.45; color: #3A3F52; }
+  .nivel p em { font-style: normal; font-weight: 600; color: var(--navy); }
+
+  .bronce   { --metal: linear-gradient(135deg, #7A4A22, #C98A4B 50%, #8C5A2B); }
+  .plata    { --metal: linear-gradient(135deg, #8E949A, #E3E6E9 50%, #A3A8AD); }
+  .oro      { --metal: linear-gradient(135deg, #A8841C, #F0D677 50%, #B8922A); }
+  .diamante { --metal: linear-gradient(135deg, #5FA3C7, #E4F5FC 50%, #7DB9D8); }
+
+  .esquina { display: flex; flex-direction: column; justify-content: flex-end; padding: 0 4px 20px; }
+  .esquina .kicker { color: var(--oro-marca); letter-spacing: 3px; font-size: 12px; }
+  .esquina p { font-size: 13px; color: var(--gris); margin-top: 8px; line-height: 1.45; }
+
+  /* filas de formato */
+  .formato { background: var(--navy-2); color: var(--marfil); padding: 22px 22px; display: flex; flex-direction: column; justify-content: center; }
+  .formato b { font-family: "Playfair"; font-size: 30px; line-height: 1.05; }
+  .formato span { font-size: 13px; color: rgba(247, 243, 231, .75); margin-top: 6px; }
+  .precio { background: var(--blanco); border: 1px solid var(--linea); display: flex; align-items: center; justify-content: center; min-height: 128px; }
+  .precio strong { font-weight: 600; font-size: 40px; color: var(--navy); letter-spacing: -.5px; }
+  .precio strong small { font-size: 22px; vertical-align: 12px; margin-right: 2px; font-weight: 600; }
+
+  .destacado.formato { background: var(--oro-marca); color: var(--navy); }
+  .destacado.formato span { color: rgba(20, 30, 60, .78); }
+  .destacado.formato .sello { align-self: flex-start; margin-bottom: 8px; font-size: 10px; letter-spacing: 3px; font-weight: 600; background: var(--navy); color: var(--marfil); padding: 4px 9px; }
+  .destacado.precio { background: var(--navy); border-color: var(--navy); }
+  .destacado.precio strong { color: var(--marfil); }
+
+  footer {
+    position: absolute; left: 76px; right: 76px; bottom: 46px; display: flex; justify-content: space-between; align-items: flex-end;
+    border-top: 1px solid var(--oro-marca); padding-top: 16px; font-size: 13px; color: var(--gris);
+  }
+  footer ul { list-style: none; display: flex; gap: 28px; }
+  footer li::before { content: ""; display: inline-block; width: 7px; height: 7px; background: var(--oro-marca); margin-right: 9px; vertical-align: 1px; }
+  footer .web { font-weight: 600; letter-spacing: 2px; color: var(--navy); }
+</style>
+</head>
+<body>
+<div class="marco"></div>
+<header>
+  <div class="izq">
+    <div class="kicker">LISTA DE PRECIOS</div>
+    <h1>Fútbol</h1>
+    <div class="bajada">Cuatro niveles de tela y tres formatos: camiseta, Duo Pack o Kit completo.</div>
+  </div>
+  <div class="der">
+    <img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker">
+    <span>UN CLUB, UNA FAMILIA.</span>
+  </div>
+</header>
+
+<main>
+  <div class="grilla" id="grilla"></div>
+</main>
+
+<footer>
+  <ul>
+    <li>Short full sublimado en tela ciré (Duo Pack y Kit)</li>
+    <li>Medias incluidas solo en el Kit</li>
+    <li>Valores en pesos chilenos, por conjunto</li>
+  </ul>
+  <div class="web">WWW.PLAYMAKER.CL</div>
+</footer>
+
+<script>
+  // ---------------- datos
+  const NIVELES = [
+    { clase: "bronce",   nombre: "Bronce",   camiseta: "Full sublimada en <em>tela ciré</em> (frente, mangas y espalda)." },
+    { clase: "plata",    nombre: "Plata",    camiseta: "Frente y mangas en <em>tela ciré</em>, espalda mesh." },
+    { clase: "oro",      nombre: "Oro",      camiseta: "Frente y mangas en <em>tela importada de Perú</em>, espalda mesh." },
+    { clase: "diamante", nombre: "Diamante", camiseta: "Frente y mangas en <em>tela importada de Colombia</em>, espalda mesh." },
+  ];
+  const FORMATOS = [
+    { nombre: "Camiseta", incluye: "Solo camiseta",             precios: [16900, 18900, 20900, 22900] },
+    { nombre: "Duo Pack", incluye: "Camiseta + short",          precios: [24900, 26900, 29200, 33200] },
+    { nombre: "Kit",      incluye: "Camiseta + short + medias", precios: [29900, 31900, 34900, 38900], destacado: "MÁS COMPLETO" },
+  ];
+
+  // ---------------- armado
+  const g = document.getElementById("grilla");
+  const fmt = n => n.toLocaleString("es-CL").replace(/,/g, ".");
+  g.insertAdjacentHTML("beforeend",
+    `<div class="esquina"><div class="kicker">NIVEL DE LA CAMISETA</div>
+     <p>El nivel define la tela de la camiseta. El short es el mismo en todos los niveles.</p></div>`);
+  NIVELES.forEach((n, i) => g.insertAdjacentHTML("beforeend",
+    `<div class="nivel ${n.clase}"><div class="num">NIVEL ${i + 1}</div>
+     <div class="nombre"><i></i><b>${n.nombre}</b></div><p>${n.camiseta}</p></div>`));
+  FORMATOS.forEach(f => {
+    const d = f.destacado ? " destacado" : "";
+    g.insertAdjacentHTML("beforeend",
+      `<div class="formato${d}">${f.destacado ? `<div class="sello">${f.destacado}</div>` : ""}
+       <b>${f.nombre}</b><span>${f.incluye}</span></div>`);
+    f.precios.forEach(p => g.insertAdjacentHTML("beforeend",
+      `<div class="precio${d}"><strong><small>$</small>${fmt(p)}</strong></div>`));
+  });
+</script>
+</body>
+</html>
