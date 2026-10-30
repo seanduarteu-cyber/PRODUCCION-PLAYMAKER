@@ -1,0 +1,37 @@
+/* Estilo Playmaker para exportar la base de conocimiento a PDF (ver exportar_pdf.sh). */
+@font-face { font-family: "Poppins"; font-weight: 400; src: url("../_recursos/fonts/Poppins-Regular.ttf"); }
+@font-face { font-family: "Poppins"; font-weight: 600; src: url("../_recursos/fonts/Poppins-SemiBold.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 700; src: url("../_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+
+@page { size: A4; margin: 18mm 18mm 20mm; }
+:root { --navy: #141E3C; --oro: #B1A542; --marfil: #F7F3E7; --texto: #1C2233; --gris: #6E7280; --linea: #DCD8CB; }
+html { background: #fff; }
+body { font-family: "Poppins", sans-serif; font-size: 9.6pt; line-height: 1.55; color: var(--texto); margin: 0; }
+
+.portada { background: var(--navy); color: var(--marfil); margin: 0 0 22px; padding: 26px 28px 24px; }
+.portada .kicker { font-weight: 600; font-size: 8pt; letter-spacing: 3.5px; color: var(--oro); }
+.portada h1 { font-family: "Playfair"; font-size: 26pt; line-height: 1.1; margin: 8px 0 8px; border: 0; color: var(--marfil); }
+.portada p { margin: 0; font-size: 9pt; color: rgba(247, 243, 231, .78); }
+.portada img { height: 26px; float: right; margin-top: 2px; }
+
+body > h1 { display: none; }  /* el título del Markdown va en la portada */
+h2 { font-family: "Playfair"; font-size: 16pt; color: var(--navy); margin: 26px 0 8px; padding-bottom: 6px;
+     border-bottom: 1.5px solid var(--oro); page-break-after: avoid; }
+h3 { font-size: 10.5pt; font-weight: 600; color: var(--navy); margin: 16px 0 4px; page-break-after: avoid; }
+p { margin: 6px 0; }
+strong { font-weight: 600; color: var(--navy); }
+ul { margin: 4px 0 8px; padding-left: 18px; }
+li { margin: 2px 0; }
+li::marker { color: var(--oro); }
+hr { display: none; }
+code { font-family: "Poppins", sans-serif; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 9pt; page-break-inside: avoid; }
+th { background: var(--navy); color: var(--marfil); font-weight: 600; font-size: 8pt; letter-spacing: .6px;
+     text-align: left; padding: 6px 8px; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--linea); }
+tr:nth-child(even) td { background: #FAF8F1; }
+td:nth-child(n+3) { white-space: nowrap; }
+
+.pendiente { background: #FFF2A8; padding: 1px 4px; font-weight: 600; }
+.pie { margin-top: 28px; padding-top: 8px; border-top: 1px solid var(--oro); font-size: 8pt; color: var(--gris); }
