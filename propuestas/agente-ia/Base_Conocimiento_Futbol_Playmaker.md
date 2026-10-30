@@ -8,19 +8,20 @@ Documento para el agente de IA de ventas de Playmaker (playmaker.cl).
 ## 1. Cómo usar esta información
 
 - Usa solo los precios, productos y características de este documento. No inventes precios, descuentos, plazos, tallas ni características que no estén aquí.
-- Todos los precios están en pesos chilenos y son por unidad: por camiseta, por Duo Pack o por Kit.
-- Para calcular el monto de un pedido, multiplica el precio unitario por la cantidad. Ejemplo: 15 Kit Oro = 15 × $34.900 = $523.500.
+- Todos los precios están en pesos chilenos, incluyen IVA y son por unidad: por camiseta, por Duo Pack o por Kit.
+- Para calcular el monto de un pedido, multiplica el precio unitario por la cantidad. El resultado ya incluye IVA. Ejemplo: 15 Kit Oro = 15 × $34.900 = $523.500.
 - Escribe los precios con punto de miles y signo peso: $16.900.
 - Habla con un tono cercano y no uses emojis.
-- Si el cliente pregunta algo que no está en este documento (ver sección 9), no lo supongas: dile que un ejecutivo se lo confirma y sigue el flujo de dudas.
+- Si el cliente pide la guía de tallas, envíale el enlace de la sección 7.
+- Si el cliente pregunta algo que no está en este documento (ver sección 10), no lo supongas: dile que un ejecutivo se lo confirma y sigue el flujo de dudas.
 
 ---
 
 ## 2. Resumen de precios
 
-### Línea por niveles (Bronce, Plata, Oro y Diamante)
+Precios por unidad, IVA incluido. Pedido mínimo: 10 unidades (compras nuevas).
 
-Pedido mínimo: 10 unidades.
+### Línea por niveles (Bronce, Plata, Oro y Diamante)
 
 | Formato | Qué incluye | Bronce | Plata | Oro | Diamante |
 |---|---|---|---|---|---|
@@ -139,17 +140,33 @@ Camiseta sublimada en tela PRO peruana con espalda microperforada (PRO peruana/m
 Camiseta sublimada en tela PRO colombiana con espalda microperforada (PRO colombiana/mesh) + short sublimado + medias PMK. Incluye las tecnologías del nivel Diamante en la camiseta. Pedido mínimo: 10 unidades.
 
 ### Camiseta reversible – $27.900 c/u
-Camiseta de fútbol reversible, sublimada en tela nacional por ambos lados. Incluye todos los elementos en sublimación.
+Camiseta de fútbol reversible, sublimada en tela nacional por ambos lados. Incluye todos los elementos en sublimación. Pedido mínimo: 10 unidades.
 
 ### Duo Pack reversible – $49.900 c/u
-Camiseta y short sublimados por ambos lados. Incluye todos los elementos en sublimación.
+Camiseta y short sublimados por ambos lados. Incluye todos los elementos en sublimación. Pedido mínimo: 10 unidades.
 
 ### Kit reversible – $55.900 c/u
-Camiseta y short sublimados por ambos lados, con todos los elementos en sublimación, más medias de 1 color a elección.
+Camiseta y short sublimados por ambos lados, con todos los elementos en sublimación, más medias de 1 color a elección. Pedido mínimo: 10 unidades.
+
+Todos los precios de las fichas incluyen IVA.
 
 ---
 
-## 7. Cómo puede llamar el cliente a cada producto
+## 7. Condiciones de compra
+
+Aplican a todos los productos de Playmaker.
+
+- **IVA:** todos los precios incluyen IVA.
+- **Pedido mínimo:** 10 unidades en compras nuevas. Las recompras (reposición de un pedido ya hecho) tienen otra condición: el ejecutivo la confirma.
+- **Plazo de producción:** de 10 a 15 días hábiles.
+- **Guía de tallas:** está en Drive. Envíale al cliente este enlace cuando la pida o cuando necesite elegir tallas: [PEGAR AQUÍ EL ENLACE DE DRIVE DE LA GUÍA DE TALLAS]
+- **Descuentos:** hay descuentos por volumen desde 50 prendas. El porcentaje lo define el ejecutivo en la cotización; no lo informes tú.
+- **Despacho:** a todo Chile por Starken u otro courier, con envío por pagar (el cliente paga el despacho al recibir).
+- **Formas de pago:** transferencia, link de pago, o pago presencial con efectivo o tarjetas bancarias.
+
+---
+
+## 8. Cómo puede llamar el cliente a cada producto
 
 - **Duo Pack:** dúo pack, duo, dúo, camiseta con short, camiseta y short, conjunto sin medias.
 - **Kit:** kit completo, uniforme completo, conjunto completo, camiseta short y medias.
@@ -160,7 +177,7 @@ Camiseta y short sublimados por ambos lados, con todos los elementos en sublimac
 
 ---
 
-## 8. Preguntas frecuentes (respuestas de referencia)
+## 9. Preguntas frecuentes (respuestas de referencia)
 
 **¿Qué diferencia hay entre los niveles?**
 El nivel define la tela de la camiseta. Bronce es de tela tipo ciré completa. Plata es de ciré con espalda microperforada para respirar mejor. Oro es de tela PRO peruana con trama, suave y con espalda microperforada. Diamante es de tela PRO colombiana con trama y suma tecnología antibacteriana, antimanchas de sudor y protección UV 50+. Los cuatro tienen secado rápido Special Dry.
@@ -171,8 +188,26 @@ Camiseta del nivel que elijas, short sublimado y medias PMK.
 **¿Y el Duo Pack?**
 Camiseta del nivel que elijas y short sublimado. No incluye medias.
 
+**¿Los precios incluyen IVA?**
+Sí, todos los precios incluyen IVA.
+
 **¿Cuál es el pedido mínimo?**
-En la línea por niveles (Bronce, Plata, Oro y Diamante), desde 10 unidades.
+10 unidades en compras nuevas. Si es una recompra de un pedido que ya hiciste con nosotros, el ejecutivo te confirma la condición.
+
+**¿Cuánto se demoran?**
+El plazo de producción es de 10 a 15 días hábiles.
+
+**¿Tienen guía de tallas?**
+Sí. Envía el enlace de la guía de tallas (sección 7).
+
+**¿Hacen descuentos?**
+Sí, hay descuentos por volumen desde 50 prendas. El ejecutivo te indica el descuento en la cotización.
+
+**¿Hacen envíos a regiones?**
+Sí, despachamos a todo Chile por Starken u otro courier, con envío por pagar.
+
+**¿Cómo puedo pagar?**
+Por transferencia, link de pago, o de forma presencial con efectivo o tarjetas bancarias.
 
 **¿Puedo elegir la trama de la tela?**
 Sí. En los niveles Oro y Diamante hay variedad de tramas a elección.
@@ -190,21 +225,19 @@ Una camiseta que se puede usar por los dos lados: está sublimada en tela nacion
 Sí, son de 1 color a elección.
 
 **¿Cuánto me sale para mi equipo?**
-Multiplica el precio unitario por la cantidad. Ejemplos:
+Multiplica el precio unitario por la cantidad. El total ya incluye IVA; el despacho se paga aparte al recibir. Ejemplos:
 - 12 camisetas Bronce: 12 × $16.900 = $202.800.
 - 20 Duo Pack Plata: 20 × $26.900 = $538.000.
 - 15 Kit Oro: 15 × $34.900 = $523.500.
 
 ---
 
-## 9. Información que no está en esta base
+## 10. Información que no está en esta base
 
 Si el cliente pregunta por alguno de estos temas, dile que un ejecutivo se lo confirma y sigue el flujo de dudas. No des una respuesta propia.
 
-- Si los precios incluyen IVA.
-- Pedido mínimo de la línea reversible.
-- Plazos de producción y entrega.
-- Guía de tallas y tallas disponibles.
-- Descuentos por volumen o precios especiales.
-- Costos y zonas de despacho.
-- Formas de pago y abono.
+- Pedido mínimo o condiciones de una recompra.
+- Porcentaje de descuento por volumen.
+- Valor del despacho (depende del courier y del destino).
+- Dirección o horario para pagar de forma presencial.
+- Condiciones de abono o anticipo.
