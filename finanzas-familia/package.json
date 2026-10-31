@@ -1,0 +1,34 @@
+{
+  "name": "finanzas-familia",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p . && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:reglas": "npx -y firebase-tools@15 emulators:exec --only firestore --project demo-finanzas-familia \"vitest run -c vitest.reglas.config.ts\"",
+    "typecheck": "tsc --noEmit -p .",
+    "deploy": "npm run build && npx -y firebase-tools@15 deploy --only hosting,firestore",
+    "emuladores": "npx -y firebase-tools@15 emulators:start --only auth,firestore --project demo-finanzas-familia"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "firebase": "^12.19.0",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.9",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.5",
+    "vite-plugin-pwa": "^2.0.0",
+    "vitest": "^5.0.5"
+  }
+}

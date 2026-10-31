@@ -1,0 +1,40 @@
+{
+  "indexes": [],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "gastos",
+      "fieldPath": "enc",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "ingresos",
+      "fieldPath": "enc",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "boletas",
+      "fieldPath": "enc",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "deudas",
+      "fieldPath": "enc",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "adjuntos",
+      "fieldPath": "enc",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "families",
+      "fieldPath": "settingsEnc",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "families",
+      "fieldPath": "cifrado",
+      "indexes": []
+    }
+  ]
+}

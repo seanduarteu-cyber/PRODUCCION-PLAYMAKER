@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-demo
+.env
+.env.local
+.env.*.local
+.firebase
+.firebaserc
+*-debug.log
+firestore-debug.log
+*-debug.log
+dist-emu
