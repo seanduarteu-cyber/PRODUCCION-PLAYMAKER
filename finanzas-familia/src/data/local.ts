@@ -67,6 +67,7 @@ export function crearBackendLocal(): Backend {
 
   return {
     mode: 'local',
+    conGoogle: false,
     onAuth(cb) {
       let last = '';
       return watch(() => {

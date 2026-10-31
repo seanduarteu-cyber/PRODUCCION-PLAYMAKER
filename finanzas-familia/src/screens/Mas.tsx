@@ -48,7 +48,7 @@ export function Mas() {
             <span className="grow t">Cerrar sesión</span>
           </button>
         </div>
-        <p className="muted tiny" style={{ textAlign: 'center' }}>Finanzas Familia · v1.0 · {backend.mode === 'local' ? 'modo demostración' : 'datos cifrados en la nube'}</p>
+        <p className="muted tiny" style={{ textAlign: 'center' }}>Finanzas Familia · v1.0 · {backend.mode === 'local' ? 'modo demostración' : `datos cifrados en ${backend.mode === 'supabase' ? 'Supabase' : 'Firebase'}`}</p>
       </div>
     </>
   );

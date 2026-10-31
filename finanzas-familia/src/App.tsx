@@ -4,7 +4,7 @@ import type { Backend } from './data/backend';
 import { VISTA_PREVIA } from './data/config';
 import { AppProvider, cargarBackend, FamiliaProvider, useApp } from './data/store';
 import { descartarInvitacion, invitacionPendiente } from './lib/enlace';
-import { ClaveCreada, EstadoFamiliaView, Ingreso, SinFamilia } from './screens/Inicio';
+import { ClaveCreada, EstadoFamiliaView, Ingreso, NuevaContrasena, SinFamilia } from './screens/Inicio';
 import { Shell } from './screens/Shell';
 
 export default function App() {
@@ -32,13 +32,16 @@ export default function App() {
 }
 
 function Raiz() {
-  const { user, families, familyId, elegirFamilia } = useApp();
+  const { backend, user, families, familyId, elegirFamilia } = useApp();
+  const [recuperando, setRecuperando] = useState(false);
+  useEffect(() => backend.onRecuperacion?.(() => setRecuperando(true)), [backend]);
   const [claveNueva, setClaveNueva] = useState<{ id: string; clave: string; nombre: string } | null>(null);
   const [agregando, setAgregando] = useState(false);
   const [creando, setCreando] = useState(false);
   const [invitacion, setInvitacion] = useState(invitacionPendiente);
 
   if (user === undefined) return <div className="center-page"><Cargando /></div>;
+  if (recuperando && user) return <NuevaContrasena onListo={() => setRecuperando(false)} />;
   if (!user) return <Ingreso />;
   if (families === undefined) return <div className="center-page"><Cargando /></div>;
 

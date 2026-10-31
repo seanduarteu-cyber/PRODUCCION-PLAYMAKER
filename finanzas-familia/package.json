@@ -11,9 +11,11 @@
     "test:reglas": "npx -y firebase-tools@15 emulators:exec --only firestore --project demo-finanzas-familia \"vitest run -c vitest.reglas.config.ts\"",
     "typecheck": "tsc --noEmit -p .",
     "deploy": "npm run build && npx -y firebase-tools@15 deploy --only hosting,firestore",
-    "emuladores": "npx -y firebase-tools@15 emulators:start --only auth,firestore --project demo-finanzas-familia"
+    "emuladores": "npx -y firebase-tools@15 emulators:start --only auth,firestore --project demo-finanzas-familia",
+    "test:supabase": "vitest run -c vitest.supabase.config.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "exceljs": "^4.4.0",
     "firebase": "^12.19.0",
     "jspdf": "^4.2.1",

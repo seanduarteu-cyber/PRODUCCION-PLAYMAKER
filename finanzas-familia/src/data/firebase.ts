@@ -81,6 +81,7 @@ export function crearBackendFirebase(): Backend {
 
   return {
     mode: 'firebase',
+    conGoogle: true,
 
     onAuth(cb) {
       authListeners.add(cb);

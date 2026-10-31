@@ -6,7 +6,7 @@ import type {
 } from '../lib/types';
 import { crearAcciones, deRaws, type Acciones } from './acciones';
 import { mensajeError, type Backend, type RangoMeses } from './backend';
-import { firebaseConfigurado } from './config';
+import { firebaseConfigurado, supabaseConfigurado } from './config';
 
 // ---------------- Avisos (toasts) ----------------
 export interface Aviso { id: number; texto: string; tipo: 'ok' | 'error' | 'info' }
@@ -35,9 +35,11 @@ const LS_FAMILIA = 'ff_familia_actual';
 
 let backendPromise: Promise<Backend> | null = null;
 export function cargarBackend(): Promise<Backend> {
-  backendPromise ||= firebaseConfigurado
-    ? import('./firebase').then((m) => m.crearBackendFirebase())
-    : import('./local').then((m) => m.crearBackendLocal());
+  backendPromise ||= supabaseConfigurado
+    ? import('./supabase').then((m) => m.crearBackendSupabase())
+    : firebaseConfigurado
+      ? import('./firebase').then((m) => m.crearBackendFirebase())
+      : import('./local').then((m) => m.crearBackendLocal());
   return backendPromise;
 }
 

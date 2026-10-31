@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { Icon, MesNav, Sheet } from '../components/ui';
 import { useApp, useFamilia } from '../data/store';
 import { resumenBoletas } from '../lib/calc';
@@ -22,8 +22,25 @@ interface NavCtx {
 const Nav = createContext<NavCtx | null>(null);
 export const useNav = () => useContext(Nav)!;
 
+function useEnLinea() {
+  const [enLinea, setEnLinea] = useState(() => navigator.onLine);
+  useEffect(() => {
+    const on = () => setEnLinea(true);
+    const off = () => setEnLinea(false);
+    window.addEventListener('online', on);
+    window.addEventListener('offline', off);
+    return () => {
+      window.removeEventListener('online', on);
+      window.removeEventListener('offline', off);
+    };
+  }, []);
+  return enLinea;
+}
+
 export function Shell({ agregarFamilia }: { agregarFamilia: () => void }) {
   const [tab, setTab] = useState<Tab>('resumen');
+  const enLinea = useEnLinea();
+  const { backend } = useApp();
   const [filtroCategoria, setFiltroCategoria] = useState('');
   const [nuevoGasto, setNuevoGasto] = useState(false);
   const f = useFamilia();
@@ -46,6 +63,9 @@ export function Shell({ agregarFamilia }: { agregarFamilia: () => void }) {
   return (
     <Nav.Provider value={{ irA, filtroCategoria, setFiltroCategoria, agregarFamilia }}>
       <DemoBanner />
+      {!enLinea && backend.mode === 'supabase' && (
+        <div className="demo-banner">Sin conexión: los datos se actualizarán cuando vuelva internet. Para registrar, conéctate.</div>
+      )}
       <div className="app">
         {tab === 'resumen' && <Resumen />}
         {tab === 'gastos' && <Gastos />}

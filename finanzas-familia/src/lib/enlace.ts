@@ -14,7 +14,7 @@ export function capturarInvitacionDeUrl() {
   if (!codigo) return;
   const clave = new URLSearchParams(url.hash.slice(1)).get('clave') || '';
   try {
-    sessionStorage.setItem(KEY, JSON.stringify({ codigo, clave }));
+    localStorage.setItem(KEY, JSON.stringify({ codigo, clave, guardada: Date.now() }));
   } catch {
     /* nada */
   }
@@ -25,8 +25,14 @@ export function capturarInvitacionDeUrl() {
 
 export function invitacionPendiente(): InvitacionPendiente | null {
   try {
-    const s = sessionStorage.getItem(KEY);
-    return s ? JSON.parse(s) : null;
+    const s = localStorage.getItem(KEY);
+    const inv = s ? (JSON.parse(s) as InvitacionPendiente & { guardada?: number }) : null;
+    // Una invitación pendiente se recuerda por 7 días (lo que dura el código).
+    if (inv && (!inv.guardada || Date.now() - inv.guardada > 7 * 86400000)) {
+      localStorage.removeItem(KEY);
+      return null;
+    }
+    return inv;
   } catch {
     return null;
   }
@@ -34,7 +40,7 @@ export function invitacionPendiente(): InvitacionPendiente | null {
 
 export function descartarInvitacion() {
   try {
-    sessionStorage.removeItem(KEY);
+    localStorage.removeItem(KEY);
   } catch {
     /* nada */
   }
