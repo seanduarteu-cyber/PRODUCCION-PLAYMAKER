@@ -2,11 +2,15 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// VITE_VISTA_PREVIA=1 genera una sola página autocontenida (demo con datos de ejemplo).
+const vistaPrevia = process.env.VITE_VISTA_PREVIA === '1';
+
 export default defineConfig({
   base: './',
   plugins: [
     react(),
     VitePWA({
+      disable: vistaPrevia,
       registerType: 'autoUpdate',
       injectRegister: false,
       includeAssets: ['icon.svg', 'apple-touch-icon.png'],
@@ -34,8 +38,17 @@ export default defineConfig({
       },
     }),
   ],
-  build: {
-    target: 'es2022',
-    chunkSizeWarningLimit: 1500,
-  },
+  build: vistaPrevia
+    ? {
+        target: 'es2022',
+        outDir: 'dist-vista',
+        assetsInlineLimit: 10_000_000,
+        cssCodeSplit: false,
+        chunkSizeWarningLimit: 5000,
+        rollupOptions: { output: { inlineDynamicImports: true } },
+      }
+    : {
+        target: 'es2022',
+        chunkSizeWarningLimit: 1500,
+      },
 });

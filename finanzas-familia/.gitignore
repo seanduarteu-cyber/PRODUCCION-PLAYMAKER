@@ -10,3 +10,4 @@ dist-demo
 firestore-debug.log
 *-debug.log
 dist-emu
+dist-vista

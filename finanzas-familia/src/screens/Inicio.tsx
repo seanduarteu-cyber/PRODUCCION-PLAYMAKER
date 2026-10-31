@@ -2,19 +2,34 @@ import { useState } from 'react';
 import { Campo, Icon } from '../components/ui';
 import { fmtCodigo, mensajeError, normalizarCodigo } from '../data/backend';
 import { crearFamiliaCifrada } from '../data/familias';
+import { VISTA_PREVIA } from '../data/config';
 import { useApp, type EstadoFamilia } from '../data/store';
 import { compartirTexto, copiarTexto } from '../lib/compartir';
 import { claveValida, fmtClave, guardarClave, normalizarClave } from '../lib/crypto';
 import { descartarInvitacion, type InvitacionPendiente } from '../lib/enlace';
 
 export function Logo({ size = 64 }: { size?: number }) {
-  return <img className="logo" src="./icon.svg" alt="" width={size} height={size} style={{ width: size, height: size }} />;
+  return (
+    <svg className="logo" viewBox="0 0 512 512" width={size} height={size} aria-hidden="true">
+      <rect width="512" height="512" rx="112" fill="#0e7458" />
+      <path d="M256 92 418 222c6 5 9 12 9 19v161c0 13-11 24-24 24H109c-13 0-24-11-24-24V241c0-7 3-14 9-19z" fill="#ffffff" />
+      <rect x="160" y="300" width="44" height="82" rx="10" fill="#0e7458" />
+      <rect x="234" y="258" width="44" height="124" rx="10" fill="#0e7458" />
+      <rect x="308" y="214" width="44" height="168" rx="10" fill="#f2b33d" />
+    </svg>
+  );
 }
 
 export function DemoBanner() {
   const { backend } = useApp();
   if (backend.mode !== 'local') return null;
-  return <div className="demo-banner">Modo demostración: los datos quedan solo en este dispositivo.</div>;
+  return (
+    <div className="demo-banner">
+      {VISTA_PREVIA
+        ? 'Vista previa con datos de ejemplo. Lo que registres queda solo en este navegador.'
+        : 'Modo demostración: los datos quedan solo en este dispositivo.'}
+    </div>
+  );
 }
 
 // ---------------- Ingreso / registro ----------------

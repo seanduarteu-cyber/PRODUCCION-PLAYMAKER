@@ -44,6 +44,7 @@ let programado = false;
 let sec = 0;
 
 function sincronizarHistorial() {
+  if (import.meta.env.VITE_VISTA_PREVIA) return;
   if (programado) return;
   programado = true;
   setTimeout(() => {
@@ -220,7 +221,7 @@ export function Barra({ valor, max, marca }: { valor: number; max: number; marca
 }
 
 export function Avatar({ nombre, sm }: { nombre: string; sm?: boolean }) {
-  const ini = nombre.trim().split(/\s+/).slice(0, 2).map((s) => s[0]?.toUpperCase() ?? '').join('') || '?';
+  const ini = nombre.trim().split(/\s+/).filter((s) => /\p{L}/u.test(s[0] ?? '')).slice(0, 2).map((s) => s[0].toUpperCase()).join('') || '?';
   return <span className={'avatar' + (sm ? ' sm' : '')} title={nombre}>{ini}</span>;
 }
 

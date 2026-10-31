@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Cargando } from './components/ui';
 import type { Backend } from './data/backend';
+import { VISTA_PREVIA } from './data/config';
 import { AppProvider, cargarBackend, FamiliaProvider, useApp } from './data/store';
 import { descartarInvitacion, invitacionPendiente } from './lib/enlace';
 import { ClaveCreada, EstadoFamiliaView, Ingreso, SinFamilia } from './screens/Inicio';
@@ -10,7 +11,15 @@ export default function App() {
   const [backend, setBackend] = useState<Backend | null>(null);
   const [err, setErr] = useState('');
   useEffect(() => {
-    cargarBackend().then(setBackend).catch((e) => setErr(String(e?.message || e)));
+    cargarBackend()
+      .then(async (b) => {
+        if (VISTA_PREVIA && b.mode === 'local') {
+          const { sembrarEjemplo } = await import('./data/semilla');
+          await sembrarEjemplo(b).catch((e) => console.error('semilla', e));
+        }
+        setBackend(b);
+      })
+      .catch((e) => setErr(String(e?.message || e)));
   }, []);
   if (err) return <div className="center-page"><p className="error-text">No se pudo iniciar: {err}</p></div>;
   if (!backend) return <div className="center-page"><Cargando /></div>;

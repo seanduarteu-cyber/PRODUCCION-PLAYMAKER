@@ -26,7 +26,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0f1412;
     --surface: #18201c;
     --surface-2: #212b26;
@@ -47,6 +47,27 @@
     --shadow: none;
     color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1412;
+  --surface: #18201c;
+  --surface-2: #212b26;
+  --text: #e8efeb;
+  --muted: #9aa8a1;
+  --border: #2c3732;
+  --accent: #38b48b;
+  --accent-strong: #5cc9a3;
+  --accent-ink: #062018;
+  --accent-soft: #173a2e;
+  --ok: #4cc27a;
+  --ok-soft: #173525;
+  --warn: #e9a23b;
+  --warn-soft: #3a2c14;
+  --danger: #f0716a;
+  --danger-soft: #3f1d1b;
+  --info-soft: #1b2638;
+  --shadow: none;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -93,14 +114,15 @@ p { margin: 0; }
   padding: calc(10px + var(--safe-t)) 16px 8px;
   border-bottom: 1px solid transparent;
 }
-.topbar .familia-btn { display: flex; align-items: center; gap: 6px; background: none; border: 0; padding: 4px 0; font-weight: 700; font-size: 17px; cursor: pointer; max-width: 70%; }
+.topbar .familia-btn { display: flex; align-items: center; gap: 6px; background: none; border: 0; padding: 4px 0; font-weight: 700; font-size: 17px; cursor: pointer; flex: 1 1 auto; min-width: 0; text-align: left; }
+.topbar .row.between { gap: 8px; }
 .topbar .familia-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .content { padding: 8px 16px 16px; display: flex; flex-direction: column; gap: 14px; }
 
-.mesnav { display: flex; align-items: center; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 2px; }
-.mesnav button { width: 34px; height: 34px; border-radius: 999px; border: 0; background: none; cursor: pointer; font-size: 18px; color: var(--muted); }
+.mesnav { flex: none; display: flex; align-items: center; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 2px; }
+.mesnav button { width: 32px; height: 34px; border-radius: 999px; border: 0; background: none; cursor: pointer; font-size: 18px; color: var(--muted); }
 .mesnav button:active { background: var(--surface-2); }
-.mesnav .label { position: relative; min-width: 118px; text-align: center; font-weight: 600; font-size: 14px; cursor: pointer; border: 0; background: none; padding: 0 4px; }
+.mesnav .label { position: relative; min-width: 104px; width: auto !important; text-align: center; font-weight: 600; font-size: 13.5px; white-space: nowrap; cursor: pointer; border: 0; background: none; padding: 0 4px; }
 
 .tabbar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
@@ -241,7 +263,7 @@ textarea.input { min-height: 70px; resize: vertical; }
 
 /* ---------- Pantallas de inicio ---------- */
 .center-page { min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; padding: calc(24px + var(--safe-t)) 20px calc(24px + var(--safe-b)); max-width: 440px; margin: 0 auto; gap: 18px; }
-.logo { width: 64px; height: 64px; border-radius: 18px; }
+.logo { flex: none; border-radius: 18px; }
 .brand { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
 .brand p { color: var(--muted); }
 .divider { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }

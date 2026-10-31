@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Campo, Icon, Seg, SubPagina } from '../components/ui';
+import { VISTA_PREVIA } from '../data/config';
 import { useApp, useFamilia } from '../data/store';
 import { entregarArchivo, puedeCompartirArchivos } from '../lib/compartir';
 import { mesActual, nombreMes } from '../lib/format';
@@ -89,6 +90,7 @@ export function Exportar({ onBack }: { onBack: () => void }) {
         <div className="row"><span className="icono">📄</span><div><h3>PDF</h3><p className="muted small">Informe para imprimir o enviar: resumen, categorías, gastos y boletas pendientes.</p></div></div>
         {botones('pdf')}
       </div>
+      {VISTA_PREVIA && <div className="alert warn small">En esta vista previa el navegador no permite descargar archivos. En la app instalada, Excel y PDF se descargan o se comparten por WhatsApp.</div>}
       <p className="muted tiny">Los archivos se generan en tu teléfono. Recuerda que el archivo descargado no va cifrado: guárdalo con cuidado.</p>
 
       <Importar />
