@@ -65,6 +65,15 @@ Los cambios de un miembro aparecen **al instante** en el teléfono de los demás
 
 Cada vez que se suba un cambio a esa rama en GitHub, Netlify vuelve a publicar la app solo, y los teléfonos se actualizan solos. Si cambias las variables, publica de nuevo en **Deploys › Trigger deploy**.
 
+#### Alternativa: subir la carpeta a mano (sin conectar GitHub)
+
+1. Compila con `npm run build` (o usa el `.zip` ya compilado) y abre `dist/config.js`.
+2. Pega tu **Project URL** y tu llave **anon / publishable** entre las comillas de `SUPABASE_URL` y `SUPABASE_ANON_KEY`, y guarda.
+3. Entra a <https://app.netlify.com/drop> y arrastra la carpeta `dist` completa.
+4. Haz el punto 5 de arriba (Site URL en Supabase).
+
+`config.js` se lee al abrir la app, así que la misma carpeta compilada sirve para cualquier proyecto de Supabase sin volver a compilar. Para actualizar, arrastra de nuevo la carpeta en **Deploys**.
+
 ### Paso 3 · Instalar en los teléfonos
 
 - **Android (Chrome):** abre la dirección › menú ⋮ › **Instalar app** (o *Agregar a pantalla principal*).

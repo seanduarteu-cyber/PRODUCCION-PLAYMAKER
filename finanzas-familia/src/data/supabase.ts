@@ -2,8 +2,8 @@
 import { createClient, type RealtimeChannel, type User } from '@supabase/supabase-js';
 import type { AppUser, ColeccionNombre, FamilyDoc, FamilyRef, Invite, Member, RawDoc, Rol } from '../lib/types';
 import { DIAS_INVITACION, generarCodigo, type Backend, type RangoMeses, type Unsub, type WriteOp } from './backend';
+import { supabaseGoogle, supabaseKey, supabaseUrl } from './config';
 
-const env = import.meta.env;
 
 interface FilaRegistro {
   id: string;
@@ -41,7 +41,7 @@ function errorSupabase(e: { message?: string; code?: string; status?: number } |
 }
 
 export function crearBackendSupabase(): Backend {
-  const sb = createClient(env.VITE_SUPABASE_URL!, (env.VITE_SUPABASE_ANON_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY)!, {
+  const sb = createClient(supabaseUrl!, supabaseKey!, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
   });
 
@@ -167,7 +167,7 @@ export function crearBackendSupabase(): Backend {
 
   return {
     mode: 'supabase',
-    conGoogle: env.VITE_SUPABASE_GOOGLE === '1',
+    conGoogle: supabaseGoogle,
 
     onAuth(cb) {
       authListeners.add(cb);

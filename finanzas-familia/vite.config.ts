@@ -33,6 +33,9 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
+        // config.js se edita después de compilar: siempre se pide al servidor primero.
+        globIgnores: ['config.js'],
+        runtimeCaching: [{ urlPattern: /\/config\.js$/, handler: 'NetworkFirst' }],
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         navigateFallback: 'index.html',
       },
