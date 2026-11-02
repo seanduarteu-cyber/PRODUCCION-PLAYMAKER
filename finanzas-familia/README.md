@@ -40,9 +40,7 @@ Los cambios de un miembro aparecen **al instante** en el teléfono de los demás
 
 1. Entra a <https://supabase.com/dashboard> y crea un proyecto nuevo (**New project**), por ejemplo `finanzas-familia`, región **South America (São Paulo)**. Usa un proyecto nuevo y no uno que ya tengas: así sus tablas no se mezclan con otras.
 2. Ve a **SQL Editor › New query**, pega **todo** el contenido de [`supabase/esquema.sql`](supabase/esquema.sql) y presiona **Run**. Debe decir *Success*.
-3. Ve a **Authentication › Sign In / Providers › Email** y elige cómo se registran las personas:
-   - **Desactivar "Confirm email"** (recomendado para empezar): cada persona crea su cuenta y entra de inmediato.
-   - Dejarlo activado: cada persona debe abrir un correo de confirmación antes de entrar. El servicio de correo incluido en Supabase permite muy pocos correos por hora; si muchas familias se registran el mismo día, conviene configurar un SMTP propio (Authentication › Emails › SMTP Settings).
+3. Configura los correos (confirmación de cuenta y "olvidé mi contraseña"). Ver [Correos de confirmación](#correos-de-confirmación) más abajo.
 4. Ve a **Project Settings › API** (o el botón **Connect**) y copia:
    - **Project URL** (ej. `https://abcd1234.supabase.co`)
    - la llave pública **anon** / **publishable**
@@ -91,6 +89,38 @@ Queda un ícono como cualquier app y abre a pantalla completa.
 ### Paso 5 · Compartirla con otras familias
 
 Envíales la dirección de la app. Cada una crea su cuenta y **su propia familia**, con su propia clave. Sus datos quedan separados y cifrados: tú no puedes verlos.
+
+### Correos de confirmación
+
+Con **"Confirm email"** activado (Authentication › Sign In / Providers › Email), cada persona confirma su correo al crear la cuenta: la app le pide un **código de 6 dígitos** que llega por correo. El código funciona aunque el correo se abra en otro dispositivo o un filtro de correo de empresa abra el enlace antes. La app también tiene "Reenviar correo" y recupera contraseñas con código.
+
+Para que funcione con **cualquier persona** hay que hacer tres cosas en Supabase:
+
+**a) Conectar un servicio de correo (SMTP).** El correo que trae Supabase de fábrica **solo envía a los miembros de tu equipo de Supabase**: a otras personas no les llegaría nada.
+
+- *Opción rápida (gratis, sin dominio): Gmail.* En tu cuenta de Google activa la verificación en 2 pasos y crea una **contraseña de aplicación** en <https://myaccount.google.com/apppasswords>. Si no aparece esa opción, usa la opción comercial. En Supabase › **Authentication › Emails › SMTP Settings** activa *Enable custom SMTP* y completa:
+
+  | Campo | Valor |
+  |---|---|
+  | Sender email | tu correo de Gmail |
+  | Sender name | Finanzas Familia |
+  | Host | `smtp.gmail.com` |
+  | Port | `587` |
+  | Username | tu correo de Gmail |
+  | Password | la contraseña de aplicación (16 letras, sin espacios) |
+
+  Gmail permite unos cientos de correos al día, suficiente para varias familias.
+- *Opción comercial:* un dominio propio (ej. `tuapp.cl`) y un servicio de envío como Resend o Brevo (tienen plan gratis). Se verifica el dominio con unos registros DNS y se envía desde, por ejemplo, `no-responder@tuapp.cl`. Los datos de Host, Port, Username y Password los da ese servicio.
+
+**b) Subir el límite de correos.** En **Authentication › Rate Limits**, en *Rate limit for sending emails*, pon al menos `30` por hora.
+
+**c) Poner las plantillas en español con código.** En **Authentication › Emails › Templates** reemplaza:
+- **Confirm signup**: asunto `Tu código para Finanzas Familia` y contenido [`supabase/correos/confirmar-cuenta.html`](supabase/correos/confirmar-cuenta.html).
+- **Reset password**: asunto `Recupera tu contraseña de Finanzas Familia` y contenido [`supabase/correos/recuperar-contrasena.html`](supabase/correos/recuperar-contrasena.html).
+
+Y en **Authentication › URL Configuration** pon la dirección de tu app en **Site URL** y en **Redirect URLs** (paso 2.5), para que el botón del correo lleve a la app.
+
+Si prefieres no confirmar correos, desactiva "Confirm email": cada persona entra apenas crea su cuenta, y solo "Olvidé mi contraseña" envía correos (igual necesita el SMTP del punto a).
 
 ### Sobre los planes gratuitos
 

@@ -278,3 +278,4 @@ textarea.input { min-height: 70px; resize: vertical; }
 .foto-btn input { display: none; }
 .empty { text-align: center; color: var(--muted); padding: 28px 16px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
 .empty .icono { width: 52px; height: 52px; font-size: 24px; }
+.link:disabled { opacity: 0.5; cursor: default; }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Campo, Icon } from '../components/ui';
 import { fmtCodigo, mensajeError, normalizarCodigo } from '../data/backend';
 import { crearFamiliaCifrada } from '../data/familias';
@@ -6,6 +6,7 @@ import { VISTA_PREVIA } from '../data/config';
 import { useApp, type EstadoFamilia } from '../data/store';
 import { compartirTexto, copiarTexto } from '../lib/compartir';
 import { claveValida, fmtClave, guardarClave, normalizarClave } from '../lib/crypto';
+import { avisoDeUrl } from '../lib/avisoUrl';
 import { descartarInvitacion, type InvitacionPendiente } from '../lib/enlace';
 
 export function Logo({ size = 64 }: { size?: number }) {
@@ -33,36 +34,167 @@ export function DemoBanner() {
 }
 
 // ---------------- Ingreso / registro ----------------
+const LS_PENDIENTE = 'ff_confirmar_email';
+const ESPERA_REENVIO = 60; // segundos entre correos (igual que Supabase por defecto)
+
+/** Correo esperando confirmación y cuándo se envió el último correo (sobrevive al cerrar la app). */
+function leerPendiente(): { email: string; enviado: number } {
+  try {
+    const s = localStorage.getItem(LS_PENDIENTE);
+    if (!s) return { email: '', enviado: 0 };
+    if (!s.startsWith('{')) return { email: s, enviado: 0 };
+    return JSON.parse(s);
+  } catch {
+    return { email: '', enviado: 0 };
+  }
+}
+function guardarPendiente(email: string | null, enviado = Date.now()) {
+  try {
+    if (email) localStorage.setItem(LS_PENDIENTE, JSON.stringify({ email, enviado }));
+    else localStorage.removeItem(LS_PENDIENTE);
+  } catch {
+    /* nada */
+  }
+}
+const segundosRestantes = (enviado: number) => Math.max(0, Math.ceil(ESPERA_REENVIO - (Date.now() - enviado) / 1000));
+
+type ModoIngreso = 'entrar' | 'crear' | 'olvide' | 'confirmar' | 'recuperar';
+
 export function Ingreso() {
   const { backend } = useApp();
   const demo = backend.mode === 'local';
-  const [modo, setModo] = useState<'entrar' | 'crear' | 'olvide'>(demo ? 'crear' : 'entrar');
+  const conCodigo = Boolean(backend.verificarCodigo);
+  const [pendiente] = useState(() => (conCodigo ? leerPendiente() : { email: '', enviado: 0 }));
+  const [modo, setModo] = useState<ModoIngreso>(demo ? 'crear' : pendiente.email ? 'confirmar' : 'entrar');
   const [nombre, setNombre] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(pendiente.email);
   const [pass, setPass] = useState('');
+  const [codigo, setCodigo] = useState('');
   const [err, setErr] = useState('');
-  const [info, setInfo] = useState('');
+  const [info, setInfo] = useState(pendiente.email ? `Escribe el código que te enviamos a ${pendiente.email}.` : '');
+  const [aviso] = useState(() => avisoDeUrl());
   const [ocupado, setOcupado] = useState(false);
+  const [espera, setEspera] = useState(() => (pendiente.email ? segundosRestantes(pendiente.enviado) : 0));
+
+  useEffect(() => {
+    if (espera <= 0) return;
+    const t = setTimeout(() => setEspera((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [espera]);
+
+  const ir = (m: ModoIngreso) => {
+    setErr('');
+    setInfo('');
+    setCodigo('');
+    setModo(m);
+  };
+
+  function aConfirmar(mensaje: string, recienEnviado: boolean) {
+    const previo = leerPendiente();
+    const enviado = recienEnviado ? Date.now() : previo.email === email.trim() ? previo.enviado : 0;
+    guardarPendiente(email.trim(), enviado);
+    ir('confirmar');
+    setInfo(mensaje);
+    setEspera(segundosRestantes(enviado));
+  }
+
+  async function confirmarCodigo() {
+    const c = codigo.replace(/\D/g, '');
+    if (c.length < 6) throw new Error('Escribe el código de 6 dígitos que llegó a tu correo.');
+    try {
+      await backend.verificarCodigo!(email, c, 'signup');
+    } catch (e) {
+      // Si un filtro de correo ya abrió el enlace, la cuenta quedó confirmada: intentar entrar.
+      if (pass) {
+        try {
+          await backend.signIn(email, pass);
+          guardarPendiente(null);
+          return;
+        } catch {
+          /* se muestra el error del código */
+        }
+      }
+      throw e;
+    }
+    guardarPendiente(null);
+  }
 
   async function enviar(e: React.FormEvent) {
     e.preventDefault();
     setErr('');
+    setOcupado(true);
+    try {
+      if (modo === 'entrar') {
+        setInfo('');
+        await backend.signIn(email, pass);
+        guardarPendiente(null);
+      } else if (modo === 'crear') {
+        setInfo('');
+        if (!nombre.trim()) throw new Error('Escribe tu nombre.');
+        await backend.signUp(nombre, email, pass);
+        guardarPendiente(null);
+      } else if (modo === 'olvide') {
+        await backend.resetPassword(email);
+        if (conCodigo) {
+          ir('recuperar');
+          setInfo(`Te enviamos un correo a ${email.trim()} con un código para crear una nueva contraseña.`);
+          setEspera(ESPERA_REENVIO);
+        } else setInfo('Te enviamos un correo para crear una nueva contraseña.');
+      } else if (modo === 'confirmar') {
+        await confirmarCodigo();
+      } else {
+        const c = codigo.replace(/\D/g, '');
+        if (c.length < 6) throw new Error('Escribe el código de 6 dígitos que llegó a tu correo.');
+        await backend.verificarCodigo!(email, c, 'recovery');
+      }
+    } catch (e2) {
+      const code = (e2 as { code?: string }).code;
+      if (code === 'confirmar_correo') {
+        aConfirmar(`Te enviamos un correo a ${email.trim()} con un código de 6 dígitos. Escríbelo aquí para activar tu cuenta.`, true);
+      } else if (code === 'email_not_confirmed' && conCodigo) {
+        aConfirmar(`Tu correo aún no está confirmado. Escribe el código que te enviamos a ${email.trim()}, o pide uno nuevo.`, false);
+      } else setErr(mensajeError(e2));
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  async function reenviar() {
+    setErr('');
     setInfo('');
     setOcupado(true);
     try {
-      if (modo === 'entrar') await backend.signIn(email, pass);
-      else if (modo === 'crear') {
-        if (!nombre.trim()) throw new Error('Escribe tu nombre.');
-        await backend.signUp(nombre, email, pass);
-      } else {
-        await backend.resetPassword(email);
-        setInfo('Te enviamos un correo para crear una nueva contraseña.');
-      }
+      if (modo === 'recuperar') await backend.resetPassword(email);
+      else await backend.reenviarConfirmacion!(email);
+      setInfo(`Te enviamos un correo nuevo a ${email.trim()}. El código anterior ya no sirve. Revisa también Spam y Promociones.`);
+      if (modo === 'confirmar') guardarPendiente(email.trim());
+      setEspera(ESPERA_REENVIO);
     } catch (e2) {
-      if ((e2 as { code?: string }).code === 'confirmar_correo') {
-        setInfo((e2 as Error).message);
-        setModo('entrar');
-      } else setErr(mensajeError(e2));
+      const m = (e2 as Error).message?.match(/after (\d+) seconds?/);
+      if (m) setEspera(Math.max(1, Number(m[1])));
+      setErr(mensajeError(e2));
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  async function yaConfirme() {
+    setErr('');
+    if (!pass) {
+      guardarPendiente(null);
+      ir('entrar');
+      setInfo('Entra con tu correo y contraseña.');
+      return;
+    }
+    setOcupado(true);
+    try {
+      await backend.signIn(email, pass);
+      guardarPendiente(null);
+    } catch (e2) {
+      const code = (e2 as { code?: string }).code;
+      setErr(code === 'email_not_confirmed'
+        ? 'Tu correo todavía no aparece confirmado. Escribe el código del correo o pide uno nuevo.'
+        : mensajeError(e2));
     } finally {
       setOcupado(false);
     }
@@ -77,17 +209,25 @@ export function Ingreso() {
     }
   }
 
+  const conCodigoPaso = modo === 'confirmar' || modo === 'recuperar';
+
   return (
     <>
       <DemoBanner />
       <div className="center-page">
         <div className="brand">
           <Logo />
-          <h1>Finanzas Familia</h1>
-          <p>Gastos, boletas y cuotas de tu familia, en un solo lugar y en privado.</p>
+          <h1>{modo === 'confirmar' ? 'Confirma tu correo' : modo === 'recuperar' ? 'Recupera tu contraseña' : 'Finanzas Familia'}</h1>
+          <p>
+            {conCodigoPaso
+              ? 'Revisa tu correo (también Spam o Promociones). El código vence en 1 hora.'
+              : 'Gastos, boletas y cuotas de tu familia, en un solo lugar y en privado.'}
+          </p>
         </div>
 
-        {backend.conGoogle && modo !== 'olvide' && (
+        {aviso && !conCodigoPaso && <div className="alert warn small">{aviso}</div>}
+
+        {backend.conGoogle && (modo === 'entrar' || modo === 'crear') && (
           <>
             <button className="btn block" onClick={google} type="button">
               <svg viewBox="0 0 48 48" width="18" height="18"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z" /><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z" /><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z" /><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z" /></svg>
@@ -98,30 +238,62 @@ export function Ingreso() {
         )}
 
         <form className="stack" onSubmit={enviar}>
-          {modo === 'crear' && (
-            <Campo label="Tu nombre">
-              <input className="input" autoComplete="name" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Ej: Daniela" />
-            </Campo>
-          )}
-          <Campo label="Correo">
-            <input className="input" type="email" autoComplete="email" inputMode="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="tu@correo.cl" required />
-          </Campo>
-          {!demo && modo !== 'olvide' && (
-            <Campo label="Contraseña">
-              <input className="input" type="password" autoComplete={modo === 'crear' ? 'new-password' : 'current-password'} value={pass} onChange={(e) => setPass(e.target.value)} minLength={6} required />
-            </Campo>
+          {conCodigoPaso ? (
+            <>
+              {info && <div className="alert ok">{info}</div>}
+              <Campo label="Código del correo">
+                <input
+                  id="codigo-correo"
+                  className="input num monto-input"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={10}
+                  placeholder="000000"
+                  value={codigo}
+                  onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ''))}
+                  autoFocus
+                />
+              </Campo>
+            </>
+          ) : (
+            <>
+              {modo === 'crear' && (
+                <Campo label="Tu nombre">
+                  <input className="input" autoComplete="name" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Ej: Daniela" />
+                </Campo>
+              )}
+              <Campo label="Correo">
+                <input className="input" type="email" autoComplete="email" inputMode="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="tu@correo.cl" required />
+              </Campo>
+              {!demo && modo !== 'olvide' && (
+                <Campo label="Contraseña">
+                  <input className="input" type="password" autoComplete={modo === 'crear' ? 'new-password' : 'current-password'} value={pass} onChange={(e) => setPass(e.target.value)} minLength={6} required />
+                </Campo>
+              )}
+              {info && <div className="alert ok">{info}</div>}
+            </>
           )}
           {err && <p className="error-text">{err}</p>}
-          {info && <div className="alert ok">{info}</div>}
           <button className="btn primary block" disabled={ocupado}>
-            {modo === 'entrar' ? 'Entrar' : modo === 'crear' ? 'Crear mi cuenta' : 'Enviar correo'}
+            {ocupado ? 'Un momento…'
+              : modo === 'entrar' ? 'Entrar'
+                : modo === 'crear' ? 'Crear mi cuenta'
+                  : modo === 'olvide' ? 'Enviar código'
+                    : modo === 'confirmar' ? 'Confirmar correo' : 'Continuar'}
           </button>
         </form>
 
         <div className="stack tight" style={{ alignItems: 'center' }}>
-          {modo !== 'entrar' && <button className="link" onClick={() => setModo('entrar')}>Ya tengo cuenta: entrar</button>}
-          {modo !== 'crear' && <button className="link" onClick={() => setModo('crear')}>Soy nuevo: crear cuenta</button>}
-          {!demo && modo === 'entrar' && <button className="link muted" onClick={() => setModo('olvide')}>Olvidé mi contraseña</button>}
+          {conCodigoPaso && (
+            <button className="link" disabled={ocupado || espera > 0} onClick={reenviar}>
+              {espera > 0 ? `Reenviar correo en ${espera} s` : 'Reenviar correo'}
+            </button>
+          )}
+          {modo === 'confirmar' && <button className="link" onClick={yaConfirme}>Ya toqué el enlace del correo: entrar</button>}
+          {modo === 'confirmar' && <button className="link muted" onClick={() => { guardarPendiente(null); ir('crear'); }}>Usar otro correo</button>}
+          {modo !== 'entrar' && <button className="link" onClick={() => ir('entrar')}>Ya tengo cuenta: entrar</button>}
+          {(modo === 'entrar' || modo === 'olvide') && <button className="link" onClick={() => ir('crear')}>Soy nuevo: crear cuenta</button>}
+          {!demo && modo === 'entrar' && <button className="link muted" onClick={() => ir('olvide')}>Olvidé mi contraseña</button>}
         </div>
       </div>
     </>

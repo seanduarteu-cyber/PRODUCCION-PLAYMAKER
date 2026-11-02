@@ -28,6 +28,10 @@ export interface Backend {
   /** Aviso cuando el usuario vuelve desde el correo de "olvidé mi contraseña". */
   onRecuperacion?(cb: () => void): Unsub;
   cambiarContrasena?(password: string): Promise<void>;
+  /** Confirma el correo (signup) o una recuperación de contraseña con el código del correo. */
+  verificarCodigo?(email: string, codigo: string, tipo: 'signup' | 'recovery'): Promise<void>;
+  /** Vuelve a enviar el correo de confirmación de cuenta. */
+  reenviarConfirmacion?(email: string): Promise<void>;
   onAuth(cb: (u: AppUser | null) => void): Unsub;
   signIn(email: string, password: string): Promise<void>;
   signUp(nombre: string, email: string, password: string): Promise<void>;
@@ -83,11 +87,18 @@ export function mensajeError(e: unknown): string {
     'over_email_send_rate_limit': 'Se enviaron demasiados correos. Espera unos minutos.',
     'over_request_rate_limit': 'Demasiados intentos. Espera unos minutos.',
     'signup_disabled': 'El registro de cuentas nuevas está desactivado.',
+    'otp_expired': 'El código no es válido o ya venció. Pide uno nuevo con "Reenviar correo".',
+    'email_address_not_authorized': 'No se pudo enviar el correo a esta dirección: el administrador de la app debe configurar el envío de correos (SMTP) en Supabase.',
+    'email_address_invalid': 'Ese correo no es válido. Revisa que esté bien escrito.',
     '42501': 'No tienes permiso para hacer esto en esta familia.',
     'PGRST301': 'Tu sesión expiró. Vuelve a entrar.',
   };
-  if (map[code]) return map[code];
   const msg = (e as Error)?.message || String(e);
+  if (code === 'over_email_send_rate_limit') {
+    const m = msg.match(/after (\d+) seconds?/);
+    if (m) return `Espera ${Math.max(1, Number(m[1]))} segundos antes de pedir otro correo.`;
+  }
+  if (map[code]) return map[code];
   if (/failed to fetch|load failed|networkerror|network request failed/i.test(msg)) return 'Sin conexión a internet. Revisa tu conexión e intenta de nuevo.';
   return msg.replace(/^Firebase: /, '').replace(/\s*\(.*\)\.?$/, '');
 }

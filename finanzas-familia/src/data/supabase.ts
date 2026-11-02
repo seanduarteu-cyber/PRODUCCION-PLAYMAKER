@@ -189,7 +189,7 @@ export function crearBackendSupabase(): Backend {
       if (error) throw errorSupabase(error);
       if (!data.session) {
         // El proyecto pide confirmar el correo antes de entrar.
-        throw Object.assign(new Error('Te enviamos un correo para confirmar tu cuenta. Ábrelo y luego entra con tu correo y contraseña.'), { code: 'confirmar_correo' });
+        throw Object.assign(new Error('Te enviamos un correo con un código para confirmar tu cuenta.'), { code: 'confirmar_correo' });
       }
     },
     async signInGoogle() {
@@ -203,6 +203,21 @@ export function crearBackendSupabase(): Backend {
     onRecuperacion(cb) {
       recuperacion.add(cb);
       return () => recuperacion.delete(cb);
+    },
+    async verificarCodigo(email, codigo, tipo) {
+      const token = codigo.replace(/\D/g, '');
+      let { error } = await sb.auth.verifyOtp({ email: email.trim(), token, type: tipo });
+      if (error && tipo === 'signup') {
+        // Algunos proyectos emiten el código de confirmación como tipo "email".
+        const r = await sb.auth.verifyOtp({ email: email.trim(), token, type: 'email' });
+        if (!r.error) error = null;
+      }
+      if (error) throw errorSupabase(error);
+      if (tipo === 'recovery') recuperacion.forEach((fn) => fn());
+    },
+    async reenviarConfirmacion(email) {
+      const { error } = await sb.auth.resend({ type: 'signup', email: email.trim(), options: { emailRedirectTo: urlApp() } });
+      if (error) throw errorSupabase(error);
     },
     async cambiarContrasena(password) {
       const { error } = await sb.auth.updateUser({ password });
