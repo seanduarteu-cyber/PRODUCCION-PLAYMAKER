@@ -28,7 +28,7 @@ export interface Backend {
   /** Aviso cuando el usuario vuelve desde el correo de "olvidé mi contraseña". */
   onRecuperacion?(cb: () => void): Unsub;
   cambiarContrasena?(password: string): Promise<void>;
-  /** Entrar sin contraseña: envía un código de 6 dígitos al correo (crea la cuenta si no existe). */
+  /** Entrar sin contraseña: envía un código al correo (crea la cuenta si no existe). */
   enviarCodigo?(email: string): Promise<void>;
   /** Comprueba el código del correo: 'email' para entrar, 'signup'/'recovery' para los flujos con contraseña. */
   verificarCodigo?(email: string, codigo: string, tipo: 'email' | 'signup' | 'recovery'): Promise<void>;
@@ -43,7 +43,7 @@ export interface Backend {
   resetPassword(email: string): Promise<void>;
   signOut(): Promise<void>;
 
-  watchMyFamilies(user: AppUser, cb: (f: FamilyRef[]) => void): Unsub;
+  watchMyFamilies(user: AppUser, cb: (f: FamilyRef[]) => void, onError?: (e: Error) => void): Unsub;
   /** `familia` ya viene con los settings cifrados. */
   createFamily(user: AppUser, familia: NuevaFamilia, id: string): Promise<void>;
   joinFamily(user: AppUser, codigo: string): Promise<FamilyRef>;
@@ -103,6 +103,10 @@ export function mensajeError(e: unknown): string {
     if (m) return `Espera ${Math.max(1, Number(m[1]))} segundos antes de pedir otro correo.`;
   }
   if (map[code]) return map[code];
+  if (code === 'PGRST205' || code === 'PGRST202' || code === '42P01' || code === '42883' || /could not find the (table|function)|does not exist/i.test(msg)) {
+    return 'La base de datos todavía no está preparada. Quien administra la app debe ejecutar el archivo SQL (supabase_esquema.sql) en Supabase › SQL Editor.';
+  }
+  if (/invalid api key|no api key/i.test(msg)) return 'La llave de Supabase de la app no es válida. Revisa SUPABASE_ANON_KEY en config.js.';
   if (/failed to fetch|load failed|networkerror|network request failed/i.test(msg)) return 'Sin conexión a internet. Revisa tu conexión e intenta de nuevo.';
   return msg.replace(/^Firebase: /, '').replace(/\s*\(.*\)\.?$/, '');
 }

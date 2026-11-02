@@ -100,7 +100,7 @@ export function Ingreso() {
 
   async function confirmarCodigo() {
     const c = codigo.replace(/\D/g, '');
-    if (c.length < 6) throw new Error('Escribe el código de 6 dígitos que llegó a tu correo.');
+    if (c.length < 6) throw new Error('Escribe el código que llegó a tu correo.');
     try {
       await backend.verificarCodigo!(email, c, 'signup');
     } catch (e) {
@@ -144,13 +144,13 @@ export function Ingreso() {
         await confirmarCodigo();
       } else {
         const c = codigo.replace(/\D/g, '');
-        if (c.length < 6) throw new Error('Escribe el código de 6 dígitos que llegó a tu correo.');
+        if (c.length < 6) throw new Error('Escribe el código que llegó a tu correo.');
         await backend.verificarCodigo!(email, c, 'recovery');
       }
     } catch (e2) {
       const code = (e2 as { code?: string }).code;
       if (code === 'confirmar_correo') {
-        aConfirmar(`Te enviamos un correo a ${email.trim()} con un código de 6 dígitos. Escríbelo aquí para activar tu cuenta.`, true);
+        aConfirmar(`Te enviamos un correo a ${email.trim()} con un código. Escríbelo aquí para activar tu cuenta.`, true);
       } else if (code === 'email_not_confirmed' && conCodigo) {
         aConfirmar(`Tu correo aún no está confirmado. Escribe el código que te enviamos a ${email.trim()}, o pide uno nuevo.`, false);
       } else setErr(mensajeError(e2));
@@ -248,7 +248,7 @@ export function Ingreso() {
                   inputMode="numeric"
                   autoComplete="one-time-code"
                   maxLength={10}
-                  placeholder="000000"
+                  placeholder="Código"
                   value={codigo}
                   onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ''))}
                   autoFocus
@@ -301,7 +301,7 @@ export function Ingreso() {
 }
 
 // ---------------- Entrar con código (sin contraseña) ----------------
-// Para cualquier persona: escribe su correo, le llega un código de 6 dígitos,
+// Para cualquier persona: escribe su correo, le llega un código numérico,
 // lo escribe y entra. El código comprueba que el correo es suyo.
 export function IngresoCodigo() {
   const { backend } = useApp();
@@ -336,7 +336,7 @@ export function IngresoCodigo() {
       setCodigo('');
       setInfo(reenvio
         ? `Te enviamos un código nuevo a ${correo}. El anterior ya no sirve.`
-        : `Te enviamos un código de 6 dígitos a ${correo}. Revisa también Spam o Promociones.`);
+        : `Te enviamos un código a ${correo}. Revisa también Spam o Promociones.`);
       setEspera(ESPERA_REENVIO);
     } catch (e2) {
       const m = (e2 as Error).message?.match(/after (\d+) seconds?/);
@@ -357,7 +357,7 @@ export function IngresoCodigo() {
     if (paso === 'correo') return enviarCodigo(false);
     setErr('');
     const c = codigo.replace(/\D/g, '');
-    if (c.length < 6) return setErr('Escribe los 6 dígitos que llegaron a tu correo.');
+    if (c.length < 6) return setErr('Escribe todos los números del código que llegó a tu correo.');
     setOcupado(true);
     try {
       await backend.verificarCodigo!(email, c, 'email');
@@ -387,7 +387,7 @@ export function IngresoCodigo() {
           <h1>{paso === 'codigo' ? 'Revisa tu correo' : 'Finanzas Familia'}</h1>
           <p>
             {paso === 'codigo'
-              ? 'Escribe el código de 6 dígitos que te enviamos. Vence en 1 hora.'
+              ? 'Escribe el código que te enviamos. Vence en 1 hora.'
               : 'Gastos, boletas y cuotas de tu familia, en un solo lugar y en privado.'}
           </p>
         </div>
@@ -413,7 +413,7 @@ export function IngresoCodigo() {
             <>
               {info && <div className="alert ok">{info}</div>}
               <Campo label="Código del correo">
-                <input id="codigo-correo" className="input num monto-input" inputMode="numeric" autoComplete="one-time-code" maxLength={10} placeholder="000000"
+                <input id="codigo-correo" className="input num monto-input" inputMode="numeric" autoComplete="one-time-code" maxLength={10} placeholder="Código"
                   value={codigo} onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ''))} autoFocus />
               </Campo>
             </>
@@ -613,6 +613,7 @@ export function EstadoFamiliaView({ estado }: { estado: EstadoFamilia }) {
   if (estado.paso === 'cargando') {
     return <div className="center-page"><div className="spinner" /></div>;
   }
+  if (estado.paso === 'error') return <ErrorCarga mensaje={estado.mensaje} onReintentar={estado.reintentar} />;
   const otras = (families || []).filter((f) => f.id !== familyId);
 
   if (estado.paso === 'sin-acceso') {
@@ -699,6 +700,22 @@ export function NuevaContrasena({ onListo }: { onListo: () => void }) {
         {err && <p className="error-text">{err}</p>}
         <button className="btn primary block" disabled={ocupado}>Guardar contraseña</button>
       </form>
+    </div>
+  );
+}
+
+// ---------------- Error al cargar (en vez de quedarse cargando) ----------------
+export function ErrorCarga({ mensaje, onReintentar }: { mensaje: string; onReintentar: () => void }) {
+  const { backend } = useApp();
+  return (
+    <div className="center-page">
+      <div className="brand">
+        <Logo size={56} />
+        <h1>No se pudo cargar</h1>
+      </div>
+      <div className="alert danger">{mensaje}</div>
+      <button className="btn primary block" onClick={onReintentar}>Reintentar</button>
+      <button className="link muted" onClick={() => backend.signOut()}>Cerrar sesión</button>
     </div>
   );
 }

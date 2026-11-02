@@ -4,7 +4,7 @@ import type { Backend } from './data/backend';
 import { VISTA_PREVIA } from './data/config';
 import { AppProvider, cargarBackend, FamiliaProvider, useApp } from './data/store';
 import { descartarInvitacion, invitacionPendiente } from './lib/enlace';
-import { ClaveCreada, EstadoFamiliaView, Ingreso, IngresoCodigo, NuevaContrasena, PedirNombre, SinFamilia } from './screens/Inicio';
+import { ClaveCreada, ErrorCarga, EstadoFamiliaView, Ingreso, IngresoCodigo, NuevaContrasena, PedirNombre, SinFamilia } from './screens/Inicio';
 import { Shell } from './screens/Shell';
 
 export default function App() {
@@ -32,7 +32,7 @@ export default function App() {
 }
 
 function Raiz() {
-  const { backend, user, families, familyId, elegirFamilia } = useApp();
+  const { backend, user, families, errorFamilias, reintentar, familyId, elegirFamilia } = useApp();
   const [recuperando, setRecuperando] = useState(false);
   useEffect(() => backend.onRecuperacion?.(() => setRecuperando(true)), [backend]);
   const [claveNueva, setClaveNueva] = useState<{ id: string; clave: string; nombre: string } | null>(null);
@@ -44,6 +44,7 @@ function Raiz() {
   if (recuperando && user) return <NuevaContrasena onListo={() => setRecuperando(false)} />;
   if (!user) return backend.enviarCodigo ? <IngresoCodigo /> : <Ingreso />;
   if (user.sinNombre && backend.guardarNombre) return <PedirNombre />;
+  if (errorFamilias) return <ErrorCarga mensaje={errorFamilias} onReintentar={reintentar} />;
   if (families === undefined) return <div className="center-page"><Cargando /></div>;
 
   if (claveNueva) {

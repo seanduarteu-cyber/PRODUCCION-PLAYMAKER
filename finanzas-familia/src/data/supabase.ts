@@ -246,12 +246,16 @@ export function crearBackendSupabase(): Backend {
       await sb.auth.signOut();
     },
 
-    watchMyFamilies(user, cb) {
+    watchMyFamilies(user, cb, onError) {
       let vivo = true;
       const cargar = async () => {
         const { data, error } = await sb.from('miembros').select('familia_id, rol, familias(nombre)').eq('uid', user.uid);
         if (!vivo) return;
-        if (error) return console.warn(error.message);
+        if (error) {
+          console.warn(error.message);
+          onError?.(errorSupabase(error));
+          return;
+        }
         const filas = (data || []) as unknown as { familia_id: string; rol: Rol; familias: { nombre: string } | null }[];
         cb(filas.filter((f) => f.familias).map((f): FamilyRef => ({ id: f.familia_id, nombre: f.familias!.nombre, rol: f.rol }))
           .sort((a, b) => a.nombre.localeCompare(b.nombre)));

@@ -16,6 +16,9 @@ interface AppCtx {
   backend: Backend;
   user: AppUser | null | undefined;
   families: FamilyRef[] | undefined;
+  /** Error al cargar la lista de familias (p. ej. base de datos sin preparar). */
+  errorFamilias: string | null;
+  reintentar: () => void;
   familyId: string | null;
   elegirFamilia: (id: string | null) => void;
   avisos: Aviso[];
@@ -46,6 +49,12 @@ export function cargarBackend(): Promise<Backend> {
 export function AppProvider({ backend, children }: { backend: Backend; children: ReactNode }) {
   const [user, setUser] = useState<AppUser | null | undefined>(undefined);
   const [families, setFamilies] = useState<FamilyRef[] | undefined>(undefined);
+  const [errorFamilias, setErrorFamilias] = useState<string | null>(null);
+  const [intento, setIntento] = useState(0);
+  const reintentar = useCallback(() => {
+    setErrorFamilias(null);
+    setIntento((i) => i + 1);
+  }, []);
   const [familyId, setFamilyId] = useState<string | null>(() => {
     try {
       return localStorage.getItem(LS_FAMILIA);
@@ -76,9 +85,13 @@ export function AppProvider({ backend, children }: { backend: Backend; children:
       return;
     }
     setFamilies(undefined);
-    return backend.watchMyFamilies(userRef.current, setFamilies);
+    setErrorFamilias(null);
+    return backend.watchMyFamilies(userRef.current, (f) => {
+      setErrorFamilias(null);
+      setFamilies(f);
+    }, (e) => setErrorFamilias(mensajeError(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [backend, uid]);
+  }, [backend, uid, intento]);
 
   const elegirFamilia = useCallback((id: string | null) => {
     setFamilyId(id);
@@ -97,8 +110,8 @@ export function AppProvider({ backend, children }: { backend: Backend; children:
     elegirFamilia(families[0]?.id ?? null);
   }, [families, familyId, elegirFamilia]);
 
-  const value = useMemo(() => ({ backend, user, families, familyId, elegirFamilia, avisos, avisar, error }),
-    [backend, user, families, familyId, elegirFamilia, avisos, avisar, error]);
+  const value = useMemo(() => ({ backend, user, families, errorFamilias, reintentar, familyId, elegirFamilia, avisos, avisar, error }),
+    [backend, user, families, errorFamilias, reintentar, familyId, elegirFamilia, avisos, avisar, error]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
@@ -162,6 +175,7 @@ function useColeccion<T>(familyId: string, llave: CryptoKey | null, coll: Colecc
 
 export type EstadoFamilia =
   | { paso: 'cargando' }
+  | { paso: 'error'; mensaje: string; reintentar: () => void }
   | { paso: 'sin-acceso' }
   | { paso: 'bloqueada'; doc: FamilyDoc; desbloquear: (clave: string) => Promise<boolean> }
   | { paso: 'lista' };
@@ -174,6 +188,8 @@ export function FamiliaProvider({ familyId, children, renderEstado }: {
   const { backend, user, error } = useApp();
   const [doc, setDoc] = useState<FamilyDoc | null | undefined>(undefined);
   const [sinAcceso, setSinAcceso] = useState(false);
+  const [errorCarga, setErrorCarga] = useState<string | null>(null);
+  const [intentoFam, setIntentoFam] = useState(0);
   const [members, setMembers] = useState<Member[]>([]);
   const [llave, setLlave] = useState<{ key: CryptoKey; clave: string; sal: string } | null>(null);
   const [verificando, setVerificando] = useState(true);
@@ -183,20 +199,24 @@ export function FamiliaProvider({ familyId, children, renderEstado }: {
   useEffect(() => {
     setDoc(undefined);
     setSinAcceso(false);
+    setErrorCarga(null);
     setLlave(null);
     setSettings(null);
     setVerificando(true);
-    const off = backend.watchFamily(familyId, setDoc, (e) => {
+    const off = backend.watchFamily(familyId, (d) => {
+      setErrorCarga(null);
+      setDoc(d);
+    }, (e) => {
       const code = (e as { code?: string }).code;
       if (code === 'permission-denied') setSinAcceso(true);
-      else error(e);
+      else setErrorCarga(mensajeError(e));
     });
     const offM = backend.watchMembers(familyId, setMembers);
     return () => {
       off();
       offM();
     };
-  }, [backend, familyId, error]);
+  }, [backend, familyId, error, intentoFam]);
 
   const probarClave = useCallback(async (clave: string, d: FamilyDoc) => {
     const key = await derivarLlave(clave, d.cifrado.sal);
@@ -287,6 +307,7 @@ export function FamiliaProvider({ familyId, children, renderEstado }: {
   }, [doc, llave, settings, acciones, members, miRol, mes, gastos, ingresos, boletas, deudas, familyId]);
 
   if (sinAcceso) return <>{renderEstado({ paso: 'sin-acceso' })}</>;
+  if (errorCarga && !doc) return <>{renderEstado({ paso: 'error', mensaje: errorCarga, reintentar: () => setIntentoFam((i) => i + 1) })}</>;
   if (doc === undefined || (doc && verificando && !llave)) return <>{renderEstado({ paso: 'cargando' })}</>;
   if (doc === null) return <>{renderEstado({ paso: 'sin-acceso' })}</>;
   if (!llave) {
