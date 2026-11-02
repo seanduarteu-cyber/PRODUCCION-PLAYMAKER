@@ -4,7 +4,7 @@ import type { Backend } from './data/backend';
 import { VISTA_PREVIA } from './data/config';
 import { AppProvider, cargarBackend, FamiliaProvider, useApp } from './data/store';
 import { descartarInvitacion, invitacionPendiente } from './lib/enlace';
-import { ClaveCreada, EstadoFamiliaView, Ingreso, NuevaContrasena, SinFamilia } from './screens/Inicio';
+import { ClaveCreada, EstadoFamiliaView, Ingreso, IngresoCodigo, NuevaContrasena, PedirNombre, SinFamilia } from './screens/Inicio';
 import { Shell } from './screens/Shell';
 
 export default function App() {
@@ -42,7 +42,8 @@ function Raiz() {
 
   if (user === undefined) return <div className="center-page"><Cargando /></div>;
   if (recuperando && user) return <NuevaContrasena onListo={() => setRecuperando(false)} />;
-  if (!user) return <Ingreso />;
+  if (!user) return backend.enviarCodigo ? <IngresoCodigo /> : <Ingreso />;
+  if (user.sinNombre && backend.guardarNombre) return <PedirNombre />;
   if (families === undefined) return <div className="center-page"><Cargando /></div>;
 
   if (claveNueva) {

@@ -187,4 +187,6 @@ export interface AppUser {
   uid: string;
   nombre: string;
   email: string | null;
+  /** true si la persona aún no escribió su nombre (entró solo con el código del correo). */
+  sinNombre?: boolean;
 }

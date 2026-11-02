@@ -28,8 +28,12 @@ export interface Backend {
   /** Aviso cuando el usuario vuelve desde el correo de "olvidé mi contraseña". */
   onRecuperacion?(cb: () => void): Unsub;
   cambiarContrasena?(password: string): Promise<void>;
-  /** Confirma el correo (signup) o una recuperación de contraseña con el código del correo. */
-  verificarCodigo?(email: string, codigo: string, tipo: 'signup' | 'recovery'): Promise<void>;
+  /** Entrar sin contraseña: envía un código de 6 dígitos al correo (crea la cuenta si no existe). */
+  enviarCodigo?(email: string): Promise<void>;
+  /** Comprueba el código del correo: 'email' para entrar, 'signup'/'recovery' para los flujos con contraseña. */
+  verificarCodigo?(email: string, codigo: string, tipo: 'email' | 'signup' | 'recovery'): Promise<void>;
+  /** Guarda el nombre de la persona (la primera vez que entra con código). */
+  guardarNombre?(nombre: string): Promise<void>;
   /** Vuelve a enviar el correo de confirmación de cuenta. */
   reenviarConfirmacion?(email: string): Promise<void>;
   onAuth(cb: (u: AppUser | null) => void): Unsub;

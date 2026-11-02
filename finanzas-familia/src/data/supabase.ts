@@ -58,8 +58,11 @@ export function crearBackendSupabase(): Backend {
   window.addEventListener('online', alVolver);
   document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && alVolver());
 
-  const toAppUser = (u: User | null | undefined): AppUser | null =>
-    u ? { uid: u.id, nombre: (u.user_metadata?.nombre as string) || (u.user_metadata?.full_name as string) || (u.email ? u.email.split('@')[0] : 'Usuario'), email: u.email ?? null } : null;
+  const toAppUser = (u: User | null | undefined): AppUser | null => {
+    if (!u) return null;
+    const nombre = ((u.user_metadata?.nombre as string) || (u.user_metadata?.full_name as string) || '').trim();
+    return { uid: u.id, nombre: nombre || (u.email ? u.email.split('@')[0] : 'Usuario'), email: u.email ?? null, sinNombre: !nombre };
+  };
 
   // ---- Registros: lectura paginada + tiempo real compartido por familia ----
   const observadores = new Set<Observador>();
@@ -204,16 +207,30 @@ export function crearBackendSupabase(): Backend {
       recuperacion.add(cb);
       return () => recuperacion.delete(cb);
     },
+    async enviarCodigo(email) {
+      const { error } = await sb.auth.signInWithOtp({
+        email: email.trim(), options: { shouldCreateUser: true, emailRedirectTo: urlApp() },
+      });
+      if (error) throw errorSupabase(error);
+    },
     async verificarCodigo(email, codigo, tipo) {
       const token = codigo.replace(/\D/g, '');
       let { error } = await sb.auth.verifyOtp({ email: email.trim(), token, type: tipo });
-      if (error && tipo === 'signup') {
-        // Algunos proyectos emiten el código de confirmación como tipo "email".
-        const r = await sb.auth.verifyOtp({ email: email.trim(), token, type: 'email' });
+      if (error && tipo !== 'recovery') {
+        // El código de una cuenta nueva llega como confirmación ("signup"); el de una existente, como "email".
+        const r = await sb.auth.verifyOtp({ email: email.trim(), token, type: tipo === 'email' ? 'signup' : 'email' });
         if (!r.error) error = null;
       }
       if (error) throw errorSupabase(error);
       if (tipo === 'recovery') recuperacion.forEach((fn) => fn());
+    },
+    async guardarNombre(nombre) {
+      const { error } = await sb.auth.updateUser({ data: { nombre: nombre.trim() } });
+      if (error) throw errorSupabase(error);
+      const { data } = await sb.auth.getUser();
+      const u = toAppUser(data.user);
+      ultimo = JSON.stringify(u);
+      authListeners.forEach((cb) => cb(u));
     },
     async reenviarConfirmacion(email) {
       const { error } = await sb.auth.resend({ type: 'signup', email: email.trim(), options: { emailRedirectTo: urlApp() } });

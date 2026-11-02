@@ -300,6 +300,182 @@ export function Ingreso() {
   );
 }
 
+// ---------------- Entrar con código (sin contraseña) ----------------
+// Para cualquier persona: escribe su correo, le llega un código de 6 dígitos,
+// lo escribe y entra. El código comprueba que el correo es suyo.
+export function IngresoCodigo() {
+  const { backend } = useApp();
+  const [pendiente] = useState(() => leerPendiente());
+  const [paso, setPaso] = useState<'correo' | 'codigo'>(pendiente.email ? 'codigo' : 'correo');
+  const [email, setEmail] = useState(pendiente.email);
+  const [codigo, setCodigo] = useState('');
+  const [err, setErr] = useState('');
+  const [info, setInfo] = useState(pendiente.email ? `Escribe el código que enviamos a ${pendiente.email}.` : '');
+  const [aviso] = useState(() => avisoDeUrl());
+  const [ocupado, setOcupado] = useState(false);
+  const [espera, setEspera] = useState(() => (pendiente.email ? segundosRestantes(pendiente.enviado) : 0));
+
+  useEffect(() => {
+    if (espera <= 0) return;
+    const t = setTimeout(() => setEspera((x) => x - 1), 1000);
+    return () => clearTimeout(t);
+  }, [espera]);
+
+  async function enviarCodigo(reenvio: boolean) {
+    setErr('');
+    const correo = email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+      setErr('Escribe un correo válido, por ejemplo nombre@gmail.com');
+      return;
+    }
+    setOcupado(true);
+    try {
+      await backend.enviarCodigo!(correo);
+      guardarPendiente(correo);
+      setPaso('codigo');
+      setCodigo('');
+      setInfo(reenvio
+        ? `Te enviamos un código nuevo a ${correo}. El anterior ya no sirve.`
+        : `Te enviamos un código de 6 dígitos a ${correo}. Revisa también Spam o Promociones.`);
+      setEspera(ESPERA_REENVIO);
+    } catch (e2) {
+      const m = (e2 as Error).message?.match(/after (\d+) seconds?/);
+      if (m) {
+        // Ya se envió uno hace poco: pasar a escribir ese código.
+        guardarPendiente(correo, Date.now() - (ESPERA_REENVIO - Number(m[1])) * 1000);
+        setPaso('codigo');
+        setInfo(`Ya te enviamos un código a ${correo}. Escríbelo aquí.`);
+        setEspera(Math.max(1, Number(m[1])));
+      } else setErr(mensajeError(e2));
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  async function entrar(e: React.FormEvent) {
+    e.preventDefault();
+    if (paso === 'correo') return enviarCodigo(false);
+    setErr('');
+    const c = codigo.replace(/\D/g, '');
+    if (c.length < 6) return setErr('Escribe los 6 dígitos que llegaron a tu correo.');
+    setOcupado(true);
+    try {
+      await backend.verificarCodigo!(email, c, 'email');
+      guardarPendiente(null);
+    } catch (e2) {
+      setErr(mensajeError(e2));
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  async function google() {
+    setErr('');
+    try {
+      await backend.signInGoogle();
+    } catch (e2) {
+      setErr(mensajeError(e2));
+    }
+  }
+
+  return (
+    <>
+      <DemoBanner />
+      <div className="center-page">
+        <div className="brand">
+          <Logo />
+          <h1>{paso === 'codigo' ? 'Revisa tu correo' : 'Finanzas Familia'}</h1>
+          <p>
+            {paso === 'codigo'
+              ? 'Escribe el código de 6 dígitos que te enviamos. Vence en 1 hora.'
+              : 'Gastos, boletas y cuotas de tu familia, en un solo lugar y en privado.'}
+          </p>
+        </div>
+
+        {aviso && paso === 'correo' && <div className="alert warn small">{aviso}</div>}
+
+        {backend.conGoogle && paso === 'correo' && (
+          <>
+            <button className="btn block" onClick={google} type="button">
+              <svg viewBox="0 0 48 48" width="18" height="18"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z" /><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z" /><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z" /><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z" /></svg>
+              Continuar con Google
+            </button>
+            <div className="divider">o con tu correo</div>
+          </>
+        )}
+
+        <form className="stack" onSubmit={entrar}>
+          {paso === 'correo' ? (
+            <Campo label="Tu correo" ayuda="Te enviaremos un código para comprobar que el correo es tuyo. No necesitas contraseña.">
+              <input id="correo" className="input" type="email" autoComplete="email" inputMode="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="nombre@gmail.com" required autoFocus />
+            </Campo>
+          ) : (
+            <>
+              {info && <div className="alert ok">{info}</div>}
+              <Campo label="Código del correo">
+                <input id="codigo-correo" className="input num monto-input" inputMode="numeric" autoComplete="one-time-code" maxLength={10} placeholder="000000"
+                  value={codigo} onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ''))} autoFocus />
+              </Campo>
+            </>
+          )}
+          {err && <p className="error-text">{err}</p>}
+          <button className="btn primary block" disabled={ocupado}>
+            {ocupado ? 'Un momento…' : paso === 'correo' ? 'Enviarme un código' : 'Entrar'}
+          </button>
+        </form>
+
+        {paso === 'codigo' && (
+          <div className="stack tight" style={{ alignItems: 'center' }}>
+            <button className="link" disabled={ocupado || espera > 0} onClick={() => enviarCodigo(true)}>
+              {espera > 0 ? `Reenviar código en ${espera} s` : 'Reenviar código'}
+            </button>
+            <button className="link muted" onClick={() => { guardarPendiente(null); setPaso('correo'); setInfo(''); setErr(''); setCodigo(''); }}>
+              Cambiar correo
+            </button>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+// ---------------- Nombre (la primera vez) ----------------
+export function PedirNombre() {
+  const { backend, user } = useApp();
+  const [nombre, setNombre] = useState('');
+  const [err, setErr] = useState('');
+  const [ocupado, setOcupado] = useState(false);
+  return (
+    <div className="center-page">
+      <div className="brand">
+        <Logo size={56} />
+        <h1>¿Cómo te llamas?</h1>
+        <p>Así tu familia verá quién registró cada gasto.</p>
+      </div>
+      <form className="stack" onSubmit={async (e) => {
+        e.preventDefault();
+        if (!nombre.trim()) return setErr('Escribe tu nombre.');
+        setOcupado(true);
+        setErr('');
+        try {
+          await backend.guardarNombre!(nombre);
+        } catch (e2) {
+          setErr(mensajeError(e2));
+        } finally {
+          setOcupado(false);
+        }
+      }}>
+        <Campo label="Tu nombre">
+          <input id="nombre" className="input" autoComplete="name" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Ej: Daniela" maxLength={60} autoFocus />
+        </Campo>
+        {err && <p className="error-text">{err}</p>}
+        <button className="btn primary block" disabled={ocupado}>{ocupado ? 'Guardando…' : 'Continuar'}</button>
+      </form>
+      <p className="muted small" style={{ textAlign: 'center' }}>Entraste como {user?.email}</p>
+    </div>
+  );
+}
+
 // ---------------- Crear o unirse a una familia ----------------
 export function SinFamilia({ onCreando, onCreada, onUnido, invitacion, onCancelar }: {
   onCreando: (si: boolean) => void;

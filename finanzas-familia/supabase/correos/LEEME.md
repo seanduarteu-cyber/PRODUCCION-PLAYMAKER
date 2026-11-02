@@ -1,14 +1,12 @@
-# Correos en español con código
+# Correo con el código para entrar
 
-En Supabase › **Authentication › Emails › Templates**:
+La app entra **sin contraseña**: la persona escribe su correo, recibe un código de 6 dígitos y lo
+escribe en la app. Supabase usa dos plantillas para eso (cuenta nueva y cuenta existente), y las
+dos llevan el mismo contenido.
 
-| Plantilla | Asunto (Subject) | Contenido (Message body) |
-|---|---|---|
-| **Confirm signup** | `Tu código para Finanzas Familia` | pega `confirmar-cuenta.html` |
-| **Reset password** | `Recupera tu contraseña de Finanzas Familia` | pega `recuperar-contrasena.html` |
+En Supabase › **Authentication › Emails › Templates**, en **Confirm signup** y en **Magic Link**:
+
+- **Subject:** `{{ .Token }} es tu código para Finanzas Familia`
+- **Message body:** el contenido de [`codigo.html`](codigo.html)
 
 Guarda cada una con **Save changes**.
-
-`{{ .Token }}` es el código de 6 dígitos que la persona escribe en la app. Así la confirmación
-funciona aunque el correo se abra en otro dispositivo o un filtro de correo de empresa abra el
-enlace antes que la persona.

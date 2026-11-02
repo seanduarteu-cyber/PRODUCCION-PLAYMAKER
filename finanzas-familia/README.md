@@ -40,7 +40,7 @@ Los cambios de un miembro aparecen **al instante** en el teléfono de los demás
 
 1. Entra a <https://supabase.com/dashboard> y crea un proyecto nuevo (**New project**), por ejemplo `finanzas-familia`, región **South America (São Paulo)**. Usa un proyecto nuevo y no uno que ya tengas: así sus tablas no se mezclan con otras.
 2. Ve a **SQL Editor › New query**, pega **todo** el contenido de [`supabase/esquema.sql`](supabase/esquema.sql) y presiona **Run**. Debe decir *Success*.
-3. Configura los correos (confirmación de cuenta y "olvidé mi contraseña"). Ver [Correos de confirmación](#correos-de-confirmación) más abajo.
+3. Configura los correos (el código para entrar). Ver [Correos con el código para entrar](#correos-con-el-código-para-entrar) más abajo.
 4. Ve a **Project Settings › API** (o el botón **Connect**) y copia:
    - **Project URL** (ej. `https://abcd1234.supabase.co`)
    - la llave pública **anon** / **publishable**
@@ -81,46 +81,44 @@ Queda un ícono como cualquier app y abre a pantalla completa.
 
 ### Paso 4 · Empezar a usarla
 
-1. Crea tu cuenta › **Crear mi familia** (ej. "Casa DY") › **guarda la clave** que aparece.
+1. Escribe tu correo, ingresa el código que te llega y tu nombre › **Crear mi familia** (ej. "Casa DY") › **guarda la clave** que aparece.
 2. *(Opcional)* **Más › Descargar Excel o PDF › Importar mi planilla**: sube `PRESUPUESTO_CASA_DY_2026-27.xlsx` y se cargan categorías, presupuesto, ingresos, gastos, boletas y la proyección de deudas.
 3. Revisa **Más › Presupuesto** (montos por categoría e ingresos fijos).
-4. **Más › Familia › Invitar a mi pareja** › *Enviar por WhatsApp*. Ella abre el enlace, crea su cuenta y entra directo a la misma familia.
+4. **Más › Familia › Invitar a mi pareja** › *Enviar por WhatsApp*. Ella abre el enlace, entra con su correo y el código, y queda en la misma familia.
 
 ### Paso 5 · Compartirla con otras familias
 
-Envíales la dirección de la app. Cada una crea su cuenta y **su propia familia**, con su propia clave. Sus datos quedan separados y cifrados: tú no puedes verlos.
+Envíales la dirección de la app. Cada una entra con su correo y crea **su propia familia**, con su propia clave. Sus datos quedan separados y cifrados: tú no puedes verlos.
 
-### Correos de confirmación
+### Correos con el código para entrar
 
-Con **"Confirm email"** activado (Authentication › Sign In / Providers › Email), cada persona confirma su correo al crear la cuenta: la app le pide un **código de 6 dígitos** que llega por correo. El código funciona aunque el correo se abra en otro dispositivo o un filtro de correo de empresa abra el enlace antes. La app también tiene "Reenviar correo" y recupera contraseñas con código.
+La app entra **sin contraseña**: la persona escribe su correo, recibe un **código de 6 dígitos** (también aparece en el asunto, así se ve en la notificación) y lo escribe en la app. La primera vez solo se le pregunta su nombre. El código comprueba que el correo es suyo.
 
-Para que funcione con **cualquier persona** hay que hacer tres cosas en Supabase:
+Para que el código llegue a **cualquier persona**, Supabase necesita un servicio que envíe los correos: el que trae de fábrica solo envía a los miembros de tu equipo de Supabase.
 
-**a) Conectar un servicio de correo (SMTP).** El correo que trae Supabase de fábrica **solo envía a los miembros de tu equipo de Supabase**: a otras personas no les llegaría nada.
+**a) Brevo (gratis, 300 correos al día, sin verificación en 2 pasos)**
+1. Crea una cuenta en <https://www.brevo.com> con tu correo.
+2. En **Senders, Domains & Dedicated IPs › Senders › Add a sender**, agrega el correo desde el que saldrán los códigos (ej. tu Gmail) y confírmalo con el enlace que te llega.
+3. En **Settings › SMTP & API › pestaña SMTP › Generate a new SMTP key**, crea una llave y copia el **Login** y la **llave SMTP**.
 
-- *Opción rápida (gratis, sin dominio): Gmail.* En tu cuenta de Google activa la verificación en 2 pasos y crea una **contraseña de aplicación** en <https://myaccount.google.com/apppasswords>. Si no aparece esa opción, usa la opción comercial. En Supabase › **Authentication › Emails › SMTP Settings** activa *Enable custom SMTP* y completa:
+**b) Supabase › Authentication › Emails › SMTP Settings** › activa *Enable custom SMTP*:
 
-  | Campo | Valor |
-  |---|---|
-  | Sender email | tu correo de Gmail |
-  | Sender name | Finanzas Familia |
-  | Host | `smtp.gmail.com` |
-  | Port | `587` |
-  | Username | tu correo de Gmail |
-  | Password | la contraseña de aplicación (16 letras, sin espacios) |
+| Campo | Valor |
+|---|---|
+| Sender email | el correo que confirmaste en Brevo |
+| Sender name | Finanzas Familia |
+| Host | `smtp-relay.brevo.com` |
+| Port | `587` |
+| Username | el **Login** de Brevo |
+| Password | la **llave SMTP** de Brevo |
 
-  Gmail permite unos cientos de correos al día, suficiente para varias familias.
-- *Opción comercial:* un dominio propio (ej. `tuapp.cl`) y un servicio de envío como Resend o Brevo (tienen plan gratis). Se verifica el dominio con unos registros DNS y se envía desde, por ejemplo, `no-responder@tuapp.cl`. Los datos de Host, Port, Username y Password los da ese servicio.
+En **Authentication › Rate Limits**, deja *Rate limit for sending emails* en al menos `30` por hora.
 
-**b) Subir el límite de correos.** En **Authentication › Rate Limits**, en *Rate limit for sending emails*, pon al menos `30` por hora.
+**c) Supabase › Authentication › Emails › Templates**: en **Confirm signup** y en **Magic Link** pon:
+- Subject: `{{ .Token }} es tu código para Finanzas Familia`
+- Message body: el contenido de [`supabase/correos/codigo.html`](supabase/correos/codigo.html)
 
-**c) Poner las plantillas en español con código.** En **Authentication › Emails › Templates** reemplaza:
-- **Confirm signup**: asunto `Tu código para Finanzas Familia` y contenido [`supabase/correos/confirmar-cuenta.html`](supabase/correos/confirmar-cuenta.html).
-- **Reset password**: asunto `Recupera tu contraseña de Finanzas Familia` y contenido [`supabase/correos/recuperar-contrasena.html`](supabase/correos/recuperar-contrasena.html).
-
-Y en **Authentication › URL Configuration** pon la dirección de tu app en **Site URL** y en **Redirect URLs** (paso 2.5), para que el botón del correo lleve a la app.
-
-Si prefieres no confirmar correos, desactiva "Confirm email": cada persona entra apenas crea su cuenta, y solo "Olvidé mi contraseña" envía correos (igual necesita el SMTP del punto a).
+Si los códigos llegan a Spam, la solución definitiva es enviar desde un dominio propio (ej. `no-responder@tuapp.cl`) verificado en Brevo.
 
 ### Sobre los planes gratuitos
 
