@@ -3,10 +3,12 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import { capturarErrorDeUrl } from './lib/avisoUrl';
 import { capturarInvitacionDeUrl } from './lib/enlace';
+import { capturarInstalacion } from './lib/instalar';
 import './styles.css';
 
 capturarInvitacionDeUrl();
 capturarErrorDeUrl();
+capturarInstalacion();
 
 // La vista previa se muestra dentro de otra página, donde confirm() no aparece.
 if (import.meta.env.VITE_VISTA_PREVIA) window.confirm = () => true;

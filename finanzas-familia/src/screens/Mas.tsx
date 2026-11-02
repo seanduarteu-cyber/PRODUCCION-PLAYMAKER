@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react';
+import { InstalarSheet } from '../components/Instalar';
 import { Icon } from '../components/ui';
 import { useApp, useFamilia } from '../data/store';
 import { Exportar } from './Exportar';
@@ -13,6 +14,7 @@ export function Mas() {
   const f = useFamilia();
   const { backend, user } = useApp();
   const [pagina, setPagina] = useState<Pagina>(null);
+  const [instalar, setInstalar] = useState(false);
   const volver = () => setPagina(null);
 
   if (pagina === 'presupuesto') return <Presupuesto onBack={volver} />;
@@ -37,6 +39,11 @@ export function Mas() {
           {item('familia', Icon.users, 'Familia y miembros', `${f.members.length} ${f.members.length === 1 ? 'miembro' : 'miembros'} · invitar a tu pareja`)}
           {item('exportar', Icon.download, 'Descargar Excel o PDF', 'Informe del mes o del año · importar tu planilla')}
           {item('privacidad', Icon.shield, 'Privacidad y seguridad', 'Cómo se protegen tus datos')}
+          <button className="item" onClick={() => setInstalar(true)}>
+            <span className="icono" style={{ color: 'var(--accent)' }}><span style={{ width: 22, height: 22, display: 'block' }}>{Icon.share}</span></span>
+            <span className="grow"><div className="t">Instalar en el teléfono</div><div className="s">Cómo dejar la app en tu pantalla de inicio</div></span>
+            <span style={{ width: 18, color: 'var(--muted)' }}>{Icon.chevron}</span>
+          </button>
         </div>
         <div className="card flush list">
           <div className="item" style={{ cursor: 'default' }}>
@@ -48,6 +55,7 @@ export function Mas() {
             <span className="grow t">Cerrar sesión</span>
           </button>
         </div>
+        {instalar && <InstalarSheet onClose={() => setInstalar(false)} />}
         <p className="muted tiny" style={{ textAlign: 'center' }}>Finanzas Familia · v1.0 · {backend.mode === 'local' ? 'modo demostración' : `datos cifrados en ${backend.mode === 'supabase' ? 'Supabase' : 'Firebase'}`}</p>
       </div>
     </>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { AvisoInstalar } from '../components/Instalar';
 import { Campo, Icon } from '../components/ui';
 import { fmtCodigo, mensajeError, normalizarCodigo } from '../data/backend';
 import { crearFamiliaCifrada } from '../data/familias';
@@ -226,6 +227,7 @@ export function Ingreso() {
         </div>
 
         {aviso && !conCodigoPaso && <div className="alert warn small">{aviso}</div>}
+        {!conCodigoPaso && <AvisoInstalar />}
 
         {backend.conGoogle && (modo === 'entrar' || modo === 'crear') && (
           <>
@@ -393,6 +395,7 @@ export function IngresoCodigo() {
         </div>
 
         {aviso && paso === 'correo' && <div className="alert warn small">{aviso}</div>}
+        {paso === 'correo' && <AvisoInstalar />}
 
         {backend.conGoogle && paso === 'correo' && (
           <>

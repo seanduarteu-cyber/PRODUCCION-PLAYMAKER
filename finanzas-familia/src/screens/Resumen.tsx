@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { AvisoInstalar } from '../components/Instalar';
 import { Barra, Campo, Cargando, EMOJI_TIPO, MontoInput, Seg, Sheet } from '../components/ui';
 import { useApp, useFamilia } from '../data/store';
 import { montoIngresoFijo, resumenBoletas, resumenMes, type FilaCategoria } from '../lib/calc';
@@ -25,6 +26,7 @@ export function Resumen() {
     <>
       <Encabezado />
       <div className="content">
+        <AvisoInstalar />
         <div className="card hero">
           <div className="row between">
             <span className="muted small">Saldo proyectado a fin de mes</span>

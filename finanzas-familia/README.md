@@ -79,6 +79,8 @@ Cada vez que se suba un cambio a esa rama en GitHub, Netlify vuelve a publicar l
 
 Queda un ícono como cualquier app y abre a pantalla completa.
 
+La app misma muestra un aviso **"Instala la app en tu teléfono"**: en Android con un botón **Instalar app**, y en iPhone con los pasos de Compartir › Agregar a inicio. También está en **Más › Instalar en el teléfono**. En iPhone conviene instalarla **antes** de entrar, porque la app instalada no comparte la sesión con Safari.
+
 ### Paso 4 · Empezar a usarla
 
 1. Escribe tu correo, ingresa el código que te llega y tu nombre › **Crear mi familia** (ej. "Casa DY") › **guarda la clave** que aparece.
