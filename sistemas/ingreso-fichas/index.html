@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Playmaker">
+<meta property="og:title" content="Completa las tallas de tu pedido">
+<meta property="og:description" content="Carga el nombre, el número y la talla de cada persona. Un club, una familia.">
+<meta property="og:image" content="https://jvgifibnoigpicwklasw.supabase.co/storage/v1/object/public/montajes/marca/playmaker-og.png">
+<meta property="og:url" content="https://ingreso-fichas-playmaker.netlify.app">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC4klEQVR42s1Xv0srQRicb/fOI43FiWKIJKAExDKgICjY2/oPCFYKWtiktRMsjeJfIYKFgWsDYiqLCEGEaGHhD9SARILuzWue94zmkktQ8wa2OZad2dn5vt0TNAfxM5B2H36KOJRX9YC8gUv1gLxBhEKPId3sXikFpf5pJwnf90Hy5wWISFdEYbC6Ic9kMpifn8fo6Ciq1SoKhQIODg5gjAkc6TQMbYfWmiLC6elpNkMulwvmRV3z3f3IAgDQ8zze399zdXWVc3NzXFhYoOd5JMlkMkkAVEp9rwARIQAODw+zUqlwfHz8yxzP85jNZgmAlmVFFqCiph4AJicnsbu7i3K5DMdxoLVGX18fAGBtbQ0jIyMdZ6CjPvDy8oKjoyPYtg3f9yEiMMbAsiycn5+jWCxCKRWE8dtCaNs2lVJMJBIt7U0mk7Qsi5ZlRc6BFaX0Xl9fAQC1Wg1jY2OIx+NwXReO48AYg2q1ipubG9ze3uLt7a3h6Hzf784BEQl2sbS0xMPDQ15fX7NerzMMj4+PLBaL3Nzc7KQiWpfd3t4eu8Hl5SVTqVRbEU1bsdYaxhgsLy9jZ2cHxhhorVGv13F6eoqzszPc3d3h+fkZjuNgYGAA6XQamUwGrusG65ycnGB2dhbGGJAMrY6mNR+Px/n09ESSfHh44MbGBtPpdEs7h4aGuLi4yFKpFDixsrLSrjd8SuXfidlsliR5fHzcQCwiQdI/jo82x2Ix5nI5kmS5XKZt2xSRYHMtBbxPKpVKvLi4YH9/f0MptuuYH3e6vb1Nkpyammp1T3wld12XtVqNMzMzAXknF4xSilprKqV4dXXF9fX10GNQn2seAFKpFPL5PAqFArTWQR+Iivcu6fs+tra2kEgkOmvFIoL9/f1AUDcwxkBEkM/nUalUWt4RX45gcHAwqOGQ4EQesViMExMToWt19Sb8TvT8Vaya/S795qv8v3AAPXJBPmdAfpu8Femv/Z7/AZrmqqszmyicAAAAAElFTkSuQmCC">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
+<title>Detalle de tallas · Playmaker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Base pensada para celular. El computador es la adaptación,
+   en el bloque @media de más abajo.
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: #fff; }
+
+#pmk {
+  --negro: #000; --blanco: #fff; --naranja: #ED6C23;
+  --humo: #f4f4f4; --linea: #e2e2e2; --gris: #6e6e6e; --verde: #1f7a45; --rojo: #c62828;
+  font-family: 'Poppins', system-ui, sans-serif;
+  color: var(--negro); background: var(--blanco);
+  max-width: 560px; margin: 0 auto;
+  padding: 0 0 calc(28px + env(safe-area-inset-bottom));
+  line-height: 1.5; -webkit-font-smoothing: antialiased;
+}
+#pmk h1, #pmk h2 { font-family: 'Oswald', 'Poppins', sans-serif; font-weight: 600; letter-spacing: .01em; margin: 0; line-height: 1.1; }
+#pmk p { margin: 0; }
+
+.pmk-top { background: var(--negro); color: var(--blanco); display: flex; align-items: center; gap: 12px;
+  padding: calc(16px + env(safe-area-inset-top)) 20px 16px; }
+.pmk-top .iso { width: 30px; height: 30px; border-radius: 7px; flex: none; }
+.pmk-top .marca { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: .06em; text-transform: uppercase; }
+.pmk-top .marca em { font-style: normal; color: var(--naranja); }
+.pmk-top .sub { font-size: 11px; color: #9a9a9a; letter-spacing: .04em; margin-top: 2px; }
+.pmk-volver { margin-left: auto; background: none; border: 1px solid #3a3a3a; color: #cfcfcf; border-radius: 999px;
+  font-size: 13px; font-family: inherit; padding: 8px 15px; cursor: pointer; min-height: 40px; }
+.pmk-volver:active { border-color: var(--naranja); color: var(--naranja); }
+
+.pmk-wrap { padding: 22px 18px 0; }
+.tit { font-size: 26px; text-transform: uppercase; }
+.bajada { font-size: 14px; color: var(--gris); margin-top: 8px; }
+.mini { font-size: 12px; color: var(--gris); }
+
+.ref-cab { border: 1px solid var(--linea); border-left: 4px solid var(--naranja); border-radius: 0 12px 12px 0; padding: 14px 16px; margin-top: 16px; }
+.ref-cab .ref { font-family: 'Oswald', sans-serif; font-size: 20px; letter-spacing: .06em; }
+.ref-cab .proy { font-size: 14px; font-weight: 500; margin-top: 2px; }
+.ref-cab .meta { font-size: 12px; color: var(--gris); margin-top: 4px; }
+.etiqueta { display: inline-block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gris); }
+
+.acceso { display: block; width: 100%; text-align: left; border: 1px solid var(--linea); background: var(--blanco);
+  border-radius: 14px; padding: 18px; margin-top: 12px; font-family: inherit; cursor: pointer; }
+.acceso .rot { font-family: 'Oswald', sans-serif; font-size: 17px; text-transform: uppercase; letter-spacing: .02em; }
+.acceso .det { font-size: 13px; color: var(--gris); margin-top: 3px; }
+.acceso.primario { background: var(--negro); border-color: var(--negro); color: var(--blanco); }
+.acceso.primario .det { color: #a8a8a8; }
+.acceso.primario .rot { color: var(--naranja); }
+
+.avance { border-top: 1px solid var(--linea); padding-top: 12px; margin-top: 12px; }
+.avance:first-of-type { border-top: none; }
+.avance .fila { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.avance .n { font-family: 'Oswald', sans-serif; font-size: 15px; text-transform: uppercase; }
+.avance .c { font-family: 'Oswald', sans-serif; font-size: 15px; }
+.avance .c.listo { color: var(--verde); }
+.avance .c.falta, .avance .c.extra { color: var(--naranja); }
+.avance .nota { font-size: 12px; color: var(--naranja); margin-top: 5px; }
+.prog { height: 6px; background: var(--humo); border-radius: 99px; overflow: hidden; margin-top: 7px; }
+.prog i { display: block; height: 100%; background: var(--naranja); border-radius: 99px; }
+.prog i.listo { background: var(--verde); }
+
+.jersey-box { background: var(--negro); border-radius: 16px; padding: 18px 16px 14px; display: flex; gap: 16px; align-items: center; }
+.jersey-box svg { width: 92px; flex: none; }
+.jersey-datos .et { font-size: 10px; color: #8c8c8c; letter-spacing: .14em; text-transform: uppercase; }
+.jersey-datos .val { font-family: 'Oswald', sans-serif; color: var(--blanco); font-size: 17px; text-transform: uppercase; word-break: break-word; }
+.jersey-datos .val.naranja { color: var(--naranja); }
+.jersey-datos div + div { margin-top: 10px; }
+
+.campo { margin-top: 22px; }
+.campo > label, .campo > .lab { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.campo .ayuda { font-size: 12px; color: var(--gris); font-weight: 400; margin-top: -4px; margin-bottom: 8px; }
+/* 16px evita el zoom automático de iOS al enfocar un campo */
+input[type=text], input[type=number], textarea, select {
+  width: 100%; font-family: inherit; font-size: 16px; border: 1px solid var(--linea);
+  border-radius: 10px; padding: 12px 13px; background: var(--blanco); color: var(--negro); min-height: 48px;
+}
+input:focus, textarea:focus, select:focus { outline: 2px solid var(--naranja); outline-offset: 1px; border-color: transparent; }
+textarea { resize: vertical; min-height: 76px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: 'Oswald', sans-serif; font-size: 15px; letter-spacing: .02em; border: 1px solid var(--linea);
+  background: var(--blanco); color: var(--negro); border-radius: 10px; padding: 0 14px;
+  min-width: 52px; min-height: 46px; cursor: pointer; text-align: center; }
+.chip.on { background: var(--negro); border-color: var(--negro); color: var(--blanco); }
+.chip.on.acento { background: var(--naranja); border-color: var(--naranja); }
+.chip.nolleva { font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--gris); }
+.chip.nolleva.on { color: var(--blanco); }
+.sep-tallas { width: 100%; height: 0; }
+
+.prenda { border-top: 1px solid var(--linea); padding-top: 18px; margin-top: 18px; }
+.prenda .cab { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.prenda .nom { font-family: 'Oswald', sans-serif; font-size: 16px; text-transform: uppercase; }
+.prenda .cupo { font-size: 12px; color: var(--gris); }
+.prenda .cupo.extra { color: var(--naranja); }
+.prenda.fuera .nom { color: var(--gris); }
+
+.check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; border: 1px solid var(--linea);
+  border-radius: 10px; padding: 13px; cursor: pointer; }
+.check input { margin-top: 2px; accent-color: var(--naranja); width: 20px; height: 20px; flex: none; }
+.check.on { border-color: var(--negro); }
+
+.btn { width: 100%; font-family: 'Oswald', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: .05em;
+  background: var(--naranja); color: var(--blanco); border: none; border-radius: 11px; padding: 16px; margin-top: 14px;
+  cursor: pointer; min-height: 52px; }
+.btn.oscuro { background: var(--negro); }
+.btn.verde { background: var(--verde); }
+.btn.plano { background: var(--blanco); color: var(--negro); border: 1px solid var(--linea); }
+.btn:disabled { opacity: .45; }
+
+/* barra pegada abajo con la acción principal del formulario */
+.barra-fija { position: sticky; bottom: 0; background: var(--blanco); border-top: 1px solid var(--linea);
+  margin: 24px -18px 0; padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); }
+.barra-fija .btn { margin-top: 0; }
+
+.aviso { border-left: 3px solid var(--naranja); background: var(--humo); padding: 12px 13px; font-size: 13px; border-radius: 0 8px 8px 0; margin-top: 16px; }
+.aviso.error { border-left-color: var(--rojo); color: #8e1f1f; }
+.aviso.ok { border-left-color: var(--verde); }
+
+.lista-item { border: 1px solid var(--linea); border-radius: 12px; padding: 14px; margin-top: 10px; display: flex;
+  align-items: center; gap: 12px; cursor: pointer; background: var(--blanco); width: 100%; text-align: left; font-family: inherit; min-height: 62px; }
+.lista-item .izq { flex: 1; min-width: 0; }
+.lista-item .club { font-family: 'Oswald', sans-serif; font-size: 16px; text-transform: uppercase; }
+.lista-item .meta { font-size: 12px; color: var(--gris); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lista-item .cod2 { font-family: 'Oswald', sans-serif; color: var(--naranja); font-size: 15px; white-space: nowrap; }
+
+.cargando { font-size: 13px; color: var(--gris); padding: 22px 0; text-align: center; }
+.vacio { border: 1px dashed var(--linea); border-radius: 12px; padding: 26px 18px; text-align: center; margin-top: 14px; }
+.vacio .t { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 15px; }
+.vacio .d { font-size: 13px; color: var(--gris); margin-top: 5px; }
+
+.pie { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--linea); font-size: 11px; color: var(--gris); text-align: center; }
+.pie b { font-family: 'Oswald', sans-serif; color: var(--negro); font-weight: 600; letter-spacing: .06em; }
+
+ /* ---------- guías de talla por molde ---------- */
+.guias { margin-top: 12px; }
+.guias a { display: flex; align-items: center; gap: 10px; border: 1px solid var(--linea);
+  border-radius: 10px; padding: 10px 12px; margin-top: 8px; text-decoration: none; color: inherit; }
+.guias a img { width: 54px; border-radius: 6px; border: 1px solid var(--linea); display: block; }
+.guias a .t { flex: 1; font-size: 13px; font-weight: 600; }
+.guias a .cod { font-weight: 400; font-size: 11px; color: var(--gris); }
+.guias a .v { font-size: 12px; color: var(--naranja); font-weight: 600; }
+
+/* ---------- montajes que sube Playmaker ---------- */
+.montajes-cli { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+.montajes-cli a { flex: none; width: 140px; text-decoration: none; color: inherit; }
+.montajes-cli img { width: 140px; height: 140px; object-fit: cover; border-radius: 12px; border: 1px solid var(--linea); display: block; }
+.montajes-cli .cap { font-size: 11px; color: var(--gris); margin-top: 5px; text-align: center; }
+.montajes-cli .cap b { color: var(--negro); font-size: 12px; }
+/* qué diseño lleva cada persona (cuando el molde tiene más de uno) */
+.fila-dis { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 4px; border-bottom: 1px solid var(--linea); font-size: 14px; }
+.fila-dis.falta { background: #FFF4EC; }
+.fila-dis .chips { margin: 0; }
+
+/* ---------- carga masiva ---------- */
+.fila-lote { border: 1px solid var(--linea); border-radius: 10px; padding: 10px; margin-top: 8px; }
+.fila-lote.falta { border-color: var(--naranja); }
+.fila-lote .l1 { display: flex; gap: 6px; align-items: center; }
+.fila-lote .l2 { display: flex; gap: 6px; margin-top: 6px; }
+.fila-lote .idx { font-family: 'Oswald', sans-serif; font-size: 13px; color: var(--gris); width: 26px; flex: none; text-align: center; }
+.fila-lote input, .fila-lote select { min-height: 42px; font-size: 15px; padding: 8px 10px; }
+.fila-lote .nom { flex: 1; min-width: 0; }
+.fila-lote .num { width: 78px; flex: none; text-align: center; }
+.fila-lote .tal { flex: 1; }
+.fila-lote .l3 { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
+.fila-lote .l3 label { font-size: 12px; color: var(--gris); width: 58px; flex: none; margin: 0; text-align: right; }
+.fila-lote .est { flex: 1; min-width: 0; text-transform: uppercase; }
+.fila-lote .x { border: 1px solid var(--linea); background: var(--blanco); border-radius: 9px; width: 42px; height: 42px;
+  flex: none; font-size: 17px; color: var(--gris); font-family: inherit; cursor: pointer; }
+.contador { position: sticky; top: 0; background: var(--blanco); padding: 10px 0; border-bottom: 1px solid var(--linea);
+  font-size: 13px; font-weight: 600; z-index: 2; }
+.contador span { color: var(--naranja); font-weight: 400; }
+#lote-texto { min-height: 200px; font-size: 15px; line-height: 1.7; }
+
+#ref-input { text-transform: uppercase; letter-spacing: .14em; font-family: 'Oswald', sans-serif; font-size: 26px; text-align: center; min-height: 60px; }
+
+/* ---------- computador y tablet ---------- */
+@media (min-width: 760px) {
+  #pmk { max-width: 720px; padding-bottom: 48px; }
+  .pmk-wrap { padding: 32px 28px 0; }
+  .tit { font-size: 32px; }
+  .bajada { font-size: 15px; }
+  .jersey-box { padding: 22px; }
+  .jersey-box svg { width: 118px; }
+  .chip { min-height: 42px; font-size: 14px; }
+  .btn { max-width: 340px; }
+  .barra-fija { position: static; border-top: none; margin: 0; padding: 0; }
+  .dos-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+  .dos-col > .campo { margin-top: 18px; }
+  .fila-lote { display: flex; align-items: center; gap: 10px; }
+  .fila-lote .l1 { flex: 1; }
+  .fila-lote .l2 { margin-top: 0; flex: 0 0 240px; }
+}
+@media (hover: hover) {
+  .acceso:hover, .lista-item:hover { border-color: var(--negro); }
+  .chip:hover { border-color: var(--negro); }
+  .btn:hover { filter: brightness(.92); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+/* pasos guiados, revisión final y cierre */
+.paso { display: flex; align-items: center; gap: 12px; border: 1px solid var(--linea); border-radius: 12px; padding: 12px; margin-top: 8px; background: var(--blanco); }
+.paso .ico { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Oswald', sans-serif; font-weight: 600; background: var(--humo); color: var(--gris); flex: none; }
+.paso.sig { border-color: var(--naranja); }
+.paso.sig .ico { background: var(--naranja); color: var(--blanco); }
+.paso.listo .ico { background: var(--verde); color: var(--blanco); }
+.paso .txt { flex: 1; min-width: 0; }
+.paso .n { font-weight: 600; font-size: 15px; }
+.paso .d { font-size: 12px; color: var(--gris); margin-top: 2px; }
+.btn-paso { border: 1px solid var(--negro); background: var(--blanco); border-radius: 999px; padding: 8px 14px; font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 13px; cursor: pointer; flex: none; }
+.paso.sig .btn-paso { background: var(--negro); color: var(--blanco); }
+.tag-fila { font-size: 12px; margin-top: 6px; color: var(--gris); }
+.tag-fila.suma { color: var(--verde); }
+.tag-fila.ojo { color: #9C5700; font-weight: 600; }
+.rev-g { margin-top: 14px; }
+.rev-g .t { font-weight: 600; font-size: 15px; }
+.rev-g .r { font-size: 12px; color: var(--gris); margin-top: 2px; }
+table.rev { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 6px; }
+table.rev th { text-align: left; font-size: 11px; color: var(--gris); text-transform: uppercase; border-bottom: 1px solid var(--linea); padding: 6px 4px; font-weight: 600; }
+table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
+.cierre { text-align: center; padding: 24px 0 8px; }
+.cierre .ok { width: 72px; height: 72px; border-radius: 50%; background: var(--verde); color: var(--blanco); font-size: 40px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+</style>
+</head>
+<body>
+<div id="pmk"></div>
+
+<script>
+(function () {
+  const app = document.getElementById('pmk');
+
+  /* ==========================================================
+     CONFIGURACIÓN — SITIO DEL CLIENTE
+     Este archivo solo conoce el proyecto de FICHAS.
+     Nunca lleva la llave del proyecto de Ventas.
+     ========================================================== */
+  const CFG = {
+    url: 'https://jvgifibnoigpicwklasw.supabase.co',
+    key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2Z2lmaWJub2lncGljd2tsYXN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1MzgzNjcsImV4cCI6MjEwNDExNDM2N30.v7FJZX0jYk3J5gXuOxqxr_i6HN0DysfZS8kNla231uc',
+
+    // PASO DE TRANSICIÓN: mientras sea true, siguen funcionando los links antiguos
+    // (?ref=COT-1234) y el ingreso escribiendo el número COT.
+    // Cuando todos los links vigentes sean los nuevos (?f=código), cambiar a false:
+    // desde ahí solo se entra con el link secreto de cada ficha.
+    permitirRef: true
+  };
+
+  /* ============ prendas (tal cual el formulario de pedido) ============ */
+  const TALLAS_INF = ['4', '6', '8', '10', '12', '14', '16'];
+  const TALLAS_AD  = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL'];
+  const PRENDAS = [
+    { id: 'camiseta',      g: 'Indumentaria de juego',        nom: 'Camiseta',                 estampado: true, manga: true },
+    { id: 'short',         g: 'Indumentaria de juego',        nom: 'Short o calza' },
+    { id: 'falda',         g: 'Indumentaria de juego',        nom: 'Falda' },
+    { id: 'top',           g: 'Indumentaria de juego',        nom: 'Top deportivo' },
+    { id: 'medias',        g: 'Indumentaria de juego',        nom: 'Medias',                   escala: ['Adulto', 'Juvenil', 'Infantil'] },
+    { id: 'poleron_ent',   g: 'Indumentaria de presentación', nom: 'Polerón de entrenamiento' },
+    { id: 'pantalon',      g: 'Indumentaria de presentación', nom: 'Pantalón pitillo' },
+    { id: 'camiseta_pres', g: 'Indumentaria de presentación', nom: 'Camiseta de presentación', estampado: true },
+    { id: 'short_salida',  g: 'Indumentaria de presentación', nom: 'Short de salida' },
+    { id: 'hoodie',        g: 'Indumentaria de presentación', nom: 'Polerón hoodie' },
+    { id: 'parka',         g: 'Indumentaria de presentación', nom: 'Parka' },
+    { id: 'cortaviento',   g: 'Indumentaria de presentación', nom: 'Cortaviento' },
+    { id: 'calza_larga',   g: 'Indumentaria de presentación', nom: 'Calza larga' },
+    { id: 'buzo',          g: 'Indumentaria de presentación', nom: 'Buzo (chaqueta y pantalón)' }
+  ];
+  // Otra prenda del mismo tipo con otro molde (ej.: una segunda camiseta): «camiseta_2» se ve como «Camiseta 2»
+  const VARIANTE = /^(.+)_(\d+)$/;
+  const basePrenda = id => { const x = String(id || '').match(VARIANTE); return x && PRENDAS.some(p => p.id === x[1]) ? x[1] : id; };
+  const prendaTipo = id => {
+    const p = PRENDAS.find(q => q.id === id); if (p) return p;
+    const x = String(id || '').match(VARIANTE), b = x && PRENDAS.find(q => q.id === x[1]);
+    return b ? Object.assign({}, b, { id: id, nom: b.nom + ' ' + x[2], base: b.id, variante: +x[2] }) : { id: id, nom: id };
+  };
+  // Cada molde de la ficha es un diseño, y Playmaker le puede dar nombre (specs[id].nombre): «Rama Voleibol (Camiseta)»
+  const nomDiseno = id => { const sp = st.ficha ? specsDe(st.ficha)[id] : null; return (sp && typeof sp === 'object' && String(sp.nombre || '').trim()) || ''; };
+  const prendaDe = id => { const t = prendaTipo(id), n = nomDiseno(id);
+    return n ? Object.assign({}, t, { nom: n + ' (' + prendaTipo(basePrenda(id)).nom + ')' }) : t; };
+  // en una frase: «las personas que llevan Rama Voleibol (camiseta)» o, sin nombre, «camiseta 2»
+  const minP = id => { const n = nomDiseno(id); return n ? n + ' (' + prendaTipo(basePrenda(id)).nom.toLowerCase() + ')' : prendaTipo(id).nom.toLowerCase(); };
+
+  /* ============ Supabase ============ */
+  const SB = {
+    async req(m, path, body, extra) {
+      const opt = { method: m, headers: Object.assign({ apikey: CFG.key, Authorization: 'Bearer ' + CFG.key, 'Content-Type': 'application/json' }, extra || {}) };
+      if (body) opt.body = JSON.stringify(body);
+      const r = await fetch(CFG.url + '/rest/v1/' + path, opt);
+      if (!r.ok) throw new Error('Supabase ' + r.status + ': ' + (await r.text()).slice(0, 160));
+      const t = await r.text();
+      return t ? JSON.parse(t) : null;
+    },
+    get(p) { return this.req('GET', p); },
+    upsert(p, b) { return this.req('POST', p, b, { Prefer: 'resolution=merge-duplicates,return=representation' }); },
+    patch(p, b) { return this.req('PATCH', p, b, { Prefer: 'return=representation' }); },
+    del(p) { return this.req('DELETE', p); }
+  };
+  const eq = v => 'eq.' + encodeURIComponent(v);
+  const API = {
+    ficha: async ref => { const r = await SB.get('fichas_tallas?select=*&ref=' + eq(ref)); return r && r[0] ? r[0] : null; },
+    // Abre la ficha con su código secreto (link ?f=...). Devuelve null si el código no existe.
+    fichaPorCodigo: codigo => SB.req('POST', 'rpc/ficha_cliente', { p_acceso: codigo }),
+    detalles: ref => SB.get('fichas_detalle?select=*&ref=' + eq(ref) + '&order=created_at.asc'),
+    guardarDetalle: async d => {
+      try { return await SB.upsert('fichas_detalle', d); }
+      catch (e) {
+        if (!/disenos/.test(String(e.message))) throw e;
+        const quitar = x => { const { disenos, ...r } = x; return r; };
+        return SB.upsert('fichas_detalle', Array.isArray(d) ? d.map(quitar) : quitar(d));
+      }
+    },
+    borrarDetalle: id => SB.del('fichas_detalle?id=' + eq(id)),
+    estadoFicha: ref => SB.patch('fichas_tallas?ref=' + eq(ref), { estado: 'confirmado', confirmado_at: new Date().toISOString() }),
+    specsFicha: (ref, specs) => SB.patch('fichas_tallas?ref=' + eq(ref), { specs: specs }),
+    guardarAviso: a => SB.upsert('fichas_avisos', a),
+    borrarAviso: id => SB.del('fichas_avisos?id=' + eq(id))
+  };
+
+  /* ============ estado ============ */
+  let st = { pant: 'inicio', ficha: null, dets: [], form: null, editando: null, error: '', verOtras: false,
+           lote: null };
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function normalizarRef(v) {
+    let s = (v || '').toString().trim().toUpperCase().replace(/\s+/g, '').replace(/^COT[-_]?/, '');
+    return s ? 'COT-' + s : '';
+  }
+  function fechaTxt(iso) {
+    if (!iso) return '';
+    const p = iso.slice(0, 10).split('-');
+    const m = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    return parseInt(p[2], 10) + ' de ' + m[parseInt(p[1], 10) - 1];
+  }
+  const leerJSON = (v, vacio) => { if (v && typeof v === 'object') return v; try { return JSON.parse(v || vacio); } catch (e) { return JSON.parse(vacio); } };
+  const items = f => { const a = leerJSON(f.items, '[]'); return Array.isArray(a) ? a : []; };
+  const imgsDe = f => { const a = leerJSON(f.imagenes, '[]'); return Array.isArray(a) ? a.filter(i => i && typeof i === 'object' && i.url) : []; };
+  const specsDe = f => { const s = leerJSON(f.specs, '{}'); return Array.isArray(s) ? {} : s; };
+  // Shorts y calzas pueden llevar número o no: specs[prenda].numero = 'si' / 'no'. Lo define Playmaker en la ficha
+  // o lo responde el cliente al cargar la lista de esa prenda. La camiseta siempre lleva número.
+  // prendas en que se pregunta si llevan número (las camisetas también: hay pedidos sin nombre ni número)
+  const numeroOpcional = id => ['camiseta', 'short', 'short_salida', 'calza_larga'].indexOf(basePrenda(id)) >= 0;
+  const losDe = id => basePrenda(id) === 'camiseta' ? 'las camisetas' : basePrenda(id) === 'calza_larga' ? 'las calzas' : 'los shorts';
+  // ¿esta prenda necesita número? La camiseta sí, salvo que se haya dicho que no lleva; shorts y calzas, solo si se dijo que sí
+  const pideNumero = (f, id) => basePrenda(id) === 'camiseta' ? llevaNumero(f, id) !== false : numeroOpcional(id) && llevaNumero(f, id) === true;
+  const llevaNumero = (f, id) => { const v = ((specsDe(f) || {})[id] || {}).numero; return v === 'si' ? true : v === 'no' ? false : null; };
+  const preguntaNumero = id => basePrenda(id) === 'camiseta' ? '¿Las camisetas llevan número?' : basePrenda(id) === 'calza_larga' ? '¿Las calzas llevan número?' : basePrenda(id) === 'short' ? '¿Los shorts (o calzas) llevan número?' : '¿Los shorts llevan número?';
+  // fecha local de un instante (fechaTxt toma solo la fecha)
+  const diaLocal = iso => { const d = new Date(iso); return isNaN(d) ? '' : d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+  const moldesDe = sp => (sp && sp.moldes && typeof sp.moldes === 'object' && !Array.isArray(sp.moldes)) ? sp.moldes : {};
+  // Diseños de un molde: los define Playmaker al subir los montajes (cada montaje dice su molde y si es Diseño 1, 2…).
+  // Si el molde de una prenda tiene dos o más, el cliente indica cuál lleva cada persona (fichas_detalle.disenos).
+  const prendasImg = i => Array.isArray(i.prendas) && i.prendas.length ? i.prendas : (i.prenda ? [i.prenda] : []);
+  const disenoImg = i => +i.diseno || 1;
+  const moldesImg = i => Array.isArray(i.moldes) ? i.moldes.filter(Boolean) : [];
+  const imgsMolde = (f, prenda, calce) => { const v = moldesDe(specsDe(f)[prenda])[calce] || '';
+    return imgsDe(f).filter(i => prendasImg(i).indexOf(prenda) >= 0 && (!moldesImg(i).length || !v || moldesImg(i).indexOf(v) >= 0)); };
+  const disenosMolde = (f, prenda, calce) => Array.from(new Set(imgsMolde(f, prenda, calce).filter(i => !i.arquero).map(disenoImg))).sort((a, b) => a - b);
+  const disenosDe = d => { const x = leerJSON(d && d.disenos, '{}'); return x && typeof x === 'object' && !Array.isArray(x) ? x : {}; };
+  // una imagen por diseño (la del frente, si está) para mostrar al elegir
+  const fotosDisenos = (f, prenda, calce) => disenosMolde(f, prenda, calce).map(n => {
+    const is = imgsMolde(f, prenda, calce).filter(i => !i.arquero && disenoImg(i) === n);
+    return { n: n, img: is.find(i => /frente/i.test(i.vista || '')) || is[0] }; }).filter(x => x.img);
+  const fotosDisenosHTML = fs => '<div class="montajes-cli">' + fs.map(x => '<a href="' + esc(x.img.url) + '" target="_blank" rel="noopener">' +
+    '<img src="' + esc(x.img.url) + '" alt="Diseño ' + x.n + '" loading="lazy"><div class="cap"><b>Diseño ' + x.n + '</b></div></a>').join('') + '</div>';
+  // N° del molde como en el catálogo: 01…99, y los especiales (guardados como 101…) son E01…
+  const etqMolde = n => { n = +n; return n > 100 && n < 200 ? 'E' + String(n - 100).padStart(2, '0') : String(n).padStart(2, '0'); };
+  const URL_MOLDE = n => CFG.url + '/storage/v1/object/public/montajes/moldes/molde-' + etqMolde(n) + '.jpg';
+
+  /* Guías de talla del molde que corresponde al calce elegido.
+     Playmaker las define en la ficha técnica; si no hay, no se muestra nada. */
+  /* Detalle de moldes del pedido: todos los calces, para que el cliente
+     vea con qué se corta su indumentaria antes de empezar a cargar. */
+  function moldesHTML(f) {
+    const specs = specsDe(f);
+    const filas = [];
+    items(f).forEach(it => {
+      const mo = moldesDe(specs[it.prenda]);
+      ['Femenino', 'Masculino', 'Infantil'].forEach(cal => {
+        if (!mo[cal] || /\|manual$/.test(String(mo[cal]))) return;
+        const par = String(mo[cal]).split('|'), cod = par[0], num = par[1];
+        filas.push('<a href="' + esc(URL_MOLDE(num)) + '" target="_blank" rel="noopener">' +
+          '<img src="' + esc(URL_MOLDE(num)) + '" alt="" loading="lazy">' +
+          '<span class="t">' + esc(prendaDe(it.prenda).nom) + ' · ' + cal +
+          '<br><span class="cod">' + esc(cod) + ' — molde ' + esc(etqMolde(num)) + '</span></span>' +
+          '<span class="v">Ver medidas</span></a>');
+      });
+    });
+    if (!filas.length) return '';
+    return '<div class="campo"><div class="lab">Moldes y medidas de tu indumentaria</div>' +
+      '<div class="ayuda">Toca cualquiera para ver la tabla de medidas de la prenda estirada.</div>' +
+      '<div class="guias">' + filas.join('') + '</div></div>';
+  }
+
+  function guiasHTML(f, calce) {
+    if (!calce) return '';
+    const specs = specsDe(f);
+    const filas = [];
+    items(f).forEach(it => {
+      const m = moldesDe(specs[it.prenda])[calce];
+      if (!m || /\|manual$/.test(String(m))) return;
+      const num = String(m).split('|')[1];
+      filas.push('<a href="' + esc(URL_MOLDE(num)) + '" target="_blank" rel="noopener">' +
+        '<img src="' + esc(URL_MOLDE(num)) + '" alt="" loading="lazy">' +
+        '<span class="t">Medidas de ' + esc(minP(it.prenda)) + '</span>' +
+        '<span class="v">Ver</span></a>');
+    });
+    if (!filas.length) return '';
+    return '<div class="ayuda">Estas son las medidas reales de la prenda, con el molde que se va a cortar.</div>' +
+      filas.join('');
+  }
+  const tallasDe = d => (d.tallas && typeof d.tallas === 'object') ? d.tallas : JSON.parse(d.tallas || '{}');
+  const asignadas = (dets, id) => dets.reduce((n, d) => n + (tallasDe(d)[id] ? 1 : 0), 0);
+  const habilitado = (f, id) => { const it = items(f).find(x => x.prenda === id); return it ? it.cant : 0; };
+  function prendasEnJuego(f, dets) {
+    const ids = items(f).map(i => i.prenda);
+    dets.forEach(d => { const t = tallasDe(d); Object.keys(t).forEach(k => { if (t[k] && ids.indexOf(k) < 0) ids.push(k); }); });
+    return ids;
+  }
+  function avanceFicha(f, dets) {
+    let vend = 0, asig = 0, extra = 0;
+    prendasEnJuego(f, dets).forEach(id => {
+      const c = habilitado(f, id), a = asignadas(dets, id);
+      vend += c; asig += Math.min(a, c); extra += Math.max(0, a - c);
+    });
+    return { vend: vend, asig: asig, extra: extra, completo: asig >= vend && vend > 0 };
+  }
+
+  /* Avisos automáticos para Playmaker: una fila por ficha+prenda con el excedente vigente */
+  async function sincronizarAvisos(f, dets) {
+    for (const id of prendasEnJuego(f, dets)) {
+      const c = habilitado(f, id), a = asignadas(dets, id), exceso = a - c;
+      try {
+        if (exceso > 0) await API.guardarAviso({ id: f.ref + ':' + id, ref: f.ref, prenda: id, habilitadas: c,
+          agregadas: a, exceso: exceso, visto: false, visto_por: null, visto_at: null, created_at: new Date().toISOString() });
+        else await API.borrarAviso(f.ref + ':' + id);
+      } catch (e) { /* informativo: nunca bloquea al cliente */ }
+    }
+  }
+
+  /* ============ piezas de UI ============ */
+  // una persona puede cargarse sin nombre (camisetas que solo llevan número y talla): se la nombra por su número
+  const nomPersona = d => String((d && d.nombre) || '').trim() || (d && d.numero ? 'N° ' + d.numero : 'Sin nombre');
+  function chips(nombre, ops, valor, acento) {
+    return ops.map(o => {
+      const v = typeof o === 'string' ? o : o.v, t = typeof o === 'string' ? o : o.t;
+      const cl = (typeof o === 'object' && o.clase ? o.clase : '') + (acento ? ' acento' : '');
+      return '<button type="button" class="chip ' + cl + (valor === v ? ' on' : '') + '" data-chip="' + nombre + '" data-val="' + esc(v) + '">' + esc(t) + '</button>';
+    }).join('');
+  }
+  // XXS y XXXXL no están en todos los moldes (según las guías del catálogo): se ofrecen si el pedido lleva
+  // alguno de los moldes que la tienen (o si esa talla ya estaba elegida)
+  const MOLDES_CON = { XXS: ['55', '56', '57', '69'],
+    XXXXL: ['1', '2', '5', '6', '9', '10', '17', '18', '21', '22', '29', '30', '33', '34', '37', '38', '41', '42', '43', '44', '45', '46', '49', '50', '53', '54', '104', '66', '68', '70', '72', '73', '80', '81', '82'] };
+  const pedidoCon = (f, talla) => !!f && Object.keys(specsDe(f)).some(k => Object.values(moldesDe(specsDe(f)[k]))
+    .some(v => MOLDES_CON[talla].indexOf(String(v || '').split('|')[1]) >= 0));
+  const tallasAd = v => TALLAS_AD.filter(t => !MOLDES_CON[t] || t === v || pedidoCon(st.ficha, t));
+  const tallaChips = (n, v) => chips(n, TALLAS_INF, v) + '<span class="sep-tallas"></span>' + chips(n, tallasAd(v), v) + chips(n, [{ v: '', t: 'No lleva', clase: 'nolleva' }], v);
+
+  function camiseta(nombre, numero) {
+    return '<svg viewBox="0 0 200 220" role="img" aria-label="Vista previa de la camiseta">' +
+      '<path d="M60 8 L78 8 C84 22 116 22 122 8 L140 8 L192 44 L166 84 L150 74 L150 212 L50 212 L50 74 L34 84 L8 44 Z" fill="#111" stroke="#ED6C23" stroke-width="2.5" stroke-linejoin="round"/>' +
+      '<text x="100" y="112" text-anchor="middle" fill="#fff" font-family="Oswald, sans-serif" font-size="19" letter-spacing="1.5">' + esc((nombre || '').toUpperCase().slice(0, 14)) + '</text>' +
+      '<text x="100" y="182" text-anchor="middle" fill="#ED6C23" font-family="Oswald, sans-serif" font-weight="700" font-size="' +
+      ((numero || '').length > 3 ? 44 : 72) + '">' + esc((numero || '').slice(0, 6)) + '</text></svg>';
+  }
+  const ISO = 'data:image/png;base64,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';
+  const barra = (t, v) => '<div class="pmk-top">' +
+    '<img class="iso" src="' + ISO + '" alt="Playmaker">' +
+    '<div><div class="marca">PLAY<em>MAKER</em></div><div class="sub">' + esc(t) + '</div></div>' +
+    (v ? '<button class="pmk-volver" data-ir="' + v + '">Volver</button>' : '') + '</div>';
+  const pie = '<div class="pie"><b>PLAYMAKER</b><br>Un club, una familia.</div>';
+
+  const cabFicha = f => '<div class="ref-cab"><span class="etiqueta">Referencia de venta</span>' +
+    '<div class="ref">' + esc(f.ref) + '</div><div class="proy">' + esc(f.proyecto) + '</div>' +
+    '<div class="meta">' + esc(f.cliente) + (f.vendedor ? ' · Vendedor: ' + esc(f.vendedor) : '') +
+    (f.entrega_cliente ? ' · Entrega comprometida ' + esc(fechaTxt(f.entrega_cliente)) : '') + '</div></div>';
+
+  function bloqueAvance(f, dets) {
+    return prendasEnJuego(f, dets).map(id => {
+      const p = prendaDe(id), c = habilitado(f, id), a = asignadas(dets, id);
+      const pct = c ? Math.min(100, Math.round(a / c * 100)) : 100;
+      const listo = c > 0 && a >= c, extra = a - c;
+      return '<div class="avance"><div class="fila"><div class="n">' + esc(p.nom) + '</div>' +
+        '<div class="c ' + (extra > 0 ? 'extra' : (listo ? 'listo' : 'falta')) + '">' + a + ' / ' + c + '</div></div>' +
+        '<div class="prog"><i class="' + (listo && extra <= 0 ? 'listo' : '') + '" style="width:' + pct + '%"></i></div>' +
+        (extra > 0 ? '<div class="nota">' + extra + (extra === 1 ? ' unidad agregada' : ' unidades agregadas') +
+          (c === 0 ? ' (no venía en tu compra)' : ' por sobre lo vendido') + '</div>' : '') + '</div>';
+    }).join('');
+  }
+  const errorConexion = e => '<div class="aviso error">No pudimos conectar con el sistema.<br>' +
+    esc((e && e.message ? e.message : '').slice(0, 140)) + '<br><br>Revisa tu conexión y vuelve a intentar. Si sigue igual, avísale a tu vendedor.</div>';
+
+  /* ==========================================================
+     PANTALLAS
+     ========================================================== */
+  function pantInicio() {
+    app.innerHTML = barra('Detalle de tallas') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">Completa las<br>tallas de tu pedido</h1>' +
+      '<p class="bajada">Playmaker dejó habilitadas las prendas de tu compra. Tú cargas el nombre, el número y la talla de cada persona.</p>' +
+      (CFG.permitirRef
+        ? '<button class="acceso primario" data-ir="ref"><div class="rot">Empezar</div>' +
+          '<div class="det">Necesitas la referencia COT que te enviamos</div></button>'
+        : '<div class="aviso">Para entrar, abre el link que te enviamos por WhatsApp. Si no lo tienes, pídeselo a tu vendedor.</div>') +
+      (st.error ? '<div class="aviso error">' + esc(st.error) + '</div>' : '') + pie + '</div>';
+  }
+
+  function pantRef() {
+    if (!CFG.permitirRef) { st.pant = 'inicio'; return pantInicio(); }
+    app.innerHTML = barra('Ingreso', 'inicio') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">Escribe tu<br>referencia</h1>' +
+      '<p class="bajada">Es el número COT de tu cotización. Viene en el mensaje que te enviamos.</p>' +
+      '<div class="campo"><input id="ref-input" type="text" maxlength="12" placeholder="COT-1234" autocomplete="off" autocapitalize="characters" enterkeyhint="go"></div>' +
+      (st.error ? '<div class="aviso error">' + esc(st.error) + '</div>' : '') +
+      '<button class="btn" id="btn-entrar">Abrir mi pedido</button>' + pie + '</div>';
+    const inp = document.getElementById('ref-input');
+    inp.focus();
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') entrar(); });
+    document.getElementById('btn-entrar').addEventListener('click', entrar);
+    async function entrar() {
+      const ref = normalizarRef(inp.value);
+      if (!ref) { st.error = 'Escribe la referencia, por ejemplo COT-1234.'; return render(); }
+      const b = document.getElementById('btn-entrar');
+      b.disabled = true; b.textContent = 'Buscando…';
+      try {
+        const f = await API.ficha(ref);
+        if (!f) { st.error = 'No encontramos el pedido ' + ref + '. Confirma la referencia con tu vendedor.'; return render(); }
+        st.error = ''; st.ficha = f; st.pant = 'confirmar'; render();
+      } catch (e) { st.error = 'No pudimos conectar. Revisa tu internet y vuelve a intentar.'; render(); }
+    }
+  }
+
+  function pantConfirmar() {
+    const f = st.ficha, tot = items(f).reduce((n, i) => n + i.cant, 0);
+    let h = barra('Confirma tu pedido', 'ref') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">¿Es este<br>tu pedido?</h1>' +
+      '<p class="bajada">Revisa que coincida con lo que compraste antes de cargar las tallas.</p>' +
+      cabFicha(f) + '<div class="campo"><div class="lab">Vas a detallar ' + tot + ' unidades</div>';
+    items(f).forEach(it => {
+      h += '<div class="avance"><div class="fila"><div class="n">' + esc(prendaDe(it.prenda).nom) + '</div><div class="c">' + it.cant + ' u.</div></div></div>';
+    });
+    h += '</div>';
+    if (f.estado === 'confirmado') h += '<div class="aviso ok">Este pedido ya está confirmado y en producción. Puedes revisarlo, pero no editarlo.</div>';
+    h += '<button class="btn" data-ir="pedido">Sí, es mi pedido</button>' +
+      '<button class="btn plano" data-ir="ref">No es este</button>' +
+      '<div class="mini" style="margin-top:12px">Si necesitas más unidades o una prenda que no aparece, entra igual: puedes agregarlas adentro.</div>' + pie + '</div>';
+    app.innerHTML = h;
+  }
+
+  async function pantPedido() {
+    const f = st.ficha;
+    app.innerHTML = barra(f.cliente, 'inicio') + '<div class="pmk-wrap"><div class="cargando">Cargando tu pedido…</div></div>';
+    let dets;
+    try { dets = await API.detalles(f.ref); }
+    catch (e) { app.innerHTML = barra(f.cliente, 'inicio') + '<div class="pmk-wrap">' + errorConexion(e) + pie + '</div>'; return; }
+    st.dets = dets;
+    const av = avanceFicha(f, dets), confirmado = f.estado === 'confirmado';
+
+    let h = barra(f.cliente, 'inicio') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">Detalle del pedido</h1>' +
+      '<p class="bajada">Carga a cada persona con su nombre, número y talla. Esto es lo que entra a producción.</p>' + cabFicha(f);
+
+    if (f.entrega_cliente) {
+      h += '<div class="aviso ok">Fecha de entrega comprometida: ' + esc(fechaTxt(f.entrega_cliente)) + '.</div>';
+    }
+    const rev = specsDe(f)._revision;
+    if (!confirmado && rev && rev.at) h += '<div class="aviso" id="aviso-revision"><b>Playmaker hizo ajustes en tu lista de tallas</b> el ' + esc(fechaTxt(diaLocal(rev.at))) +
+      (rev.nota ? ': ' + esc(String(rev.nota).replace(/[.\s]+$/, '')) : '') + '. Revísala y, si está todo bien, vuelve a enviarla con «Revisar y enviar a producción».</div>';
+
+    const montajes = imgsDe(f);
+    if (montajes.length) {
+      h += '<div class="campo"><div class="lab">Así va tu diseño</div>' +
+        '<div class="ayuda">Toca una imagen para verla completa.</div><div class="montajes-cli">' +
+        montajes.map(i => '<a href="' + esc(i.url) + '" target="_blank" rel="noopener">' +
+          '<img src="' + esc(i.url) + '" alt="' + esc(i.nombre) + '" loading="lazy">' +
+          '<div class="cap">' + esc((i.vista ? ((Array.isArray(i.prendas) && i.prendas.length ? i.prendas : [i.prenda || '']).map(id => prendaDe(id).nom).join(' + ') + ' · ' + i.vista) : i.nombre) +
+            (montajes.some(x => disenoImg(x) > 1) ? ' · Diseño ' + disenoImg(i) : '') + (i.arquero ? ' · arquero/líbero' : '')) + '</div></a>').join('') + '</div>' +
+        '<div class="ayuda" style="margin-top:10px">Si quieres algún cambio en el diseño, escríbele a tu vendedor.</div></div>';
+    }
+
+    h += moldesHTML(f);
+    if (confirmado) h += '<div class="aviso ok">' + (f.entrega_cliente
+        ? 'Tallas confirmadas: tu pedido está en producción.'
+        : 'Tallas confirmadas. Tu pedido entra a producción cuando Playmaker defina la fecha de entrega.') +
+      ' Para corregir algo, escríbele a tu vendedor.</div>';
+    if (av.extra > 0) h += '<div class="aviso">Agregaste ' + av.extra + (av.extra === 1 ? ' unidad' : ' unidades') +
+      ' por sobre lo vendido. Playmaker ya está avisado y te confirma el valor antes de producir.</div>';
+
+    h += pasosHTML(f, dets, !confirmado);
+    if (confirmado) h += '<button class="btn" id="btn-pdf">Descargar mi copia (PDF)</button>';
+
+    if (dets.length) {
+      h += '<div class="campo"><div class="lab">Personas cargadas (' + dets.length + ')</div>';
+      dets.forEach(d => {
+        const t = tallasDe(d);
+        const txt = Object.keys(t).filter(k => t[k]).map(k => prendaDe(k).nom + ' ' + t[k] +
+          (disenosMolde(f, k, d.calce).length > 1 ? (+disenosDe(d)[k] ? ' (diseño ' + disenosDe(d)[k] + ')' : ' (falta el diseño)') : '')).join(' · ');
+        h += '<button class="lista-item" data-editar="' + esc(d.id) + '"' + (confirmado ? ' disabled' : '') + '>' +
+          '<div class="izq"><div class="club">' + (String(d.nombre || '').trim() ? esc(d.nombre) : '<span style="color:var(--gris)">Sin nombre</span>') + '</div><div class="meta">' + esc(txt || 'Sin prendas') + '</div></div>' +
+          '<div class="cod2">' + (d.numero ? '#' + esc(d.numero) : (confirmado ? '' : 'Editar')) + '</div></button>';
+      });
+      h += '</div>';
+    } else {
+      h += '<div class="vacio"><div class="t">Sin detalle todavía</div><div class="d">Empieza por la primera persona.</div></div>';
+    }
+
+    if (!confirmado) {
+      h += '<button class="btn plano" id="btn-agregar">Agregar una persona suelta</button>';
+
+      // detalle de lo que falta, prenda por prenda
+      const faltantes = [];
+      items(f).forEach(it => {
+        const falta = it.cant - Math.min(asignadas(dets, it.prenda), it.cant);
+        if (falta > 0) faltantes.push(falta + ' ' + minP(it.prenda) + (falta > 1 && !nomDiseno(it.prenda) ? 's' : ''));
+      });
+
+      if (av.asig > 0) {
+        if (av.completo) {
+          h += '<button class="btn verde" id="btn-revisar">Revisar y enviar a producción</button>';
+        } else {
+          h += '<button class="btn oscuro" disabled>Revisar y enviar a producción</button>' +
+            '<div class="aviso">Falta completar ' + esc(faltantes.join(' y ')) +
+            ' antes de confirmar el pedido. Si compraste más unidades de las que vas a usar, avísale a tu vendedor para que ajuste el pedido.</div>';
+        }
+      }
+    }
+    app.innerHTML = h + pie + '</div>';
+
+    const bAdd = document.getElementById('btn-agregar');
+    if (bAdd) bAdd.addEventListener('click', () => {
+      st.form = { nombre: '', estampado: '', numero: '', calce: '', manga: 'Corta', arquero: false, obs: '', tallas: {}, disenos: {} };
+      st.editando = null; st.verOtras = false; st.pant = 'form'; render();
+    });
+    if (!confirmado) app.querySelectorAll('[data-editar]').forEach(b => b.addEventListener('click', () => {
+      const d = dets.find(x => String(x.id) === b.dataset.editar);
+      st.form = { nombre: d.nombre, estampado: d.estampado || '', numero: d.numero || '', calce: d.calce || '',
+        manga: d.manga || 'Corta', arquero: !!d.arquero, obs: d.obs || '', tallas: Object.assign({}, tallasDe(d)), disenos: Object.assign({}, disenosDe(d)) };
+      st.editando = d.id; st.verOtras = false; st.pant = 'form'; render();
+    }));
+    const brv = document.getElementById('btn-revisar');
+    if (brv) brv.addEventListener('click', () => { st.rev = { tallas: false, diseno: false }; st.error = ''; st.pant = 'revision'; render(); });
+    app.querySelectorAll('[data-paso]').forEach(b => b.addEventListener('click', () => {
+      const g = gruposFicha(f, dets)[+b.dataset.paso];
+      st.lote = { grupo: g, texto: '', calce: g.calce || g.calceDef || '', manga: 'Corta', filas: null, numero: numeroOpcional(g.prenda) ? llevaNumero(f, g.prenda) : null };
+      st.error = ''; st.pant = 'lote'; render();
+    }));
+    enlazarPDF(f, dets);
+    if (st.unisex === undefined) {   // catálogo de moldes: para avisar cuando un molde es unisex
+      st.unisex = null;
+      SB.get('moldes?select=numero,calce,descripcion').then(r => {
+        st.unisex = (r || []).filter(m => m.calce === 'Unisex').map(m => String(m.numero));
+        st.sinMangas = (r || []).filter(m => /sin mangas/i.test(m.descripcion || '')).map(m => String(m.numero));
+        if ((st.unisex.length || st.sinMangas.length) && (st.pant === 'pedido' || st.pant === 'form')) render();
+      }).catch(() => {});
+    }
+  }
+
+  /* ==========================================================
+     PASOS GUIADOS — un paso por prenda y calce, según los moldes
+     que Playmaker definió en la ficha (ej: camiseta masculina,
+     camiseta femenina, short masculino, short femenino)
+     ========================================================== */
+  const ORDEN_CALCE = ['Masculino', 'Femenino', 'Infantil'];
+  const numMolde = v => String(v || '').split('|')[1] || '';
+  const esUnisex = v => !!(st.unisex && st.unisex.indexOf(numMolde(v)) >= 0);
+  // Moldes sin mangas (vóley, hockey, E02…): esa camiseta es sin mangas por el molde y no se pregunta el largo de manga
+  const SIN_MANGAS_BASE = ['55', '56', '57', '64', '65', '102'];
+  const moldeSinMangas = v => !!v && (st.sinMangas || SIN_MANGAS_BASE).indexOf(numMolde(v)) >= 0;
+  const camisetaSinMangas = (f, id, calce) => {
+    const mo = moldesDe(specsDe(f)[id]), vs = (calce ? [mo[calce]] : Object.values(mo)).filter(Boolean);
+    return vs.length > 0 && vs.every(moldeSinMangas);
+  };
+  // largo de manga que se guarda para la persona: el de su camiseta con mangas; si solo lleva camisetas sin mangas, «Sin mangas»
+  const mangaPersona = (f, tallas, calce, elegida) => {
+    const cams = Object.keys(tallas || {}).filter(k => tallas[k] && basePrenda(k) === 'camiseta');
+    if (!cams.length) return '';
+    return cams.some(k => !camisetaSinMangas(f, k, calce)) ? (elegida || 'Corta') : 'Sin mangas';
+  };
+  function gruposFicha(f, dets) {
+    const specs = specsDe(f), out = [];
+    items(f).forEach(it => {
+      const sp = specs[it.prenda] || {}, mo = moldesDe(sp), un = (sp.unidades && typeof sp.unidades === 'object') ? sp.unidades : {};
+      const cals = Object.keys(mo).filter(c => mo[c]).sort((a, b) => ORDEN_CALCE.indexOf(a) - ORDEN_CALCE.indexOf(b));
+      if (!cals.length) { out.push({ prenda: it.prenda, calce: '', cant: it.cant, molde: '' }); return; }
+      // un mismo molde unisex para hombres y mujeres = un solo paso
+      const uni = cals.filter(c => esUnisex(mo[c]) && c !== 'Infantil');
+      if (uni.length > 1 && uni.every(c => numMolde(mo[c]) === numMolde(mo[uni[0]]))) {
+        const suma = uni.every(c => typeof un[c] === 'number') ? uni.reduce((n, c) => n + un[c], 0) : null;
+        out.push({ prenda: it.prenda, calce: '', calceDef: uni[0], unisex: true, cant: suma, molde: String(mo[uni[0]]).split('|')[0] });
+        cals.filter(c => uni.indexOf(c) < 0).forEach(c => out.push({ prenda: it.prenda, calce: c, cant: typeof un[c] === 'number' ? un[c] : null, molde: String(mo[c]).split('|')[0] }));
+        return;
+      }
+      cals.forEach(c => out.push({ prenda: it.prenda, calce: c, unisex: esUnisex(mo[c]), molde: String(mo[c]).split('|')[0],
+        cant: typeof un[c] === 'number' ? un[c] : (cals.length === 1 ? it.cant : null) }));
+    });
+    out.forEach(g => {
+      g.disenos = disenosMolde(f, g.prenda, g.calce || g.calceDef || '');
+      g.n = personasGrupo(g, dets).length;
+      g.extra = g.cant != null ? Math.max(0, g.n - g.cant) : 0;
+      g.listo = g.cant != null ? g.n >= g.cant && g.cant > 0 : (g.n > 0 && asignadas(dets, g.prenda) >= habilitado(f, g.prenda));
+    });
+    return out;
+  }
+  const nombreGrupo = g => prendaDe(g.prenda).nom + (g.unisex ? ' · Unisex' : (g.calce ? ' · ' + g.calce : ''));
+  const ordenNum = d => { const n = parseInt(d.numero, 10); return isNaN(n) ? 9999 : n; };
+  const personasGrupo = (g, dets) => dets.filter(d => tallasDe(d)[g.prenda] && (!g.calce || d.calce === g.calce))
+    .sort((a, b) => ordenNum(a) - ordenNum(b) || String(a.nombre).localeCompare(String(b.nombre)));
+  // pasos + prendas cargadas fuera de ellos (otro calce o prenda que no venía en la compra)
+  function gruposRevision(f, dets) {
+    const gs = gruposFicha(f, dets), extra = {};
+    dets.forEach(d => { const t = tallasDe(d); Object.keys(t).forEach(pr => {
+      if (!t[pr] || gs.some(g => g.prenda === pr && (!g.calce || g.calce === d.calce))) return;
+      const k = pr + '|' + (d.calce || ''); extra[k] = extra[k] || { prenda: pr, calce: d.calce || '', cant: null, molde: '', fuera: true };
+    }); });
+    return gs.concat(Object.values(extra).map(g => Object.assign(g, { n: personasGrupo(g, dets).length })));
+  }
+  const ORDEN_TALLA = TALLAS_INF.concat(TALLAS_AD, ['Infantil', 'Juvenil', 'Adulto', 'Sí']);
+  function resumenTallas(pers, prenda) {
+    const c = {}; pers.forEach(d => { const t = tallasDe(d)[prenda]; c[t] = (c[t] || 0) + 1; });
+    return Object.keys(c).sort((a, b) => ORDEN_TALLA.indexOf(a) - ORDEN_TALLA.indexOf(b)).map(t => t + ': ' + c[t]).join(' · ');
+  }
+  function pasosHTML(f, dets, activo) {
+    const gs = gruposFicha(f, dets); let sig = -1;
+    gs.forEach((g, i) => { if (sig < 0 && !g.listo) sig = i; });
+    const hechos = gs.filter(g => g.listo).length;
+    return '<div class="campo"><div class="lab">Carga de tallas · ' + hechos + ' de ' + gs.length + ' pasos listos</div>' +
+      (activo ? '<div class="ayuda">Ve paso por paso: cada uno es una prenda con su molde. En cada paso pegas la lista de esas personas con su número y talla. ' +
+        'Si el número ya está cargado (por ejemplo en la camiseta), el short se le suma a esa misma persona.</div>' : '') +
+      gs.map((g, i) => '<div class="paso' + (g.listo ? ' listo' : (activo && i === sig ? ' sig' : '')) + '">' +
+        '<div class="ico">' + (g.listo ? '✓' : (i + 1)) + '</div>' +
+        '<div class="txt"><div class="n">' + esc(nombreGrupo(g)) + '</div><div class="d">' + g.n + (g.cant != null ? ' de ' + g.cant : '') + ' cargadas' +
+          (g.molde ? ' · molde ' + esc(g.molde) : '') + (g.disenos && g.disenos.length > 1 ? ' · ' + g.disenos.length + ' diseños' : '') + (g.extra > 0 ? ' · ' + g.extra + ' de más' : '') + (g.listo ? ' · listo' : (activo && i === sig ? ' · sigue este' : '')) + '</div></div>' +
+        (activo ? '<button type="button" class="btn-paso" data-paso="' + i + '">' + (g.listo ? 'Agregar' : (g.n ? 'Seguir' : 'Cargar')) + '</button>' : '') + '</div>').join('') + '</div>';
+  }
+
+  /* ==========================================================
+     REVISIÓN FINAL Y ENVÍO A PRODUCCIÓN
+     ========================================================== */
+  function tablasRevisionHTML(f, dets) {
+    return gruposRevision(f, dets).map(g => {
+      const pers = personasGrupo(g, dets), manga = !!prendaDe(g.prenda).manga, dis = disenosMolde(f, g.prenda, g.calce || g.calceDef || '').length > 1;
+      const cuenta = {}; pers.forEach(d => { const k = d.calce + '|' + normNum(d.numero); if (normNum(d.numero)) cuenta[k] = (cuenta[k] || 0) + 1; });
+      return '<div class="rev-g"><div class="t">' + esc(nombreGrupo(g)) + ' · ' + pers.length + (g.cant != null ? ' de ' + g.cant : '') + (g.fuera ? ' (adicional)' : '') + '</div>' +
+        '<div class="r">' + esc(resumenTallas(pers, g.prenda)) + '</div>' +
+        '<table class="rev"><tr><th>N°</th><th>Nombre</th><th>Talla</th>' + (manga ? '<th>Manga</th>' : '') + (dis ? '<th>Diseño</th>' : '') + '</tr>' +
+        pers.map(d => '<tr><td><b>' + esc(d.numero || '—') + '</b>' + (cuenta[d.calce + '|' + normNum(d.numero)] > 1 ? ' <span title="Número repetido">⚠</span>' : '') + '</td><td>' + (String(d.nombre || '').trim() ? esc(d.nombre) : '<span class="mini">sin nombre</span>') + (d.arquero ? ' <span class="mini">(arquero)</span>' : '') + '</td><td>' +
+          esc(tallasDe(d)[g.prenda]) + '</td>' + (manga ? '<td>' + esc(d.manga || '') + '</td>' : '') +
+          (dis ? '<td>' + (+disenosDe(d)[g.prenda] ? 'Diseño ' + esc(disenosDe(d)[g.prenda]) : '<b style="color:var(--naranja)">Falta</b>') + '</td>' : '') + '</tr>').join('') + '</table></div>';
+    }).join('');
+  }
+  async function pantRevision() {
+    const f = st.ficha;
+    if (f.estado === 'confirmado') { st.pant = 'pedido'; return render(); }
+    app.innerHTML = barra(f.cliente, 'pedido') + '<div class="pmk-wrap"><div class="cargando">Preparando la revisión…</div></div>';
+    let dets;
+    try { dets = await API.detalles(f.ref); } catch (e) { app.innerHTML = barra(f.cliente, 'pedido') + '<div class="pmk-wrap">' + errorConexion(e) + pie + '</div>'; return; }
+    st.dets = dets;
+    if (!avanceFicha(f, dets).completo) { st.pant = 'pedido'; return render(); }
+    const rv = st.rev || (st.rev = { tallas: false });
+    const montajes = imgsDe(f);   // el diseño se muestra solo como referencia: no se aprueba aquí
+    const reps = repetidosDe(dets, d => d.calce);
+    let h = barra(f.cliente, 'pedido') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">Revisa y envía<br>a producción</h1>' +
+      '<p class="bajada">Es el último paso. Revisa con calma: después de enviar, cualquier cambio se pide a tu vendedor.</p>' + cabFicha(f) +
+      '<div class="campo"><div class="lab">1 · Nombres, números y tallas</div>' + tablasRevisionHTML(f, dets) +
+      '<button class="btn plano" data-ir="pedido" style="margin-top:12px">Corregir algo</button></div>';
+    if (montajes.length) h += '<div class="campo"><div class="lab">2 · Tu diseño</div><div class="montajes-cli">' + montajes.map(i => '<a href="' + esc(i.url) + '" target="_blank" rel="noopener">' +
+      '<img src="' + esc(i.url) + '" alt="" loading="lazy"><div class="cap">' + esc((i.vista || i.nombre || '') + (i.arquero ? ' · arquero/líbero' : '')) + '</div></a>').join('') + '</div>' +
+      '<div class="ayuda" style="margin-top:10px">Si quieres algún cambio en el diseño, escríbele a tu vendedor.</div></div>';
+    h += '<div class="campo"><div class="lab">' + (montajes.length ? '3' : '2') + ' · Confirmación</div>' +
+      '<label class="check' + (rv.tallas ? ' on' : '') + '" data-rev="tallas"><input type="checkbox"' + (rv.tallas ? ' checked' : '') + '>' +
+      '<span>Revisé el detalle completo: los nombres, números y tallas son correctos.</span></label>' +
+      (reps.length ? avisoRepetidos(reps, 'No impide enviar: si están bien, confírmalo.') +
+        '<label class="check' + (rv.repetidos ? ' on' : '') + '" data-rev="repetidos"><input type="checkbox"' + (rv.repetidos ? ' checked' : '') + '>' +
+        '<span>Los números o nombres repetidos están bien así.</span></label>' : '') + '</div>';
+    if (st.error) h += '<div class="aviso error">' + esc(st.error) + '</div>';
+    h += '<button class="btn verde" id="btn-enviar">Enviar a producción</button>';
+    app.innerHTML = h + pie + '</div>';
+    app.querySelectorAll('[data-rev]').forEach(l => l.addEventListener('change', e => { rv[l.dataset.rev] = e.target.checked; l.classList.toggle('on', e.target.checked); }));
+    document.getElementById('btn-enviar').addEventListener('click', async () => {
+      if (!rv.tallas) { st.error = 'Marca la confirmación de que revisaste nombres, números y tallas.'; return render(); }
+      if (reps.length && !rv.repetidos) { st.error = 'Hay números o nombres repetidos: confirma que están bien, o corrígelos con "Corregir algo".'; return render(); }
+      const b = document.getElementById('btn-enviar'); b.disabled = true; b.textContent = 'Enviando…';
+      try {
+        const ahora = new Date().toISOString();
+        await API.estadoFicha(f.ref);
+        st.ficha = Object.assign({}, f, { estado: 'confirmado', confirmado_at: ahora });
+        st.error = ''; st.rev = null; st.pant = 'cerrado'; render();
+        descargarPDF(st.ficha, dets).catch(() => {});
+      } catch (e) { st.error = 'No se pudo enviar. Revisa tu conexión y vuelve a intentar.'; render(); }
+    });
+  }
+  function pantCerrado() {
+    const f = st.ficha, dets = st.dets || [];
+    const n = dets.reduce((s, d) => s + Object.keys(tallasDe(d)).filter(k => tallasDe(d)[k]).length, 0);
+    app.innerHTML = barra(f.cliente) + '<div class="pmk-wrap"><div class="cierre"><div class="ok">✓</div>' +
+      '<h1 class="tit">¡Listo! Tu pedido fue<br>enviado a producción</h1>' +
+      '<p class="bajada">Recibimos el detalle de ' + n + ' prendas de ' + esc(f.proyecto || f.ref) + '. No necesitas hacer nada más.</p></div>' +
+      '<div class="aviso ok">Se descargó una copia en PDF con todo el detalle. Si no la ves, usa el botón.</div>' +
+      '<button class="btn" id="btn-pdf">Descargar mi copia (PDF)</button>' +
+      '<div class="aviso">¿Necesitas algún cambio? Desde ahora los cambios se piden directamente a tu vendedor' + (f.vendedor ? ': <b>' + esc(f.vendedor) + '</b>' : '') + '.</div>' +
+      '<button class="btn plano" data-ir="pedido">Ver mi pedido</button>' + pie + '</div>';
+    enlazarPDF(f, dets);
+  }
+  function enlazarPDF(f, dets) {
+    const b = document.getElementById('btn-pdf'); if (!b) return;
+    b.addEventListener('click', async () => {
+      b.disabled = true; const t = b.textContent; b.textContent = 'Generando…';
+      try { await descargarPDF(f, dets); } catch (e) { alert('No se pudo generar el PDF. Intenta de nuevo.'); }
+      b.disabled = false; b.textContent = t;
+    });
+  }
+
+  /* ==========================================================
+     PDF DE RESPALDO PARA EL CLIENTE — hecho aquí mismo, sin
+     librerías externas: texto, tablas y fotos JPEG del montaje
+     ========================================================== */
+  const latin1 = s => { const b = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i) & 255; return b; };
+  function pdfDoc() {
+    const W = 595.28, H = 841.89, M = 42, paginas = [], fotos = [];
+    let ops = null;
+    const limpio = s => String(s == null ? '' : s)
+      .replace(/[\u2014\u2013]/g, '-').replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'").replace(/\u2026/g, '...')
+      .replace(/[^\x20-\xFF]/g, '?').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+    const n1 = v => v.toFixed(1);
+    const d = { W: W, H: H, M: M, y: 0 };
+    d.nueva = () => { ops = []; paginas.push(ops); d.y = H - M; };
+    d.lugar = h => { if (d.y - h < M) { d.nueva(); return true; } return false; };
+    d.texto = (x, y, s, size, bold, color) => ops.push((color || '0 0 0') + ' rg BT /' + (bold ? 'F2' : 'F1') + ' ' + size + ' Tf ' + n1(x) + ' ' + n1(y) + ' Td (' + limpio(s) + ') Tj ET');
+    d.linea = (x1, y1, x2, y2) => ops.push('0.85 G 0.6 w ' + n1(x1) + ' ' + n1(y1) + ' m ' + n1(x2) + ' ' + n1(y2) + ' l S');
+    d.caja = (x, y, w, h, color) => ops.push(color + ' rg ' + [x, y, w, h].map(n1).join(' ') + ' re f');
+    d.foto = (ft, x, y, w, h) => { fotos.push(ft); ops.push('q ' + n1(w) + ' 0 0 ' + n1(h) + ' ' + n1(x) + ' ' + n1(y) + ' cm /Im' + fotos.length + ' Do Q'); };
+    d.cabe = (s, ancho, size) => { s = String(s == null ? '' : s); const max = Math.max(1, Math.floor(ancho / (size * 0.52))); return s.length > max ? s.slice(0, max - 1) + '.' : s; };
+    d.bytes = () => {
+      const partes = [], offs = []; let largo = 0;
+      const add = x => { const b = typeof x === 'string' ? latin1(x) : x; partes.push(b); largo += b.length; };
+      const obj = (n, cuerpo) => { offs[n] = largo; add(n + ' 0 obj\n'); cuerpo(); add('\nendobj\n'); };
+      add('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+      const base = 5 + fotos.length;
+      obj(1, () => add('<< /Type /Catalog /Pages 2 0 R >>'));
+      obj(2, () => add('<< /Type /Pages /Kids [' + paginas.map((_, i) => (base + i * 2) + ' 0 R').join(' ') + '] /Count ' + paginas.length + ' >>'));
+      obj(3, () => add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'));
+      obj(4, () => add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'));
+      fotos.forEach((ft, i) => obj(5 + i, () => {
+        add('<< /Type /XObject /Subtype /Image /Width ' + ft.w + ' /Height ' + ft.h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + ft.bytes.length + ' >>\nstream\n');
+        add(ft.bytes); add('\nendstream');
+      }));
+      const xo = fotos.map((_, i) => '/Im' + (i + 1) + ' ' + (5 + i) + ' 0 R').join(' ');
+      paginas.forEach((o, i) => {
+        const cont = latin1(o.join('\n'));
+        obj(base + i * 2, () => add('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + W + ' ' + H + '] /Resources << /Font << /F1 3 0 R /F2 4 0 R >>' +
+          (xo ? ' /XObject << ' + xo + ' >>' : '') + ' >> /Contents ' + (base + i * 2 + 1) + ' 0 R >>'));
+        obj(base + i * 2 + 1, () => { add('<< /Length ' + cont.length + ' >>\nstream\n'); add(cont); add('\nendstream'); });
+      });
+      const total = base + paginas.length * 2, xref = largo;
+      let t = 'xref\n0 ' + total + '\n0000000000 65535 f \n';
+      for (let n = 1; n < total; n++) t += String(offs[n]).padStart(10, '0') + ' 00000 n \n';
+      add(t + 'trailer\n<< /Size ' + total + ' /Root 1 0 R >>\nstartxref\n' + xref + '\n%%EOF\n');
+      const out = new Uint8Array(largo); let p = 0; partes.forEach(b => { out.set(b, p); p += b.length; }); return out;
+    };
+    d.nueva();
+    return d;
+  }
+  // foto del montaje → JPEG chico para el PDF (si el navegador no la deja leer, se omite)
+  function fotoJPEG(url) {
+    return new Promise(res => {
+      const img = new Image(); let listo = false; const fin = v => { if (!listo) { listo = true; res(v); } };
+      img.crossOrigin = 'anonymous';
+      img.onload = () => { try {
+        const k = Math.min(1, 900 / Math.max(img.width, img.height)), w = Math.max(1, Math.round(img.width * k)), h = Math.max(1, Math.round(img.height * k));
+        const c = document.createElement('canvas'); c.width = w; c.height = h; const cx = c.getContext('2d');
+        cx.fillStyle = '#fff'; cx.fillRect(0, 0, w, h); cx.drawImage(img, 0, 0, w, h);
+        fin({ w: w, h: h, bytes: latin1(atob(c.toDataURL('image/jpeg', 0.82).split(',')[1])) });
+      } catch (e) { fin(null); } };
+      img.onerror = () => fin(null); setTimeout(() => fin(null), 8000);
+      img.src = url;
+    });
+  }
+  function tablaPDF(d, g, pers) {
+    const M = d.M, W = d.W, conManga = !!prendaDe(g.prenda).manga, gris = '0.4 0.4 0.4';
+    const cols = conManga ? [['N°', 40], ['Nombre', 190], ['Estampado', 120], ['Talla', 70], ['Manga', 91]] : [['N°', 40], ['Nombre', 230], ['Estampado', 150], ['Talla', 91]];
+    const cab = () => { d.caja(M, d.y - 5, W - 2 * M, 17, '0.93 0.93 0.93'); let x = M + 4; cols.forEach(c => { d.texto(x, d.y, c[0], 9, true); x += c[1]; }); d.y -= 18; };
+    d.lugar(70);
+    d.texto(M, d.y, nombreGrupo(g) + ' - ' + pers.length + (g.cant != null ? ' de ' + g.cant : '') + ' unidades' + (g.fuera ? ' (adicional)' : ''), 12, true); d.y -= 14;
+    d.texto(M, d.y, 'Tallas: ' + resumenTallas(pers, g.prenda) + (g.molde ? '   ·   Molde ' + g.molde : ''), 9, false, gris); d.y -= 16;
+    cab();
+    pers.forEach(p => {
+      if (d.lugar(16)) cab();
+      const vals = [p.numero || '-', p.nombre, p.estampado || '-', tallasDe(p)[g.prenda]].concat(conManga ? [p.manga || '-'] : []);
+      let x = M + 4; vals.forEach((v, i) => { d.texto(x, d.y, d.cabe(v, cols[i][1] - 6, 9), 9, i === 0); x += cols[i][1]; });
+      d.y -= 5; d.linea(M, d.y, W - M, d.y); d.y -= 11;
+    });
+    d.y -= 14;
+  }
+  async function descargarPDF(f, dets) {
+    const d = pdfDoc(), M = d.M, W = d.W, naranja = '0.93 0.42 0.14', gris = '0.4 0.4 0.4';
+    const fecha = iso => iso ? fechaTxt(iso) + ' de ' + String(iso).slice(0, 4) : '';
+    d.texto(M, d.y - 8, 'PLAYMAKER', 22, true, naranja); d.y -= 32;
+    d.texto(M, d.y, 'Detalle del pedido enviado a producción', 14, true); d.y -= 22;
+    [['Referencia', f.ref], ['Proyecto', f.proyecto], ['Cliente', f.cliente], ['Vendedor(a)', f.vendedor],
+     ['Enviado a producción', fecha(f.confirmado_at || new Date().toISOString())],
+     ['Entrega comprometida', f.entrega_cliente ? fecha(f.entrega_cliente) : 'la define Playmaker y te la informa tu vendedor(a)']].forEach(r => {
+      if (!r[1]) return; d.texto(M, d.y, r[0] + ':', 10, true); d.texto(M + 130, d.y, d.cabe(r[1], W - 2 * M - 130, 10), 10); d.y -= 14;
+    });
+    const total = dets.reduce((s, x) => s + Object.keys(tallasDe(x)).filter(k => tallasDe(x)[k]).length, 0);
+    d.texto(M, d.y, 'Total:', 10, true); d.texto(M + 130, d.y, total + ' prendas · ' + dets.length + ' personas', 10); d.y -= 10;
+    d.linea(M, d.y, W - M, d.y); d.y -= 26;
+    gruposRevision(f, dets).forEach(g => { const pers = personasGrupo(g, dets); if (pers.length) tablaPDF(d, g, pers); });
+    d.lugar(60);
+    d.texto(M, d.y, 'Diseño', 13, true); d.y -= 16;
+    if (!imgsDe(f).length) { d.texto(M, d.y, 'Playmaker te enviará el diseño por separado.', 10); d.y -= 18; }
+    const ancho = (W - 2 * M - 16) / 2, alto = 200; let col = 0;
+    for (const i of imgsDe(f).slice(0, 6)) {
+      const ft = await fotoJPEG(i.url); if (!ft) continue;
+      if (col === 0) d.lugar(alto + 24);
+      const k = Math.min(ancho / ft.w, alto / ft.h), w = ft.w * k, h = ft.h * k, x = M + col * (ancho + 16);
+      d.foto(ft, x, d.y - h, w, h);
+      d.texto(x, d.y - alto - 12, d.cabe((i.vista || i.nombre || '') + (i.arquero ? ' · arquero/líbero' : ''), ancho, 8), 8, false, gris);
+      if (col === 1) { d.y -= alto + 26; col = 0; } else col = 1;
+    }
+    if (col === 1) d.y -= alto + 26;
+    d.lugar(40); d.linea(M, d.y, W - M, d.y); d.y -= 16;
+    d.texto(M, d.y, 'Si necesitas algún cambio, contacta directamente a tu vendedor(a)' + (f.vendedor ? ': ' + f.vendedor : '') + '.', 10, false, gris);
+    const blob = new Blob([d.bytes()], { type: 'application/pdf' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = 'Pedido_' + f.ref + '_' + String(f.cliente || '').replace(/[^\w]+/g, '_') + '.pdf';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    return blob;
+  }
+
+  function pantForm() {
+    const f = st.ficha, fo = st.form, dets = st.dets, yo = st.editando;
+    fo.disenos = fo.disenos || {};
+    const hayDisenos = ['Masculino', 'Femenino', 'Infantil'].some(c => items(f).some(i => disenosMolde(f, i.prenda, c).length > 1));
+    const habIds = items(f).map(i => i.prenda);
+    const extrasYa = Object.keys(fo.tallas).filter(k => fo.tallas[k] && habIds.indexOf(k) < 0);
+    const visibles = habIds.concat(extrasYa);
+    const otras = PRENDAS.filter(p => visibles.indexOf(p.id) < 0);
+    const pideEstampado = visibles.some(id => prendaDe(id).estampado) || (st.verOtras && otras.some(p => p.estampado));
+
+    const usadas = {};
+    PRENDAS.map(p => p.id).concat(visibles).forEach(id => { usadas[id] = dets.reduce((n, d) => n + ((d.id !== yo && tallasDe(d)[id]) ? 1 : 0), 0); });
+    let mangaPuesta = false, arqPuesto = false;   // con dos camisetas, el largo de manga y «arquero» se preguntan una sola vez
+
+    const bloque = (id, fuera) => {
+      const p = prendaDe(id), c = habilitado(f, id);
+      const ya = usadas[id] + (fo.tallas[id] ? 1 : 0), extra = ya - c;
+      let x = '<div class="prenda' + (fuera ? ' fuera' : '') + '" data-prenda="' + id + '"><div class="cab">' +
+        '<div class="nom">' + esc(p.nom) + '</div><div class="cupo' + (extra > 0 ? ' extra' : '') + '">' +
+        (c > 0 ? ya + ' de ' + c + (extra > 0 ? ' · +' + extra : '') : 'no venía en tu compra') + '</div></div>';
+      x += '<div class="chips">' + (p.escala
+        ? chips('t_' + p.id, p.escala, fo.tallas[p.id] || '') + chips('t_' + p.id, [{ v: '', t: 'No lleva', clase: 'nolleva' }], fo.tallas[p.id] || '')
+        : (p.sinTalla
+          ? chips('t_' + p.id, [{ v: 'Sí', t: 'Sí, las lleva' }, { v: '', t: 'No lleva', clase: 'nolleva' }], fo.tallas[p.id] || '')
+          : tallaChips('t_' + p.id, fo.tallas[p.id] || ''))) + '</div>';
+      const ds = fo.calce ? disenosMolde(f, id, fo.calce) : [];
+      if (ds.length > 1) x += '<div style="margin-top:14px"><div style="font-size:13px;font-weight:600;margin-bottom:8px">Diseño</div>' +
+        fotosDisenosHTML(fotosDisenos(f, id, fo.calce)) +
+        '<div class="chips" style="margin-top:8px">' + chips('d_' + id, ds.map(n => ({ v: String(n), t: 'Diseño ' + n })), String(fo.disenos[id] || '')) + '</div></div>';
+      if (p.manga) {
+        if (camisetaSinMangas(f, id, fo.calce)) x += '<div class="mini" style="margin-top:10px">Esta camiseta es <b>sin mangas</b> (así es su molde).</div>';
+        else if (!mangaPuesta) {
+          mangaPuesta = true;
+          x += '<div style="margin-top:14px"><div style="font-size:13px;font-weight:600;margin-bottom:8px">Largo de manga</div>' +
+            '<div class="chips">' + chips('manga', ['Corta', 'Sin mangas', 'Larga'], fo.manga) + '</div>' +
+            '<div class="mini" style="margin-top:7px">La manga larga tiene costo adicional. Corta y sin mangas van incluidas.</div></div>';
+        }
+        if (!arqPuesto) {
+          arqPuesto = true;
+          x += '<label class="check' + (fo.arquero ? ' on' : '') + '" style="margin-top:14px" data-check="arquero">' +
+            '<input type="checkbox" ' + (fo.arquero ? 'checked' : '') + '><span>Es arquero/a o líbero <span class="mini">(diseño y confección aparte)</span></span></label>';
+        }
+      }
+      return x + '</div>';
+    };
+
+    let h = barra(f.cliente, 'pedido') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">' + (yo ? 'Editar persona' : 'Nueva persona') + '</h1>' +
+      '<p class="bajada">Cada persona toma una unidad de las prendas que marques.</p>';
+
+    if (pideEstampado) {
+      h += '<div class="campo"><div class="jersey-box"><div id="jersey">' + camiseta(fo.estampado, fo.numero) + '</div>' +
+        '<div class="jersey-datos"><div><div class="et">Nombre estampado</div><div class="val" id="jv-nom">' + (esc(fo.estampado.toUpperCase()) || '—') + '</div></div>' +
+        '<div><div class="et">Número</div><div class="val naranja" id="jv-num">' + (esc(fo.numero) || '—') + '</div></div></div></div></div>';
+    }
+
+    h += '<div class="campo"><label for="f-nombre">Nombre de la persona <span class="mini">(opcional)</span></label>' +
+      '<div class="ayuda">Solo para reconocer la prenda en la entrega; no se estampa. Lo que va en la espalda se escribe en «Nombre a estampar».</div>' +
+      '<input id="f-nombre" type="text" value="' + esc(fo.nombre) + '" placeholder="Ej: Camila Rojas" autocapitalize="words"></div>';
+    if (pideEstampado) {
+      h += '<div class="dos-col"><div class="campo"><label for="f-estampado">Nombre a estampar</label>' +
+        '<input id="f-estampado" type="text" maxlength="20" value="' + esc(fo.estampado) + '" placeholder="Ej: P. SALINAS (vacío si no lleva)" autocapitalize="characters"></div>' +
+        '<div class="campo"><label for="f-numero">Número</label>' +
+        '<input id="f-numero" type="text" maxlength="6" value="' + esc(fo.numero) + '" placeholder="Ej: 10 o 9+1"></div></div>';
+    }
+    h += '<div class="campo"><label>Calce</label><div class="ayuda">Masculino es corte recto, femenino es corte entallado.</div>' +
+      '<div class="chips">' + chips('calce', ['Masculino', 'Femenino', 'Infantil'], fo.calce, true) + '</div>' +
+      '<div class="guias" id="guias">' + guiasHTML(f, fo.calce) + '</div></div>';
+
+    h += '<div class="campo"><div class="lab">Prendas de tu pedido</div>' + visibles.map(id => bloque(id, habIds.indexOf(id) < 0)).join('') + '</div>';
+
+    if (otras.length) {
+      h += '<div class="campo"><div class="lab">¿Necesitas otra prenda?</div>' +
+        '<div class="ayuda">No venían en tu compra. Si las agregas, Playmaker recibe el aviso y te confirma el valor antes de producir.</div>' +
+        (st.verOtras ? otras.map(p => bloque(p.id, true)).join('') : '<button class="btn plano" id="btn-otras">Agregar otra prenda</button>') + '</div>';
+    }
+
+    h += '<div class="aviso">¿Dudas con alguna talla? Revisa las medidas que aparecen bajo el calce: ' +
+      'son las de la prenda real, estirada. Cualquier cambio que no sea talla, nombre o número se acuerda con Playmaker.</div>';
+    if (st.error) h += '<div class="aviso error">' + esc(st.error) + '</div>';
+    if (yo) h += '<button class="btn plano" id="btn-eliminar">Eliminar esta persona</button>';
+    h += '<div class="barra-fija"><button class="btn" id="btn-guardar">' + (yo ? 'Guardar cambios' : 'Agregar al pedido') + '</button></div>';
+    app.innerHTML = h + pie + '</div>';
+
+    const bo = document.getElementById('btn-otras');
+    if (bo) bo.addEventListener('click', () => { st.verOtras = true; render(); });
+
+    const refrescar = () => {
+      const j = document.getElementById('jersey');
+      if (!j) return;
+      j.innerHTML = camiseta(fo.estampado, fo.numero);
+      document.getElementById('jv-nom').textContent = fo.estampado.toUpperCase() || '—';
+      document.getElementById('jv-num').textContent = fo.numero || '—';
+    };
+    const bind = (id, campo, cb) => { const el = document.getElementById(id); if (el) el.addEventListener('input', e => { fo[campo] = e.target.value; if (cb) cb(); }); };
+    bind('f-nombre', 'nombre'); bind('f-estampado', 'estampado', refrescar);
+    const num = document.getElementById('f-numero');
+    // acepta 9+1, 10/11 y similares, no solo dígitos
+    if (num) num.addEventListener('input', e => {
+      fo.numero = e.target.value.toUpperCase().replace(/[^0-9A-Z+\-\/]/g, '').slice(0, 6);
+      e.target.value = fo.numero; refrescar();
+    });
+
+    app.querySelectorAll('[data-chip]').forEach(b => b.addEventListener('click', () => {
+      const g = b.dataset.chip, v = b.dataset.val;
+      if (g === 'calce') fo.calce = v; else if (g === 'manga') fo.manga = v; else if (g.slice(0, 2) === 'd_') fo.disenos[g.slice(2)] = +v; else fo.tallas[g.slice(2)] = v;
+      if (g === 'calce' && hayDisenos) return render();   // los diseños dependen del molde de ese calce
+      if (g === 'calce') { const gu = document.getElementById('guias'); if (gu) gu.innerHTML = guiasHTML(f, v); }
+      b.parentElement.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      const cont = b.closest('.prenda');
+      if (cont && g.slice(0, 2) === 't_') {
+        const id = cont.dataset.prenda, c = habilitado(f, id), ya = usadas[id] + (v ? 1 : 0), extra = ya - c;
+        const el = cont.querySelector('.cupo');
+        el.textContent = c > 0 ? ya + ' de ' + c + (extra > 0 ? ' · +' + extra : '') : 'no venía en tu compra';
+        el.classList.toggle('extra', extra > 0);
+      }
+    }));
+    app.querySelectorAll('[data-check="arquero"]').forEach(chk =>
+      chk.addEventListener('change', e => { fo.arquero = e.target.checked; chk.classList.toggle('on', fo.arquero); }));
+
+    document.getElementById('btn-guardar').addEventListener('click', guardar);
+    const bd = document.getElementById('btn-eliminar');
+    if (bd) bd.addEventListener('click', async () => {
+      bd.disabled = true; bd.textContent = 'Eliminando…';
+      try {
+        await API.borrarDetalle(yo);
+        await sincronizarAvisos(f, await API.detalles(f.ref));
+        st.editando = null; st.error = ''; st.pant = 'pedido'; render();
+      } catch (e) { bd.disabled = false; bd.textContent = 'Reintentar'; }
+    });
+
+    async function guardar() {
+      const necesitaNum = Object.keys(fo.tallas).some(k => fo.tallas[k] && pideNumero(f, k));
+      if (necesitaNum && !fo.nombre.trim() && !String(fo.numero || '').trim() && !fo.estampado.trim()) { st.error = 'Escribe al menos el número (o el nombre de la persona) para reconocer su prenda.'; return render(); }
+      if (!fo.calce) { st.error = 'Elige el calce: masculino, femenino o infantil.'; return render(); }
+      if (!Object.keys(fo.tallas).some(k => fo.tallas[k])) { st.error = 'Marca la talla de al menos una prenda.'; return render(); }
+      if (Object.keys(fo.tallas).some(k => fo.tallas[k] && basePrenda(k) === 'camiseta' && pideNumero(f, k)) && !fo.numero) { st.error = 'La camiseta necesita un número.'; return render(); }
+      const sinDis = Object.keys(fo.tallas).filter(k => fo.tallas[k] && disenosMolde(f, k, fo.calce).length > 1 && disenosMolde(f, k, fo.calce).indexOf(+fo.disenos[k]) < 0);
+      if (sinDis.length) { st.error = 'Elige el diseño de ' + sinDis.map(k => minP(k)).join(' y ') + '.'; return render(); }
+      const conNum = Object.keys(fo.tallas).filter(k => fo.tallas[k] && numeroOpcional(k) && llevaNumero(f, k) === true);
+      if (conNum.length && !String(fo.numero || '').trim()) { st.error = 'En este pedido, ' + conNum.map(k => minP(k)).join(' y ') + ' lleva número: escríbelo.'; return render(); }
+      const b = document.getElementById('btn-guardar');
+      b.disabled = true; b.textContent = 'Guardando…';
+      try {
+        await API.guardarDetalle({
+          id: yo || (Date.now() * 1000 + Math.floor(Math.random() * 1000)).toString(),
+          ref: f.ref, nombre: fo.nombre.trim(), estampado: fo.estampado.trim().toUpperCase(), numero: fo.numero,
+          calce: fo.calce, manga: mangaPersona(f, fo.tallas, fo.calce, fo.manga), arquero: !!fo.arquero, obs: fo.obs.trim(), tallas: fo.tallas,
+          disenos: Object.keys(fo.tallas).filter(k => fo.tallas[k] && disenosMolde(f, k, fo.calce).length > 1).reduce((o, k) => { o[k] = +fo.disenos[k]; return o; }, {})
+        });
+        await sincronizarAvisos(f, await API.detalles(f.ref));
+        st.error = ''; st.editando = null; st.pant = 'pedido'; render();
+      } catch (e) { st.error = 'No se pudo guardar. Revisa la conexión y vuelve a intentar.'; render(); }
+    }
+  }
+
+  /* ==========================================================
+     CARGA MASIVA — pegar la lista que el club ya tiene armada
+     ========================================================== */
+  const TODAS_TALLAS = TALLAS_INF.concat(TALLAS_AD);
+
+  /* Interpreta una línea suelta: nombre, número y talla en cualquier orden.
+     Acepta separación por espacios, comas, punto y coma o tabulaciones
+     (esto último es lo que sale al copiar una columna de Excel). */
+  // palabras que nunca son un nombre: instrucciones, etiquetas y pronombres
+  // palabras sueltas de instrucciones que no son parte de lo que se escribe (los artículos sí quedan: «LA ROCA», «María de la Fuente»)
+  const NO_NOMBRE = ['aqui', 'aquí', 'va', 'nombre', 'nombres', 'jugador', 'jugadora',
+    'apellido', 'talla', 'tallas', 'numero', 'número', 'n', 'camiseta', 'short', 'medias',
+    'ella', 'ellos', 'ellas', 'sr', 'sra', 'don', 'doña'];
+
+  // Lo que se estampa en la espalda (nombre, apellido o frase), cuando las camisetas llevan nombre estampado: el texto
+  // de cada línea tal como se escribió («P. Salinas» → P. SALINAS). En la revisión se ve y se puede cambiar.
+  const estampadoDe = texto => String(texto || '').trim().replace(/\s+/g, ' ').toUpperCase().slice(0, 20);
+  // lo que se estampa en una fila: lo escrito en «Estampa»; si no, lo que ya tenía la persona; si no, el texto de la línea
+  const estampadoFila = (x, previo) => (x.estEditado ? String(x.est || '') : (previo ? previo : estampadoDe(x.nombre))).trim().toUpperCase().slice(0, 20);
+  const filaEstampa = (x, previo) => '<div class="l3"><label>Estampa</label><input class="est" type="text" maxlength="20" value="' +
+    esc(estampadoFila(x, previo)) + '" placeholder="Lo que va en la espalda" autocapitalize="characters" aria-label="Nombre a estampar"></div>';
+  function leerLinea(linea) {
+    let bruto = linea;
+    // "Aquí va el nombre: SOYA" → se queda con lo que viene después de los dos puntos
+    if (bruto.indexOf(':') >= 0) {
+      const der = bruto.slice(bruto.indexOf(':') + 1).trim();
+      if (der) bruto = der;
+    }
+    const limpia = bruto.replace(/\t/g, ' ').replace(/[;,|]/g, ' ').replace(/\s+/g, ' ').trim();
+    if (!limpia) return null;
+    let talla = '', numero = '';
+    const nombre = [];
+    limpia.split(' ').forEach(tok => {
+      const up = tok.toUpperCase().replace(/[.\-#]/g, '');
+      const tx = { '2XS': 'XXS', '2XL': 'XXL', '3XL': 'XXXL', '4XL': 'XXXXL' }[up] || up;
+      if (!talla && TALLAS_AD.indexOf(tx) >= 0) { talla = tx; return; }
+      // número de camiseta: dígitos, y combinaciones como 9+1 o 10/11
+      if (/^\d{1,3}([+\-\/]\d{1,3})?$/.test(up)) {
+        if (!talla && TALLAS_INF.indexOf(up) >= 0 && numero) { talla = up; return; }
+        if (!numero) { numero = up; return; }
+        if (!talla && TALLAS_INF.indexOf(up) >= 0) { talla = up; return; }
+        return;
+      }
+      // descarta etiquetas e instrucciones sueltas
+      const plano = tok.toLowerCase().replace(/[^a-záéíóúñ]/g, '');
+      if (plano && NO_NOMBRE.indexOf(plano) >= 0) return;
+      nombre.push(tok);
+    });
+    const nom = nombre.join(' ').trim();
+    if (!nom && !numero && !talla) return null;   // «10 M»: persona sin nombre (camisetas solo con número)
+    return { nombre: nom, numero: numero, talla: talla };
+  }
+
+  function pantLote() {
+    const f = st.ficha;
+    const lote = st.lote || (st.lote = { texto: '', calce: '', manga: 'Corta', filas: null });
+    const g = lote.grupo, pg = g ? prendaDe(g.prenda) : null;
+    const yaG = g ? personasGrupo(g, st.dets || []).length : 0;
+    app.innerHTML = barra(f.cliente, 'pedido') + '<div class="pmk-wrap">' +
+      (g ? '<h1 class="tit">' + esc(pg.nom) + '<br>' + esc(g.unisex ? 'Unisex' : (g.calce || 'Todas las personas')) + '</h1>' +
+        '<p class="bajada">Pega la lista de las personas que llevan ' + esc(minP(g.prenda)) + (g.calce && !g.unisex ? ' ' + esc(g.calce.toLowerCase()) : '') +
+        ': del grupo de WhatsApp, de una planilla o escrita a mano. Una persona por línea.</p>' +
+        '<div class="aviso">' + (g.cant != null ? 'Este paso es de <b>' + g.cant + ' unidades</b>; llevas ' + yaG + '.' : 'Llevas ' + yaG + ' cargadas en este paso.') +
+        (g.molde ? ' Molde ' + esc(g.molde) + '.' : '') + ' Si un número ya está cargado en otra prenda, se junta con esa persona.</div>' +
+        (g.disenos && g.disenos.length > 1 ? '<div class="campo"><div class="lab">Esta prenda tiene ' + g.disenos.length + ' diseños</div>' +
+          '<div class="ayuda">Después de revisar la lista te preguntamos qué diseño lleva cada persona.</div>' + fotosDisenosHTML(fotosDisenos(f, g.prenda, g.calce || g.calceDef || '')) + '</div>'
+          : nomDiseno(g.prenda) && imgsMolde(f, g.prenda, g.calce || g.calceDef || '').length ? '<div class="campo"><div class="lab">Así va ' + esc(nomDiseno(g.prenda)) + '</div><div class="montajes-cli">' +
+            imgsMolde(f, g.prenda, g.calce || g.calceDef || '').map(i => '<a href="' + esc(i.url) + '" target="_blank" rel="noopener"><img src="' + esc(i.url) + '" alt="" loading="lazy">' +
+              '<div class="cap">' + esc((i.vista || '') + (i.arquero ? ' · arquero/líbero' : '')) + '</div></a>').join('') + '</div></div>' : '')
+       : '<h1 class="tit">Cargar varias<br>personas</h1>' +
+        '<p class="bajada">Pega la lista tal como la tienes: del grupo de WhatsApp, de una planilla o escrita a mano. Una persona por línea.</p>') +
+      (g && !pg.estampado ? '' : '<div class="campo"><label>¿Las camisetas llevan nombre estampado?</label>' +
+      '<div class="ayuda">Es lo que va en la espalda: un nombre, un apellido o una frase. Si llevan, escríbelo en cada línea junto al número y la talla, tal como se estampa (ej: P. SALINAS 5 M); antes de guardar lo ves y lo puedes cambiar. ' +
+      'Si no llevan, basta con el número y la talla (ej: 5 M). El nombre de la persona no es necesario.</div>' +
+      '<div class="chips">' + chips('lote_estampar', [{ v: 'si', t: 'Sí, llevan nombre estampado' }, { v: 'no', t: 'No, solo número' }], lote.estampar == null ? '' : (lote.estampar ? 'si' : 'no')) + '</div></div>') +
+      (g && numeroOpcional(g.prenda) ? '<div class="campo"><label>' + esc(preguntaNumero(g.prenda)) + '</label>' +
+        '<div class="ayuda">' + (basePrenda(g.prenda) === 'camiseta'
+          ? 'Es el número estampado en la camiseta. Si llevan, escríbelo en cada línea junto a la talla (ej: 10 M). Si no llevan nombre ni número, basta con la talla en cada línea (ej: M).'
+          : 'Es el número estampado en la prenda. Si llevan, escríbelo en cada línea junto a la talla (ej: 10 M). ' +
+            'Si no llevan, basta con la talla; si la persona también lleva camiseta, puedes poner su número o su nombre para juntarlos (en esta prenda no se estampa).') + '</div>' +
+        '<div class="chips">' + chips('lote_numero', [{ v: 'si', t: 'Sí, llevan número' }, { v: 'no', t: 'No, sin número' }], lote.numero == null ? '' : (lote.numero ? 'si' : 'no')) + '</div></div>' : '') +
+      '<div class="campo"><label for="lote-texto">Pega tu lista aquí</label>' +
+      '<div class="ayuda">Una persona por línea: lo que se estampa (si lleva), número y talla, en cualquier orden. Todas estas formas funcionan:<br>' +
+      'P. SALINAS 10 M<br>7 Rojas L<br>Antonia, 4, XS<br>Sin nombre: 10 M</div>' +
+      '<textarea id="lote-texto" placeholder="Camila Rojas 10 M&#10;Diego Salas 7 L&#10;Antonia Pérez 4 XS">' + esc(lote.texto) + '</textarea></div>' +
+      (g && (g.calce || g.calceDef) ? '' : '<div class="campo"><label>Calce para todo el grupo</label>' +
+      '<div class="ayuda">Después puedes cambiarlo persona por persona si alguien lleva otro calce.</div>' +
+      '<div class="chips">' + chips('lote_calce', ['Masculino', 'Femenino', 'Infantil'], lote.calce, true) + '</div></div>') +
+      (g && (!pg.manga || camisetaSinMangas(f, g.prenda, g.calce || g.calceDef || lote.calce)) ? '' : '<div class="campo"><label>Largo de manga para todo el grupo</label>' +
+      '<div class="chips">' + chips('lote_manga', ['Corta', 'Sin mangas', 'Larga'], lote.manga) + '</div></div>') +
+      (st.error ? '<div class="aviso error">' + esc(st.error) + '</div>' : '') +
+      '<div class="barra-fija"><button class="btn" id="btn-leer">Revisar la lista</button></div>' + pie + '</div>';
+
+    const ta = document.getElementById('lote-texto');
+    ta.addEventListener('input', e => { lote.texto = e.target.value; });
+    app.querySelectorAll('[data-chip]').forEach(b => b.addEventListener('click', () => {
+      if (b.dataset.chip === 'lote_calce') lote.calce = b.dataset.val;
+      else if (b.dataset.chip === 'lote_estampar') lote.estampar = b.dataset.val === 'si';
+      else if (b.dataset.chip === 'lote_numero') lote.numero = b.dataset.val === 'si';
+      else lote.manga = b.dataset.val;
+      b.parentElement.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+    }));
+
+    document.getElementById('btn-leer').addEventListener('click', () => {
+      if (!lote.calce && !(lote.grupo && (lote.grupo.calce || lote.grupo.calceDef))) { st.error = 'Elige el calce del grupo antes de continuar.'; return render(); }
+      if (!(g && !pg.estampado) && lote.estampar == null) { st.error = 'Responde si las camisetas llevan nombre estampado.'; return render(); }
+      if (g && numeroOpcional(g.prenda) && lote.numero == null) { st.error = 'Responde si ' + losDe(g.prenda) + ' llevan número.'; return render(); }
+      const filas = (lote.texto || '').split('\n').map(leerLinea).filter(Boolean);
+      if (g && basePrenda(g.prenda) === 'camiseta' && lote.numero === false)
+        filas.forEach(x => { if (!x.talla && x.numero && TALLAS_INF.indexOf(x.numero) >= 0) { x.talla = x.numero; x.numero = ''; } });
+      if (!filas.length) { st.error = 'No pudimos leer ninguna persona. Revisa que sea una por línea (lo que se estampa, número y talla, o solo número y talla).'; return render(); }
+      if (filas.length > 300) { st.error = 'Son ' + filas.length + ' líneas y el máximo por ficha es 300. Divídela en dos cargas.'; return render(); }
+      lote.filas = filas; st.error = ''; st.pant = 'lote-revisar'; render();
+    });
+  }
+
+  /* Cruce: al cargar un paso, la persona se busca entre las ya cargadas del mismo calce,
+     primero por número y después por nombre. Si existe, se le suma la prenda. */
+  const normNom = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zñ ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const normNum = s => String(s || '').toUpperCase().trim();
+  // Un número puede repetirse (el cliente lo confirma): si coincide el número pero el nombre es otro, es otra persona.
+  function buscarPersona(dets, g, x) {
+    const cal = g.calce || '', mismos = dets.filter(d => !cal || d.calce === cal);
+    const num = normNum(x.numero), nom = normNom(x.nombre);
+    const porNum = num ? mismos.filter(d => normNum(d.numero) === num) : [];
+    let d = null, por = 'numero';
+    if (porNum.length) d = nom ? porNum.find(d => normNom(d.nombre) === nom) || null : porNum[0];
+    if (!d && nom) { d = mismos.find(d => normNom(d.nombre) === nom) || null; por = 'nombre'; }
+    if (!d) return null;
+    return { d: d, por: por, ya: tallasDe(d)[g.prenda] || '' };
+  }
+  // otra persona del mismo calce que ya usa ese número
+  function numeroDeOtro(dets, g, x) {
+    const cal = g.calce || '', num = normNum(x.numero), nom = normNom(x.nombre);
+    return num ? dets.find(d => (!cal || d.calce === cal) && normNum(d.numero) === num && (!nom || normNom(d.nombre) !== nom)) || null : null;
+  }
+  // Números (por calce) y nombres que se repiten en una lista de personas
+  function repetidosDe(lista, calceDe) {
+    const porNum = {}, porNom = {};
+    lista.forEach(x => {
+      const num = normNum(x.numero), nom = normNom(x.nombre), cal = calceDe(x) || '';
+      if (num) (porNum[cal + '|' + num] = porNum[cal + '|' + num] || []).push(x);
+      if (nom) (porNom[nom] = porNom[nom] || []).push(x);
+    });
+    const out = [];
+    Object.keys(porNum).forEach(k => { if (porNum[k].length > 1) { const [cal, num] = k.split('|');
+      out.push({ tipo: 'numero', clave: k, txt: 'N° ' + num + (cal ? ' (' + cal.toLowerCase() + ')' : '') + ': ' + porNum[k].map(x => (x.nombre || '').trim() || 'sin nombre').join(', ') }); } });
+    Object.keys(porNom).forEach(k => { if (porNom[k].length > 1)
+      out.push({ tipo: 'nombre', clave: k, txt: (porNom[k][0].nombre || '').trim() + ' aparece ' + porNom[k].length + ' veces' + (porNom[k].some(x => x.numero) ? ' (N° ' + porNom[k].map(x => x.numero || '—').join(', ') + ')' : '') }); });
+    return out;
+  }
+  const avisoRepetidos = (reps, pie) => '<div class="aviso"><b>Hay números o nombres repetidos:</b><ul style="margin:6px 0 6px 18px">' +
+    reps.map(r => '<li>' + esc(r.txt) + '</li>').join('') + '</ul>' + pie + '</div>';
+  function textoCruce(dets, g, x) {
+    const m = buscarPersona(dets, g, x);
+    if (!m) { const o = numeroDeOtro(dets, g, x);
+      return o ? { c: 'ojo', t: 'Persona nueva · el N° ' + o.numero + ' también lo tiene ' + nomPersona(o) + ' (número repetido). Si es la misma persona, escribe el nombre igual.' } : { c: '', t: 'Persona nueva' }; }
+    const otras = Object.keys(tallasDe(m.d)).filter(k => k !== g.prenda && tallasDe(m.d)[k]).map(k => minP(k) + ' ' + tallasDe(m.d)[k]).join(', ');
+    if (m.ya && g.disenos && g.disenos.length > 1) return { c: 'ojo', t: nomPersona(m.d) + ' ya tiene ' + minP(g.prenda) + ' ' + m.ya +
+      (+disenosDe(m.d)[g.prenda] ? ' (diseño ' + disenosDe(m.d)[g.prenda] + ')' : '') + '. Si esta fila es de otro diseño, se agrega aparte; si es del mismo, se reemplaza la talla.' };
+    if (m.ya) return { c: 'ojo', t: nomPersona(m.d) + ' ya tenía ' + minP(g.prenda) + ' ' + m.ya + ': se reemplaza por la talla de esta fila.' };
+    return { c: 'suma', t: 'Se suma a ' + nomPersona(m.d) + (m.d.numero && String(m.d.nombre || '').trim() ? ' #' + m.d.numero : '') + (otras ? ' (ya tiene ' + otras + ')' : '') };
+  }
+  function pantLoteRevisar() {
+    if (st.lote && st.lote.grupo) return pantLoteRevisarGrupo();
+    const f = st.ficha, lote = st.lote, filas = lote.filas;
+    const conTalla = items(f).map(i => i.prenda).filter(id => !prendaDe(id).sinTalla && !prendaDe(id).escala);
+    const sinTalla = items(f).map(i => i.prenda).filter(id => prendaDe(id).sinTalla || prendaDe(id).escala);
+    const faltan = filas.filter(x => !x.talla).length;
+
+    let h = barra(f.cliente, 'lote') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">Revisa antes<br>de guardar</h1>' +
+      '<p class="bajada">La talla que dejes en cada fila se aplica a ' +
+      esc(conTalla.map(id => minP(id)).join(', ') || 'las prendas del pedido') +
+      (sinTalla.length ? ', y se marca ' + esc(sinTalla.map(id => minP(id)).join(', ')) : '') + '.</p>' +
+      '<div class="contador" id="contador">' + filas.length + ' personas' +
+      (faltan ? ' <span>· ' + faltan + ' sin talla</span>' : '') + '</div>';
+
+    filas.forEach((x, i) => {
+      h += '<div class="fila-lote' + (x.talla ? '' : ' falta') + '" data-fila="' + i + '">' +
+        '<div class="l1"><span class="idx">' + (i + 1) + '</span>' +
+        '<input class="nom" type="text" value="' + esc(x.nombre) + '" placeholder="Nombre de la persona (opcional)">' +
+        '<button type="button" class="x" data-quitar="' + i + '" aria-label="Quitar">×</button></div>' +
+        '<div class="l2"><input class="num" type="text" maxlength="6" value="' + esc(x.numero) + '" placeholder="N°">' +
+        '<select class="tal"><option value="">Sin talla</option>' +
+        TALLAS_INF.concat(tallasAd(x.talla)).map(t => '<option value="' + t + '"' + (x.talla === t ? ' selected' : '') + '>' + t + '</option>').join('') +
+        '</select></div>' + (lote.estampar ? filaEstampa(x) : '') + '</div>';
+    });
+
+    if (st.error) h += '<div class="aviso error">' + esc(st.error) + '</div>';
+    h += '<div class="barra-fija"><button class="btn" id="btn-guardar-lote">Guardar ' + filas.length + ' personas</button></div>';
+    app.innerHTML = h + pie + '</div>';
+
+    const refrescarContador = () => {
+      const f2 = filas.filter(x => !x.talla).length;
+      document.getElementById('contador').innerHTML = filas.length + ' personas' + (f2 ? ' <span>· ' + f2 + ' sin talla</span>' : '');
+    };
+    app.querySelectorAll('[data-fila]').forEach(div => {
+      const i = +div.dataset.fila;
+      const est = div.querySelector('.est');
+      div.querySelector('.nom').addEventListener('input', e => { filas[i].nombre = e.target.value; if (est && !filas[i].estEditado) est.value = estampadoFila(filas[i]); });
+      if (est) est.addEventListener('input', e => { filas[i].est = e.target.value; filas[i].estEditado = true; });
+      div.querySelector('.num').addEventListener('input', e => {
+        e.target.value = e.target.value.toUpperCase().replace(/[^0-9A-Z+\-\/]/g, '').slice(0, 6);
+        filas[i].numero = e.target.value;
+      });
+      div.querySelector('.tal').addEventListener('change', e => {
+        filas[i].talla = e.target.value;
+        div.classList.toggle('falta', !e.target.value);
+        refrescarContador();
+      });
+    });
+    app.querySelectorAll('[data-quitar]').forEach(b => b.addEventListener('click', () => {
+      filas.splice(+b.dataset.quitar, 1);
+      if (!filas.length) { st.pant = 'lote'; }
+      render();
+    }));
+
+    document.getElementById('btn-guardar-lote').addEventListener('click', async () => {
+      const validas = filas.filter(x => String(x.nombre || '').trim() || String(x.numero || '').trim() || x.talla);
+      if (!validas.length) { st.error = 'La lista quedó vacía.'; return render(); }
+      const sinEst = lote.estampar ? validas.filter(x => !estampadoFila(x)).length : 0;
+      if (sinEst) { st.error = (sinEst === 1 ? 'Falta 1 nombre' : 'Faltan ' + sinEst + ' nombres') + ' a estampar: dijiste que las camisetas llevan nombre estampado. Escríbelos en «Estampa» o, si no llevan, vuelve atrás y elige «No, solo número».'; return render(); }
+      const sin = validas.filter(x => !x.talla).length;
+      if (sin) { st.error = 'Quedan ' + sin + ' personas sin talla. Complétalas o quítalas de la lista.'; return render(); }
+
+      const b = document.getElementById('btn-guardar-lote');
+      b.disabled = true; b.textContent = 'Guardando…';
+      const base = Date.now().toString(36);
+      const regs = validas.map((x, i) => {
+        const tallas = {};
+        conTalla.forEach(id => { tallas[id] = x.talla; });
+        sinTalla.forEach(id => {
+          const p2 = prendaDe(id);
+          tallas[id] = p2.escala ? (lote.calce === 'Infantil' ? 'Infantil' : 'Adulto') : 'Sí';
+        });
+        return {
+          id: base + '-' + i + '-' + Math.floor(Math.random() * 1000),
+          ref: f.ref, nombre: x.nombre.trim(),
+          estampado: lote.estampar ? estampadoFila(x) : '',
+          numero: x.numero || '', calce: lote.calce, manga: mangaPersona(f, tallas, lote.calce, lote.manga),
+          arquero: false, obs: '', tallas: tallas
+        };
+      });
+      try {
+        // un solo envío a la base, no uno por persona
+        await API.guardarDetalle(regs);
+        await sincronizarAvisos(f, await API.detalles(f.ref));
+        st.lote = null; st.error = ''; st.pant = 'pedido'; render();
+      } catch (e) {
+        st.error = 'No se pudo guardar la lista. ' + (e.message || '').slice(0, 400);
+        b.disabled = false; render();
+      }
+    });
+  }
+
+  function pantLoteRevisarGrupo() {
+    const f = st.ficha, lote = st.lote, filas = lote.filas, g = lote.grupo, pg = prendaDe(g.prenda), dets = st.dets || [];
+    lote.disListo = false;   // si se vuelve a la lista, se vuelve a preguntar el diseño (con lo ya elegido)
+    const opciones = pg.escala ? pg.escala : (pg.sinTalla ? ['Sí'] : TALLAS_INF.concat(tallasAd()));
+    const calce = g.calce || g.calceDef || lote.calce;
+    filas.forEach(x => { if (pg.escala && opciones.indexOf(x.talla) < 0) x.talla = calce === 'Infantil' ? 'Infantil' : 'Adulto'; });
+    const ya = personasGrupo(g, dets).length;
+    const nuevasEnGrupo = () => filas.filter(x => { const m = buscarPersona(dets, g, x); return !m || !m.ya; }).length;
+    const faltan = filas.filter(x => !x.talla).length;
+    // si las camisetas llevan nombre, cada fila necesita el suyo; si no, basta con el número y la talla
+    // una persona que ya estaba cargada conserva su nombre estampado (salvo que se cambie aquí)
+    const previoDe = x => { const m = buscarPersona(dets, g, x); return m ? (m.d.estampado || '') : null; };
+    // si las camisetas llevan nombre estampado, cada fila necesita lo que se estampa; el nombre de la persona nunca es obligatorio
+    const pideEstampa = !!(lote.estampar && pg.estampado), sinEstampa = x => pideEstampa && !estampadoFila(x, previoDe(x));
+    const textoContador = () => { const f2 = filas.filter(x => !x.talla).length, n2 = filas.filter(sinEstampa).length, n3 = filas.filter(sinNumero).length;
+      return filas.length + ' personas' + (f2 ? ' <span>· ' + f2 + ' sin talla</span>' : '') + (n2 ? ' <span>· ' + n2 + ' sin nombre a estampar</span>' : '') +
+        (n3 ? ' <span>· ' + n3 + ' sin número</span>' : ''); };
+    const pideNumero = numeroOpcional(g.prenda) && lote.numero === true;
+    const sinNumero = x => { if (!pideNumero || String(x.numero || '').trim()) return false; const m = buscarPersona(dets, g, x); return !(m && String(m.d.numero || '').trim()); };
+    const falta = x => !x.talla || sinEstampa(x) || sinNumero(x);
+
+    let h = barra(f.cliente, 'lote') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">Revisa antes<br>de guardar</h1>' +
+      '<p class="bajada">' + esc(nombreGrupo(g)) + ': cada fila es una persona con su talla. Revisa el número: con él se junta la camiseta y el short de la misma persona.' +
+        (pideEstampa ? ' En «Estampa» va lo que se estampa en la espalda: revísalo.' : pg.estampado ? ' Las camisetas no llevan nombre estampado: basta con el número y la talla.' : '') +
+        (numeroOpcional(g.prenda) ? (lote.numero ? ' Esta prenda lleva número estampado: cada fila necesita el suyo.'
+          : basePrenda(g.prenda) === 'camiseta' ? ' Las camisetas no llevan número: basta con la talla (el nombre de la persona es opcional).'
+          : ' Esta prenda no lleva número: el número solo sirve para juntarla con la camiseta de la misma persona.') : '') + '</p>' +
+      '<div class="contador" id="contador">' + textoContador() + '</div>';
+    if (g.cant != null && ya + nuevasEnGrupo() > g.cant) h += '<div class="aviso">Con esta lista quedarían ' + (ya + nuevasEnGrupo()) + ' en este paso y el pedido tiene ' + g.cant +
+      '. Las unidades de más se avisan a Playmaker, que te confirma el valor antes de producir.</div>';
+    filas.forEach((x, i) => {
+      const cr = textoCruce(dets, g, x);
+      h += '<div class="fila-lote' + (falta(x) ? ' falta' : '') + '" data-fila="' + i + '">' +
+        '<div class="l1"><span class="idx">' + (i + 1) + '</span>' +
+        '<input class="nom" type="text" value="' + esc(x.nombre) + '" placeholder="Nombre de la persona (opcional)">' +
+        '<button type="button" class="x" data-quitar="' + i + '" aria-label="Quitar">×</button></div>' +
+        '<div class="l2"><input class="num" type="text" maxlength="6" value="' + esc(x.numero) + '" placeholder="N°">' +
+        '<select class="tal"><option value="">Sin talla</option>' +
+        (opciones.indexOf(x.talla) < 0 && TALLAS_AD.indexOf(x.talla) >= 0 ? opciones.concat([x.talla]) : opciones)
+          .map(t => '<option value="' + t + '"' + (x.talla === t ? ' selected' : '') + '>' + t + '</option>').join('') +
+        '</select></div>' + (lote.estampar && pg.estampado ? filaEstampa(x, previoDe(x)) : '') + '<div class="tag-fila ' + cr.c + '">' + esc(cr.t) + '</div></div>';
+    });
+    if (lote.pideOk && lote.reps) h += avisoRepetidos(lote.reps, 'Si están bien (por ejemplo, dos personas con el mismo número), confírmalo y se guardan igual. Si es un error, corrígelo en la lista.');
+    if (st.error) h += '<div class="aviso error">' + esc(st.error) + '</div>';
+    h += '<div class="barra-fija"><button class="btn" id="btn-guardar-lote">' + (lote.pideOk ? 'Sí, están bien · guardar ' : 'Guardar ') + filas.length + ' personas</button></div>';
+    app.innerHTML = h + pie + '</div>';
+
+    const refrescar = () => { document.getElementById('contador').innerHTML = textoContador(); };
+    app.querySelectorAll('[data-fila]').forEach(div => {
+      const i = +div.dataset.fila, tag = div.querySelector('.tag-fila');
+      const est = div.querySelector('.est');
+      const cruce = () => { const cr = textoCruce(dets, g, filas[i]); tag.className = 'tag-fila ' + cr.c; tag.textContent = cr.t;
+        if (est && !filas[i].estEditado) est.value = estampadoFila(filas[i], previoDe(filas[i])); };
+      div.querySelector('.nom').addEventListener('input', e => { filas[i].nombre = e.target.value; cruce(); div.classList.toggle('falta', falta(filas[i])); refrescar(); });
+      if (est) est.addEventListener('input', e => { filas[i].est = e.target.value; filas[i].estEditado = true; div.classList.toggle('falta', falta(filas[i])); refrescar(); });
+      div.querySelector('.num').addEventListener('input', e => {
+        e.target.value = e.target.value.toUpperCase().replace(/[^0-9A-Z+\-\/]/g, '').slice(0, 6);
+        filas[i].numero = e.target.value; cruce(); div.classList.toggle('falta', falta(filas[i])); refrescar();
+      });
+      div.querySelector('.tal').addEventListener('change', e => { filas[i].talla = e.target.value; div.classList.toggle('falta', falta(filas[i])); refrescar(); });
+    });
+    app.querySelectorAll('[data-quitar]').forEach(b => b.addEventListener('click', () => {
+      filas.splice(+b.dataset.quitar, 1); if (!filas.length) st.pant = 'lote'; render();
+    }));
+
+    document.getElementById('btn-guardar-lote').addEventListener('click', async () => {
+      if (lote.pideOk) lote.okRepetidos = lote.pideOk;   // el cliente confirmó que los repetidos están bien
+      lote.pideOk = null;
+      const validas = filas.filter(x => String(x.nombre || '').trim() || String(x.numero || '').trim() || x.talla);
+      if (!validas.length) { st.error = 'La lista quedó vacía.'; return render(); }
+      const sin = validas.filter(x => !x.talla).length;
+      if (sin) { st.error = 'Quedan ' + sin + ' personas sin talla. Complétalas o quítalas de la lista.'; return render(); }
+      const sinNum = validas.filter(sinNumero).length;
+      if (sinNum) { st.error = (sinNum === 1 ? 'Falta 1 número' : 'Faltan ' + sinNum + ' números') + ': dijiste que llevan número. Escríbelos o, si no llevan, vuelve atrás y elige «No, sin número».'; return render(); }
+      const sinEst = validas.filter(sinEstampa).length;
+      if (sinEst) { st.error = (sinEst === 1 ? 'Falta 1 nombre' : 'Faltan ' + sinEst + ' nombres') + ' a estampar: dijiste que las camisetas llevan nombre estampado. Escríbelos en «Estampa» o, si no llevan, vuelve atrás y elige «No, solo número».'; return render(); }
+      // números o nombres repetidos (en la lista o con personas ya cargadas): se avisa y el cliente decide
+      // se compara con las personas ya cargadas del mismo calce (salvo las que esta lista completa, que son la misma persona)
+      const yaCargadas = dets.filter(d => d.calce === calce && !validas.some(v => buscarPersona([d], g, v)))
+        .map(d => ({ nombre: d.nombre, numero: d.numero }));
+      const reps = repetidosDe(validas.concat(yaCargadas), () => calce);
+      const firma = reps.map(r => r.txt).join('|');
+      if (reps.length && lote.okRepetidos !== firma) { lote.pideOk = firma; lote.reps = reps; st.error = ''; return render(); }
+      // camisetas: antes de guardar se pregunta quién es arquero/a o líbero (como en la carga de una persona)
+      // el molde tiene varios diseños: se pregunta cuál lleva cada persona (las ya cargadas traen el suyo)
+      if (g.disenos && g.disenos.length > 1 && !lote.disListo) {
+        validas.forEach(x => { if (!x.diseno) { const m = buscarPersona(dets, g, x), v = m ? +disenosDe(m.d)[g.prenda] : 0; x.diseno = g.disenos.indexOf(v) >= 0 ? v : 0; } });
+        lote.validas = validas; st.error = ''; st.pant = 'lote-diseno'; return render();
+      }
+      if (pg.manga && !lote.arqListo) {
+        validas.forEach(x => { if (x.arquero == null) { const m = buscarPersona(dets, g, x); x.arquero = !!(m && m.d.arquero); } });
+        lote.validas = validas; st.error = ''; st.pant = 'lote-arquero'; return render();
+      }
+      await guardarLoteGrupo(validas, document.getElementById('btn-guardar-lote'));
+    });
+  }
+  // Guarda la lista de un paso: personas nuevas y personas ya cargadas a las que se suma la prenda
+  async function guardarLoteGrupo(validas, b) {
+    const f = st.ficha, lote = st.lote, g = lote.grupo, pg = prendaDe(g.prenda), calce = g.calce || g.calceDef || lote.calce;
+    lote.arqListo = false; lote.disListo = false;
+    b.disabled = true; b.textContent = 'Guardando…';
+    try {
+      const actuales = await API.detalles(f.ref); // se cruza contra lo último guardado
+      const base = Date.now().toString(36), usados = {};
+      const fila = r => ({ id: r.id, ref: f.ref, nombre: r.nombre, estampado: r.estampado || '', numero: r.numero || '', calce: r.calce || '',
+        manga: r.manga || '', arquero: !!r.arquero, obs: r.obs || '', tallas: r.tallas, disenos: r.disenos || {} });
+      const conDiseno = (previos, x) => Object.assign({}, previos, x.diseno ? { [g.prenda]: x.diseno } : {});
+      // con varios diseños, una persona puede llevar uno de cada uno: la fila de otro diseño se agrega aparte
+      // (se junta con la suya del mismo diseño, o con la que aún no tiene diseño en esta prenda)
+      const buscarParaGuardar = x => {
+        if (!(g.disenos && g.disenos.length > 1 && x.diseno)) return buscarPersona(actuales, g, x);
+        const cands = actuales.filter(d => !usados[d.id] && buscarPersona([d], g, x));
+        const d = cands.find(c => +disenosDe(c)[g.prenda] === x.diseno) || cands.find(c => !tallasDe(c)[g.prenda] || !+disenosDe(c)[g.prenda]);
+        return d ? buscarPersona([d], g, x) : null;
+      };
+      const regs = [], sinMg = !!pg.manga && camisetaSinMangas(f, g.prenda, calce);
+      validas.forEach((x, i) => {
+        const m = buscarParaGuardar(x);
+        if (m && !usados[m.d.id]) {
+          usados[m.d.id] = true;
+          const t = Object.assign({}, tallasDe(m.d)); t[g.prenda] = x.talla;
+          // la manga es la de su camiseta con mangas: en una segunda camiseta se respeta la que ya tenía
+          const tenia = Object.keys(tallasDe(m.d)).some(k => tallasDe(m.d)[k] && basePrenda(k) === 'camiseta' && !camisetaSinMangas(f, k, m.d.calce));
+          const elegida = !pg.manga ? m.d.manga : (tenia && (pg.variante || sinMg) ? m.d.manga : lote.manga);
+          regs.push(fila({ id: m.d.id, nombre: m.d.nombre, estampado: x.estEditado && lote.estampar && pg.estampado ? estampadoFila(x) : m.d.estampado, numero: m.d.numero || x.numero, calce: m.d.calce,
+            manga: pg.manga ? mangaPersona(f, t, m.d.calce, elegida) : m.d.manga, arquero: x.arquero != null ? !!x.arquero : m.d.arquero, obs: m.d.obs, tallas: t,
+            disenos: conDiseno(disenosDe(m.d), x) }));
+          return;
+        }
+        const t = {}; t[g.prenda] = x.talla;
+        regs.push(fila({ id: base + '-' + i + '-' + Math.floor(Math.random() * 1000), nombre: x.nombre.trim(),
+          estampado: lote.estampar && pg.estampado ? estampadoFila(x) : '',
+          numero: x.numero || '', calce: calce, manga: pg.manga ? mangaPersona(f, t, calce, lote.manga) : '', arquero: !!x.arquero, tallas: t, disenos: conDiseno({}, x) }));
+      });
+      if (numeroOpcional(g.prenda) && lote.numero != null && llevaNumero(f, g.prenda) !== lote.numero) {
+        let fr = null;
+        try { fr = f.acceso ? await API.fichaPorCodigo(f.acceso) : await API.ficha(f.ref); } catch (e) {}
+        const specs = JSON.parse(JSON.stringify(specsDe(fr || f)));
+        specs[g.prenda] = Object.assign({}, specs[g.prenda], { numero: lote.numero ? 'si' : 'no' });
+        await API.specsFicha(f.ref, specs);
+        st.ficha = Object.assign({}, st.ficha, { specs: specs });
+      }
+      await API.guardarDetalle(regs);   // un solo envío: personas nuevas y personas a las que se suma la prenda
+      await sincronizarAvisos(f, await API.detalles(f.ref));
+      st.lote = null; st.error = ''; st.pant = 'pedido'; render();
+    } catch (e) {
+      st.error = 'No se pudo guardar la lista. ' + (e.message || '').slice(0, 400);
+      b.disabled = false; render();
+    }
+  }
+  // Antes de guardar una lista de un molde con varios diseños: cuál lleva cada persona
+  function pantLoteDiseno() {
+    const f = st.ficha, lote = st.lote, vs = (lote && lote.validas) || [], g = lote && lote.grupo;
+    if (!vs.length || !g) { st.pant = 'lote-revisar'; return render(); }
+    const pg = prendaDe(g.prenda), ds = g.disenos || [];
+    const cuenta = () => ds.map(n => 'Diseño ' + n + ': ' + vs.filter(x => x.diseno === n).length).join(' · ') +
+      (vs.some(x => !x.diseno) ? ' · sin elegir: ' + vs.filter(x => !x.diseno).length : '');
+    const quien = x => (x.numero ? '<b>N° ' + esc(x.numero) + '</b>' + (String(x.nombre || '').trim() ? ' · ' : '') : '') +
+      esc(String(x.nombre || '').trim() || (x.numero ? '' : 'Sin nombre')) + (x.talla ? ' <span class="mini">· ' + esc(x.talla) + '</span>' : '');
+    app.innerHTML = barra(f.cliente, 'lote-revisar') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">¿Qué diseño<br>lleva cada uno?</h1>' +
+      '<p class="bajada">' + esc(nombreGrupo(g)) + ' tiene ' + ds.length + ' diseños. Elige el de cada persona. Toca una imagen para verla completa.</p>' +
+      fotosDisenosHTML(fotosDisenos(f, g.prenda, g.calce || g.calceDef || '')) +
+      '<div class="chips" style="margin-top:12px">' + ds.map(n => '<button type="button" class="chip" data-todos="' + n + '">Todos con Diseño ' + n + '</button>').join('') + '</div>' +
+      '<div class="contador" id="dis-cuenta">' + esc(cuenta()) + '</div>' +
+      vs.map((x, i) => '<div class="fila-dis' + (x.diseno ? '' : ' falta') + '" data-dis="' + i + '"><span>' + quien(x) + '</span><div class="chips">' +
+        ds.map(n => '<button type="button" class="chip' + (x.diseno === n ? ' on' : '') + '" data-d="' + n + '">Diseño ' + n + '</button>').join('') + '</div></div>').join('') +
+      (st.error ? '<div class="aviso error">' + esc(st.error) + '</div>' : '') +
+      '<button class="btn plano" data-ir="lote-revisar" style="margin-top:14px">Volver a la lista</button>' +
+      '<div class="barra-fija"><button class="btn" id="btn-guardar-dis">' + (pg.manga ? 'Seguir' : 'Guardar ' + vs.length + ' personas') + '</button></div>' + pie + '</div>';
+    app.querySelectorAll('[data-todos]').forEach(b => b.addEventListener('click', () => { vs.forEach(x => { x.diseno = +b.dataset.todos; }); st.error = ''; render(); }));
+    app.querySelectorAll('[data-dis]').forEach(fila => fila.querySelectorAll('[data-d]').forEach(b => b.addEventListener('click', () => {
+      vs[+fila.dataset.dis].diseno = +b.dataset.d;
+      fila.querySelectorAll('[data-d]').forEach(c => c.classList.toggle('on', c === b)); fila.classList.remove('falta');
+      document.getElementById('dis-cuenta').textContent = cuenta();
+    })));
+    document.getElementById('btn-guardar-dis').addEventListener('click', e => {
+      const sin = vs.filter(x => !x.diseno).length;
+      if (sin) { st.error = 'Falta elegir el diseño de ' + sin + (sin === 1 ? ' persona.' : ' personas.'); return render(); }
+      st.error = ''; lote.disListo = true;
+      if (pg.manga) {
+        vs.forEach(x => { if (x.arquero == null) { const m = buscarPersona(st.dets || [], g, x); x.arquero = !!(m && m.d.arquero); } });
+        lote.validas = vs; st.pant = 'lote-arquero'; return render();
+      }
+      guardarLoteGrupo(vs, e.currentTarget);
+    });
+  }
+  // Antes de guardar una lista de camisetas: quién es arquero/a o líbero (llevan otro diseño y se confeccionan aparte)
+  function pantLoteArquero() {
+    const f = st.ficha, lote = st.lote, vs = (lote && lote.validas) || [];
+    if (!vs.length) { st.pant = 'lote-revisar'; return render(); }
+    const marcados = () => vs.filter(x => x.arquero);
+    const cuenta = () => { const m = marcados(); return m.length ? m.length + (m.length === 1 ? ' marcado: ' : ' marcados: ') + m.map(nomPersona).join(', ') : 'Nadie marcado'; };
+    let h = barra(f.cliente, 'lote-revisar') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">¿Hay arqueros<br>o líberos?</h1>' +
+      '<p class="bajada">Su camiseta lleva otro diseño y se confecciona aparte. Marca a quien sea arquero/a o líbero. Si nadie lo es, guarda así.</p>' +
+      '<div class="contador" id="arq-cuenta">' + esc(cuenta()) + '</div>' +
+      vs.map((x, i) => '<label class="check' + (x.arquero ? ' on' : '') + '" style="margin-top:8px" data-arq="' + i + '"><input type="checkbox"' + (x.arquero ? ' checked' : '') + '>' +
+        '<span>' + (x.numero ? '<b>N° ' + esc(x.numero) + '</b>' + (String(x.nombre || '').trim() ? ' · ' : '') : '') + esc(String(x.nombre || '').trim() || (x.numero ? '' : 'Sin nombre')) + (x.talla ? ' <span class="mini">· ' + esc(x.talla) + '</span>' : '') + '</span></label>').join('') +
+      (st.error ? '<div class="aviso error">' + esc(st.error) + '</div>' : '') +
+      '<button class="btn plano" data-ir="lote-revisar" style="margin-top:14px">Volver a la lista</button>' +
+      '<div class="barra-fija"><button class="btn" id="btn-guardar-arq">Guardar ' + vs.length + ' personas</button></div>' + pie + '</div>';
+    app.innerHTML = h;
+    app.querySelectorAll('[data-arq]').forEach(l => l.querySelector('input').addEventListener('change', e => {
+      vs[+l.dataset.arq].arquero = e.target.checked; l.classList.toggle('on', e.target.checked);
+      document.getElementById('arq-cuenta').textContent = cuenta();
+    }));
+    document.getElementById('btn-guardar-arq').addEventListener('click', e => guardarLoteGrupo(vs, e.currentTarget));
+  }
+
+  /* ============ router ============ */
+  let ultimaPant = null;
+  function render() {
+    const y = window.scrollY, misma = (ultimaPant === st.pant);
+    const p = st.pant;
+    if (p === 'inicio') pantInicio();
+    else if (p === 'ref') pantRef();
+    else if (p === 'confirmar') pantConfirmar();
+    else if (p === 'pedido') pantPedido();
+    else if (p === 'form') pantForm();
+    else if (p === 'lote') pantLote();
+    else if (p === 'lote-revisar') pantLoteRevisar();
+    else if (p === 'lote-arquero') pantLoteArquero();
+    else if (p === 'lote-diseno') pantLoteDiseno();
+    else if (p === 'revision') pantRevision();
+    else if (p === 'cerrado') pantCerrado();
+    ultimaPant = st.pant;
+    if (misma) window.scrollTo({ top: y }); else window.scrollTo({ top: 0 });
+  }
+  app.addEventListener('click', e => {
+    const b = e.target.closest('[data-ir]');
+    if (!b) return;
+    st.error = ''; st.pant = b.dataset.ir; render();
+  });
+
+  // Link directo: ?f=código secreto (nuevo) · ?ref=COT-1234 (antiguo, solo durante la transición)
+  (async function () {
+    const params = new URLSearchParams(location.search);
+    const codigo = params.get('f'), q = params.get('ref');
+    if (codigo) {
+      try { const f = await API.fichaPorCodigo(codigo); if (f) { st.ficha = f; st.pant = 'confirmar'; return render(); } } catch (e) {}
+      st.error = 'Este link no es válido o ya no está vigente. Pide uno nuevo a tu vendedor.';
+    } else if (q && CFG.permitirRef) {
+      try { const f = await API.ficha(normalizarRef(q)); if (f) { st.ficha = f; st.pant = 'confirmar'; return render(); } } catch (e) {}
+    } else if (q) {
+      st.error = 'Este link ya no está vigente. Pide el nuevo link a tu vendedor.';
+    }
+    render();
+  })();
+})();
+</script>
+</body>
+</html>

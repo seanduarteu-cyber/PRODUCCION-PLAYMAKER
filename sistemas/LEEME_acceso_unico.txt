@@ -1,0 +1,61 @@
+ACCESO ÚNICO PLAYMAKER — un solo usuario para Planificación, Fichas y Ventas
+============================================================================
+
+PÁGINA PRINCIPAL (guárdala en favoritos o en la pantalla de inicio del celular)
+    https://planificacion-playmaker.netlify.app/sistemas.html
+- Ahí se ingresa una sola vez con el usuario y la clave de Planificación.
+- Muestra los sistemas que permite tu perfil; los demás aparecen apagados («Tu perfil no tiene acceso»).
+- Si abres Fichas o Ventas sin haber ingresado, te manda a esta página y, al ingresar, te devuelve.
+- Ya ingresado, pasas de un sistema a otro con la barra de arriba sin volver a poner la clave.
+- «Salir» en cualquier sistema cierra la sesión en todos.
+- Desde cualquier sistema vuelves a esta página con «PLAYMAKER» (el ícono de cuadritos naranjo,
+  arriba a la izquierda de la barra negra).
+
+APP EN EL CELULAR
+- La app Playmaker ahora abre en esta página principal (antes abría directo en Planificación).
+  El taller, que solo tiene Planificación, entra directo como siempre.
+- Android: la app ya instalada se actualiza sola (Chrome puede tardar hasta un día). Para tenerlo al tiro,
+  desinstálala y vuelve a instalarla desde la página principal.
+- iPhone: borra el ícono y vuelve a agregarlo desde Safari en la página principal
+  (Compartir → Agregar a pantalla de inicio). iPhone no actualiza solo los íconos ya agregados.
+- En la página principal hay un botón «Instalar Playmaker en este teléfono» con los pasos.
+- Fichas y Ventas están en otras direcciones: desde la app se abren en una ventana del navegador
+  (con la sesión ya abierta). Para volver a la app, ciérrala.
+
+QUÉ PERMITE CADA PERFIL (se definen en Planificación › Usuarios)
+- Planificación: todos los perfiles.
+- Fichas: todos, menos Taller.
+- Ventas: perfil «Vendedor (Ventas)» o «Administrador».
+  Gerencia en Ventas (gastos, flujo de caja y comisiones): Sean Duarte y Silvia Urbina, como hasta ahora.
+- La barra de arriba muestra solo los sistemas del perfil (al taller no se le muestra).
+
+ANTES DE SUBIR — revisa en Planificación › Usuarios
+- Cada vendedor debe tener usuario en Planificación con el perfil «Vendedor (Ventas)».
+  Hoy en Ventas están: Javiera D'Orival, Sean Duarte, Silvia Urbina, Antonia Hermosilla.
+  El nombre debe ser igual al de Ventas (así sus ventas quedan a su nombre).
+- Si alguien aún no tiene usuario, no queda fuera: Fichas y Ventas siguen aceptando su clave
+  anterior («¿Aún no tienes usuario Playmaker? Entra con tu clave anterior»). Cuando todos tengan
+  usuario Playmaker, esa opción se puede quitar.
+- Las claves se restablecen en Planificación › Usuarios › Restablecer clave (queda 1234 y la persona
+  crea la suya en la página principal).
+
+EN EL CELULAR (los tres sistemas se pueden revisar completos)
+- Ventas: las tablas (pedidos, cobranza, facturación, gastos, comisiones) se deslizan hacia el costado
+  dentro de su recuadro; una sombra al borde indica que hay más. El detalle de un pedido se abre a
+  pantalla completa, con cada abono uno bajo otro (monto, fecha, método y comprobante).
+- Comprobantes: «Ver» muestra la transferencia en pantalla (imagen) o en el visor de PDF, con botón
+  Descargar; se cierra con la ✕. También en el computador.
+- Fichas: la ficha de producción se puede revisar en el celular (sus tablas se deslizan); al imprimir
+  o guardar en PDF queda igual que antes.
+- Planificación: el usuario y sus botones caben arriba, el encabezado ya no queda fijo en el teléfono
+  (deja más pantalla) y las tablas anchas de Gerencia, Rendimiento y Configuración se deslizan.
+- En el computador todo se ve igual que antes.
+
+QUÉ SUBIR (cada zip completo, arrastrándolo a su sitio en Netlify → Deploys)
+1. 2_planificacion_SUBIR_A_NETLIFY_desde_7_nov.zip → planificacion-playmaker   (trae sistemas.html y sw.js)
+2. 3_panel-fichas_SUBIR_A_NETLIFY_desde_7_nov.zip   → panel-fichas-playmaker
+3. 6_ventas_SUBIR_A_NETLIFY_desde_7_nov.zip         → ventas-playmaker
+Sube los tres el mismo día. No hay SQL que correr y no cambia ningún dato.
+Si un sistema no muestra lo nuevo, recarga la página (Ctrl+F5 o Cmd+Shift+R).
+
+Estos zips reemplazan a los de la barra de sistemas que te mandé antes (la incluyen).

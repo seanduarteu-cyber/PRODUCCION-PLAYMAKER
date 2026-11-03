@@ -1,0 +1,45 @@
+VELOCIDAD Y ESPACIO DE LOS SISTEMAS PLAYMAKER — revisión del 2 de noviembre
+===========================================================================
+
+QUÉ HACÍA LENTO A VENTAS
+- Cada vez que se abría (app o navegador), Ventas bajaba TODOS los pedidos con los comprobantes
+  de transferencia adentro (cada imagen o PDF guardado como texto dentro del pedido). Con unos
+  cientos de comprobantes son decenas de megas en cada apertura.
+- Además, antes de mostrar nada descargaba la librería de Excel (casi 1 MB), que solo se usa al exportar.
+
+QUÉ CAMBIA
+Ventas
+- La lista de pedidos llega sin los comprobantes. Cada comprobante se trae al tocar «Ver».
+- Al guardar cualquier cambio de un pedido, el sistema trae primero sus comprobantes y los guarda
+  completos: ningún comprobante se pierde. Si alguien cambió ese comprobante en otro equipo,
+  no guarda y pide recargar (no pisa lo del otro).
+- La librería de Excel se descarga solo al tocar «Descargar Excel».
+Planificación y Fichas
+- Las consultas que no dependen entre sí se hacen a la vez (antes, una tras otra).
+
+RESULTADOS (simulación, con conexión de 10 Mbps)
+- Ventas, 300 pedidos con un comprobante de ~100 KB cada uno:
+  antes 36,6 s y 40 MB  →  ahora 0,4 s y 0,1 MB.
+  (En una prueba con PostgreSQL: 450 pedidos con comprobantes de 200 KB pasan de 90 MB a 0,3 MB.)
+- Planificación: de 1,8 s a 1,2 s hasta ver los proyectos.
+- Fichas: lista de 0,76 s a 0,57 s; una ficha de 0,97 s a 0,76 s.
+La mejora real depende de cuántos comprobantes tenga hoy la base y de la conexión.
+
+QUÉ HACER (en este orden)
+1. Supabase de VENTAS (nnisdusdujcpkrbjqnhe) → SQL Editor → pegar
+   SQL_15A_VENTAS_pedidos_livianos.sql → Run. Debe mostrar «ok».
+   Solo agrega una función de lectura: no cambia ni borra datos.
+2. Subir a Netlify los 3 zips (reemplazan a los anteriores; incluyen todo lo de antes:
+   acceso único, app, versión celular e instrucciones para iPhone).
+Si se sube Ventas sin correr el SQL, funciona igual que antes (lento) hasta correrlo.
+
+ESPACIO
+- Páginas: Planificación 531 KB (150 KB comprimida), Fichas 316 KB, Ventas 238 KB: tamaños normales.
+- Base de Ventas: los comprobantes ocupan casi todo el espacio de la tabla de pedidos (en texto
+  pesan un tercio más que el archivo original). Ya existe una limpieza diaria (la hace gerencia
+  al abrir Ventas): cuando un pedido lleva más de 30 días pagado, sus comprobantes pasan a la
+  tabla respaldo_comprobantes_2026 y salen del pedido.
+- Para saber cuánto pesan hoy: al final del SQL 15A hay una consulta opcional (quitar los «--»).
+- Mejora siguiente posible: guardar los comprobantes nuevos como archivos (Supabase Storage) en
+  vez de texto dentro del pedido. Ocupan menos y la base queda liviana. No está hecho: es un
+  cambio mayor y conviene decidirlo con el resultado de esa consulta.

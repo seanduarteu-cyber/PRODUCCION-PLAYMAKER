@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sistemas Playmaker</title>
+<meta name="description" content="Ingreso único a los sistemas internos de Playmaker: Planificación, Fichas y Ventas.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/png" href="icon-192.png">
+<!-- La app Playmaker (pantalla de inicio del celular) abre en esta página -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Playmaker">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --marca: #ED6C23; --linea: #262626; --suave: #9A9A9A; --error: #F87171; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #000; color: #FFF; font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 15px; line-height: 1.5; }
+body { min-height: 100vh; display: flex; flex-direction: column; }
+main { width: 100%; max-width: 980px; margin: 0 auto; padding: 48px 16px 32px; flex: 1; }
+.cab { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.marca { display: flex; align-items: center; gap: 12px; }
+.marca img { width: 44px; height: 44px; border-radius: 8px; display: block; }
+.marca b { font-weight: 700; letter-spacing: .12em; font-size: 18px; }
+.marca b em { font-style: normal; color: var(--marca); }
+.quien { display: none; align-items: center; gap: 10px; font-size: 13px; color: var(--suave); }
+.quien b { color: #FFF; font-weight: 600; }
+.quien button { background: none; border: 1px solid #3A3A3A; color: #B5B5B5; border-radius: 6px; padding: 4px 10px; font: inherit; font-size: 12px; cursor: pointer; }
+.quien button:hover { color: #FFF; border-color: #6A6A6A; }
+h1 { font-family: 'League Gothic', 'Arial Narrow', sans-serif; font-weight: 400; font-size: 48px; line-height: 1; letter-spacing: .01em;
+  text-transform: uppercase; margin-top: 28px; }
+.bajada { color: var(--suave); margin-top: 8px; max-width: 560px; }
+.aviso { margin-top: 18px; padding: 10px 14px; border-left: 3px solid var(--marca); background: #141414; border-radius: 8px; font-size: 13px; max-width: 560px; }
+.aviso:empty { display: none; }
+.sistemas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
+.sis { display: flex; flex-direction: column; gap: 10px; background: #0E0E0E; border: 1px solid var(--linea); border-radius: 14px; padding: 22px 20px;
+  color: #FFF; text-decoration: none; transition: border-color .15s, transform .15s; min-height: 190px; }
+a.sis:hover, a.sis:focus-visible { border-color: var(--marca); transform: translateY(-2px); outline: none; }
+.sis .n { font-family: 'League Gothic', 'Arial Narrow', sans-serif; font-size: 34px; line-height: 1; text-transform: uppercase; letter-spacing: .01em; }
+.sis .d { color: var(--suave); font-size: 13px; flex: 1; }
+.sis .ir { color: var(--marca); font-weight: 600; font-size: 13px; }
+.sis.no { opacity: .45; }
+.sis.no .ir { color: var(--suave); font-weight: 500; }
+.ingreso { max-width: 380px; margin-top: 28px; background: #0E0E0E; border: 1px solid var(--linea); border-radius: 14px; padding: 24px 22px; }
+.ingreso label { display: block; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); margin: 14px 0 6px; }
+.ingreso label:first-child { margin-top: 0; }
+.ingreso select, .ingreso input { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #3A3A3A; background: #1A1A1A; color: #FFF; font: inherit; font-size: 14px; }
+.ingreso select:focus, .ingreso input:focus { outline: none; border-color: var(--marca); }
+.ingreso .btn { width: 100%; margin-top: 18px; padding: 12px; border: 0; border-radius: 8px; background: var(--marca); color: #FFF; font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; }
+.ingreso .btn:disabled { opacity: .6; cursor: default; }
+.ingreso .msg { color: var(--error); font-size: 13px; font-weight: 500; min-height: 20px; margin-top: 10px; }
+.ingreso .pista { color: var(--suave); font-size: 12px; margin-top: 4px; }
+.antiguo { display: block; margin-top: 14px; font-size: 12px; color: var(--suave); }
+.antiguo a { color: #D0D0D0; }
+.nota { color: #6E6E6E; font-size: 12px; margin-top: 22px; }
+.instalar { margin-top: 22px; background: none; border: 1px solid #3A3A3A; color: #D0D0D0; border-radius: 8px; padding: 9px 14px; font: inherit; font-size: 13px; cursor: pointer; }
+.instalar:hover { color: #FFF; border-color: #6A6A6A; }
+.pasos { margin-top: 10px; color: var(--suave); font-size: 13px; max-width: 560px; }
+.pasos ol { margin: 6px 0 0 18px; line-height: 1.8; }
+.pasos b { color: #FFF; }
+.pasos p { margin-top: 6px; }
+.pmk-copiar { margin-left: 4px; background: #222; border: 1px solid #444; color: #FFF; border-radius: 6px; padding: 3px 9px; font: inherit; font-size: 12px; cursor: pointer; }
+.cargando { color: var(--suave); margin-top: 28px; }
+footer { color: #6E6E6E; font-size: 12px; text-align: center; padding: 18px 16px 24px; border-top: 1px solid #141414; }
+[hidden] { display: none !important; }
+@media (max-width: 760px) {
+  main { padding-top: 32px; }
+  h1 { font-size: 40px; }
+  .sistemas { grid-template-columns: 1fr; }
+  .sis { min-height: 0; }
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="cab">
+    <div class="marca"><img src="icon-192.png" alt=""><b>PLAY<em>MAKER</em></b></div>
+    <div class="quien" id="quien"><span>Hola, <b id="quien-nombre"></b></span><button type="button" id="btn-salir">Salir</button></div>
+  </div>
+  <h1>Sistemas Playmaker</h1>
+  <p class="bajada" id="bajada">Un solo usuario para todos los sistemas.</p>
+  <div class="aviso" id="aviso" role="status"></div>
+  <p class="cargando" id="cargando">Cargando…</p>
+
+  <!-- Ingreso único: el usuario y la clave son los de Planificación -->
+  <div class="ingreso" id="ingreso" hidden>
+    <div id="paso1">
+      <label for="i-usuario">Usuario</label>
+      <select id="i-usuario"><option value="">Cargando…</option></select>
+      <label for="i-clave">Clave</label>
+      <input id="i-clave" type="password" autocomplete="current-password">
+      <button class="btn" type="button" id="btn-entrar">Entrar</button>
+    </div>
+    <div id="paso2" hidden>
+      <p style="font-weight:600">Crea tu clave personal</p>
+      <p class="pista">Es tu primer ingreso o administración restableció tu clave.</p>
+      <label for="i-nueva">Nueva clave</label>
+      <input id="i-nueva" type="password" autocomplete="new-password">
+      <label for="i-nueva2">Repite la clave</label>
+      <input id="i-nueva2" type="password" autocomplete="new-password">
+      <button class="btn" type="button" id="btn-clave">Guardar clave y entrar</button>
+    </div>
+    <p class="msg" id="msg" role="alert"></p>
+    <span class="antiguo" id="antiguo" hidden></span>
+  </div>
+
+  <div class="sistemas" id="sistemas" hidden></div>
+  <p class="nota" id="nota" hidden>Pasas de un sistema a otro con la barra de arriba, sin volver a ingresar; con «PLAYMAKER» (arriba a la izquierda) vuelves a esta página. Los perfiles se definen en Planificación › Usuarios.</p>
+  <button type="button" class="instalar" id="btn-instalar" hidden>📲 Instalar Playmaker en este teléfono</button>
+  <div class="pasos" id="pasos-instalar" hidden></div>
+</main>
+<footer>Playmaker · Un club, una familia.</footer>
+<script>
+/* Acceso único Playmaker: un solo usuario (el de Planificación) para Planificación, Fichas y Ventas.
+   Se ingresa en la página de sistemas (sitio de Planificación); al pasar a otro sistema la sesión viaja en la
+   dirección (#pmk_acceso=…) y ese sistema la valida en la base de Producción. Lo que abre cada perfil: permite(). */
+const PMK_ACCESO = (() => {
+  const PROD_URL = 'https://ygcsqrylpibhofvetdyh.supabase.co';
+  const PROD_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlnY3NxcnlscGliaG9mdmV0ZHloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjYzMzcsImV4cCI6MjA5NjI0MjMzN30.olLJiMa5-yDNYtoGisy-5Mv7aFsxwvtoQU8yIgHjbto';
+  const SITIOS = { planificacion: 'https://planificacion-playmaker.netlify.app', fichas: 'https://panel-fichas-playmaker.netlify.app', ventas: 'https://ventas-playmaker.netlify.app' };
+  const NOMBRES = { planificacion: 'Planificación', fichas: 'Fichas', ventas: 'Ventas' };
+  const PORTAL = SITIOS.planificacion + '/sistemas.html';
+  const GERENCIA = ['Sean Duarte', 'Silvia Urbina'];   // gerencia de Ventas: gastos, flujo de caja y comisiones
+  const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const perfiles = u => !u ? [] : Array.isArray(u.roles) && u.roles.length ? u.roles : u.rol ? [u.rol] : [];
+  const esGerencia = u => !!u && GERENCIA.some(g => norm(g) === norm(u.nombre));
+  // Planificación: todos · Fichas: todos menos el taller externo · Ventas: vendedores, administración y gerencia
+  function permite(u, sis) {
+    const p = perfiles(u);
+    if (!p.length) return false;
+    if (sis === 'planificacion') return true;
+    if (sis === 'fichas') return p.some(r => r !== 'taller');
+    if (sis === 'ventas') return p.includes('ventas') || p.includes('admin') || esGerencia(u);
+    return false;
+  }
+  const sistemas = u => Object.keys(SITIOS).filter(s => permite(u, s));
+  const sistemaDe = url => Object.keys(SITIOS).find(k => url === SITIOS[k] || String(url).startsWith(SITIOS[k] + '/')) || null;
+  async function rpc(fn, args, extra) {
+    const r = await fetch(PROD_URL + '/rest/v1/rpc/' + fn, { method: 'POST', body: JSON.stringify(args || {}), ...(extra || {}),
+      headers: { apikey: PROD_KEY, Authorization: 'Bearer ' + PROD_KEY, 'Content-Type': 'application/json' } });
+    if (!r.ok) throw new Error(r.status + ' ' + await r.text());
+    const t = await r.text(); return t ? JSON.parse(t) : null;
+  }
+  async function usuarios() {
+    const r = await fetch(PROD_URL + '/rest/v1/plan_usuarios?select=usuario,nombre&activo=eq.true&order=nombre.asc', { headers: { apikey: PROD_KEY, Authorization: 'Bearer ' + PROD_KEY } });
+    if (!r.ok) throw new Error(r.status + ' ' + await r.text());
+    return r.json();
+  }
+  // El usuario de esa sesión (con sus perfiles al día), o null si terminó. Sin conexión lanza error.
+  async function validar(token) {
+    if (!token) return null;
+    const x = await rpc('plan_sesion', { p_token: token });
+    return x ? { ...x, roles: perfiles(x), token } : null;
+  }
+  // Cierra la sesión en todos los sistemas (keepalive: alcanza a llegar aunque la página se vaya)
+  function salir(token) { if (token) rpc('plan_logout', { p_token: token }, { keepalive: true }).catch(() => {}); }
+  // Lee y quita de la dirección la sesión que llega desde otro sistema. null: no llegó nada; '': se volvió sin sesión.
+  function tomarMarca() {
+    const m = location.hash.match(/[#&]pmk_acceso=([^&]*)/);
+    if (!m) return null;
+    const resto = location.hash.slice(1).split('&').filter(x => x && !/^pmk_acceso=/.test(x)).join('&');
+    try { history.replaceState(null, '', location.pathname + location.search + (resto ? '#' + resto : '')); } catch (e) {}
+    try { return decodeURIComponent(m[1]); } catch (e) { return ''; }
+  }
+  function conSesion(url, token) {
+    const base = String(url).replace(/[#&]pmk_acceso=[^&]*/, '').replace(/#$/, '');
+    return base + (base.includes('#') ? '&' : '#') + 'pmk_acceso=' + encodeURIComponent(token || '');
+  }
+  // Va a la página de sistemas a ingresar (o a tomar la sesión ya abierta) y vuelve aquí
+  function irAIngresar(motivo) {
+    if (location.pathname.endsWith('/sistemas.html')) return false;
+    location.replace(PORTAL + '?volver=' + encodeURIComponent(location.href) + (motivo ? '&motivo=' + motivo : ''));
+    return true;
+  }
+  // Barra de sistemas: solo los sistemas del perfil (si es uno solo, no se muestra) y, al pasar a otro, lleva la sesión
+  let tokenBarra = null;
+  function ajustarBarra(u, token) {
+    const b = document.querySelector('.pmk-sis');
+    if (!b) return;
+    const ok = u ? sistemas(u) : Object.keys(SITIOS);
+    b.querySelectorAll('a[data-sis]').forEach(a => { a.style.display = ok.includes(a.dataset.sis) ? '' : 'none'; });
+    b.style.display = ok.length < 2 ? 'none' : '';
+    tokenBarra = token || null;
+    if (b.dataset.acceso) return;
+    b.dataset.acceso = '1';
+    const llevar = e => { const a = e.target.closest('a[data-sis]'); if (a && tokenBarra && !a.classList.contains('on')) a.href = conSesion(a.href, tokenBarra); };
+    b.addEventListener('click', llevar); b.addEventListener('auxclick', llevar);
+  }
+  return { SITIOS, NOMBRES, PORTAL, permite, sistemas, sistemaDe, esGerencia, perfiles, rpc, usuarios, validar, salir, tomarMarca, conSesion, irAIngresar, ajustarBarra };
+})();
+</script>
+<script>
+/* Página principal: ingreso único y accesos a los sistemas que permite el perfil.
+   ?volver=<dirección de un sistema>: después de ingresar se vuelve allá con la sesión. */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const SESION = 'pmk_prod_sesion', ULTIMO = 'pmk_prod_ultimo';   // la misma sesión de Planificación (mismo sitio)
+const DESC = {
+  planificacion: 'Proyectos, diseño, ingreso a producción, áreas y calendario.',
+  fichas: 'Fichas de tallas, ficha técnica y montajes de cada diseño, y ficha de producción.',
+  ventas: 'Pedidos, cobranza, facturación, gastos, flujo de caja y comisiones.'
+};
+const params = new URLSearchParams(location.search);
+const volver = PMK_ACCESO.sistemaDe(params.get('volver') || '') ? params.get('volver') : '';
+const destino = volver ? PMK_ACCESO.sistemaDe(volver) : null;
+let SES = null, PEND = null;
+
+function leer() { try { const s = JSON.parse(localStorage.getItem(SESION) || 'null'); return s && s.usuario && s.token ? s : null; } catch (e) { return null; } }
+function guardar(s) { try { localStorage.setItem(SESION, JSON.stringify(s)); localStorage.setItem(ULTIMO, s.usuario); } catch (e) {} }
+function borrar() { try { localStorage.removeItem(SESION); } catch (e) {} }
+const mostrar = (id, si) => { $(id).hidden = !si; };
+
+async function inicio() {
+  SES = leer();
+  if (SES) {
+    try {
+      const x = await PMK_ACCESO.validar(SES.token);
+      if (!x) { SES = null; borrar(); }
+      else { SES = { ...SES, nombre: x.nombre, rol: x.rol, roles: x.roles, ejecutante_id: x.ejecutante_id || null, usuario: x.usuario || SES.usuario }; guardar(SES); }
+    } catch (e) {}   // sin conexión: se usa la sesión guardada
+  }
+  if (SES) return listo();
+  if (params.get('motivo') === 'fin') $('aviso').textContent = 'Tu sesión terminó. Vuelve a ingresar.';
+  mostrarIngreso();
+}
+// Con sesión: vuelve al sistema de donde se vino (si el perfil lo permite) o muestra los accesos.
+// Si el perfil tiene un solo sistema (el taller), entra directo.
+function listo() {
+  if (destino && PMK_ACCESO.permite(SES, destino)) { location.replace(PMK_ACCESO.conSesion(volver, SES.token)); return; }
+  const mios = PMK_ACCESO.sistemas(SES);
+  if (!destino && mios.length === 1) { location.replace(PMK_ACCESO.conSesion(PMK_ACCESO.SITIOS[mios[0]] + '/', SES.token)); return; }
+  mostrarSistemas(destino ? 'Tu perfil no tiene acceso a ' + PMK_ACCESO.NOMBRES[destino] + '. Si lo necesitas, pídelo a administración.' : '');
+}
+async function mostrarIngreso() {
+  mostrar('cargando', false); mostrar('sistemas', false); mostrar('nota', false); $('quien').style.display = 'none';
+  mostrar('ingreso', true); mostrar('paso1', true); mostrar('paso2', false); $('msg').textContent = ''; $('i-clave').value = '';
+  $('bajada').textContent = destino ? 'Ingresa con tu usuario Playmaker para entrar a ' + PMK_ACCESO.NOMBRES[destino] + '.' : 'Un solo usuario para todos los sistemas: el mismo de Planificación.';
+  // mientras haya personas sin usuario Playmaker, Fichas y Ventas aceptan también su clave anterior
+  if (destino && destino !== 'planificacion') {
+    $('antiguo').innerHTML = '¿Aún no tienes usuario Playmaker? <a href="' + esc(PMK_ACCESO.conSesion(volver, '')) + '">Entra con tu clave anterior de ' + PMK_ACCESO.NOMBRES[destino] + '</a>';
+    mostrar('antiguo', true);
+  }
+  try {
+    const us = await PMK_ACCESO.usuarios();
+    if (!us || !us.length) { $('i-usuario').innerHTML = '<option value="">Sin usuarios</option>'; $('msg').textContent = 'No hay usuarios activos.'; return; }
+    $('i-usuario').innerHTML = us.map(u => '<option value="' + esc(u.usuario) + '">' + esc(u.nombre) + '</option>').join('');
+    try { const ult = localStorage.getItem(ULTIMO); if (ult && us.some(u => u.usuario === ult)) $('i-usuario').value = ult; } catch (e) {}
+    $('i-clave').focus();
+  } catch (e) {
+    $('i-usuario').innerHTML = '<option value="">—</option>';
+    $('msg').textContent = 'Sin conexión. Revisa tu internet y recarga la página.';
+  }
+}
+async function entrar() {
+  const u = $('i-usuario').value, c = $('i-clave').value;
+  if (!u) return;
+  if (!c) { $('msg').textContent = 'Ingresa tu clave'; return; }
+  $('btn-entrar').disabled = true; $('msg').textContent = '';
+  try {
+    const x = await PMK_ACCESO.rpc('plan_login', { p_usuario: u, p_clave: c });
+    if (!x) { $('msg').textContent = 'Clave incorrecta'; $('i-clave').value = ''; $('i-clave').focus(); return; }
+    if (x.debe_cambiar) { PEND = x; mostrar('paso1', false); mostrar('paso2', true); $('i-nueva').focus(); return; }
+    iniciar(x);
+  } catch (e) { $('msg').textContent = 'No se pudo validar. Revisa tu conexión.'; }
+  finally { $('btn-entrar').disabled = false; }
+}
+async function guardarClave() {
+  const a = $('i-nueva').value, b = $('i-nueva2').value;
+  if (a.length < 4) { $('msg').textContent = 'La clave debe tener al menos 4 caracteres'; return; }
+  if (a !== b) { $('msg').textContent = 'Las claves no coinciden'; return; }
+  if (a === '1234') { $('msg').textContent = 'Elige una clave distinta a la inicial'; return; }
+  $('btn-clave').disabled = true; $('msg').textContent = '';
+  try { await PMK_ACCESO.rpc('plan_cambiar_clave', { p_token: PEND.token, p_nueva: a }); }
+  catch (e) { $('msg').textContent = 'No se pudo guardar la clave. Revisa tu conexión.'; $('btn-clave').disabled = false; return; }
+  $('btn-clave').disabled = false; const x = PEND; PEND = null; iniciar(x);
+}
+function iniciar(x) {
+  SES = { usuario: x.usuario, nombre: x.nombre, rol: x.rol, roles: PMK_ACCESO.perfiles(x), ejecutante_id: x.ejecutante_id || null, token: x.token };
+  guardar(SES);
+  ['i-clave', 'i-nueva', 'i-nueva2'].forEach(i => { $(i).value = ''; });
+  listo();
+}
+function mostrarSistemas(aviso) {
+  mostrar('cargando', false); mostrar('ingreso', false); mostrar('sistemas', true); mostrar('nota', true);
+  $('quien').style.display = 'flex'; $('quien-nombre').textContent = SES.nombre;
+  $('bajada').textContent = 'Elige el sistema.';
+  $('aviso').textContent = aviso || '';
+  $('sistemas').innerHTML = Object.keys(PMK_ACCESO.SITIOS).map(k => PMK_ACCESO.permite(SES, k)
+    ? '<a class="sis" href="' + PMK_ACCESO.SITIOS[k] + '/" data-sis="' + k + '"><span class="n">' + PMK_ACCESO.NOMBRES[k] + '</span><span class="d">' + DESC[k] + '</span><span class="ir">Entrar →</span></a>'
+    : '<div class="sis no" data-sis="' + k + '" aria-disabled="true"><span class="n">' + PMK_ACCESO.NOMBRES[k] + '</span><span class="d">' + DESC[k] + '</span><span class="ir">Tu perfil no tiene acceso</span></div>').join('');
+}
+// al entrar a otro sistema se lleva la sesión
+function llevar(e) { const a = e.target.closest('a.sis'); if (a && SES) a.href = PMK_ACCESO.conSesion(PMK_ACCESO.SITIOS[a.dataset.sis] + '/', SES.token); }
+$('sistemas').addEventListener('click', llevar); $('sistemas').addEventListener('auxclick', llevar);
+$('btn-salir').addEventListener('click', () => { if (SES) PMK_ACCESO.salir(SES.token); SES = null; borrar(); $('aviso').textContent = ''; mostrarIngreso(); });
+$('btn-entrar').addEventListener('click', entrar);
+$('btn-clave').addEventListener('click', guardarClave);
+$('i-clave').addEventListener('keydown', e => { if (e.key === 'Enter') entrar(); });
+$('i-nueva2').addEventListener('keydown', e => { if (e.key === 'Enter') guardarClave(); });
+
+// Pasos para instalar en iPhone según dónde está abierta la página
+const PORTAL_PLAYMAKER = 'https://planificacion-playmaker.netlify.app/sistemas.html';
+function navegadorIOS() {
+  const ua = navigator.userAgent;
+  if (/FBAN|FBAV|FB_IAB|Instagram|LinkedInApp|Line\/|GSA\/|Snapchat|TikTok|musical_ly|WhatsApp|Messenger|Twitter|Pinterest/i.test(ua)) return 'app';
+  if (/CriOS|EdgiOS|FxiOS|OPiOS/i.test(ua)) return 'otro';
+  return 'safari';
+}
+function pasosIPhone() {
+  const nav = navegadorIOS();
+  const copiar = '<button type="button" class="pmk-copiar" onclick="navigator.clipboard&&navigator.clipboard.writeText(PORTAL_PLAYMAKER).then(()=>{this.textContent=\'Enlace copiado ✓\'},()=>{})">Copiar enlace</button>';
+  if (nav === 'app') return '<p><b>Esta página está abierta dentro de otra aplicación</b> (WhatsApp, Instagram, Gmail…). Desde ahí el iPhone no permite instalarla.</p>' +
+    '<ol><li>Toca <b>⋯</b> o el ícono de la brújula y elige <b>Abrir en Safari</b>. Si no aparece, copia el enlace y pégalo en <b>Safari</b>: ' + copiar + '</li>' +
+    '<li>En Safari sigue los pasos de instalación (vuelve a tocar <b>Instalar</b>).</li></ol>';
+  const compartir = nav === 'otro'
+    ? '<li>Toca <b>Compartir</b> (el cuadrado con la flecha hacia arriba, junto a la dirección).</li>'
+    : '<li>Toca <b>Compartir</b> (el cuadrado con la flecha hacia arriba, en la barra de abajo). Si no lo ves, toca primero <b>⋯</b> (los tres puntos, abajo a la derecha).</li>';
+  return '<p>En iPhone no hay botón de instalación: se agrega desde el menú <b>Compartir</b>.</p><ol>' + compartir +
+    '<li>Baja en la lista y elige <b>Agregar a pantalla de inicio</b>. Si no aparece, toca <b>Editar acciones</b> (al final de la lista) y agrégala.</li>' +
+    '<li>Deja activado <b>Abrir como app web</b> (si aparece) y toca <b>Agregar</b>.</li></ol>' +
+    (nav === 'otro' ? '<p>Si en este navegador no aparece la opción, abre la página en <b>Safari</b>: ' + copiar + '</p>' : '');
+}
+/* Aplicación en el celular: queda en la pantalla de inicio y abre en esta página, con la sesión guardada */
+let PROMPT_INSTALAR = null;
+const esApp = () => (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+const esIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const esMovil = () => /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent) || esIOS();
+const botonInstalar = () => { $('btn-instalar').hidden = esApp() || !(esMovil() || PROMPT_INSTALAR); };
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); PROMPT_INSTALAR = e; botonInstalar(); });
+window.addEventListener('appinstalled', () => { PROMPT_INSTALAR = null; $('pasos-instalar').hidden = true; botonInstalar(); });
+$('btn-instalar').addEventListener('click', async () => {
+  if (PROMPT_INSTALAR) { PROMPT_INSTALAR.prompt(); try { await PROMPT_INSTALAR.userChoice; } catch (e) {} PROMPT_INSTALAR = null; botonInstalar(); return; }
+  $('pasos-instalar').innerHTML = esIOS()
+    ? pasosIPhone()
+    : 'En Android se instala desde <b>Chrome</b>:<ol><li>Abre esta página en <b>Chrome</b>.</li><li>Toca el menú <b>⋮</b> (arriba a la derecha).</li><li>Elige <b>Instalar aplicación</b> o <b>Agregar a pantalla de inicio</b>.</li></ol>';
+  $('pasos-instalar').hidden = !$('pasos-instalar').hidden;
+});
+botonInstalar();
+if ('serviceWorker' in navigator && location.protocol === 'https:') window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+inicio();
+</script>
+</body>
+</html>

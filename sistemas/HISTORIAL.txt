@@ -1,0 +1,11 @@
+2026-11-03  Camisetas sin nombre ni número: el cliente responde si llevan número y se guardan solo con su talla
+2026-11-02  Planificación: pestaña «Estado» para todos y pendientes que vuelven a Armado de mesa y Corte juntos
+2026-11-02  Ventas reconoce al vendedor aunque el apóstrofo del nombre sea distinto (D´Orival = D'Orival)
+2026-11-02  Velocidad: Ventas abre sin bajar los comprobantes; Planificación y Fichas piden sus datos a la vez
+2026-10-30  Instalar en iPhone: pasos según dónde está abierta la página
+2026-10-30  Los tres sistemas se pueden revisar completos en el celular
+2026-10-30  La app Playmaker abre en la página principal de sistemas
+2026-10-30  Acceso único Playmaker: un solo usuario (el de Planificación) para Planificación, Fichas y Ventas
+2026-10-30  Barra de sistemas Playmaker (Planificación · Fichas · Ventas) y página con los tres accesos
+2026-10-30  Base de Ventas: el index.html publicado (igual en tamaño a la versión del 8/10)
+2026-10-30  Base recuperada de los zips entregados (Planificación, panel de fichas y sitio del cliente)
