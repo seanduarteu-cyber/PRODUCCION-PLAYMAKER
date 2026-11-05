@@ -23,6 +23,7 @@ Se corren una vez en el SQL Editor de la base indicada en cada archivo.
 | `SQL_16B_FICHAS_quitar_chk_det_nombre.sql` | Fichas | Quita `chk_det_nombre`, que exigía nombre en cada persona. |
 | `SQL_16C_FICHAS_nombre_hasta_80.sql` | Fichas | Vuelve a poner el tope de 80 caracteres al nombre, que ahora puede ir vacío. |
 | `SQL_17A_FICHAS_moldes_orden_del_catalogo.sql` | Fichas | Catálogo ordenado: columna `orden`, deporte = sección del catálogo y moldes nuevos 83 y 84. |
+| `SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql` | Fichas | Solo revisa: compara los 85 moldes del catálogo con la tabla moldes (falta, desactivado, código o sección distinta). |
 | `SQL_17B_FICHAS_desactivar_moldes_01_al_10_OPCIONAL.sql` | Fichas | Opcional: desactiva los moldes 01 al 10, que no están en el catálogo ordenado. |
 
 Los SQL 1A a 14A se corrieron antes y no están en este repositorio.
