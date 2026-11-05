@@ -1,0 +1,34 @@
+INGRESO DE TALLAS Y MEDIAS (noviembre 2026) · qué cambia
+========================================================
+
+QUÉ HAY QUE HACER
+- Netlify: subir los 3 zip (Planificación, panel de fichas y sitio del cliente). No hay SQL nuevo.
+
+SITIO DEL CLIENTE (ingreso de tallas)
+- Basta con la talla. No pregunta si llevan número ni nombre estampado, y no reclama si una fila no trae nombre o número:
+  de una lista de 10, las 2 que van solo con talla se guardan igual. Lo único obligatorio es la talla.
+- Lista pegada desde Excel o Google Sheets: se copian las columnas (con o sin la fila de títulos) y se pegan tal cual.
+  El sistema reconoce cada columna (Nombre, N°, Talla, Nombre a estampar…) y en la revisión se ve qué tomó de cada una;
+  si alguna quedó mal, se cambia y la lista se vuelve a leer. Un nombre como «M. Sepúlveda» nunca se toma como talla.
+- Lista escrita (WhatsApp): una persona por línea. «M.» es una inicial, no una talla; si una línea trae dos tallas vale la última.
+- En la revisión: resumen por talla (S: 10 · M: 45…) para compararlo con la planilla, y las filas dudosas (sin talla,
+  talla que no existe, «¿M es talla o inicial?», talla infantil en un paso de adulto) quedan marcadas en amarillo.
+  «Ver solo las filas para revisar» muestra solo esas; cada una se corrige o se marca «Está bien».
+- Cada prenda es su propia lista: la del short no se junta con la de la camiseta (ni por nombre ni por número).
+  Si un paso ya tiene personas, se elige «Agregar esta lista» o «Reemplazar».
+- Ya no aparece la pregunta de arquero o líbero.
+- Medias: no van por persona. El paso de medias pide cuántos pares de cada talla (S, M, L, Adulto, Infantil) y muestra su montaje.
+
+PANEL DE FICHAS
+- Arquero o líbero: se agrega el mismo molde otra vez con su cantidad (ej: 10 de jugador y 1 de arquero) y a cada línea
+  se le adjunta su montaje. Cada uno sale en su propia hoja. Ya no se marca «arquero» en el listado ni en los montajes
+  (en fichas antiguas que ya lo tenían, se sigue viendo).
+- «+ Medias» (al crear la ficha o en «Editar prendas y moldes»): cada línea es un diseño de medias con su nombre o color,
+  su montaje y, si ya se saben, los pares por talla (S, M, L, Adulto, Infantil); la cantidad es su suma.
+  Ej: 10 pares azules en una línea y 1 par blanco en otra, cada una con su montaje. Si no se indican las tallas, las indica el cliente.
+- Ficha de producción: cada diseño de medias tiene su propia hoja con su montaje y la tabla de pares por talla.
+- El listado y la ficha ya no exigen número ni nombre: basta con calce y talla.
+
+PLANIFICACIÓN
+- Al ingresar un pedido a producción toma las medias de cada diseño con sus pares por talla (adulto e infantil por separado),
+  y la «Ficha completa» muestra el nombre de cada diseño y los pares por talla de las medias.

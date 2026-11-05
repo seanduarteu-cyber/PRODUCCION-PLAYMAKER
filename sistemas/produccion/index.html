@@ -917,6 +917,15 @@ const PRENDAS_FICHA = { camiseta: 'Camiseta', short: 'Short o calza', falda: 'Fa
 // Otra prenda del mismo tipo con otro molde en el mismo pedido (ej.: una segunda camiseta): «camiseta_2» → «Camiseta 2»
 const basePrendaFicha = id => { const x = String(id || '').match(/^(.+)_(\d+)$/); return x && PRENDAS_FICHA[x[1]] ? x[1] : id; };
 const nomPrendaFicha = id => { if (PRENDAS_FICHA[id]) return PRENDAS_FICHA[id]; const x = String(id || '').match(/^(.+)_(\d+)$/); return x && PRENDAS_FICHA[x[1]] ? PRENDAS_FICHA[x[1]] + ' ' + x[2] : id; };
+// Medias: no van por persona. Cada diseño de medias (medias, medias_2…: otro color, otro montaje) trae sus pares
+// por talla en specs[id].cantidades ({ S: 4, M: 6, Infantil: 1 }). Las fichas antiguas las traen por persona.
+const TALLAS_MEDIAS = ['S', 'M', 'L', 'Adulto', 'Infantil'];
+const esMediasFicha = id => basePrendaFicha(id) === 'medias';
+const cantMedias = (specs, id) => { const c = ((specs || {})[id] || {}).cantidades; return c && typeof c === 'object' && !Array.isArray(c) ? c : null; };
+const textoCantMedias = c => TALLAS_MEDIAS.concat(Object.keys(c || {}).filter(t => TALLAS_MEDIAS.indexOf(t) < 0)).filter(t => parseInt(c[t], 10) > 0).map(t => t + ': ' + c[t]).join(' · ');
+// código de Producción según la talla: infantil → MEDIAS-INF; S, M, L o adulto → MEDIAS-ADL
+const codigoMedias = t => /infantil/i.test(t) ? 'MEDIAS-INF' : 'MEDIAS-ADL';
+const codigosMedias = c => Array.from(new Set(Object.keys(c || {}).filter(t => parseInt(c[t], 10) > 0).map(codigoMedias)));
 const NOM_ACC = { ficha_ingresada: 'Ficha ingresada', ingreso_forzado: 'Ingreso forzado', devuelto: 'Devuelto', diseno_aprobacion_deshecha: 'Devuelto a Diseño', diseno_parte_editada: 'Prendas de Diseño corregidas', inicio: 'Inicio', termino: 'Terminado', bloqueo: 'Bloqueo', desbloqueo: 'Desbloqueo', replanificacion: 'Replanificación', cambio_fecha_entrega: 'Cambio de fecha de entrega', cambio_tipo: 'Cambio de tipo', cambio_desglose: 'Cambio de desglose', listo_entrega: 'Listo para entrega', entregado: 'Terminado', recalculo: 'Recálculo' };
 const TAB_NOMBRE = { proyectos: 'Proyectos', estado: 'Estado', calendario: 'Calendario', area: 'Mi área', fichas: 'Ingreso a producción', diseno: 'Diseño', tallas: 'Fichas de pedidos', gerencia: 'Gerencia', talleres: 'Talleres', rendimiento: 'Rendimiento', inventario: 'Inventario', moldes: 'Moldes', config: 'Configuración' };
 
@@ -2354,9 +2363,10 @@ async function verFicha(cot, pid) {
     const piezas = sp.despiece && Array.isArray(sp.despiece.piezas) ? sp.despiece.piezas.filter(q => q && q.pieza) : [];
     const datos = [sp.tela && 'Tela: ' + [sp.tela, sp.telaDetalle].filter(Boolean).join(' · '), sp.proceso && 'Proceso: ' + sp.proceso,
       sp.aplicacion && 'Escudos y logos: ' + sp.aplicacion, sp.origen && 'Origen: ' + sp.origen,
+      esMediasFicha(it.prenda) && (cantMedias(specs, it.prenda) ? 'Pares por talla: ' + textoCantMedias(cantMedias(specs, it.prenda)) : 'Pares por talla: los indica el cliente'),
       sp.numero === 'no' && 'Sin número', sp.numero === 'si' && 'Lleva número'].filter(Boolean);   // shorts y calzas: si llevan número estampado
     return `<div style="border:1px solid var(--linea);border-radius:8px;padding:12px;margin-top:10px">
-      <b style="font-size:16px">${esc(nomPrendaFicha(it.prenda))} · ${it.cant} u.</b>
+      <b style="font-size:16px">${esc(nomPrendaFicha(it.prenda))}${sp.nombre ? ' · ' + esc(sp.nombre) : ''} · ${it.cant} ${esMediasFicha(it.prenda) ? 'pares' : 'u.'}</b>
       ${filasM ? `<table class="mini" style="margin-top:6px"><tr><th>Calce</th><th>Molde</th></tr>${filasM}</table>` : ''}
       <p class="hint" style="margin-top:6px">${datos.length ? datos.map(esc).join(' · ') : 'Sin tela definida en la ficha técnica'}</p>
       ${piezas.length ? `<table class="mini"><tr><th>Pieza</th><th>Cant.</th><th>Tela</th><th>Proceso</th></tr>${piezas.map(q => `<tr><td>${esc(q.pieza)}</td><td>${q.cant || 1}</td><td>${esc(q.tela || '—')}</td><td>${esc(q.detalle || '—')}</td></tr>`).join('')}</table>` : ''}
@@ -2639,7 +2649,7 @@ function moldesFaltantes(cot) {
   (DETS_MAP[cot] || []).forEach(d => {
     const t = jsonDe(d.tallas) || {};
     Object.keys(t).forEach(pr => {
-      if (!t[pr] || pr === 'medias') return;                         // las medias no llevan molde
+      if (!t[pr] || esMediasFicha(pr)) return;                       // las medias no llevan molde
       const v = ((specs[pr] || {}).moldes || {})[d.calce] || '';
       const manual = /\|manual$/.test(v);
       if (!v || (manual && !v.split('|')[0].trim())) faltan.add((nomPrendaFicha(pr)) + ' ' + String(d.calce || 'sin calce').toLowerCase());
@@ -2669,7 +2679,7 @@ function desgloseDesdeItems(cot) {
   const specs = jsonDe(f.specs) || {}; const desglose = {}; const pend = [];
   (jsonDe(f.items) || []).forEach(it => {
     const cant = parseInt(it.cant) || 0; if (!cant) return;
-    if (it.prenda === 'medias') { desglose['MEDIAS-ADL'] = true; return; }
+    if (esMediasFicha(it.prenda)) { const cm = codigosMedias(cantMedias(specs, it.prenda)); (cm.length ? cm : ['MEDIAS-ADL']).forEach(k => { desglose[k] = true; }); return; }
     const sp = specs[it.prenda] || {}, mo = sp.moldes || {}, un = sp.unidades || {};
     const cals = Object.keys(mo).filter(c => mo[c]);
     const claves = cals.map(c => claveDeFicha(mo[c], ''));
@@ -2686,13 +2696,15 @@ function traducirFicha(cot) {
     const t = jsonDe(d.tallas) || {};
     Object.keys(t).forEach(pr => {
       if (!t[pr]) return;
-      if (pr === 'medias') { desglose[/infantil/i.test(t[pr]) ? 'MEDIAS-INF' : 'MEDIAS-ADL'] = true; return; }
+      if (esMediasFicha(pr)) { if (!cantMedias(specs, pr)) desglose[codigoMedias(t[pr])] = true; return; }
       const molde = ((specs[pr] || {}).moldes || {})[d.calce] || '';
       const cod = claveDeFicha(molde, basePrendaFicha(pr) === 'camiseta' ? d.manga : '');
       if (cod) desglose[cod] = (desglose[cod] || 0) + 1;
       else { const k = pr + '|' + molde; pend[k] = pend[k] || { prenda: pr, molde, cant: 0 }; pend[k].cant++; }
     });
   });
+  // medias con pares por talla (no van por persona)
+  (jsonDe(f.items) || []).forEach(it => { if (esMediasFicha(it.prenda)) codigosMedias(cantMedias(specs, it.prenda)).forEach(k => { desglose[k] = true; }); });
   return { desglose, pendientes: Object.values(pend) };
 }
 function renderPendientes() {
@@ -2744,17 +2756,29 @@ function armarMoldes(cot) {
     const t = jsonDe(d.tallas) || {};
     Object.keys(t).forEach(pr => {
       if (!t[pr]) return;
-      const sp = specs[pr] || {}; const molde = pr === 'medias' ? '' : ((sp.moldes || {})[d.calce] || '');
+      if (esMediasFicha(pr) && cantMedias(specs, pr)) return;   // estas medias van por pares por talla (abajo)
+      const sp = specs[pr] || {}; const molde = esMediasFicha(pr) ? '' : ((sp.moldes || {})[d.calce] || '');
       const sinM = /sin mangas/i.test((MOLDES_INFO[String(+String(molde).split('|')[1])] || {}).descripcion || '');   // molde sin mangas
       const manga = basePrendaFicha(pr) === 'camiseta' ? (sinM ? 'Sin mangas' : d.manga || '') : '';
       const k = [pr, d.calce || '', manga, molde].join('|');
       if (!grupos[k]) {
         const [cod, num] = molde.split('|');
         grupos[k] = { prenda: nomPrendaFicha(pr), calce: d.calce || '', manga, molde: molde ? (num === 'manual' ? cod + ' (manual)' : (MOLDES_FICHAS[num] || cod)) : '',
-          codigo: pr === 'medias' ? (/infantil/i.test(t[pr]) ? 'MEDIAS-INF' : 'MEDIAS-ADL') : (claveDeFicha(molde, manga) || ''),
+          codigo: esMediasFicha(pr) ? codigoMedias(t[pr]) : (claveDeFicha(molde, manga) || ''),
           tela: [sp.tela, sp.telaDetalle].filter(Boolean).join(' · '), aplicacion: sp.aplicacion || '', cant: 0, tallas: {} };
       }
       grupos[k].cant++; grupos[k].tallas[t[pr]] = (grupos[k].tallas[t[pr]] || 0) + 1;
+    });
+  });
+  // medias: cada diseño con sus pares por talla (adulto e infantil por separado, por su código)
+  (jsonDe(f.items) || []).forEach(it => {
+    const c = esMediasFicha(it.prenda) ? cantMedias(specs, it.prenda) : null; if (!c) return;
+    const nom = nomPrendaFicha(it.prenda) + ((specs[it.prenda] || {}).nombre ? ' · ' + specs[it.prenda].nombre : '');
+    ['MEDIAS-ADL', 'MEDIAS-INF'].forEach(cod => {
+      const ts = Object.keys(c).filter(t => parseInt(c[t], 10) > 0 && codigoMedias(t) === cod); if (!ts.length) return;
+      const g = grupos[it.prenda + '|' + cod] = { prenda: nom, calce: cod === 'MEDIAS-INF' ? 'Infantil' : '', manga: '', molde: '', codigo: cod,
+        tela: '', aplicacion: (specs[it.prenda] || {}).origen ? 'Origen: ' + specs[it.prenda].origen : '', cant: 0, tallas: {} };
+      ts.forEach(t => { g.tallas[t] = parseInt(c[t], 10); g.cant += g.tallas[t]; });
     });
   });
   return Object.values(grupos);
@@ -4967,7 +4991,7 @@ function consumoTelas(cot) {
   (DETS_MAP[cot] || []).forEach(d => {
     const t = jsonDe(d.tallas) || {};
     Object.keys(t).forEach(pr => {
-      if (!t[pr] || pr === 'medias') return;
+      if (!t[pr] || esMediasFicha(pr)) return;
       const sp = specs[pr] || {}, nom = nomPrendaFicha(pr);
       const n = numMolde((sp.moldes || {})[d.calce]);
       const piezas = ((n && MOLDES_PIEZAS[n]) || []).filter(q => +q.consumo > 0);

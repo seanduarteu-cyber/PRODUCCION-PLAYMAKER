@@ -42,7 +42,8 @@ Las pruebas usan Playwright con las bases simuladas: no tocan Supabase ni Netlif
 | `acceso.test.js` | Ingreso único, permisos por perfil y cerrar sesión. |
 | `ventas_rapido.test.js` | Carga liviana de Ventas; que ningún guardado pierda un comprobante. |
 | `estado.test.js` | Pestaña «Estado» y pendientes que vuelven a Armado y Corte juntos. |
-| `camisetas_sin_numero.test.js` | Camisetas sin nombre ni número en el sitio del cliente. |
+| `pedido_cliente.test.js` | Sitio del cliente: basta con la talla, lista pegada desde Excel (columnas), cada prenda con su lista, sin arquero, medias por pares. |
+| `pedido_panel.test.js` | Panel y Planificación: medias por diseño con pares por talla y hoja propia, sin arquero ni número obligatorio. |
 | `catalogo.test.js` | Catálogo ordenado en el panel y en Planificación: orden, secciones, 83 y 84, moldes ya elegidos; con y sin el SQL 17A, y sin conexión. |
 | `ventas_movil.js`, `fichas_movil.js`, `plan_movil.js` | Revisión en tamaño celular: que nada quede cortado. |
 

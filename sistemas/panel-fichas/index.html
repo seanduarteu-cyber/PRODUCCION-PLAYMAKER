@@ -423,6 +423,12 @@ tr:last-child td { border-bottom: none; }
 .pend-prev { flex: none; width: 110px; }
 .pend-prev img { width: 110px; height: 110px; object-fit: cover; border-radius: 8px; border: 1px solid var(--linea); display: block; margin-bottom: 6px; }
 .molde-card { border: 1px solid var(--linea); border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
+.lm-med { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: flex-end; }
+.lm-med-t { flex: 1 0 100%; font-size: 12px; font-weight: 600; }
+.lm-med-t span { font-weight: 400; color: var(--gris, #6e6e6e); }
+.lm-med label { display: flex; flex-direction: column; font-size: 12px; gap: 3px; margin: 0; }
+.lm-med input { width: 70px; min-height: 38px; text-align: center; }
+.lm-med-s { font-size: 12px; font-weight: 600; padding-bottom: 10px; }
 .mc-seccion { margin: 18px 0 2px; font-weight: 700; font-size: 15px; border-bottom: 2px solid var(--linea); padding-bottom: 4px; }
 .molde-card .mc-cab { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
 .molde-card .mc-acc { display: flex; gap: 6px; }
@@ -832,6 +838,17 @@ const PMK_ACCESO = (() => {
     return b ? Object.assign({}, b, { id: id, nom: b.nom + ' ' + x[2], base: b.id, variante: +x[2] }) : { id: id, nom: id, g: GRUPOS[0] };
   };
 
+  // Medias: no van por persona. Cada línea de medias es un diseño (medias, medias_2…: otro color, otro montaje) con
+  // cuántos pares de cada talla: specs[id].cantidades = { S: 4, M: 6, … }. Si no se definen aquí, las indica el cliente.
+  const TALLAS_MEDIAS = ['S', 'M', 'L', 'Adulto', 'Infantil'];
+  const porCantidad = id => basePrenda(id) === 'medias';
+  const cantidadesDe = (f, id) => { const c = f ? ((specsDe(f) || {})[id] || {}).cantidades : null; return c && typeof c === 'object' && !Array.isArray(c) ? c : null; };
+  const sumaCant = c => Object.keys(c || {}).reduce((n, t) => n + (parseInt(c[t], 10) || 0), 0);
+  const tallasCant = c => TALLAS_MEDIAS.concat(Object.keys(c || {}).filter(t => TALLAS_MEDIAS.indexOf(t) < 0)).filter(t => parseInt((c || {})[t], 10) > 0);
+  const textoCant = c => tallasCant(c).map(t => t + ': ' + c[t]).join(' · ');
+  // prendas que se cargan por persona (las medias por cantidad no, salvo personas de cargas antiguas que las traen)
+  const idsPersona = (f, dets, ids) => ids.filter(id => !porCantidad(id) || dets.some(d => tallasDe(d)[id]));
+
   /* ============ acceso a las dos bases ============ */
   function cliente(url, key) {
     return {
@@ -959,7 +976,9 @@ const PMK_ACCESO = (() => {
   }
   const items = f => Array.isArray(f.items) ? f.items : JSON.parse(f.items || '[]');
   const tallasDe = d => (d.tallas && typeof d.tallas === 'object') ? d.tallas : JSON.parse(d.tallas || '{}');
-  const asignadas = (dets, id) => dets.reduce((n, d) => n + (tallasDe(d)[id] ? 1 : 0), 0);
+  // unidades cargadas: personas que llevan la prenda; las medias, la suma de pares por talla
+  const asignadas = (dets, id, f) => { const c = porCantidad(id) ? cantidadesDe(f, id) : null;
+    return c ? sumaCant(c) : dets.reduce((n, d) => n + (tallasDe(d)[id] ? 1 : 0), 0); };
   const habilitado = (f, id) => { const it = items(f).find(x => x.prenda === id); return it ? it.cant : 0; };
   function prendasEnJuego(f, dets) {
     const ids = items(f).map(i => i.prenda);
@@ -969,14 +988,14 @@ const PMK_ACCESO = (() => {
   function avanceFicha(f, dets) {
     let vend = 0, asig = 0, extra = 0;
     prendasEnJuego(f, dets).forEach(id => {
-      const c = habilitado(f, id), a = asignadas(dets, id);
+      const c = habilitado(f, id), a = asignadas(dets, id, f);
       vend += c; asig += Math.min(a, c); extra += Math.max(0, a - c);
     });
     return { vend: vend, asig: asig, extra: extra, completo: asig >= vend && vend > 0 };
   }
   async function sincronizarAvisos(f, dets) {
     for (const id of prendasEnJuego(f, dets)) {
-      const c = habilitado(f, id), a = asignadas(dets, id), ex = a - c;
+      const c = habilitado(f, id), a = asignadas(dets, id, f), ex = a - c;
       try {
         if (ex > 0) await API.guardarAviso({ id: f.ref + ':' + id, ref: f.ref, prenda: id, habilitadas: c,
           agregadas: a, exceso: ex, visto: false, visto_por: null, visto_at: null, created_at: new Date().toISOString() });
@@ -1005,7 +1024,7 @@ const PMK_ACCESO = (() => {
 
   function bloqueAvance(f, dets) {
     return prendasEnJuego(f, dets).map(id => {
-      const p = prendaDe(id), c = habilitado(f, id), a = asignadas(dets, id);
+      const p = prendaDe(id), c = habilitado(f, id), a = asignadas(dets, id, f);
       const pct = c ? Math.min(100, Math.round(a / c * 100)) : 100;
       const listo = c > 0 && a >= c, extra = a - c;
       return '<div class="avance"><div class="fila"><div class="n">' + esc(nomDT(f, id)) + '</div>' +
@@ -1059,40 +1078,48 @@ const PMK_ACCESO = (() => {
     const cargadas = l => dets ? dets.filter(d => tallasDe(d)[l.prenda] && (!l.calce || d.calce === l.calce)).length : null;
     lineas.forEach((l, i) => {
       let txt, sub;
+      const med = l.tipo === 'prenda' && porCantidad(l.prenda);   // medias: diseño por cantidad, con montaje y pares por talla
       if (l.tipo === 'molde') txt = partesMolde(MOLDES.find(x => x.n === l.n) || { e: 'N° ' + etqMolde(l.n) + (l.valor ? ' — ' + l.valor.split('|')[0] : '') });
       else if (l.tipo === 'manual') txt = '<b>' + esc(l.nombre) + '</b> <span class="lm-tag">otro</span>';
       else if (l.tipo === 'sinmolde') txt = '<b>' + esc(prendaDe(l.prenda).nom) + '</b> <span class="lm-tag">sin molde</span>';
+      else if (med) txt = '<b>' + esc(prendaDe(l.prenda).nom) + '</b> <span class="lm-tag">sin molde</span>';
       else txt = '<select data-campo="prenda">' + prendasSinMolde().map(p => '<option value="' + p.id + '"' + (p.id === l.prenda ? ' selected' : '') + '>' + esc(p.nom) + '</option>').join('') + '</select>';
-      if (l.tipo === 'prenda') sub = 'Sin molde (se compra o sale de stock)';
+      if (med) sub = 'Se compra o sale de stock. Otro color = otra línea de medias, con su montaje';
+      else if (l.tipo === 'prenda') sub = 'Sin molde (se compra o sale de stock)';
       else if (l.tipo === 'sinmolde') sub = esc(tipoDe(l.prenda)) + ' · aún sin molde: agrégalo desde el catálogo o elígelo en la ficha técnica';
       else sub = esc(tipoDe(l.prenda)) + ' · ' + esc(l.calce);
       // nombre del diseño, en su primera línea (una ficha antigua puede tener dos calces en un mismo diseño)
       const primera = lineas.findIndex(x => x.prenda === l.prenda) === i;
-      const nom = l.tipo === 'prenda' ? '' : primera
+      const nom = l.tipo === 'prenda' && !med ? '' : med ? '<input type="text" class="lm-nom" data-campo="disnom" maxlength="60" value="' + esc(l.disNom || '') + '" placeholder="Nombre o color (ej: Medias azules)" aria-label="Nombre de las medias">' : primera
         ? '<input type="text" class="lm-nom" data-campo="disnom" maxlength="60" value="' + esc(l.disNom || '') + '" placeholder="' + esc(prendaDe(l.prenda).nom) + '" aria-label="Nombre del diseño">'
         : '<div class="lm-sub">Mismo diseño: ' + esc(String(l.disNom || '').trim() || prendaDe(l.prenda).nom) + '</div>';
-      const c = cargadas(l);
+      const c = med ? null : cargadas(l);
       if (c != null) sub += ' · ' + c + (c === 1 ? ' cargada' : ' cargadas') + ' por el cliente';
-      const falta = !l.cant ? 'Define cuántas prendas lleva este molde' : l.confirmar ? 'Cantidad sugerida: confírmala o cámbiala' : '';
+      const falta = !l.cant ? (med ? 'Define cuántos pares (o los pares por talla)' : 'Define cuántas prendas lleva este molde') : l.confirmar ? 'Cantidad sugerida: confírmala o cámbiala' : '';
+      const ct = l.cants || {}, sumaM = sumaCant(ct);
+      const grilla = med ? '<div class="lm-med"><div class="lm-med-t">Pares por talla <span>(opcional: si no los defines, los indica el cliente)</span></div>' +
+        TALLAS_MEDIAS.concat(Object.keys(ct).filter(t => TALLAS_MEDIAS.indexOf(t) < 0)).map(t => '<label>' + esc(t) +
+          '<input type="number" min="0" max="999" inputmode="numeric" data-med="' + esc(t) + '" value="' + (parseInt(ct[t], 10) || '') + '" placeholder="0"></label>').join('') +
+        '<div class="lm-med-s" data-med-suma>' + (sumaM ? 'Total: ' + sumaM + ' pares' : '') + '</div></div>' : '';
       // montaje en la línea de cada molde: los ya guardados y los adjuntados (se suben al crear la ficha o al guardar).
       // Si un diseño tiene más de un molde (fichas antiguas: masculino y femenino juntos), cada línea muestra los de su molde.
       const vL = l.tipo === 'molde' || l.tipo === 'manual' ? valorMolde(l) : '', varios = lineas.filter(x => x.prenda === l.prenda).length > 1;
-      const ya = l.tipo !== 'prenda' ? (imgs || []).filter((x, k, a) => prendasImg(x).indexOf(l.prenda) >= 0 && (!varios || !moldesImg(x).length || moldesImg(x).indexOf(vL) >= 0) &&
+      const ya = l.tipo !== 'prenda' || med ? (imgs || []).filter((x, k, a) => prendasImg(x).indexOf(l.prenda) >= 0 && (!varios || !moldesImg(x).length || moldesImg(x).indexOf(vL) >= 0) &&
         a.findIndex(y => (y.grupo || y.path) === (x.grupo || x.path)) === k) : [];
-      const mj = l.tipo !== 'prenda' ? '<div class="lm-mj">' +
+      const mj = l.tipo !== 'prenda' || med ? '<div class="lm-mj">' +
         ya.map(x => '<a class="lm-mj-img" href="' + esc(x.pdf || x.url) + '" target="_blank" rel="noopener" title="Montaje guardado"><img src="' + esc(x.url) + '" alt="">' + (x.origen === 'pdf' ? '<em>PDF</em>' : '') + '</a>').join('') +
         (l.mj || []).map((x, k) => '<span class="lm-mj-img nuevo"><img src="' + esc(x.url || x.paginas[0].url) + '" alt="">' + (x.pdf ? '<em>PDF</em>' : '') +
           '<button type="button" data-mj-quitar="' + i + '|' + k + '" aria-label="Quitar montaje">×</button></span>').join('') +
         '<button type="button" class="btn plano chico" data-mj-linea="' + i + '">+ Adjuntar montaje (imagen o PDF)</button>' +
         ((l.mj || []).length ? '<span class="lm-mj-nota">Se sube al ' + (st.pant === 'crear' ? 'crear la ficha' : 'guardar') + '</span>' : '') + '</div>' : '';
       h += '<div class="linea-item lm-item' + (falta ? ' confirmar' : '') + '" data-linea="' + i + '"><div class="lm-txt">' + nom + txt +
-        '<div class="lm-sub">' + sub + '</div>' + (falta ? '<div class="lm-falta">' + falta + '</div>' : '') + mj + '</div>' +
+        '<div class="lm-sub">' + sub + '</div>' + (falta ? '<div class="lm-falta">' + falta + '</div>' : '') + grilla + mj + '</div>' +
         '<input type="number" min="1" max="999" value="' + (l.cant || '') + '" placeholder="¿Cuántas?" data-campo="cant" aria-label="Unidades">' +
         '<button type="button" data-quitar="' + i + '" aria-label="Quitar">×</button></div>';
     });
     return h + '</div><input type="file" id="mj-linea-file" accept="image/*,application/pdf,.pdf" multiple style="display:none">' +
       '<div class="lm-botones"><button class="btn chico" id="btn-catalogo">+ Agregar molde del catálogo</button>' +
-      '<button class="btn plano chico" id="btn-sinmolde">+ Prenda sin molde</button></div>';
+      '<button class="btn plano chico" id="btn-sinmolde">+ Medias</button></div>';
   }
   function catalogoMoldes(lineas) {
     const f = st.catMol || (st.catMol = { deporte: deporteProyecto(lineas), prenda: '', calce: '', q: '' });   // filtros del catálogo de moldes
@@ -1133,6 +1160,15 @@ const PMK_ACCESO = (() => {
         const p = div.querySelector('[data-campo=prenda]'); if (p) l.prenda = p.value;
         const dn = div.querySelector('[data-campo=disnom]');
         if (dn) lineas.forEach(x => { if (x.prenda === l.prenda) x.disNom = dn.value; });
+        // medias: con pares por talla, la cantidad es su suma
+        const ms = div.querySelectorAll('[data-med]');
+        if (ms.length) {
+          l.cants = {}; ms.forEach(m => { const v = parseInt(m.value, 10); if (v > 0) l.cants[m.dataset.med] = Math.min(999, v); });
+          const sm = sumaCant(l.cants), ci = div.querySelector('[data-campo=cant]'), ss = div.querySelector('[data-med-suma]');
+          if (sm) { l.cant = sm; l.confirmar = false; if (ci) ci.value = sm;
+            const fa = div.querySelector('.lm-falta'); if (fa) fa.style.visibility = 'hidden'; div.classList.remove('confirmar'); }
+          if (ss) ss.textContent = sm ? 'Total: ' + sm + ' pares' : '';
+        }
       });
       if (alCambiar) alCambiar();
     };
@@ -1185,9 +1221,10 @@ const PMK_ACCESO = (() => {
     const clic = (id, fn) => { const e = document.getElementById(id); if (e) e.addEventListener('click', () => { sync(); st.error = ''; fn(); render(); }); };
     clic('btn-catalogo', () => { st.catAbierto = true; });
     clic('cat-cerrar', () => { st.catAbierto = false; });
+    // cada línea de medias es un diseño propio (otro color, otro montaje): medias, medias_2…
     clic('btn-sinmolde', () => {
-      const p = prendasSinMolde().find(x => !lineas.some(l => l.tipo === 'prenda' && l.prenda === x.id));
-      if (p) lineas.push({ tipo: 'prenda', prenda: p.id, cant: resto(p.id) });
+      const id = nuevoIdDiseno(lineas, 'medias');
+      lineas.push({ tipo: 'prenda', prenda: id, cant: resto(id), disNom: '', cants: {} });
     });
     clic('mo-agregar', () => {
       const nombre = document.getElementById('mo-nombre').value.replace(/\|/g, ' ').trim();
@@ -1525,7 +1562,10 @@ const PMK_ACCESO = (() => {
     let h = '<div class="corte ' + (clase || '') + '">';
     let algo = false;
     ids.forEach(id => {
-      const p = prendaDe(id);
+      const p = prendaDe(id), cq = porCantidad(id) ? cantidadesDe(f, id) : null;
+      if (cq) { const tm = sumaCant(cq); if (!tm) return; algo = true;
+        h += '<div class="corte-prenda"><div class="tit-p">' + esc(nomDT(f, id)) + '<span>' + tm + (mostrarVendidas ? ' de ' + habilitado(f, id) : '') + ' pares</span></div>' +
+          '<div class="g">Pares por talla: ' + esc(textoCant(cq)) + '</div></div>'; return; }
       const grupos = agruparCorte(dets, id, f);
       if (!grupos.length) return;
       algo = true;
@@ -1810,7 +1850,10 @@ const PMK_ACCESO = (() => {
       await cargarMoldes();
     }
     const imp = st.importado;
-    if (!st.lineas) { st.lineas = []; st.idsUsados = []; st.catMol = null; st.catAbierto = true; }
+    if (!st.lineas) { st.lineas = []; st.idsUsados = []; st.catMol = null; st.catAbierto = true; st.crearCab = {}; }
+    // lo escrito en la cabecera se conserva al agregar o quitar moldes (la pantalla se vuelve a dibujar)
+    const cab = st.crearCab || (st.crearCab = {});
+    const vCab = k => cab[k] != null ? ' value="' + esc(cab[k]) + '"' : '';
     const lineas = st.lineas;
     const parte = imp ? st.parte : null;
     const vendido = parte && parte.cant ? parte.cant : imp ? (parseInt(imp.cantidad, 10) || 0) : 0;
@@ -1830,17 +1873,19 @@ const PMK_ACCESO = (() => {
     } else {
       h += '<p class="bajada">Para ventas que no estén en el sistema. Usa igual la referencia COT.</p>' +
         '<div class="campo"><label for="c-ref">Referencia de venta</label><div class="ayuda">Se guarda como COT-xxxx.</div>' +
-        '<input id="c-ref" type="text" placeholder="COT-1234" autocapitalize="characters"></div>' +
-        '<div class="campo"><label for="c-cliente">Cliente o club</label><input id="c-cliente" type="text" placeholder="Ej: Club Deportivo Los Andes"></div>' +
-        '<div class="campo"><label for="c-vend">Vendedor</label><input id="c-vend" type="text" placeholder="Ej: Javiera D\u2019Orival"></div>' +
-        '<div class="campo"><label for="c-entrega">Fecha de entrega</label><input id="c-entrega" type="date"></div>';
+        '<input id="c-ref" type="text" placeholder="COT-1234" autocapitalize="characters"' + vCab('c-ref') + '></div>' +
+        '<div class="campo"><label for="c-cliente">Cliente o club</label><input id="c-cliente" type="text" placeholder="Ej: Club Deportivo Los Andes"' + vCab('c-cliente') + '></div>' +
+        '<div class="campo"><label for="c-vend">Vendedor</label><input id="c-vend" type="text" placeholder="Ej: Javiera D\u2019Orival"' + vCab('c-vend') + '></div>' +
+        '<div class="campo"><label for="c-entrega">Fecha de entrega</label><input id="c-entrega" type="date"' + vCab('c-entrega') + '></div>';
     }
     h += '<div class="campo"><label for="c-proy">Nombre del proyecto</label>' +
       '<div class="ayuda">Es lo que ve el cliente al abrir su ficha.</div>' +
-      '<input id="c-proy" type="text" placeholder="Ej: Uniforme competencia 2026"' + (imp ? ' value="' + esc('Uniforme ' + (imp.cliente || '')) + '"' : '') + '></div>' +
+      '<input id="c-proy" type="text" placeholder="Ej: Uniforme competencia 2026"' + (cab['c-proy'] != null ? vCab('c-proy') : imp ? ' value="' + esc('Uniforme ' + (imp.cliente || '')) + '"' : '') + '></div>' +
       '<div class="campo"><label>Moldes del proyecto</label>' +
       '<div class="ayuda">Agrega cada molde que se va a fabricar y define cuántas prendas lleva cada uno (viene sugerido según el pedido; súbelo o bájalo). La prenda y el calce salen del molde, ' +
       'y al crear la ficha su despiece queda cargado. Si un molde no está en el catálogo, agrégalo como otro con su nombre completo.</div>' +
+      '<div class="ayuda">El arquero o líbero es otro diseño: agrega el mismo molde otra vez con su cantidad (ej: 10 de jugador y 1 de arquero) y adjunta su montaje. ' +
+      'Las medias van con «+ Medias»: cada color es una línea con su montaje y, si ya los sabes, los pares por talla.</div>' +
       '<div class="ayuda">Cada molde que agregas es un <b>diseño</b> propio, con su nombre, telas, despiece, montaje y fecha de entrega. El mismo molde se puede agregar ' +
       'más de una vez (ej: el molde 10 para «Rama Voleibol» y para «Rama Hockey»). Ponle nombre a cada diseño aquí o después en la ficha técnica.</div>' +
       editorMoldesProyecto(lineas) + (st.catAbierto ? catalogoMoldes(lineas) : '');
@@ -1849,6 +1894,7 @@ const PMK_ACCESO = (() => {
     if (st.error) h += '<div class="aviso error">' + esc(st.error) + '</div>';
     app.innerHTML = h + '<button class="btn" id="btn-crear">Crear ficha</button>' + pie + '</div>';
 
+    ['c-ref', 'c-cliente', 'c-vend', 'c-entrega', 'c-proy'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', () => { cab[id] = el.value; }); });
     const sync = bindMoldesProyecto(lineas, vendido, () => {
       const c = document.getElementById('cuadre');
       if (!c || !imp) return;
@@ -1874,7 +1920,13 @@ const PMK_ACCESO = (() => {
       lineas.forEach(l => {
         const it = itemsFicha.find(x => x.prenda === l.prenda);
         if (it) it.cant += l.cant; else itemsFicha.push({ prenda: l.prenda, cant: l.cant });
-        if (l.tipo === 'prenda') return;
+        if (l.tipo === 'prenda') {
+          if (!porCantidad(l.prenda)) return;
+          const spm = specs[l.prenda] || (specs[l.prenda] = {});
+          if (String(l.disNom || '').trim()) spm.nombre = String(l.disNom).trim();
+          if (sumaCant(l.cants)) spm.cantidades = Object.assign({}, l.cants);
+          return;
+        }
         const sp = specs[l.prenda] || (specs[l.prenda] = { deporte: '', moldes: {}, unidades: {} });
         if (!sp.nombre && String(l.disNom || '').trim()) sp.nombre = String(l.disNom).trim();
         sp.moldes[l.calce] = valorMolde(l); sp.unidades[l.calce] = l.cant;
@@ -1901,7 +1953,7 @@ const PMK_ACCESO = (() => {
           catch (e2) { st.avisoCreada = 'La ficha se creó, pero no se pudieron subir los montajes (' + String(e2.message || '').slice(0, 100) + '). Súbelos en la ficha técnica, dentro de cada diseño.'; }
           lineas.forEach(l => (l.mj || []).forEach(liberarMontaje));
         }
-        st.lineas = null; st.importado = null; st.parte = null; st.error = '';
+        st.lineas = null; st.importado = null; st.parte = null; st.error = ''; st.crearCab = null;
         st.pant = 'creada'; render();
       } catch (e) {
         st.error = /duplicate|already exists/i.test(e.message) ? 'Ya existe una ficha con la referencia ' + ref + '.' : 'No se pudo crear. ' + e.message.slice(0, 120);
@@ -1938,7 +1990,8 @@ const PMK_ACCESO = (() => {
     items(f).forEach(it => {
       const sp = specs[it.prenda] || {}, mo = sp.moldes || {}, un = (sp.unidades && typeof sp.unidades === 'object') ? sp.unidades : {};
       const cals = CALCES.filter(c => mo[c]).concat(Object.keys(mo).filter(c => mo[c] && CALCES.indexOf(c) < 0));
-      if (!cals.length) { out.push({ tipo: necesitaMolde(it.prenda) ? 'sinmolde' : 'prenda', prenda: it.prenda, cant: it.cant, disNom: sp.nombre || '' }); return; }
+      if (!cals.length) { out.push({ tipo: necesitaMolde(it.prenda) ? 'sinmolde' : 'prenda', prenda: it.prenda, cant: it.cant, disNom: sp.nombre || '',
+        cants: Object.assign({}, (sp.cantidades && typeof sp.cantidades === 'object') ? sp.cantidades : {}) }); return; }
       const cargadas = c => dets.filter(d => tallasDe(d)[it.prenda] && d.calce === c).length;
       const conDato = cals.every(c => typeof un[c] === 'number' && un[c] > 0);
       const cuadra = conDato && cals.reduce((n, c) => n + un[c], 0) === it.cant;
@@ -2020,7 +2073,15 @@ const PMK_ACCESO = (() => {
       nuevos.forEach(it => {
         const ls = lineas.filter(l => l.prenda === it.prenda && esMoldeLinea(l));
         const dn = String((lineas.find(l => l.prenda === it.prenda) || {}).disNom || '').trim();   // nombre del diseño (vacío: el de la prenda)
-        if (!ls.length) { if (dn && necesitaMolde(it.prenda)) (specs[it.prenda] = specs[it.prenda] || {}).nombre = dn; else if (specs[it.prenda]) delete specs[it.prenda].nombre; return; }
+        if (!ls.length) {
+          if (dn && (necesitaMolde(it.prenda) || porCantidad(it.prenda))) (specs[it.prenda] = specs[it.prenda] || {}).nombre = dn; else if (specs[it.prenda]) delete specs[it.prenda].nombre;
+          const lp = lineas.find(l => l.prenda === it.prenda);
+          if (porCantidad(it.prenda) && lp) {
+            if (sumaCant(lp.cants)) (specs[it.prenda] = specs[it.prenda] || {}).cantidades = Object.assign({}, lp.cants);
+            else if (specs[it.prenda]) delete specs[it.prenda].cantidades;
+          }
+          return;
+        }
         const sp = specs[it.prenda] || (specs[it.prenda] = { deporte: '' });
         if (dn) sp.nombre = dn; else delete sp.nombre;
         sp.moldes = {}; sp.unidades = {};
@@ -2153,9 +2214,9 @@ const PMK_ACCESO = (() => {
         Array.from({ length: maxDiseno }, (x, k) => k + 1).map(n => '<option value="' + n + '"' + ((+dis || 1) === n ? ' selected' : '') + '>Diseño ' + n + '</option>').join('') + '</select>' : '') +
       '<div class="lab-mini">¿Qué vista muestra?</div><select ' + attr + ' data-vista="1"><option value="">Elegir vista…</option>' +
       VISTAS.map(v => '<option' + (v === vista ? ' selected' : '') + '>' + v + '</option>').join('') + '</select>' +
-      '<div class="lab-mini" style="margin-top:10px">¿Es de ' + esc(nombreArq(f).toLowerCase()) + '? <span>(su diseño va aparte, en la hoja de ' + esc(nombreArq(f) === 'Líbero' ? 'los líberos' : 'los arqueros') + ')</span></div><div class="chips">' +
+      (!arq ? '' : '<div class="lab-mini" style="margin-top:10px">¿Es de ' + esc(nombreArq(f).toLowerCase()) + '? <span>(su diseño va aparte, en la hoja de ' + esc(nombreArq(f) === 'Líbero' ? 'los líberos' : 'los arqueros') + ')</span></div><div class="chips">' +
       [['no', 'No'], ['si', 'Sí']].map(o => '<label class="chip' + ((arq ? 'si' : 'no') === o[0] ? ' on' : '') + '"><input type="radio" name="arq-' + grupo + '" ' + attr + ' data-arq="' + o[0] + '"' +
-        ((arq ? 'si' : 'no') === o[0] ? ' checked' : '') + '>' + o[1] + '</label>').join('') + '</div></div>';
+        ((arq ? 'si' : 'no') === o[0] ? ' checked' : '') + '>' + o[1] + '</label>').join('') + '</div>') + '</div>';
     };
     // molde(s) con que queda registrado: el único de la prenda, o los marcados si tiene varios
     const moldesFinal = obj => { const ops = moldesOpc(obj.prendas); return ops.length === 1 ? [ops[0].v] : (obj.moldes || []).filter(v => ops.some(o => o.v === v)); };
@@ -2224,6 +2285,9 @@ const PMK_ACCESO = (() => {
 
       // las medias no llevan molde: se compran o salen de stock
       if (p.origen) {
+        const cq = sp.cantidades && typeof sp.cantidades === 'object' ? sp.cantidades : null;
+        if (porCantidad(it.prenda)) h += '<div class="ayuda">Cada línea de medias es un diseño: otro color va en otra línea, con su montaje. El nombre y los pares por talla se cambian en «Editar prendas y moldes».</div>' +
+          '<div class="mini">Pares por talla: <b>' + esc(cq && sumaCant(cq) ? textoCant(cq) + ' (' + sumaCant(cq) + ' pares)' : 'los indica el cliente') + '</b></div>';
         h += '<label for="o-' + it.prenda + '">Origen</label>' +
           '<select id="o-' + it.prenda + '" data-spec="' + it.prenda + '" data-campo="origen">' +
           ['', 'PMK', 'Externa'].map(o => '<option value="' + o + '"' + ((sp.origen || '') === o ? ' selected' : '') + '>' +
@@ -2338,9 +2402,6 @@ const PMK_ACCESO = (() => {
       h += '<div class="montaje-dis">' + paso('Montaje') + bloqueMontaje(it.prenda) + '</div></details>';
     });
 
-    if (imgs.some(i => i.arquero) && (st.dets || []).length && !(st.dets || []).some(d => d.arquero))
-      h += '<div class="aviso" style="margin-top:10px">Hay un montaje de ' + esc(nombreArq(f).toLowerCase()) + ', pero nadie está marcado como ' + esc(nombreArq(f).toLowerCase()) +
-        ' en el listado: márcalo en la ficha (pestaña Listado) para que lleve ese diseño.</div>';
     h += '<button class="btn plano chico" data-ir="catalogo" style="margin-top:12px">Gestionar catálogo</button>' +
       '<input type="file" id="file-montaje" accept="image/*,application/pdf,.pdf" multiple style="display:none">' +
       '<input type="file" id="file-reemplazo" accept="image/*,application/pdf,.pdf" style="display:none">' + finSec;
@@ -3015,14 +3076,6 @@ const PMK_ACCESO = (() => {
         chk(av.completo, 'Tallas completas por el cliente (' + av.asig + ' de ' + av.vend + ')', 'id="chk-link"', 'Enviar link') +
         chk(!!f.entrega_cliente, 'Fechas de entrega definidas', 'data-ir="tecnica"', 'Definir fechas') +
         chk(f.estado === 'confirmado', 'Ficha confirmada: lista para ingresar a producción', 'id="chk-confirmar"', 'Confirmar') + '</div>';
-      if (dets.length) {
-        const arqs = dets.filter(d => d.arquero), nom = nombreArq(f);
-        h += '<div class="campo"><label>' + esc(nom === 'Arquero o líbero' ? 'Arqueros y líberos' : nom + 's') + '</label>' +
-          '<div class="ayuda">Llevan diseño y confección aparte. Si el cliente no los marcó, márcalos en el listado.</div>' +
-          (arqs.length ? '<div class="mini">' + arqs.length + ' marcado' + (arqs.length > 1 ? 's' : '') + ': ' +
-            arqs.map(d => String(d.nombre || '').trim() ? esc(d.nombre) + (d.numero ? ' (' + esc(d.numero) + ')' : '') : esc(nomPersona(d))).join(', ') + '</div>' : '<div class="mini">Ninguno marcado.</div>') +
-          '<button class="btn plano chico" data-pest="listado" style="margin-top:8px">Revisar y marcar en el listado</button></div>';
-      }
       h += '<button class="btn plano" data-ir="editar">Editar prendas y moldes</button>' +
         (dets.length ? '<button class="btn plano" data-ir="listado-ed">Editar el listado de personas</button>' : '') +
         '<button class="btn plano" data-ir="tecnica">Ficha técnica y montajes</button>' +
@@ -3035,12 +3088,12 @@ const PMK_ACCESO = (() => {
     } else if (st.pest === 'listado') {
       const ep = st.editPersona && st.editPersona.ref === f.ref ? st.editPersona : null;
       h += '<div class="btn-par" style="margin-top:12px"><button class="btn" data-ir="listado-ed">Editar todo el listado</button><button class="btn plano chico" id="ep-nueva">+ Agregar persona</button></div>';
-      if (ep) h += formPersona(f, ep, ids);
+      if (ep) h += formPersona(f, ep, idsPersona(f, dets, ids));
       if (!dets.length) h += '<div class="vacio"><div class="t">Sin datos</div><div class="d">El cliente aún no carga detalle.</div></div>';
       else h += '<div class="ayuda" style="margin-top:12px"><b>Editar todo el listado</b> abre a todas las personas en una sola pantalla: corriges lo que haga falta, marcas las que se eliminan y guardas todo junto. ' +
         'Con <b>Editar</b> y <b>Eliminar</b> de cada fila corriges o quitas a una persona. ' +
         'Toca la columna <b>' + esc(nombreArq(f)) + '</b> para marcar o quitar a quien lleva ese diseño, si el cliente no lo indicó.</div>' +
-        tablaDetalle(f, dets, ids);
+        tablaDetalle(f, dets, idsPersona(f, dets, ids));
     } else {
       if (!avs.length) h += '<div class="vacio"><div class="t">Sin avisos</div><div class="d">El cliente no ha agregado prendas por sobre lo vendido.</div></div>';
       avs.forEach(a => {
@@ -3061,7 +3114,7 @@ const PMK_ACCESO = (() => {
     app.innerHTML = h + pie + '</div>';
 
     app.querySelectorAll('[data-pest]').forEach(b => b.addEventListener('click', () => { st.pest = b.dataset.pest; st.editPersona = null; render(); }));
-    document.getElementById('btn-csv').addEventListener('click', () => descargarCSV(f, dets, ids));
+    document.getElementById('btn-csv').addEventListener('click', () => descargarCSV(f, dets, idsPersona(f, dets, ids)));
     const bl2 = document.getElementById('chk-link');
     const bc2 = document.getElementById('chk-confirmar');
     if (bc2) bc2.addEventListener('click', () => { const b = document.getElementById('btn-estado'); if (b) b.click(); });
@@ -3123,10 +3176,10 @@ const PMK_ACCESO = (() => {
         const disenos = {};
         formEp.querySelectorAll('[data-ep-dis]').forEach(s2 => { if (s2.value && tallas[s2.dataset.epDis]) disenos[s2.dataset.epDis] = +s2.value; });
         const datos = { nombre: val('ep-nombre'), estampado: val('ep-estampado').toUpperCase(), numero: val('ep-numero').toUpperCase(), calce: val('ep-calce'),
-          manga: Object.keys(tallas).some(k => basePrenda(k) === 'camiseta') ? (val('ep-manga') || 'Corta') : '', arquero: document.getElementById('ep-arq').checked, obs: val('ep-obs'), tallas: tallas, disenos: disenos };
+          manga: Object.keys(tallas).some(k => basePrenda(k) === 'camiseta') ? (val('ep-manga') || 'Corta') : '', arquero: !!(document.getElementById('ep-arq') || {}).checked, obs: val('ep-obs'), tallas: tallas, disenos: disenos };
         Object.assign(ep, datos, { error: '' });   // si algo falta, el formulario queda con lo escrito
-        const err = !Object.keys(tallas).length ? 'Marca la talla de al menos una prenda.' : !datos.calce ? 'Elige el calce.' :
-          (!datos.nombre && !datos.numero && !datos.estampado && Object.keys(tallas).some(k => pideNumero(f, k))) ? 'Escribe al menos el número, el nombre a estampar o el nombre de la persona.' : '';
+        // basta con el calce y la talla: el nombre y el número son opcionales
+        const err = !Object.keys(tallas).length ? 'Marca la talla de al menos una prenda.' : !datos.calce ? 'Elige el calce.' : '';
         if (err) { ep.error = err; return render(); }
         const b = document.getElementById('ep-guardar'); b.disabled = true; b.textContent = 'Guardando…';
         try {
@@ -3198,12 +3251,13 @@ const PMK_ACCESO = (() => {
       try { dets = await API.detalles(f.ref); }
       catch (e) { app.innerHTML = barra(f.cliente, 'ficha') + '<div class="pmk-wrap">' + errorConexion(e) + pie + '</div>'; return; }
       const sp = specsDe(f);
-      ed = st.ed = { ref: f.ref, ids: prendasEnJuego(f, dets), filas: dets.map(d => { const x = filaEd(d); x.orig = firmaEd(x); x.antes = { numero: x.numero, estampado: x.estampado, nombre: x.nombre }; return x; }),
+      ed = st.ed = { ref: f.ref, ids: idsPersona(f, dets, prendasEnJuego(f, dets)), filas: dets.map(d => { const x = filaEd(d); x.orig = firmaEd(x); x.antes = { numero: x.numero, estampado: x.estampado, nombre: x.nombre }; return x; }),
         flags: {}, flagsOrig: {}, ver: '', q: '', foco: null };
       ed.ids.filter(numeroOpcional).forEach(id => { ed.flags[id] = ed.flagsOrig[id] = ((sp[id] || {}).numero) || ''; });
     }
     const listo = st.edListo && st.edListo.ref === f.ref ? st.edListo : null;
     const hayCam = ed.ids.some(id => basePrenda(id) === 'camiseta');
+    const hayArq = hayCam && ed.filas.some(x => x.arquero);   // solo fichas antiguas: el arquero ahora es otro diseño
     const conEst = hayCam || ed.filas.some(x => x.estampado);
     const opts = (ops, v) => ops.concat(v && ops.indexOf(v) < 0 ? [v] : []).map(o => '<option value="' + esc(o) + '"' + (o === v ? ' selected' : '') + '>' + esc(o || '—') + '</option>').join('');
     const tallasPara = id => { const pr = prendaDe(id); return pr.escala ? pr.escala : pr.sinTalla ? ['Sí'] : TALLAS; };
@@ -3211,7 +3265,7 @@ const PMK_ACCESO = (() => {
     const arqCorto = nombreArq(f) === 'Líbero' ? 'Líb.' : 'Arq.';
     const conDis = ed.ids.filter(id => disenosPrenda(f, id).length > 1);   // prendas cuyo molde tiene varios diseños
     const cols = ['28px', '64px'].concat(conEst ? ['minmax(90px, 1.1fr)'] : []).concat(['minmax(90px, 1.1fr)', '108px']).concat(hayCam ? ['98px'] : [])
-      .concat(ed.ids.map(() => 'minmax(66px, 88px)')).concat(conDis.map(() => '64px')).concat(hayCam ? ['40px'] : []).concat(['minmax(80px, 1fr)', '36px']);
+      .concat(ed.ids.map(() => 'minmax(66px, 88px)')).concat(conDis.map(() => '64px')).concat(hayArq ? ['40px'] : []).concat(['minmax(80px, 1fr)', '36px']);
     const celda = (et, html, titulo) => '<label class="ed-c"' + (titulo ? ' title="' + esc(titulo) + '"' : '') + '><span class="ed-l">' + esc(et) + '</span>' + html + '</label>';
     const filaHTML = (x, i) => '<div class="ed-fila" data-fila="' + i + '"><span class="ed-idx">' + (i + 1) + '</span>' +
       celda('N°', '<input type="text" data-k="numero" maxlength="6" value="' + esc(x.numero) + '">') +
@@ -3222,7 +3276,7 @@ const PMK_ACCESO = (() => {
       ed.ids.map(id => celda(nomCol(id), '<select data-t="' + esc(id) + '">' + opts([''].concat(tallasPara(id)), x.tallas[id] || '') + '</select>', nomDT(f, id))).join('') +
       conDis.map(id => celda('Diseño ' + nomCol(id).toLowerCase(), '<select data-dis="' + esc(id) + '"><option value="">—</option>' +
         disenosPrenda(f, id).map(n => '<option value="' + n + '"' + (+(x.disenos || {})[id] === n ? ' selected' : '') + '>D' + n + '</option>').join('') + '</select>', 'Diseño de ' + nomDT(f, id).toLowerCase())).join('') +
-      (hayCam ? celda(nombreArq(f), '<input type="checkbox" data-k="arquero"' + (x.arquero ? ' checked' : '') + '>', nombreArq(f)) : '') +
+      (hayArq ? celda(nombreArq(f), '<input type="checkbox" data-k="arquero"' + (x.arquero ? ' checked' : '') + '>', nombreArq(f)) : '') +
       celda('Observaciones', '<input type="text" data-k="obs" maxlength="200" value="' + esc(x.obs) + '">') +
       '<button type="button" class="ed-x" data-ed-x title="Eliminar">✕</button></div>';
 
@@ -3419,7 +3473,7 @@ const PMK_ACCESO = (() => {
         await sincronizarAvisos(fn, quedan);
         st.ficha = fn;
         // si quedaron menos prendas que las vendidas, el cliente no podrá volver a confirmar hasta completarlas
-        const bajo = prendasEnJuego(fn, quedan).map(id => ({ id: id, c: habilitado(fn, id), a: asignadas(quedan, id) })).filter(x => x.a < x.c);
+        const bajo = prendasEnJuego(fn, quedan).map(id => ({ id: id, c: habilitado(fn, id), a: asignadas(quedan, id, fn) })).filter(x => x.a < x.c);
         // qué cambió en número, nombre a estampar y persona (para confirmar a simple vista que quedó guardado)
         const cambiosVisibles = cambian.filter(x => !x.nuevo && x.antes).flatMap(x => [['numero', 'N°'], ['estampado', 'estampa'], ['nombre', 'persona']]
           .filter(([k]) => String(x.antes[k] || '').trim().toUpperCase() !== String(x[k] || '').trim().toUpperCase())
@@ -3469,7 +3523,7 @@ const PMK_ACCESO = (() => {
   // Editar o agregar una persona de la lista de tallas (lo mismo que carga el cliente)
   function formPersona(f, ep, ids) {
     const conTalla = Object.keys(ep.tallas || {}).filter(k => ep.tallas[k]);
-    const prendas = Array.from(new Set(items(f).map(i => i.prenda).concat(ids).concat(conTalla)));
+    const prendas = Array.from(new Set(items(f).map(i => i.prenda).filter(id => !porCantidad(id)).concat(ids).concat(conTalla)));   // medias: por cantidad, no por persona
     const hayCam = prendas.some(id => basePrenda(id) === 'camiseta');
     const opciones = (ops, v) => ops.concat(v && ops.indexOf(v) < 0 ? [v] : []).map(o => '<option value="' + esc(o) + '"' + (o === v ? ' selected' : '') + '>' + esc(o || '—') + '</option>').join('');
     const tallasPara = id => { const p = prendaDe(id); return p.escala ? p.escala : p.sinTalla ? ['Sí'] : TALLAS; };
@@ -3486,7 +3540,7 @@ const PMK_ACCESO = (() => {
           (disenosPrenda(f, id).length > 1 ? '<label>Diseño de ' + esc(prendaDe(id).nom.toLowerCase()) + '<select data-ep-dis="' + esc(id) + '"><option value="">—</option>' +
             disenosPrenda(f, id).map(n => '<option value="' + n + '"' + (+(ep.disenos || {})[id] === n ? ' selected' : '') + '>Diseño ' + n + '</option>').join('') + '</select></label>' : '')).join('') +
       '</div>' +
-      '<label class="ep-chk"><input type="checkbox" id="ep-arq"' + (ep.arquero ? ' checked' : '') + '> ' + esc(nombreArq(f)) + ' <span class="mini">(diseño y confección aparte)</span></label>' +
+      (ep.arquero ? '<label class="ep-chk"><input type="checkbox" id="ep-arq" checked> ' + esc(nombreArq(f)) + ' <span class="mini">(ficha antigua: ahora el arquero es otro diseño)</span></label>' : '') +
       '<label class="ep-obs" style="margin-top:10px">Observaciones<input type="text" id="ep-obs" maxlength="200" value="' + esc(ep.obs) + '"></label>' +
       (ep.error ? '<div class="aviso error" style="margin-top:10px">' + esc(ep.error) + '</div>' : '') +
       '<div class="btn-par"><button class="btn" id="ep-guardar">' + (ep.nuevo ? 'Agregar' : 'Guardar cambios') + '</button><button class="btn plano" id="ep-cancelar">Cancelar</button></div>' +
@@ -3495,17 +3549,18 @@ const PMK_ACCESO = (() => {
   function tablaDetalle(f, dets, ids) {
     const cols = ids.map(id => prendaDe(id));
     const hayCam = ids.some(id => basePrenda(id) === 'camiseta');
+    const hayArq = dets.some(d => d.arquero);   // solo fichas antiguas: el arquero ahora es otro diseño (otra línea del molde)
     let h = '<div class="tabla-scroll"><table><thead><tr><th>#</th><th>Persona <span class="mini">(no va en la ficha)</span></th><th>Nombre a estampar</th><th>N°</th><th>Calce</th>' +
       (hayCam ? '<th>Manga</th>' : '') + cols.map(p => '<th>' + esc(nomDT(f, p.id)) + '</th>').join('') +
-      '<th>' + esc(nombreArq(f)) + '</th><th>Observaciones</th><th></th></tr></thead><tbody>';
+      (hayArq ? '<th>' + esc(nombreArq(f)) + '</th>' : '') + '<th>Observaciones</th><th></th></tr></thead><tbody>';
     dets.forEach((d, i) => {
       const t = tallasDe(d);
       h += '<tr><td>' + (i + 1) + '</td><td>' + (String(d.nombre || '').trim() ? esc(d.nombre) : '<span class="mini">sin nombre</span>') + '</td><td>' + esc(d.estampado || '—') + '</td>' +
         '<td>' + esc(d.numero || '—') + '</td><td>' + esc(d.calce) + '</td>' + (hayCam ? '<td>' + esc(d.manga || '—') + '</td>' : '') +
         cols.map(p => { const dz = t[p.id] ? disenoPersona(f, d, p.id) : null;
           return '<td>' + esc(t[p.id] || '—') + (dz ? ' <span class="mini">· D' + dz + '</span>' : dz === 0 ? ' <span class="mini" style="color:var(--rojo)">· sin diseño</span>' : '') + '</td>'; }).join('') +
-        '<td><button type="button" class="chip' + (d.arquero ? ' on' : '') + '" data-arq="' + esc(d.id) + '" aria-pressed="' + !!d.arquero + '">' +
-        (d.arquero ? '✓ ' + esc(nombreArq(f).replace(' o líbero', '/líbero')) : 'No') + '</button></td><td>' + esc(d.obs || '') + '</td>' +
+        (hayArq ? '<td><button type="button" class="chip' + (d.arquero ? ' on' : '') + '" data-arq="' + esc(d.id) + '" aria-pressed="' + !!d.arquero + '">' +
+        (d.arquero ? '✓ ' + esc(nombreArq(f).replace(' o líbero', '/líbero')) : 'No') + '</button></td>' : '') + '<td>' + esc(d.obs || '') + '</td>' +
         '<td class="ep-acc"><button type="button" class="btn plano chico" data-ep-editar="' + esc(d.id) + '">Editar</button>' +
         '<button type="button" class="btn plano chico" data-ep-borrar="' + esc(d.id) + '" style="color:var(--rojo)">Eliminar</button></td></tr>';
     });
@@ -3541,6 +3596,8 @@ const PMK_ACCESO = (() => {
     const res = [];
     ids.forEach(id => {
       const p = prendaDe(id);
+      const cq = porCantidad(id) ? cantidadesDe(f, id) : null;
+      if (cq) { if (sumaCant(cq)) res.push({ id: id, p: p, cantidades: cq, unidades: sumaCant(cq), titulo: tieneNombreD(f, id) ? tipoDe(id) : p.nom, grupo: '', dets: [] }); return; }
       const con = dets.filter(d => tallasDe(d)[id]);
       if (!con.length) return;
       const hayArq = con.some(d => d.arquero);
@@ -3606,7 +3663,34 @@ const PMK_ACCESO = (() => {
   // cómo se identifica a una persona en lo que va a producción: número y nombre estampado, nunca su nombre
   const idEstampado = d => [d.numero ? 'N° ' + d.numero : '', String(d.estampado || '').trim()].filter(Boolean).join(' ') || 'sin número ni nombre';
 
+  const unidadesHoja = fi => fi.cantidades ? fi.unidades : fi.dets.length;
+  // Hoja de medias: van por pares por talla, con su montaje (otro color es otra línea de medias, en su propia hoja)
+  function hojaMedias(f, fi, k, total, hoy) {
+    const sp = specsDe(f)[fi.id] || {}, nd = tieneNombreD(f, fi.id) ? nomD(f, fi.id) : '';
+    const dato = (et, v) => '<div class="dt"><span>' + et + '</span><b>' + (v ? esc(v) : '—') + '</b></div>';
+    const imgs = imgsDe(f).filter(i => prendasImg(i).indexOf(fi.id) >= 0);
+    const tabla = '<table class="tt"><thead><tr><th>Talla</th><th>Pares</th></tr></thead><tbody>' +
+      tallasCant(fi.cantidades).map(t => '<tr><td>' + esc(t) + '</td><td class="num">' + (parseInt(fi.cantidades[t], 10) || 0) + '</td></tr>').join('') +
+      '</tbody><tfoot><tr class="total"><td>Total</td><td class="num">' + fi.unidades + ' pares</td></tr></tfoot></table>';
+    return '<section class="fp">' +
+      '<div class="fp-cab"><div class="marca-hoja"><img class="iso-hoja" src="' + ISO + '" alt="">' +
+        '<div><div class="logo">PLAY<em>MAKER</em></div><div class="doc">Ficha de producción · ' + (k + 1) + ' de ' + total + '</div></div></div>' +
+        '<div class="fp-tit"><div class="prenda">' + esc(fi.titulo) + '</div>' + (nd ? '<div class="diseno-hoja">' + esc(nd) + '</div>' : '') + '</div>' +
+        '<div class="refbox"><div class="r">' + esc(f.ref) + '</div><div class="doc">' + esc(fechaTxt(hoy)) + '</div></div></div>' +
+      '<div class="fp-datos">' + datosPedido(f, sp.entrega) + dato('Pares de este diseño', String(fi.unidades)) + dato('Origen', sp.origen) + '</div>' +
+      '<div class="fp-medio"><div class="fp-montaje"><h3>Montaje' + (nd ? ' · ' + esc(nd) : '') + '</h3>' +
+        (f.montaje_aprobado ? '<div class="aprob">' + esc(aprobacionTxt(f)) + '</div>' : '') +
+        (imgs.length ? '<div class="mj' + (imgs.length > 1 ? ' dos' : '') + '">' + imgs.slice(0, 4).map(i => '<figure><img src="' + esc(i.url) + '" alt="">' +
+          '<figcaption>' + esc(i.vista || i.nombre || '') + '</figcaption></figure>').join('') + '</div>' : '<div class="vacio">Sin montaje cargado para estas medias</div>') + '</div>' +
+        '<div class="fp-tallas"><h3>Pares por talla</h3>' + tabla + '</div></div>' +
+      '<div class="fp-com"><h3>Comentarios</h3><div class="caja">' + esc(sp.nota || '') + '</div></div>' +
+      '<div class="firma"><div>Bodega o compra</div><div>Control de calidad</div></div>' +
+      '<div class="fp-pie">' + esc(f.ref) + ' · ' + (nd ? esc(nd) + ' · ' : '') + esc(fi.titulo) + ' · hoja ' + (k + 1) + ' de ' + total + '</div>' +
+      '</section>';
+  }
+
   function fichaHoja(f, fi, k, total, hoy) {
+    if (fi.cantidades) return hojaMedias(f, fi, k, total, hoy);
     const sp = specsDe(f)[fi.id] || {}, mo = sp.moldes || {};
     // diseño con nombre: el nombre y su molde van bajo el título de la hoja y en el título de cada sección
     const nd = tieneNombreD(f, fi.id) ? nomD(f, fi.id) : '';
@@ -3712,7 +3796,7 @@ const PMK_ACCESO = (() => {
     const arq = dets.filter(d => d.arquero);
 
     // portada: datos del pedido e índice de fichas
-    const faltan = ids.map(id => ({ p: prendaDe(id), n: nomDT(f, id), c: habilitado(f, id), a: asignadas(dets, id) })).filter(x => x.c && x.a !== x.c);
+    const faltan = ids.map(id => ({ p: prendaDe(id), n: nomDT(f, id), c: habilitado(f, id), a: asignadas(dets, id, f) })).filter(x => x.c && x.a !== x.c);
     // diseños con fecha de entrega propia: la portada la muestra en cada hoja
     const entD = fi => (specsDe(f)[fi.id] || {}).entrega || '', conEntD = fichas.some(fi => entD(fi));
     const portada = '<section class="fp portada">' +
@@ -3723,11 +3807,11 @@ const PMK_ACCESO = (() => {
         '<div class="dt"><span>Diseño</span><b>' + esc(aprobacionTxt(f) || '—') + '</b></div>' +
         '<div class="dt"><span>Personas</span><b>' + dets.length + '</b></div>' +
         '<div class="dt"><span>Total de prendas</span><b>' + (av.asig + av.extra) + '</b></div>' +
-        '<div class="dt"><span>Arqueros o líberos</span><b>' + (arq.length ? esc(arq.map(idEstampado).join(', ')) : '—') + '</b></div></div>' +
+        (arq.length ? '<div class="dt"><span>Arqueros o líberos</span><b>' + esc(arq.map(idEstampado).join(', ')) + '</b></div>' : '') + '</div>' +
       '<h3>Fichas de este pedido</h3><table class="tp"><thead><tr><th>Hoja</th><th>Ficha</th><th>Grupo</th><th>Unidades</th>' + (conEntD ? '<th>Entrega</th>' : '') + '</tr></thead><tbody>' +
-        fichas.map((fi, k) => '<tr><td class="num">' + (k + 2) + '</td><td>' + (tieneNombreD(f, fi.id) ? '<b>' + esc(nomD(f, fi.id)) + '</b> · ' : '') + esc(fi.titulo) + '</td><td>' + (fi.grupo || '—') + '</td><td class="num">' + fi.dets.length + '</td>' +
+        fichas.map((fi, k) => '<tr><td class="num">' + (k + 2) + '</td><td>' + (tieneNombreD(f, fi.id) ? '<b>' + esc(nomD(f, fi.id)) + '</b> · ' : '') + esc(fi.titulo) + '</td><td>' + (fi.grupo || '—') + '</td><td class="num">' + unidadesHoja(fi) + (fi.cantidades ? ' pares' : '') + '</td>' +
           (conEntD ? '<td>' + esc(fechaTxt(entD(fi) || f.entrega_cliente) || 'por definir') + '</td>' : '') + '</tr>').join('') +
-        '</tbody><tfoot><tr><td></td><td>Total</td><td></td><td class="num">' + fichas.reduce((n, fi) => n + fi.dets.length, 0) + '</td>' + (conEntD ? '<td></td>' : '') + '</tr></tfoot></table>' +
+        '</tbody><tfoot><tr><td></td><td>Total</td><td></td><td class="num">' + fichas.reduce((n, fi) => n + unidadesHoja(fi), 0) + '</td>' + (conEntD ? '<td></td>' : '') + '</tr></tfoot></table>' +
       (faltan.length ? '<div class="alerta">⚠ Cargado distinto a lo vendido: ' + faltan.map(x => esc(x.n) + ' ' + x.a + ' de ' + x.c).join(' · ') + '</div>' : '') +
       '<div class="firma"><div>Revisó (Playmaker)</div><div>Recibió conforme (cliente)</div></div>' +
       '</section>';

@@ -1,3 +1,5 @@
+2026-11-05  Medias: varios diseños (otro color, otro montaje), pares por talla S, M, L, Adulto e Infantil y hoja propia en la ficha de producción
+2026-11-05  Ingreso de tallas: basta con la talla (sin preguntas de nombre ni número), lista pegada desde Excel por columnas, cada prenda con su propia lista y sin paso de arquero
 2026-11-05  Catálogo ordenado: los moldes se ven en el orden y las secciones del catálogo (panel y Planificación); moldes nuevos 83 y 84
 2026-11-03  Camisetas sin nombre ni número: el cliente responde si llevan número y se guardan solo con su talla
 2026-11-02  Planificación: pestaña «Estado» para todos y pendientes que vuelven a Armado de mesa y Corte juntos

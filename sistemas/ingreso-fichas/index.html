@@ -190,6 +190,18 @@ textarea { resize: vertical; min-height: 76px; }
   font-size: 13px; font-weight: 600; z-index: 2; }
 .contador span { color: var(--naranja); font-weight: 400; }
 #lote-texto { min-height: 200px; font-size: 15px; line-height: 1.7; }
+.fila-lote[hidden] { display: none !important; }
+.fila-lote.duda { border-color: #E0A100; background: #FFFAEB; }
+.ok-fila { border: 1px solid #9C5700; background: var(--blanco); color: #9C5700; border-radius: 999px; padding: 3px 10px; margin-left: 6px; font: inherit; font-size: 12px; cursor: pointer; }
+.cols-tabla { display: grid; gap: 8px; }
+.col-t { display: grid; grid-template-columns: 1fr 170px; grid-template-areas: "n s" "e s"; gap: 0 10px; align-items: center; border: 1px solid var(--linea); border-radius: 10px; padding: 8px 10px; margin: 0; }
+.col-t .col-n { grid-area: n; font-weight: 600; font-size: 14px; }
+.col-t .col-ej { grid-area: e; font-size: 12px; color: var(--gris); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.col-t select { grid-area: s; min-height: 40px; font-size: 14px; padding: 6px 8px; }
+.med-fila { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--linea); padding: 8px 2px; }
+.med-fila label { flex: 1; font-family: 'Oswald', sans-serif; font-size: 18px; margin: 0; }
+.med-fila input { width: 110px; flex: none; text-align: center; font-size: 18px; min-height: 46px; }
+@media (max-width: 420px) { .col-t { grid-template-columns: 1fr; grid-template-areas: "n" "e" "s"; } .col-t select { margin-top: 6px; } }
 
 #ref-input { text-transform: uppercase; letter-spacing: .14em; font-family: 'Oswald', sans-serif; font-size: 26px; text-align: center; min-height: 60px; }
 
@@ -327,6 +339,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
       }
     },
     borrarDetalle: id => SB.del('fichas_detalle?id=' + eq(id)),
+    borrarDetalles: (ref, ids) => SB.del('fichas_detalle?ref=' + eq(ref) + '&id=in.(' + ids.map(i => encodeURIComponent('"' + String(i).replace(/"/g, '') + '"')).join(',') + ')'),
     estadoFicha: ref => SB.patch('fichas_tallas?ref=' + eq(ref), { estado: 'confirmado', confirmado_at: new Date().toISOString() }),
     specsFicha: (ref, specs) => SB.patch('fichas_tallas?ref=' + eq(ref), { specs: specs }),
     guardarAviso: a => SB.upsert('fichas_avisos', a),
@@ -335,7 +348,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
 
   /* ============ estado ============ */
   let st = { pant: 'inicio', ficha: null, dets: [], form: null, editando: null, error: '', verOtras: false,
-           lote: null };
+           lote: null, medias: null };
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   function normalizarRef(v) {
@@ -352,15 +365,15 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   const items = f => { const a = leerJSON(f.items, '[]'); return Array.isArray(a) ? a : []; };
   const imgsDe = f => { const a = leerJSON(f.imagenes, '[]'); return Array.isArray(a) ? a.filter(i => i && typeof i === 'object' && i.url) : []; };
   const specsDe = f => { const s = leerJSON(f.specs, '{}'); return Array.isArray(s) ? {} : s; };
-  // Shorts y calzas pueden llevar número o no: specs[prenda].numero = 'si' / 'no'. Lo define Playmaker en la ficha
-  // o lo responde el cliente al cargar la lista de esa prenda. La camiseta siempre lleva número.
-  // prendas en que se pregunta si llevan número (las camisetas también: hay pedidos sin nombre ni número)
-  const numeroOpcional = id => ['camiseta', 'short', 'short_salida', 'calza_larga'].indexOf(basePrenda(id)) >= 0;
-  const losDe = id => basePrenda(id) === 'camiseta' ? 'las camisetas' : basePrenda(id) === 'calza_larga' ? 'las calzas' : 'los shorts';
-  // ¿esta prenda necesita número? La camiseta sí, salvo que se haya dicho que no lleva; shorts y calzas, solo si se dijo que sí
-  const pideNumero = (f, id) => basePrenda(id) === 'camiseta' ? llevaNumero(f, id) !== false : numeroOpcional(id) && llevaNumero(f, id) === true;
-  const llevaNumero = (f, id) => { const v = ((specsDe(f) || {})[id] || {}).numero; return v === 'si' ? true : v === 'no' ? false : null; };
-  const preguntaNumero = id => basePrenda(id) === 'camiseta' ? '¿Las camisetas llevan número?' : basePrenda(id) === 'calza_larga' ? '¿Las calzas llevan número?' : basePrenda(id) === 'short' ? '¿Los shorts (o calzas) llevan número?' : '¿Los shorts llevan número?';
+  // El nombre y el número nunca se exigen ni se preguntan: basta con la talla (van solo si la prenda los lleva).
+  // Medias: no van por persona. Cada diseño de medias (medias, medias_2…) lleva cuántos pares de cada talla:
+  // specs[id].cantidades = { S: 4, M: 6, … }. Lo define Playmaker al crear la ficha o lo completa el cliente.
+  const TALLAS_MEDIAS = ['S', 'M', 'L', 'Adulto', 'Infantil'];
+  const porCantidad = id => basePrenda(id) === 'medias';
+  const cantidadesDe = (f, id) => { const c = f ? ((specsDe(f) || {})[id] || {}).cantidades : null; return c && typeof c === 'object' && !Array.isArray(c) ? c : null; };
+  const sumaCant = c => Object.keys(c || {}).reduce((n, t) => n + (parseInt(c[t], 10) || 0), 0);
+  const textoCant = c => TALLAS_MEDIAS.concat(Object.keys(c || {}).filter(t => TALLAS_MEDIAS.indexOf(t) < 0))
+    .filter(t => parseInt((c || {})[t], 10) > 0).map(t => t + ': ' + c[t]).join(' · ');
   // fecha local de un instante (fechaTxt toma solo la fecha)
   const diaLocal = iso => { const d = new Date(iso); return isNaN(d) ? '' : d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
   const moldesDe = sp => (sp && sp.moldes && typeof sp.moldes === 'object' && !Array.isArray(sp.moldes)) ? sp.moldes : {};
@@ -426,7 +439,12 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
       filas.join('');
   }
   const tallasDe = d => (d.tallas && typeof d.tallas === 'object') ? d.tallas : JSON.parse(d.tallas || '{}');
-  const asignadas = (dets, id) => dets.reduce((n, d) => n + (tallasDe(d)[id] ? 1 : 0), 0);
+  // unidades cargadas de una prenda: personas que la llevan; las medias, la suma de pares por talla
+  const asignadas = (dets, id, f) => { const c = porCantidad(id) ? cantidadesDe(f || st.ficha, id) : null;
+    return c ? sumaCant(c) : dets.reduce((n, d) => n + (tallasDe(d)[id] ? 1 : 0), 0); };
+  // prendas de todo el pedido (las medias por cantidad, aunque haya personas antiguas con medias)
+  const totalPrendas = (f, dets) => dets.reduce((s, x) => s + Object.keys(tallasDe(x)).filter(k => tallasDe(x)[k] && !(porCantidad(k) && cantidadesDe(f, k))).length, 0) +
+    items(f).filter(i => porCantidad(i.prenda)).reduce((n, i) => n + sumaCant(cantidadesDe(f, i.prenda)), 0);
   const habilitado = (f, id) => { const it = items(f).find(x => x.prenda === id); return it ? it.cant : 0; };
   function prendasEnJuego(f, dets) {
     const ids = items(f).map(i => i.prenda);
@@ -513,7 +531,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   function pantInicio() {
     app.innerHTML = barra('Detalle de tallas') + '<div class="pmk-wrap">' +
       '<h1 class="tit">Completa las<br>tallas de tu pedido</h1>' +
-      '<p class="bajada">Playmaker dejó habilitadas las prendas de tu compra. Tú cargas el nombre, el número y la talla de cada persona.</p>' +
+      '<p class="bajada">Playmaker dejó habilitadas las prendas de tu compra. Tú cargas la talla de cada persona y, si llevan, su nombre y número.</p>' +
       (CFG.permitirRef
         ? '<button class="acceso primario" data-ir="ref"><div class="rot">Empezar</div>' +
           '<div class="det">Necesitas la referencia COT que te enviamos</div></button>'
@@ -574,7 +592,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
 
     let h = barra(f.cliente, 'inicio') + '<div class="pmk-wrap">' +
       '<h1 class="tit">Detalle del pedido</h1>' +
-      '<p class="bajada">Carga a cada persona con su nombre, número y talla. Esto es lo que entra a producción.</p>' + cabFicha(f);
+      '<p class="bajada">Carga la talla de cada persona (y su nombre y número, si la prenda los lleva). Esto es lo que entra a producción.</p>' + cabFicha(f);
 
     if (f.entrega_cliente) {
       h += '<div class="aviso ok">Fecha de entrega comprometida: ' + esc(fechaTxt(f.entrega_cliente)) + '.</div>';
@@ -657,7 +675,12 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
     if (brv) brv.addEventListener('click', () => { st.rev = { tallas: false, diseno: false }; st.error = ''; st.pant = 'revision'; render(); });
     app.querySelectorAll('[data-paso]').forEach(b => b.addEventListener('click', () => {
       const g = gruposFicha(f, dets)[+b.dataset.paso];
-      st.lote = { grupo: g, texto: '', calce: g.calce || g.calceDef || '', manga: 'Corta', filas: null, numero: numeroOpcional(g.prenda) ? llevaNumero(f, g.prenda) : null };
+      if (g.cantidad) {   // medias: pares por talla (lo ya definido, o lo que traían las personas en cargas antiguas)
+        const cant = Object.assign({}, cantidadesDe(f, g.prenda) || {});
+        if (!cantidadesDe(f, g.prenda)) dets.forEach(d => { const t = tallasDe(d)[g.prenda]; if (t) cant[t] = (cant[t] || 0) + 1; });
+        st.medias = { grupo: g, cant: cant }; st.error = ''; st.pant = 'medias'; return render();
+      }
+      st.lote = { grupo: g, texto: '', calce: g.calce || g.calceDef || '', manga: 'Corta', filas: null };
       st.error = ''; st.pant = 'lote'; render();
     }));
     enlazarPDF(f, dets);
@@ -695,6 +718,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   function gruposFicha(f, dets) {
     const specs = specsDe(f), out = [];
     items(f).forEach(it => {
+      if (porCantidad(it.prenda)) { out.push({ prenda: it.prenda, calce: '', cant: it.cant, molde: '', cantidad: true }); return; }
       const sp = specs[it.prenda] || {}, mo = moldesDe(sp), un = (sp.unidades && typeof sp.unidades === 'object') ? sp.unidades : {};
       const cals = Object.keys(mo).filter(c => mo[c]).sort((a, b) => ORDEN_CALCE.indexOf(a) - ORDEN_CALCE.indexOf(b));
       if (!cals.length) { out.push({ prenda: it.prenda, calce: '', cant: it.cant, molde: '' }); return; }
@@ -710,8 +734,8 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
         cant: typeof un[c] === 'number' ? un[c] : (cals.length === 1 ? it.cant : null) }));
     });
     out.forEach(g => {
-      g.disenos = disenosMolde(f, g.prenda, g.calce || g.calceDef || '');
-      g.n = personasGrupo(g, dets).length;
+      g.disenos = g.cantidad ? [] : disenosMolde(f, g.prenda, g.calce || g.calceDef || '');
+      g.n = g.cantidad ? asignadas(dets, g.prenda, f) : personasGrupo(g, dets).length;
       g.extra = g.cant != null ? Math.max(0, g.n - g.cant) : 0;
       g.listo = g.cant != null ? g.n >= g.cant && g.cant > 0 : (g.n > 0 && asignadas(dets, g.prenda) >= habilitado(f, g.prenda));
     });
@@ -740,11 +764,12 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
     gs.forEach((g, i) => { if (sig < 0 && !g.listo) sig = i; });
     const hechos = gs.filter(g => g.listo).length;
     return '<div class="campo"><div class="lab">Carga de tallas · ' + hechos + ' de ' + gs.length + ' pasos listos</div>' +
-      (activo ? '<div class="ayuda">Ve paso por paso: cada uno es una prenda con su molde. En cada paso pegas la lista de esas personas con su número y talla. ' +
-        'Si el número ya está cargado (por ejemplo en la camiseta), el short se le suma a esa misma persona.</div>' : '') +
+      (activo ? '<div class="ayuda">Ve paso por paso: cada uno es una prenda con su molde y su propia lista (no tiene que coincidir con las otras). ' +
+        'Pega la lista desde Excel o escrita: basta con la talla; el nombre y el número, si la prenda los lleva.' +
+        (gs.some(g => g.cantidad) ? ' Las medias van por cantidad: cuántos pares de cada talla.' : '') + '</div>' : '') +
       gs.map((g, i) => '<div class="paso' + (g.listo ? ' listo' : (activo && i === sig ? ' sig' : '')) + '">' +
         '<div class="ico">' + (g.listo ? '✓' : (i + 1)) + '</div>' +
-        '<div class="txt"><div class="n">' + esc(nombreGrupo(g)) + '</div><div class="d">' + g.n + (g.cant != null ? ' de ' + g.cant : '') + ' cargadas' +
+        '<div class="txt"><div class="n">' + esc(nombreGrupo(g)) + '</div><div class="d">' + g.n + (g.cant != null ? ' de ' + g.cant : '') + (g.cantidad ? ' pares' : ' cargadas') +
           (g.molde ? ' · molde ' + esc(g.molde) : '') + (g.disenos && g.disenos.length > 1 ? ' · ' + g.disenos.length + ' diseños' : '') + (g.extra > 0 ? ' · ' + g.extra + ' de más' : '') + (g.listo ? ' · listo' : (activo && i === sig ? ' · sigue este' : '')) + '</div></div>' +
         (activo ? '<button type="button" class="btn-paso" data-paso="' + i + '">' + (g.listo ? 'Agregar' : (g.n ? 'Seguir' : 'Cargar')) + '</button>' : '') + '</div>').join('') + '</div>';
   }
@@ -754,6 +779,9 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
      ========================================================== */
   function tablasRevisionHTML(f, dets) {
     return gruposRevision(f, dets).map(g => {
+      if (g.cantidad) { const c = cantidadesDe(f, g.prenda);
+        return '<div class="rev-g"><div class="t">' + esc(nombreGrupo(g)) + ' · ' + g.n + (g.cant != null ? ' de ' + g.cant : '') + ' pares</div>' +
+          '<div class="r">' + esc(c ? textoCant(c) : resumenTallas(personasGrupo(g, dets), g.prenda)) + '</div></div>'; }
       const pers = personasGrupo(g, dets), manga = !!prendaDe(g.prenda).manga, dis = disenosMolde(f, g.prenda, g.calce || g.calceDef || '').length > 1;
       const cuenta = {}; pers.forEach(d => { const k = d.calce + '|' + normNum(d.numero); if (normNum(d.numero)) cuenta[k] = (cuenta[k] || 0) + 1; });
       return '<div class="rev-g"><div class="t">' + esc(nombreGrupo(g)) + ' · ' + pers.length + (g.cant != null ? ' de ' + g.cant : '') + (g.fuera ? ' (adicional)' : '') + '</div>' +
@@ -774,7 +802,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
     if (!avanceFicha(f, dets).completo) { st.pant = 'pedido'; return render(); }
     const rv = st.rev || (st.rev = { tallas: false });
     const montajes = imgsDe(f);   // el diseño se muestra solo como referencia: no se aprueba aquí
-    const reps = repetidosDe(dets, d => d.calce);
+    const reps = repetidosPorPaso(f, dets);
     let h = barra(f.cliente, 'pedido') + '<div class="pmk-wrap">' +
       '<h1 class="tit">Revisa y envía<br>a producción</h1>' +
       '<p class="bajada">Es el último paso. Revisa con calma: después de enviar, cualquier cambio se pide a tu vendedor.</p>' + cabFicha(f) +
@@ -808,7 +836,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   }
   function pantCerrado() {
     const f = st.ficha, dets = st.dets || [];
-    const n = dets.reduce((s, d) => s + Object.keys(tallasDe(d)).filter(k => tallasDe(d)[k]).length, 0);
+    const n = totalPrendas(f, dets);
     app.innerHTML = barra(f.cliente) + '<div class="pmk-wrap"><div class="cierre"><div class="ok">✓</div>' +
       '<h1 class="tit">¡Listo! Tu pedido fue<br>enviado a producción</h1>' +
       '<p class="bajada">Recibimos el detalle de ' + n + ' prendas de ' + esc(f.proyecto || f.ref) + '. No necesitas hacer nada más.</p></div>' +
@@ -918,10 +946,14 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
      ['Entrega comprometida', f.entrega_cliente ? fecha(f.entrega_cliente) : 'la define Playmaker y te la informa tu vendedor(a)']].forEach(r => {
       if (!r[1]) return; d.texto(M, d.y, r[0] + ':', 10, true); d.texto(M + 130, d.y, d.cabe(r[1], W - 2 * M - 130, 10), 10); d.y -= 14;
     });
-    const total = dets.reduce((s, x) => s + Object.keys(tallasDe(x)).filter(k => tallasDe(x)[k]).length, 0);
+    const total = totalPrendas(f, dets);
     d.texto(M, d.y, 'Total:', 10, true); d.texto(M + 130, d.y, total + ' prendas · ' + dets.length + ' personas', 10); d.y -= 10;
     d.linea(M, d.y, W - M, d.y); d.y -= 26;
-    gruposRevision(f, dets).forEach(g => { const pers = personasGrupo(g, dets); if (pers.length) tablaPDF(d, g, pers); });
+    gruposRevision(f, dets).forEach(g => {
+      if (g.cantidad) { if (!g.n) return; const c = cantidadesDe(f, g.prenda); d.lugar(44);
+        d.texto(M, d.y, nombreGrupo(g) + ' - ' + g.n + ' pares', 12, true); d.y -= 14;
+        d.texto(M, d.y, 'Tallas: ' + (c ? textoCant(c) : resumenTallas(personasGrupo(g, dets), g.prenda)), 9, false, gris); d.y -= 24; return; }
+      const pers = personasGrupo(g, dets); if (pers.length) tablaPDF(d, g, pers); });
     d.lugar(60);
     d.texto(M, d.y, 'Diseño', 13, true); d.y -= 16;
     if (!imgsDe(f).length) { d.texto(M, d.y, 'Playmaker te enviará el diseño por separado.', 10); d.y -= 18; }
@@ -948,15 +980,15 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
     const f = st.ficha, fo = st.form, dets = st.dets, yo = st.editando;
     fo.disenos = fo.disenos || {};
     const hayDisenos = ['Masculino', 'Femenino', 'Infantil'].some(c => items(f).some(i => disenosMolde(f, i.prenda, c).length > 1));
-    const habIds = items(f).map(i => i.prenda);
+    const habIds = items(f).map(i => i.prenda).filter(id => !porCantidad(id) || fo.tallas[id]);   // medias: por cantidad, no por persona
     const extrasYa = Object.keys(fo.tallas).filter(k => fo.tallas[k] && habIds.indexOf(k) < 0);
     const visibles = habIds.concat(extrasYa);
-    const otras = PRENDAS.filter(p => visibles.indexOf(p.id) < 0);
+    const otras = PRENDAS.filter(p => visibles.indexOf(p.id) < 0 && !porCantidad(p.id));
     const pideEstampado = visibles.some(id => prendaDe(id).estampado) || (st.verOtras && otras.some(p => p.estampado));
 
     const usadas = {};
     PRENDAS.map(p => p.id).concat(visibles).forEach(id => { usadas[id] = dets.reduce((n, d) => n + ((d.id !== yo && tallasDe(d)[id]) ? 1 : 0), 0); });
-    let mangaPuesta = false, arqPuesto = false;   // con dos camisetas, el largo de manga y «arquero» se preguntan una sola vez
+    let mangaPuesta = false;   // con dos camisetas, el largo de manga se pregunta una sola vez
 
     const bloque = (id, fuera) => {
       const p = prendaDe(id), c = habilitado(f, id);
@@ -981,11 +1013,6 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
             '<div class="chips">' + chips('manga', ['Corta', 'Sin mangas', 'Larga'], fo.manga) + '</div>' +
             '<div class="mini" style="margin-top:7px">La manga larga tiene costo adicional. Corta y sin mangas van incluidas.</div></div>';
         }
-        if (!arqPuesto) {
-          arqPuesto = true;
-          x += '<label class="check' + (fo.arquero ? ' on' : '') + '" style="margin-top:14px" data-check="arquero">' +
-            '<input type="checkbox" ' + (fo.arquero ? 'checked' : '') + '><span>Es arquero/a o líbero <span class="mini">(diseño y confección aparte)</span></span></label>';
-        }
       }
       return x + '</div>';
     };
@@ -1006,7 +1033,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
     if (pideEstampado) {
       h += '<div class="dos-col"><div class="campo"><label for="f-estampado">Nombre a estampar</label>' +
         '<input id="f-estampado" type="text" maxlength="20" value="' + esc(fo.estampado) + '" placeholder="Ej: P. SALINAS (vacío si no lleva)" autocapitalize="characters"></div>' +
-        '<div class="campo"><label for="f-numero">Número</label>' +
+        '<div class="campo"><label for="f-numero">Número <span class="mini">(opcional)</span></label>' +
         '<input id="f-numero" type="text" maxlength="6" value="' + esc(fo.numero) + '" placeholder="Ej: 10 o 9+1"></div></div>';
     }
     h += '<div class="campo"><label>Calce</label><div class="ayuda">Masculino es corte recto, femenino es corte entallado.</div>' +
@@ -1062,8 +1089,6 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
         el.classList.toggle('extra', extra > 0);
       }
     }));
-    app.querySelectorAll('[data-check="arquero"]').forEach(chk =>
-      chk.addEventListener('change', e => { fo.arquero = e.target.checked; chk.classList.toggle('on', fo.arquero); }));
 
     document.getElementById('btn-guardar').addEventListener('click', guardar);
     const bd = document.getElementById('btn-eliminar');
@@ -1077,15 +1102,10 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
     });
 
     async function guardar() {
-      const necesitaNum = Object.keys(fo.tallas).some(k => fo.tallas[k] && pideNumero(f, k));
-      if (necesitaNum && !fo.nombre.trim() && !String(fo.numero || '').trim() && !fo.estampado.trim()) { st.error = 'Escribe al menos el número (o el nombre de la persona) para reconocer su prenda.'; return render(); }
       if (!fo.calce) { st.error = 'Elige el calce: masculino, femenino o infantil.'; return render(); }
       if (!Object.keys(fo.tallas).some(k => fo.tallas[k])) { st.error = 'Marca la talla de al menos una prenda.'; return render(); }
-      if (Object.keys(fo.tallas).some(k => fo.tallas[k] && basePrenda(k) === 'camiseta' && pideNumero(f, k)) && !fo.numero) { st.error = 'La camiseta necesita un número.'; return render(); }
       const sinDis = Object.keys(fo.tallas).filter(k => fo.tallas[k] && disenosMolde(f, k, fo.calce).length > 1 && disenosMolde(f, k, fo.calce).indexOf(+fo.disenos[k]) < 0);
       if (sinDis.length) { st.error = 'Elige el diseño de ' + sinDis.map(k => minP(k)).join(' y ') + '.'; return render(); }
-      const conNum = Object.keys(fo.tallas).filter(k => fo.tallas[k] && numeroOpcional(k) && llevaNumero(f, k) === true);
-      if (conNum.length && !String(fo.numero || '').trim()) { st.error = 'En este pedido, ' + conNum.map(k => minP(k)).join(' y ') + ' lleva número: escríbelo.'; return render(); }
       const b = document.getElementById('btn-guardar');
       b.disabled = true; b.textContent = 'Guardando…';
       try {
@@ -1102,57 +1122,183 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   }
 
   /* ==========================================================
-     CARGA MASIVA — pegar la lista que el club ya tiene armada
+     CARGA MASIVA — pegar la lista que el club ya tiene armada.
+     Cada paso (una prenda con su molde) es su propia lista: lo que se carga en la camiseta
+     no se junta con el short. Basta con la talla: el nombre y el número van solo si la prenda los lleva.
      ========================================================== */
   const TODAS_TALLAS = TALLAS_INF.concat(TALLAS_AD);
 
-  /* Interpreta una línea suelta: nombre, número y talla en cualquier orden.
-     Acepta separación por espacios, comas, punto y coma o tabulaciones
-     (esto último es lo que sale al copiar una columna de Excel). */
-  // palabras que nunca son un nombre: instrucciones, etiquetas y pronombres
   // palabras sueltas de instrucciones que no son parte de lo que se escribe (los artículos sí quedan: «LA ROCA», «María de la Fuente»)
   const NO_NOMBRE = ['aqui', 'aquí', 'va', 'nombre', 'nombres', 'jugador', 'jugadora',
     'apellido', 'talla', 'tallas', 'numero', 'número', 'n', 'camiseta', 'short', 'medias',
     'ella', 'ellos', 'ellas', 'sr', 'sra', 'don', 'doña'];
 
-  // Lo que se estampa en la espalda (nombre, apellido o frase), cuando las camisetas llevan nombre estampado: el texto
-  // de cada línea tal como se escribió («P. Salinas» → P. SALINAS). En la revisión se ve y se puede cambiar.
+  // Lo que se estampa en la espalda (nombre, apellido o frase): el texto de cada fila tal como se escribió
+  // («P. Salinas» → P. SALINAS). En la revisión se ve y se puede cambiar.
   const estampadoDe = texto => String(texto || '').trim().replace(/\s+/g, ' ').toUpperCase().slice(0, 20);
-  // lo que se estampa en una fila: lo escrito en «Estampa»; si no, lo que ya tenía la persona; si no, el texto de la línea
-  const estampadoFila = (x, previo) => (x.estEditado ? String(x.est || '') : (previo ? previo : estampadoDe(x.nombre))).trim().toUpperCase().slice(0, 20);
-  const filaEstampa = (x, previo) => '<div class="l3"><label>Estampa</label><input class="est" type="text" maxlength="20" value="' +
-    esc(estampadoFila(x, previo)) + '" placeholder="Lo que va en la espalda" autocapitalize="characters" aria-label="Nombre a estampar"></div>';
-  function leerLinea(linea) {
-    let bruto = linea;
-    // "Aquí va el nombre: SOYA" → se queda con lo que viene después de los dos puntos
-    if (bruto.indexOf(':') >= 0) {
-      const der = bruto.slice(bruto.indexOf(':') + 1).trim();
-      if (der) bruto = der;
-    }
-    const limpia = bruto.replace(/\t/g, ' ').replace(/[;,|]/g, ' ').replace(/\s+/g, ' ').trim();
-    if (!limpia) return null;
-    let talla = '', numero = '';
-    const nombre = [];
-    limpia.split(' ').forEach(tok => {
-      const up = tok.toUpperCase().replace(/[.\-#]/g, '');
-      const tx = { '2XS': 'XXS', '2XL': 'XXL', '3XL': 'XXXL', '4XL': 'XXXXL' }[up] || up;
-      if (!talla && TALLAS_AD.indexOf(tx) >= 0) { talla = tx; return; }
-      // número de camiseta: dígitos, y combinaciones como 9+1 o 10/11
-      if (/^\d{1,3}([+\-\/]\d{1,3})?$/.test(up)) {
-        if (!talla && TALLAS_INF.indexOf(up) >= 0 && numero) { talla = up; return; }
-        if (!numero) { numero = up; return; }
-        if (!talla && TALLAS_INF.indexOf(up) >= 0) { talla = up; return; }
-        return;
-      }
-      // descarta etiquetas e instrucciones sueltas
-      const plano = tok.toLowerCase().replace(/[^a-záéíóúñ]/g, '');
-      if (plano && NO_NOMBRE.indexOf(plano) >= 0) return;
-      nombre.push(tok);
-    });
-    const nom = nombre.join(' ').trim();
-    if (!nom && !numero && !talla) return null;   // «10 M»: persona sin nombre (camisetas solo con número)
-    return { nombre: nom, numero: numero, talla: talla };
+  // lo que se estampa en una fila: lo escrito en «Estampa»; si no, el texto de la fila
+  const estampadoFila = x => (x.estEditado ? String(x.est || '') : estampadoDe(x.nombre)).trim().toUpperCase().slice(0, 20);
+  const filaEstampa = x => '<div class="l3"><label>Estampa</label><input class="est" type="text" maxlength="20" value="' +
+    esc(estampadoFila(x)) + '" placeholder="Lo que va en la espalda (vacío si no lleva)" autocapitalize="characters" aria-label="Nombre a estampar"></div>';
+
+  // Talla escrita de cualquier forma («m», «Talla M», «2XL», «10 años») → la del sistema; '' si no es una talla
+  const ALIAS_TALLA = { '2XS': 'XXS', '2XL': 'XXL', '3XL': 'XXXL', '4XL': 'XXXXL', SMALL: 'S', MEDIUM: 'M', MEDIANA: 'M', MEDIANO: 'M', LARGE: 'L', XLARGE: 'XL' };
+  function normTalla(v) {
+    let s = String(v == null ? '' : v).toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+    s = s.replace(/^TALLA\s*/, '').replace(/^(\d{1,2})\s*(ANOS|ANO|A)$/, '$1').replace(/[\s.\-#]/g, '');
+    if (ALIAS_TALLA[s]) s = ALIAS_TALLA[s];
+    return TODAS_TALLAS.indexOf(s) >= 0 ? s : '';
   }
+  const esNumeroCam = s => /^\d{1,3}([+\-\/]\d{1,3})?$/.test(String(s || ''));
+  const limpiaNumero = s => String(s || '').toUpperCase().replace(/^N[°º.]?\s*(?=\d)/, '').replace(/[^0-9A-Z+\-\/]/g, '').slice(0, 6);
+  // palabra de un nombre o apellido (no una talla ni un número): «Sepúlveda», «Rojas»
+  const palabraNombre = t => /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ']{2,}/.test(t || '') && !normTalla(t);
+
+  /* Una línea escrita (WhatsApp, a mano): lo que se estampa o el nombre, número y talla, en cualquier orden.
+     «M.» o «M.Sepúlveda» es una inicial, nunca una talla. Si hay dos tallas en la línea vale la última
+     (la de antes, seguida de un apellido, es una inicial). Lo que no queda claro se marca para revisar. */
+  function leerLinea(linea, infantil) {
+    let bruto = String(linea || '');
+    // "Aquí va el nombre: SOYA" → se queda con lo que viene después de los dos puntos
+    if (bruto.indexOf(':') >= 0) { const der = bruto.slice(bruto.indexOf(':') + 1).trim(); if (der) bruto = der; }
+    const toks = bruto.replace(/\t/g, ' ').replace(/[;,|]/g, ' ').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
+    if (!toks.length) return null;
+    const usado = {}, dudas = [];
+    let talla = '', numero = '';
+    // tallas de letra: palabras sueltas; una letra con punto es una inicial (salvo al final: «Rojas 10 M.»)
+    const cand = [];
+    toks.forEach((t, i) => {
+      if (/^[A-Za-zÁÉÍÓÚÑáéíóúñ]\.\S/.test(t) || (/^[A-Za-zÁÉÍÓÚÑáéíóúñ]\.$/.test(t) && i < toks.length - 1)) return;
+      const n = normTalla(t);
+      if (n && !/^\d+$/.test(n)) cand.push(i);
+    });
+    if (cand.length) {
+      const k = cand[cand.length - 1]; talla = normTalla(toks[k]); usado[k] = true;
+      const otras = cand.slice(0, -1).filter(i => !palabraNombre(toks[i + 1]));
+      if (otras.length) dudas.push('Tenía más de una talla (' + cand.map(i => toks[i]).join(', ') + '): se tomó ' + talla);
+      else if (cand.length === 1 && /^[SML]$/.test(talla) && palabraNombre(toks[k + 1]))
+        dudas.push('¿«' + toks[k] + '» es la talla o la inicial del nombre? Se tomó como talla');
+    }
+    // números: el primero es el número de la camiseta; otro que sea talla infantil (4…16) es la talla
+    const nums = [];
+    toks.forEach((t, i) => { if (!usado[i] && esNumeroCam(t.replace(/^#/, ''))) nums.push(i); });
+    nums.forEach(i => {
+      const up = toks[i].replace(/^#/, '');
+      if (!numero) { numero = up; usado[i] = true; return; }
+      if (!talla && TALLAS_INF.indexOf(up) >= 0) { talla = up; usado[i] = true; }
+    });
+    const sobran = nums.filter(i => !usado[i]);
+    if (sobran.length) dudas.push('Sobraban números (' + sobran.map(i => toks[i]).join(', ') + ')');
+    // en un paso infantil, un número solo («10») es la talla
+    if (infantil && !talla && numero && nums.length === 1 && TALLAS_INF.indexOf(numero) >= 0) { talla = numero; numero = ''; }
+    const nombre = toks.filter((t, i) => {
+      if (usado[i] || nums.indexOf(i) >= 0) return false;
+      const plano = t.toLowerCase().replace(/[^a-záéíóúñ]/g, '');
+      return !(plano && NO_NOMBRE.indexOf(plano) >= 0);
+    }).join(' ').trim();
+    if (!nombre && !numero && !talla) return null;
+    return { nombre: nombre, numero: numero, talla: talla, duda: dudas.join(' · ') };
+  }
+
+  /* Lista copiada de una planilla (Excel, Google Sheets): las columnas vienen separadas por tabulación.
+     Se reconoce qué es cada columna (por su título o por lo que trae) y se puede cambiar en la revisión. */
+  const esTabla = texto => { const ls = String(texto || '').split(/\r?\n/).filter(l => l.trim());
+    return ls.length > 0 && ls.filter(l => l.indexOf('\t') >= 0).length * 2 >= ls.length; };
+  const ROLES_COL = [['nombre', 'Nombre de la persona'], ['estampa', 'Nombre a estampar'], ['numero', 'Número'], ['talla', 'Talla'], ['no', 'No usar']];
+  const planoTit = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[º°]/g, '').replace(/[^a-z0-9#]+/g, ' ').trim();
+  function rolPorTitulo(t) {
+    const p = planoTit(t);
+    if (!p) return '';
+    if (/^(talla|tallas|talle|size|t)(\s|$)/.test(p)) return 'talla';
+    if (/^(n|no|nro|num|numero|dorsal|#)(\s|$)/.test(p) || /(^|\s)(numero|dorsal)(\s|$)/.test(p)) return 'numero';
+    if (/estamp|espalda|camiseta|polera|dorso/.test(p)) return 'estampa';
+    if (/nombre|apellido|jugador|alumn|integrante|deportista|persona|socio|nomina/.test(p)) return 'nombre';
+    return 'otro';
+  }
+  function estadCol(vals) {
+    const v = vals.map(x => String(x || '').trim()).filter(Boolean), n = v.length || 1;
+    const parte = f => v.filter(f).length / n;
+    return { lleno: v.length,
+      letra: parte(x => { const t = normTalla(x); return !!t && !/^\d+$/.test(t); }),
+      inf: parte(x => TALLAS_INF.indexOf(normTalla(x)) >= 0),
+      num: parte(x => /\d/.test(x) && !/[a-z]{2,}/i.test(x) && esNumeroCam(limpiaNumero(x))),
+      texto: parte(x => /[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{2,}/.test(x) && !normTalla(x)),
+      raro: parte(x => /@/.test(x) || /^\+?\d[\d\s.\-]{6,}[\dkK]?$/.test(x)) };   // correos, teléfonos, RUT
+  }
+  function rolesAuto(filas, titulos, infantil, nc) {
+    const est = [], roles = [];
+    for (let c = 0; c < nc; c++) { est.push(estadCol(filas.map(r => r[c]))); roles.push(titulos ? rolPorTitulo(titulos[c]) : ''); }
+    const libre = c => (!roles[c] || roles[c] === 'otro') && est[c].lleno > 0;   // sin rol, o con un título desconocido
+    const sinTitulo = c => !roles[c] && est[c].lleno > 0;
+    if (roles.indexOf('talla') < 0) {
+      let t = -1;   // la columna con más tallas de letra (S, M, L…)
+      for (let c = 0; c < nc; c++) if (libre(c) && est[c].letra >= 0.5 && (t < 0 || est[c].letra > est[t].letra)) t = c;
+      if (t < 0) {   // tallas infantiles (4…16): columna de puros números que son tallas; si hay dos de números, la de más a la derecha
+        const nums = []; for (let c = 0; c < nc; c++) if (sinTitulo(c) && est[c].num >= 0.8) nums.push(c);
+        const inf = nums.filter(c => est[c].inf >= 0.9);
+        if (inf.length && (nums.length > 1 || infantil)) t = inf[inf.length - 1];
+      }
+      if (t >= 0) roles[t] = 'talla';
+    }
+    if (roles.indexOf('numero') < 0) for (let c = 0; c < nc; c++) if (sinTitulo(c) && est[c].num >= 0.6) { roles[c] = 'numero'; break; }
+    // sin títulos, las columnas de texto son el nombre; con títulos, solo las que lo dicen (curso, RUT, correo… no se usan)
+    for (let c = 0; c < nc; c++) if (!roles[c] || roles[c] === 'otro')
+      roles[c] = !titulos && est[c].lleno && est[c].texto >= 0.5 && est[c].raro < 0.5 ? 'nombre' : 'no';
+    return roles;
+  }
+  function leerTabla(texto, infantil) {
+    let filas = String(texto || '').split(/\r?\n/).filter(l => l.trim()).map(l => l.split('\t').map(c => c.trim()));
+    const nc = Math.max.apply(null, filas.map(r => r.length));
+    filas = filas.map(r => { while (r.length < nc) r.push(''); return r; });
+    // la primera fila son títulos si alguno es conocido (Nombre, N°, Talla…) y no trae tallas ni números
+    const r0 = filas[0];
+    const titulos = r0.some(c => ['talla', 'numero', 'estampa', 'nombre'].indexOf(rolPorTitulo(c)) >= 0) && !r0.some(c => normTalla(c) || esNumeroCam(c)) ? r0 : null;
+    const datos = titulos ? filas.slice(1) : filas;
+    return { titulos: titulos, filas: datos, roles: rolesAuto(datos, titulos, infantil, nc), nc: nc };
+  }
+  function filasDeTabla(tab) {
+    const conEstampa = tab.roles.indexOf('estampa') >= 0;
+    return tab.filas.map(r => {
+      const de = rol => tab.roles.map((ro, c) => ro === rol ? String(r[c] || '').trim() : '').filter(Boolean);
+      const nombre = de('nombre').join(' '), est = de('estampa').join(' '), numTxt = de('numero')[0] || '', talTxt = de('talla')[0] || '';
+      if (!nombre && !est && !numTxt && !talTxt) return null;
+      const talla = normTalla(talTxt), numero = limpiaNumero(numTxt), dudas = [];
+      if (talTxt && !talla) dudas.push('La talla «' + talTxt + '» no se reconoce');
+      if (numTxt && !esNumeroCam(numero)) dudas.push('El número «' + numTxt + '» no parece un número de camiseta');
+      const x = { nombre: nombre, numero: numero, talla: talla, duda: dudas.join(' · ') };
+      if (conEstampa) { x.est = est.toUpperCase().slice(0, 20); x.estEditado = true; }
+      return x;
+    }).filter(Boolean);
+  }
+  // talla infantil en un paso de adulto (o al revés): se marca para revisar
+  function revisarCalce(filas, calce) {
+    if (!calce) return;
+    filas.forEach(x => {
+      if (!x.talla || TODAS_TALLAS.indexOf(x.talla) < 0) return;
+      const inf = TALLAS_INF.indexOf(x.talla) >= 0;
+      if (calce === 'Infantil' ? !inf : inf)
+        x.duda = [x.duda, 'Talla ' + (inf ? 'infantil' : 'de adulto') + ' en un paso ' + (calce === 'Infantil' ? 'infantil' : 'de adulto')].filter(Boolean).join(' · ');
+    });
+  }
+  const leerLista = (texto, calce) => {
+    const infantil = calce === 'Infantil', tab = esTabla(texto) ? leerTabla(texto, infantil) : null;
+    const filas = tab ? filasDeTabla(tab) : String(texto || '').split('\n').map(l => leerLinea(l, infantil)).filter(Boolean);
+    revisarCalce(filas, calce);
+    return { tabla: tab, filas: filas };
+  };
+  // qué es cada columna de la planilla pegada (se puede cambiar)
+  function columnasHTML(tab) {
+    if (!tab) return '';
+    return '<div class="campo"><div class="lab">Columnas de tu planilla</div>' +
+      '<div class="ayuda">Revisa qué es cada columna. Si alguna quedó mal, cámbiala y la lista se vuelve a leer.</div><div class="cols-tabla">' +
+      tab.roles.map((ro, c) => { const ej = tab.filas.map(r => r[c]).filter(Boolean).slice(0, 3).join(' · ');
+        return '<label class="col-t"><span class="col-n">' + esc(tab.titulos && tab.titulos[c] ? tab.titulos[c] : 'Columna ' + (c + 1)) + '</span>' +
+          '<span class="col-ej">' + esc(ej || 'vacía') + '</span><select data-col="' + c + '">' +
+          ROLES_COL.map(o => '<option value="' + o[0] + '"' + (ro === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></label>'; }).join('') +
+      '</div></div>';
+  }
+  const resumenLote = filas => { const c = {}; filas.forEach(x => { if (x.talla) c[x.talla] = (c[x.talla] || 0) + 1; });
+    return Object.keys(c).sort((a, b) => ORDEN_TALLA.indexOf(a) - ORDEN_TALLA.indexOf(b)).map(t => t + ': ' + c[t]).join(' · '); };
 
   function pantLote() {
     const f = st.ficha;
@@ -1161,31 +1307,23 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
     const yaG = g ? personasGrupo(g, st.dets || []).length : 0;
     app.innerHTML = barra(f.cliente, 'pedido') + '<div class="pmk-wrap">' +
       (g ? '<h1 class="tit">' + esc(pg.nom) + '<br>' + esc(g.unisex ? 'Unisex' : (g.calce || 'Todas las personas')) + '</h1>' +
-        '<p class="bajada">Pega la lista de las personas que llevan ' + esc(minP(g.prenda)) + (g.calce && !g.unisex ? ' ' + esc(g.calce.toLowerCase()) : '') +
-        ': del grupo de WhatsApp, de una planilla o escrita a mano. Una persona por línea.</p>' +
+        '<p class="bajada">Pega la lista de quienes llevan ' + esc(minP(g.prenda)) + (g.calce && !g.unisex ? ' ' + esc(g.calce.toLowerCase()) : '') +
+        '. Es la lista de esta prenda: no tiene que coincidir con la de las otras.</p>' +
         '<div class="aviso">' + (g.cant != null ? 'Este paso es de <b>' + g.cant + ' unidades</b>; llevas ' + yaG + '.' : 'Llevas ' + yaG + ' cargadas en este paso.') +
-        (g.molde ? ' Molde ' + esc(g.molde) + '.' : '') + ' Si un número ya está cargado en otra prenda, se junta con esa persona.</div>' +
+        (g.molde ? ' Molde ' + esc(g.molde) + '.' : '') + '</div>' +
         (g.disenos && g.disenos.length > 1 ? '<div class="campo"><div class="lab">Esta prenda tiene ' + g.disenos.length + ' diseños</div>' +
           '<div class="ayuda">Después de revisar la lista te preguntamos qué diseño lleva cada persona.</div>' + fotosDisenosHTML(fotosDisenos(f, g.prenda, g.calce || g.calceDef || '')) + '</div>'
-          : nomDiseno(g.prenda) && imgsMolde(f, g.prenda, g.calce || g.calceDef || '').length ? '<div class="campo"><div class="lab">Así va ' + esc(nomDiseno(g.prenda)) + '</div><div class="montajes-cli">' +
+          : imgsMolde(f, g.prenda, g.calce || g.calceDef || '').length ? '<div class="campo"><div class="lab">Así va' + (nomDiseno(g.prenda) ? ' ' + esc(nomDiseno(g.prenda)) : '') + '</div><div class="montajes-cli">' +
             imgsMolde(f, g.prenda, g.calce || g.calceDef || '').map(i => '<a href="' + esc(i.url) + '" target="_blank" rel="noopener"><img src="' + esc(i.url) + '" alt="" loading="lazy">' +
-              '<div class="cap">' + esc((i.vista || '') + (i.arquero ? ' · arquero/líbero' : '')) + '</div></a>').join('') + '</div></div>' : '')
+              '<div class="cap">' + esc(i.vista || '') + '</div></a>').join('') + '</div></div>' : '')
        : '<h1 class="tit">Cargar varias<br>personas</h1>' +
-        '<p class="bajada">Pega la lista tal como la tienes: del grupo de WhatsApp, de una planilla o escrita a mano. Una persona por línea.</p>') +
-      (g && !pg.estampado ? '' : '<div class="campo"><label>¿Las camisetas llevan nombre estampado?</label>' +
-      '<div class="ayuda">Es lo que va en la espalda: un nombre, un apellido o una frase. Si llevan, escríbelo en cada línea junto al número y la talla, tal como se estampa (ej: P. SALINAS 5 M); antes de guardar lo ves y lo puedes cambiar. ' +
-      'Si no llevan, basta con el número y la talla (ej: 5 M). El nombre de la persona no es necesario.</div>' +
-      '<div class="chips">' + chips('lote_estampar', [{ v: 'si', t: 'Sí, llevan nombre estampado' }, { v: 'no', t: 'No, solo número' }], lote.estampar == null ? '' : (lote.estampar ? 'si' : 'no')) + '</div></div>') +
-      (g && numeroOpcional(g.prenda) ? '<div class="campo"><label>' + esc(preguntaNumero(g.prenda)) + '</label>' +
-        '<div class="ayuda">' + (basePrenda(g.prenda) === 'camiseta'
-          ? 'Es el número estampado en la camiseta. Si llevan, escríbelo en cada línea junto a la talla (ej: 10 M). Si no llevan nombre ni número, basta con la talla en cada línea (ej: M).'
-          : 'Es el número estampado en la prenda. Si llevan, escríbelo en cada línea junto a la talla (ej: 10 M). ' +
-            'Si no llevan, basta con la talla; si la persona también lleva camiseta, puedes poner su número o su nombre para juntarlos (en esta prenda no se estampa).') + '</div>' +
-        '<div class="chips">' + chips('lote_numero', [{ v: 'si', t: 'Sí, llevan número' }, { v: 'no', t: 'No, sin número' }], lote.numero == null ? '' : (lote.numero ? 'si' : 'no')) + '</div></div>' : '') +
+        '<p class="bajada">Pega la lista tal como la tienes. Una persona por línea.</p>') +
       '<div class="campo"><label for="lote-texto">Pega tu lista aquí</label>' +
-      '<div class="ayuda">Una persona por línea: lo que se estampa (si lleva), número y talla, en cualquier orden. Todas estas formas funcionan:<br>' +
-      'P. SALINAS 10 M<br>7 Rojas L<br>Antonia, 4, XS<br>Sin nombre: 10 M</div>' +
-      '<textarea id="lote-texto" placeholder="Camila Rojas 10 M&#10;Diego Salas 7 L&#10;Antonia Pérez 4 XS">' + esc(lote.texto) + '</textarea></div>' +
+      '<div class="ayuda"><b>Desde Excel o Google Sheets:</b> copia las columnas (nombre, número, talla…, con o sin la fila de títulos) y pégalas tal cual. ' +
+      'En la revisión ves qué es cada columna y lo puedes cambiar.<br>' +
+      '<b>Escrita o de WhatsApp:</b> una persona por línea con su talla y, si lleva, el nombre y el número. Todas sirven: ' +
+      'P. SALINAS 10 M · 7 Rojas L · M.Sepúlveda S · M</div>' +
+      '<textarea id="lote-texto" placeholder="Camila Rojas 10 M&#10;Diego Salas 7 L&#10;M">' + esc(lote.texto) + '</textarea></div>' +
       (g && (g.calce || g.calceDef) ? '' : '<div class="campo"><label>Calce para todo el grupo</label>' +
       '<div class="ayuda">Después puedes cambiarlo persona por persona si alguien lleva otro calce.</div>' +
       '<div class="chips">' + chips('lote_calce', ['Masculino', 'Femenino', 'Infantil'], lote.calce, true) + '</div></div>') +
@@ -1194,51 +1332,29 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
       (st.error ? '<div class="aviso error">' + esc(st.error) + '</div>' : '') +
       '<div class="barra-fija"><button class="btn" id="btn-leer">Revisar la lista</button></div>' + pie + '</div>';
 
-    const ta = document.getElementById('lote-texto');
-    ta.addEventListener('input', e => { lote.texto = e.target.value; });
+    document.getElementById('lote-texto').addEventListener('input', e => { lote.texto = e.target.value; });
     app.querySelectorAll('[data-chip]').forEach(b => b.addEventListener('click', () => {
       if (b.dataset.chip === 'lote_calce') lote.calce = b.dataset.val;
-      else if (b.dataset.chip === 'lote_estampar') lote.estampar = b.dataset.val === 'si';
-      else if (b.dataset.chip === 'lote_numero') lote.numero = b.dataset.val === 'si';
       else lote.manga = b.dataset.val;
       b.parentElement.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
       b.classList.add('on');
     }));
-
     document.getElementById('btn-leer').addEventListener('click', () => {
-      if (!lote.calce && !(lote.grupo && (lote.grupo.calce || lote.grupo.calceDef))) { st.error = 'Elige el calce del grupo antes de continuar.'; return render(); }
-      if (!(g && !pg.estampado) && lote.estampar == null) { st.error = 'Responde si las camisetas llevan nombre estampado.'; return render(); }
-      if (g && numeroOpcional(g.prenda) && lote.numero == null) { st.error = 'Responde si ' + losDe(g.prenda) + ' llevan número.'; return render(); }
-      const filas = (lote.texto || '').split('\n').map(leerLinea).filter(Boolean);
-      if (g && basePrenda(g.prenda) === 'camiseta' && lote.numero === false)
-        filas.forEach(x => { if (!x.talla && x.numero && TALLAS_INF.indexOf(x.numero) >= 0) { x.talla = x.numero; x.numero = ''; } });
-      if (!filas.length) { st.error = 'No pudimos leer ninguna persona. Revisa que sea una por línea (lo que se estampa, número y talla, o solo número y talla).'; return render(); }
-      if (filas.length > 300) { st.error = 'Son ' + filas.length + ' líneas y el máximo por ficha es 300. Divídela en dos cargas.'; return render(); }
-      lote.filas = filas; st.error = ''; st.pant = 'lote-revisar'; render();
+      const calce = g ? (g.calce || g.calceDef || lote.calce) : lote.calce;
+      if (!calce) { st.error = 'Elige el calce del grupo antes de continuar.'; return render(); }
+      const r = leerLista(lote.texto, calce);
+      if (!r.filas.length) { st.error = 'No pudimos leer ninguna persona. Pega las columnas copiadas de la planilla, o una persona por línea con su talla.'; return render(); }
+      if (r.filas.length > 300) { st.error = 'Son ' + r.filas.length + ' líneas y el máximo por carga es 300. Divídela en dos cargas.'; return render(); }
+      // se estampa lo que trae cada fila (si no lleva nombre, va sin nombre); en la revisión se puede quitar
+      if (lote.estampar == null) lote.estampar = g ? !!pg.estampado : items(f).some(i => prendaDe(i.prenda).estampado);
+      lote.tabla = r.tabla; lote.filas = r.filas; lote.soloRevisar = false; lote.pideOk = null; lote.okRepetidos = null;
+      st.error = ''; st.pant = 'lote-revisar'; render();
     });
   }
 
-  /* Cruce: al cargar un paso, la persona se busca entre las ya cargadas del mismo calce,
-     primero por número y después por nombre. Si existe, se le suma la prenda. */
-  const normNom = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zñ ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const normNom = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zñ ]/g, ' ').replace(/\s+/g, ' ').trim();
   const normNum = s => String(s || '').toUpperCase().trim();
-  // Un número puede repetirse (el cliente lo confirma): si coincide el número pero el nombre es otro, es otra persona.
-  function buscarPersona(dets, g, x) {
-    const cal = g.calce || '', mismos = dets.filter(d => !cal || d.calce === cal);
-    const num = normNum(x.numero), nom = normNom(x.nombre);
-    const porNum = num ? mismos.filter(d => normNum(d.numero) === num) : [];
-    let d = null, por = 'numero';
-    if (porNum.length) d = nom ? porNum.find(d => normNom(d.nombre) === nom) || null : porNum[0];
-    if (!d && nom) { d = mismos.find(d => normNom(d.nombre) === nom) || null; por = 'nombre'; }
-    if (!d) return null;
-    return { d: d, por: por, ya: tallasDe(d)[g.prenda] || '' };
-  }
-  // otra persona del mismo calce que ya usa ese número
-  function numeroDeOtro(dets, g, x) {
-    const cal = g.calce || '', num = normNum(x.numero), nom = normNom(x.nombre);
-    return num ? dets.find(d => (!cal || d.calce === cal) && normNum(d.numero) === num && (!nom || normNom(d.nombre) !== nom)) || null : null;
-  }
-  // Números (por calce) y nombres que se repiten en una lista de personas
+  // Números y nombres que se repiten en una lista de personas (un número puede repetirse: el cliente lo confirma)
   function repetidosDe(lista, calceDe) {
     const porNum = {}, porNom = {};
     lista.forEach(x => {
@@ -1253,108 +1369,95 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
       out.push({ tipo: 'nombre', clave: k, txt: (porNom[k][0].nombre || '').trim() + ' aparece ' + porNom[k].length + ' veces' + (porNom[k].some(x => x.numero) ? ' (N° ' + porNom[k].map(x => x.numero || '—').join(', ') + ')' : '') }); });
     return out;
   }
+  // repetidos dentro de cada paso (cada prenda es su propia lista: el N° 10 de la camiseta y el del short no se comparan)
+  const repetidosPorPaso = (f, dets) => gruposRevision(f, dets).filter(g => !g.cantidad).reduce((a, g) =>
+    a.concat(repetidosDe(personasGrupo(g, dets), () => '').map(r => Object.assign({}, r, { txt: nombreGrupo(g) + ' · ' + r.txt }))), []);
   const avisoRepetidos = (reps, pie) => '<div class="aviso"><b>Hay números o nombres repetidos:</b><ul style="margin:6px 0 6px 18px">' +
     reps.map(r => '<li>' + esc(r.txt) + '</li>').join('') + '</ul>' + pie + '</div>';
-  function textoCruce(dets, g, x) {
-    const m = buscarPersona(dets, g, x);
-    if (!m) { const o = numeroDeOtro(dets, g, x);
-      return o ? { c: 'ojo', t: 'Persona nueva · el N° ' + o.numero + ' también lo tiene ' + nomPersona(o) + ' (número repetido). Si es la misma persona, escribe el nombre igual.' } : { c: '', t: 'Persona nueva' }; }
-    const otras = Object.keys(tallasDe(m.d)).filter(k => k !== g.prenda && tallasDe(m.d)[k]).map(k => minP(k) + ' ' + tallasDe(m.d)[k]).join(', ');
-    if (m.ya && g.disenos && g.disenos.length > 1) return { c: 'ojo', t: nomPersona(m.d) + ' ya tiene ' + minP(g.prenda) + ' ' + m.ya +
-      (+disenosDe(m.d)[g.prenda] ? ' (diseño ' + disenosDe(m.d)[g.prenda] + ')' : '') + '. Si esta fila es de otro diseño, se agrega aparte; si es del mismo, se reemplaza la talla.' };
-    if (m.ya) return { c: 'ojo', t: nomPersona(m.d) + ' ya tenía ' + minP(g.prenda) + ' ' + m.ya + ': se reemplaza por la talla de esta fila.' };
-    return { c: 'suma', t: 'Se suma a ' + nomPersona(m.d) + (m.d.numero && String(m.d.nombre || '').trim() ? ' #' + m.d.numero : '') + (otras ? ' (ya tiene ' + otras + ')' : '') };
+
+  // Revisión de la lista: filas con su talla (lo dudoso marcado), resumen por talla y, si vino de una planilla, sus columnas
+  function bindRevisionLote(filas, alCambiar) {
+    const lote = st.lote;
+    app.querySelectorAll('[data-col]').forEach(s => s.addEventListener('change', () => {
+      lote.tabla.roles[+s.dataset.col] = s.value;
+      lote.filas = filasDeTabla(lote.tabla);
+      revisarCalce(lote.filas, (lote.grupo && (lote.grupo.calce || lote.grupo.calceDef)) || lote.calce);
+      render();
+    }));
+    const chk = (id, fn) => { const l = document.getElementById(id); if (l) l.querySelector('input').addEventListener('change', e => { fn(e.target.checked); render(); }); };
+    chk('chk-estampa', v => { lote.estampar = v; });
+    chk('chk-revisar', v => { lote.soloRevisar = v; });
+    app.querySelectorAll('[data-chip="lote_modo"]').forEach(b => b.addEventListener('click', () => { lote.reemplazar = b.dataset.val === 'reemplazar'; render(); }));
+    app.querySelectorAll('[data-fila]').forEach(div => {
+      const i = +div.dataset.fila, x = filas[i], est = div.querySelector('.est');
+      const marcar = () => { div.classList.toggle('falta', !x.talla); div.classList.toggle('duda', !!x.talla && !!x.duda); alCambiar(); };
+      div.querySelector('.nom').addEventListener('input', e => { x.nombre = e.target.value; if (est && !x.estEditado) est.value = estampadoFila(x); });
+      if (est) est.addEventListener('input', e => { x.est = e.target.value; x.estEditado = true; });
+      div.querySelector('.num').addEventListener('input', e => { e.target.value = limpiaNumero(e.target.value); x.numero = e.target.value; });
+      div.querySelector('.tal').addEventListener('change', e => { x.talla = e.target.value; x.duda = ''; const tg = div.querySelector('.tag-fila'); if (tg) tg.remove(); marcar(); });
+      const ok = div.querySelector('[data-ok]');
+      if (ok) ok.addEventListener('click', () => { x.duda = ''; ok.closest('.tag-fila').remove(); marcar(); });
+    });
+    app.querySelectorAll('[data-quitar]').forEach(b => b.addEventListener('click', () => {
+      filas.splice(+b.dataset.quitar, 1); if (!filas.length) st.pant = 'lote'; render();
+    }));
   }
+  function filaLoteHTML(x, i, opciones, conEstampa, oculta) {
+    return '<div class="fila-lote' + (!x.talla ? ' falta' : x.duda ? ' duda' : '') + '" data-fila="' + i + '"' + (oculta ? ' hidden' : '') + '>' +
+      '<div class="l1"><span class="idx">' + (i + 1) + '</span>' +
+      '<input class="nom" type="text" value="' + esc(x.nombre) + '" placeholder="Nombre (opcional)">' +
+      '<button type="button" class="x" data-quitar="' + i + '" aria-label="Quitar">×</button></div>' +
+      '<div class="l2"><input class="num" type="text" maxlength="6" value="' + esc(x.numero) + '" placeholder="N°">' +
+      '<select class="tal"><option value="">Sin talla</option>' +
+      (x.talla && opciones.indexOf(x.talla) < 0 ? opciones.concat([x.talla]) : opciones).map(t => '<option value="' + esc(t) + '"' + (x.talla === t ? ' selected' : '') + '>' + esc(t) + '</option>').join('') +
+      '</select></div>' + (conEstampa ? filaEstampa(x) : '') +
+      (x.duda && x.talla ? '<div class="tag-fila ojo">' + esc(x.duda) + ' <button type="button" class="ok-fila" data-ok>Está bien</button></div>'
+        : x.duda ? '<div class="tag-fila ojo">' + esc(x.duda) + '</div>' : '') + '</div>';
+  }
+  const contadorLote = filas => { const sin = filas.filter(x => !x.talla).length, du = filas.filter(x => x.talla && x.duda).length, res = resumenLote(filas);
+    return filas.length + ' personas' + (res ? ' · ' + esc(res) : '') + (sin ? ' <span>· ' + sin + ' sin talla</span>' : '') + (du ? ' <span>· ' + du + ' para revisar</span>' : ''); };
+  const paraRevisar = x => !x.talla || !!x.duda;
+  const chkRevisarHTML = (filas, lote) => { const n = filas.filter(paraRevisar).length;
+    return n ? '<label class="check' + (lote.soloRevisar ? ' on' : '') + '" id="chk-revisar" style="margin-top:8px"><input type="checkbox"' + (lote.soloRevisar ? ' checked' : '') + '>' +
+      '<span>Ver solo las ' + n + (n === 1 ? ' fila' : ' filas') + ' para revisar <span class="mini">(sin talla o con algo dudoso)</span></span></label>' : ''; };
+
+  // Lista sin paso (fichas antiguas): la talla de cada fila se aplica a todas las prendas del pedido
   function pantLoteRevisar() {
     if (st.lote && st.lote.grupo) return pantLoteRevisarGrupo();
     const f = st.ficha, lote = st.lote, filas = lote.filas;
-    const conTalla = items(f).map(i => i.prenda).filter(id => !prendaDe(id).sinTalla && !prendaDe(id).escala);
-    const sinTalla = items(f).map(i => i.prenda).filter(id => prendaDe(id).sinTalla || prendaDe(id).escala);
-    const faltan = filas.filter(x => !x.talla).length;
-
+    const conTalla = items(f).map(i => i.prenda).filter(id => !prendaDe(id).sinTalla && !prendaDe(id).escala && !porCantidad(id));
+    const sinTalla = items(f).map(i => i.prenda).filter(id => prendaDe(id).sinTalla || (prendaDe(id).escala && !porCantidad(id)));
     let h = barra(f.cliente, 'lote') + '<div class="pmk-wrap">' +
       '<h1 class="tit">Revisa antes<br>de guardar</h1>' +
-      '<p class="bajada">La talla que dejes en cada fila se aplica a ' +
-      esc(conTalla.map(id => minP(id)).join(', ') || 'las prendas del pedido') +
-      (sinTalla.length ? ', y se marca ' + esc(sinTalla.map(id => minP(id)).join(', ')) : '') + '.</p>' +
-      '<div class="contador" id="contador">' + filas.length + ' personas' +
-      (faltan ? ' <span>· ' + faltan + ' sin talla</span>' : '') + '</div>';
-
-    filas.forEach((x, i) => {
-      h += '<div class="fila-lote' + (x.talla ? '' : ' falta') + '" data-fila="' + i + '">' +
-        '<div class="l1"><span class="idx">' + (i + 1) + '</span>' +
-        '<input class="nom" type="text" value="' + esc(x.nombre) + '" placeholder="Nombre de la persona (opcional)">' +
-        '<button type="button" class="x" data-quitar="' + i + '" aria-label="Quitar">×</button></div>' +
-        '<div class="l2"><input class="num" type="text" maxlength="6" value="' + esc(x.numero) + '" placeholder="N°">' +
-        '<select class="tal"><option value="">Sin talla</option>' +
-        TALLAS_INF.concat(tallasAd(x.talla)).map(t => '<option value="' + t + '"' + (x.talla === t ? ' selected' : '') + '>' + t + '</option>').join('') +
-        '</select></div>' + (lote.estampar ? filaEstampa(x) : '') + '</div>';
-    });
-
+      '<p class="bajada">La talla de cada fila se aplica a ' + esc(conTalla.map(id => minP(id)).join(', ') || 'las prendas del pedido') +
+      (sinTalla.length ? ', y se marca ' + esc(sinTalla.map(id => minP(id)).join(', ')) : '') + '. El nombre y el número son opcionales.</p>' +
+      columnasHTML(lote.tabla) + '<div class="contador" id="contador">' + contadorLote(filas) + '</div>' + chkRevisarHTML(filas, lote);
+    filas.forEach((x, i) => { h += filaLoteHTML(x, i, TALLAS_INF.concat(tallasAd(x.talla)), lote.estampar, lote.soloRevisar && !paraRevisar(x)); });
     if (st.error) h += '<div class="aviso error">' + esc(st.error) + '</div>';
     h += '<div class="barra-fija"><button class="btn" id="btn-guardar-lote">Guardar ' + filas.length + ' personas</button></div>';
     app.innerHTML = h + pie + '</div>';
-
-    const refrescarContador = () => {
-      const f2 = filas.filter(x => !x.talla).length;
-      document.getElementById('contador').innerHTML = filas.length + ' personas' + (f2 ? ' <span>· ' + f2 + ' sin talla</span>' : '');
-    };
-    app.querySelectorAll('[data-fila]').forEach(div => {
-      const i = +div.dataset.fila;
-      const est = div.querySelector('.est');
-      div.querySelector('.nom').addEventListener('input', e => { filas[i].nombre = e.target.value; if (est && !filas[i].estEditado) est.value = estampadoFila(filas[i]); });
-      if (est) est.addEventListener('input', e => { filas[i].est = e.target.value; filas[i].estEditado = true; });
-      div.querySelector('.num').addEventListener('input', e => {
-        e.target.value = e.target.value.toUpperCase().replace(/[^0-9A-Z+\-\/]/g, '').slice(0, 6);
-        filas[i].numero = e.target.value;
-      });
-      div.querySelector('.tal').addEventListener('change', e => {
-        filas[i].talla = e.target.value;
-        div.classList.toggle('falta', !e.target.value);
-        refrescarContador();
-      });
-    });
-    app.querySelectorAll('[data-quitar]').forEach(b => b.addEventListener('click', () => {
-      filas.splice(+b.dataset.quitar, 1);
-      if (!filas.length) { st.pant = 'lote'; }
-      render();
-    }));
-
+    bindRevisionLote(filas, () => { document.getElementById('contador').innerHTML = contadorLote(filas); });
     document.getElementById('btn-guardar-lote').addEventListener('click', async () => {
       const validas = filas.filter(x => String(x.nombre || '').trim() || String(x.numero || '').trim() || x.talla);
       if (!validas.length) { st.error = 'La lista quedó vacía.'; return render(); }
-      const sinEst = lote.estampar ? validas.filter(x => !estampadoFila(x)).length : 0;
-      if (sinEst) { st.error = (sinEst === 1 ? 'Falta 1 nombre' : 'Faltan ' + sinEst + ' nombres') + ' a estampar: dijiste que las camisetas llevan nombre estampado. Escríbelos en «Estampa» o, si no llevan, vuelve atrás y elige «No, solo número».'; return render(); }
       const sin = validas.filter(x => !x.talla).length;
-      if (sin) { st.error = 'Quedan ' + sin + ' personas sin talla. Complétalas o quítalas de la lista.'; return render(); }
-
+      if (sin) { st.error = (sin === 1 ? 'Queda 1 fila' : 'Quedan ' + sin + ' filas') + ' sin talla. Elige su talla o quítalas de la lista.'; return render(); }
       const b = document.getElementById('btn-guardar-lote');
       b.disabled = true; b.textContent = 'Guardando…';
       const base = Date.now().toString(36);
       const regs = validas.map((x, i) => {
         const tallas = {};
         conTalla.forEach(id => { tallas[id] = x.talla; });
-        sinTalla.forEach(id => {
-          const p2 = prendaDe(id);
-          tallas[id] = p2.escala ? (lote.calce === 'Infantil' ? 'Infantil' : 'Adulto') : 'Sí';
-        });
-        return {
-          id: base + '-' + i + '-' + Math.floor(Math.random() * 1000),
-          ref: f.ref, nombre: x.nombre.trim(),
-          estampado: lote.estampar ? estampadoFila(x) : '',
-          numero: x.numero || '', calce: lote.calce, manga: mangaPersona(f, tallas, lote.calce, lote.manga),
-          arquero: false, obs: '', tallas: tallas
-        };
+        sinTalla.forEach(id => { const p2 = prendaDe(id); tallas[id] = p2.escala ? (lote.calce === 'Infantil' ? 'Infantil' : 'Adulto') : 'Sí'; });
+        return { id: base + '-' + i + '-' + Math.floor(Math.random() * 1000), ref: f.ref, nombre: String(x.nombre || '').trim(),
+          estampado: lote.estampar ? estampadoFila(x) : '', numero: x.numero || '', calce: lote.calce,
+          manga: mangaPersona(f, tallas, lote.calce, lote.manga), arquero: false, obs: '', tallas: tallas };
       });
       try {
-        // un solo envío a la base, no uno por persona
-        await API.guardarDetalle(regs);
+        await API.guardarDetalle(regs);   // un solo envío a la base, no uno por persona
         await sincronizarAvisos(f, await API.detalles(f.ref));
         st.lote = null; st.error = ''; st.pant = 'pedido'; render();
-      } catch (e) {
-        st.error = 'No se pudo guardar la lista. ' + (e.message || '').slice(0, 400);
-        b.disabled = false; render();
-      }
+      } catch (e) { st.error = 'No se pudo guardar la lista. ' + (e.message || '').slice(0, 400); b.disabled = false; render(); }
     });
   }
 
@@ -1364,65 +1467,27 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
     const opciones = pg.escala ? pg.escala : (pg.sinTalla ? ['Sí'] : TALLAS_INF.concat(tallasAd()));
     const calce = g.calce || g.calceDef || lote.calce;
     filas.forEach(x => { if (pg.escala && opciones.indexOf(x.talla) < 0) x.talla = calce === 'Infantil' ? 'Infantil' : 'Adulto'; });
-    const ya = personasGrupo(g, dets).length;
-    const nuevasEnGrupo = () => filas.filter(x => { const m = buscarPersona(dets, g, x); return !m || !m.ya; }).length;
-    const faltan = filas.filter(x => !x.talla).length;
-    // si las camisetas llevan nombre, cada fila necesita el suyo; si no, basta con el número y la talla
-    // una persona que ya estaba cargada conserva su nombre estampado (salvo que se cambie aquí)
-    const previoDe = x => { const m = buscarPersona(dets, g, x); return m ? (m.d.estampado || '') : null; };
-    // si las camisetas llevan nombre estampado, cada fila necesita lo que se estampa; el nombre de la persona nunca es obligatorio
-    const pideEstampa = !!(lote.estampar && pg.estampado), sinEstampa = x => pideEstampa && !estampadoFila(x, previoDe(x));
-    const textoContador = () => { const f2 = filas.filter(x => !x.talla).length, n2 = filas.filter(sinEstampa).length, n3 = filas.filter(sinNumero).length;
-      return filas.length + ' personas' + (f2 ? ' <span>· ' + f2 + ' sin talla</span>' : '') + (n2 ? ' <span>· ' + n2 + ' sin nombre a estampar</span>' : '') +
-        (n3 ? ' <span>· ' + n3 + ' sin número</span>' : ''); };
-    const pideNumero = numeroOpcional(g.prenda) && lote.numero === true;
-    const sinNumero = x => { if (!pideNumero || String(x.numero || '').trim()) return false; const m = buscarPersona(dets, g, x); return !(m && String(m.d.numero || '').trim()); };
-    const falta = x => !x.talla || sinEstampa(x) || sinNumero(x);
+    const ya = personasGrupo(g, dets).length, quedan = lote.reemplazar ? 0 : ya;
+    const conEstampa = !!(lote.estampar && pg.estampado);
 
     let h = barra(f.cliente, 'lote') + '<div class="pmk-wrap">' +
       '<h1 class="tit">Revisa antes<br>de guardar</h1>' +
-      '<p class="bajada">' + esc(nombreGrupo(g)) + ': cada fila es una persona con su talla. Revisa el número: con él se junta la camiseta y el short de la misma persona.' +
-        (pideEstampa ? ' En «Estampa» va lo que se estampa en la espalda: revísalo.' : pg.estampado ? ' Las camisetas no llevan nombre estampado: basta con el número y la talla.' : '') +
-        (numeroOpcional(g.prenda) ? (lote.numero ? ' Esta prenda lleva número estampado: cada fila necesita el suyo.'
-          : basePrenda(g.prenda) === 'camiseta' ? ' Las camisetas no llevan número: basta con la talla (el nombre de la persona es opcional).'
-          : ' Esta prenda no lleva número: el número solo sirve para juntarla con la camiseta de la misma persona.') : '') + '</p>' +
-      '<div class="contador" id="contador">' + textoContador() + '</div>';
-    if (g.cant != null && ya + nuevasEnGrupo() > g.cant) h += '<div class="aviso">Con esta lista quedarían ' + (ya + nuevasEnGrupo()) + ' en este paso y el pedido tiene ' + g.cant +
+      '<p class="bajada">' + esc(nombreGrupo(g)) + ': cada fila es una persona con su talla. El nombre y el número son opcionales: van solo si la prenda los lleva.' +
+        (pg.estampado ? (conEstampa ? ' En «Estampa» va lo que se estampa en la espalda.' : ' Van sin nombre estampado.') : '') + '</p>' +
+      columnasHTML(lote.tabla) +
+      (pg.estampado ? '<label class="check' + (conEstampa ? ' on' : '') + '" id="chk-estampa"><input type="checkbox"' + (conEstampa ? ' checked' : '') + '>' +
+        '<span>Estampar en la espalda el nombre de cada fila <span class="mini">(la que no tiene nombre va sin nombre)</span></span></label>' : '') +
+      (ya ? '<div class="campo"><div class="lab">Ya hay ' + ya + ' cargadas en este paso</div><div class="chips">' +
+        chips('lote_modo', [{ v: 'agregar', t: 'Agregar esta lista' }, { v: 'reemplazar', t: 'Reemplazar las ' + ya }], lote.reemplazar ? 'reemplazar' : 'agregar') + '</div></div>' : '') +
+      '<div class="contador" id="contador">' + contadorLote(filas) + '</div>' + chkRevisarHTML(filas, lote);
+    if (g.cant != null && quedan + filas.length > g.cant) h += '<div class="aviso">Con esta lista quedarían ' + (quedan + filas.length) + ' en este paso y el pedido tiene ' + g.cant +
       '. Las unidades de más se avisan a Playmaker, que te confirma el valor antes de producir.</div>';
-    filas.forEach((x, i) => {
-      const cr = textoCruce(dets, g, x);
-      h += '<div class="fila-lote' + (falta(x) ? ' falta' : '') + '" data-fila="' + i + '">' +
-        '<div class="l1"><span class="idx">' + (i + 1) + '</span>' +
-        '<input class="nom" type="text" value="' + esc(x.nombre) + '" placeholder="Nombre de la persona (opcional)">' +
-        '<button type="button" class="x" data-quitar="' + i + '" aria-label="Quitar">×</button></div>' +
-        '<div class="l2"><input class="num" type="text" maxlength="6" value="' + esc(x.numero) + '" placeholder="N°">' +
-        '<select class="tal"><option value="">Sin talla</option>' +
-        (opciones.indexOf(x.talla) < 0 && TALLAS_AD.indexOf(x.talla) >= 0 ? opciones.concat([x.talla]) : opciones)
-          .map(t => '<option value="' + t + '"' + (x.talla === t ? ' selected' : '') + '>' + t + '</option>').join('') +
-        '</select></div>' + (lote.estampar && pg.estampado ? filaEstampa(x, previoDe(x)) : '') + '<div class="tag-fila ' + cr.c + '">' + esc(cr.t) + '</div></div>';
-    });
+    filas.forEach((x, i) => { h += filaLoteHTML(x, i, opciones, conEstampa, lote.soloRevisar && !paraRevisar(x)); });
     if (lote.pideOk && lote.reps) h += avisoRepetidos(lote.reps, 'Si están bien (por ejemplo, dos personas con el mismo número), confírmalo y se guardan igual. Si es un error, corrígelo en la lista.');
     if (st.error) h += '<div class="aviso error">' + esc(st.error) + '</div>';
     h += '<div class="barra-fija"><button class="btn" id="btn-guardar-lote">' + (lote.pideOk ? 'Sí, están bien · guardar ' : 'Guardar ') + filas.length + ' personas</button></div>';
     app.innerHTML = h + pie + '</div>';
-
-    const refrescar = () => { document.getElementById('contador').innerHTML = textoContador(); };
-    app.querySelectorAll('[data-fila]').forEach(div => {
-      const i = +div.dataset.fila, tag = div.querySelector('.tag-fila');
-      const est = div.querySelector('.est');
-      const cruce = () => { const cr = textoCruce(dets, g, filas[i]); tag.className = 'tag-fila ' + cr.c; tag.textContent = cr.t;
-        if (est && !filas[i].estEditado) est.value = estampadoFila(filas[i], previoDe(filas[i])); };
-      div.querySelector('.nom').addEventListener('input', e => { filas[i].nombre = e.target.value; cruce(); div.classList.toggle('falta', falta(filas[i])); refrescar(); });
-      if (est) est.addEventListener('input', e => { filas[i].est = e.target.value; filas[i].estEditado = true; div.classList.toggle('falta', falta(filas[i])); refrescar(); });
-      div.querySelector('.num').addEventListener('input', e => {
-        e.target.value = e.target.value.toUpperCase().replace(/[^0-9A-Z+\-\/]/g, '').slice(0, 6);
-        filas[i].numero = e.target.value; cruce(); div.classList.toggle('falta', falta(filas[i])); refrescar();
-      });
-      div.querySelector('.tal').addEventListener('change', e => { filas[i].talla = e.target.value; div.classList.toggle('falta', falta(filas[i])); refrescar(); });
-    });
-    app.querySelectorAll('[data-quitar]').forEach(b => b.addEventListener('click', () => {
-      filas.splice(+b.dataset.quitar, 1); if (!filas.length) st.pant = 'lote'; render();
-    }));
+    bindRevisionLote(filas, () => { document.getElementById('contador').innerHTML = contadorLote(filas); });
 
     document.getElementById('btn-guardar-lote').addEventListener('click', async () => {
       if (lote.pideOk) lote.okRepetidos = lote.pideOk;   // el cliente confirmó que los repetidos están bien
@@ -1430,78 +1495,45 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
       const validas = filas.filter(x => String(x.nombre || '').trim() || String(x.numero || '').trim() || x.talla);
       if (!validas.length) { st.error = 'La lista quedó vacía.'; return render(); }
       const sin = validas.filter(x => !x.talla).length;
-      if (sin) { st.error = 'Quedan ' + sin + ' personas sin talla. Complétalas o quítalas de la lista.'; return render(); }
-      const sinNum = validas.filter(sinNumero).length;
-      if (sinNum) { st.error = (sinNum === 1 ? 'Falta 1 número' : 'Faltan ' + sinNum + ' números') + ': dijiste que llevan número. Escríbelos o, si no llevan, vuelve atrás y elige «No, sin número».'; return render(); }
-      const sinEst = validas.filter(sinEstampa).length;
-      if (sinEst) { st.error = (sinEst === 1 ? 'Falta 1 nombre' : 'Faltan ' + sinEst + ' nombres') + ' a estampar: dijiste que las camisetas llevan nombre estampado. Escríbelos en «Estampa» o, si no llevan, vuelve atrás y elige «No, solo número».'; return render(); }
-      // números o nombres repetidos (en la lista o con personas ya cargadas): se avisa y el cliente decide
-      // se compara con las personas ya cargadas del mismo calce (salvo las que esta lista completa, que son la misma persona)
-      const yaCargadas = dets.filter(d => d.calce === calce && !validas.some(v => buscarPersona([d], g, v)))
-        .map(d => ({ nombre: d.nombre, numero: d.numero }));
-      const reps = repetidosDe(validas.concat(yaCargadas), () => calce);
+      if (sin) { st.error = (sin === 1 ? 'Queda 1 fila' : 'Quedan ' + sin + ' filas') + ' sin talla. Elige su talla o quítalas de la lista (con «Ver solo las filas para revisar» las encuentras).'; return render(); }
+      // números o nombres repetidos dentro de este paso (en la lista o con lo ya cargado en él): se avisa y el cliente decide
+      const yaCargadas = lote.reemplazar ? [] : personasGrupo(g, dets).map(d => ({ nombre: d.nombre, numero: d.numero }));
+      const reps = repetidosDe(validas.concat(yaCargadas), () => '');
       const firma = reps.map(r => r.txt).join('|');
       if (reps.length && lote.okRepetidos !== firma) { lote.pideOk = firma; lote.reps = reps; st.error = ''; return render(); }
-      // camisetas: antes de guardar se pregunta quién es arquero/a o líbero (como en la carga de una persona)
-      // el molde tiene varios diseños: se pregunta cuál lleva cada persona (las ya cargadas traen el suyo)
+      // el molde tiene varios diseños: se pregunta cuál lleva cada persona
       if (g.disenos && g.disenos.length > 1 && !lote.disListo) {
-        validas.forEach(x => { if (!x.diseno) { const m = buscarPersona(dets, g, x), v = m ? +disenosDe(m.d)[g.prenda] : 0; x.diseno = g.disenos.indexOf(v) >= 0 ? v : 0; } });
+        validas.forEach(x => { if (!x.diseno) x.diseno = 0; });
         lote.validas = validas; st.error = ''; st.pant = 'lote-diseno'; return render();
-      }
-      if (pg.manga && !lote.arqListo) {
-        validas.forEach(x => { if (x.arquero == null) { const m = buscarPersona(dets, g, x); x.arquero = !!(m && m.d.arquero); } });
-        lote.validas = validas; st.error = ''; st.pant = 'lote-arquero'; return render();
       }
       await guardarLoteGrupo(validas, document.getElementById('btn-guardar-lote'));
     });
   }
-  // Guarda la lista de un paso: personas nuevas y personas ya cargadas a las que se suma la prenda
+  // Guarda la lista de un paso: cada fila es una persona de esta prenda (no se junta con lo cargado en otras).
+  // «Reemplazar»: las de este paso se quitan; quien tenía además otra prenda (fichas antiguas) conserva esa.
   async function guardarLoteGrupo(validas, b) {
     const f = st.ficha, lote = st.lote, g = lote.grupo, pg = prendaDe(g.prenda), calce = g.calce || g.calceDef || lote.calce;
-    lote.arqListo = false; lote.disListo = false;
+    lote.disListo = false;
     b.disabled = true; b.textContent = 'Guardando…';
     try {
-      const actuales = await API.detalles(f.ref); // se cruza contra lo último guardado
-      const base = Date.now().toString(36), usados = {};
-      const fila = r => ({ id: r.id, ref: f.ref, nombre: r.nombre, estampado: r.estampado || '', numero: r.numero || '', calce: r.calce || '',
+      const base = Date.now().toString(36);
+      const fila = r => ({ id: r.id, ref: f.ref, nombre: r.nombre || '', estampado: r.estampado || '', numero: r.numero || '', calce: r.calce || '',
         manga: r.manga || '', arquero: !!r.arquero, obs: r.obs || '', tallas: r.tallas, disenos: r.disenos || {} });
-      const conDiseno = (previos, x) => Object.assign({}, previos, x.diseno ? { [g.prenda]: x.diseno } : {});
-      // con varios diseños, una persona puede llevar uno de cada uno: la fila de otro diseño se agrega aparte
-      // (se junta con la suya del mismo diseño, o con la que aún no tiene diseño en esta prenda)
-      const buscarParaGuardar = x => {
-        if (!(g.disenos && g.disenos.length > 1 && x.diseno)) return buscarPersona(actuales, g, x);
-        const cands = actuales.filter(d => !usados[d.id] && buscarPersona([d], g, x));
-        const d = cands.find(c => +disenosDe(c)[g.prenda] === x.diseno) || cands.find(c => !tallasDe(c)[g.prenda] || !+disenosDe(c)[g.prenda]);
-        return d ? buscarPersona([d], g, x) : null;
-      };
-      const regs = [], sinMg = !!pg.manga && camisetaSinMangas(f, g.prenda, calce);
-      validas.forEach((x, i) => {
-        const m = buscarParaGuardar(x);
-        if (m && !usados[m.d.id]) {
-          usados[m.d.id] = true;
-          const t = Object.assign({}, tallasDe(m.d)); t[g.prenda] = x.talla;
-          // la manga es la de su camiseta con mangas: en una segunda camiseta se respeta la que ya tenía
-          const tenia = Object.keys(tallasDe(m.d)).some(k => tallasDe(m.d)[k] && basePrenda(k) === 'camiseta' && !camisetaSinMangas(f, k, m.d.calce));
-          const elegida = !pg.manga ? m.d.manga : (tenia && (pg.variante || sinMg) ? m.d.manga : lote.manga);
-          regs.push(fila({ id: m.d.id, nombre: m.d.nombre, estampado: x.estEditado && lote.estampar && pg.estampado ? estampadoFila(x) : m.d.estampado, numero: m.d.numero || x.numero, calce: m.d.calce,
-            manga: pg.manga ? mangaPersona(f, t, m.d.calce, elegida) : m.d.manga, arquero: x.arquero != null ? !!x.arquero : m.d.arquero, obs: m.d.obs, tallas: t,
-            disenos: conDiseno(disenosDe(m.d), x) }));
-          return;
-        }
-        const t = {}; t[g.prenda] = x.talla;
-        regs.push(fila({ id: base + '-' + i + '-' + Math.floor(Math.random() * 1000), nombre: x.nombre.trim(),
-          estampado: lote.estampar && pg.estampado ? estampadoFila(x) : '',
-          numero: x.numero || '', calce: calce, manga: pg.manga ? mangaPersona(f, t, calce, lote.manga) : '', arquero: !!x.arquero, tallas: t, disenos: conDiseno({}, x) }));
-      });
-      if (numeroOpcional(g.prenda) && lote.numero != null && llevaNumero(f, g.prenda) !== lote.numero) {
-        let fr = null;
-        try { fr = f.acceso ? await API.fichaPorCodigo(f.acceso) : await API.ficha(f.ref); } catch (e) {}
-        const specs = JSON.parse(JSON.stringify(specsDe(fr || f)));
-        specs[g.prenda] = Object.assign({}, specs[g.prenda], { numero: lote.numero ? 'si' : 'no' });
-        await API.specsFicha(f.ref, specs);
-        st.ficha = Object.assign({}, st.ficha, { specs: specs });
+      const regs = validas.map((x, i) => { const t = {}; t[g.prenda] = x.talla;
+        return fila({ id: base + '-' + i + '-' + Math.floor(Math.random() * 1000), nombre: String(x.nombre || '').trim(),
+          estampado: lote.estampar && pg.estampado ? estampadoFila(x) : '', numero: x.numero || '', calce: calce,
+          manga: pg.manga ? mangaPersona(f, t, calce, lote.manga) : '', tallas: t, disenos: x.diseno ? { [g.prenda]: x.diseno } : {} }); });
+      const borrar = [];
+      if (lote.reemplazar) {
+        personasGrupo(g, await API.detalles(f.ref)).forEach(d => {
+          const t = Object.assign({}, tallasDe(d)); delete t[g.prenda];
+          if (!Object.keys(t).some(k => t[k])) { borrar.push(d.id); return; }
+          const ds = Object.assign({}, disenosDe(d)); delete ds[g.prenda];
+          regs.push(fila(Object.assign({}, d, { tallas: t, disenos: ds })));
+        });
       }
-      await API.guardarDetalle(regs);   // un solo envío: personas nuevas y personas a las que se suma la prenda
+      await API.guardarDetalle(regs);   // un solo envío para toda la lista
+      if (borrar.length) await API.borrarDetalles(f.ref, borrar);
       await sincronizarAvisos(f, await API.detalles(f.ref));
       st.lote = null; st.error = ''; st.pant = 'pedido'; render();
     } catch (e) {
@@ -1513,7 +1545,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   function pantLoteDiseno() {
     const f = st.ficha, lote = st.lote, vs = (lote && lote.validas) || [], g = lote && lote.grupo;
     if (!vs.length || !g) { st.pant = 'lote-revisar'; return render(); }
-    const pg = prendaDe(g.prenda), ds = g.disenos || [];
+    const ds = g.disenos || [];
     const cuenta = () => ds.map(n => 'Diseño ' + n + ': ' + vs.filter(x => x.diseno === n).length).join(' · ') +
       (vs.some(x => !x.diseno) ? ' · sin elegir: ' + vs.filter(x => !x.diseno).length : '');
     const quien = x => (x.numero ? '<b>N° ' + esc(x.numero) + '</b>' + (String(x.nombre || '').trim() ? ' · ' : '') : '') +
@@ -1528,7 +1560,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
         ds.map(n => '<button type="button" class="chip' + (x.diseno === n ? ' on' : '') + '" data-d="' + n + '">Diseño ' + n + '</button>').join('') + '</div></div>').join('') +
       (st.error ? '<div class="aviso error">' + esc(st.error) + '</div>' : '') +
       '<button class="btn plano" data-ir="lote-revisar" style="margin-top:14px">Volver a la lista</button>' +
-      '<div class="barra-fija"><button class="btn" id="btn-guardar-dis">' + (pg.manga ? 'Seguir' : 'Guardar ' + vs.length + ' personas') + '</button></div>' + pie + '</div>';
+      '<div class="barra-fija"><button class="btn" id="btn-guardar-dis">Guardar ' + vs.length + ' personas</button></div>' + pie + '</div>';
     app.querySelectorAll('[data-todos]').forEach(b => b.addEventListener('click', () => { vs.forEach(x => { x.diseno = +b.dataset.todos; }); st.error = ''; render(); }));
     app.querySelectorAll('[data-dis]').forEach(fila => fila.querySelectorAll('[data-d]').forEach(b => b.addEventListener('click', () => {
       vs[+fila.dataset.dis].diseno = +b.dataset.d;
@@ -1539,34 +1571,52 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
       const sin = vs.filter(x => !x.diseno).length;
       if (sin) { st.error = 'Falta elegir el diseño de ' + sin + (sin === 1 ? ' persona.' : ' personas.'); return render(); }
       st.error = ''; lote.disListo = true;
-      if (pg.manga) {
-        vs.forEach(x => { if (x.arquero == null) { const m = buscarPersona(st.dets || [], g, x); x.arquero = !!(m && m.d.arquero); } });
-        lote.validas = vs; st.pant = 'lote-arquero'; return render();
-      }
       guardarLoteGrupo(vs, e.currentTarget);
     });
   }
-  // Antes de guardar una lista de camisetas: quién es arquero/a o líbero (llevan otro diseño y se confeccionan aparte)
-  function pantLoteArquero() {
-    const f = st.ficha, lote = st.lote, vs = (lote && lote.validas) || [];
-    if (!vs.length) { st.pant = 'lote-revisar'; return render(); }
-    const marcados = () => vs.filter(x => x.arquero);
-    const cuenta = () => { const m = marcados(); return m.length ? m.length + (m.length === 1 ? ' marcado: ' : ' marcados: ') + m.map(nomPersona).join(', ') : 'Nadie marcado'; };
-    let h = barra(f.cliente, 'lote-revisar') + '<div class="pmk-wrap">' +
-      '<h1 class="tit">¿Hay arqueros<br>o líberos?</h1>' +
-      '<p class="bajada">Su camiseta lleva otro diseño y se confecciona aparte. Marca a quien sea arquero/a o líbero. Si nadie lo es, guarda así.</p>' +
-      '<div class="contador" id="arq-cuenta">' + esc(cuenta()) + '</div>' +
-      vs.map((x, i) => '<label class="check' + (x.arquero ? ' on' : '') + '" style="margin-top:8px" data-arq="' + i + '"><input type="checkbox"' + (x.arquero ? ' checked' : '') + '>' +
-        '<span>' + (x.numero ? '<b>N° ' + esc(x.numero) + '</b>' + (String(x.nombre || '').trim() ? ' · ' : '') : '') + esc(String(x.nombre || '').trim() || (x.numero ? '' : 'Sin nombre')) + (x.talla ? ' <span class="mini">· ' + esc(x.talla) + '</span>' : '') + '</span></label>').join('') +
+
+  /* ==========================================================
+     MEDIAS — no van por persona: cuántos pares de cada talla tiene cada diseño de medias
+     (cada uno con su montaje). Playmaker puede dejarlas definidas al crear la ficha.
+     ========================================================== */
+  function pantMedias() {
+    const f = st.ficha, md = st.medias, g = md && md.grupo;
+    if (!g) { st.pant = 'pedido'; return render(); }
+    const imgs = imgsDe(f).filter(i => prendasImg(i).indexOf(g.prenda) >= 0);
+    const extras = Object.keys(md.cant).filter(t => TALLAS_MEDIAS.indexOf(t) < 0);   // tallas de cargas antiguas (ej: Juvenil)
+    const total = () => { const s = sumaCant(md.cant);
+      return s + (s === 1 ? ' par' : ' pares') + (g.cant != null ? ' de ' + g.cant + (s > g.cant ? ' <span>· ' + (s - g.cant) + ' de más</span>' : s < g.cant ? ' <span>· faltan ' + (g.cant - s) + '</span>' : ' · completo') : ''); };
+    app.innerHTML = barra(f.cliente, 'pedido') + '<div class="pmk-wrap">' +
+      '<h1 class="tit">' + esc(prendaDe(g.prenda).nom) + '</h1>' +
+      '<p class="bajada">Las medias no van por persona: indica cuántos pares de cada talla.</p>' +
+      (g.cant != null ? '<div class="aviso">Este diseño de medias es de <b>' + g.cant + ' pares</b>.</div>' : '') +
+      (imgs.length ? '<div class="campo"><div class="lab">Así van</div><div class="montajes-cli">' + imgs.map(i => '<a href="' + esc(i.url) + '" target="_blank" rel="noopener">' +
+        '<img src="' + esc(i.url) + '" alt="" loading="lazy"><div class="cap">' + esc(i.vista || '') + '</div></a>').join('') + '</div></div>' : '') +
+      '<div class="campo"><div class="lab">Pares por talla</div>' +
+      TALLAS_MEDIAS.concat(extras).map(t => '<div class="med-fila"><label for="md-' + esc(t) + '">' + esc(t) + '</label>' +
+        '<input id="md-' + esc(t) + '" type="number" min="0" max="999" inputmode="numeric" data-md="' + esc(t) + '" value="' + (parseInt(md.cant[t], 10) || '') + '" placeholder="0"></div>').join('') +
+      '<div class="contador" id="md-total">' + total() + '</div></div>' +
       (st.error ? '<div class="aviso error">' + esc(st.error) + '</div>' : '') +
-      '<button class="btn plano" data-ir="lote-revisar" style="margin-top:14px">Volver a la lista</button>' +
-      '<div class="barra-fija"><button class="btn" id="btn-guardar-arq">Guardar ' + vs.length + ' personas</button></div>' + pie + '</div>';
-    app.innerHTML = h;
-    app.querySelectorAll('[data-arq]').forEach(l => l.querySelector('input').addEventListener('change', e => {
-      vs[+l.dataset.arq].arquero = e.target.checked; l.classList.toggle('on', e.target.checked);
-      document.getElementById('arq-cuenta').textContent = cuenta();
+      '<div class="barra-fija"><button class="btn" id="btn-guardar-md">Guardar medias</button></div>' + pie + '</div>';
+    app.querySelectorAll('[data-md]').forEach(inp => inp.addEventListener('input', () => {
+      const v = parseInt(inp.value, 10); if (v > 0) md.cant[inp.dataset.md] = Math.min(999, v); else delete md.cant[inp.dataset.md];
+      document.getElementById('md-total').innerHTML = total();
     }));
-    document.getElementById('btn-guardar-arq').addEventListener('click', e => guardarLoteGrupo(vs, e.currentTarget));
+    document.getElementById('btn-guardar-md').addEventListener('click', async () => {
+      if (!sumaCant(md.cant)) { st.error = 'Indica cuántos pares de al menos una talla.'; return render(); }
+      const b = document.getElementById('btn-guardar-md'); b.disabled = true; b.textContent = 'Guardando…';
+      try {
+        let fr = null;   // se parte de la ficha guardada, para no pisar cambios de Playmaker
+        try { fr = f.acceso ? await API.fichaPorCodigo(f.acceso) : await API.ficha(f.ref); } catch (e) {}
+        const specs = JSON.parse(JSON.stringify(specsDe(fr || f)));
+        const limpio = {}; Object.keys(md.cant).forEach(t => { const v = parseInt(md.cant[t], 10); if (v > 0) limpio[t] = v; });
+        specs[g.prenda] = Object.assign({}, specs[g.prenda], { cantidades: limpio });
+        await API.specsFicha(f.ref, specs);
+        st.ficha = Object.assign({}, st.ficha, { specs: specs });
+        await sincronizarAvisos(st.ficha, await API.detalles(f.ref));
+        st.medias = null; st.error = ''; st.pant = 'pedido'; render();
+      } catch (e) { st.error = 'No se pudieron guardar las medias. ' + (e.message || '').slice(0, 300); b.disabled = false; b.textContent = 'Guardar medias'; render(); }
+    });
   }
 
   /* ============ router ============ */
@@ -1581,7 +1631,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
     else if (p === 'form') pantForm();
     else if (p === 'lote') pantLote();
     else if (p === 'lote-revisar') pantLoteRevisar();
-    else if (p === 'lote-arquero') pantLoteArquero();
+    else if (p === 'medias') pantMedias();
     else if (p === 'lote-diseno') pantLoteDiseno();
     else if (p === 'revision') pantRevision();
     else if (p === 'cerrado') pantCerrado();
