@@ -682,7 +682,8 @@ const PMK_ACCESO = (() => {
   ];
   /* Catálogo de moldes: sigue el «Catálogo ordenado» (noviembre 2026), con sus secciones y su orden:
      Fútbol, Básquetbol, Vóleibol, Hockey, Rugby, Multideporte y Salida y entrenamiento.
-     Los especiales (E01…E11) van en la sección de su deporte, pero se siguen ofreciendo con cualquier deporte.
+     Los especiales (E01…E11) van en la sección de su deporte y se ofrecen solo con ese deporte (E04 con fútbol; E01, E02, E03,
+     E10 y E11 con rugby…). Con cualquier deporte se ofrecen solo Multideporte y Salida y entrenamiento.
      Los especiales se guardan con N° 101-111 (E01 = 101) y se muestran como E01…E11.
      Los moldes 01 al 10 no están en el catálogo ordenado: quedan al final mientras sigan activos.
      Las guías están en Storage, en montajes/moldes/molde-NN.jpg (molde-E01.jpg para los especiales).
@@ -785,18 +786,24 @@ const PMK_ACCESO = (() => {
     {n:9,c:'FUTMUJCC01',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:9009,e:'09 · FUTMUJCC01 — Fútbol, cuello camisero'},
     {n:10,c:'FUTHOMCC01',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:9010,e:'10 · FUTHOMCC01 — Fútbol, cuello camisero'}
   ];
+  // Sección y orden del catálogo ordenado por número (con su código, para no confundir un molde renumerado):
+  // se usan cuando la base aún no tiene el SQL 17A
+  const CAT_RESPALDO = {};
+  MOLDES.forEach(m => { if (m.o != null && m.o < 9000) CAT_RESPALDO[m.n] = { c: m.c, d: m.d, o: m.o }; });
   // N° visible del molde: 01…99 como siempre; 101…199 son los especiales E01…E99
   const ESPECIALES = 'Especiales';
   const ABRIGO = 'Abrigo', MUSCULOSA = 'Musculosa';
   const MULTIDEPORTE = 'Multideporte', SALIDA = 'Salida y entrenamiento';
-  // secciones del catálogo que se ofrecen junto a los moldes de cualquier deporte (y los nombres antiguos: especiales, abrigo, musculosa)
-  const paraTodoDeporte = d => [MULTIDEPORTE, SALIDA, ESPECIALES, ABRIGO, MUSCULOSA].indexOf(d) >= 0;
-  // los especiales (E01…) van en la sección de su deporte en el catálogo, pero se siguen ofreciendo con cualquier deporte
-  const esEspecial = n => +n > 100 && +n < 200;
-  const sirveATodos = m => paraTodoDeporte(m.d) || esEspecial(m.n);
+  // secciones del catálogo que se ofrecen junto a los moldes de cualquier deporte (y los nombres antiguos abrigo y musculosa).
+  // «Especiales» solo queda en un especial que no está en el catálogo (sin deporte conocido) o en fichas antiguas.
+  const paraTodoDeporte = d => [MULTIDEPORTE, SALIDA, ABRIGO, MUSCULOSA, ESPECIALES].indexOf(d) >= 0;
+  // los especiales (E01…) van solo con su deporte, como cualquier molde: un E04 de fútbol no aparece en rugby, ni al revés
+  const sirveATodos = m => paraTodoDeporte(m.d);
   // orden del catálogo; los moldes sin orden (01 al 10, o uno recién agregado) van al final, por su número
   const ordenMolde = m => m.o != null ? +m.o : 9000 + m.n;
-  const ordenFila = r => r.orden != null ? +r.orden : 9000 + r.numero;
+  // fila de la base: su orden y su sección (sin el SQL 17A, los del catálogo ordenado)
+  const ordenFila = r => r.orden != null ? +r.orden : catDeFila(r) ? catDeFila(r).o : 9000 + r.numero;
+  const deporteFila = r => (catDeFila(r) || {}).d || r.deporte || '';
   const etqMolde = n => { n = +n; return n > 100 && n < 200 ? 'E' + String(n - 100).padStart(2, '0') : String(n).padStart(2, '0'); };
   const URL_MOLDE = n => CFG.fichasUrl + '/storage/v1/object/public/montajes/moldes/molde-' + etqMolde(n) + '.jpg';
   const moldePorCodigo = c => MOLDES.find(m => m.c === c);
@@ -2745,8 +2752,11 @@ const PMK_ACCESO = (() => {
     lista.map(t => '<option value="' + esc(t) + '"' + (t === valor ? ' selected' : '') + '>' + esc(t) + '</option>').join('') +
     (valor && lista.indexOf(valor) < 0 ? '<option value="' + esc(valor) + '" selected>' + esc(valor) + '</option>' : '') + '</select>';
   const piezasDe = m => Array.isArray(m.piezas) ? m.piezas : JSON.parse(m.piezas || '[]');
-  const filaAMolde = r => ({ n: r.numero, c: r.codigo, d: r.deporte || '', ca: r.calce || 'Unisex', i: r.infantil ? 1 : 0,
-    t: r.prenda === 'camiseta' ? 'polera' : r.prenda, o: r.orden != null ? r.orden : null, e: etqMolde(r.numero) + ' · ' + r.codigo + ' — ' + r.descripcion, piezas: piezasDe(r) });
+  // sin el SQL 17A (sin orden en la base) la sección y el orden salen del catálogo ordenado, si el código coincide
+  const catDeFila = r => r.orden == null && CAT_RESPALDO[r.numero] && CAT_RESPALDO[r.numero].c === r.codigo ? CAT_RESPALDO[r.numero] : null;
+  const filaAMolde = r => { const cat = catDeFila(r);
+    return { n: r.numero, c: r.codigo, d: cat ? cat.d : (r.deporte || ''), ca: r.calce || 'Unisex', i: r.infantil ? 1 : 0,
+      t: r.prenda === 'camiseta' ? 'polera' : r.prenda, o: r.orden != null ? r.orden : cat ? cat.o : null, e: etqMolde(r.numero) + ' · ' + r.codigo + ' — ' + r.descripcion, piezas: piezasDe(r) }; };
   const moldesVigentes = filas => filas.filter(r => r.activo !== false).map(filaAMolde).sort((a, b) => ordenMolde(a) - ordenMolde(b));
 
   async function cargarMoldes() {
@@ -2779,11 +2789,11 @@ const PMK_ACCESO = (() => {
     const telas = telasPlanas(st.cat);
     const filtro = st.moldeFiltro || '';
     const enOrden = st.moldes.slice().sort((a, b) => ordenFila(a) - ordenFila(b) || a.numero - b.numero);
-    const lista = enOrden.filter(m => !filtro || m.prenda === filtro || m.deporte === filtro);
-    const deportes = Array.from(new Set(enOrden.map(m => m.deporte).filter(Boolean)));
+    const lista = enOrden.filter(m => !filtro || m.prenda === filtro || deporteFila(m) === filtro);
+    const deportes = Array.from(new Set(enOrden.map(deporteFila).filter(Boolean)));
     // sin el SQL 17A ningún molde tiene orden: se agrupan solo por deporte
-    const hayOrden = st.moldes.some(m => m.orden != null);
-    const seccionFila = m => hayOrden && (m.orden == null || m.orden >= 9000) ? 'Fuera del catálogo ordenado' : (m.deporte || 'Sin deporte');
+    const hayOrden = st.moldes.some(m => m.orden != null || catDeFila(m));
+    const seccionFila = m => hayOrden && ordenFila(m) >= 9000 ? 'Fuera del catálogo ordenado' : (deporteFila(m) || 'Sin deporte');
     const ed = st.moldeEdit;
 
     let h = barra('Catálogo de moldes', 'catalogo') + '<div class="pmk-wrap">' +

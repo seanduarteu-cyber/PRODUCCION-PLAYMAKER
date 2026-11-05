@@ -37,16 +37,24 @@ async function panel(b, modo) {
   r.secciones = await p.$$eval('[data-cf="deporte"] option', os => os.map(o => o.value).filter(Boolean));
   await p.selectOption('[data-cf="deporte"]', 'Hockey'); await p.waitForTimeout(400);
   r.catHockey = await p.$$eval('[data-add-molde]', bs => bs.map(x => +x.dataset.addMolde));
+  await p.selectOption('[data-cf="deporte"]', 'Rugby'); await p.waitForTimeout(300);
+  r.catRugby = await p.$$eval('[data-add-molde]', bs => bs.map(x => +x.dataset.addMolde));
+  await p.selectOption('[data-cf="deporte"]', 'Fútbol'); await p.waitForTimeout(300);
+  r.catFutbol = await p.$$eval('[data-add-molde]', bs => bs.map(x => +x.dataset.addMolde));
   // ficha técnica: los moldes ya elegidos siguen elegidos; la lista de cada calce según el deporte
   await p.goto('https://panel-fichas-playmaker.netlify.app/?ref=COT-3610'); await p.waitForTimeout(1500);
   await p.click('[data-ir="tecnica"]'); await p.waitForTimeout(800);
   r.elegidos = await p.evaluate(() => [...document.querySelectorAll('select[data-molde]')].map(s => s.dataset.molde + '/' + s.dataset.calce + '=' + s.value));
   r.rugbyFem = await valores('#m-camiseta-Femenino');
+  r.rugbyMas = await valores('#m-camiseta-Masculino');
   await p.evaluate(() => { const x = document.getElementById('dep-camiseta'); x.value = 'Hockey'; x.dispatchEvent(new Event('change', { bubbles: true })); });
   await p.waitForTimeout(500);
   r.hockeyFem = await valores('#m-camiseta-Femenino');
   r.femTrasCambio = await p.$eval('#m-camiseta-Femenino', s => s.value);
   r.masTrasCambio = await p.$eval('#m-camiseta-Masculino', s => s.value);
+  await p.evaluate(() => { const x = document.getElementById('dep-camiseta'); x.value = 'Fútbol'; x.dispatchEvent(new Event('change', { bubbles: true })); });
+  await p.waitForTimeout(500);
+  r.futMas = (await valores('#m-camiseta-Masculino')).filter(n => n !== 58);   // el 58 es el ya elegido: se mantiene arriba
   // pantalla «Catálogo de moldes» (desde la ficha técnica)
   if (modo !== 'sinbase') {
     await p.goto('https://panel-fichas-playmaker.netlify.app/?ref=COT-3610'); await p.waitForTimeout(1500);
@@ -77,6 +85,14 @@ async function plan(b, modo) {
   return r;
 }
 const es = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+const COD = {}; CON_17A.forEach(m => { COD[m.numero] = m.codigo; });
+const de = (ns, pref) => ns.filter(n => new RegExp('^' + pref).test(COD[n] || ''));
+function sinMezcla(r, cuando) {
+  ok(!de(r.catRugby, 'FUT').length && de(r.catRugby, 'RB').length >= 10, cuando + 'catálogo con Rugby: ningún molde de fútbol (' + (de(r.catRugby, 'FUT').join(',') || 'ninguno') + ')');
+  ok(!de(r.catFutbol, 'RB').length && de(r.catFutbol, 'FUT').length >= 20, cuando + 'catálogo con Fútbol: ningún molde de rugby (' + (de(r.catFutbol, 'RB').join(',') || 'ninguno') + ')');
+  ok(!de(r.rugbyMas, 'FUT').length && r.rugbyMas.includes(58) && r.rugbyMas.includes(110), cuando + 'ficha técnica, camiseta de rugby: solo moldes de rugby (y multideporte): ' + r.rugbyMas.join(','));
+  ok(!de(r.futMas, 'RB').length && r.futMas.includes(104), cuando + 'ficha técnica, camiseta de fútbol: sin moldes de rugby, con E04: ' + r.futMas.join(','));
+}
 (async () => {
   const b = await chromium.launch();
   console.log('— Panel de fichas, base con el SQL 17A');
@@ -85,18 +101,20 @@ const es = (a, b) => JSON.stringify(a) === JSON.stringify(b);
   ok(es(r.secciones, SECCIONES), 'secciones del catálogo en orden: ' + r.secciones.join(', '));
   ok(r.orden.slice(-10).join() === '1,2,3,4,5,6,7,8,9,10', 'los moldes 01 al 10 (no están en el catálogo) quedan al final');
   ok(r.rugbyFem.slice(0, 5).join() === '59,61,63,111,83', 'ficha técnica, camiseta femenina de rugby: primero las de Rugby, con E11 y el 83 nuevo (' + r.rugbyFem.slice(0, 6).join(',') + '…)');
-  ok(r.hockeyFem.slice(0, 3).join() === '64,65,84' && r.hockeyFem.includes(111), 'con Hockey: primero 64, 65 y el 84 nuevo; los especiales siguen (' + r.hockeyFem.slice(0, 5).join(',') + '…)');
+  ok(r.hockeyFem.slice(0, 4).join() === '111,64,65,84', 'con Hockey: el ya elegido (E11) arriba, luego 64, 65 y el 84 nuevo (' + r.hockeyFem.slice(0, 5).join(',') + '…)');
   ok(r.femTrasCambio === 'RB-MUJU02|111' && r.masTrasCambio === 'RB-HOMU02|58', 'cambiar el deporte no borra los moldes ya elegidos (ni el 58, que es de Rugby)');
   ok(es(r.titulos, SECCIONES.concat(['Fuera del catálogo ordenado'])), 'pantalla «Catálogo de moldes» con el título de cada sección');
   ok(r.tarjetas[0] === '11' && r.tarjetas.indexOf('83') > r.tarjetas.indexOf('E11') && r.tarjetas.indexOf('84') === r.tarjetas.indexOf('E09') + 1, 'tarjetas en el orden del catálogo (83 tras E11, 84 tras E09)');
-  ok(r.catHockey.slice(0, 7).join() === '64,65,106,107,108,109,84' && r.catHockey.includes(104) && r.catHockey.includes(80), 'catálogo con Hockey: primero los de Hockey; después los especiales y multideporte (' + r.catHockey.slice(0, 9).join(',') + '…)');
+  sinMezcla(r, '');
+  ok(r.catHockey.slice(0, 7).join() === '64,65,106,107,108,109,84' && !r.catHockey.includes(104) && r.catHockey.includes(80), 'catálogo con Hockey: los de Hockey y después multideporte y salida, sin especiales de otro deporte (' + r.catHockey.slice(0, 9).join(',') + '…)');
   ok(r.elegidos.includes('camiseta/Masculino=RB-HOMU02|58') && r.elegidos.includes('short/Masculino=CA-MUJ|105'), 'ficha técnica: los moldes ya elegidos siguen elegidos (incluida la calza E05 en una ficha de rugby)');
   ok(!r.errores.length, 'sin errores JS ' + r.errores.join(' | '));
 
   console.log('— Panel de fichas, base sin el SQL 17A');
   r = await panel(b, 'sin17a');
-  ok(r.orden.slice(0, 3).join() === '1,2,3' && !r.orden.includes(83), 'sin la columna orden: como antes, por número');
-  ok(r.titulos[0] === 'Fútbol' && !r.titulos.includes('Fuera del catálogo ordenado'), 'pantalla «Catálogo de moldes» agrupada por deporte, sin «Fuera del catálogo» (' + r.titulos.join(', ') + ')');
+  ok(r.orden.slice(0, 3).join() === '11,12,13' && !r.orden.includes(83) && r.orden.slice(-10).join() === '1,2,3,4,5,6,7,8,9,10', 'sin la columna orden: toma el orden y las secciones del catálogo (01 al 10 al final)');
+  sinMezcla(r, 'sin SQL 17A · ');
+  ok(es(r.titulos, SECCIONES.concat(['Fuera del catálogo ordenado'])), 'pantalla «Catálogo de moldes» con las secciones del catálogo, cada una una vez (' + r.titulos.join(', ') + ')');
   ok(r.elegidos.includes('short/Masculino=CA-MUJ|105') && !r.errores.length, 'ficha técnica y moldes sin errores ' + r.errores.join(' | '));
 
   console.log('— Panel de fichas, sin conexión a la tabla moldes (respaldo del código)');
@@ -118,8 +136,10 @@ const es = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
   console.log('— Planificación, base sin el SQL 17A');
   r = await plan(b, 'sin17a');
-  ok(r.grupos.length >= 5 && r.grupos[0][0] === 'Fútbol' && r.grupos[0][1][0] === '01', 'sin la columna orden: lee igual el catálogo (como antes, por número)');
-  ok(r.titulos[0] === 'Fútbol' && !r.titulos.includes('Fuera del catálogo ordenado'), '«Moldes vigentes» agrupado por deporte, sin «Fuera del catálogo» (' + r.titulos.join(', ') + ')');
+  ok(es(r.grupos.map(g => g[0]), SECCIONES) && r.grupos[0][1][0] === '11', 'sin la columna orden: las mismas secciones del catálogo (sin grupo «Especiales»): ' + r.grupos.map(g => g[0]).join(', '));
+  const gs = Object.fromEntries(r.grupos);
+  ok(gs['Fútbol'].includes('E04') && !gs['Fútbol'].some(k => /^E(01|02|03|10|11)$/.test(k)) && gs['Rugby'].includes('E01') && !gs['Rugby'].includes('E04'), 'sin la columna orden: E04 en Fútbol y E01, E02, E03, E10, E11 en Rugby');
+  ok(es(r.titulos, SECCIONES.concat(['Fuera del catálogo ordenado'])), '«Moldes vigentes» con las secciones del catálogo (' + r.titulos.join(', ') + ')');
   ok(r.config.length >= 5 && !r.errores.length, 'Configuración sin errores ' + r.errores.join(' | '));
 
   console.log('— Planificación, sin conexión a la tabla moldes (respaldo del código)');

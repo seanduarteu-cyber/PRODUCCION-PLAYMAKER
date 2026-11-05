@@ -17,14 +17,16 @@ QUÉ SE VE DISTINTO
   Al filtrar por un deporte salen primero los moldes de ese deporte.
 - Planificación: la lista de moldes al ingresar un pedido, «Moldes vigentes» y Configuración › catálogo de moldes, en el mismo orden y secciones.
 - Moldes nuevos: 83 RB-MUJV02 (Rugby, raglán, cuello v, femenino) y 84 HO-MUJV02 (Hockey, raglán, cuello v, femenino).
-- Los especiales (E01…E11) quedan en la sección de su deporte (E04 en Fútbol, E05 en Vóleibol, E06–E09 en Hockey,
-  E01–E03, E10 y E11 en Rugby), pero se siguen ofreciendo con cualquier deporte, como antes. Multideporte (top 80 y
-  musculosas 81 y 82) y Salida y entrenamiento (chaquetas, parka y cortavientos) también sirven para cualquier deporte.
+- Los especiales (E01…E11) quedan en la sección de su deporte y se ofrecen solo con ese deporte: E04 con fútbol,
+  E05 con vóleibol, E06–E09 con hockey y E01–E03, E10 y E11 con rugby (un molde de fútbol ya no aparece en rugby ni al revés).
+  Con cualquier deporte se ofrecen solo Multideporte (top 80 y musculosas 81 y 82) y Salida y entrenamiento
+  (chaquetas, parka y cortavientos). Para usar un molde de otro deporte, se elige «Deporte: Todos» en la lista.
 
 QUÉ NO CAMBIA
 - Números, códigos y descripciones de los moldes. Las fichas y los pedidos ya ingresados quedan igual.
 - Un molde ya elegido en una ficha sigue elegido aunque ahora esté en otra sección.
-- Si el SQL 17A todavía no se corre, los sistemas funcionan como antes (por número).
+- Si el SQL 17A todavía no se corre, los sistemas usan igual las secciones y el orden del catálogo (salen del código);
+  solo faltan los moldes nuevos 83 y 84, que agrega el SQL.
 
 PENDIENTE DE DEFINIR
 - Moldes 01 al 10: no están en el catálogo ordenado. Siguen activos, al final de Fútbol.
