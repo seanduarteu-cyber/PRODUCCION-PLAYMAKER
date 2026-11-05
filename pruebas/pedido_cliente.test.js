@@ -47,6 +47,8 @@ const filas = p => p.$$eval('[data-fila]', ds => ds.map(d => ({ nom: d.querySele
 
 (async () => {
   const { b, p, ficha, detalle, borrados, patches } = await abrir();
+  const guia = await p.$eval('.guias a', a => a.getAttribute('href')).catch(() => '');
+  ok(guia === 'https://planificacion-playmaker.netlify.app/guias/molde-18.jpg', 'la guía de tallas del molde 18 es la del catálogo, que viene con el sistema');
   // 1 · camiseta: planilla copiada de Excel, con títulos; 2 de 10 sin nombre ni número
   await paso(p, 0);
   ok(!(await p.$('[data-chip="lote_numero"]')) && !(await p.$('[data-chip="lote_estampar"]')), 'no pregunta si llevan número ni nombre estampado');

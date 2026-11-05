@@ -4,7 +4,7 @@ Código fuente de los sistemas web. Cada carpeta se publica en Netlify arrastran
 
 | Carpeta | Sitio en Netlify | Base de datos (Supabase) | Qué va en el zip |
 |---|---|---|---|
-| `produccion/` | planificacion-playmaker | Producción `ygcsqrylpibhofvetdyh` | `index.html`, `sistemas.html`, `sw.js`, `manifest.webmanifest` y los 4 íconos `.png` |
+| `produccion/` | planificacion-playmaker | Producción `ygcsqrylpibhofvetdyh` | `index.html`, `sistemas.html`, `sw.js`, `manifest.webmanifest`, los 4 íconos `.png` y la carpeta `guias/` (95 guías de tallas) |
 | `panel-fichas/` | panel-fichas-playmaker | Fichas `jvgifibnoigpicwklasw` | `index.html` |
 | `ingreso-fichas/` | ingreso-fichas-playmaker (sitio del cliente) | Fichas `jvgifibnoigpicwklasw` | `index.html` |
 | `ventas/` | ventas-playmaker | Ventas `nnisdusdujcpkrbjqnhe` | `index.html` |
@@ -23,15 +23,16 @@ Se corren una vez en el SQL Editor de la base indicada en cada archivo.
 | `SQL_16B_FICHAS_quitar_chk_det_nombre.sql` | Fichas | Quita `chk_det_nombre`, que exigía nombre en cada persona. |
 | `SQL_16C_FICHAS_nombre_hasta_80.sql` | Fichas | Vuelve a poner el tope de 80 caracteres al nombre, que ahora puede ir vacío. |
 | `SQL_17A_FICHAS_moldes_orden_del_catalogo.sql` | Fichas | Catálogo ordenado: columna `orden`, deporte = sección del catálogo y moldes nuevos 83 y 84. |
-| `SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql` | Fichas | Solo revisa: compara los 85 moldes del catálogo con la tabla moldes (falta, desactivado, código o sección distinta). |
-| `SQL_17B_FICHAS_desactivar_moldes_01_al_10_OPCIONAL.sql` | Fichas | Opcional: desactiva los moldes 01 al 10, que no están en el catálogo ordenado. |
+| `SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql` | Fichas | Solo revisa: compara los 95 moldes del catálogo completo con la tabla moldes (falta, desactivado, código o sección distinta). |
+| `SQL_17D_FICHAS_orden_catalogo_completo.sql` | Fichas | Catálogo completo: orden y sección de los 95 moldes (los 01 al 10 al inicio de Fútbol). |
 
 Los SQL 1A a 14A se corrieron antes y no están en este repositorio.
 
 ## Catálogo de moldes (`../catalogo/`)
 
-- `Catalogo_ordenado_INDEXADO.pdf`: el catálogo ordenado (noviembre 2026) con índice al inicio (enlaces a cada molde) y marcadores por sección.
-- `Indice_catalogo_ordenado.xlsx`: el mismo índice en planilla (orden, sección, N°, código, calce, tallas, página).
+- `Catalogo_ordenado_COMPLETO_INDEXADO.pdf`: el catálogo completo (95 moldes, 105 páginas) con su índice en la página 1 (un enlace por página) y marcadores.
+- `Indice_catalogo_ordenado_COMPLETO.xlsx`: el mismo índice en planilla (orden, sección, N°, código, calce, tallas, página, guía).
+- Guías de tallas: `produccion/guias/molde-NN.jpg`, una por molde, sacadas del catálogo completo. Se publican con el sitio de Planificación y las usan los tres sistemas; un molde nuevo, fuera del catálogo, usa la que se sube en el panel (Storage).
 - En los sistemas, el orden y la sección de cada molde vienen de la tabla `moldes` de Fichas (columnas `orden` y `deporte`, SQL 17A). Los especiales (E01…) van en la sección de su deporte, pero se siguen ofreciendo con cualquier deporte; Multideporte y Salida y entrenamiento también. Detalle: `LEEME_catalogo.txt`.
 
 ## Pruebas (`../pruebas/`)

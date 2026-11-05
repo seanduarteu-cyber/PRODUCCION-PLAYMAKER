@@ -394,7 +394,11 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
     '<img src="' + esc(x.img.url) + '" alt="Diseño ' + x.n + '" loading="lazy"><div class="cap"><b>Diseño ' + x.n + '</b></div></a>').join('') + '</div>';
   // N° del molde como en el catálogo: 01…99, y los especiales (guardados como 101…) son E01…
   const etqMolde = n => { n = +n; return n > 100 && n < 200 ? 'E' + String(n - 100).padStart(2, '0') : String(n).padStart(2, '0'); };
-  const URL_MOLDE = n => CFG.url + '/storage/v1/object/public/montajes/moldes/molde-' + etqMolde(n) + '.jpg';
+  // Guías de tallas: las de los moldes del catálogo ordenado completo vienen con el sistema (sitio de Planificación);
+  // un molde nuevo, fuera del catálogo, usa la que se subió en el panel de fichas (Storage)
+  const GUIAS_CATALOGO = 'https://planificacion-playmaker.netlify.app/guias/';
+  const MOLDES_CATALOGO = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,104,72,73,74,75,69,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,105,64,65,106,107,108,109,84,58,59,60,61,62,63,101,102,103,110,111,83,76,78,79,80,81,82,66,67,77,70,71,68];
+  const URL_MOLDE = n => MOLDES_CATALOGO.indexOf(+n) >= 0 ? GUIAS_CATALOGO + 'molde-' + etqMolde(n) + '.jpg' : CFG.url + '/storage/v1/object/public/montajes/moldes/molde-' + etqMolde(n) + '.jpg';
 
   /* Guías de talla del molde que corresponde al calce elegido.
      Playmaker las define en la ficha técnica; si no hay, no se muestra nada. */
@@ -703,7 +707,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   const numMolde = v => String(v || '').split('|')[1] || '';
   const esUnisex = v => !!(st.unisex && st.unisex.indexOf(numMolde(v)) >= 0);
   // Moldes sin mangas (vóley, hockey, E02…): esa camiseta es sin mangas por el molde y no se pregunta el largo de manga
-  const SIN_MANGAS_BASE = ['55', '56', '57', '64', '65', '102'];
+  const SIN_MANGAS_BASE = ['55', '56', '57', '64', '65', '81', '82', '102'];
   const moldeSinMangas = v => !!v && (st.sinMangas || SIN_MANGAS_BASE).indexOf(numMolde(v)) >= 0;
   const camisetaSinMangas = (f, id, calce) => {
     const mo = moldesDe(specsDe(f)[id]), vs = (calce ? [mo[calce]] : Object.values(mo)).filter(Boolean);

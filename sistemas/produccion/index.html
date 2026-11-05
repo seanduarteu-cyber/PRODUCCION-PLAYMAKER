@@ -846,9 +846,9 @@ const deporteDe = desc => { const d = String(desc || '').split(',')[0].replace(/
 const ESPECIALES = 'Especiales';
 const ABRIGO = 'Abrigo', PRENDAS_ABRIGO = ['poleron_ent', 'cortaviento', 'parka', 'top'], MUSCULOSA = 'Musculosa';
 const MULTIDEPORTE = 'Multideporte', SALIDA = 'Salida y entrenamiento';
-// Catálogo ordenado (noviembre 2026): sus secciones y los moldes de cada una, en el orden del catálogo.
+// Catálogo ordenado completo (noviembre 2026, 95 moldes): sus secciones y los moldes de cada una, en el orden del catálogo.
 // En la base está en las columnas «deporte» y «orden» de la tabla moldes (SQL 17A); esto es el respaldo sin conexión.
-const CATALOGO_ORDENADO = [["Fútbol", [11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,104,72,73,74,75,69]],
+const CATALOGO_ORDENADO = [["Fútbol", [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,104,72,73,74,75,69]],
   ["Básquetbol", [29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54]],
   ["Vóleibol", [55,56,57,105]],
   ["Hockey", [64,65,106,107,108,109,84]],
@@ -5580,7 +5580,9 @@ async function renderGerencia() {
 }
 
 /* ---------- Vista: Moldes (catálogo vigente, guías de tallas) ---------- */
-const URL_GUIA = n => `${FICHAS_URL}/storage/v1/object/public/montajes/moldes/molde-${etqMolde(n)}.jpg`;
+// Guías de tallas: las de los moldes del catálogo vienen con este sitio (carpeta guias/, del catálogo completo);
+// un molde nuevo, fuera del catálogo, usa la que se subió en el panel de fichas (Storage)
+const URL_GUIA = n => SECCION_CATALOGO[+n] ? `guias/molde-${etqMolde(n)}.jpg` : `${FICHAS_URL}/storage/v1/object/public/montajes/moldes/molde-${etqMolde(n)}.jpg`;
 function renderMoldes() {
   const qTxt = $('q-moldes') && $('q-moldes').value || '', q = qTxt.toLowerCase().trim();   // el campo conserva lo escrito (espacios incluidos)
   const foco = conFoco('q-moldes');

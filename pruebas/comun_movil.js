@@ -3,7 +3,7 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const fs = require('fs'), path = require('path');
 const BASE = path.resolve(__dirname, '../sistemas');
 const SITIOS = { 'planificacion-playmaker.netlify.app': 'produccion', 'panel-fichas-playmaker.netlify.app': 'panel-fichas', 'ventas-playmaker.netlify.app': 'ventas' };
-const TIPOS = { '.html': 'text/html', '.js': 'text/javascript', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
+const TIPOS = { '.html': 'text/html', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.webmanifest': 'application/manifest+json' };
 const USUARIO = { usuario: 'sean.duarte', nombre: 'Sean Duarte', rol: 'admin', roles: ['admin'], ejecutante_id: null };
 async function contexto(b, datos, opciones) {
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, serviceWorkers: 'block',
