@@ -1,0 +1,131 @@
+// Catálogo ordenado (noviembre 2026): orden y secciones del catálogo en el panel de fichas y en Planificación,
+// moldes nuevos 83 y 84, y que nada se rompa si la base aún no tiene el SQL 17A o no responde.
+const { chromium, contexto } = require('./comun_movil');
+const CON_17A = require('./datos_moldes_catalogo.json');      // la tabla moldes después del SQL 17A
+const ANTES_17A = require('./datos_moldes_antes_17a.json');   // la tabla como estaba (sin orden, deportes antiguos, sin 83 ni 84)
+const SECCIONES = ['Fútbol', 'Básquetbol', 'Vóleibol', 'Hockey', 'Rugby', 'Multideporte', 'Salida y entrenamiento'];
+let fallas = 0; const ok = (c, m) => { console.log((c ? 'OK   ' : 'FALLA') + ' ' + m); if (!c) fallas++; };
+const hoy = new Date().toISOString().slice(0, 10), ahora = new Date().toISOString();
+// ficha de rugby con una calza (E05, que en el catálogo quedó en Vóleibol): el molde elegido no se puede perder
+const ficha = { id: 1, ref: 'COT-3610', proyecto: 'Uniformes 2026', cliente: 'Club Rugby', vendedor: 'Sean Duarte', entrega: hoy, entrega_interna: hoy, entrega_cliente: hoy,
+  estado: 'abierto', created_at: ahora, imagenes: [], items: [{ prenda: 'camiseta', cant: 22 }, { prenda: 'short', cant: 22 }],
+  specs: { camiseta: { deporte: 'Rugby', moldes: { Masculino: 'RB-HOMU02|58', Femenino: 'RB-MUJU02|111' }, unidades: { Masculino: 12, Femenino: 10 } },
+           short: { deporte: 'Rugby', moldes: { Masculino: 'CA-MUJ|105' }, unidades: { Masculino: 22 } } } };
+const datosCon = moldes => ({ tablas: { fichas_tallas: [ficha], fichas_detalle: [], fichas_avisos: [], catalogo_tecnico: [], pedidos: [], moldes,
+  planificacion: [], planificacion_etapas: [], plan_usuarios: [], ejecutantes: [] } });
+// modo: 'con17a' · 'sin17a' (la columna orden no existe: la base responde 400 si se pide) · 'sinbase' (moldes no responde)
+async function abrir(b, modo) {
+  const ctx = await contexto(b, datosCon(modo === 'con17a' ? CON_17A : ANTES_17A), { viewport: { width: 1280, height: 900 }, isMobile: false, hasTouch: false, userAgent: undefined });
+  await ctx.route(/supabase\.co\/rest\/v1\/moldes/, r => {
+    const u = new URL(r.request().url());
+    if (modo === 'sinbase') return r.fulfill({ status: 503, body: 'sin conexión' });
+    if (modo === 'sin17a' && /orden/.test(u.searchParams.get('select') || '')) return r.fulfill({ status: 400, contentType: 'application/json', body: '{"message":"column moldes.orden does not exist"}' });
+    return r.fallback();
+  });
+  const p = await ctx.newPage(); p.errores = []; p.on('pageerror', e => p.errores.push(e.message)); p.on('dialog', d => d.accept());
+  return p;
+}
+async function panel(b, modo) {
+  const p = await abrir(b, modo), r = {};
+  const valores = sel => p.$$eval(sel + ' option', os => os.map(o => o.value).filter(v => v && v !== '__manual').map(v => +v.split('|')[1]));
+  await p.goto('https://panel-fichas-playmaker.netlify.app/#pmk_acceso=tok1'); await p.waitForTimeout(1500);
+  // catálogo al crear una ficha: todos los moldes, sus deportes y, con Hockey, primero los de hockey
+  await p.goto('https://panel-fichas-playmaker.netlify.app/'); await p.waitForTimeout(1000);
+  await p.click('[data-ir="crear"]'); await p.waitForTimeout(600);
+  await p.click('#btn-catalogo'); await p.waitForTimeout(400);
+  r.orden = await p.$$eval('[data-add-molde]', bs => bs.map(x => +x.dataset.addMolde));
+  r.secciones = await p.$$eval('[data-cf="deporte"] option', os => os.map(o => o.value).filter(Boolean));
+  await p.selectOption('[data-cf="deporte"]', 'Hockey'); await p.waitForTimeout(400);
+  r.catHockey = await p.$$eval('[data-add-molde]', bs => bs.map(x => +x.dataset.addMolde));
+  // ficha técnica: los moldes ya elegidos siguen elegidos; la lista de cada calce según el deporte
+  await p.goto('https://panel-fichas-playmaker.netlify.app/?ref=COT-3610'); await p.waitForTimeout(1500);
+  await p.click('[data-ir="tecnica"]'); await p.waitForTimeout(800);
+  r.elegidos = await p.evaluate(() => [...document.querySelectorAll('select[data-molde]')].map(s => s.dataset.molde + '/' + s.dataset.calce + '=' + s.value));
+  r.rugbyFem = await valores('#m-camiseta-Femenino');
+  await p.evaluate(() => { const x = document.getElementById('dep-camiseta'); x.value = 'Hockey'; x.dispatchEvent(new Event('change', { bubbles: true })); });
+  await p.waitForTimeout(500);
+  r.hockeyFem = await valores('#m-camiseta-Femenino');
+  r.femTrasCambio = await p.$eval('#m-camiseta-Femenino', s => s.value);
+  r.masTrasCambio = await p.$eval('#m-camiseta-Masculino', s => s.value);
+  // pantalla «Catálogo de moldes» (desde la ficha técnica)
+  if (modo !== 'sinbase') {
+    await p.goto('https://panel-fichas-playmaker.netlify.app/?ref=COT-3610'); await p.waitForTimeout(1500);
+    await p.click('[data-ir="tecnica"]'); await p.waitForTimeout(800);
+    await p.click('[data-ir="catalogo"]'); await p.waitForTimeout(800);
+    await p.click('[data-ir="moldes"]'); await p.waitForTimeout(800);
+    r.titulos = await p.$$eval('.mc-seccion', xs => xs.map(x => x.textContent));
+    r.tarjetas = await p.$$eval('.molde-card .mc-cab b', xs => xs.map(x => x.textContent.split(' · ')[0]));
+    await p.screenshot({ path: 'movil/catalogo_panel_' + modo + '.png' });
+  }
+  r.errores = p.errores; await p.context().close();
+  return r;
+}
+async function plan(b, modo) {
+  const p = await abrir(b, modo), r = {};
+  await p.goto('https://planificacion-playmaker.netlify.app/#pmk_acceso=tok1'); await p.waitForTimeout(2500);
+  r.grupos = await p.evaluate(() => GRUPOS_PRENDA.filter(g => g.moldes).map(g => [g.grupo, g.tipos.map(t => t.split(' · ')[0])]));
+  await p.evaluate(() => { TAB = 'moldes'; renderTabs(); renderVista(); }); await p.waitForTimeout(500);
+  r.titulos = await p.$$eval('#view-moldes th[colspan]', xs => xs.map(x => x.textContent));
+  r.filas = await p.$$eval('#view-moldes tr td:first-child b', xs => xs.map(x => x.textContent));
+  await p.fill('#q-moldes', 'hockey'); await p.waitForTimeout(300);
+  r.buscaHockey = await p.$$eval('#view-moldes tr td:first-child b', xs => xs.map(x => x.textContent));
+  if (modo !== 'sinbase') {
+    await p.evaluate(() => { TAB = 'config'; renderTabs(); renderVista(); }); await p.waitForTimeout(1200);
+    r.config = await p.$$eval('#cfg-prendas details > summary', xs => xs.map(x => x.textContent.split(' · ')[0]));
+  }
+  r.errores = p.errores; await p.context().close();
+  return r;
+}
+const es = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+(async () => {
+  const b = await chromium.launch();
+  console.log('— Panel de fichas, base con el SQL 17A');
+  let r = await panel(b, 'con17a');
+  ok(r.orden.slice(0, 3).join() === '11,12,13' && r.orden.indexOf(104) === 18 && r.orden.indexOf(69) === 23, 'moldes en el orden del catálogo: parte en 11, E04 después del 28, 69 cierra Fútbol');
+  ok(es(r.secciones, SECCIONES), 'secciones del catálogo en orden: ' + r.secciones.join(', '));
+  ok(r.orden.slice(-10).join() === '1,2,3,4,5,6,7,8,9,10', 'los moldes 01 al 10 (no están en el catálogo) quedan al final');
+  ok(r.rugbyFem.slice(0, 5).join() === '59,61,63,111,83', 'ficha técnica, camiseta femenina de rugby: primero las de Rugby, con E11 y el 83 nuevo (' + r.rugbyFem.slice(0, 6).join(',') + '…)');
+  ok(r.hockeyFem.slice(0, 3).join() === '64,65,84' && r.hockeyFem.includes(111), 'con Hockey: primero 64, 65 y el 84 nuevo; los especiales siguen (' + r.hockeyFem.slice(0, 5).join(',') + '…)');
+  ok(r.femTrasCambio === 'RB-MUJU02|111' && r.masTrasCambio === 'RB-HOMU02|58', 'cambiar el deporte no borra los moldes ya elegidos (ni el 58, que es de Rugby)');
+  ok(es(r.titulos, SECCIONES.concat(['Fuera del catálogo ordenado'])), 'pantalla «Catálogo de moldes» con el título de cada sección');
+  ok(r.tarjetas[0] === '11' && r.tarjetas.indexOf('83') > r.tarjetas.indexOf('E11') && r.tarjetas.indexOf('84') === r.tarjetas.indexOf('E09') + 1, 'tarjetas en el orden del catálogo (83 tras E11, 84 tras E09)');
+  ok(r.catHockey.slice(0, 7).join() === '64,65,106,107,108,109,84' && r.catHockey.includes(104) && r.catHockey.includes(80), 'catálogo con Hockey: primero los de Hockey; después los especiales y multideporte (' + r.catHockey.slice(0, 9).join(',') + '…)');
+  ok(r.elegidos.includes('camiseta/Masculino=RB-HOMU02|58') && r.elegidos.includes('short/Masculino=CA-MUJ|105'), 'ficha técnica: los moldes ya elegidos siguen elegidos (incluida la calza E05 en una ficha de rugby)');
+  ok(!r.errores.length, 'sin errores JS ' + r.errores.join(' | '));
+
+  console.log('— Panel de fichas, base sin el SQL 17A');
+  r = await panel(b, 'sin17a');
+  ok(r.orden.slice(0, 3).join() === '1,2,3' && !r.orden.includes(83), 'sin la columna orden: como antes, por número');
+  ok(r.titulos[0] === 'Fútbol' && !r.titulos.includes('Fuera del catálogo ordenado'), 'pantalla «Catálogo de moldes» agrupada por deporte, sin «Fuera del catálogo» (' + r.titulos.join(', ') + ')');
+  ok(r.elegidos.includes('short/Masculino=CA-MUJ|105') && !r.errores.length, 'ficha técnica y moldes sin errores ' + r.errores.join(' | '));
+
+  console.log('— Panel de fichas, sin conexión a la tabla moldes (respaldo del código)');
+  r = await panel(b, 'sinbase');
+  ok(r.orden.slice(0, 3).join() === '11,12,13' && r.orden.includes(83) && r.orden.includes(84), 'el respaldo ya trae el catálogo ordenado con 83 y 84');
+  ok(!r.errores.length, 'sin errores JS ' + r.errores.join(' | '));
+
+  console.log('— Planificación, base con el SQL 17A');
+  r = await plan(b, 'con17a');
+  ok(es(r.grupos.map(g => g[0]), SECCIONES), 'lista de moldes al ingresar un pedido, por sección del catálogo: ' + r.grupos.map(g => g[0]).join(', '));
+  const g = Object.fromEntries(r.grupos);
+  ok(g['Fútbol'][0] === '11' && g['Fútbol'].indexOf('E04') === 18 && g['Fútbol'].slice(-10).join() === '01,02,03,04,05,06,07,08,09,10', 'Fútbol en el orden del catálogo (E04 incluido; 01 al 10 al final)');
+  ok(g['Rugby'].includes('83') && g['Hockey'].includes('84') && g['Rugby'].includes('E01'), 'Rugby trae el 83 y los E01…; Hockey el 84');
+  ok(es(r.titulos, SECCIONES.concat(['Fuera del catálogo ordenado'])), '«Moldes vigentes» con el título de cada sección');
+  ok(r.filas[0] === '11' && r.filas.includes('83') && r.filas.includes('84'), '«Moldes vigentes» parte en el 11 y trae 83 y 84');
+  ok(r.buscaHockey.join() === '64,65,E06,E07,E08,E09,84', 'buscar «hockey» encuentra la sección completa (' + r.buscaHockey.join(',') + ')');
+  ok(es(r.config, SECCIONES.concat([])) || es(r.config.slice(0, 7), SECCIONES), 'Configuración › catálogo de moldes agrupado por sección, en orden: ' + r.config.join(', '));
+  ok(!r.errores.length, 'sin errores JS ' + r.errores.join(' | '));
+
+  console.log('— Planificación, base sin el SQL 17A');
+  r = await plan(b, 'sin17a');
+  ok(r.grupos.length >= 5 && r.grupos[0][0] === 'Fútbol' && r.grupos[0][1][0] === '01', 'sin la columna orden: lee igual el catálogo (como antes, por número)');
+  ok(r.titulos[0] === 'Fútbol' && !r.titulos.includes('Fuera del catálogo ordenado'), '«Moldes vigentes» agrupado por deporte, sin «Fuera del catálogo» (' + r.titulos.join(', ') + ')');
+  ok(r.config.length >= 5 && !r.errores.length, 'Configuración sin errores ' + r.errores.join(' | '));
+
+  console.log('— Planificación, sin conexión a la tabla moldes (respaldo del código)');
+  r = await plan(b, 'sinbase');
+  ok(es(r.grupos.map(g => g[0]).slice(0, 7), SECCIONES) && Object.fromEntries(r.grupos)['Rugby'].includes('83'), 'el respaldo arma las mismas secciones, con 83 y 84');
+  ok(!r.errores.length, 'sin errores JS ' + r.errores.join(' | '));
+  await b.close();
+  console.log(fallas ? fallas + ' FALLAS' : 'TODO OK'); process.exit(fallas ? 1 : 0);
+})();

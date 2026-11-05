@@ -1,0 +1,33 @@
+CATÁLOGO ORDENADO (noviembre 2026) · qué cambia en los sistemas
+================================================================
+
+QUÉ HAY QUE HACER (en este orden)
+1. Base de FICHAS (jvgifibnoigpicwklasw) › SQL Editor › New query: pegar SQL_17A_FICHAS_moldes_orden_del_catalogo.sql › Run.
+   Al final muestra: moldes_del_catalogo 85 · sin_orden 0 · fuera_del_catalogo 10 (1, 2, …, 10).
+2. Netlify: subir el zip de Planificación (planificacion-playmaker) y el del panel de fichas (panel-fichas-playmaker).
+   El sitio del cliente no cambia: no hay que subirlo.
+3. Guías de tallas (sacadas del catálogo nuevo, una por molde, con 83 y 84):
+   panel de fichas › abrir cualquier ficha › Ficha técnica › «Gestionar catálogo» › «Catálogo de moldes y despiece» › «Subir guías de tallas»
+   › elegir todas las imágenes de la carpeta guias_de_tallas (molde-11.jpg … molde-E11.jpg). Reemplazan las anteriores.
+4. Moldes 83 y 84: definir su despiece en el panel (Catálogo de moldes › 83 o 84 › Editar › «Copiar las piezas de otro molde…»).
+
+QUÉ SE VE DISTINTO
+- Panel de fichas: el catálogo al crear una ficha, la lista de moldes de la ficha técnica y la pantalla «Catálogo de moldes»
+  siguen el orden del catálogo, con sus secciones: Fútbol, Básquetbol, Vóleibol, Hockey, Rugby, Multideporte y Salida y entrenamiento.
+  Al filtrar por un deporte salen primero los moldes de ese deporte.
+- Planificación: la lista de moldes al ingresar un pedido, «Moldes vigentes» y Configuración › catálogo de moldes, en el mismo orden y secciones.
+- Moldes nuevos: 83 RB-MUJV02 (Rugby, raglán, cuello v, femenino) y 84 HO-MUJV02 (Hockey, raglán, cuello v, femenino).
+- Los especiales (E01…E11) quedan en la sección de su deporte (E04 en Fútbol, E05 en Vóleibol, E06–E09 en Hockey,
+  E01–E03, E10 y E11 en Rugby), pero se siguen ofreciendo con cualquier deporte, como antes. Multideporte (top 80 y
+  musculosas 81 y 82) y Salida y entrenamiento (chaquetas, parka y cortavientos) también sirven para cualquier deporte.
+
+QUÉ NO CAMBIA
+- Números, códigos y descripciones de los moldes. Las fichas y los pedidos ya ingresados quedan igual.
+- Un molde ya elegido en una ficha sigue elegido aunque ahora esté en otra sección.
+- Si el SQL 17A todavía no se corre, los sistemas funcionan como antes (por número).
+
+PENDIENTE DE DEFINIR
+- Moldes 01 al 10: no están en el catálogo ordenado. Siguen activos, al final de Fútbol.
+  Si ya no se usan: SQL_17B_FICHAS_desactivar_moldes_01_al_10_OPCIONAL.sql (no borra nada; se pueden volver a activar).
+- Páginas 27 y 28 del catálogo: FUT-SH femenino (XXS a XXXL) y FUT-SH infantil (4 a 16) no tienen N° de molde.
+  Hoy el único FUT-SH del sistema es el 69 (masculino). Falta decidir qué número llevan.

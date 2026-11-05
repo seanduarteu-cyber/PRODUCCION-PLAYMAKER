@@ -1,3 +1,4 @@
+2026-11-05  Catálogo ordenado: los moldes se ven en el orden y las secciones del catálogo (panel y Planificación); moldes nuevos 83 y 84
 2026-11-03  Camisetas sin nombre ni número: el cliente responde si llevan número y se guardan solo con su talla
 2026-11-02  Planificación: pestaña «Estado» para todos y pendientes que vuelven a Armado de mesa y Corte juntos
 2026-11-02  Ventas reconoce al vendedor aunque el apóstrofo del nombre sea distinto (D´Orival = D'Orival)

@@ -423,6 +423,7 @@ tr:last-child td { border-bottom: none; }
 .pend-prev { flex: none; width: 110px; }
 .pend-prev img { width: 110px; height: 110px; object-fit: cover; border-radius: 8px; border: 1px solid var(--linea); display: block; margin-bottom: 6px; }
 .molde-card { border: 1px solid var(--linea); border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
+.mc-seccion { margin: 18px 0 2px; font-weight: 700; font-size: 15px; border-bottom: 2px solid var(--linea); padding-bottom: 4px; }
 .molde-card .mc-cab { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
 .molde-card .mc-acc { display: flex; gap: 6px; }
 .molde-card .mc-piezas { font-size: 12.5px; margin-top: 6px; line-height: 1.5; }
@@ -673,112 +674,123 @@ const PMK_ACCESO = (() => {
     { id: 'calza_larga',   g: 'Indumentaria de presentación', nom: 'Calza larga' },
     { id: 'buzo',          g: 'Indumentaria de presentación', nom: 'Buzo (chaqueta y pantalón)' }
   ];
-  /* Catálogo de moldes vigentes 2026. La numeración sigue el PDF
-     CATALOGO_MOLDES_VIGENTES_2710_INDEXADO: Fútbol 01-28, 69 y 72-75, Básquetbol 29-54, Vóley 55-57,
-     Rugby 58-63, 76, 78 y 79, Hockey 64-65, Musculosa 81-82, Abrigo 66-68, 70, 71, 77 y 80 (top deportivo),
-     y Moldes especiales E01-E11.
+  /* Catálogo de moldes: sigue el «Catálogo ordenado» (noviembre 2026), con sus secciones y su orden:
+     Fútbol, Básquetbol, Vóleibol, Hockey, Rugby, Multideporte y Salida y entrenamiento.
+     Los especiales (E01…E11) van en la sección de su deporte, pero se siguen ofreciendo con cualquier deporte.
      Los especiales se guardan con N° 101-111 (E01 = 101) y se muestran como E01…E11.
-     Las guías están en Storage, en montajes/moldes/molde-NN.jpg (molde-E01.jpg para los especiales) */
-  // Respaldo: catálogo vigente escrito en el código. Al cargar, lo reemplaza la tabla moldes de la base.
+     Los moldes 01 al 10 no están en el catálogo ordenado: quedan al final mientras sigan activos.
+     Las guías están en Storage, en montajes/moldes/molde-NN.jpg (molde-E01.jpg para los especiales).
+     o: orden en el catálogo (columna «orden» de la tabla moldes, SQL 17A) */
+  // Respaldo: catálogo escrito en el código, en el orden del catálogo. Al cargar, lo reemplaza la tabla moldes de la base.
   let MOLDES = [
-    {n:1,c:'FUTMUJU01',d:'Fútbol',ca:'Femenino',i:0,t:'polera',e:'01 · FUTMUJU01 — Fútbol, cuello redondo'},
-    {n:2,c:'FUTHOMU01',d:'Fútbol',ca:'Masculino',i:0,t:'polera',e:'02 · FUTHOMU01 — Fútbol, cuello redondo'},
-    {n:3,c:'FUTINMUJU01',d:'Fútbol',ca:'Femenino',i:1,t:'polera',e:'03 · FUTINMUJU01 — Fútbol infantil, cuello redondo'},
-    {n:4,c:'FUTINHOMU01',d:'Fútbol',ca:'Masculino',i:1,t:'polera',e:'04 · FUTINHOMU01 — Fútbol infantil, cuello redondo'},
-    {n:5,c:'FUTMUJV01',d:'Fútbol',ca:'Femenino',i:0,t:'polera',e:'05 · FUTMUJV01 — Fútbol, cuello v'},
-    {n:6,c:'FUTHOMV01',d:'Fútbol',ca:'Masculino',i:0,t:'polera',e:'06 · FUTHOMV01 — Fútbol, cuello v'},
-    {n:7,c:'FUTINMUJV01',d:'Fútbol',ca:'Femenino',i:1,t:'polera',e:'07 · FUTINMUJV01 — Fútbol infantil, cuello v'},
-    {n:8,c:'FUTINHOMV01',d:'Fútbol',ca:'Masculino',i:1,t:'polera',e:'08 · FUTINHOMV01 — Fútbol infantil, cuello v'},
-    {n:9,c:'FUTMUJCC01',d:'Fútbol',ca:'Femenino',i:0,t:'polera',e:'09 · FUTMUJCC01 — Fútbol, cuello camisero'},
-    {n:10,c:'FUTHOMCC01',d:'Fútbol',ca:'Masculino',i:0,t:'polera',e:'10 · FUTHOMCC01 — Fútbol, cuello camisero'},
-    {n:11,c:'FUTINMUJCC01',d:'Fútbol',ca:'Femenino',i:1,t:'polera',e:'11 · FUTINMUJCC01 — Fútbol infantil, cuello camisero'},
-    {n:12,c:'FUTINHOMCC01',d:'Fútbol',ca:'Masculino',i:1,t:'polera',e:'12 · FUTINHOMCC01 — Fútbol infantil, cuello camisero'},
-    {n:13,c:'FUTMUJU01PRO',d:'Fútbol',ca:'Femenino',i:0,t:'polera',e:'13 · FUTMUJU01PRO — Fútbol, pro, cuello redondo'},
-    {n:14,c:'FUTHOMU01PRO',d:'Fútbol',ca:'Masculino',i:0,t:'polera',e:'14 · FUTHOMU01PRO — Fútbol, pro, cuello redondo'},
-    {n:15,c:'FUTMUJV01PRO',d:'Fútbol',ca:'Femenino',i:0,t:'polera',e:'15 · FUTMUJV01PRO — Fútbol, pro, cuello v'},
-    {n:16,c:'FUTHOMV01PRO',d:'Fútbol',ca:'Masculino',i:0,t:'polera',e:'16 · FUTHOMV01PRO — Fútbol, pro, cuello v'},
-    {n:17,c:'FUTMUJU02',d:'Fútbol',ca:'Femenino',i:0,t:'polera',e:'17 · FUTMUJU02 — Fútbol, raglán, cuello redondo'},
-    {n:18,c:'FUTHOMU02',d:'Fútbol',ca:'Masculino',i:0,t:'polera',e:'18 · FUTHOMU02 — Fútbol, raglán, cuello redondo'},
-    {n:19,c:'FUTINMUJU02',d:'Fútbol',ca:'Femenino',i:1,t:'polera',e:'19 · FUTINMUJU02 — Fútbol infantil, raglán, cuello redondo'},
-    {n:20,c:'FUTINHOMU02',d:'Fútbol',ca:'Masculino',i:1,t:'polera',e:'20 · FUTINHOMU02 — Fútbol infantil, raglán, cuello redondo'},
-    {n:21,c:'FUTMUJV02',d:'Fútbol',ca:'Femenino',i:0,t:'polera',e:'21 · FUTMUJV02 — Fútbol, raglán, cuello v'},
-    {n:22,c:'FUTHOMV02',d:'Fútbol',ca:'Masculino',i:0,t:'polera',e:'22 · FUTHOMV02 — Fútbol, raglán, cuello v'},
-    {n:23,c:'FUTINMUJV02',d:'Fútbol',ca:'Femenino',i:1,t:'polera',e:'23 · FUTINMUJV02 — Fútbol infantil, raglán, cuello v'},
-    {n:24,c:'FUTINHOMV02',d:'Fútbol',ca:'Masculino',i:1,t:'polera',e:'24 · FUTINHOMV02 — Fútbol infantil, raglán, cuello v'},
-    {n:25,c:'FUTMUJU02PRO',d:'Fútbol',ca:'Femenino',i:0,t:'polera',e:'25 · FUTMUJU02PRO — Fútbol, raglán, pro, cuello redondo'},
-    {n:26,c:'FUTHOMU02PRO',d:'Fútbol',ca:'Masculino',i:0,t:'polera',e:'26 · FUTHOMU02PRO — Fútbol, raglán, pro, cuello redondo'},
-    {n:27,c:'FUTMUJV02PRO',d:'Fútbol',ca:'Femenino',i:0,t:'polera',e:'27 · FUTMUJV02PRO — Fútbol, raglán, pro, cuello v'},
-    {n:28,c:'FUTHOMV02PRO',d:'Fútbol',ca:'Masculino',i:0,t:'polera',e:'28 · FUTHOMV02PRO — Fútbol, raglán, pro, cuello v'},
-    {n:29,c:'BKMUJU03',d:'Básquetbol',ca:'Femenino',i:0,t:'polera',e:'29 · BKMUJU03 — Básquetbol, cuello redondo'},
-    {n:30,c:'BKHOMU03',d:'Básquetbol',ca:'Masculino',i:0,t:'polera',e:'30 · BKHOMU03 — Básquetbol, cuello redondo'},
-    {n:31,c:'BKINMUJU03',d:'Básquetbol',ca:'Femenino',i:1,t:'polera',e:'31 · BKINMUJU03 — Básquetbol infantil, cuello redondo'},
-    {n:32,c:'BKINHOMU03',d:'Básquetbol',ca:'Masculino',i:1,t:'polera',e:'32 · BKINHOMU03 — Básquetbol infantil, cuello redondo'},
-    {n:33,c:'BKMUJV03',d:'Básquetbol',ca:'Femenino',i:0,t:'polera',e:'33 · BKMUJV03 — Básquetbol, cuello v'},
-    {n:34,c:'BKHOMV03',d:'Básquetbol',ca:'Masculino',i:0,t:'polera',e:'34 · BKHOMV03 — Básquetbol, cuello v'},
-    {n:35,c:'BKINMUJV03',d:'Básquetbol',ca:'Femenino',i:1,t:'polera',e:'35 · BKINMUJV03 — Básquetbol infantil, cuello v'},
-    {n:36,c:'BKINHOMV03',d:'Básquetbol',ca:'Masculino',i:1,t:'polera',e:'36 · BKINHOMV03 — Básquetbol infantil, cuello v'},
-    {n:37,c:'BKMUJU03RE',d:'Básquetbol',ca:'Femenino',i:0,t:'polera',e:'37 · BKMUJU03RE — Básquetbol, reversible, cuello redondo'},
-    {n:38,c:'BKHOMU03RE',d:'Básquetbol',ca:'Masculino',i:0,t:'polera',e:'38 · BKHOMU03RE — Básquetbol, reversible, cuello redondo'},
-    {n:39,c:'BKINMUJU03',d:'Básquetbol',ca:'Femenino',i:1,t:'polera',e:'39 · BKINMUJU03 — Básquetbol infantil, reversible, cuello redondo'},
-    {n:40,c:'BKINHOMU03RE',d:'Básquetbol',ca:'Masculino',i:1,t:'polera',e:'40 · BKINHOMU03RE — Básquetbol infantil, reversible, cuello redondo'},
-    {n:41,c:'BKMUJU03PRO',d:'Básquetbol',ca:'Femenino',i:0,t:'polera',e:'41 · BKMUJU03PRO — Básquetbol, pro, cuello redondo'},
-    {n:42,c:'BKHOMU03PRO',d:'Básquetbol',ca:'Masculino',i:0,t:'polera',e:'42 · BKHOMU03PRO — Básquetbol, pro, cuello redondo'},
-    {n:43,c:'BKMUJV03PRO',d:'Básquetbol',ca:'Femenino',i:0,t:'polera',e:'43 · BKMUJV03PRO — Básquetbol, pro, cuello v'},
-    {n:44,c:'BKHOMV03PRO',d:'Básquetbol',ca:'Masculino',i:0,t:'polera',e:'44 · BKHOMV03PRO — Básquetbol, pro, cuello v'},
-    {n:45,c:'BKSHMUJ',d:'Básquetbol',ca:'Femenino',i:0,t:'short',e:'45 · BKSHMUJ — Básquetbol'},
-    {n:46,c:'BK-SH',d:'Básquetbol',ca:'Masculino',i:0,t:'short',e:'46 · BK-SH — Básquetbol'},
-    {n:47,c:'BKINSHMUJ',d:'Básquetbol',ca:'Femenino',i:1,t:'short',e:'47 · BKINSHMUJ — Básquetbol infantil'},
-    {n:48,c:'BKINSHHOM',d:'Básquetbol',ca:'Masculino',i:1,t:'short',e:'48 · BKINSHHOM — Básquetbol infantil'},
-    {n:49,c:'BKSHMUJRE',d:'Básquetbol',ca:'Femenino',i:0,t:'short',e:'49 · BKSHMUJRE — Básquetbol, reversible'},
-    {n:50,c:'BK-SH',d:'Básquetbol',ca:'Masculino',i:0,t:'short',e:'50 · BK-SH — Básquetbol, reversible'},
-    {n:51,c:'BKINSHMUJRE',d:'Básquetbol',ca:'Femenino',i:1,t:'short',e:'51 · BKINSHMUJRE — Básquetbol infantil, reversible'},
-    {n:52,c:'BKINSHHOMRE',d:'Básquetbol',ca:'Masculino',i:1,t:'short',e:'52 · BKINSHHOMRE — Básquetbol infantil, reversible'},
-    {n:53,c:'BKSHMUJPRO',d:'Básquetbol',ca:'Femenino',i:0,t:'short',e:'53 · BKSHMUJPRO — Básquetbol, pro'},
-    {n:54,c:'BK-SH PRO',d:'Básquetbol',ca:'Masculino',i:0,t:'short',e:'54 · BK-SH PRO — Básquetbol, pro'},
-    {n:55,c:'VOMUJV03',d:'Vóleibol',ca:'Femenino',i:0,t:'polera',e:'55 · VOMUJV03 — Vóleibol, sin mangas, cuello v'},
-    {n:56,c:'VOMUJMAV03',d:'Vóleibol',ca:'Femenino',i:0,t:'polera',e:'56 · VOMUJMAV03 — Vóleibol, pro, sin mangas, cuello mao en v'},
-    {n:57,c:'VOMUJVCC03',d:'Vóleibol',ca:'Femenino',i:0,t:'polera',e:'57 · VOMUJVCC03 — Vóleibol, pro, sin mangas, cuello v cruzado'},
-    {n:58,c:'RB-HOMU02',d:'Rugby',ca:'Masculino',i:0,t:'polera',e:'58 · RB-HOMU02 — Rugby, raglán, cuello redondo'},
-    {n:59,c:'RB-MUJU02',d:'Rugby',ca:'Femenino',i:0,t:'polera',e:'59 · RB-MUJU02 — Rugby, raglán, cuello redondo'},
-    {n:60,c:'RBHOMCC02',d:'Rugby',ca:'Masculino',i:0,t:'polera',e:'60 · RBHOMCC02 — Rugby, cuello camisero'},
-    {n:61,c:'RBMUJCC02',d:'Rugby',ca:'Femenino',i:0,t:'polera',e:'61 · RBMUJCC02 — Rugby, cuello camisero'},
-    {n:62,c:'RB-HOMCL02',d:'Rugby',ca:'Masculino',i:0,t:'polera',e:'62 · RB-HOMCL02 — Rugby, raglán, cuello clásico'},
-    {n:63,c:'RBMUJCL02',d:'Rugby',ca:'Femenino',i:0,t:'polera',e:'63 · RBMUJCL02 — Rugby, raglán, cuello clásico'},
-    {n:64,c:'HO-MUJ03',d:'Hockey',ca:'Femenino',i:0,t:'polera',e:'64 · HO-MUJ03 — Hockey, sin mangas, cuello redondo'},
-    {n:65,c:'HO-MUJCC03',d:'Hockey',ca:'Femenino',i:0,t:'polera',e:'65 · HO-MUJCC03 — Hockey, sin mangas, cuello camisero'},
-    {n:66,c:'PE-HOM02',d:'Abrigo',ca:'Masculino',i:0,t:'poleron_ent',e:'66 · PE-HOM02 — Chaqueta de entrenamiento, raglán, cierre y cuello alto'},
-    {n:67,c:'PE-HOM02',d:'Abrigo',ca:'Unisex',i:1,t:'poleron_ent',e:'67 · PE-HOM02 — Chaqueta de entrenamiento infantil, raglán, cierre y cuello alto'},
-    {n:68,c:'PE-MUJ02',d:'Abrigo',ca:'Femenino',i:0,t:'poleron_ent',e:'68 · PE-MUJ02 — Chaqueta de entrenamiento, raglán, cierre y cuello alto'},
-    {n:69,c:'FUT-SH',d:'Fútbol',ca:'Masculino',i:0,t:'short',e:'69 · FUT-SH — Fútbol'},
-    {n:70,c:'PA-UNI01',d:'Abrigo',ca:'Unisex',i:0,t:'cortaviento',e:'70 · PA-UNI01 — Cortaviento'},
-    {n:71,c:'PA-INUNI01',d:'Abrigo',ca:'Unisex',i:1,t:'cortaviento',e:'71 · PA-INUNI01 — Cortaviento infantil'},
-    {n:72,c:'FUTMUJCCV02',d:'Fútbol',ca:'Femenino',i:0,t:'polera',e:'72 · FUTMUJCCV02 — Fútbol, raglán, cuello camisero en v'},
-    {n:73,c:'FUTHOMCCV02',d:'Fútbol',ca:'Masculino',i:0,t:'polera',e:'73 · FUTHOMCCV02 — Fútbol, raglán, cuello camisero en v'},
-    {n:74,c:'FUTINMUJCCV02',d:'Fútbol',ca:'Femenino',i:1,t:'polera',e:'74 · FUTINMUJCCV02 — Fútbol infantil, raglán, cuello camisero en v'},
-    {n:75,c:'FUTINHOMCCV02',d:'Fútbol',ca:'Masculino',i:1,t:'polera',e:'75 · FUTINHOMCCV02 — Fútbol infantil, raglán, cuello camisero en v'},
-    {n:76,c:'RB-SHHOM',d:'Rugby',ca:'Masculino',i:0,t:'short',e:'76 · RB-SHHOM — Rugby'},
-    {n:77,c:'PK-HOM02',d:'Abrigo',ca:'Unisex',i:0,t:'parka',e:'77 · PK-HOM02 — Parka con capucha'},
-    {n:78,c:'RB-SHMUJ',d:'Rugby',ca:'Femenino',i:0,t:'short',e:'78 · RB-SHMUJ — Rugby'},
-    {n:79,c:'RB-SHIN',d:'Rugby',ca:'Unisex',i:1,t:'short',e:'79 · RB-SHIN — Rugby infantil'},
-    {n:80,c:'PE-MUJU03',d:'Abrigo',ca:'Femenino',i:0,t:'top',e:'80 · PE-MUJU03 — Top deportivo, espalda olímpica'},
-    {n:81,c:'MUL-HOMU03',d:'Musculosa',ca:'Masculino',i:0,t:'polera',e:'81 · MUL-HOMU03 — Musculosa, sin mangas, cuello redondo'},
-    {n:82,c:'MUL-HOMV03',d:'Musculosa',ca:'Masculino',i:0,t:'polera',e:'82 · MUL-HOMV03 — Musculosa, sin mangas, cuello v'},
-    {n:101,c:'RB-HOMUCC02',d:'Especiales',ca:'Masculino',i:0,t:'polera',e:'E01 · RB-HOMUCC02 — Rugby, raglán con costados, cuello redondo'},
-    {n:102,c:'RB-HOMUCC02',d:'Especiales',ca:'Masculino',i:0,t:'polera',e:'E02 · RB-HOMUCC02 — Rugby, sin mangas, cuello redondo'},
-    {n:103,c:'RBHOMMA02',d:'Especiales',ca:'Masculino',i:0,t:'polera',e:'E03 · RBHOMMA02 — Rugby, cuello mao'},
-    {n:104,c:'FUTHOMMA01',d:'Especiales',ca:'Masculino',i:0,t:'polera',e:'E04 · FUTHOMMA01 — Fútbol, cuello mao'},
-    {n:105,c:'CA-MUJ',d:'Especiales',ca:'Femenino',i:0,t:'short',e:'E05 · CA-MUJ — Calza'},
-    {n:106,c:'C-FALDA TUBO',d:'Especiales',ca:'Femenino',i:0,t:'falda',e:'E06 · C-FALDA TUBO — Falda tubo'},
-    {n:107,c:'C-FALDA CRUZADA',d:'Especiales',ca:'Femenino',i:0,t:'falda',e:'E07 · C-FALDA CRUZADA — Falda cruzada'},
-    {n:108,c:'C-FALDA CON COSTADO',d:'Especiales',ca:'Femenino',i:0,t:'falda',e:'E08 · C-FALDA CON COSTADO — Falda con costado'},
-    {n:109,c:'C-FALDA CON TAJALÍ',d:'Especiales',ca:'Femenino',i:0,t:'falda',e:'E09 · C-FALDA CON TAJALÍ — Falda con tajalí'},
-    {n:110,c:'RB-HOMMA02',d:'Especiales',ca:'Masculino',i:0,t:'polera',e:'E10 · RB-HOMMA02 — Rugby, raglán, cuello mao'},
-    {n:111,c:'RB-MUJU02',d:'Especiales',ca:'Femenino',i:0,t:'polera',e:'E11 · RB-MUJU02 — Rugby, raglán, cuello mao'}
+    {n:11,c:'FUTINMUJCC01',d:'Fútbol',ca:'Femenino',i:1,t:'polera',o:10,e:'11 · FUTINMUJCC01 — Fútbol infantil, cuello camisero'},
+    {n:12,c:'FUTINHOMCC01',d:'Fútbol',ca:'Masculino',i:1,t:'polera',o:20,e:'12 · FUTINHOMCC01 — Fútbol infantil, cuello camisero'},
+    {n:13,c:'FUTMUJU01PRO',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:30,e:'13 · FUTMUJU01PRO — Fútbol, pro, cuello redondo'},
+    {n:14,c:'FUTHOMU01PRO',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:40,e:'14 · FUTHOMU01PRO — Fútbol, pro, cuello redondo'},
+    {n:15,c:'FUTMUJV01PRO',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:50,e:'15 · FUTMUJV01PRO — Fútbol, pro, cuello v'},
+    {n:16,c:'FUTHOMV01PRO',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:60,e:'16 · FUTHOMV01PRO — Fútbol, pro, cuello v'},
+    {n:17,c:'FUTMUJU02',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:70,e:'17 · FUTMUJU02 — Fútbol, raglán, cuello redondo'},
+    {n:18,c:'FUTHOMU02',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:80,e:'18 · FUTHOMU02 — Fútbol, raglán, cuello redondo'},
+    {n:19,c:'FUTINMUJU02',d:'Fútbol',ca:'Femenino',i:1,t:'polera',o:90,e:'19 · FUTINMUJU02 — Fútbol infantil, raglán, cuello redondo'},
+    {n:20,c:'FUTINHOMU02',d:'Fútbol',ca:'Masculino',i:1,t:'polera',o:100,e:'20 · FUTINHOMU02 — Fútbol infantil, raglán, cuello redondo'},
+    {n:21,c:'FUTMUJV02',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:110,e:'21 · FUTMUJV02 — Fútbol, raglán, cuello v'},
+    {n:22,c:'FUTHOMV02',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:120,e:'22 · FUTHOMV02 — Fútbol, raglán, cuello v'},
+    {n:23,c:'FUTINMUJV02',d:'Fútbol',ca:'Femenino',i:1,t:'polera',o:130,e:'23 · FUTINMUJV02 — Fútbol infantil, raglán, cuello v'},
+    {n:24,c:'FUTINHOMV02',d:'Fútbol',ca:'Masculino',i:1,t:'polera',o:140,e:'24 · FUTINHOMV02 — Fútbol infantil, raglán, cuello v'},
+    {n:25,c:'FUTMUJU02PRO',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:150,e:'25 · FUTMUJU02PRO — Fútbol, raglán, pro, cuello redondo'},
+    {n:26,c:'FUTHOMU02PRO',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:160,e:'26 · FUTHOMU02PRO — Fútbol, raglán, pro, cuello redondo'},
+    {n:27,c:'FUTMUJV02PRO',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:170,e:'27 · FUTMUJV02PRO — Fútbol, raglán, pro, cuello v'},
+    {n:28,c:'FUTHOMV02PRO',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:180,e:'28 · FUTHOMV02PRO — Fútbol, raglán, pro, cuello v'},
+    {n:104,c:'FUTHOMMA01',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:190,e:'E04 · FUTHOMMA01 — Fútbol, cuello mao'},
+    {n:72,c:'FUTMUJCCV02',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:200,e:'72 · FUTMUJCCV02 — Fútbol, raglán, cuello camisero en v'},
+    {n:73,c:'FUTHOMCCV02',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:210,e:'73 · FUTHOMCCV02 — Fútbol, raglán, cuello camisero en v'},
+    {n:74,c:'FUTINMUJCCV02',d:'Fútbol',ca:'Femenino',i:1,t:'polera',o:220,e:'74 · FUTINMUJCCV02 — Fútbol infantil, raglán, cuello camisero en v'},
+    {n:75,c:'FUTINHOMCCV02',d:'Fútbol',ca:'Masculino',i:1,t:'polera',o:230,e:'75 · FUTINHOMCCV02 — Fútbol infantil, raglán, cuello camisero en v'},
+    {n:69,c:'FUT-SH',d:'Fútbol',ca:'Masculino',i:0,t:'short',o:240,e:'69 · FUT-SH — Fútbol'},
+    {n:29,c:'BKMUJU03',d:'Básquetbol',ca:'Femenino',i:0,t:'polera',o:250,e:'29 · BKMUJU03 — Básquetbol, cuello redondo'},
+    {n:30,c:'BKHOMU03',d:'Básquetbol',ca:'Masculino',i:0,t:'polera',o:260,e:'30 · BKHOMU03 — Básquetbol, cuello redondo'},
+    {n:31,c:'BKINMUJU03',d:'Básquetbol',ca:'Femenino',i:1,t:'polera',o:270,e:'31 · BKINMUJU03 — Básquetbol infantil, cuello redondo'},
+    {n:32,c:'BKINHOMU03',d:'Básquetbol',ca:'Masculino',i:1,t:'polera',o:280,e:'32 · BKINHOMU03 — Básquetbol infantil, cuello redondo'},
+    {n:33,c:'BKMUJV03',d:'Básquetbol',ca:'Femenino',i:0,t:'polera',o:290,e:'33 · BKMUJV03 — Básquetbol, cuello v'},
+    {n:34,c:'BKHOMV03',d:'Básquetbol',ca:'Masculino',i:0,t:'polera',o:300,e:'34 · BKHOMV03 — Básquetbol, cuello v'},
+    {n:35,c:'BKINMUJV03',d:'Básquetbol',ca:'Femenino',i:1,t:'polera',o:310,e:'35 · BKINMUJV03 — Básquetbol infantil, cuello v'},
+    {n:36,c:'BKINHOMV03',d:'Básquetbol',ca:'Masculino',i:1,t:'polera',o:320,e:'36 · BKINHOMV03 — Básquetbol infantil, cuello v'},
+    {n:37,c:'BKMUJU03RE',d:'Básquetbol',ca:'Femenino',i:0,t:'polera',o:330,e:'37 · BKMUJU03RE — Básquetbol, reversible, cuello redondo'},
+    {n:38,c:'BKHOMU03RE',d:'Básquetbol',ca:'Masculino',i:0,t:'polera',o:340,e:'38 · BKHOMU03RE — Básquetbol, reversible, cuello redondo'},
+    {n:39,c:'BKINMUJU03',d:'Básquetbol',ca:'Femenino',i:1,t:'polera',o:350,e:'39 · BKINMUJU03 — Básquetbol infantil, reversible, cuello redondo'},
+    {n:40,c:'BKINHOMU03RE',d:'Básquetbol',ca:'Masculino',i:1,t:'polera',o:360,e:'40 · BKINHOMU03RE — Básquetbol infantil, reversible, cuello redondo'},
+    {n:41,c:'BKMUJU03PRO',d:'Básquetbol',ca:'Femenino',i:0,t:'polera',o:370,e:'41 · BKMUJU03PRO — Básquetbol, pro, cuello redondo'},
+    {n:42,c:'BKHOMU03PRO',d:'Básquetbol',ca:'Masculino',i:0,t:'polera',o:380,e:'42 · BKHOMU03PRO — Básquetbol, pro, cuello redondo'},
+    {n:43,c:'BKMUJV03PRO',d:'Básquetbol',ca:'Femenino',i:0,t:'polera',o:390,e:'43 · BKMUJV03PRO — Básquetbol, pro, cuello v'},
+    {n:44,c:'BKHOMV03PRO',d:'Básquetbol',ca:'Masculino',i:0,t:'polera',o:400,e:'44 · BKHOMV03PRO — Básquetbol, pro, cuello v'},
+    {n:45,c:'BKSHMUJ',d:'Básquetbol',ca:'Femenino',i:0,t:'short',o:410,e:'45 · BKSHMUJ — Básquetbol'},
+    {n:46,c:'BK-SH',d:'Básquetbol',ca:'Masculino',i:0,t:'short',o:420,e:'46 · BK-SH — Básquetbol'},
+    {n:47,c:'BKINSHMUJ',d:'Básquetbol',ca:'Femenino',i:1,t:'short',o:430,e:'47 · BKINSHMUJ — Básquetbol infantil'},
+    {n:48,c:'BKINSHHOM',d:'Básquetbol',ca:'Masculino',i:1,t:'short',o:440,e:'48 · BKINSHHOM — Básquetbol infantil'},
+    {n:49,c:'BKSHMUJRE',d:'Básquetbol',ca:'Femenino',i:0,t:'short',o:450,e:'49 · BKSHMUJRE — Básquetbol, reversible'},
+    {n:50,c:'BK-SH',d:'Básquetbol',ca:'Masculino',i:0,t:'short',o:460,e:'50 · BK-SH — Básquetbol, reversible'},
+    {n:51,c:'BKINSHMUJRE',d:'Básquetbol',ca:'Femenino',i:1,t:'short',o:470,e:'51 · BKINSHMUJRE — Básquetbol infantil, reversible'},
+    {n:52,c:'BKINSHHOMRE',d:'Básquetbol',ca:'Masculino',i:1,t:'short',o:480,e:'52 · BKINSHHOMRE — Básquetbol infantil, reversible'},
+    {n:53,c:'BKSHMUJPRO',d:'Básquetbol',ca:'Femenino',i:0,t:'short',o:490,e:'53 · BKSHMUJPRO — Básquetbol, pro'},
+    {n:54,c:'BK-SH PRO',d:'Básquetbol',ca:'Masculino',i:0,t:'short',o:500,e:'54 · BK-SH PRO — Básquetbol, pro'},
+    {n:55,c:'VOMUJV03',d:'Vóleibol',ca:'Femenino',i:0,t:'polera',o:510,e:'55 · VOMUJV03 — Vóleibol, sin mangas, cuello v'},
+    {n:56,c:'VOMUJMAV03',d:'Vóleibol',ca:'Femenino',i:0,t:'polera',o:520,e:'56 · VOMUJMAV03 — Vóleibol, pro, sin mangas, cuello mao en v'},
+    {n:57,c:'VOMUJVCC03',d:'Vóleibol',ca:'Femenino',i:0,t:'polera',o:530,e:'57 · VOMUJVCC03 — Vóleibol, pro, sin mangas, cuello v cruzado'},
+    {n:105,c:'CA-MUJ',d:'Vóleibol',ca:'Femenino',i:0,t:'short',o:540,e:'E05 · CA-MUJ — Calza'},
+    {n:64,c:'HO-MUJ03',d:'Hockey',ca:'Femenino',i:0,t:'polera',o:550,e:'64 · HO-MUJ03 — Hockey, sin mangas, cuello redondo'},
+    {n:65,c:'HO-MUJCC03',d:'Hockey',ca:'Femenino',i:0,t:'polera',o:560,e:'65 · HO-MUJCC03 — Hockey, sin mangas, cuello camisero'},
+    {n:106,c:'C-FALDA TUBO',d:'Hockey',ca:'Femenino',i:0,t:'falda',o:570,e:'E06 · C-FALDA TUBO — Falda tubo'},
+    {n:107,c:'C-FALDA CRUZADA',d:'Hockey',ca:'Femenino',i:0,t:'falda',o:580,e:'E07 · C-FALDA CRUZADA — Falda cruzada'},
+    {n:108,c:'C-FALDA CON COSTADO',d:'Hockey',ca:'Femenino',i:0,t:'falda',o:590,e:'E08 · C-FALDA CON COSTADO — Falda con costado'},
+    {n:109,c:'C-FALDA CON TAJALÍ',d:'Hockey',ca:'Femenino',i:0,t:'falda',o:600,e:'E09 · C-FALDA CON TAJALÍ — Falda con tajalí'},
+    {n:84,c:'HO-MUJV02',d:'Hockey',ca:'Femenino',i:0,t:'polera',o:610,e:'84 · HO-MUJV02 — Hockey, raglán, cuello v'},
+    {n:58,c:'RB-HOMU02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:620,e:'58 · RB-HOMU02 — Rugby, raglán, cuello redondo'},
+    {n:59,c:'RB-MUJU02',d:'Rugby',ca:'Femenino',i:0,t:'polera',o:630,e:'59 · RB-MUJU02 — Rugby, raglán, cuello redondo'},
+    {n:60,c:'RBHOMCC02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:640,e:'60 · RBHOMCC02 — Rugby, cuello camisero'},
+    {n:61,c:'RBMUJCC02',d:'Rugby',ca:'Femenino',i:0,t:'polera',o:650,e:'61 · RBMUJCC02 — Rugby, cuello camisero'},
+    {n:62,c:'RB-HOMCL02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:660,e:'62 · RB-HOMCL02 — Rugby, raglán, cuello clásico'},
+    {n:63,c:'RBMUJCL02',d:'Rugby',ca:'Femenino',i:0,t:'polera',o:670,e:'63 · RBMUJCL02 — Rugby, raglán, cuello clásico'},
+    {n:101,c:'RB-HOMUCC02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:680,e:'E01 · RB-HOMUCC02 — Rugby, raglán con costados, cuello redondo'},
+    {n:102,c:'RB-HOMUCC02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:690,e:'E02 · RB-HOMUCC02 — Rugby, sin mangas, cuello redondo'},
+    {n:103,c:'RBHOMMA02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:700,e:'E03 · RBHOMMA02 — Rugby, cuello mao'},
+    {n:110,c:'RB-HOMMA02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:710,e:'E10 · RB-HOMMA02 — Rugby, raglán, cuello mao'},
+    {n:111,c:'RB-MUJU02',d:'Rugby',ca:'Femenino',i:0,t:'polera',o:720,e:'E11 · RB-MUJU02 — Rugby, raglán, cuello mao'},
+    {n:83,c:'RB-MUJV02',d:'Rugby',ca:'Femenino',i:0,t:'polera',o:730,e:'83 · RB-MUJV02 — Rugby, raglán, cuello v'},
+    {n:76,c:'RB-SHHOM',d:'Rugby',ca:'Masculino',i:0,t:'short',o:740,e:'76 · RB-SHHOM — Rugby'},
+    {n:78,c:'RB-SHMUJ',d:'Rugby',ca:'Femenino',i:0,t:'short',o:750,e:'78 · RB-SHMUJ — Rugby'},
+    {n:79,c:'RB-SHIN',d:'Rugby',ca:'Unisex',i:1,t:'short',o:760,e:'79 · RB-SHIN — Rugby infantil'},
+    {n:80,c:'PE-MUJU03',d:'Multideporte',ca:'Femenino',i:0,t:'top',o:770,e:'80 · PE-MUJU03 — Top deportivo, espalda olímpica'},
+    {n:81,c:'MUL-HOMU03',d:'Multideporte',ca:'Masculino',i:0,t:'polera',o:780,e:'81 · MUL-HOMU03 — Musculosa, sin mangas, cuello redondo'},
+    {n:82,c:'MUL-HOMV03',d:'Multideporte',ca:'Masculino',i:0,t:'polera',o:790,e:'82 · MUL-HOMV03 — Musculosa, sin mangas, cuello v'},
+    {n:66,c:'PE-HOM02',d:'Salida y entrenamiento',ca:'Masculino',i:0,t:'poleron_ent',o:800,e:'66 · PE-HOM02 — Chaqueta de entrenamiento, raglán, cierre y cuello alto'},
+    {n:67,c:'PE-HOM02',d:'Salida y entrenamiento',ca:'Unisex',i:1,t:'poleron_ent',o:810,e:'67 · PE-HOM02 — Chaqueta de entrenamiento infantil, raglán, cierre y cuello alto'},
+    {n:77,c:'PK-HOM02',d:'Salida y entrenamiento',ca:'Unisex',i:0,t:'parka',o:820,e:'77 · PK-HOM02 — Parka con capucha'},
+    {n:70,c:'PA-UNI01',d:'Salida y entrenamiento',ca:'Unisex',i:0,t:'cortaviento',o:830,e:'70 · PA-UNI01 — Cortaviento'},
+    {n:71,c:'PA-INUNI01',d:'Salida y entrenamiento',ca:'Unisex',i:1,t:'cortaviento',o:840,e:'71 · PA-INUNI01 — Cortaviento infantil'},
+    {n:68,c:'PE-MUJ02',d:'Salida y entrenamiento',ca:'Femenino',i:0,t:'poleron_ent',o:850,e:'68 · PE-MUJ02 — Chaqueta de entrenamiento, raglán, cierre y cuello alto'},
+    {n:1,c:'FUTMUJU01',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:9001,e:'01 · FUTMUJU01 — Fútbol, cuello redondo'},
+    {n:2,c:'FUTHOMU01',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:9002,e:'02 · FUTHOMU01 — Fútbol, cuello redondo'},
+    {n:3,c:'FUTINMUJU01',d:'Fútbol',ca:'Femenino',i:1,t:'polera',o:9003,e:'03 · FUTINMUJU01 — Fútbol infantil, cuello redondo'},
+    {n:4,c:'FUTINHOMU01',d:'Fútbol',ca:'Masculino',i:1,t:'polera',o:9004,e:'04 · FUTINHOMU01 — Fútbol infantil, cuello redondo'},
+    {n:5,c:'FUTMUJV01',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:9005,e:'05 · FUTMUJV01 — Fútbol, cuello v'},
+    {n:6,c:'FUTHOMV01',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:9006,e:'06 · FUTHOMV01 — Fútbol, cuello v'},
+    {n:7,c:'FUTINMUJV01',d:'Fútbol',ca:'Femenino',i:1,t:'polera',o:9007,e:'07 · FUTINMUJV01 — Fútbol infantil, cuello v'},
+    {n:8,c:'FUTINHOMV01',d:'Fútbol',ca:'Masculino',i:1,t:'polera',o:9008,e:'08 · FUTINHOMV01 — Fútbol infantil, cuello v'},
+    {n:9,c:'FUTMUJCC01',d:'Fútbol',ca:'Femenino',i:0,t:'polera',o:9009,e:'09 · FUTMUJCC01 — Fútbol, cuello camisero'},
+    {n:10,c:'FUTHOMCC01',d:'Fútbol',ca:'Masculino',i:0,t:'polera',o:9010,e:'10 · FUTHOMCC01 — Fútbol, cuello camisero'}
   ];
   // N° visible del molde: 01…99 como siempre; 101…199 son los especiales E01…E99
   const ESPECIALES = 'Especiales';
   const ABRIGO = 'Abrigo', MUSCULOSA = 'Musculosa';
-  const paraTodoDeporte = d => d === ESPECIALES || d === ABRIGO || d === MUSCULOSA;   // se ofrecen junto a los moldes de cualquier deporte
+  const MULTIDEPORTE = 'Multideporte', SALIDA = 'Salida y entrenamiento';
+  // secciones del catálogo que se ofrecen junto a los moldes de cualquier deporte (y los nombres antiguos: especiales, abrigo, musculosa)
+  const paraTodoDeporte = d => [MULTIDEPORTE, SALIDA, ESPECIALES, ABRIGO, MUSCULOSA].indexOf(d) >= 0;
+  // los especiales (E01…) van en la sección de su deporte en el catálogo, pero se siguen ofreciendo con cualquier deporte
+  const esEspecial = n => +n > 100 && +n < 200;
+  const sirveATodos = m => paraTodoDeporte(m.d) || esEspecial(m.n);
+  // orden del catálogo; los moldes sin orden (01 al 10, o uno recién agregado) van al final, por su número
+  const ordenMolde = m => m.o != null ? +m.o : 9000 + m.n;
+  const ordenFila = r => r.orden != null ? +r.orden : 9000 + r.numero;
   const etqMolde = n => { n = +n; return n > 100 && n < 200 ? 'E' + String(n - 100).padStart(2, '0') : String(n).padStart(2, '0'); };
   const URL_MOLDE = n => CFG.fichasUrl + '/storage/v1/object/public/montajes/moldes/molde-' + etqMolde(n) + '.jpg';
   const moldePorCodigo = c => MOLDES.find(m => m.c === c);
@@ -788,9 +800,11 @@ const PMK_ACCESO = (() => {
     const ca = infantil ? null : calce;
     // en infantil se muestran los moldes de niño y niña juntos, con su etiqueta
     const tipo = basePrenda(idPrenda) === 'camiseta' ? 'polera' : basePrenda(idPrenda);
+    // primero los del deporte elegido, luego los que sirven para cualquiera; cada grupo en el orden del catálogo
     return MOLDES.filter(m =>
       (infantil ? m.i === 1 : (m.i === 0 && (m.ca === ca || m.ca === 'Unisex'))) && m.t === tipo &&
-      (!deporte || paraTodoDeporte(deporte) || m.d === deporte || paraTodoDeporte(m.d)));
+      (!deporte || paraTodoDeporte(deporte) || m.d === deporte || sirveATodos(m)))
+      .sort((a, b) => (deporte ? (b.d === deporte) - (a.d === deporte) : 0) || ordenMolde(a) - ordenMolde(b));
   }
   // molde ingresado a mano (no está en el catálogo): se guarda como "texto|manual"
   const MANUAL = '__manual';
@@ -1031,9 +1045,11 @@ const PMK_ACCESO = (() => {
   const sigNombreDiseno = lineas => { const ids = Array.from(new Set(lineas.filter(l => l.tipo !== 'prenda').map(l => l.prenda)));
     const max = lineas.reduce((n, l) => { const x = String(l.disNom || '').trim().match(/^Diseño (\d+)$/i); return x ? Math.max(n, +x[1]) : n; }, 0);
     return 'Diseño ' + (Math.max(max, ids.length) + 1); };
-  // deporte del proyecto: el del primer molde que no sea especial ni de abrigo (esos sirven para cualquier deporte)
+  // deporte del proyecto: el del primer molde que no sea especial, multideporte ni de salida (esos sirven para cualquier deporte)
   const deporteProyecto = lineas => { const ms = lineas.filter(x => x.tipo === 'molde').map(l => MOLDES.find(y => y.n === l.n)).filter(Boolean);
-    const m = ms.find(y => !paraTodoDeporte(y.d)); return m ? m.d : ''; };
+    const m = ms.find(y => !sirveATodos(y)); return m ? m.d : ''; };
+  // deporte de una prenda de la ficha: el de su molde, salvo que sirva para cualquier deporte
+  const deporteDeLinea = l => { const m = l.tipo === 'molde' ? MOLDES.find(x => x.n === l.n) : null; return m && !sirveATodos(m) ? m.d : ''; };
   const partesMolde = m => { const t = m.e.split(' — '); return '<b>' + esc(t[0]) + '</b>' + (t[1] ? ' — ' + esc(t[1]) : ''); };
 
   // dets: lo que cargó el cliente (al editar), para mostrar cuántas personas lleva cada molde
@@ -1085,8 +1101,9 @@ const PMK_ACCESO = (() => {
     const deps = Array.from(new Set(MOLDES.map(m => m.d).filter(Boolean)));
     const tipos = Array.from(new Set(MOLDES.map(prendaDeMolde)));
     const q = f.q.trim().toLowerCase();
-    const lista = MOLDES.filter(m => (!f.deporte || m.d === f.deporte || (!paraTodoDeporte(f.deporte) && paraTodoDeporte(m.d))) && (!f.prenda || prendaDeMolde(m) === f.prenda) &&
-      (!f.calce || calceDeMolde(m) === f.calce) && (!q || m.e.toLowerCase().indexOf(q) >= 0));
+    const lista = MOLDES.filter(m => (!f.deporte || m.d === f.deporte || (!paraTodoDeporte(f.deporte) && sirveATodos(m))) && (!f.prenda || prendaDeMolde(m) === f.prenda) &&
+      (!f.calce || calceDeMolde(m) === f.calce) && (!q || m.e.toLowerCase().indexOf(q) >= 0))
+      .sort((a, b) => (f.deporte ? (b.d === f.deporte) - (a.d === f.deporte) : 0) || ordenMolde(a) - ordenMolde(b));
     let h = '<div class="cat-mol" id="cat-mol"><div class="cat-tit">Catálogo de moldes</div><div class="cat-filtros">' +
       sel('deporte', 'Deporte', deps.map(d => [d, d])) + sel('prenda', 'Prenda', tipos.map(t => [t, prendaDe(t).nom])) +
       sel('calce', 'Calce', CALCES.map(c => [c, c])) +
@@ -1183,7 +1200,7 @@ const PMK_ACCESO = (() => {
       sync(); const m = MOLDES.find(x => x.n === +b.dataset.addMolde); if (!m) return;
       const destino = nuevoIdDiseno(lineas, prendaDeMolde(m));
       agregarLinea({ tipo: 'molde', n: m.n, prenda: destino, calce: calceDeMolde(m), cant: resto(destino) });
-      if (st.catMol && !st.catMol.deporte && !paraTodoDeporte(m.d)) st.catMol.deporte = m.d || '';
+      if (st.catMol && !st.catMol.deporte && !sirveATodos(m)) st.catMol.deporte = m.d || '';
       render();
     }));
     app.querySelectorAll('[data-cf]').forEach(el => el.addEventListener(el.tagName === 'INPUT' ? 'input' : 'change', () => {
@@ -1861,7 +1878,7 @@ const PMK_ACCESO = (() => {
         const sp = specs[l.prenda] || (specs[l.prenda] = { deporte: '', moldes: {}, unidades: {} });
         if (!sp.nombre && String(l.disNom || '').trim()) sp.nombre = String(l.disNom).trim();
         sp.moldes[l.calce] = valorMolde(l); sp.unidades[l.calce] = l.cant;
-        if (l.tipo === 'molde' && !sp.deporte) sp.deporte = (MOLDES.find(m => m.n === l.n) || {}).d || '';
+        if (!sp.deporte) sp.deporte = deporteDeLinea(l);
       });
       Object.keys(specs).forEach(k => { const dp = despieceInicial(specs[k]); if (dp) specs[k].despiece = dp; });
       const b = document.getElementById('btn-crear');
@@ -2009,7 +2026,7 @@ const PMK_ACCESO = (() => {
         sp.moldes = {}; sp.unidades = {};
         ls.forEach(l => {
           sp.moldes[l.calce] = valorMolde(l); sp.unidades[l.calce] = l.cant;
-          if (l.tipo === 'molde' && !sp.deporte) sp.deporte = (MOLDES.find(m => m.n === l.n) || {}).d || '';
+          if (!sp.deporte) sp.deporte = deporteDeLinea(l);
         });
         if (!sp.despiece) { const dp = despieceInicial(sp); if (dp) sp.despiece = dp; }
       });
@@ -2229,9 +2246,13 @@ const PMK_ACCESO = (() => {
       let calces = ['Masculino', 'Femenino', 'Infantil'].filter(c => moldes[c] || calcCli.indexOf(c) >= 0 || (st.calcesExtra || {})[it.prenda + c]);
       if (!calces.length) calces = ['Masculino', 'Femenino', 'Infantil'];
       calces.forEach(cal => {
-        const lista = moldesPara(cal, it.prenda, sp.deporte || '');
         const elegido = moldes[cal] || '';
         const manual = esManual(elegido);
+        const lista = moldesPara(cal, it.prenda, sp.deporte || '');
+        if (elegido && !manual && !lista.some(m => m.c === elegido.split('|')[0] && m.n === +elegido.split('|')[1])) {
+          const nE = +elegido.split('|')[1], mE = MOLDES.find(m => m.n === nE && m.c === elegido.split('|')[0]);
+          lista.unshift(mE || { n: nE, c: elegido.split('|')[0], e: etqMolde(nE) + ' · ' + elegido.split('|')[0] + ' — fuera del catálogo vigente' });
+        }
         h += '<label for="m-' + it.prenda + '-' + cal + '">' + cal + '</label>' +
           '<select id="m-' + it.prenda + '-' + cal + '" data-molde="' + it.prenda + '" data-calce="' + cal + '">' +
           '<option value="">Sin definir</option>' +
@@ -2664,14 +2685,15 @@ const PMK_ACCESO = (() => {
     (valor && lista.indexOf(valor) < 0 ? '<option value="' + esc(valor) + '" selected>' + esc(valor) + '</option>' : '') + '</select>';
   const piezasDe = m => Array.isArray(m.piezas) ? m.piezas : JSON.parse(m.piezas || '[]');
   const filaAMolde = r => ({ n: r.numero, c: r.codigo, d: r.deporte || '', ca: r.calce || 'Unisex', i: r.infantil ? 1 : 0,
-    t: r.prenda === 'camiseta' ? 'polera' : r.prenda, e: etqMolde(r.numero) + ' · ' + r.codigo + ' — ' + r.descripcion, piezas: piezasDe(r) });
+    t: r.prenda === 'camiseta' ? 'polera' : r.prenda, o: r.orden != null ? r.orden : null, e: etqMolde(r.numero) + ' · ' + r.codigo + ' — ' + r.descripcion, piezas: piezasDe(r) });
+  const moldesVigentes = filas => filas.filter(r => r.activo !== false).map(filaAMolde).sort((a, b) => ordenMolde(a) - ordenMolde(b));
 
   async function cargarMoldes() {
     if (st.moldes) return st.moldes;
     try {
       st.moldes = await API.moldes() || []; st.moldesError = '';
       // el catálogo de la base reemplaza a la lista escrita en el código
-      if (st.moldes.length) MOLDES = st.moldes.filter(r => r.activo !== false).map(filaAMolde);
+      if (st.moldes.length) MOLDES = moldesVigentes(st.moldes);
     }
     catch (e) { st.moldes = null; st.moldesError = /moldes/.test(e.message || '') ? 'falta-tabla' : 'conexion'; }
     return st.moldes;
@@ -2695,8 +2717,12 @@ const PMK_ACCESO = (() => {
     }
     const telas = telasPlanas(st.cat);
     const filtro = st.moldeFiltro || '';
-    const lista = st.moldes.filter(m => !filtro || m.prenda === filtro || m.deporte === filtro).sort((a, b) => a.numero - b.numero);
-    const deportes = Array.from(new Set(st.moldes.map(m => m.deporte).filter(Boolean)));
+    const enOrden = st.moldes.slice().sort((a, b) => ordenFila(a) - ordenFila(b) || a.numero - b.numero);
+    const lista = enOrden.filter(m => !filtro || m.prenda === filtro || m.deporte === filtro);
+    const deportes = Array.from(new Set(enOrden.map(m => m.deporte).filter(Boolean)));
+    // sin el SQL 17A ningún molde tiene orden: se agrupan solo por deporte
+    const hayOrden = st.moldes.some(m => m.orden != null);
+    const seccionFila = m => hayOrden && (m.orden == null || m.orden >= 9000) ? 'Fuera del catálogo ordenado' : (m.deporte || 'Sin deporte');
     const ed = st.moldeEdit;
 
     let h = barra('Catálogo de moldes', 'catalogo') + '<div class="pmk-wrap">' +
@@ -2749,9 +2775,11 @@ const PMK_ACCESO = (() => {
       '<optgroup label="Por prenda">' + PRENDAS.filter(p => st.moldes.some(m => m.prenda === p.id)).map(p => '<option value="' + p.id + '"' + (filtro === p.id ? ' selected' : '') + '>' + esc(p.nom) + '</option>').join('') + '</optgroup></select>';
     const sinDesp = lista.filter(m => m.activo !== false && !piezasDe(m).length).length;
     if (sinDesp) h += '<div class="mini" style="margin-top:6px">' + sinDesp + ' moldes aún sin despiece definido.</div>';
-    h += lista.length ? lista.map(m => {
+    h += lista.length ? lista.map((m, k) => {
       const pz = piezasDe(m);
-      return '<div class="molde-card' + (m.activo === false ? ' inactivo' : '') + '"><div class="mc-cab"><div><b>' + etqMolde(m.numero) + ' · ' + esc(m.codigo) + '</b> — ' + esc(m.descripcion) +
+      // título de la sección del catálogo cuando cambia (y «Fuera del catálogo» para los que no tienen orden)
+      const sec = seccionFila(m), secAnt = k ? seccionFila(lista[k - 1]) : null;
+      return (sec !== secAnt ? '<div class="mc-seccion">' + esc(sec) + '</div>' : '') + '<div class="molde-card' + (m.activo === false ? ' inactivo' : '') + '"><div class="mc-cab"><div><b>' + etqMolde(m.numero) + ' · ' + esc(m.codigo) + '</b> — ' + esc(m.descripcion) +
         '<div class="mini">' + esc(prendaDe(m.prenda).nom) + ' · ' + esc(m.calce || '') + (m.infantil ? ' infantil' : '') + (m.activo === false ? ' · no vigente' : '') + '</div></div>' +
         '<div class="mc-acc"><button class="btn plano chico" data-me-editar="' + m.numero + '">Editar</button></div></div>' +
         '<div class="mc-guia"><img src="' + URL_MOLDE(m.numero) + '?v=' + (st.guiaV || 0) + '" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement(\'span\'),{className:\'mini\',textContent:\'Sin guía de tallas\'}))">' +
@@ -2836,8 +2864,9 @@ const PMK_ACCESO = (() => {
         prenda: ed.prenda, piezas: piezas, activo: ed.activo, updated_at: new Date().toISOString() };
       try {
         await API.guardarMolde(fila);
-        st.moldes = st.moldes.filter(m => m.numero !== fila.numero).concat([fila]);
-        MOLDES = st.moldes.filter(r => r.activo !== false).map(filaAMolde);
+        const antes = st.moldes.find(m => m.numero === fila.numero);   // conserva su orden en el catálogo
+        st.moldes = st.moldes.filter(m => m.numero !== fila.numero).concat([Object.assign({ orden: antes ? antes.orden : null }, fila)]);
+        MOLDES = moldesVigentes(st.moldes);
         st.moldeEdit = null; st.error = ''; render();
       } catch (e) { st.error = 'No se pudo guardar. ' + (e.message || '').slice(0, 120); render(); }
     });

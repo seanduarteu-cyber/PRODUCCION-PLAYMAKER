@@ -22,8 +22,16 @@ Se corren una vez en el SQL Editor de la base indicada en cada archivo.
 | `SQL_16A_FICHAS_prendas_sin_nombre_ni_numero.sql` | Fichas | Quita reglas que exigían nombre y número a la vez. |
 | `SQL_16B_FICHAS_quitar_chk_det_nombre.sql` | Fichas | Quita `chk_det_nombre`, que exigía nombre en cada persona. |
 | `SQL_16C_FICHAS_nombre_hasta_80.sql` | Fichas | Vuelve a poner el tope de 80 caracteres al nombre, que ahora puede ir vacío. |
+| `SQL_17A_FICHAS_moldes_orden_del_catalogo.sql` | Fichas | Catálogo ordenado: columna `orden`, deporte = sección del catálogo y moldes nuevos 83 y 84. |
+| `SQL_17B_FICHAS_desactivar_moldes_01_al_10_OPCIONAL.sql` | Fichas | Opcional: desactiva los moldes 01 al 10, que no están en el catálogo ordenado. |
 
 Los SQL 1A a 14A se corrieron antes y no están en este repositorio.
+
+## Catálogo de moldes (`../catalogo/`)
+
+- `Catalogo_ordenado_INDEXADO.pdf`: el catálogo ordenado (noviembre 2026) con índice al inicio (enlaces a cada molde) y marcadores por sección.
+- `Indice_catalogo_ordenado.xlsx`: el mismo índice en planilla (orden, sección, N°, código, calce, tallas, página).
+- En los sistemas, el orden y la sección de cada molde vienen de la tabla `moldes` de Fichas (columnas `orden` y `deporte`, SQL 17A). Los especiales (E01…) van en la sección de su deporte, pero se siguen ofreciendo con cualquier deporte; Multideporte y Salida y entrenamiento también. Detalle: `LEEME_catalogo.txt`.
 
 ## Pruebas (`../pruebas/`)
 
@@ -35,6 +43,7 @@ Las pruebas usan Playwright con las bases simuladas: no tocan Supabase ni Netlif
 | `ventas_rapido.test.js` | Carga liviana de Ventas; que ningún guardado pierda un comprobante. |
 | `estado.test.js` | Pestaña «Estado» y pendientes que vuelven a Armado y Corte juntos. |
 | `camisetas_sin_numero.test.js` | Camisetas sin nombre ni número en el sitio del cliente. |
+| `catalogo.test.js` | Catálogo ordenado en el panel y en Planificación: orden, secciones, 83 y 84, moldes ya elegidos; con y sin el SQL 17A, y sin conexión. |
 | `ventas_movil.js`, `fichas_movil.js`, `plan_movil.js` | Revisión en tamaño celular: que nada quede cortado. |
 
 `tiempos.js` y `tiempos_ventas.js` comparan con la versión anterior, que esperan en `pruebas/antes/`. Esa versión se saca del historial de git.
