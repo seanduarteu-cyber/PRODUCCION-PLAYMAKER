@@ -1,7 +1,8 @@
-"""Presentación mensual para el equipo de producción (contexto e historial primero, resultado al final).
-Sin costos, ventas ni nombres de personas. Para un mes nuevo: actualizar sólo el bloque DATOS.
-Uso: python3 equipo_mensual.py <pptx_base_con_tema> <salida.pptx>"""
-import sys
+"""Presentación mensual para el equipo de producción: largo plazo (12 meses) y corto plazo (últimos 3 meses),
+con el resultado del mes al final. Sin costos, ventas ni nombres de personas.
+Datos en datos_pmk.py; textos del mes en el bloque TEXTOS. Uso: python3 equipo_mensual.py <pptx_base> <salida.pptx>"""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lxml import etree
 from pptx import Presentation
 from pptx.util import Emu, Pt
@@ -10,27 +11,36 @@ from pptx.chart.data import CategoryChartData
 from pptx.enum.chart import XL_CHART_TYPE, XL_LABEL_POSITION
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+from pptx.enum.dml import MSO_LINE_DASH_STYLE
+import datos_pmk as D
 
-# ================================================================== DATOS DEL MES
-MES, MES_ANT, MES_SIG = 'OCTUBRE 2026', 'septiembre', 'noviembre'
-# (mes, metros impresos, metros reprocesados, % reproceso, pedidos en el chat)
-HIST = [('MAYO', 1890, 133, 6.6, 25), ('JUNIO', 1864, 149, 7.4, 55), ('JULIO*', 1901, 245, 11.4, 48),
-        ('AGOSTO', 1722, 279, 13.9, 57), ('SEPTIEMBRE', 2098, 127, 5.7, 51)]
-ACT = ('OCTUBRE', 2195, 95, 4.1, 28)
-# hoja de ruta: (mes corto, meta %, meta metros, resultado real o None)
-RUTA = [('SEP', 11, 235, 5.7), ('OCT', 8, 165, None), ('NOV', 6, 121, None), ('DIC', 5, 100, None)]
-# pedidos del chat por etapa: (etapa, mes anterior, mes actual)
-CAUSAS = [('Armado de mesa / papel', 10, 3), ('Sublimación', 12, 7), ('Pendientes en taller', 7, 9), ('Corte', 7, 6),
-          ('Diseño / ficha', 7, 0), ('Confección', 6, 1), ('Faltó impresión', 2, 2)]
-LECTURAS = [  # (color, ícono, título, texto)
-    ('27AE60', '▼', 'Bajaron', 'Armado de mesa / papel (10 → 3), sublimación (12 → 7), confección (6 → 1) y diseño / ficha (7 → 0).'),
-    ('E74C3C', '▲', 'Subieron', 'Pendientes en taller (7 → 9): hoy es la etapa con más casos y el foco de noviembre.'),
+# ================================================================== DATOS (derivados de datos_pmk)
+CUR, PREV, NEXT = D.MES_ACTUAL, D.shift(D.MES_ACTUAL, -1), D.shift(D.MES_ACTUAL, 1)
+W3, W12 = D.ventana(3), D.ventana(12)
+MES = f'{D.nombre(CUR)} {D.ym(CUR)[0]}'
+MES_ANT, MES_SIG = D.nombre(PREV).lower(), D.nombre(NEXT).lower()
+
+
+def _row(k):
+    d = D.MESES[k]
+    return (D.nombre(k) + ('*' if d.get('est') else ''), round(d['prod']), round(d['rep']), round(D.pct(k), 1), d['ev'])
+
+
+HIST = [_row(k) for k in sorted(D.MESES) if k < CUR]
+ACT = _row(CUR)
+RUTA = [(D.corto(k), mp, mm, round(D.pct(k), 1) if (k in D.MESES and k < CUR) else None) for k, (mp, mm) in sorted(D.METAS.items())]
+CORTOS = [D.corto(k) for k in sorted(D.MESES)] + [D.corto(D.shift(CUR, i)) for i in range(1, 4)]
+NOMBRES_CAUSA = ['Armado de mesa / papel', 'Sublimación', 'Pendientes en taller', 'Faltó impresión', 'Corte', 'Confección', 'Diseño / ficha']
+
+# ================================================================== TEXTOS DEL MES (revisar cada mes)
+LECTURAS = [  # (color, ícono, título, texto) — lectura de los últimos 3 meses
+    ('27AE60', '▼', 'Bajaron en 3 meses', 'Armado de mesa / papel (15 → 10 → 3), sublimación (12 → 12 → 7) y diseño / ficha (5 → 7 → 0).'),
+    ('E74C3C', '▲', 'Ojo', 'Pendientes en taller volvió a subir (12 → 7 → 9): es el foco de noviembre.'),
     ('ED6C23', '●', 'Nuevo: la línea ETAPA', '24 de 28 pedidos la usaron, y 8 se frenaron antes de sublimar: ahí no se pierde tela.')]
 CIERRE_NUMEROS = 'Más trabajo y menos pedidos. ¿Y el resultado?'
-CORTOS = ['MAY', 'JUN', 'JUL*', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC']      # rótulos de los gráficos
 FRASE_RESULTADO = 'De cada 100 metros, cerca de 4 fueron para repetir. En septiembre eran 6 y en agosto, 14.'
-TILE_3 = ('≤6%', 'próxima meta: noviembre (≤121 m) · ya estamos bajo la meta de diciembre (5%)')
-MENSAJE_MEJORA = ['¡FELICITACIONES, EQUIPO!', 'Dos meses seguidos bajando: de 13,9% a 4,1%. Ya estamos bajo la meta de diciembre.', 'Este logro es de todos.']
+META_SIG_TXT = 'PRÓXIMA META · NOVIEMBRE ≤6% (≤121 m)  ·  ya estamos bajo la meta de diciembre (5%)'
+MENSAJE_MEJORA = ['¡FELICITACIONES, EQUIPO!', 'De 13,9% a 4,1% en dos meses: ya estamos bajo la meta de diciembre.', 'Este logro es de todos.']
 DESAFIO = 'PRÓXIMO DESAFÍO: MANTENERNOS BAJO EL 5%   ·   NOVIEMBRE ≤6%'
 # ==================================================================
 
@@ -230,35 +240,90 @@ tb(sl, 0.65, 4.25, 8.8, 0.7, [[('Y ADEMÁS: ', {'bold': True, 'color': ORANGE}),
 notes(sl, 'Explicar el indicador: metros reprocesados dividido por el total impreso. Mide el proceso, no a personas. '
           'Semáforo: verde bajo 7%, naranja 7–10%, rojo sobre 10%. Meta de diciembre: 5% (1 de cada 20 metros).')
 
-# ================================================================== 3. EL HISTORIAL
-sl = new_slide(); base(sl, '2 · CÓMO VENIMOS', 'EL HISTORIAL, MES A MES')
-COLS = [(0.45, 1.85, 'MES'), (2.30, 1.75, 'METROS IMPRESOS'), (4.05, 1.85, 'METROS REPROCESADOS'),
-        (5.90, 1.70, '% REPROCESO'), (7.60, 2.00, 'PEDIDOS EN EL CHAT')]
-HY, HH = 1.28, 0.40
-n = len(HIST) + 1
-RH = min(0.44, (2.70 - 0.04 * n) / n); ST = RH + 0.05
-rect(sl, 0.45, HY, 9.15, HH, ORANGE)
-for x, w, t in COLS:
-    tb(sl, x + 0.05, HY, w - 0.1, HH, t, size=9, bold=True, color=BLACK, align='c', anchor='m')
-for i, (m, prod, rep, p, ev) in enumerate(HIST):
-    y = HY + HH + 0.06 + i * ST
-    rect(sl, 0.45, y, 9.15, RH, PANEL if i % 2 == 0 else PANEL2)
-    f, tcol = sem(p)
-    for (x, w, _), (t, c, b, al) in zip(COLS, [(m, WHITE, True, 'l'), (num(prod) + ' m', LIGHT, False, 'c'),
-                                               (num(rep) + ' m', LIGHT, False, 'c'), (pct(p), tcol, True, 'c'), (str(ev), LIGHT, False, 'c')]):
-        tb(sl, x + (0.15 if al == 'l' else 0.05), y, w - 0.2, RH, t, size=12 if c == tcol and al == 'c' else 11, color=c, bold=b, align=al, anchor='m')
-y = HY + HH + 0.06 + len(HIST) * ST
-rect(sl, 0.45, y, 9.15, RH, None, line=ORANGE, lw=1.25)
-tb(sl, 0.60, y, 1.7, RH, ACT[0], size=11, bold=True, color=ORANGE, anchor='m')
-for x, w, _ in COLS[1:]:
-    tb(sl, x + 0.05, y, w - 0.1, RH, '?', size=15, bold=True, color=ORANGE, align='c', anchor='m')
-hi = max(HIST, key=lambda h: h[3])
-tb(sl, 0.45, y + RH + 0.15, 9.15, 0.3, [[('Subimos hasta ', {'color': LIGHT}), (f'{pct(hi[3])} en {hi[0].lower()}', {'bold': True}),
-                                         (f' y en {MES_ANT} bajamos a ', {'color': LIGHT}), (pct(PCT_ANT), {'bold': True, 'color': sem(PCT_ANT)[1]}),
-                                         (f'. ¿Y {ACT[0].lower()}? Al final.', {'color': LIGHT})]], size=11.5)
-tb(sl, 0.45, 4.98, 9.0, 0.2, '* Julio estimado (el registro de ploteo de ese mes quedó incompleto).  Mayo: el chat de pendientes comenzó el 19-may.',
-   size=7.5, color=GREY, italic=True)
-notes(sl, f'Recorrer la tabla mes a mes con el semáforo. {ACT[0].capitalize()} queda tapado: el resultado se ve al final.')
+def cat_labels(keys):
+    return [D.corto(k, con_anio=(i == 0 or D.ym(k)[1] == 1)) for i, k in enumerate(keys)]
+
+
+def overlay_sin_registro(sl, cx, cw, cy, chh, n_vacios, pad=0.12):
+    if not n_vacios:
+        return
+    pw = cw - pad - 0.12
+    r = rect(sl, cx + pad + 0.02, cy + 0.20, pw * n_vacios / 12 - 0.04, chh - 0.62, None, line=MUTED, lw=0.75)
+    r.line.dash_style = MSO_LINE_DASH_STYLE.DASH
+    write(r, ['Sin registro', [(f'(medimos desde {D.corto(D.INICIO_REGISTRO).lower()}-26)', {'size': 7.5})]],
+          size=8.5, italic=True, color=GREY, align='c', anchor='m')
+
+
+def chart12(sl, x, y, w, h, keys, ocultar_actual):
+    vals, fills, lcols = [], [], []
+    for k in keys:
+        if k in D.MESES and not (ocultar_actual and k == CUR):
+            p = round(D.pct(k), 1)
+            vals.append(p)
+            if ocultar_actual:
+                f, t = sem(p)
+            else:
+                f, t = (sem(p) if k == CUR else (MUTED, GREY))
+            fills.append(f); lcols.append(t)
+        else:
+            vals.append(None); fills.append(MUTED); lcols.append(GREY)
+    ch = col_chart(sl, x, y, w, h, cat_labels(keys), vals, fills, lcols)
+    for s_ in ch.plots[0].series:
+        s_.data_labels.font.size = Pt(8.5)
+    ch.category_axis.tick_labels.font.size = Pt(8)
+    vac = sum(1 for k in keys if k not in D.MESES)
+    overlay_sin_registro(sl, x, w, y, h, vac)
+    if ocultar_actual:
+        pw = w - 0.24
+        cxm = x + 0.12 + pw * (len(keys) - 0.5) / len(keys)
+        r = rect(sl, cxm - 0.17, y + h - 1.05, 0.34, 0.62, None, line=ORANGE, lw=1.25)
+        write(r, ['?'], size=16, bold=True, color=ORANGE, align='c', anchor='m')
+    return ch
+
+
+def flechas(vals, fmt, last_color):
+    runs = []
+    for i, v in enumerate(vals):
+        if i:
+            runs.append(('  →  ', {'color': GREY, 'size': 12}))
+        runs.append((fmt(v), {'color': last_color if i == len(vals) - 1 else LIGHT}))
+    return runs
+
+
+# ================================================================== 3. CÓMO VENIMOS: LARGO Y CORTO PLAZO
+sl = new_slide(); base(sl, '2 · CÓMO VENIMOS', 'LARGO PLAZO Y CORTO PLAZO')
+tb(sl, 0.45, 1.22, 5.6, 0.25, 'LARGO PLAZO — % DE REPROCESO, ÚLTIMOS 12 MESES', size=9, color=GREY, bold=True)
+chart12(sl, 0.30, 1.42, 5.75, 3.45, W12, ocultar_actual=True)
+tb(sl, 0.45, 4.98, 5.5, 0.2, '* Julio estimado (registro de ploteo incompleto).', size=7.5, color=GREY, italic=True)
+X, WR = 6.30, 3.30
+tb(sl, X, 1.22, WR, 0.25, 'CORTO PLAZO — ÚLTIMOS 3 MESES', size=10, bold=True, color=ORANGE)
+cols = [('MES', 1.15, 'l'), ('%', 0.65, 'c'), ('M REPETIDOS', 0.85, 'c'), ('PEDIDOS', 0.65, 'c')]
+rect(sl, X, 1.52, WR, 0.36, ORANGE)
+cx = X
+for t, w, _ in cols:
+    tb(sl, cx + 0.03, 1.52, w - 0.06, 0.36, t, size=8, bold=True, color=BLACK, align='c', anchor='m'); cx += w
+for i, k in enumerate(W3):
+    y = 1.94 + i * 0.58
+    hide = k == CUR
+    rect(sl, X, y, WR, 0.52, None if hide else (PANEL if i % 2 == 0 else PANEL2), line=ORANGE if hide else None, lw=1.25)
+    d = D.MESES[k]
+    p = D.pct(k)
+    cells = [(D.nombre(k), ORANGE if hide else WHITE, True, 'l')] + (
+        [('?', ORANGE, True, 'c')] * 3 if hide else
+        [(pct(p), sem(p)[1], True, 'c'), (num(d['rep']) + ' m', LIGHT, False, 'c'), (str(d['ev']), LIGHT, False, 'c')])
+    cx = X
+    for (t, w, _), (txt, col, b, al) in zip(cols, cells):
+        tb(sl, cx + (0.10 if al == 'l' else 0.03), y, w - 0.13, 0.52, txt, size=14 if txt == '?' else (11 if al == 'l' else 11.5),
+           bold=b, color=col, align=al, anchor='m')
+        cx += w
+p0, pp = D.pct(W3[0]), D.pct(PREV)
+tb(sl, X, 3.80, WR, 1.05, [[('Venimos de ', {'color': LIGHT}), (pct(p0), {'bold': True, 'color': sem(p0)[1]}),
+                            (f' en {D.nombre(W3[0]).lower()} a ', {'color': LIGHT}), (pct(pp), {'bold': True, 'color': sem(pp)[1]}),
+                            (f' en {MES_ANT}.', {'color': LIGHT})],
+                           [(f'¿Y {D.nombre(CUR).lower()}? ', {'bold': True}), ('Lo vemos al final.', {'color': ORANGE, 'bold': True})]],
+   size=11.5, space=6)
+notes(sl, 'Izquierda, largo plazo: cómo se movió el % de reproceso en los últimos 12 meses (medimos desde mayo). '
+          f'Derecha, corto plazo: los últimos 3 meses. {D.nombre(CUR).capitalize()} queda oculto hasta el final.')
 
 # ================================================================== 4. LA HOJA DE RUTA
 sl = new_slide(); base(sl, '3 · LA META QUE NOS PUSIMOS', 'LA HOJA DE RUTA HASTA DICIEMBRE')
@@ -287,35 +352,38 @@ notes(sl, 'Metas por mes: septiembre ≤11%, octubre ≤8%, noviembre ≤6% y di
           + ' '.join(f'{MESES_LARGOS[r[0]].capitalize()} ya se cumplió ({pct(r[3])}).' for r in ruta_hecha)
           + f' Dejar abierta la pregunta de {ACT[0].lower()}.')
 
-# ================================================================== 5. EL MES EN NÚMEROS
+# ================================================================== 5. EL MES EN NÚMEROS (comparativa 3 meses)
 sl = new_slide(); base(sl, f'4 · QUÉ PASÓ EN {ACT[0]}', f'{ACT[0]} EN NÚMEROS')
 max_prod = max(h[1] for h in HIST)
 prod_txt = 'impresos: el mes de mayor producción desde mayo' if ACT[1] > max_prod else 'impresos en el mes'
+evs = [D.MESES[k]['ev'] for k in W3]
 for i, (big, small, col) in enumerate([(num(ACT[1]) + ' m', prod_txt, WHITE),
-                                       (str(ACT[4]), f'pedidos de reimpresión en el chat ({HIST[-1][4]} en {MES_ANT})', ORANGE)]):
+                                       (str(ACT[4]), 'pedidos de reimpresión en el chat  (' + ' → '.join(map(str, evs)) + ' en 3 meses)', ORANGE)]):
     x = 0.45 + i * 2.75
     rect(sl, x, 1.25, 2.6, 1.05, PANEL)
     tb(sl, x + 0.15, 1.32, 2.3, 0.5, big, size=26, bold=True, color=col)
     tb(sl, x + 0.15, 1.82, 2.3, 0.45, small, size=9, color=LIGHT)
-tb(sl, 0.45, 2.45, 5.4, 0.25, [[('¿EN QUÉ ETAPA NACIÓ CADA PEDIDO?  ', {'color': GREY}), (MES_ANT, {'color': '8A8A8A'}),
-                               ('  vs  ', {'color': GREY}), (ACT[0].lower(), {'color': ORANGE})]], size=9, bold=True)
+SER_COL = ['4A4A4A', '8A8A8A', ORANGE]
+tb(sl, 0.45, 2.42, 5.5, 0.25, [[('¿EN QUÉ ETAPA NACIÓ CADA PEDIDO?   ', {'color': GREY})] +
+                               sum([[(D.nombre(k).lower(), {'color': c if c != '4A4A4A' else '6A6A6A'}), ('  ·  ', {'color': GREY})] for k, c in zip(W3, SER_COL)], [])[:-1]],
+   size=9, bold=True)
 cd = CategoryChartData()
-cd.categories = [c[0] for c in reversed(CAUSAS)]
-cd.add_series(ACT[0].capitalize(), [c[2] for c in reversed(CAUSAS)])   # en barras horizontales la 1ª serie queda abajo
-cd.add_series(MES_ANT.capitalize(), [c[1] for c in reversed(CAUSAS)])
-ch = sl.shapes.add_chart(XL_CHART_TYPE.BAR_CLUSTERED, E(0.30), E(2.68), E(5.6), E(2.32), cd).chart
+cd.categories = list(reversed(NOMBRES_CAUSA))
+for k in reversed(W3):                     # en barras horizontales la 1ª serie queda abajo
+    cd.add_series(D.nombre(k).capitalize(), list(reversed(D.CAUSAS_MES[k])))
+ch = sl.shapes.add_chart(XL_CHART_TYPE.BAR_CLUSTERED, E(0.30), E(2.62), E(5.6), E(2.45), cd).chart
 chart_clean(ch)
-pl = ch.plots[0]; pl.gap_width = 45; pl.overlap = -5
-for s_, col in zip(pl.series, (ORANGE, '5A5A5A')):
+pl = ch.plots[0]; pl.gap_width = 35; pl.overlap = -5
+for s_, col in zip(pl.series, list(reversed(SER_COL))):
     s_.format.fill.solid(); s_.format.fill.fore_color.rgb = RGBColor.from_string(col)
     d = s_.data_labels; d.show_value = True; d.position = XL_LABEL_POSITION.OUTSIDE_END
-    d.font.size = Pt(8.5); d.font.bold = True; d.font.color.rgb = RGBColor.from_string(LIGHT if col == ORANGE else GREY)
+    d.font.size = Pt(7.5); d.font.bold = True; d.font.color.rgb = RGBColor.from_string(LIGHT if col == ORANGE else GREY)
 va = ch.value_axis; va.visible = False; va.has_major_gridlines = False
-va.maximum_scale = max(max(c[1], c[2]) for c in CAUSAS) + 2
-ca = ch.category_axis; ca.tick_labels.font.size = Pt(9); ca.tick_labels.font.color.rgb = RGBColor.from_string(LIGHT)
+va.maximum_scale = max(max(D.CAUSAS_MES[k]) for k in W3) + 2
+ca = ch.category_axis; ca.tick_labels.font.size = Pt(8.5); ca.tick_labels.font.color.rgb = RGBColor.from_string(LIGHT)
 ca.format.line.color.rgb = RGBColor.from_string(MUTED)
 X = 6.15
-tb(sl, X, 1.25, 3.45, 0.25, 'LO QUE NOS DICEN LOS NÚMEROS', size=10, bold=True, color=ORANGE)
+tb(sl, X, 1.25, 3.45, 0.25, 'LO QUE NOS DICEN LOS ÚLTIMOS 3 MESES', size=10, bold=True, color=ORANGE)
 for i, (col, ico, t, d) in enumerate(LECTURAS):
     y = 1.60 + i * 1.02
     rect(sl, X, y, 3.45, 0.92, PANEL)
@@ -323,32 +391,36 @@ for i, (col, ico, t, d) in enumerate(LECTURAS):
     tb(sl, X + 0.52, y + 0.10, 2.8, 0.25, t.upper(), size=10, bold=True, color=col)
     tb(sl, X + 0.52, y + 0.36, 2.83, 0.55, d, size=9.5, color=LIGHT)
 tb(sl, X, 4.72, 3.45, 0.25, CIERRE_NUMEROS, size=10.5, bold=True)
-notes(sl, f'{ACT[0].capitalize()}: {num(ACT[1])} m impresos y {ACT[4]} pedidos en el chat ({HIST[-1][4]} en {MES_ANT}). '
-          'Comentar qué etapas bajaron y cuáles subieron, hablando de procesos y no de personas. Reconocer el uso de la línea ETAPA.')
+notes(sl, f'{ACT[0].capitalize()}: {num(ACT[1])} m impresos y {ACT[4]} pedidos en el chat. Comparar los últimos 3 meses por etapa '
+          '(hablar de procesos, no de personas). Reconocer el uso de la línea ETAPA.')
 
-# ================================================================== 6. EL RESULTADO
+# ================================================================== 6. EL RESULTADO (corto y largo plazo)
 sl = new_slide(); base(sl, '5 · EL RESULTADO', f'¿Y CÓMO TERMINÓ {ACT[0]}?')
 f_act, t_act = sem(PCT)
-tb(sl, 0.45, 1.15, 3.3, 1.15, pct(PCT), size=66, bold=True, color=t_act)
-tb(sl, 3.75, 1.38, 2.3, 0.3, 'DE REPROCESO', size=14, bold=True)
-badge = rect(sl, 3.75, 1.78, 2.25, 0.36, GREEN_F if META_OK else ORANGE)
+tb(sl, 0.45, 1.12, 3.3, 1.15, pct(PCT), size=62, bold=True, color=t_act)
+tb(sl, 3.60, 1.32, 2.4, 0.3, 'DE REPROCESO', size=14, bold=True)
+badge = rect(sl, 3.60, 1.70, 2.40, 0.36, GREEN_F if META_OK else ORANGE)
 write(badge, [f'META ≤{META_MES}%  ✓  CUMPLIDA' if META_OK else f'META ≤{META_MES}%: NO ALCANZADA'], size=10, bold=True,
       color=WHITE if META_OK else BLACK, align='c', anchor='m')
-tb(sl, 0.45, 2.38, 5.6, 0.45, FRASE_RESULTADO,
-   size=11.5, color=LIGHT)
-col_chart(sl, 0.30, 2.80, 5.8, 2.15, CORTOS[:len(HIST) + 1], [h[3] for h in HIST] + [PCT],
-          [MUTED] * len(HIST) + [f_act], [GREY] * len(HIST) + [t_act])
-tb(sl, 0.45, 4.98, 3, 0.2, '* Julio estimado', size=7.5, color=GREY, italic=True)
-X = 6.40
-for i, (big, col, d) in enumerate([(num(ACT[2]) + ' m', GREEN if ACT[2] < HIST[-1][2] else ORANGE, f'repetidos en el mes ({HIST[-1][2]} m en {MES_ANT})'),
-                                   (num(ACT[1]) + ' m', WHITE, prod_txt),
-                                   (TILE_3[0], ORANGE, TILE_3[1])]):
-    y = 1.20 + i * 1.22
-    rect(sl, X, y, 3.2, 1.10, PANEL)
-    tb(sl, X + 0.18, y + 0.10, 2.9, 0.5, big, size=24, bold=True, color=col)
-    tb(sl, X + 0.18, y + 0.60, 2.9, 0.45, d, size=9.5, color=LIGHT)
-notes(sl, f'Revelar: {ACT[0].lower()} cerró en {pct(PCT)}. Meta del mes ≤{META_MES}%: ' + ('se cumplió. ' if META_OK else 'no se alcanzó. ')
-          + f'Repetimos {ACT[2]} m contra {HIST[-1][2]} m en {MES_ANT}.')
+tb(sl, 0.45, 2.22, 5.6, 0.45, FRASE_RESULTADO, size=11, color=LIGHT)
+tb(sl, 0.45, 2.70, 5.6, 0.22, 'LARGO PLAZO — ÚLTIMOS 12 MESES', size=8.5, color=GREY, bold=True)
+chart12(sl, 0.30, 2.86, 5.8, 2.15, W12, ocultar_actual=False)
+tb(sl, 0.45, 5.02, 3, 0.2, '* Julio estimado', size=7.5, color=GREY, italic=True)
+X = 6.35
+tb(sl, X, 1.12, 3.25, 0.25, 'CORTO PLAZO — ÚLTIMOS 3 MESES', size=10, bold=True, color=ORANGE)
+tiles = [('% DE REPROCESO', [D.pct(k) for k in W3], pct, t_act),
+         ('METROS REPETIDOS', [D.MESES[k]['rep'] for k in W3], lambda v: num(v), GREEN if ACT[2] < HIST[-1][2] else ORANGE),
+         ('PEDIDOS EN EL CHAT', [D.MESES[k]['ev'] for k in W3], lambda v: str(v), GREEN if ACT[4] < HIST[-1][4] else ORANGE)]
+for i, (lab, vals, fmt, lc) in enumerate(tiles):
+    y = 1.45 + i * 0.95
+    rect(sl, X, y, 3.25, 0.85, PANEL)
+    tb(sl, X + 0.15, y + 0.08, 3.0, 0.22, lab + '  (' + ' · '.join(D.corto(k).lower() for k in W3) + ')', size=8, bold=True, color=GREY)
+    tb(sl, X + 0.15, y + 0.33, 3.0, 0.45, [flechas(vals, fmt, lc)], size=17, bold=True)
+r = rect(sl, X, 4.35, 3.25, 0.66, PANEL2, line=ORANGE)
+write(r, [META_SIG_TXT], size=9, bold=True, color=ORANGE, align='c', anchor='m')
+r.text_frame.margin_left = r.text_frame.margin_right = E(0.12)
+notes(sl, f'Revelar: {ACT[0].lower()} cerró en {pct(PCT)} (meta del mes ≤{META_MES}%: ' + ('cumplida' if META_OK else 'no alcanzada') + '). '
+          'Corto plazo: comparar los últimos 3 meses. Largo plazo: mirar el gráfico de 12 meses completo, ahora con el mes revelado.')
 
 # ================================================================== 7. MENSAJE FINAL
 sl = new_slide(); base(sl, None, None, tag=False)
