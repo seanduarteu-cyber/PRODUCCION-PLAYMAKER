@@ -3908,13 +3908,13 @@ const PMK_ACCESO = (() => {
     // short o calza: si se definió que no lleva número, la hoja va sin esa columna; si lleva, siempre con ella
     const lleva = numeroOpcional(fi.id) ? llevaNumero(f, fi.id) : null;
     const conNumero = lleva !== null ? lleva : (!!fi.p.estampado || orden.some(d => String(d.numero || '').trim()));
+    // orden de las columnas: #, calce (masculino, femenino o infantil), talla, manga, número y nombre a estampar
     const filas = orden.map((d, i) => '<tr><td class="chk"></td><td class="num">' + (i + 1) + '</td>' +
-      (conNombre ? '<td><b>' + esc(d.estampado || '') + '</b></td>' : '') +
-      '<td>' + (d.calce === 'Masculino' ? 'Masculino' : d.calce === 'Femenino' ? 'Femenino' : '—') + '</td>' +
-      '<td>' + (d.calce === 'Infantil' ? 'Infantil' : 'Adulto') + '</td>' +
+      '<td>' + (['Masculino', 'Femenino', 'Infantil'].indexOf(d.calce) >= 0 ? d.calce : '—') + '</td>' +
       '<td class="num"><b>' + esc(tallasDe(d)[fi.id] || '') + '</b></td>' +
       (conManga ? '<td>' + esc(mangaEn(f, fi.id, d)) + '</td>' : '') +
       (conNumero ? '<td class="num"><b>' + esc(d.numero || '') + '</b></td>' : '') +
+      (conNombre ? '<td><b>' + esc(d.estampado || '') + '</b></td>' : '') +
       (hayObs ? '<td class="obs">' + esc(d.obs || '') + '</td>' : '') + '</tr>').join('');
 
     // números repetidos dentro de esta ficha (con el nombre estampado, si lo llevan)
@@ -3944,8 +3944,8 @@ const PMK_ACCESO = (() => {
       (fi.p.origen ? '' : '<h3>' + tit('Despiece y telas', true) + '</h3>' + despiece) +
       (rep.length ? '<div class="alerta">⚠ Número repetido: ' + rep.map(nu => 'N° ' + esc(nu) + ' (' + porNum[nu].length + ' veces' + (porNum[nu].some(Boolean) ? ': ' + esc(porNum[nu].map(x => x || 'sin nombre').join(', ')) : '') + ')').join(' · ') + '</div>' : '') +
       '<h3>Detalle de ' + (nd ? esc(nd) + ' · ' : '') + esc(fi.titulo.toLowerCase()) + (fi.grupo ? ' · ' + fi.grupo.toLowerCase() : '') + '</h3>' +
-      '<table class="tp"><thead><tr><th class="chk">✓</th><th>#</th>' + (conNombre ? '<th>Nombre a estampar</th>' : '') + '<th>Calce</th><th>Adulto / infantil</th><th class="num">Talla</th>' +
-        (conManga ? '<th>Manga</th>' : '') + (conNumero ? '<th class="num">N°</th>' : '') +
+      '<table class="tp"><thead><tr><th class="chk">✓</th><th>#</th><th>Calce</th><th class="num">Talla</th>' +
+        (conManga ? '<th>Manga</th>' : '') + (conNumero ? '<th class="num">N°</th>' : '') + (conNombre ? '<th>Nombre a estampar</th>' : '') +
         (hayObs ? '<th>Observaciones</th>' : '') + '</tr></thead><tbody>' + filas + '</tbody></table>' +
       '<div class="fp-com"><h3>' + tit('Comentarios') + '</h3><div class="caja">' + esc(sp.nota || '') + '</div></div>' +
       '<div class="firma"><div>Corte</div><div>Confección</div><div>Control de calidad</div></div>' +

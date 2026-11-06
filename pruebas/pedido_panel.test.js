@@ -64,6 +64,12 @@ const datos = { tablas: { fichas_tallas: [ficha], fichas_detalle: personas, fich
   ok(bl && /blanca\.jpg/.test(bl.img) && /Infantil\s+1/.test(bl.tabla), 'hoja de medias blancas: su montaje e Infantil 1');
   const arqH = hojas.find(h => /Arquero/.test(h.d));
   ok(arqH && /arq\.jpg/.test(arqH.img), 'el arquero sale en su propia hoja con su montaje (es otro diseño)');
+  // detalle de la hoja: #, calce, talla, manga, número y nombre a estampar (sin columna adulto / infantil)
+  const det = await p.$$eval('section.fp:not(.portada)', ss => { const s = ss.find(x => /Jugadores/.test((x.querySelector('.diseno-hoja') || {}).textContent || ''));
+    const tb = s && s.querySelector('table.tp'); return tb ? { th: [...tb.querySelectorAll('th')].map(x => x.textContent), fila: [...tb.querySelectorAll('tbody tr')].map(r => [...r.children].map(c => c.textContent))
+      .find(c => c[6]) } : null; });
+  ok(det && det.th.join('|') === '✓|#|Calce|Talla|Manga|N°|Nombre a estampar', 'columnas del detalle: ' + (det ? det.th.join(' | ') : 'sin tabla'));
+  ok(det && det.fila && det.fila[2] === 'Masculino' && /^[SML]$/.test(det.fila[3]) && det.fila[4] === 'Corta' && /^\d+$/.test(det.fila[5]) && /^JUG\d+$/.test(det.fila[6]), 'fila del detalle en ese orden: ' + (det && det.fila ? det.fila.join(' | ') : ''));
   const portada = await p.innerText('section.portada');
   ok(!/Arqueros o líberos/.test(portada) && /10 pares/.test(portada), 'portada: sin fila de arqueros; las medias en pares');
 

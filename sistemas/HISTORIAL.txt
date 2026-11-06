@@ -1,3 +1,4 @@
+2026-11-06  Ficha de producción: el detalle va en orden #, calce, talla, manga, N° y nombre a estampar; sin la columna adulto / infantil (el calce dice Infantil)
 2026-11-06  Panel: «Cambiar molde» en cada diseño (Editar prendas y moldes) sin perder personas, tallas, montajes ni ficha técnica; el despiece pasa al molde nuevo con sus telas y la ficha técnica avisa para revisar
 2026-11-06  E02 (rugby sin mangas) pasa a código RB-HOMUCC03 en los tres sistemas; SQL 19B lo cambia en la base y en las fichas guardadas
 2026-11-06  Mangas según el código del molde: …01 manga clásica y …02 manga raglán (corta o larga), …03 sin mangas; Planificación ofrece manga larga solo en esas y el cliente elige entre corta y larga
