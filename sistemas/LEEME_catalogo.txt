@@ -22,7 +22,9 @@ GUÍAS DE TALLAS
 MANGAS (según el código del molde)
 - …01 = manga clásica y …02 = manga raglán: se hacen en manga corta o larga.
 - …03 = sin mangas (básquetbol, vóleibol, hockey 64 y 65, musculosas 81 y 82): solo sin mangas.
-- La E02 (RB-HOMUCC02) es sin mangas según su guía, aunque su código termina en 02: se trata como sin mangas.
+- La E02 es sin mangas, así que su código pasa a RB-HOMUCC03 (antes RB-HOMUCC02, igual que la E01). SQL 19B cambia el
+  código en la base y en las fichas ya guardadas. En el PDF del catálogo y en su guía de tallas todavía dice RB-HOMUCC02:
+  hay que corregirlo en el catálogo original. Las fichas antiguas con RB-HOMUCC02|102 se siguen leyendo bien.
 - SQL 19A deja la descripción de cada camiseta con su manga (ej: «Fútbol, manga clásica, cuello redondo»).
 - Planificación: la lista «Manga larga» trae solo las camisetas …01 y …02; cada camiseta dice «manga corta» o «manga larga».
   El cliente elige manga corta o larga solo en camisetas …01 y …02; en las …03 no se pregunta.

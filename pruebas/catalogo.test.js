@@ -80,7 +80,9 @@ async function plan(b, modo) {
     const doc = new DOMParser().parseFromString('<select>' + opcionesMolde('') + '</select>', 'text/html');
     const g = [...doc.querySelectorAll('optgroup')].find(x => /Manga larga/.test(x.label));
     return { ml: g ? [...g.querySelectorAll('option')].map(o => o.value) : [], n01: nombrePrenda('01 · FUTMUJU01'), n01ml: nombrePrenda('01 · FUTMUJU01 · ML'),
-      n34: nombrePrenda('34 · BKHOMV03'), clave34: claveDeFicha('BKHOMV03|34', 'Larga'), clave18: claveDeFicha('FUTHOMU02|18', 'Larga') };
+      n34: nombrePrenda('34 · BKHOMV03'), clave34: claveDeFicha('BKHOMV03|34', 'Larga'), clave18: claveDeFicha('FUTHOMU02|18', 'Larga'),
+      e02: claveMolde(102), e02vieja: claveVigente('E02 · RB-HOMUCC02'), e02sel: /value="E02 · RB-HOMUCC03" selected/.test(opcionesMolde('E02 · RB-HOMUCC02')),
+      e02tarifa: (() => { const t = TARIFAS; TARIFAS = { 'E02 · RB-HOMUCC02': 4321 }; const v = tarifaDe('E02 · RB-HOMUCC03'); TARIFAS = t; return v; })() };
   });
   await p.evaluate(() => { TAB = 'moldes'; renderTabs(); renderVista(); }); await p.waitForTimeout(500);
   r.titulos = await p.$$eval('#view-moldes th[colspan]', xs => xs.map(x => x.textContent));
@@ -149,6 +151,8 @@ function sinMezcla(r, cuando) {
   ok(mg.n01 === 'Fútbol, manga clásica, cuello redondo · manga corta' && mg.n01ml === 'Fútbol, manga clásica, cuello redondo · manga larga', 'molde 01: «' + mg.n01 + '» y «' + mg.n01ml + '»');
   ok(mg.n34 === 'Básquetbol, sin mangas, cuello v', 'molde 34 (…03): «' + mg.n34 + '», sin manga corta ni larga');
   ok(mg.clave34 === '34 · BKHOMV03' && mg.clave18 === '18 · FUTHOMU02 · ML', 'ficha con manga larga: el 18 pasa a «· ML»; el 34 (sin mangas) no');
+  ok(mg.e02 === 'E02 · RB-HOMUCC03' && mg.e02vieja === 'E02 · RB-HOMUCC03' && mg.e02sel && mg.e02tarifa === 4321,
+    'E02 es RB-HOMUCC03 (sin mangas); un pedido o una tarifa guardados con RB-HOMUCC02 siguen valiendo');
   ok(r.guia83 === 'guias/molde-83.jpg' && r.guiaServida === 200 && r.guiasArchivo === 95, '«Ver guía» abre la guía del catálogo que viene con el sitio (' + r.guiasArchivo + ' de 95 en la carpeta guias)');
   ok(r.filas[0] === '01' && r.filas.includes('83') && r.filas.includes('84') && r.filas.length === 95, '«Moldes vigentes»: los 95, desde el 01');
   ok(r.buscaHockey.join() === '64,65,E06,E07,E08,E09,84', 'buscar «hockey» encuentra la sección completa (' + r.buscaHockey.join(',') + ')');

@@ -100,7 +100,7 @@ with cat(numero, codigo, deporte, orden) as (values
   (62, 'RB-HOMCL02', 'Rugby', 760),
   (63, 'RBMUJCL02', 'Rugby', 770),
   (101, 'RB-HOMUCC02', 'Rugby', 780),
-  (102, 'RB-HOMUCC02', 'Rugby', 790),
+  (102, 'RB-HOMUCC03', 'Rugby', 790),
   (103, 'RBHOMMA02', 'Rugby', 800),
   (110, 'RB-HOMMA02', 'Rugby', 810),
   (111, 'RB-MUJU02', 'Rugby', 820),

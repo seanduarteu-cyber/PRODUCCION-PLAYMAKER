@@ -87,7 +87,7 @@ with cat(numero, etiqueta, codigo, seccion, orden) as (values
   (62, '62', 'RB-HOMCL02', 'Rugby', 76),
   (63, '63', 'RBMUJCL02', 'Rugby', 77),
   (101, 'E01', 'RB-HOMUCC02', 'Rugby', 78),
-  (102, 'E02', 'RB-HOMUCC02', 'Rugby', 79),
+  (102, 'E02', 'RB-HOMUCC03', 'Rugby', 79),
   (103, 'E03', 'RBHOMMA02', 'Rugby', 80),
   (110, 'E10', 'RB-HOMMA02', 'Rugby', 81),
   (111, 'E11', 'RB-MUJU02', 'Rugby', 82),

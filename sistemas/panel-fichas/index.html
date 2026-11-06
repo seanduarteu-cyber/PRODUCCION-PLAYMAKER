@@ -769,7 +769,7 @@ const PMK_ACCESO = (() => {
     {n:62,c:'RB-HOMCL02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:760,e:'62 · RB-HOMCL02 — Rugby, manga raglán, cuello clásico'},
     {n:63,c:'RBMUJCL02',d:'Rugby',ca:'Femenino',i:0,t:'polera',o:770,e:'63 · RBMUJCL02 — Rugby, manga raglán, cuello clásico'},
     {n:101,c:'RB-HOMUCC02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:780,e:'E01 · RB-HOMUCC02 — Rugby, manga raglán con costados, cuello redondo'},
-    {n:102,c:'RB-HOMUCC02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:790,e:'E02 · RB-HOMUCC02 — Rugby, sin mangas, cuello redondo'},
+    {n:102,c:'RB-HOMUCC03',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:790,e:'E02 · RB-HOMUCC03 — Rugby, sin mangas, cuello redondo'},
     {n:103,c:'RBHOMMA02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:800,e:'E03 · RBHOMMA02 — Rugby, manga raglán, cuello mao'},
     {n:110,c:'RB-HOMMA02',d:'Rugby',ca:'Masculino',i:0,t:'polera',o:810,e:'E10 · RB-HOMMA02 — Rugby, manga raglán, cuello mao'},
     {n:111,c:'RB-MUJU02',d:'Rugby',ca:'Femenino',i:0,t:'polera',o:820,e:'E11 · RB-MUJU02 — Rugby, manga raglán, cuello mao'},
@@ -2756,7 +2756,9 @@ const PMK_ACCESO = (() => {
     (valor && lista.indexOf(valor) < 0 ? '<option value="' + esc(valor) + '" selected>' + esc(valor) + '</option>' : '') + '</select>';
   const piezasDe = m => Array.isArray(m.piezas) ? m.piezas : JSON.parse(m.piezas || '[]');
   // sin el SQL 17A (sin orden en la base) la sección y el orden salen del catálogo ordenado, si el código coincide
-  const catDeFila = r => r.orden == null && CAT_RESPALDO[r.numero] && CAT_RESPALDO[r.numero].c === r.codigo ? CAT_RESPALDO[r.numero] : null;
+  // códigos que cambió el catálogo (N° → código anterior): la base aún sin actualizar se reconoce igual
+  const CODIGOS_ANTERIORES = { 102: 'RB-HOMUCC02' };   // E02 es sin mangas: RB-HOMUCC02 → RB-HOMUCC03 (SQL 19B)
+  const catDeFila = r => r.orden == null && CAT_RESPALDO[r.numero] && (CAT_RESPALDO[r.numero].c === r.codigo || CODIGOS_ANTERIORES[r.numero] === r.codigo) ? CAT_RESPALDO[r.numero] : null;
   const filaAMolde = r => { const cat = catDeFila(r);
     return { n: r.numero, c: r.codigo, d: cat ? cat.d : (r.deporte || ''), ca: r.calce || 'Unisex', i: r.infantil ? 1 : 0,
       t: r.prenda === 'camiseta' ? 'polera' : r.prenda, o: r.orden != null ? r.orden : cat ? cat.o : null, e: etqMolde(r.numero) + ' · ' + r.codigo + ' — ' + r.descripcion, piezas: piezasDe(r) }; };
