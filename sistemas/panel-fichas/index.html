@@ -866,7 +866,7 @@ const PMK_ACCESO = (() => {
         const opt = { method: m, headers: Object.assign({ apikey: key, Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' }, extra || {}) };
         if (body) opt.body = JSON.stringify(body);
         const r = await fetch(url + '/rest/v1/' + path, opt);
-        if (!r.ok) throw new Error('Supabase ' + r.status + ': ' + (await r.text()).slice(0, 160));
+        if (!r.ok) throw new Error('Supabase ' + r.status + ': ' + (await r.text()).slice(0, 600));   // completo: trae el nombre de la regla que falló
         const t = await r.text();
         return t ? JSON.parse(t) : null;
       },
@@ -1966,7 +1966,7 @@ const PMK_ACCESO = (() => {
         st.lineas = null; st.importado = null; st.parte = null; st.error = ''; st.crearCab = null;
         st.pant = 'creada'; render();
       } catch (e) {
-        st.error = /duplicate|already exists/i.test(e.message) ? 'Ya existe una ficha con la referencia ' + ref + '.' : 'No se pudo crear. ' + e.message.slice(0, 120);
+        st.error = /duplicate|already exists/i.test(e.message) ? 'Ya existe una ficha con la referencia ' + ref + '.' : 'No se pudo crear. ' + e.message.slice(0, 600);
         b.disabled = false; render();
       }
     });
@@ -2122,7 +2122,7 @@ const PMK_ACCESO = (() => {
         }
         await sincronizarAvisos(fn, dets);
         st.ficha = fn; st.lineas = null; st.specsBorrador = null; st.error = ''; st.pant = 'ficha'; render();
-      } catch (e) { st.error = 'No se pudo guardar. ' + e.message.slice(0, 120); b.disabled = false; render(); }
+      } catch (e) { st.error = 'No se pudo guardar. ' + e.message.slice(0, 600); b.disabled = false; render(); }
     });
   }
 
@@ -2576,7 +2576,7 @@ const PMK_ACCESO = (() => {
         await API.fechasFicha(f.ref, fi, fc);
         st.ficha = Object.assign({}, f, { specs: specs, entrega_interna: fi || null, entrega_cliente: fc || null });
         st.specsBorrador = null; st.error = ''; st.pant = 'ficha'; render();
-      } catch (e) { st.error = 'No se pudo guardar. ' + (e.message || '').slice(0, 120); b.disabled = false; render(); }
+      } catch (e) { st.error = 'No se pudo guardar. ' + (e.message || '').slice(0, 600); b.disabled = false; render(); }
     });
 
     const file = document.getElementById('file-montaje'), fileR = document.getElementById('file-reemplazo');
@@ -2945,7 +2945,7 @@ const PMK_ACCESO = (() => {
         st.moldes = st.moldes.filter(m => m.numero !== fila.numero).concat([Object.assign({ orden: antes ? antes.orden : null }, fila)]);
         MOLDES = moldesVigentes(st.moldes);
         st.moldeEdit = null; st.error = ''; render();
-      } catch (e) { st.error = 'No se pudo guardar. ' + (e.message || '').slice(0, 120); render(); }
+      } catch (e) { st.error = 'No se pudo guardar. ' + (e.message || '').slice(0, 600); render(); }
     });
   }
 
@@ -3203,7 +3203,7 @@ const PMK_ACCESO = (() => {
           else await API.editarPersona(ep.id, datos);
           await sincronizarAvisos(f, await API.detalles(f.ref));
           st.editPersona = null; render();
-        } catch (e) { ep.error = 'No se pudo guardar. ' + (e.message || '').slice(0, 120); render(); }
+        } catch (e) { ep.error = 'No se pudo guardar. ' + (e.message || '').slice(0, 600); render(); }
       });
     }
     app.querySelectorAll('[data-arq]').forEach(b => b.addEventListener('click', async () => {
@@ -3504,7 +3504,7 @@ const PMK_ACCESO = (() => {
         await render(); window.scrollTo({ top: 0 });
       } catch (e) {
         b.disabled = false; b.textContent = 'Guardar cambios';
-        errEl.hidden = false; errEl.textContent = 'No se pudo guardar. ' + (e.message || '').slice(0, 160);
+        errEl.hidden = false; errEl.textContent = 'No se pudo guardar. ' + (e.message || '').slice(0, 600);
       }
     });
     const bNo = document.getElementById('ed-no-devolver');
