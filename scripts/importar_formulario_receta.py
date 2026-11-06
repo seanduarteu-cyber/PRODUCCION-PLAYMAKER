@@ -85,7 +85,7 @@ for base, d in grupo('MOLDE__').items():
     for n in (1, 2, 3):   # marcadas por tela (hojas de despiece)
         mm = [f"{k} {d[f'm{n}_{k}']}" for k in ('tela', 'ancho', 'metros', 'prendas', 'aprov') if d.get(f'm{n}_{k}')]
         if any(d.get(f'm{n}_{k}') for k in ('ancho', 'metros', 'prendas', 'aprov')): marc.append(f'marcada {n}: ' + ' '.join(mm))
-        MARCADAS[(code, n)] = (d.get(f'm{n}_tela'), num(d.get(f'm{n}_ancho')))
+        MARCADAS[(code, n)] = (d.get(f'm{n}_tela'), num(d.get(f'm{n}_ancho')), num(d.get(f'm{n}_aprov')))
     if any(d.get(k) for k in ('marcada_metros', 'marcada_prendas', 'aprovechamiento', 'suma_piezas', 'obs')) or any(x.startswith('marcada ') and ':' in x for x in marc):
         nota = 'Marcada ' + (d.get('fecha') or '') + ': ' + ', '.join(marc).replace('marcada_', '').replace('_', ' ')
         old = str(M.cell(r, 17).value or '')
@@ -109,7 +109,8 @@ for base, d in sorted(grupo('PZA__').items()):
         r = libres.pop(0); poner(D, r, 1, code, 'molde nuevo en despiece'); fm.append(r)
     poner(D, r, 2, d['pieza'].strip(), f'pieza {code}'); poner(D, r, 3, num(d.get('cant')), f"cant. {code} {d['pieza']}")
     poner(D, r, 4, num(d.get('metros')), f"metros {code} {d['pieza']}"); poner(D, r, 5, d.get('tela'), f"tela {code} {d['pieza']}")
-    mt, ma = MARCADAS.get((code, mn), (None, None))
+    mt, ma, mp = MARCADAS.get((code, mn), (None, None, None))
+    if mp: poner(D, r, 10, mp / 100 if mp > 1 else mp, f"aprovechamiento de la marcada {code} {d['pieza']}")
     if mt and not d.get('tela'): poner(D, r, 5, mt.strip(), f"tela {code} {d['pieza']} (de la marcada {mn})")
     poner(D, r, 9, num(d.get('ancho')) or ma, f"ancho de la marcada {code} {d['pieza']}")
     if d.get('sublima'): poner(D, r, 6, 'Sí' if d['sublima'].strip().upper().startswith('S') else 'No', f"sublima {code} {d['pieza']}")

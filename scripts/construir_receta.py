@@ -379,5 +379,8 @@ wf.cell(rk + 10, 2, 'No van aquí (están en los gastos generales del sistema de
 wf.freeze_panes = 'A8'
 
 wb._sheets = [wb['Ficha'], wb['Moldes'], wb['Despiece'], wb['Precios']]
+import importlib.util, os   # columnas de retazos (merma de la marcada, ya incluida en la tela)
+_sp = importlib.util.spec_from_file_location('retazos', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'retazos.py'))
+_rz = importlib.util.module_from_spec(_sp); _sp.loader.exec_module(_rz); _rz.agregar(wb)
 wb.save(DST)
 print('ok', len(rec6), 'moldes', fila - F0, 'piezas', len(telas6), 'telas')
