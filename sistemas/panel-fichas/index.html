@@ -462,6 +462,17 @@ tr:last-child td { border-bottom: none; }
 .lm-item.confirmar input { border-color: var(--naranja); }
 .lm-falta { font-size: 12px; color: var(--naranja); font-weight: 600; margin-top: 2px; }
 .lm-botones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+/* cambiar el molde de un diseño (mismo diseño: se conservan personas, tallas, montajes y ficha técnica) */
+.lm-acc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.linea-item .lm-acc .btn.chico, .linea-item .lm-cambio .btn.chico { width: auto; max-width: 100%; height: auto; margin: 0; padding: 6px 10px; font-size: 12px; color: var(--negro); flex: none; white-space: normal; }
+.lm-cambio { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; color: var(--naranja); font-weight: 600; }
+.lm-cambio b { color: var(--negro); }
+.lm-calce { margin-top: 8px; font-size: 12px; }
+.lm-calce .chips { margin: 6px 0 4px; }
+.linea-item .chip input { width: auto; min-height: 0; }
+.lm-item.cambiado { border-color: var(--negro); }
+.lm-item.reemplazando { box-shadow: 0 0 0 2px var(--naranja); }
+.cat-actual { font-size: 12.5px; margin-bottom: 10px; line-height: 1.45; }
 .cat-mol { margin-top: 14px; border: 1px solid var(--linea); border-radius: 14px; padding: 12px; background: var(--blanco); }
 .cat-tit { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
 .cat-tit2 { font-weight: 600; font-size: 13px; margin-bottom: 6px; }
@@ -907,6 +918,8 @@ const PMK_ACCESO = (() => {
     // editar todo el listado: un envío con las personas que cambian y otro con las que se eliminan
     guardarPersonas: ds => sinDisenosSiFalta(x => FICHAS.upsert('fichas_detalle', x), ds),
     borrarPersonas: ids => FICHAS.del('fichas_detalle?id=in.' + encodeURIComponent('(' + ids.map(id => '"' + String(id).replace(/"/g, '') + '"').join(',') + ')')),
+    // al cambiar el molde de un diseño a otro calce: esas personas pasan al calce nuevo (nombre, número y tallas no cambian)
+    calcePersonas: (ids, calce) => FICHAS.patch('fichas_detalle?id=in.' + encodeURIComponent('(' + ids.map(id => '"' + String(id).replace(/"/g, '') + '"').join(',') + ')'), { calce: calce }),
     // devolver la ficha al cliente para que revise los cambios y la vuelva a confirmar
     devolverFicha: (ref, specs) => FICHAS.patch('fichas_tallas?ref=' + eq(ref), { estado: 'abierto', confirmado_at: null, specs: specs }),
     estadoFicha: (ref, e) => FICHAS.patch('fichas_tallas?ref=' + eq(ref),
@@ -1061,6 +1074,17 @@ const PMK_ACCESO = (() => {
       ? { molde: etqMolde(base.n) + ' · ' + base.c, piezas: base.piezas.map(q => ({ pieza: q.pieza, cant: q.cant || 1, tela: q.tela || '', detalle: '' })) }
       : null;
   };
+  // al cambiar el molde de un diseño: las piezas del molde nuevo, con la tela y el proceso de las piezas que se llaman igual
+  // (si el molde nuevo aún no tiene despiece en el catálogo, quedan las piezas de antes, para revisarlas)
+  const despieceConTelas = (sp, antes) => {
+    const nuevo = despieceInicial(sp); if (!nuevo) return antes || null;
+    const norm = s => String(s || '').trim().toLowerCase(), prev = antes && Array.isArray(antes.piezas) ? antes.piezas.filter(q => q && typeof q === 'object') : [];
+    nuevo.piezas.forEach(q => { const a = prev.find(x => norm(x.pieza) === norm(q.pieza)); if (a) { if (a.tela) q.tela = a.tela; if (a.detalle) q.detalle = a.detalle; } });
+    return nuevo;
+  };
+  // ¿el despiece guardado es de otro molde que el actual? (su etiqueta: «18 · FUTHOMU02»)
+  const despieceDeOtroMolde = (sp, dp) => { const base = moldeBase(sp); if (!base || !dp || !dp.molde) return false;
+    return String(dp.molde).split(' · ')[0].replace(/^N°\s*/, '').trim() !== etqMolde(base.n); };
   const prendaDeMolde = m => m.t === 'polera' ? 'camiseta' : m.t;
   const calceDeMolde = m => m.i ? 'Infantil' : (m.ca === 'Femenino' ? 'Femenino' : 'Masculino');
   const prendasSinMolde = () => PRENDAS.filter(p => p.origen);
@@ -1085,7 +1109,9 @@ const PMK_ACCESO = (() => {
   function editorMoldesProyecto(lineas, dets, imgs) {
     let h = '<div id="lineas">';
     if (!lineas.length) h += '<div class="lm-vacio">Aún no hay moldes. Agrégalos desde el catálogo.</div>';
-    const cargadas = l => dets ? dets.filter(d => tallasDe(d)[l.prenda] && (!l.calce || d.calce === l.calce)).length : null;
+    // personas cargadas en ese molde (si se cambió a otro calce y se pasan, también las del calce anterior)
+    const cargadas = l => dets ? dets.filter(d => tallasDe(d)[l.prenda] && (!l.calce || d.calce === l.calce || (l.antes && l.moverCalce && d.calce === l.antes.calce))).length : null;
+    const nomLinea = l => String(l.disNom || '').trim() || prendaDe(l.prenda).nom;
     lineas.forEach((l, i) => {
       let txt, sub;
       const med = l.tipo === 'prenda' && porCantidad(l.prenda);   // medias: diseño por cantidad, con montaje y pares por talla
@@ -1105,6 +1131,31 @@ const PMK_ACCESO = (() => {
         : '<div class="lm-sub">Mismo diseño: ' + esc(String(l.disNom || '').trim() || prendaDe(l.prenda).nom) + '</div>';
       const c = med ? null : cargadas(l);
       if (c != null) sub += ' · ' + c + (c === 1 ? ' cargada' : ' cargadas') + ' por el cliente';
+      // cambiar el molde (se eligió otro por error): sigue siendo el mismo diseño, con sus personas, tallas, montajes y ficha técnica
+      const esM = l.tipo === 'molde' || l.tipo === 'manual';
+      let cambio = '';
+      if (esM && l.antes) {
+        cambio = '<div class="lm-cambio">Molde cambiado · antes: <b>' + esc(moldeTxt(l.antes.valor)) + (l.antes.calce !== l.calce ? ' (' + esc(String(l.antes.calce).toLowerCase()) + ')' : '') + '</b>' +
+          '<button type="button" class="btn plano chico" data-deshacer-molde="' + i + '">Deshacer</button></div>';
+        const mover = dets && l.antes.calce !== l.calce ? dets.filter(d => tallasDe(d)[l.prenda] && d.calce === l.antes.calce) : [];
+        if (mover.length) {
+          const de = String(l.antes.calce).toLowerCase(), a = String(l.calce).toLowerCase(), escala = x => x === 'Infantil' ? 'infantil' : 'adulto';
+          // otras prendas de esas personas cuyo diseño no tiene molde en el calce nuevo
+          const otras = Array.from(new Set(mover.reduce((acc, d) => acc.concat(Object.keys(tallasDe(d)).filter(k => k !== l.prenda && tallasDe(d)[k] &&
+            lineas.some(x => x.prenda === k && esMoldeLinea(x)) && !lineas.some(x => x.prenda === k && esMoldeLinea(x) && x.calce === l.calce))), [])));
+          cambio += '<div class="lm-calce">' + mover.length + (mover.length === 1 ? ' persona de este diseño está cargada' : ' personas de este diseño están cargadas') +
+            ' como ' + esc(de) + ' y el molde nuevo es ' + esc(a) + '.<div class="chips">' +
+            [['1', 'Pasarlas a ' + a], ['0', 'Dejarlas como ' + de]].map(o => { const on = (l.moverCalce ? '1' : '0') === o[0];
+              return '<label class="chip' + (on ? ' on' : '') + '"><input type="radio" name="mc-' + i + '" data-mover-calce="' + i + '" value="' + o[0] + '"' + (on ? ' checked' : '') + '>' + esc(o[1]) + '</label>'; }).join('') + '</div>' +
+            (l.moverCalce ? '<div class="lm-nota">Conservan su nombre, número y tallas.</div>' : '<div class="lm-nota">Quedan en un calce sin molde en este diseño.</div>') +
+            (l.moverCalce && escala(l.antes.calce) !== escala(l.calce) ? '<div class="lm-falta">Sus tallas son de ' + escala(l.antes.calce) + ': después de guardar, cámbialas a tallas de ' +
+              escala(l.calce) + ' en «Editar el listado de personas» (nombres y números se conservan).</div>' : '') +
+            (l.moverCalce && otras.length ? '<div class="lm-falta">También llevan ' + otras.map(k => '«' + esc(nomLinea(lineas.find(x => x.prenda === k))) + '»').join(', ') +
+              ', que no tiene molde ' + esc(a) + ': si también está mal, cámbiale el molde.</div>' : '') + '</div>';
+        }
+      }
+      const acc = esM ? '<div class="lm-acc"><button type="button" class="btn plano chico" data-cambiar-molde="' + i + '">' +
+        (st.reemplazo === i ? 'Cancelar el cambio' : 'Cambiar molde') + '</button></div>' : '';
       const falta = !l.cant ? (med ? 'Define cuántos pares (o los pares por talla)' : 'Define cuántas prendas lleva este molde') : l.confirmar ? 'Cantidad sugerida: confírmala o cámbiala' : '';
       const ct = l.cants || {}, sumaM = sumaCant(ct);
       const grilla = med ? '<div class="lm-med"><div class="lm-med-t">Pares por talla <span>(opcional: si no los defines, los indica el cliente)</span></div>' +
@@ -1122,8 +1173,8 @@ const PMK_ACCESO = (() => {
           '<button type="button" data-mj-quitar="' + i + '|' + k + '" aria-label="Quitar montaje">×</button></span>').join('') +
         '<button type="button" class="btn plano chico" data-mj-linea="' + i + '">+ Adjuntar montaje (imagen o PDF)</button>' +
         ((l.mj || []).length ? '<span class="lm-mj-nota">Se sube al ' + (st.pant === 'crear' ? 'crear la ficha' : 'guardar') + '</span>' : '') + '</div>' : '';
-      h += '<div class="linea-item lm-item' + (falta ? ' confirmar' : '') + '" data-linea="' + i + '"><div class="lm-txt">' + nom + txt +
-        '<div class="lm-sub">' + sub + '</div>' + (falta ? '<div class="lm-falta">' + falta + '</div>' : '') + grilla + mj + '</div>' +
+      h += '<div class="linea-item lm-item' + (falta ? ' confirmar' : '') + (l.antes ? ' cambiado' : '') + (st.reemplazo === i ? ' reemplazando' : '') + '" data-linea="' + i + '"><div class="lm-txt">' + nom + txt +
+        '<div class="lm-sub">' + sub + '</div>' + (falta ? '<div class="lm-falta">' + falta + '</div>' : '') + cambio + acc + grilla + mj + '</div>' +
         '<input type="number" min="1" max="999" value="' + (l.cant || '') + '" placeholder="¿Cuántas?" data-campo="cant" aria-label="Unidades">' +
         '<button type="button" data-quitar="' + i + '" aria-label="Quitar">×</button></div>';
     });
@@ -1132,17 +1183,23 @@ const PMK_ACCESO = (() => {
       '<button class="btn plano chico" id="btn-sinmolde">+ Medias</button></div>';
   }
   function catalogoMoldes(lineas) {
-    const f = st.catMol || (st.catMol = { deporte: deporteProyecto(lineas), prenda: '', calce: '', q: '' });   // filtros del catálogo de moldes
+    // cambiar el molde de una línea: solo moldes de la misma prenda (el diseño sigue siendo el mismo)
+    const rl = st.reemplazo != null ? lineas[st.reemplazo] : null, tipoR = rl ? basePrenda(rl.prenda) : '';
+    const f = st.catMol || (st.catMol = rl ? { deporte: deporteDeLinea(rl) || deporteProyecto(lineas), prenda: tipoR, calce: rl.calce || '', q: '' }
+      : { deporte: deporteProyecto(lineas), prenda: '', calce: '', q: '' });   // filtros del catálogo de moldes
     const sel = (k, nom, ops) => '<label>' + nom + '<select data-cf="' + k + '"><option value="">Todos</option>' +
       ops.map(o => '<option value="' + esc(o[0]) + '"' + (f[k] === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>').join('') + '</select></label>';
     const deps = Array.from(new Set(MOLDES.map(m => m.d).filter(Boolean)));
     const tipos = Array.from(new Set(MOLDES.map(prendaDeMolde)));
     const q = f.q.trim().toLowerCase();
-    const lista = MOLDES.filter(m => (!f.deporte || m.d === f.deporte || (!paraTodoDeporte(f.deporte) && sirveATodos(m))) && (!f.prenda || prendaDeMolde(m) === f.prenda) &&
+    const lista = MOLDES.filter(m => (!f.deporte || m.d === f.deporte || (!paraTodoDeporte(f.deporte) && sirveATodos(m))) && (rl ? prendaDeMolde(m) === tipoR : (!f.prenda || prendaDeMolde(m) === f.prenda)) &&
       (!f.calce || calceDeMolde(m) === f.calce) && (!q || m.e.toLowerCase().indexOf(q) >= 0))
       .sort((a, b) => (f.deporte ? (b.d === f.deporte) - (a.d === f.deporte) : 0) || ordenMolde(a) - ordenMolde(b));
-    let h = '<div class="cat-mol" id="cat-mol"><div class="cat-tit">Catálogo de moldes</div><div class="cat-filtros">' +
-      sel('deporte', 'Deporte', deps.map(d => [d, d])) + sel('prenda', 'Prenda', tipos.map(t => [t, prendaDe(t).nom])) +
+    let h = '<div class="cat-mol" id="cat-mol"><div class="cat-tit">' + (rl ? 'Cambiar el molde de «' + esc(String(rl.disNom || '').trim() || prendaDe(rl.prenda).nom) + '»' : 'Catálogo de moldes') + '</div>' +
+      (rl ? '<div class="cat-actual">Molde actual: <b>' + esc(moldeTxt(valorMolde(rl))) + '</b> · ' + esc(rl.calce) + '.<br>Es el mismo diseño: se conservan las personas con sus nombres, números y tallas, ' +
+        'los montajes y la ficha técnica. El despiece se carga del molde nuevo (con la tela de las piezas que se llaman igual).</div>' : '') +
+      '<div class="cat-filtros">' +
+      sel('deporte', 'Deporte', deps.map(d => [d, d])) + (rl ? '<label>Prenda<select disabled><option>' + esc(prendaDe(tipoR).nom) + '</option></select></label>' : sel('prenda', 'Prenda', tipos.map(t => [t, prendaDe(t).nom]))) +
       sel('calce', 'Calce', CALCES.map(c => [c, c])) +
       '<label>Buscar<input data-cf="q" value="' + esc(f.q) + '" placeholder="Código o descripción"></label></div><div class="cat-lista">';
     if (!lista.length) h += '<div class="lm-vacio">No hay moldes con estos filtros. Si no existe, agrégalo abajo como otro.</div>';
@@ -1150,10 +1207,17 @@ const PMK_ACCESO = (() => {
       const pr = prendaDeMolde(m), ca = calceDeMolde(m), ya = lineas.filter(l => l.tipo === 'molde' && l.n === m.n).length;
       h += '<div class="cat-fila"><div class="lm-txt">' + partesMolde(m) + '<div class="lm-sub">' + esc(prendaDe(pr).nom) + ' · ' + ca +
         (ya ? ' · ya en la ficha' + (ya > 1 ? ' (' + ya + ' diseños)' : '') : '') + '</div></div>' +
+        (rl ? (rl.tipo === 'molde' && rl.n === m.n ? '<button class="btn chico plano" disabled>Molde actual</button>'
+          : '<button class="btn chico" data-usar-molde="' + m.n + '">Usar este molde</button>') + '</div>' :
         '<button class="btn chico' + (ya ? ' plano' : '') + '" data-add-molde="' + m.n + '"' +
         (ya ? ' title="Se agrega como otro diseño, con su propio nombre, telas, despiece, montaje y fecha de entrega"' : '') + '>' +
-        (ya ? 'Agregar otro diseño' : 'Agregar') + '</button></div>';
+        (ya ? 'Agregar otro diseño' : 'Agregar') + '</button></div>');
     });
+    if (rl) return h + '</div><div class="cat-otro"><div class="cat-tit2">¿No está en el catálogo? Usa otro</div>' +
+      '<label>Nombre completo del molde<input id="mo-nombre" maxlength="60" placeholder="Ej: FUTHOMP01 — Fútbol, cuello polo"></label>' +
+      '<div class="cat-filtros"><label>Calce<select id="mo-calce">' + CALCES.map(c => '<option' + (c === rl.calce ? ' selected' : '') + '>' + c + '</option>').join('') + '</select></label></div>' +
+      '<button class="btn plano chico" id="mo-usar">Usar este otro molde</button></div>' +
+      '<button class="btn plano chico" id="cat-cerrar">Cancelar el cambio de molde</button></div>';
     return h + '</div><div class="cat-otro"><div class="cat-tit2">¿No está en el catálogo? Agrega otro</div>' +
       '<label>Nombre completo del molde<input id="mo-nombre" maxlength="60" placeholder="Ej: FUTHOMP01 — Fútbol, cuello polo"></label>' +
       '<div class="cat-filtros"><label>Prenda<select id="mo-prenda">' + PRENDAS.filter(p => !p.origen).map(p => '<option value="' + p.id + '">' + esc(p.nom) + '</option>').join('') + '</select></label>' +
@@ -1162,6 +1226,7 @@ const PMK_ACCESO = (() => {
       '<button class="btn plano chico" id="cat-cerrar">Cerrar catálogo</button></div>';
   }
   function bindMoldesProyecto(lineas, vendido, alCambiar) {
+    if (st.catScroll) { st.catScroll = false; const cm = document.getElementById('cat-mol'); if (cm && cm.scrollIntoView) cm.scrollIntoView({ block: 'start' }); }
     const sync = () => {
       app.querySelectorAll('[data-linea]').forEach(div => {
         const l = lineas[+div.dataset.linea];
@@ -1204,7 +1269,36 @@ const PMK_ACCESO = (() => {
       return r > 0 ? r : null;
     };
     app.querySelectorAll('[data-linea] select, [data-linea] input').forEach(el => { el.addEventListener('change', sync); el.addEventListener('input', sync); });
-    app.querySelectorAll('[data-quitar]').forEach(b => b.addEventListener('click', () => { sync(); (lineas[+b.dataset.quitar].mj || []).forEach(liberarMontaje); lineas.splice(+b.dataset.quitar, 1); render(); }));
+    app.querySelectorAll('[data-quitar]').forEach(b => b.addEventListener('click', () => { sync(); (lineas[+b.dataset.quitar].mj || []).forEach(liberarMontaje); lineas.splice(+b.dataset.quitar, 1);
+      if (st.reemplazo != null) { st.reemplazo = null; st.catAbierto = st.pant === 'crear'; st.catMol = null; } render(); }));
+    // cambiar el molde de una línea: mismo diseño (mismo id), así que no se pierden personas, tallas, montajes ni ficha técnica
+    const reemplazar = (i, nueva) => {
+      const l = lineas[i]; if (!l) return;
+      const nom = String(l.disNom || '').trim() || prendaDe(l.prenda).nom;
+      if (lineas.some((x, k) => k !== i && x.prenda === l.prenda && esMoldeLinea(x) && x.calce === nueva.calce)) {
+        st.error = '«' + nom + '» ya tiene otro molde ' + nueva.calce.toLowerCase() + ': cambia ese, o quita una de las dos líneas.'; return; }
+      const antes = l.antes || { tipo: l.tipo, n: l.n, nombre: l.nombre, valor: valorMolde(l), calce: l.calce };
+      l.tipo = nueva.tipo; l.n = nueva.n; l.nombre = nueva.nombre; delete l.valor; l.calce = nueva.calce;
+      if (valorMolde(l) === antes.valor && l.calce === antes.calce) { delete l.antes; delete l.moverCalce; }
+      else { l.antes = antes; if (l.moverCalce == null) l.moverCalce = true; }
+      st.reemplazo = null; st.catAbierto = st.pant === 'crear'; st.catMol = null;   // al crear, el catálogo sigue abierto para agregar
+    };
+    app.querySelectorAll('[data-cambiar-molde]').forEach(b => b.addEventListener('click', () => {
+      sync(); st.error = ''; const i = +b.dataset.cambiarMolde;
+      if (st.reemplazo === i) { st.reemplazo = null; st.catAbierto = st.pant === 'crear'; } else { st.reemplazo = i; st.catAbierto = true; st.catScroll = true; }
+      st.catMol = null; render();
+    }));
+    app.querySelectorAll('[data-usar-molde]').forEach(b => b.addEventListener('click', () => {
+      sync(); st.error = ''; const m = MOLDES.find(x => x.n === +b.dataset.usarMolde); if (!m) return;
+      reemplazar(st.reemplazo, { tipo: 'molde', n: m.n, calce: calceDeMolde(m) }); render();
+    }));
+    app.querySelectorAll('[data-deshacer-molde]').forEach(b => b.addEventListener('click', () => {
+      sync(); const l = lineas[+b.dataset.deshacerMolde]; if (!l || !l.antes) return; const a = l.antes;
+      l.tipo = a.tipo; l.n = a.n; l.nombre = a.nombre; l.valor = a.valor; l.calce = a.calce; delete l.antes; delete l.moverCalce; render();
+    }));
+    app.querySelectorAll('[data-mover-calce]').forEach(el => el.addEventListener('change', () => {
+      sync(); const l = lineas[+el.dataset.moverCalce]; if (l) l.moverCalce = el.value === '1'; render();
+    }));
     // montaje en la línea del molde
     const fileMj = document.getElementById('mj-linea-file');
     app.querySelectorAll('[data-mj-linea]').forEach(b => b.addEventListener('click', () => { sync(); st.mjLinea = +b.dataset.mjLinea; fileMj.value = ''; fileMj.click(); }));
@@ -1229,8 +1323,13 @@ const PMK_ACCESO = (() => {
       liberarMontaje(l.mj[k]); l.mj.splice(k, 1); render();
     }));
     const clic = (id, fn) => { const e = document.getElementById(id); if (e) e.addEventListener('click', () => { sync(); st.error = ''; fn(); render(); }); };
-    clic('btn-catalogo', () => { st.catAbierto = true; });
-    clic('cat-cerrar', () => { st.catAbierto = false; });
+    clic('btn-catalogo', () => { if (st.reemplazo != null) st.catMol = null; st.reemplazo = null; st.catAbierto = true; });
+    clic('cat-cerrar', () => { const eraCambio = st.reemplazo != null; if (eraCambio) st.catMol = null; st.reemplazo = null; st.catAbierto = eraCambio && st.pant === 'crear'; });
+    clic('mo-usar', () => {
+      const nombre = document.getElementById('mo-nombre').value.replace(/\|/g, ' ').trim();
+      if (!nombre) { st.error = 'Escribe el nombre completo del molde.'; return; }
+      reemplazar(st.reemplazo, { tipo: 'manual', nombre: nombre, calce: document.getElementById('mo-calce').value });
+    });
     // cada línea de medias es un diseño propio (otro color, otro montaje): medias, medias_2…
     clic('btn-sinmolde', () => {
       const id = nuevoIdDiseno(lineas, 'medias');
@@ -1860,7 +1959,7 @@ const PMK_ACCESO = (() => {
       await cargarMoldes();
     }
     const imp = st.importado;
-    if (!st.lineas) { st.lineas = []; st.idsUsados = []; st.catMol = null; st.catAbierto = true; st.crearCab = {}; }
+    if (!st.lineas) { st.lineas = []; st.idsUsados = []; st.catMol = null; st.catAbierto = true; st.crearCab = {}; st.reemplazo = null; }
     // lo escrito en la cabecera se conserva al agregar o quitar moldes (la pantalla se vuelve a dibujar)
     const cab = st.crearCab || (st.crearCab = {});
     const vCab = k => cab[k] != null ? ' value="' + esc(cab[k]) + '"' : '';
@@ -2032,7 +2131,7 @@ const PMK_ACCESO = (() => {
       }
     }
     if (!st.lineas) {
-      st.lineas = lineasDeFicha(f, dets); st.catAbierto = false; st.catMol = null;
+      st.lineas = lineasDeFicha(f, dets); st.catAbierto = false; st.catMol = null; st.reemplazo = null;
       // ids con datos en la ficha: un diseño nuevo nunca los toma (heredaría personas, ficha técnica o montajes)
       st.idsUsados = Array.from(new Set(Object.keys(specsDe(f)).filter(k => k[0] !== '_').concat(items(f).map(i => i.prenda))
         .concat(dets.reduce((a, d) => a.concat(Object.keys(tallasDe(d))), [])).concat(imgsDe(f).reduce((a, i) => a.concat(prendasImg(i)), []))));
@@ -2073,7 +2172,19 @@ const PMK_ACCESO = (() => {
       const imgsQuedan = imgsAntes.map(i => { const ps = prendasImg(i); if (!ps.some(k => fueraIds.indexOf(k) >= 0)) return i;
         const r = ps.filter(k => fueraIds.indexOf(k) < 0); return r.length ? Object.assign({}, i, { prendas: r, prenda: r[0] }) : null; });
       const imgsFuera = imgsAntes.filter((i, k) => !imgsQuedan[k]);
-      const fuera = dets.filter(d => Object.keys(tallasDe(d)).some(k => tallasDe(d)[k] && necesitaMolde(k) && lineas.some(l => l.prenda === k && esMoldeLinea(l)) &&
+      // moldes cambiados: el mismo diseño (mismo id) con otro molde; sus personas, tallas, montajes y ficha técnica se conservan
+      const cambiados = lineas.filter(l => l.antes && esMoldeLinea(l) && nuevos.some(i => i.prenda === l.prenda));
+      const aMover = [];   // personas que pasan al calce del molde nuevo
+      cambiados.forEach(l => { if (l.antes.calce !== l.calce && l.moverCalce) dets.forEach(d => {
+        if (tallasDe(d)[l.prenda] && d.calce === l.antes.calce && !aMover.some(x => x.id === d.id)) aMover.push({ id: d.id, calce: l.calce }); }); });
+      const detsDesp = dets.map(d => { const m = aMover.find(x => x.id === d.id); return m ? Object.assign({}, d, { calce: m.calce }) : d; });
+      // los montajes marcados con el molde anterior quedan con el nuevo
+      const reemplazos = cambiados.map(l => ({ id: l.prenda, de: l.antes.valor, a: valorMolde(l) })).filter(r => r.de !== r.a);
+      const imgsFinal = imgsQuedan.map(i => { if (!i) return i; const ms = moldesImg(i); if (!ms.length) return i;
+        const nm = ms.map(v => { const r = reemplazos.find(x => x.de === v && prendasImg(i).indexOf(x.id) >= 0); return r ? r.a : v; });
+        return nm.some((v, k) => v !== ms[k]) ? Object.assign({}, i, { moldes: nm }) : i; });
+      const imgsCambian = imgsFinal.some((i, k) => i !== imgsQuedan[k]);
+      const fuera = detsDesp.filter(d => Object.keys(tallasDe(d)).some(k => tallasDe(d)[k] && necesitaMolde(k) && lineas.some(l => l.prenda === k && esMoldeLinea(l)) &&
         !lineas.some(l => l.prenda === k && esMoldeLinea(l) && l.calce === d.calce)));
       const avisos = [fueraIds.length && 'Se quita de la ficha: ' + fueraIds.map(k => nomDeSpecs(specs, k)).join(', ') + ' (con su ficha técnica' +
           (imgsFuera.length ? ' y ' + imgsFuera.length + (imgsFuera.length === 1 ? ' imagen de montaje' : ' imágenes de montaje') : '') + ').',
@@ -2099,6 +2210,16 @@ const PMK_ACCESO = (() => {
           sp.moldes[l.calce] = valorMolde(l); sp.unidades[l.calce] = l.cant;
           if (!sp.deporte) sp.deporte = deporteDeLinea(l);
         });
+        // molde cambiado: deporte del molde nuevo, despiece del molde nuevo (con las telas de las piezas que se llaman igual)
+        // y aviso en la ficha técnica para revisar despiece, telas y montaje
+        const camb = ls.filter(l => l.antes);
+        if (camb.length) {
+          const dN = ls.map(deporteDeLinea).find(Boolean); if (dN) sp.deporte = dN;
+          if (!esShort(it.prenda) && sp.despiece && despieceDeOtroMolde(sp, sp.despiece)) { const dp = despieceConTelas(sp, sp.despiece); if (dp) sp.despiece = dp; }
+          const prev = sp.moldeCambiado && typeof sp.moldeCambiado === 'object' && !sp.moldeCambiado.revisado ? sp.moldeCambiado.antes : '';
+          sp.moldeCambiado = { antes: prev || camb.map(l => moldeTxt(l.antes.valor)).join(' y '), ahora: camb.map(l => moldeTxt(valorMolde(l))).join(' y '),
+            at: new Date().toISOString(), por: st.usuario || '' };
+        }
         if (!sp.despiece) { const dp = despieceInicial(sp); if (dp) sp.despiece = dp; }
       });
       const b = document.getElementById('btn-guardar-items');
@@ -2106,8 +2227,15 @@ const PMK_ACCESO = (() => {
       try {
         await API.itemsYSpecs(f.ref, nuevos, specs);
         const fn = Object.assign({}, f, { items: nuevos, specs: specs });
-        if (imgsFuera.length) {
-          const quedan = imgsQuedan.filter(Boolean);
+        let detsFin = dets;
+        if (aMover.length) {
+          b.textContent = 'Pasando personas al calce nuevo…';
+          const porCalce = {}; aMover.forEach(x => (porCalce[x.calce] = porCalce[x.calce] || []).push(x.id));
+          try { for (const c of Object.keys(porCalce)) await API.calcePersonas(porCalce[c], c); detsFin = detsDesp; st.dets = detsDesp; }
+          catch (e3) { alert('Se cambió el molde, pero no se pudo pasar a las personas al calce nuevo (' + String(e3.message || '').slice(0, 100) + '). Cámbialo en «Editar el listado de personas».'); }
+        }
+        if (imgsFuera.length || imgsCambian) {
+          const quedan = imgsFinal.filter(Boolean);
           await API.imagenesFicha(f.ref, quedan); fn.imagenes = quedan;
           for (const i of imgsFuera) await borrarMontaje(i.path);
           for (const pp of Array.from(new Set(imgsFuera.map(i => i.pdfPath).filter(Boolean)))) if (!quedan.some(i => i.pdfPath === pp)) await borrarMontaje(pp);
@@ -2120,8 +2248,12 @@ const PMK_ACCESO = (() => {
           catch (e2) { alert('Se guardaron las prendas y moldes, pero no se pudieron subir los montajes (' + String(e2.message || '').slice(0, 100) + '). Súbelos en la ficha técnica, dentro de cada diseño.'); }
           lineas.forEach(l => (l.mj || []).forEach(liberarMontaje));
         }
-        await sincronizarAvisos(fn, dets);
-        st.ficha = fn; st.lineas = null; st.specsBorrador = null; st.error = ''; st.pant = 'ficha'; render();
+        await sincronizarAvisos(fn, detsFin);
+        st.ficha = fn; st.lineas = null; st.specsBorrador = null; st.error = ''; st.reemplazo = null;
+        // con un molde cambiado se abre la ficha técnica en ese diseño, para revisar despiece, telas y montaje
+        if (cambiados.length) { st.tecAbiertos = { especif: true }; cambiados.forEach(l => { st.tecAbiertos['p-' + l.prenda] = true; }); st.pant = 'tecnica'; }
+        else st.pant = 'ficha';
+        render();
       } catch (e) { st.error = 'No se pudo guardar. ' + e.message.slice(0, 600); b.disabled = false; render(); }
     });
   }
@@ -2195,7 +2327,7 @@ const PMK_ACCESO = (() => {
     const resumenPrenda = (it, sp) => {
       if (prendaDe(it.prenda).origen) return it.cant + ' u.' + (sp.origen ? ' · ' + sp.origen : '');
       const nM = Object.values(sp.moldes || {}).filter(Boolean).length;
-      return it.cant + ' u. · ' + tipoDe(it.prenda) + (nM ? '' : ' · falta molde') + ' · ' + (sp.tela ? sp.tela : 'falta tela') + (sp.entrega ? ' · entrega ' + fechaTxt(sp.entrega) : '');
+      return (sp.moldeCambiado ? 'molde cambiado: revisar · ' : '') + it.cant + ' u. · ' + tipoDe(it.prenda) + (nM ? '' : ' · falta molde') + ' · ' + (sp.tela ? sp.tela : 'falta tela') + (sp.entrega ? ' · entrega ' + fechaTxt(sp.entrega) : '');
     };
 
     // ---- montajes: cada diseño tiene los suyos (imagen o PDF; las páginas de un PDF van juntas, mismo «grupo») ----
@@ -2280,6 +2412,15 @@ const PMK_ACCESO = (() => {
       let np = 0; const paso = t => '<div class="paso-ft">' + (++np) + ' · ' + t + '</div>';
       h += '<details class="spec-prenda" data-sec="p-' + it.prenda + '"' + (abiertos['p-' + it.prenda] ? ' open' : '') + '><summary class="nom">' +
         '<span data-dis-tit="' + it.prenda + '">' + esc(p.origen ? nomDeSpecs(specs, it.prenda) : nomDMSpecs(specs, it.prenda)) + '</span><span class="r">' + esc(resumenPrenda(it, sp)) + '</span></summary>';
+
+      // molde cambiado en «Editar prendas y moldes»: se avisa hasta que alguien marque que lo revisó
+      if (sp.moldeCambiado && typeof sp.moldeCambiado === 'object') {
+        const mc = sp.moldeCambiado;
+        h += '<div class="aviso mc-aviso" data-mc="' + it.prenda + '">Se cambió el molde de este diseño' + (mc.antes ? ': antes <b>' + esc(mc.antes) + '</b>' : '') +
+          (mc.ahora ? ', ahora <b>' + esc(mc.ahora) + '</b>' : '') + (mc.at ? ' (' + esc(fechaTxt(mc.at)) + (mc.por ? ', ' + esc(mc.por) : '') + ')' : '') + '. ' +
+          'Las personas, sus tallas y los montajes se conservaron. Revisa el despiece, la tela de cada pieza y el montaje.' +
+          '<label class="chk-ft"><input type="checkbox" data-mc-ok="' + it.prenda + '"' + (mc.revisado ? ' checked' : '') + '> Ya lo revisé (se guarda con «Guardar ficha técnica»)</label></div>';
+      }
 
       // a · nombre del diseño y su fecha de entrega (las medias no son un diseño: se compran o salen de stock)
       if (!p.origen) {
@@ -2387,6 +2528,13 @@ const PMK_ACCESO = (() => {
         const lin = lineaFiltroTela(sp.tela);
         const listaT = telasPlanas(cat).filter(t => !lin || t === lin || t.indexOf(lin + ' · ') === 0);
         h += '<div class="despiece">' + paso('Despiece y tela de cada pieza');
+        // piezas cargadas de otro molde (se cambió el molde): se ofrece cargar las del nuevo, conservando las telas
+        if (dp && dp.piezas && dp.piezas.length && despieceDeOtroMolde(sp, dp)) {
+          h += '<div class="aviso" data-dp-otro="' + it.prenda + '">Estas piezas son del molde <b>' + esc(dp.molde) + '</b>, pero el molde ahora es <b>' + esc(etqMolde(base.n) + ' · ' + base.c) + '</b>. ' +
+            (base.piezas && base.piezas.length ? '<button class="btn plano chico" data-dp-nuevo="' + it.prenda + '">Cargar las piezas del molde nuevo</button>' +
+              '<div class="mini">Conserva la tela y el proceso de las piezas que se llaman igual.</div>'
+              : 'El molde nuevo aún no tiene despiece en el catálogo: revisa estas piezas aquí o defínelo en el catálogo.') + '</div>';
+        }
         if (base && base.piezas && base.piezas.length) {
           h += '<div class="ayuda">Piezas del molde ' + esc(base.e) + '. Ajusta la tela de cada pieza para este pedido.</div>' +
             '<button class="btn plano chico" data-dp-cargar="' + it.prenda + '">' + (dp && dp.piezas && dp.piezas.length ? 'Volver a cargar las piezas del molde' : 'Cargar piezas del molde') + '</button>';
@@ -2534,6 +2682,12 @@ const PMK_ACCESO = (() => {
       const dp = specs[el.dataset.dp] && specs[el.dataset.dp].despiece; if (!dp) return;
       const q = dp.piezas[+el.dataset.i]; q[el.dataset.k] = el.dataset.k === 'cant' ? Math.max(1, parseInt(el.value, 10) || 1) : el.value;
     }));
+    app.querySelectorAll('[data-dp-nuevo]').forEach(b => b.addEventListener('click', () => {
+      const pr = b.dataset.dpNuevo, dp = specs[pr] ? despieceConTelas(specs[pr], specs[pr].despiece) : null; if (dp) specs[pr].despiece = dp; render();
+    }));
+    app.querySelectorAll('[data-mc-ok]').forEach(cb => cb.addEventListener('change', () => {
+      const sp = specs[cb.dataset.mcOk]; if (sp && sp.moldeCambiado && typeof sp.moldeCambiado === 'object') sp.moldeCambiado.revisado = cb.checked;
+    }));
     app.querySelectorAll('[data-dp-quitar]').forEach(b => b.addEventListener('click', () => {
       const dp = specs[b.dataset.dpQuitar].despiece; dp.piezas.splice(+b.dataset.i, 1); render();
     }));
@@ -2571,6 +2725,8 @@ const PMK_ACCESO = (() => {
       const fc = document.getElementById('fe-cliente').value;
       // los shorts guardan su despiece simple (tela, proceso, aplicación y cierre) para Producción
       its.forEach(it => { if (esShort(it.prenda) && specs[it.prenda]) specs[it.prenda].despiece = despieceShort(specs[it.prenda]); });
+      // molde cambiado ya revisado: deja de avisarse
+      its.forEach(it => { const sp = specs[it.prenda]; if (sp && sp.moldeCambiado && (typeof sp.moldeCambiado !== 'object' || sp.moldeCambiado.revisado)) delete sp.moldeCambiado; });
       try {
         await API.specsFicha(f.ref, specs);
         await API.fechasFicha(f.ref, fi, fc);
@@ -3085,6 +3241,9 @@ const PMK_ACCESO = (() => {
 
     if (st.pest === 'avance') {
       h += avisoSinDiseno(f, dets);
+      const mcs = items(f).filter(it => (specsDe(f)[it.prenda] || {}).moldeCambiado);
+      if (mcs.length) h += '<div class="aviso" id="aviso-molde-cambiado">Se cambió el molde de ' + mcs.map(it => '«' + esc(nomDT(f, it.prenda)) + '»').join(', ') +
+        ': revisa su despiece, telas y montaje en la ficha técnica.<br><button class="btn plano chico" data-ir="tecnica" style="margin-top:8px">Ir a la ficha técnica</button></div>';
       h += '<div class="campo">' + bloqueAvance(f, dets) + '</div>';
       // Cada punto se resuelve tocándolo: no son casillas manuales, se cumplen con la acción que falta
       const chk = (ok, t, accion, etiqueta) => '<div style="display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 0;font-size:14px;border-bottom:1px solid #EEF0F2">' +
