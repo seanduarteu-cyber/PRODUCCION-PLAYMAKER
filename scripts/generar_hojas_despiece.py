@@ -5,6 +5,7 @@ from openpyxl import load_workbook
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import HexColor, black, white
+from reportlab.lib.utils import simpleSplit
 
 SRC, DST = sys.argv[1], sys.argv[2]
 PEDIDOS = sys.argv[3].split(',')          # números de molde, ej: 01,02,29,30,46,61
@@ -14,6 +15,15 @@ moldes = {str(M.cell(r, 1).value).split(' ')[0]: [M.cell(r, c).value for c in ra
 piezas = {}
 for r in range(5, 1005):
     if D.cell(r, 1).value: piezas.setdefault(D.cell(r, 1).value, []).append([D.cell(r, c).value for c in range(1, 7)])
+# moldes agrupados: los que usan el rendimiento de cada referencia (Moldes S = referencia, T = factor de capas, W = grupo)
+agrupa, grupo_de = {}, {}
+for r in range(5, 155):
+    a = M.cell(r, 1).value
+    if not a: continue
+    grupo_de[a] = M.cell(r, 23).value
+    if M.cell(r, 19).value:
+        f = M.cell(r, 20).value
+        agrupa.setdefault(M.cell(r, 19).value, []).append(a + (f' (x{f:g} capas)' if isinstance(f, (int, float)) and f > 1 else ''))
 telas = [P.cell(r, 1).value for r in range(5, 125) if P.cell(r, 1).value]
 AZUL = HexColor('#1F3864'); GRIS = HexColor('#595959'); FONDO = HexColor('#EAF1FB'); LINEA = HexColor('#BFBFBF')
 W, H = letter; X0, X1 = 36, W - 36
@@ -29,6 +39,26 @@ def txt(x, y, s, size=8.5, bold=False, color=black):
     c.setFont('Helvetica-Bold' if bold else 'Helvetica', size); c.setFillColor(color); c.drawString(x, y, s); c.setFillColor(black)
 def sec(y, t):
     c.setFillColor(HexColor('#D9D9D9')); c.rect(X0, y - 4, X1 - X0, 15, fill=1, stroke=0); txt(X0 + 4, y, t, 9, True); return y - 22
+def parrafo(x, y, s, w, size=8.5, bold=False, color=black, lead=11):
+    for ln in simpleSplit(s, 'Helvetica-Bold' if bold else 'Helvetica', size, w): txt(x, y, ln, size, bold, color); y -= lead
+    return y
+# ---- portada: qué hojas completar y qué moldes agrupa cada una
+c.setFillColor(AZUL); c.rect(0, H - 54, W, 54, fill=1, stroke=0)
+txt(X0, H - 30, 'RENDIMIENTO DE TELAS  -  HOJAS A COMPLETAR', 15, True, white)
+txt(X0, H - 45, f'{len(PEDIDOS)} hojas, una por molde de referencia. Medir en talla L. Su rendimiento se replica en los moldes que agrupa.', 8.5, False, white)
+y = H - 78
+for num_m in PEDIDOS:
+    v = moldes.get(num_m); code = v[0] if v else num_m
+    hijos = agrupa.get(code, [])
+    lineas = simpleSplit('Agrupa: ' + (', '.join(hijos) if hijos else 'ninguno (solo este molde)'), 'Helvetica', 7.5, X1 - X0 - 215)
+    if y - 11 * max(1, len(lineas)) < 40:
+        c.showPage(); y = H - 50
+    txt(X0, y, code, 8.5, True, AZUL); txt(X0, y - 9, str(grupo_de.get(code) or '')[:60], 6.5, False, GRIS)
+    for i, ln in enumerate(lineas): txt(X0 + 215, y - 10 * i, ln, 7.5)
+    y -= max(10 * len(lineas), 14) + 4
+    c.setStrokeColor(LINEA); c.line(X0, y + 6, X1, y + 6); c.setStrokeColor(black); y -= 6
+c.setFont('Helvetica', 7); c.setFillColor(GRIS); c.drawString(X0, 20, 'x2 capas = reversible: usa el mismo despiece con el doble de tela. La manga larga usa el consumo de la manga corta (se cobra aparte).'); c.setFillColor(black)
+c.showPage()
 ncorte = 0
 for num_m in PEDIDOS:
     v = moldes.get(num_m)
@@ -39,7 +69,12 @@ for num_m in PEDIDOS:
     txt(X0, H - 45, 'Completar en el plotter (marcada) y en el corte. Devolver el PDF o una foto para actualizar la receta.', 8.5, False, white)
     y = H - 76
     if v:
-        txt(X0, y, f'{code}', 13, True, AZUL); txt(X0 + 170, y + 1, f'{v[1] or ""}  -  {v[2] or ""} {v[3] or ""}', 9.5, False, GRIS); y -= 22
+        txt(X0, y, f'{code}', 13, True, AZUL); txt(X0 + 170, y + 1, f'{v[1] or ""}  -  {v[2] or ""} {v[3] or ""}', 9.5, False, GRIS); y -= 16
+        hijos = agrupa.get(code, [])
+        msg = ('ESTE RENDIMIENTO SE USA TAMBIEN EN: ' + ', '.join(hijos)) if hijos else 'Este molde no agrupa a otros: su rendimiento es solo para él.'
+        ln = simpleSplit(msg, 'Helvetica-Bold', 8, X1 - X0 - 12)
+        c.setFillColor(HexColor('#E2EFDA')); c.rect(X0, y - 11 * len(ln) + 7, X1 - X0, 11 * len(ln) + 4, fill=1, stroke=0); c.setFillColor(black)
+        y = parrafo(X0 + 6, y, msg, X1 - X0 - 12, 8, True, HexColor('#375623')) - 8
     else:
         txt(X0, y, 'Molde nuevo (no esta en la receta todavia):', 9.5, True)
         txt(X0 + 205, y, 'Codigo:', 8.5); campo(f'MOLDENUEVO_{num_m}__codigo', X0 + 240, y, 140, f'{num_m} · ')
