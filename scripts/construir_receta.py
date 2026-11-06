@@ -35,7 +35,7 @@ for r in v6['Precios'].iter_rows(min_row=5, max_row=120, max_col=8, values_only=
     if r[0]: (telas6 if r[1] == 'Tela' else avios6).append(r)
 conf6 = [r for r in v6['Confeccion'].iter_rows(min_row=5, max_row=100, max_col=2, values_only=True) if r[0]]
 rec6 = [r for r in v6['Recetas'].iter_rows(min_row=5, max_row=84, max_col=17, values_only=True) if r[0] and not str(r[0]).startswith('PRENDAS SIN')]
-# Moldes del catálogo vigente (CATALOGO_MOLDES_VIGENTES_INDEXADO_2.pdf) que no estaban: 55-65 y especiales E01-E09.
+# Moldes del catálogo vigente (Catalogo_ordenado_INDEXADO_disciplinas.pdf, nov. 2026) que no estaban en v6: 55-84, especiales E01-E11 y shorts de fútbol.
 # Piezas sugeridas según el dibujo de cada guía de tallas: revisar en la marcada.
 SM_, RG, CC, TAP, CU = ('Ribete cuello y sisas', 1), ('Manga raglán', 2), ('Cuello camisero', 1), ('Tapeta', 1), ('Tira de cuello', 1)
 DE, ES, MA, PL = ('Delantero', 1), ('Espalda', 1), ('Manga', 2), ('Paneles laterales', 2)
@@ -60,12 +60,42 @@ NUEVOS = [  # código, descripción, deporte, prenda, calce, confección, piezas
  ('E07 · C-FALDA CRUZADA', 'Calza-falda cruzada', 'Varios', 'Falda', 'Femenino', 'Calza-Falda', [('Falda delantero cruzado', 2), ('Falda trasero', 1), ('Calza pierna', 2), ('Pretina', 1)]),
  ('E08 · C-FALDA CON COSTADO', 'Calza-falda con costado', 'Varios', 'Falda', 'Femenino', 'Calza-Falda', [('Falda delantero', 1), ('Falda trasero', 1), ('Costados', 2), ('Calza pierna', 2), ('Pretina', 1)]),
  ('E09 · C-FALDA CON TAJALÍ', 'Calza-falda con tajalí', 'Varios', 'Falda', 'Femenino', 'Calza-Falda', [('Falda delantero', 1), ('Falda trasero', 1), ('Calza pierna', 2), ('Pretina', 1)]),
+ # Catálogo ordenado por disciplinas (noviembre 2026): moldes 66-84, E10, E11 y shorts de fútbol.
+ ('69F · FUT-SH FEMENINO', 'Short de fútbol (sin número en el catálogo)', 'Fútbol', 'Short', 'Femenino', 'Short De Futbol', None),
+ ('69I · FUT-SH INFANTIL', 'Short de fútbol infantil (sin número en el catálogo)', 'Fútbol', 'Short', 'Infantil Masculino', 'Short De Futbol', None),
+ ('72 · FUTMUJCCV02', 'Fútbol, raglán, cuello camisero en V', 'Fútbol', 'Camiseta', 'Femenino', 'Camiseta Futbol Molde 2026 (Raglan)', None),
+ ('73 · FUTHOMCCV02', 'Fútbol, raglán, cuello camisero en V', 'Fútbol', 'Camiseta', 'Masculino', 'Camiseta Futbol Molde 2026 (Raglan)', None),
+ ('74 · FUTINMUJCCV02', 'Fútbol infantil, raglán, cuello camisero en V', 'Fútbol', 'Camiseta', 'Infantil Femenino', 'Camiseta Futbol Molde 2026 (Raglan)', None),
+ ('75 · FUTINHOMCCV02', 'Fútbol infantil, raglán, cuello camisero en V', 'Fútbol', 'Camiseta', 'Infantil Masculino', 'Camiseta Futbol Molde 2026 (Raglan)', None),
+ ('78 · RB-SHMUJ', 'Short de rugby', 'Rugby', 'Short', 'Femenino', 'Short De Rugby', None),
+ ('79 · RB-SHIN', 'Short de rugby infantil', 'Rugby', 'Short', 'Infantil Masculino', 'Short De Rugby', None),
+ ('83 · RB-MUJV02', 'Rugby, raglán, cuello v', 'Rugby', 'Camiseta', 'Femenino', 'Camiseta De Rugby Básica', None),
+ ('84 · HO-MUJV02', 'Hockey, raglán, cuello v', 'Hockey', 'Camiseta', 'Femenino', 'Camiseta De Hockey', [DE, ES, RG, CU]),
+ ('E10 · RB-HOMMA02', 'Especial rugby, raglán, cuello con tapeta', 'Rugby', 'Camiseta', 'Masculino', 'Camiseta Rugby Con Cuello', None),
+ ('E11 · RB-MUJU02', 'Especial rugby, raglán, cuello redondo (mismo código que el 59)', 'Rugby', 'Camiseta', 'Femenino', 'Camiseta De Rugby Básica', None),
+ ('80 · PE-MUJU03', 'Top deportivo, espalda nadadora', 'Multideporte', 'Top', 'Femenino', 'Multideporte', [DE, ES, ('Banda inferior', 1), SM_]),
+ ('82 · MUL-HOMV03', 'Musculosa, cuello v', 'Multideporte', 'Musculosa', 'Masculino', 'Multideporte', None),
+ ('66 · PE-HOM02', 'Chaqueta de entrenamiento, raglán, cierre', 'Salida y entrenamiento', 'Chaqueta', 'Masculino', 'Poleron Entrenamiento Raglan', [('Delantero', 2), ES, RG, ('Cuello', 1), ('Puños', 2), ('Pretina', 1)]),
+ ('67 · PE-HOM02 INF', 'Chaqueta de entrenamiento infantil, raglán, cierre', 'Salida y entrenamiento', 'Chaqueta', 'Infantil Masculino', 'Poleron Entrenamiento Raglan', [('Delantero', 2), ES, RG, ('Cuello', 1), ('Puños', 2), ('Pretina', 1)]),
+ ('68 · PE-MUJ02', 'Chaqueta de entrenamiento, raglán, cierre', 'Salida y entrenamiento', 'Chaqueta', 'Femenino', 'Poleron Entrenamiento Raglan', [('Delantero', 2), ES, RG, ('Cuello', 1), ('Puños', 2), ('Pretina', 1)]),
+ ('77 · PK-HOM02', 'Polerón canguro con capucha, raglán', 'Salida y entrenamiento', 'Polerón', 'Masculino', 'Poleron Hoodie', [DE, ES, RG, ('Capucha', 2), ('Bolsillo canguro', 1), ('Puños', 2), ('Pretina', 1)]),
+ ('70 · PA-UNI01', 'Cortaviento unisex adulto', 'Salida y entrenamiento', 'Cortaviento', 'Unisex', 'Cortaviento Sin Capucha', [('Delantero', 2), ES, MA, ('Cuello', 2), ('Puños', 2), ('Pretina', 1)]),
+ ('71 · PA-INUNI01', 'Cortaviento unisex infantil', 'Salida y entrenamiento', 'Cortaviento', 'Infantil Unisex', 'Cortaviento Sin Capucha', [('Delantero', 2), ES, MA, ('Cuello', 2), ('Puños', 2), ('Pretina', 1)]),
 ]
+# Los moldes "sin molde en catálogo" del sistema anterior ya tienen molde en el catálogo nuevo: se renombran y conservan sus datos de corte.
+SM_A_CATALOGO = {'SM-01 · Short Fútbol': ('69 · FUT-SH', 'Short de fútbol'), 'SM-02 · Short Rugby': ('76 · RB-SHHOM', 'Short de rugby'),
+                 'SM-03 · Camiseta Running s/m': ('81 · MUL-HOMU03', 'Musculosa, cuello redondo (running sin mangas)')}
+TELA_NUEVA = {'E05 · CA-MUJ': 'LYCRA'}   # calza vóley (antes SM-04): corte OT 2642 en Lycra
+NO_SUBLIMA = ('76 · RB-SHHOM', '78 · RB-SHMUJ', '79 · RB-SHIN', 'E05 · CA-MUJ')
 PZ_NUEVAS = {n[0]: n[6] for n in NUEVOS}
-_sm = [x for x in rec6 if str(x[0]).startswith('SM-')]
-rec6 = [x for x in rec6 if not str(x[0]).startswith('SM-')] + \
-       [(c, d, dep, pr, ca, None, None, None, None, None, None, None, cf, None, None, 'Por confirmar', 'Agregado desde el catálogo vigente: piezas sugeridas, revisar en la marcada.')
-        for c, d, dep, pr, ca, cf, _ in NUEVOS] + _sm
+_sm = [(SM_A_CATALOGO[x[0]][0], SM_A_CATALOGO[x[0]][1], 'Multideporte' if x[0].startswith('SM-03') else x[2], 'Musculosa' if x[0].startswith('SM-03') else x[3]) + tuple(x[4:])
+       for x in rec6 if x[0] in SM_A_CATALOGO]
+def _orden(x):
+    c = str(x[0]).split(' · ')[0]; m = re.match(r'(E?)(\d+)(.*)', c)
+    return (1 if m.group(1) else 0, int(m.group(2)), m.group(3))
+rec6 = sorted([x for x in rec6 if not str(x[0]).startswith('SM-')] + \
+       [(c, d, dep, pr, ca, TELA_NUEVA.get(c), None, None, None, None, None, None, cf, None, None, 'Por confirmar', 'Agregado desde el catálogo vigente: piezas sugeridas, revisar en la marcada.')
+        for c, d, dep, pr, ca, cf, _ in NUEVOS] + _sm, key=_orden)
 p6 = v6['Parametros']
 # ---- Grupos y moldes de referencia (despiece medido en talla L): los moldes semejantes usan el consumo de su referencia.
 # Grupo = deporte + prenda + género + adulto/infantil. Cuello V, redondo o camisero, raglán, Pro y manga larga usan la referencia
@@ -78,15 +108,21 @@ REFS = {('Fútbol', 'Camiseta', 'Masculino', 'Adulto'): '02 · FUTHOMU01', ('Fú
         ('Básquetbol', 'Short', 'Masculino', 'Infantil'): '48 · BKINSHHOM', ('Básquetbol', 'Short', 'Femenino', 'Infantil'): '47 · BKINSHMUJ',
         ('Vóley', 'Camiseta', 'Femenino', 'Adulto'): '55 · VOMUJV03', ('Rugby', 'Camiseta', 'Masculino', 'Adulto'): '58 · RB-HOMU02',
         ('Rugby', 'Camiseta', 'Femenino', 'Adulto'): '59 · RB-MUJU02', ('Hockey', 'Camiseta', 'Femenino', 'Adulto'): '64 · HO-MUJ03',
-        ('Varios', 'Falda', 'Femenino', 'Adulto'): 'E06 · C-FALDA TUBO'}
+        ('Varios', 'Falda', 'Femenino', 'Adulto'): 'E06 · C-FALDA TUBO',
+        ('Fútbol', 'Short', 'Masculino', 'Adulto'): '69 · FUT-SH', ('Fútbol', 'Short', 'Femenino', 'Adulto'): '69F · FUT-SH FEMENINO',
+        ('Fútbol', 'Short', 'Masculino', 'Infantil'): '69I · FUT-SH INFANTIL', ('Rugby', 'Short', 'Masculino', 'Adulto'): '76 · RB-SHHOM',
+        ('Rugby', 'Short', 'Femenino', 'Adulto'): '78 · RB-SHMUJ', ('Rugby', 'Short', 'Masculino', 'Infantil'): '79 · RB-SHIN',
+        ('Multideporte', 'Musculosa', 'Masculino', 'Adulto'): '81 · MUL-HOMU03'}
+# Casos puntuales: el hockey 84 tiene manga raglán y las mismas medidas que el rugby femenino 59 (no se parece al 64 sin mangas).
+REF_MANUAL = {'84 · HO-MUJV02': '59 · RB-MUJU02'}
 SIN_REF = {'E02 · RB-HOMUCC02 SM', 'E05 · CA-MUJ'}   # distintos a su grupo: se miden aparte
 GRUPO, REF, FACTOR = {}, {}, {}
 for x in rec6:
     code, desc, dep, prenda, calce = x[0], (x[1] or ''), x[2], x[3], (x[4] or '')
-    gen = 'Femenino' if 'Femenino' in calce else 'Masculino'
+    gen = 'Femenino' if 'Femenino' in calce else 'Unisex' if 'Unisex' in calce else 'Masculino'
     edad = 'Infantil' if 'Infantil' in calce or 'infantil' in desc else 'Adulto'
     GRUPO[code] = (gen, edad, f'{dep} · {prenda} · {gen} · {edad}')
-    ref = None if code in SIN_REF or code.startswith('SM-') else REFS.get((dep, prenda, gen, edad))
+    ref = None if code in SIN_REF else REF_MANUAL.get(code) or REFS.get((dep, prenda, gen, edad))
     REF[code] = ref if ref and ref != code else None
     FACTOR[code] = 2 if ('reversible' in desc.lower() or code.split(' · ')[-1].endswith('RE')) else None
 
@@ -191,7 +227,7 @@ for x in rec6:
     for n, q in (PZ_NUEVAS.get(code) or piezas(code, x[1] or '', x[3] or '')):
         wd.cell(fila, 1, code); wd.cell(fila, 2, n); wd.cell(fila, 3, q)
         wd.cell(fila, 5, t2 if (n == 'Paneles laterales' and t2) else t1)
-        wd.cell(fila, 6, 'No' if code.startswith(('SM-02', 'SM-04')) else 'Sí')
+        wd.cell(fila, 6, 'No' if code in NO_SUBLIMA else 'Sí')
         fila += 1
 for r in range(F0, F0 + ND):
     for c in (1, 2, 3, 4, 5, 6, 9): wd.cell(r, c).fill = AZUL
@@ -217,9 +253,9 @@ enc(wm, 4, 1, ['Molde', 'Descripción', 'Prenda', 'Calce', 'Tipo de confección'
     [24, 30, 9, 15, 30, 13, 6, 13, 6, 9, 16, 12, 12, 10, 13, 40, 60, 14, 24, 8, 11, 10, 36])
 NOTAS_MED = {'04 · FUTINHOMU01': 'Corte OT 2369: 0,0375 kg Cire + 0,024 kg Mesh por prenda.', '13 · FUTMUJU01PRO': 'Corte OT 2257: 0,1225 kg Montesimone por prenda.',
              '14 · FUTHOMU01PRO': 'Corte OT 2547: 0,12 kg Montesimone + 0,0775 kg Mesh por prenda.', '30 · BKHOMU03': 'Corte OT 2425: 0,2029 kg Quickdry por prenda.',
-             '46 · BK-SH': 'Corte OT 2425: 0,1529 kg Quickdry por prenda.', 'SM-01 · Short Fútbol': 'Cortes OT 2547 y 2588: 0,175 y 0,138 kg Cire por prenda.',
-             'SM-02 · Short Rugby': 'Corte OT 205: 0,1842 kg Gabardina por prenda.', 'SM-03 · Camiseta Running s/m': 'Corte OT 2223: 0,082 kg 5K por prenda.',
-             'SM-04 · Calza Vóley': 'Corte OT 2642: 0,074 kg Lycra por prenda.'}
+             '46 · BK-SH': 'Corte OT 2425: 0,1529 kg Quickdry por prenda.', '69 · FUT-SH': 'Cortes OT 2547 y 2588: 0,175 y 0,138 kg Cire por prenda.',
+             '76 · RB-SHHOM': 'Corte OT 205: 0,1842 kg Gabardina por prenda.', '81 · MUL-HOMU03': 'Corte OT 2223: 0,082 kg 5K por prenda.',
+             'E05 · CA-MUJ': 'Corte OT 2642 (calza vóley): 0,074 kg Lycra por prenda.'}
 for i in range(NM):
     r = F0 + i
     if i < len(rec6):
@@ -252,7 +288,7 @@ wm['A3'] = f'="Moldes con costo completo: "&COUNTIF(P{F0}:P{F0+NM-1},"Lista*")&"
 wm['A3'].font = Font(bold=True, color='C00000')
 wm.freeze_panes = 'B5'; wm.auto_filter.ref = f'A4:W{F0+NM-1}'
 lista(wm, f'=Moldes!$A${F0}:$A${F0+NM-1}', f'S{F0}:S{F0+NM-1}')
-lista(wm, '"Masculino,Femenino"', f'U{F0}:U{F0+NM-1}'); lista(wm, '"Adulto,Infantil"', f'V{F0}:V{F0+NM-1}')
+lista(wm, '"Masculino,Femenino,Unisex"', f'U{F0}:U{F0+NM-1}'); lista(wm, '"Adulto,Infantil"', f'V{F0}:V{F0+NM-1}')
 MA = f'Moldes!$A${F0}:$A${F0+NM-1}'
 def MX(col): return f'INDEX(Moldes!${col}${F0}:${col}${F0+NM-1},MATCH($C$4,{MA},0))'
 def MXE(col): return f'INDEX(Moldes!${col}${F0}:${col}${F0+NM-1},MATCH($L$4,{MA},0))'   # del molde cuyo despiece se usa
