@@ -23,6 +23,8 @@ Se corren una vez en el SQL Editor de la base indicada en cada archivo.
 | `SQL_16B_FICHAS_quitar_chk_det_nombre.sql` | Fichas | Quita `chk_det_nombre`, que exigía nombre en cada persona. |
 | `SQL_16C_FICHAS_nombre_hasta_80.sql` | Fichas | Vuelve a poner el tope de 80 caracteres al nombre, que ahora puede ir vacío. |
 | `SQL_17A_FICHAS_moldes_orden_del_catalogo.sql` | Fichas | Catálogo ordenado: columna `orden`, deporte = sección del catálogo y moldes nuevos 83 y 84. |
+| `SQL_18A_FICHAS_reglas_fichas_tallas_SOLO_LECTURA.sql` | Fichas | Solo lee: reglas (check) de fichas_tallas y tamaño de una ficha. |
+| `SQL_18B_FICHAS_ampliar_topes_ficha.sql` | Fichas | Amplía los topes de tamaño de la ficha (specs e imagenes a 200.000 caracteres, items a 20.000): fichas con muchos diseños y montajes. |
 | `SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql` | Fichas | Solo revisa: compara los 95 moldes del catálogo completo con la tabla moldes (falta, desactivado, código o sección distinta). |
 | `SQL_17D_FICHAS_orden_catalogo_completo.sql` | Fichas | Catálogo completo: orden y sección de los 95 moldes (los 01 al 10 al inicio de Fútbol). |
 
