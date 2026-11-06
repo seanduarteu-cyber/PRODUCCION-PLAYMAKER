@@ -14,7 +14,7 @@ telas = [(r, P.cell(r, 1).value, P.cell(r, 2).value, P.cell(r, 4).value, P.cell(
 conf = [(r, P.cell(r, 14).value, P.cell(r, 15).value) for r in range(5, 85) if P.cell(r, 14).value]
 avios = [(r, P.cell(r, 17).value, P.cell(r, 18).value) for r in range(5, 65) if P.cell(r, 17).value]
 par = {k: P.cell(r, 21).value for k, r in (('papel_rollo', 5), ('papel_metros', 6), ('tinta_litro', 7), ('tinta_ml', 8), ('proteccion', 9), ('merma', 12), ('gg', 14), ('meta', 15))}
-moldes = [(r, [M.cell(r, c).value for c in range(1, 19)]) for r in range(5, 155) if M.cell(r, 1).value]
+moldes = [(r, [M.cell(r, c).value for c in range(1, 24)]) for r in range(5, 155) if M.cell(r, 1).value]
 piezas = {}
 for r in range(5, 1005):
     if D.cell(r, 1).value: piezas.setdefault(D.cell(r, 1).value, []).append((r, D.cell(r, 2).value, D.cell(r, 3).value, D.cell(r, 4).value, D.cell(r, 5).value, D.cell(r, 6).value, D.cell(r, 9).value))
@@ -124,7 +124,8 @@ def enc_desp(y): return encabezado(y, [(X0 + 2, 'Pieza'), (X0 + 150, 'Cant.'), (
 y = nueva('E. DESPIECE POR MOLDE - Diseno / moldaje / ploteo', SUB); y = responsable(y, 'E')
 for r, v in moldes:
     code = v[0]; pz = piezas.get(code, [])
-    need = 50 + 16 * (len(pz) + 2)
+    ref = v[18]
+    need = 50 + (20 if ref else 16 * (len(pz) + 2))
     if y - need < 40: y = nueva('E. DESPIECE POR MOLDE (continuacion)', SUB)
     mk = f'MOLDE__{san(code)}'
     c.setFillColor(AZUL); c.setFont('Helvetica-Bold', 9.5); c.drawString(X0, y, f'{code}'); c.setFillColor(GRIS); c.setFont('Helvetica', 8)
@@ -132,7 +133,11 @@ for r, v in moldes:
     c.setFont('Helvetica', 7.5); c.drawString(X0, y, 'Confeccion:'); campo(f'{mk}__confeccion', X0 + 45, y, 165, v[4])
     c.drawString(X0 + 218, y, 'Avios (nombre x cant.):'); campo(f'{mk}__avios', X0 + 305, y, 120, ' + '.join(f'{a} x {q}' for a, q in ((v[5], v[6]), (v[7], v[8])) if a))
     c.drawString(X0 + 432, y, 'Ajuste real %:'); campo(f'{mk}__ajuste', X0 + 488, y, 52, num(v[10] * 100) if isinstance(v[10], (int, float)) else '')
-    y -= 16; c.drawString(X0, y, 'Ancho de la tela con que se midio el despiece (m):'); campo(f'{mk}__ancho_ref', X0 + 190, y, 50, num(v[17]))
+    y -= 16; c.drawString(X0, y, 'Molde de referencia (usa su despiece):'); campo(f'{mk}__referencia', X0 + 150, y, 150, ref)
+    c.drawString(X0 + 310, y, 'Factor capas:'); campo(f'{mk}__factor', X0 + 365, y, 30, v[19])
+    if ref:
+        c.setFillColor(GRIS); c.drawString(X0 + 405, y, 'Despiece: el de la referencia.'); c.setFillColor(black); y -= 22; continue
+    c.drawString(X0 + 405, y, 'Ancho general (m):'); campo(f'{mk}__ancho_ref', X0 + 480, y, 44, num(v[17]))
     y -= 18; y = enc_desp(y)
     for j, (dr, pzn, q, mt, tl, sb, an) in enumerate(pz + [(None, '', '', '', '', '', '')] * 2):
         k = f'PZA__{san(code)}__{j+1:02d}'

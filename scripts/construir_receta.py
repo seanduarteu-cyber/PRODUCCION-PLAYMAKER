@@ -67,6 +67,29 @@ rec6 = [x for x in rec6 if not str(x[0]).startswith('SM-')] + \
        [(c, d, dep, pr, ca, None, None, None, None, None, None, None, cf, None, None, 'Por confirmar', 'Agregado desde el catálogo vigente: piezas sugeridas, revisar en la marcada.')
         for c, d, dep, pr, ca, cf, _ in NUEVOS] + _sm
 p6 = v6['Parametros']
+# ---- Grupos y moldes de referencia (despiece medido en talla L): los moldes semejantes usan el consumo de su referencia.
+# Grupo = deporte + prenda + género + adulto/infantil. Cuello V, redondo o camisero, raglán, Pro y manga larga usan la referencia
+# (la manga larga se cobra aparte). Reversibles: misma referencia con factor 2 (dos capas de tela).
+REFS = {('Fútbol', 'Camiseta', 'Masculino', 'Adulto'): '02 · FUTHOMU01', ('Fútbol', 'Camiseta', 'Femenino', 'Adulto'): '01 · FUTMUJU01',
+        ('Fútbol', 'Camiseta', 'Masculino', 'Infantil'): '04 · FUTINHOMU01', ('Fútbol', 'Camiseta', 'Femenino', 'Infantil'): '03 · FUTINMUJU01',
+        ('Básquetbol', 'Camiseta', 'Masculino', 'Adulto'): '30 · BKHOMU03', ('Básquetbol', 'Camiseta', 'Femenino', 'Adulto'): '29 · BKMUJU03',
+        ('Básquetbol', 'Camiseta', 'Masculino', 'Infantil'): '32 · BKINHOMU03', ('Básquetbol', 'Camiseta', 'Femenino', 'Infantil'): '31 · BKINMUJU03',
+        ('Básquetbol', 'Short', 'Masculino', 'Adulto'): '46 · BK-SH', ('Básquetbol', 'Short', 'Femenino', 'Adulto'): '45 · BKSHMUJ',
+        ('Básquetbol', 'Short', 'Masculino', 'Infantil'): '48 · BKINSHHOM', ('Básquetbol', 'Short', 'Femenino', 'Infantil'): '47 · BKINSHMUJ',
+        ('Vóley', 'Camiseta', 'Femenino', 'Adulto'): '55 · VOMUJV03', ('Rugby', 'Camiseta', 'Masculino', 'Adulto'): '58 · RB-HOMU02',
+        ('Rugby', 'Camiseta', 'Femenino', 'Adulto'): '59 · RB-MUJU02', ('Hockey', 'Camiseta', 'Femenino', 'Adulto'): '64 · HO-MUJ03',
+        ('Varios', 'Falda', 'Femenino', 'Adulto'): 'E06 · C-FALDA TUBO'}
+SIN_REF = {'E02 · RB-HOMUCC02 SM', 'E05 · CA-MUJ'}   # distintos a su grupo: se miden aparte
+GRUPO, REF, FACTOR = {}, {}, {}
+for x in rec6:
+    code, desc, dep, prenda, calce = x[0], (x[1] or ''), x[2], x[3], (x[4] or '')
+    gen = 'Femenino' if 'Femenino' in calce else 'Masculino'
+    edad = 'Infantil' if 'Infantil' in calce or 'infantil' in desc else 'Adulto'
+    GRUPO[code] = (gen, edad, f'{dep} · {prenda} · {gen} · {edad}')
+    ref = None if code in SIN_REF or code.startswith('SM-') else REFS.get((dep, prenda, gen, edad))
+    REF[code] = ref if ref and ref != code else None
+    FACTOR[code] = 2 if ('reversible' in desc.lower() or code.split(' · ')[-1].endswith('RE')) else None
+
 
 F0 = 5                      # primera fila de datos (encabezado en la fila 4)
 NT, NC, NA = 120, 80, 60    # filas disponibles: telas, confección, avíos
@@ -159,11 +182,12 @@ def piezas(code, desc, prenda):
     return p + ([('Paneles laterales', 2)] if pro else [])
 
 wd = wb.create_sheet('Despiece')
-titulo(wd, 'DESPIECE — piezas de cada molde', 'Metros por prenda de cada pieza (de la marcada del plotter). Los metros NO cambian con la tela. "Tela por defecto" es la que usa la Ficha si no eliges otra.')
+titulo(wd, 'DESPIECE — piezas de los moldes de referencia (talla L)', 'Solo los moldes que se miden: las referencias de cada grupo y los moldes sin referencia. Los moldes semejantes usan estas piezas (hoja Moldes, columna Molde de referencia). Metros de la marcada en talla L.')
 enc(wd, 4, 1, ['Molde', 'Pieza', 'Cant.', 'METROS\npor prenda', 'Tela por defecto', '¿Se\nsublima?', '$ tela + impresión\n(con tela por defecto)', 'clave', 'ANCHO ÚTIL de la\nmarcada en que se\nmidió esta pieza (m)'], [24, 24, 7, 11, 30, 8, 16, 6, 16])
 fila = F0
 for x in rec6:
     code, t1, t2 = x[0], x[5], x[8]
+    if REF.get(code): continue          # usa el despiece de su molde de referencia
     for n, q in (PZ_NUEVAS.get(code) or piezas(code, x[1] or '', x[3] or '')):
         wd.cell(fila, 1, code); wd.cell(fila, 2, n); wd.cell(fila, 3, q)
         wd.cell(fila, 5, t2 if (n == 'Paneles laterales' and t2) else t1)
@@ -189,8 +213,8 @@ DA, DB_, DC, DD, DE, DF, DG, DK, DI = (f'Despiece!${c}${F0}:${c}${F0+ND-1}' for 
 wm = wb.create_sheet('Moldes')
 titulo(wm, 'MOLDES — catálogo con su costo de producción (telas por defecto)', 'Una fila por molde. Lo que va por prenda y no depende de la tela: confección y avíos. Para probar otras telas, usa la Ficha.')
 enc(wm, 4, 1, ['Molde', 'Descripción', 'Prenda', 'Calce', 'Tipo de confección', 'Avío 1', 'Cant.', 'Avío 2', 'Cant.', 'Piezas\nen despiece',
-               'Ajuste por consumo\nreal (%) — vacío =\nmerma general', '$ Tela +\nimpresión', '$ Confección', '$ Avíos', 'COSTO DE\nPRODUCCIÓN', 'Qué falta', 'Notas', 'Ancho general (m)\nsolo si TODAS las\npiezas son de una\nmisma marcada'],
-    [24, 30, 9, 15, 30, 13, 6, 13, 6, 9, 16, 12, 12, 10, 13, 40, 60])
+               'Ajuste por consumo\nreal (%) — vacío =\nmerma general', '$ Tela +\nimpresión', '$ Confección', '$ Avíos', 'COSTO DE\nPRODUCCIÓN', 'Qué falta', 'Notas', 'Ancho general (m)\nsolo si TODAS las\npiezas son de una\nmisma marcada', 'MOLDE DE REFERENCIA\n(usa su despiece)\nvacío = se mide', 'Factor\n(capas)', 'Género', 'Adulto /\nInfantil', 'Grupo'],
+    [24, 30, 9, 15, 30, 13, 6, 13, 6, 9, 16, 12, 12, 10, 13, 40, 60, 14, 24, 8, 11, 10, 36])
 NOTAS_MED = {'04 · FUTINHOMU01': 'Corte OT 2369: 0,0375 kg Cire + 0,024 kg Mesh por prenda.', '13 · FUTMUJU01PRO': 'Corte OT 2257: 0,1225 kg Montesimone por prenda.',
              '14 · FUTHOMU01PRO': 'Corte OT 2547: 0,12 kg Montesimone + 0,0775 kg Mesh por prenda.', '30 · BKHOMU03': 'Corte OT 2425: 0,2029 kg Quickdry por prenda.',
              '46 · BK-SH': 'Corte OT 2425: 0,1529 kg Quickdry por prenda.', 'SM-01 · Short Fútbol': 'Cortes OT 2547 y 2588: 0,175 y 0,138 kg Cire por prenda.',
@@ -202,17 +226,23 @@ for i in range(NM):
         x = rec6[i]
         wm.cell(r, 1, x[0]); wm.cell(r, 2, x[1]); wm.cell(r, 3, x[3]); wm.cell(r, 4, x[4]); wm.cell(r, 5, x[12])
         wm.cell(r, 6, x[13]); wm.cell(r, 7, x[14]); wm.cell(r, 17, NOTAS_MED.get(x[0]))
-    for c in (1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 17, 18): wm.cell(r, c).fill = AZUL
+        g = GRUPO[x[0]]; wm.cell(r, 19, REF[x[0]]); wm.cell(r, 20, FACTOR[x[0]]); wm.cell(r, 21, g[0]); wm.cell(r, 22, g[1]); wm.cell(r, 23, g[2])
+        if not REF[x[0]] and x[0] in REFS.values():
+            for cc in range(1, 3): wm.cell(r, cc).font = Font(bold=True, color='006100')
+            wm.cell(r, 19, None); wm.cell(r, 19).value = None
+    for c in (1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 17, 18, 19, 20, 21, 22, 23): wm.cell(r, c).fill = AZUL
+    EM = f'IF(S{r}="",A{r},S{r})'      # molde cuyo despiece se usa
+    FT = f'IF(N(T{r})>0,T{r},1)'
     wm.cell(r, 18).number_format = '0.00'
     wm.cell(r, 11).number_format = PCT
-    wm[f'J{r}'] = f'=IF(A{r}="","",COUNTIF({DA},A{r}))'
-    wm[f'L{r}'] = f'=IF(A{r}="","",IF(COUNTIFS({DA},A{r},{DD},">0")<J{r},"",IF(COUNTIFS({DA},A{r},{DG},"falta*")>0,"",SUMIFS({DG},{DA},A{r}))))'
+    wm[f'J{r}'] = f'=IF(A{r}="","",COUNTIF({DA},{EM}))'
+    wm[f'L{r}'] = f'=IF(A{r}="","",IF(COUNTIFS({DA},{EM},{DD},">0")<J{r},"",IF(COUNTIFS({DA},{EM},{DG},"falta*")>0,"",SUMIFS({DG},{DA},{EM})*{FT})))'
     wm[f'M{r}'] = f'=IF(OR(A{r}="",E{r}=""),"",IFERROR(INDEX({CP},MATCH(E{r},{CN},0)),""))'
     wm[f'N{r}'] = f'=IF(A{r}="","",IFERROR(N(G{r})*IF(F{r}="",0,INDEX({AP},MATCH(F{r},{AN},0)))+N(I{r})*IF(H{r}="",0,INDEX({AP},MATCH(H{r},{AN},0))),""))'
     wm[f'O{r}'] = f'=IF(A{r}="","",IFERROR(L{r}+M{r}+N{r},""))'
     wm[f'P{r}'] = (f'=IF(A{r}="","",IF(ISNUMBER(O{r}),"Lista"&IF(N({IMP})=0," (impresión en $0)",""),'
-                   f'IF(J{r}=0,"Agregar piezas en Despiece. ",IF(COUNTIFS({DA},A{r},{DD},">0")<J{r},"Metros de "&(J{r}-COUNTIFS({DA},A{r},{DD},">0"))&" pieza(s). ",""))'
-                   f'&IF(COUNTIFS({DA},A{r},{DG},"falta*")>0,"Precio o peso de 1 m de alguna tela. ","")&IF(M{r}="","Tipo/precio de confección. ","")))')
+                   f'IF(S{r}<>"","Usa "&S{r}&": ","")&IF(J{r}=0,"Agregar piezas en Despiece. ",IF(COUNTIFS({DA},{EM},{DD},">0")<J{r},"Metros de "&(J{r}-COUNTIFS({DA},{EM},{DD},">0"))&" pieza(s). ",""))'
+                   f'&IF(COUNTIFS({DA},{EM},{DG},"falta*")>0,"Precio o peso de 1 m de alguna tela. ","")&IF(M{r}="","Tipo/precio de confección. ","")))')
     for c, fmt in (('L', MONEY), ('M', MONEY), ('N', MONEY), ('O', MONEY)): wm[f'{c}{r}'].number_format = fmt
     for c in 'JLMNP': wm[f'{c}{r}'].fill = GRIS
     wm[f'O{r}'].fill = AMA; wm[f'O{r}'].font = B; wm[f'P{r}'].font = ROJO
@@ -220,9 +250,12 @@ lista(wm, f'={CN}', f'E{F0}:E{F0+NM-1}')
 for c in 'FH': lista(wm, f'={AN}', f'{c}{F0}:{c}{F0+NM-1}')
 wm['A3'] = f'="Moldes con costo completo: "&COUNTIF(P{F0}:P{F0+NM-1},"Lista*")&" de "&COUNTA(A{F0}:A{F0+NM-1})'
 wm['A3'].font = Font(bold=True, color='C00000')
-wm.freeze_panes = 'B5'
+wm.freeze_panes = 'B5'; wm.auto_filter.ref = f'A4:W{F0+NM-1}'
+lista(wm, f'=Moldes!$A${F0}:$A${F0+NM-1}', f'S{F0}:S{F0+NM-1}')
+lista(wm, '"Masculino,Femenino"', f'U{F0}:U{F0+NM-1}'); lista(wm, '"Adulto,Infantil"', f'V{F0}:V{F0+NM-1}')
 MA = f'Moldes!$A${F0}:$A${F0+NM-1}'
 def MX(col): return f'INDEX(Moldes!${col}${F0}:${col}${F0+NM-1},MATCH($C$4,{MA},0))'
+def MXE(col): return f'INDEX(Moldes!${col}${F0}:${col}${F0+NM-1},MATCH($L$4,{MA},0))'   # del molde cuyo despiece se usa
 
 # ================================================================ FICHA
 wf = wb.active; wf.title = 'Ficha'
@@ -233,21 +266,23 @@ wf.column_dimensions['K'].width = 40
 wf['B4'] = 'MOLDE ▶'; wf['B4'].font = Font(bold=True, size=13, color='1F3864')
 wf.merge_cells('C4:E4'); c = wf['C4']; c.value = '14 · FUTHOMU01PRO'; c.fill = AZUL; c.font = Font(bold=True, size=13)
 lista(wf, f'={MA}', 'C4')
-wf['F4'] = f'=IFERROR({MX("B")}&"  ·  "&{MX("C")}&" "&{MX("D")},"← elige un molde")'; wf['F4'].font = Font(italic=True, color='595959')
-wf['B5'] = f'=IFERROR("Cada pieza se ajusta al ancho de la tela elegida, desde el ancho de la marcada en que se midió (Despiece).  "&"Consumo: despiece + "&TEXT(IF(ISNUMBER({MX("K")}),{MX("K")},{MERMA}),"0%")&IF(ISNUMBER({MX("K")})," (ajuste por consumo real de este molde)"," (merma general)"),"")'
+wf['F4'] = f'=IFERROR({MX("B")}&"  ·  "&{MX("C")}&" "&{MX("D")}&IF($L$4<>$C$4,"   ▶ usa el despiece de "&$L$4&" (talla L)",""),"← elige un molde")'; wf['F4'].font = Font(italic=True, color='595959')
+wf['L4'] = f'=IF($C$4="","",IFERROR(IF({MX("S")}&""="",$C$4,{MX("S")}&""),$C$4))'; wf['L4'].font = Font(color='BBBBBB', size=8)
+FT = f'IFERROR(IF(N({MX("T")})>0,{MX("T")},1),1)'
+wf['B5'] = f'=IFERROR(IF({FT}>1,"Reversible: x"&{FT}&" capas.  ","")&"Cada pieza se ajusta al ancho de la tela elegida, desde el ancho de la marcada en que se midió (Despiece).  "&"Consumo: despiece + "&TEXT(IF(ISNUMBER({MXE("K")}),{MXE("K")},{MERMA}),"0%")&IF(ISNUMBER({MXE("K")})," (ajuste por consumo real de este molde)"," (merma general)"),"")'
 wf['B5'].font = Font(italic=True, color='595959', size=9)
 wf['B3'] = 'Al cambiar de molde, borra las telas elegidas (columna azul) para volver a las de siempre.'; wf['B3'].font = Font(italic=True, color='C00000', size=9)
 H0, NP = 7, 16
 for i, t in enumerate(['#', 'Pieza', 'Cant.', 'Metros\npor prenda', 'TELA (elige)\nvacío = por defecto', 'Tela usada', '$ por metro', '$ Tela', '$ Impresión', 'TOTAL PIEZA', 'Aviso'], 1):
     c = wf.cell(H0, i, t); c.font = H; c.fill = HF; c.alignment = WC
 wf.row_dimensions[H0].height = 40
-AJ = f'(1+IFERROR(IF(ISNUMBER({MX("K")}),{MX("K")},{MERMA}),{MERMA}))'
+AJ = f'(1+IFERROR(IF(ISNUMBER({MXE("K")}),{MXE("K")},{MERMA}),{MERMA}))*{FT}'
 for i in range(NP):
-    r = H0 + 1 + i; k = f'$C$4&"|"&{i+1}'; idx = f'MATCH({k},{DK},0)'
+    r = H0 + 1 + i; k = f'$L$4&"|"&{i+1}'; idx = f'MATCH({k},{DK},0)'
     wf[f'A{r}'] = f'=IF(B{r}="","",{i+1})'
     wf[f'B{r}'] = f'=IFERROR(INDEX({DB_},{idx}),"")'
     wf[f'C{r}'] = f'=IF(B{r}="","",INDEX({DC},{idx}))'
-    refp = f'IF(N(INDEX({DI},{idx}))>0,INDEX({DI},{idx}),{MX("R")})'
+    refp = f'IF(N(INDEX({DI},{idx}))>0,INDEX({DI},{idx}),{MXE("R")})'
     fac = f'IFERROR(IF(AND(N({refp})>0,N(INDEX({TAN},MATCH(F{r},{TN},0)))>0),{refp}/INDEX({TAN},MATCH(F{r},{TN},0)),1),1)'
     wf[f'D{r}'] = f'=IF(B{r}="","",IF(N(INDEX({DD},{idx}))>0,INDEX({DD},{idx})*{AJ}*{fac},""))'
     wf[f'E{r}'].fill = AZUL

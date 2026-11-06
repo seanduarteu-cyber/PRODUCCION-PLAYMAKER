@@ -48,7 +48,7 @@ for num_m in PEDIDOS:
         txt(X0 + 320, y, 'Calce:', 8.5); campo(f'MOLDENUEVO_{num_m}__calce', X0 + 350, y, 190); y -= 24
     mk = f'MOLDE__{key}'
     txt(X0, y, 'Responsable:', 8.5); campo(f'{mk}__responsable', X0 + 62, y, 150); txt(X0 + 225, y, 'Fecha:', 8.5); campo(f'{mk}__fecha', X0 + 255, y, 80)
-    txt(X0 + 350, y, 'Talla base:', 8.5); campo(f'{mk}__talla', X0 + 400, y, 50, 'M'); y -= 26
+    txt(X0 + 350, y, 'Talla base:', 8.5); campo(f'{mk}__talla', X0 + 400, y, 50, 'L'); y -= 26
 
     y = sec(y, '1. MARCADAS EN EL PLOTTER (talla base) - una por cada tela del molde')
     lst = (piezas.get(code) or []) if code else []

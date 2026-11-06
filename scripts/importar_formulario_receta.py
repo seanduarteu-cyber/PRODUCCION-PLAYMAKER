@@ -93,6 +93,8 @@ for base, d in grupo('MOLDE__').items():
     aj = num(d.get('ajuste'))
     if aj is not None: poner(M, r, 11, aj / 100, f'ajuste real {code}')
     poner(M, r, 18, num(d.get('ancho_ref')), f'ancho de referencia {code}')
+    if 'referencia' in d: poner(M, r, 19, d['referencia'].strip(), f'molde de referencia {code}')
+    poner(M, r, 20, num(d.get('factor')), f'factor capas {code}')
 filas_molde = collections.defaultdict(list)
 for r in range(5, 1005):
     if D.cell(r, 1).value: filas_molde[D.cell(r, 1).value].append(r)
