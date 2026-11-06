@@ -1,3 +1,4 @@
+2026-11-06  Mangas según el código del molde: …01 manga clásica y …02 manga raglán (corta o larga), …03 sin mangas; Planificación ofrece manga larga solo en esas y el cliente elige entre corta y larga
 2026-11-06  Fichas grandes (muchos diseños y montajes): SQL 18B amplía los topes de tamaño de fichas_tallas; el panel muestra el error completo
 2026-11-05  Catálogo completo (95 moldes, 01 al 10 incluidos): orden en los tres sistemas y guías de tallas de todos los moldes publicadas con el sistema
 2026-11-05  Cada molde solo con su deporte: los especiales ya no cruzan fútbol y rugby; sin el SQL 17A se usan igual las secciones del catálogo

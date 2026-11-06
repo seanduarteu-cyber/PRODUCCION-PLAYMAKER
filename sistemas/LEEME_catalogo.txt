@@ -19,6 +19,14 @@ GUÍAS DE TALLAS
 - Si el catálogo cambia, se vuelven a generar desde el PDF nuevo.
 - Un molde nuevo que no esté en el catálogo: su guía se sube en el panel (Catálogo de moldes › Guías de tallas o al editar el molde).
 
+MANGAS (según el código del molde)
+- …01 = manga clásica y …02 = manga raglán: se hacen en manga corta o larga.
+- …03 = sin mangas (básquetbol, vóleibol, hockey 64 y 65, musculosas 81 y 82): solo sin mangas.
+- La E02 (RB-HOMUCC02) es sin mangas según su guía, aunque su código termina en 02: se trata como sin mangas.
+- SQL 19A deja la descripción de cada camiseta con su manga (ej: «Fútbol, manga clásica, cuello redondo»).
+- Planificación: la lista «Manga larga» trae solo las camisetas …01 y …02; cada camiseta dice «manga corta» o «manga larga».
+  El cliente elige manga corta o larga solo en camisetas …01 y …02; en las …03 no se pregunta.
+
 QUÉ SE VE
 - Panel de fichas y Planificación: los moldes en el orden del catálogo completo, por sección (Fútbol parte en el 01).
   Cada molde se ofrece solo con su deporte; con cualquier deporte, solo Multideporte y Salida y entrenamiento.

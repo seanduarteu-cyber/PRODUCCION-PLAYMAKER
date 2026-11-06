@@ -75,6 +75,13 @@ async function plan(b, modo) {
   const p = await abrir(b, modo), r = {};
   await p.goto('https://planificacion-playmaker.netlify.app/#pmk_acceso=tok1'); await p.waitForTimeout(2500);
   r.grupos = await p.evaluate(() => GRUPOS_PRENDA.filter(g => g.moldes).map(g => [g.grupo, g.tipos.map(t => t.split(' · ')[0])]));
+  // mangas: …01 clásica y …02 raglán (corta o larga) · …03 sin mangas
+  r.mangas = await p.evaluate(() => {
+    const doc = new DOMParser().parseFromString('<select>' + opcionesMolde('') + '</select>', 'text/html');
+    const g = [...doc.querySelectorAll('optgroup')].find(x => /Manga larga/.test(x.label));
+    return { ml: g ? [...g.querySelectorAll('option')].map(o => o.value) : [], n01: nombrePrenda('01 · FUTMUJU01'), n01ml: nombrePrenda('01 · FUTMUJU01 · ML'),
+      n34: nombrePrenda('34 · BKHOMV03'), clave34: claveDeFicha('BKHOMV03|34', 'Larga'), clave18: claveDeFicha('FUTHOMU02|18', 'Larga') };
+  });
   await p.evaluate(() => { TAB = 'moldes'; renderTabs(); renderVista(); }); await p.waitForTimeout(500);
   r.titulos = await p.$$eval('#view-moldes th[colspan]', xs => xs.map(x => x.textContent));
   r.filas = await p.$$eval('#view-moldes tr td:first-child b', xs => xs.map(x => x.textContent));
@@ -136,6 +143,12 @@ function sinMezcla(r, cuando) {
   ok(g['Fútbol'][0] === '01' && g['Fútbol'].indexOf('E04') === 28 && g['Fútbol'][g['Fútbol'].length - 1] === '69' && g['Fútbol'].length === 34, 'Fútbol en el orden del catálogo completo (01 al 28, E04, 72 al 75 y 69)');
   ok(g['Rugby'].includes('83') && g['Hockey'].includes('84') && g['Rugby'].includes('E01'), 'Rugby trae el 83 y los E01…; Hockey el 84');
   ok(es(r.titulos, SECCIONES), '«Moldes vigentes» con el título de cada sección');
+  const mg = r.mangas;
+  ok(mg.ml.includes('01 · FUTMUJU01 · ML') && mg.ml.includes('18 · FUTHOMU02 · ML') && !mg.ml.some(k => /^(34|55|64|81) · |^E02 · /.test(k)) && mg.ml.length === 45,
+    'manga larga: solo las 45 camisetas de manga clásica (…01) o raglán (…02); ninguna …03 ni la E02 (' + mg.ml.length + ')');
+  ok(mg.n01 === 'Fútbol, manga clásica, cuello redondo · manga corta' && mg.n01ml === 'Fútbol, manga clásica, cuello redondo · manga larga', 'molde 01: «' + mg.n01 + '» y «' + mg.n01ml + '»');
+  ok(mg.n34 === 'Básquetbol, sin mangas, cuello v', 'molde 34 (…03): «' + mg.n34 + '», sin manga corta ni larga');
+  ok(mg.clave34 === '34 · BKHOMV03' && mg.clave18 === '18 · FUTHOMU02 · ML', 'ficha con manga larga: el 18 pasa a «· ML»; el 34 (sin mangas) no');
   ok(r.guia83 === 'guias/molde-83.jpg' && r.guiaServida === 200 && r.guiasArchivo === 95, '«Ver guía» abre la guía del catálogo que viene con el sitio (' + r.guiasArchivo + ' de 95 en la carpeta guias)');
   ok(r.filas[0] === '01' && r.filas.includes('83') && r.filas.includes('84') && r.filas.length === 95, '«Moldes vigentes»: los 95, desde el 01');
   ok(r.buscaHockey.join() === '64,65,E06,E07,E08,E09,84', 'buscar «hockey» encuentra la sección completa (' + r.buscaHockey.join(',') + ')');
@@ -144,6 +157,7 @@ function sinMezcla(r, cuando) {
 
   console.log('— Planificación, base sin el SQL 17A');
   r = await plan(b, 'sin17a');
+  ok(!r.mangas.ml.some(k => /^(34|55|64|81) · /.test(k)) && r.mangas.clave34 === '34 · BKHOMV03', 'sin el SQL 19A (descripciones antiguas): las …03 igual son sin mangas por su código');
   ok(es(r.grupos.map(g => g[0]), SECCIONES) && r.grupos[0][1][0] === '01', 'sin la columna orden: las mismas secciones del catálogo (sin grupo «Especiales»): ' + r.grupos.map(g => g[0]).join(', '));
   const gs = Object.fromEntries(r.grupos);
   ok(gs['Fútbol'].includes('E04') && !gs['Fútbol'].some(k => /^E(01|02|03|10|11)$/.test(k)) && gs['Rugby'].includes('E01') && !gs['Rugby'].includes('E04'), 'sin la columna orden: E04 en Fútbol y E01, E02, E03, E10, E11 en Rugby');

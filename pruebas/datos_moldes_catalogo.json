@@ -2,7 +2,7 @@
 {
 "numero": 1,
 "codigo": "FUTMUJU01",
-"descripcion": "Fútbol, cuello redondo",
+"descripcion": "Fútbol, manga clásica, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": false,
@@ -13,7 +13,7 @@
 {
 "numero": 2,
 "codigo": "FUTHOMU01",
-"descripcion": "Fútbol, cuello redondo",
+"descripcion": "Fútbol, manga clásica, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -24,7 +24,7 @@
 {
 "numero": 3,
 "codigo": "FUTINMUJU01",
-"descripcion": "Fútbol infantil, cuello redondo",
+"descripcion": "Fútbol infantil, manga clásica, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": true,
@@ -35,7 +35,7 @@
 {
 "numero": 4,
 "codigo": "FUTINHOMU01",
-"descripcion": "Fútbol infantil, cuello redondo",
+"descripcion": "Fútbol infantil, manga clásica, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": true,
@@ -46,7 +46,7 @@
 {
 "numero": 5,
 "codigo": "FUTMUJV01",
-"descripcion": "Fútbol, cuello v",
+"descripcion": "Fútbol, manga clásica, cuello v",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": false,
@@ -57,7 +57,7 @@
 {
 "numero": 6,
 "codigo": "FUTHOMV01",
-"descripcion": "Fútbol, cuello v",
+"descripcion": "Fútbol, manga clásica, cuello v",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -68,7 +68,7 @@
 {
 "numero": 7,
 "codigo": "FUTINMUJV01",
-"descripcion": "Fútbol infantil, cuello v",
+"descripcion": "Fútbol infantil, manga clásica, cuello v",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": true,
@@ -79,7 +79,7 @@
 {
 "numero": 8,
 "codigo": "FUTINHOMV01",
-"descripcion": "Fútbol infantil, cuello v",
+"descripcion": "Fútbol infantil, manga clásica, cuello v",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": true,
@@ -90,7 +90,7 @@
 {
 "numero": 9,
 "codigo": "FUTMUJCC01",
-"descripcion": "Fútbol, cuello camisero",
+"descripcion": "Fútbol, manga clásica, cuello camisero",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": false,
@@ -101,7 +101,7 @@
 {
 "numero": 10,
 "codigo": "FUTHOMCC01",
-"descripcion": "Fútbol, cuello camisero",
+"descripcion": "Fútbol, manga clásica, cuello camisero",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -112,7 +112,7 @@
 {
 "numero": 11,
 "codigo": "FUTINMUJCC01",
-"descripcion": "Fútbol infantil, cuello camisero",
+"descripcion": "Fútbol infantil, manga clásica, cuello camisero",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": true,
@@ -123,7 +123,7 @@
 {
 "numero": 12,
 "codigo": "FUTINHOMCC01",
-"descripcion": "Fútbol infantil, cuello camisero",
+"descripcion": "Fútbol infantil, manga clásica, cuello camisero",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": true,
@@ -134,7 +134,7 @@
 {
 "numero": 13,
 "codigo": "FUTMUJU01PRO",
-"descripcion": "Fútbol, pro, cuello redondo",
+"descripcion": "Fútbol, pro, manga clásica, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": false,
@@ -145,7 +145,7 @@
 {
 "numero": 14,
 "codigo": "FUTHOMU01PRO",
-"descripcion": "Fútbol, pro, cuello redondo",
+"descripcion": "Fútbol, pro, manga clásica, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -156,7 +156,7 @@
 {
 "numero": 15,
 "codigo": "FUTMUJV01PRO",
-"descripcion": "Fútbol, pro, cuello v",
+"descripcion": "Fútbol, pro, manga clásica, cuello v",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": false,
@@ -167,7 +167,7 @@
 {
 "numero": 16,
 "codigo": "FUTHOMV01PRO",
-"descripcion": "Fútbol, pro, cuello v",
+"descripcion": "Fútbol, pro, manga clásica, cuello v",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -178,7 +178,7 @@
 {
 "numero": 17,
 "codigo": "FUTMUJU02",
-"descripcion": "Fútbol, raglán, cuello redondo",
+"descripcion": "Fútbol, manga raglán, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": false,
@@ -189,7 +189,7 @@
 {
 "numero": 18,
 "codigo": "FUTHOMU02",
-"descripcion": "Fútbol, raglán, cuello redondo",
+"descripcion": "Fútbol, manga raglán, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -200,7 +200,7 @@
 {
 "numero": 19,
 "codigo": "FUTINMUJU02",
-"descripcion": "Fútbol infantil, raglán, cuello redondo",
+"descripcion": "Fútbol infantil, manga raglán, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": true,
@@ -211,7 +211,7 @@
 {
 "numero": 20,
 "codigo": "FUTINHOMU02",
-"descripcion": "Fútbol infantil, raglán, cuello redondo",
+"descripcion": "Fútbol infantil, manga raglán, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": true,
@@ -222,7 +222,7 @@
 {
 "numero": 21,
 "codigo": "FUTMUJV02",
-"descripcion": "Fútbol, raglán, cuello v",
+"descripcion": "Fútbol, manga raglán, cuello v",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": false,
@@ -233,7 +233,7 @@
 {
 "numero": 22,
 "codigo": "FUTHOMV02",
-"descripcion": "Fútbol, raglán, cuello v",
+"descripcion": "Fútbol, manga raglán, cuello v",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -244,7 +244,7 @@
 {
 "numero": 23,
 "codigo": "FUTINMUJV02",
-"descripcion": "Fútbol infantil, raglán, cuello v",
+"descripcion": "Fútbol infantil, manga raglán, cuello v",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": true,
@@ -255,7 +255,7 @@
 {
 "numero": 24,
 "codigo": "FUTINHOMV02",
-"descripcion": "Fútbol infantil, raglán, cuello v",
+"descripcion": "Fútbol infantil, manga raglán, cuello v",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": true,
@@ -266,7 +266,7 @@
 {
 "numero": 25,
 "codigo": "FUTMUJU02PRO",
-"descripcion": "Fútbol, raglán, pro, cuello redondo",
+"descripcion": "Fútbol, pro, manga raglán, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": false,
@@ -277,7 +277,7 @@
 {
 "numero": 26,
 "codigo": "FUTHOMU02PRO",
-"descripcion": "Fútbol, raglán, pro, cuello redondo",
+"descripcion": "Fútbol, pro, manga raglán, cuello redondo",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -288,7 +288,7 @@
 {
 "numero": 27,
 "codigo": "FUTMUJV02PRO",
-"descripcion": "Fútbol, raglán, pro, cuello v",
+"descripcion": "Fútbol, pro, manga raglán, cuello v",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": false,
@@ -299,7 +299,7 @@
 {
 "numero": 28,
 "codigo": "FUTHOMV02PRO",
-"descripcion": "Fútbol, raglán, pro, cuello v",
+"descripcion": "Fútbol, pro, manga raglán, cuello v",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -310,7 +310,7 @@
 {
 "numero": 29,
 "codigo": "BKMUJU03",
-"descripcion": "Básquetbol, cuello redondo",
+"descripcion": "Básquetbol, sin mangas, cuello redondo",
 "deporte": "Básquetbol",
 "calce": "Femenino",
 "infantil": false,
@@ -321,7 +321,7 @@
 {
 "numero": 30,
 "codigo": "BKHOMU03",
-"descripcion": "Básquetbol, cuello redondo",
+"descripcion": "Básquetbol, sin mangas, cuello redondo",
 "deporte": "Básquetbol",
 "calce": "Masculino",
 "infantil": false,
@@ -332,7 +332,7 @@
 {
 "numero": 31,
 "codigo": "BKINMUJU03",
-"descripcion": "Básquetbol infantil, cuello redondo",
+"descripcion": "Básquetbol infantil, sin mangas, cuello redondo",
 "deporte": "Básquetbol",
 "calce": "Femenino",
 "infantil": true,
@@ -343,7 +343,7 @@
 {
 "numero": 32,
 "codigo": "BKINHOMU03",
-"descripcion": "Básquetbol infantil, cuello redondo",
+"descripcion": "Básquetbol infantil, sin mangas, cuello redondo",
 "deporte": "Básquetbol",
 "calce": "Masculino",
 "infantil": true,
@@ -354,7 +354,7 @@
 {
 "numero": 33,
 "codigo": "BKMUJV03",
-"descripcion": "Básquetbol, cuello v",
+"descripcion": "Básquetbol, sin mangas, cuello v",
 "deporte": "Básquetbol",
 "calce": "Femenino",
 "infantil": false,
@@ -365,7 +365,7 @@
 {
 "numero": 34,
 "codigo": "BKHOMV03",
-"descripcion": "Básquetbol, cuello v",
+"descripcion": "Básquetbol, sin mangas, cuello v",
 "deporte": "Básquetbol",
 "calce": "Masculino",
 "infantil": false,
@@ -376,7 +376,7 @@
 {
 "numero": 35,
 "codigo": "BKINMUJV03",
-"descripcion": "Básquetbol infantil, cuello v",
+"descripcion": "Básquetbol infantil, sin mangas, cuello v",
 "deporte": "Básquetbol",
 "calce": "Femenino",
 "infantil": true,
@@ -387,7 +387,7 @@
 {
 "numero": 36,
 "codigo": "BKINHOMV03",
-"descripcion": "Básquetbol infantil, cuello v",
+"descripcion": "Básquetbol infantil, sin mangas, cuello v",
 "deporte": "Básquetbol",
 "calce": "Masculino",
 "infantil": true,
@@ -398,7 +398,7 @@
 {
 "numero": 37,
 "codigo": "BKMUJU03RE",
-"descripcion": "Básquetbol, reversible, cuello redondo",
+"descripcion": "Básquetbol, reversible, sin mangas, cuello redondo",
 "deporte": "Básquetbol",
 "calce": "Femenino",
 "infantil": false,
@@ -409,7 +409,7 @@
 {
 "numero": 38,
 "codigo": "BKHOMU03RE",
-"descripcion": "Básquetbol, reversible, cuello redondo",
+"descripcion": "Básquetbol, reversible, sin mangas, cuello redondo",
 "deporte": "Básquetbol",
 "calce": "Masculino",
 "infantil": false,
@@ -420,7 +420,7 @@
 {
 "numero": 39,
 "codigo": "BKINMUJU03",
-"descripcion": "Básquetbol infantil, reversible, cuello redondo",
+"descripcion": "Básquetbol infantil, reversible, sin mangas, cuello redondo",
 "deporte": "Básquetbol",
 "calce": "Femenino",
 "infantil": true,
@@ -431,7 +431,7 @@
 {
 "numero": 40,
 "codigo": "BKINHOMU03RE",
-"descripcion": "Básquetbol infantil, reversible, cuello redondo",
+"descripcion": "Básquetbol infantil, reversible, sin mangas, cuello redondo",
 "deporte": "Básquetbol",
 "calce": "Masculino",
 "infantil": true,
@@ -442,7 +442,7 @@
 {
 "numero": 41,
 "codigo": "BKMUJU03PRO",
-"descripcion": "Básquetbol, pro, cuello redondo",
+"descripcion": "Básquetbol, pro, sin mangas, cuello redondo",
 "deporte": "Básquetbol",
 "calce": "Femenino",
 "infantil": false,
@@ -453,7 +453,7 @@
 {
 "numero": 42,
 "codigo": "BKHOMU03PRO",
-"descripcion": "Básquetbol, pro, cuello redondo",
+"descripcion": "Básquetbol, pro, sin mangas, cuello redondo",
 "deporte": "Básquetbol",
 "calce": "Masculino",
 "infantil": false,
@@ -464,7 +464,7 @@
 {
 "numero": 43,
 "codigo": "BKMUJV03PRO",
-"descripcion": "Básquetbol, pro, cuello v",
+"descripcion": "Básquetbol, pro, sin mangas, cuello v",
 "deporte": "Básquetbol",
 "calce": "Femenino",
 "infantil": false,
@@ -475,7 +475,7 @@
 {
 "numero": 44,
 "codigo": "BKHOMV03PRO",
-"descripcion": "Básquetbol, pro, cuello v",
+"descripcion": "Básquetbol, pro, sin mangas, cuello v",
 "deporte": "Básquetbol",
 "calce": "Masculino",
 "infantil": false,
@@ -629,7 +629,7 @@
 {
 "numero": 58,
 "codigo": "RB-HOMU02",
-"descripcion": "Rugby, raglán, cuello redondo",
+"descripcion": "Rugby, manga raglán, cuello redondo",
 "deporte": "Rugby",
 "calce": "Masculino",
 "infantil": false,
@@ -640,7 +640,7 @@
 {
 "numero": 59,
 "codigo": "RB-MUJU02",
-"descripcion": "Rugby, raglán, cuello redondo",
+"descripcion": "Rugby, manga raglán, cuello redondo",
 "deporte": "Rugby",
 "calce": "Femenino",
 "infantil": false,
@@ -651,7 +651,7 @@
 {
 "numero": 60,
 "codigo": "RBHOMCC02",
-"descripcion": "Rugby, cuello camisero",
+"descripcion": "Rugby, manga raglán, cuello camisero",
 "deporte": "Rugby",
 "calce": "Masculino",
 "infantil": false,
@@ -662,7 +662,7 @@
 {
 "numero": 61,
 "codigo": "RBMUJCC02",
-"descripcion": "Rugby, cuello camisero",
+"descripcion": "Rugby, manga raglán, cuello camisero",
 "deporte": "Rugby",
 "calce": "Femenino",
 "infantil": false,
@@ -673,7 +673,7 @@
 {
 "numero": 62,
 "codigo": "RB-HOMCL02",
-"descripcion": "Rugby, raglán, cuello clásico",
+"descripcion": "Rugby, manga raglán, cuello clásico",
 "deporte": "Rugby",
 "calce": "Masculino",
 "infantil": false,
@@ -684,7 +684,7 @@
 {
 "numero": 63,
 "codigo": "RBMUJCL02",
-"descripcion": "Rugby, raglán, cuello clásico",
+"descripcion": "Rugby, manga raglán, cuello clásico",
 "deporte": "Rugby",
 "calce": "Femenino",
 "infantil": false,
@@ -783,7 +783,7 @@
 {
 "numero": 72,
 "codigo": "FUTMUJCCV02",
-"descripcion": "Fútbol, raglán, cuello camisero en v",
+"descripcion": "Fútbol, manga raglán, cuello camisero en v",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": false,
@@ -794,7 +794,7 @@
 {
 "numero": 73,
 "codigo": "FUTHOMCCV02",
-"descripcion": "Fútbol, raglán, cuello camisero en v",
+"descripcion": "Fútbol, manga raglán, cuello camisero en v",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -805,7 +805,7 @@
 {
 "numero": 74,
 "codigo": "FUTINMUJCCV02",
-"descripcion": "Fútbol infantil, raglán, cuello camisero en v",
+"descripcion": "Fútbol infantil, manga raglán, cuello camisero en v",
 "deporte": "Fútbol",
 "calce": "Femenino",
 "infantil": true,
@@ -816,7 +816,7 @@
 {
 "numero": 75,
 "codigo": "FUTINHOMCCV02",
-"descripcion": "Fútbol infantil, raglán, cuello camisero en v",
+"descripcion": "Fútbol infantil, manga raglán, cuello camisero en v",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": true,
@@ -904,7 +904,7 @@
 {
 "numero": 83,
 "codigo": "RB-MUJV02",
-"descripcion": "Rugby, raglán, cuello v",
+"descripcion": "Rugby, manga raglán, cuello v",
 "deporte": "Rugby",
 "calce": "Femenino",
 "infantil": false,
@@ -915,7 +915,7 @@
 {
 "numero": 84,
 "codigo": "HO-MUJV02",
-"descripcion": "Hockey, raglán, cuello v",
+"descripcion": "Hockey, manga raglán, cuello v",
 "deporte": "Hockey",
 "calce": "Femenino",
 "infantil": false,
@@ -926,7 +926,7 @@
 {
 "numero": 101,
 "codigo": "RB-HOMUCC02",
-"descripcion": "Rugby, raglán con costados, cuello redondo",
+"descripcion": "Rugby, manga raglán con costados, cuello redondo",
 "deporte": "Rugby",
 "calce": "Masculino",
 "infantil": false,
@@ -948,7 +948,7 @@
 {
 "numero": 103,
 "codigo": "RBHOMMA02",
-"descripcion": "Rugby, cuello mao",
+"descripcion": "Rugby, manga raglán, cuello mao",
 "deporte": "Rugby",
 "calce": "Masculino",
 "infantil": false,
@@ -959,7 +959,7 @@
 {
 "numero": 104,
 "codigo": "FUTHOMMA01",
-"descripcion": "Fútbol, cuello mao",
+"descripcion": "Fútbol, manga clásica, cuello mao",
 "deporte": "Fútbol",
 "calce": "Masculino",
 "infantil": false,
@@ -1025,7 +1025,7 @@
 {
 "numero": 110,
 "codigo": "RB-HOMMA02",
-"descripcion": "Rugby, raglán, cuello mao",
+"descripcion": "Rugby, manga raglán, cuello mao",
 "deporte": "Rugby",
 "calce": "Masculino",
 "infantil": false,
@@ -1036,7 +1036,7 @@
 {
 "numero": 111,
 "codigo": "RB-MUJU02",
-"descripcion": "Rugby, raglán, cuello mao",
+"descripcion": "Rugby, manga raglán, cuello mao",
 "deporte": "Rugby",
 "calce": "Femenino",
 "infantil": false,

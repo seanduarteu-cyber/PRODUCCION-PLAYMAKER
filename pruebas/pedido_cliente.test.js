@@ -52,6 +52,8 @@ const filas = p => p.$$eval('[data-fila]', ds => ds.map(d => ({ nom: d.querySele
   // 1 · camiseta: planilla copiada de Excel, con títulos; 2 de 10 sin nombre ni número
   await paso(p, 0);
   ok(!(await p.$('[data-chip="lote_numero"]')) && !(await p.$('[data-chip="lote_estampar"]')), 'no pregunta si llevan número ni nombre estampado');
+  const mangas = await p.$$eval('[data-chip="lote_manga"]', bs => bs.map(b => b.dataset.val));
+  ok(mangas.join() === 'Corta,Larga', 'camiseta 18 (…02, raglán): manga corta o larga, sin la opción «sin mangas» (' + mangas.join(', ') + ')');
   const excel = ['N°' + TAB + 'Nombre' + TAB + 'Talla', '10' + TAB + 'M. Sepúlveda' + TAB + 'L', '7' + TAB + 'S. Rojas' + TAB + 'M', '4' + TAB + 'L. Pérez' + TAB + 'S',
     '9' + TAB + 'M.Soto' + TAB + 'XL', '11' + TAB + 'Ana María López' + TAB + 'm', '2' + TAB + 'Pía Díaz' + TAB + '2XL', '5' + TAB + 'José Ruiz' + TAB + 'XG',
     '8' + TAB + 'Luis Mena' + TAB + 'L', '' + TAB + '' + TAB + 'M', '' + TAB + '' + TAB + 'S'].join('\n');

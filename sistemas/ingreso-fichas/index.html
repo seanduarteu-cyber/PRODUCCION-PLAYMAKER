@@ -708,7 +708,9 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   const esUnisex = v => !!(st.unisex && st.unisex.indexOf(numMolde(v)) >= 0);
   // Moldes sin mangas (vóley, hockey, E02…): esa camiseta es sin mangas por el molde y no se pregunta el largo de manga
   const SIN_MANGAS_BASE = ['55', '56', '57', '64', '65', '81', '82', '102'];
-  const moldeSinMangas = v => !!v && (st.sinMangas || SIN_MANGAS_BASE).indexOf(numMolde(v)) >= 0;
+  // Manga según el código del molde: …01 manga clásica y …02 manga raglán (corta o larga) · …03 sin mangas
+  const serieManga = cod => { const m = String(cod || '').trim().toUpperCase().match(/(\d{2})(?:PRO|RE)?$/); return m ? m[1] : ''; };
+  const moldeSinMangas = v => !!v && !/\|manual$/.test(v) && (serieManga(String(v).split('|')[0]) === '03' || (st.sinMangas || SIN_MANGAS_BASE).indexOf(numMolde(v)) >= 0);
   const camisetaSinMangas = (f, id, calce) => {
     const mo = moldesDe(specsDe(f)[id]), vs = (calce ? [mo[calce]] : Object.values(mo)).filter(Boolean);
     return vs.length > 0 && vs.every(moldeSinMangas);
@@ -717,7 +719,8 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   const mangaPersona = (f, tallas, calce, elegida) => {
     const cams = Object.keys(tallas || {}).filter(k => tallas[k] && basePrenda(k) === 'camiseta');
     if (!cams.length) return '';
-    return cams.some(k => !camisetaSinMangas(f, k, calce)) ? (elegida || 'Corta') : 'Sin mangas';
+    // una camiseta con mangas (molde …01 o …02) es de manga corta o larga, nunca sin mangas
+    return cams.some(k => !camisetaSinMangas(f, k, calce)) ? (elegida === 'Larga' ? 'Larga' : 'Corta') : 'Sin mangas';
   };
   function gruposFicha(f, dets) {
     const specs = specsDe(f), out = [];
@@ -1014,8 +1017,8 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
         else if (!mangaPuesta) {
           mangaPuesta = true;
           x += '<div style="margin-top:14px"><div style="font-size:13px;font-weight:600;margin-bottom:8px">Largo de manga</div>' +
-            '<div class="chips">' + chips('manga', ['Corta', 'Sin mangas', 'Larga'], fo.manga) + '</div>' +
-            '<div class="mini" style="margin-top:7px">La manga larga tiene costo adicional. Corta y sin mangas van incluidas.</div></div>';
+            '<div class="chips">' + chips('manga', ['Corta', 'Larga'], fo.manga === 'Larga' ? 'Larga' : 'Corta') + '</div>' +
+            '<div class="mini" style="margin-top:7px">La manga larga tiene costo adicional; la corta va incluida. Las camisetas sin mangas lo son por su molde.</div></div>';
         }
       }
       return x + '</div>';
@@ -1332,7 +1335,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
       '<div class="ayuda">Después puedes cambiarlo persona por persona si alguien lleva otro calce.</div>' +
       '<div class="chips">' + chips('lote_calce', ['Masculino', 'Femenino', 'Infantil'], lote.calce, true) + '</div></div>') +
       (g && (!pg.manga || camisetaSinMangas(f, g.prenda, g.calce || g.calceDef || lote.calce)) ? '' : '<div class="campo"><label>Largo de manga para todo el grupo</label>' +
-      '<div class="chips">' + chips('lote_manga', ['Corta', 'Sin mangas', 'Larga'], lote.manga) + '</div></div>') +
+      '<div class="chips">' + chips('lote_manga', ['Corta', 'Larga'], lote.manga === 'Larga' ? 'Larga' : 'Corta') + '</div></div>') +
       (st.error ? '<div class="aviso error">' + esc(st.error) + '</div>' : '') +
       '<div class="barra-fija"><button class="btn" id="btn-leer">Revisar la lista</button></div>' + pie + '</div>';
 
