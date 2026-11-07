@@ -38,3 +38,38 @@ export async function comprimirFoto(file: File, maxLado = 1400, maxBytes = 350_0
   }
   return url;
 }
+
+/** Las fotos se guardan este número de días y luego se borran solas. */
+export const DIAS_FOTO = 60;
+
+export function fotoVencida(creadoEn: number, ahora = Date.now()): boolean {
+  return creadoEn > 0 && ahora - creadoEn > DIAS_FOTO * 86400000;
+}
+
+export function fechaBorradoFoto(creadoEn: number): Date {
+  return new Date(creadoEn + DIAS_FOTO * 86400000);
+}
+
+/** Guarda una copia de la foto en el teléfono (Compartir › Guardar imagen, o descarga). */
+export async function guardarCopiaFoto(dataUrl: string, nombre: string): Promise<void> {
+  const blob = await (await fetch(dataUrl)).blob();
+  const archivo = new File([blob], nombre, { type: blob.type || 'image/jpeg' });
+  const nav = navigator as Navigator & { canShare?: (d: ShareData) => boolean };
+  const tactil = matchMedia('(pointer: coarse)').matches;
+  if (tactil && nav.canShare?.({ files: [archivo] })) {
+    try {
+      await nav.share({ files: [archivo], title: nombre });
+      return;
+    } catch (e) {
+      if ((e as Error).name === 'AbortError') return; // la persona canceló
+    }
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nombre;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+}

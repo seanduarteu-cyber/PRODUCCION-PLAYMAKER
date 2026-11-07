@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Campo, CategoriaSelect, Icon, MontoInput, Sheet } from '../components/ui';
+import { CategoriaCampo } from '../components/Categoria';
+import { FotoCampo } from '../components/Foto';
+import { Campo, MontoInput, Sheet } from '../components/ui';
 import { useApp, useFamilia } from '../data/store';
 import { fmtCLP, hoy, mesActual, mesDe, nombreMes, primerDia, sumarMeses } from '../lib/format';
-import { comprimirFoto } from '../lib/imagen';
 import type { Gasto } from '../lib/types';
 
 const LS_ULTIMA = 'ff_ultima_categoria';
@@ -30,28 +31,14 @@ export function GastoForm({ gasto, onClose }: { gasto?: Gasto; onClose: () => vo
   const [valorCuota, setValorCuota] = useState<number | null>(null);
   const [cuotaManual, setCuotaManual] = useState(false);
   const [primerMes, setPrimerMes] = useState(sumarMeses(mesDe(defFecha), 1));
-  const [foto, setFoto] = useState<string | null>(null);
-  const [fotoCambiada, setFotoCambiada] = useState(false);
+  /** undefined = sin cambios; null = se quitó; texto = foto nueva */
+  const [fotoNueva, setFotoNueva] = useState<string | null | undefined>(undefined);
   const [guardando, setGuardando] = useState(false);
   const [err, setErr] = useState('');
 
   useEffect(() => {
-    if (gasto?.adjuntoId) f.acciones.leerAdjunto(gasto.adjuntoId).then(setFoto).catch(() => undefined);
-  }, [gasto?.adjuntoId, f.acciones]);
-
-  useEffect(() => {
     if (!cuotaManual && monto && numCuotas > 0) setValorCuota(Math.round(monto / numCuotas));
   }, [monto, numCuotas, cuotaManual]);
-
-  async function elegirFoto(file?: File) {
-    if (!file) return;
-    try {
-      setFoto(await comprimirFoto(file));
-      setFotoCambiada(true);
-    } catch (e) {
-      error(e);
-    }
-  }
 
   async function guardar() {
     setErr('');
@@ -75,9 +62,9 @@ export function GastoForm({ gasto, onClose }: { gasto?: Gasto; onClose: () => vo
         return;
       }
       let adjuntoId = gasto?.adjuntoId;
-      if (fotoCambiada) {
+      if (fotoNueva !== undefined) {
         if (adjuntoId) f.acciones.eliminarAdjunto(adjuntoId);
-        adjuntoId = foto ? await f.acciones.guardarAdjunto(foto) : undefined;
+        adjuntoId = fotoNueva ? await f.acciones.guardarAdjunto(fotoNueva) : undefined;
       }
       const datos = { monto, fecha, categoriaId, descripcion: descripcion.trim(), medioPago: medioPago || undefined, adjuntoId };
       const g: Gasto = gasto ? { ...gasto, ...datos } : f.acciones.nuevoGasto(datos);
@@ -114,9 +101,7 @@ export function GastoForm({ gasto, onClose }: { gasto?: Gasto; onClose: () => vo
           {gasto?.boletaId ? 'Este gasto es el pago de una boleta. Si cambias el monto, se actualiza la boleta.' : 'Este gasto es el pago de una cuota.'}
         </div>
       )}
-      <Campo label="Categoría">
-        <CategoriaSelect settings={f.settings} value={categoriaId} onChange={setCategoriaId} />
-      </Campo>
+      <CategoriaCampo value={categoriaId} onChange={setCategoriaId} />
       <Campo label="Descripción">
         <input className="input" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} placeholder="Ej: almacén, pan y leche" maxLength={120} />
       </Campo>
@@ -157,19 +142,8 @@ export function GastoForm({ gasto, onClose }: { gasto?: Gasto; onClose: () => vo
       )}
 
       {!enCuotas && (
-        <div className="stack tight">
-          {foto ? (
-            <>
-              <img className="thumb" src={foto} alt="Foto de la boleta" />
-              <button className="btn sm danger" onClick={() => { setFoto(null); setFotoCambiada(true); }}>{Icon.trash} Quitar foto</button>
-            </>
-          ) : (
-            <label className="foto-btn">
-              {Icon.camera} Foto de la boleta (opcional)
-              <input type="file" accept="image/*" capture="environment" onChange={(e) => elegirFoto(e.target.files?.[0])} />
-            </label>
-          )}
-        </div>
+        <FotoCampo adjuntoId={gasto?.adjuntoId} etiqueta="Foto de la boleta o comprobante (opcional)"
+          nombreArchivo={`gasto-${fecha}.jpg`} onCambio={setFotoNueva} />
       )}
       {err && <p className="error-text">{err}</p>}
       {gasto && <p className="muted tiny">Registrado por {gasto.creadoPorNombre}</p>}

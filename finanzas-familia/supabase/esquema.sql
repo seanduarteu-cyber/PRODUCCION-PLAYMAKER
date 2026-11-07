@@ -60,6 +60,7 @@ create table if not exists public.registros (
 create index if not exists registros_mes on public.registros (familia_id, coleccion, mes);
 
 -- Fotos de boletas (cifradas). Tabla aparte para no enviarlas por tiempo real.
+-- Se guardan 60 días y luego se borran solas (ver más abajo).
 create table if not exists public.adjuntos (
   familia_id uuid not null references public.familias (id) on delete cascade,
   id text not null check (char_length(id) <= 64),
@@ -68,6 +69,7 @@ create table if not exists public.adjuntos (
   creado_en bigint not null,
   primary key (familia_id, id)
 );
+create index if not exists adjuntos_antiguedad on public.adjuntos (creado_en);
 
 -- ---------- Funciones de ayuda ----------
 create or replace function public.es_miembro(fid uuid) returns boolean
@@ -185,12 +187,16 @@ begin
     raise exception 'No tienes permiso en esta familia.' using errcode = '42501';
   end if;
   if jsonb_array_length(p_ops) > 500 then raise exception 'Demasiados cambios en una sola operación.'; end if;
+  -- Fotos con más de 60 días: se borran para ahorrar espacio.
+  delete from adjuntos where familia_id = p_familia
+    and creado_en < (extract(epoch from now()) * 1000)::bigint - 60::bigint * 86400000;
   for o in select * from jsonb_array_elements(p_ops) loop
     c := o->>'coll';
     if c = 'adjuntos' then
       if o->>'op' = 'set' then
+        -- La fecha de la foto la pone el servidor (así los 60 días son exactos).
         insert into adjuntos (familia_id, id, enc, creado_por, creado_en)
-          values (p_familia, o->>'id', o->>'enc', auth.uid(), coalesce((o->>'creado_en')::bigint, 0))
+          values (p_familia, o->>'id', o->>'enc', auth.uid(), (extract(epoch from now()) * 1000)::bigint)
           on conflict (familia_id, id) do update set enc = excluded.enc;
       else
         delete from adjuntos where familia_id = p_familia and id = o->>'id';
@@ -212,6 +218,18 @@ begin
 end;
 $$;
 
+-- Borra las fotos de todas las familias con más de 60 días (lo usa la tarea diaria).
+create or replace function public.borrar_fotos_antiguas() returns integer
+language sql security definer set search_path = public as $$
+  with borradas as (
+    delete from public.adjuntos
+      where creado_en < (extract(epoch from now()) * 1000)::bigint - 60::bigint * 86400000
+      returning 1
+  )
+  select count(*)::integer from borradas;
+$$;
+
+revoke all on function public.borrar_fotos_antiguas() from public, anon, authenticated;
 revoke all on function public.crear_familia(uuid, text, jsonb, text, bigint, text) from public, anon;
 revoke all on function public.unirse_familia(text, text) from public, anon;
 revoke all on function public.renombrar_familia(uuid, text) from public, anon;
@@ -234,4 +252,15 @@ begin
   if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and tablename = 'familias') then
     alter publication supabase_realtime add table public.familias;
   end if;
+end $$;
+
+-- ---------- Borrado automático de fotos con más de 60 días (todos los días a las 04:17) ----------
+-- Usa la extensión pg_cron de Supabase. Si no está disponible, el script sigue igual:
+-- las fotos antiguas también se borran cada vez que la familia guarda algo.
+do $$
+begin
+  create extension if not exists pg_cron;
+  perform cron.schedule('borrar-fotos-antiguas', '17 4 * * *', 'select public.borrar_fotos_antiguas()');
+exception when others then
+  raise notice 'No se programó el borrado diario de fotos (pg_cron no disponible): %', sqlerrm;
 end $$;

@@ -1,10 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Campo, CategoriaSelect, Cargando, Icon, MontoInput, Seg, Sheet, Vacio } from '../components/ui';
+import { useMemo, useState } from 'react';
+import { CategoriaCampo } from '../components/Categoria';
+import { FotoCampo, FotoGuardada } from '../components/Foto';
+import { Campo, Cargando, Icon, MontoInput, Seg, Sheet, Vacio } from '../components/ui';
 import { useApp, useFamilia } from '../data/store';
 import { nombreCategoria, pagadoBoleta, resumenBoletas, saldoBoleta, situacionBoleta } from '../lib/calc';
 import { fmtCLP, fmtFecha, hoy } from '../lib/format';
-import { comprimirFoto } from '../lib/imagen';
 import type { Boleta } from '../lib/types';
+
+/** ¿La boleta o alguno de sus pagos tiene foto? */
+const tieneFoto = (b: Boleta) => !!b.adjuntoId || b.pagos.some((p) => p.adjuntoId);
 import { Encabezado } from './Shell';
 
 type Filtro = 'pendientes' | 'pagadas' | 'todas';
@@ -50,7 +54,7 @@ export function Boletas() {
                 <button key={b.id} className="item" onClick={() => setVer(b.id)}>
                   <span className="grow">
                     <div className="t ellipsis">{nombreCategoria(f.settings, b.categoriaId)}{b.detalle ? ` · ${b.detalle}` : ''}</div>
-                    <div className="s">Vence {fmtFecha(b.vencimiento)}{b.adjuntoId ? ' · 📎' : ''}</div>
+                    <div className="s">Vence {fmtFecha(b.vencimiento)}{tieneFoto(b) ? ' · 📎' : ''}</div>
                     <span className={'badge ' + s.nivel} style={{ marginTop: 4, whiteSpace: 'normal' }}>{s.texto}</span>
                   </span>
                   <span className="stack tight" style={{ alignItems: 'flex-end', gap: 0 }}>
@@ -76,22 +80,17 @@ export function BoletaForm({ boleta, onClose }: { boleta?: Boleta; onClose: () =
   const [vencimiento, setVencimiento] = useState(boleta?.vencimiento ?? hoy());
   const [categoriaId, setCategoriaId] = useState(boleta?.categoriaId ?? '');
   const [detalle, setDetalle] = useState(boleta?.detalle ?? '');
-  const [foto, setFoto] = useState<string | null>(null);
-  const [fotoCambiada, setFotoCambiada] = useState(false);
+  const [fotoNueva, setFotoNueva] = useState<string | null | undefined>(undefined);
   const [err, setErr] = useState('');
-
-  useEffect(() => {
-    if (boleta?.adjuntoId) f.acciones.leerAdjunto(boleta.adjuntoId).then(setFoto).catch(() => undefined);
-  }, [boleta?.adjuntoId, f.acciones]);
 
   async function guardar() {
     if (!monto) return setErr('Ingresa el monto.');
     if (!f.settings.categorias.some((c) => c.id === categoriaId)) return setErr('Elige una categoría.');
     try {
       let adjuntoId = boleta?.adjuntoId;
-      if (fotoCambiada) {
+      if (fotoNueva !== undefined) {
         if (adjuntoId) f.acciones.eliminarAdjunto(adjuntoId);
-        adjuntoId = foto ? await f.acciones.guardarAdjunto(foto) : undefined;
+        adjuntoId = fotoNueva ? await f.acciones.guardarAdjunto(fotoNueva) : undefined;
       }
       await f.acciones.guardarBoleta({ ...(boleta || {}), monto, vencimiento, categoriaId, detalle: detalle.trim(), adjuntoId });
       avisar(boleta ? 'Boleta actualizada' : 'Boleta agregada');
@@ -104,29 +103,10 @@ export function BoletaForm({ boleta, onClose }: { boleta?: Boleta; onClose: () =
   return (
     <Sheet titulo={boleta ? 'Editar boleta' : 'Nueva boleta'} onClose={onClose} pie={<button className="btn primary" onClick={guardar}>Guardar</button>}>
       <MontoInput value={monto} onChange={setMonto} grande autoFocus={!boleta} />
-      <Campo label="Categoría"><CategoriaSelect settings={f.settings} value={categoriaId} onChange={setCategoriaId} /></Campo>
+      <CategoriaCampo value={categoriaId} onChange={setCategoriaId} />
       <Campo label="Detalle"><input className="input" value={detalle} onChange={(e) => setDetalle(e.target.value)} placeholder="Ej: periodo 26-09 al 26-10, N° cliente…" /></Campo>
       <Campo label="Vencimiento"><input className="input" type="date" value={vencimiento} onChange={(e) => e.target.value && setVencimiento(e.target.value)} /></Campo>
-      {foto ? (
-        <>
-          <img className="thumb" src={foto} alt="Foto de la boleta" />
-          <button className="btn sm danger" onClick={() => { setFoto(null); setFotoCambiada(true); }}>{Icon.trash} Quitar foto</button>
-        </>
-      ) : (
-        <label className="foto-btn">
-          {Icon.camera} Foto de la boleta (opcional)
-          <input type="file" accept="image/*" capture="environment" onChange={async (e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            try {
-              setFoto(await comprimirFoto(file));
-              setFotoCambiada(true);
-            } catch (e2) {
-              error(e2);
-            }
-          }} />
-        </label>
-      )}
+      <FotoCampo adjuntoId={boleta?.adjuntoId} etiqueta="Foto de la boleta (opcional)" nombreArchivo={`boleta-${vencimiento}.jpg`} onCambio={setFotoNueva} />
       {err && <p className="error-text">{err}</p>}
     </Sheet>
   );
@@ -136,13 +116,10 @@ function BoletaDetalle({ boleta: b, onClose }: { boleta: Boleta; onClose: () => 
   const f = useFamilia();
   const { avisar } = useApp();
   const [modo, setModo] = useState<'ver' | 'pagar' | 'editar'>('ver');
-  const [foto, setFoto] = useState<string | null>(null);
   const s = situacionBoleta(b, hoy());
   const saldo = saldoBoleta(b);
-
-  useEffect(() => {
-    if (b.adjuntoId) f.acciones.leerAdjunto(b.adjuntoId).then(setFoto).catch(() => undefined);
-  }, [b.adjuntoId, f.acciones]);
+  // Pagos antiguos: la foto puede estar solo en el gasto.
+  const fotoPago = (gastoId: string, adjuntoId?: string) => adjuntoId ?? f.gastos.find((g) => g.id === gastoId)?.adjuntoId;
 
   if (modo === 'editar') return <BoletaForm boleta={b} onClose={onClose} />;
   if (modo === 'pagar') return <PagoBoleta boleta={b} onClose={onClose} />;
@@ -165,17 +142,23 @@ function BoletaDetalle({ boleta: b, onClose }: { boleta: Boleta; onClose: () => 
         <div className="stack tight">
           <h3>Pagos</h3>
           <div className="card flush list">
-            {b.pagos.map((p) => (
-              <div key={p.gastoId} className="item" style={{ cursor: 'default' }}>
-                <span className="grow">{fmtFecha(p.fecha)}</span>
-                <span className="num m">{fmtCLP(p.monto)}</span>
-              </div>
-            ))}
+            {b.pagos.map((p) => {
+              const adj = fotoPago(p.gastoId, p.adjuntoId);
+              return (
+                <div key={p.gastoId} className="item stack tight" style={{ cursor: 'default', alignItems: 'stretch' }}>
+                  <div className="row between">
+                    <span className="grow">Pago del {fmtFecha(p.fecha)}{adj ? ' · 📎' : ''}</span>
+                    <span className="num m">{fmtCLP(p.monto)}</span>
+                  </div>
+                  {adj && <FotoGuardada adjuntoId={adj} nombreArchivo={`pago-boleta-${p.fecha}.jpg`} chica />}
+                </div>
+              );
+            })}
           </div>
           <p className="muted tiny">Cada pago aparece también en Gastos. Para deshacer un pago, elimínalo desde Gastos.</p>
         </div>
       )}
-      {foto && <img className="thumb" src={foto} alt="Foto de la boleta" />}
+      {b.adjuntoId && <FotoGuardada adjuntoId={b.adjuntoId} titulo="Foto de la boleta" nombreArchivo={`boleta-${b.vencimiento}.jpg`} />}
       <div className="btn-row">
         <button className="btn sm" onClick={() => setModo('editar')}>Editar</button>
         {b.estado === 'pendiente' && (
@@ -205,12 +188,13 @@ function PagoBoleta({ boleta: b, onClose }: { boleta: Boleta; onClose: () => voi
   const [fecha, setFecha] = useState(hoy());
   const [medioPago, setMedioPago] = useState('');
   const [cerrar, setCerrar] = useState(false);
+  const [foto, setFoto] = useState<string | null>(null);
   const parcial = (monto || 0) < saldo;
 
   async function pagar() {
     if (!monto) return;
     try {
-      await f.acciones.pagarBoleta(b, { fecha, monto, medioPago: medioPago || undefined, cerrar: !parcial || cerrar });
+      await f.acciones.pagarBoleta(b, { fecha, monto, medioPago: medioPago || undefined, cerrar: !parcial || cerrar, foto });
       avisar(parcial && !cerrar ? `Pago parcial registrado. Faltan ${fmtCLP(saldo - monto)}` : 'Boleta pagada');
       onClose();
     } catch (e) {
@@ -237,7 +221,8 @@ function PagoBoleta({ boleta: b, onClose }: { boleta: Boleta; onClose: () => voi
           <label className="check"><input type="radio" checked={cerrar} onChange={() => setCerrar(true)} /> Pagada (me cobraron menos / descuento)</label>
         </div>
       )}
-      <p className="muted tiny">El pago se registra como gasto en la categoría de la boleta.</p>
+      <FotoCampo etiqueta="Foto del comprobante o de la boleta (opcional)" nombreArchivo={`pago-boleta-${fecha}.jpg`} onCambio={setFoto} />
+      <p className="muted tiny">El pago se registra como gasto en la categoría de la boleta. La foto queda en la boleta y en el gasto.</p>
     </Sheet>
   );
 }

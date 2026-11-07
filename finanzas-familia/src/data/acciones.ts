@@ -4,6 +4,7 @@ import { etiquetaCuota } from '../lib/calc';
 import { cifrar, descifrar } from '../lib/crypto';
 import { nuevoId } from '../lib/defaults';
 import { mesDe, sumarMeses } from '../lib/format';
+import { fotoVencida } from '../lib/imagen';
 import type {
   AppUser, Boleta, ColeccionNombre, Deuda, Gasto, Ingreso, MesKey, RawDoc, Settings,
 } from '../lib/types';
@@ -20,7 +21,17 @@ export interface Contexto {
   deudas: Deuda[];
   /** Errores de escritura en segundo plano (sin permiso, etc.) */
   onError: (e: unknown) => void;
+  /** Muestra al instante la configuración nueva (antes de que responda el servidor). */
+  onSettings?: (s: Settings) => void;
+  /** Si falló el guardado, vuelve a la configuración del servidor. */
+  revertirSettings?: () => void;
 }
+
+/** Foto leída, o 'borrada' si ya no existe (se borra sola a los 60 días). */
+export type FotoLeida = { dataUrl: string; creadoEn: number } | 'borrada';
+
+// Fotos recién guardadas: se muestran aunque todavía se estén subiendo.
+const fotosRecientes = new Map<string, { dataUrl: string; creadoEn: number }>();
 
 const COLECCION_CON_MES: Partial<Record<ColeccionNombre, (x: never) => MesKey>> = {
   gastos: (g: Gasto) => mesDe(g.fecha),
@@ -83,7 +94,7 @@ export function crearAcciones(ctx: Contexto) {
     const b = boletaPorId(g.boletaId);
     if (b) {
       const pagos = b.pagos.filter((p) => p.gastoId !== g.id);
-      if (!eliminar) pagos.push({ gastoId: g.id, fecha: g.fecha, monto: g.monto });
+      if (!eliminar) pagos.push({ gastoId: g.id, fecha: g.fecha, monto: g.monto, ...(g.adjuntoId ? { adjuntoId: g.adjuntoId } : {}) });
       let nb: Boleta = { ...b, pagos };
       if (eliminar && b.estado === 'pagada' && pagadoDe(nb) < b.monto) nb.estado = 'pendiente';
       nb = recalcularEstado(nb);
@@ -101,7 +112,20 @@ export function crearAcciones(ctx: Contexto) {
   }
 
   async function guardarSettings(settings: Settings) {
-    await backend.updateFamily(familyId, { settingsEnc: await cifrar(llave, settings) });
+    ctx.onSettings?.(settings);
+    try {
+      await backend.updateFamily(familyId, { settingsEnc: await cifrar(llave, settings) });
+    } catch (e) {
+      ctx.revertirSettings?.();
+      throw e;
+    }
+  }
+
+  /** Prepara la foto cifrada para guardarla junto con otros cambios. */
+  async function opAdjunto(dataUrl: string): Promise<{ id: string; op: WriteOp }> {
+    const obj = { id: nuevoId(), dataUrl, creadoPor: user.uid, creadoEn: Date.now() };
+    fotosRecientes.set(`${familyId}:${obj.id}`, { dataUrl, creadoEn: obj.creadoEn });
+    return { id: obj.id, op: await set('adjuntos', obj) };
   }
 
   return {
@@ -142,15 +166,24 @@ export function crearAcciones(ctx: Contexto) {
       if (b.adjuntoId) ops.push(del('adjuntos', b.adjuntoId));
       commit(ops);
     },
-    async pagarBoleta(b: Boleta, p: { fecha: string; monto: number; medioPago?: string; cerrar: boolean }) {
+    async pagarBoleta(b: Boleta, p: { fecha: string; monto: number; medioPago?: string; cerrar: boolean; foto?: string | null }) {
+      const ops: WriteOp[] = [];
+      let adjuntoId: string | undefined;
+      if (p.foto) {
+        const a = await opAdjunto(p.foto);
+        adjuntoId = a.id;
+        ops.push(a.op);
+      }
       const g: Gasto = {
         id: nuevoId(), ...audit(), fecha: p.fecha, categoriaId: b.categoriaId, monto: p.monto,
         descripcion: `Boleta: ${b.detalle || 'sin detalle'}`, medioPago: p.medioPago, boletaId: b.id,
+        ...(adjuntoId ? { adjuntoId } : {}),
       };
-      let nb: Boleta = { ...b, pagos: [...b.pagos, { gastoId: g.id, fecha: g.fecha, monto: g.monto }] };
+      let nb: Boleta = { ...b, pagos: [...b.pagos, { gastoId: g.id, fecha: g.fecha, monto: g.monto, ...(adjuntoId ? { adjuntoId } : {}) }] };
       if (p.cerrar) nb.estado = 'pagada';
       nb = recalcularEstado(nb);
-      commit([await set('gastos', g), await set('boletas', nb)]);
+      ops.push(await set('gastos', g), await set('boletas', nb));
+      commit(ops);
     },
     async cambiarEstadoBoleta(b: Boleta, estado: Boleta['estado']) {
       commit([await set('boletas', recalcularEstado({ ...b, estado }))]);
@@ -198,16 +231,31 @@ export function crearAcciones(ctx: Contexto) {
     },
 
     async guardarAdjunto(dataUrl: string): Promise<string> {
-      const obj = { id: nuevoId(), dataUrl, creadoPor: user.uid, creadoEn: Date.now() };
-      commit([await set('adjuntos', obj)]);
-      return obj.id;
+      const a = await opAdjunto(dataUrl);
+      commit([a.op]);
+      return a.id;
     },
-    async leerAdjunto(id: string): Promise<string | null> {
-      const raw = await backend.getDoc(familyId, 'adjuntos', id);
-      if (!raw) return null;
-      return (await deRaw<{ dataUrl: string }>(llave, raw))?.dataUrl ?? null;
+    /** Lee una foto. Pasados 60 días se considera borrada (y se borra de la nube). */
+    async leerAdjunto(id: string): Promise<FotoLeida> {
+      const k = `${familyId}:${id}`;
+      let foto = fotosRecientes.get(k);
+      if (!foto) {
+        const raw = await backend.getDoc(familyId, 'adjuntos', id);
+        const obj = raw ? await deRaw<{ dataUrl: string; creadoEn?: number }>(llave, raw) : null;
+        if (!raw || !obj?.dataUrl) return 'borrada';
+        foto = { dataUrl: obj.dataUrl, creadoEn: Number(raw.creadoEn) || obj.creadoEn || 0 };
+      }
+      if (fotoVencida(foto.creadoEn)) {
+        fotosRecientes.delete(k);
+        commit([del('adjuntos', id)]);
+        return 'borrada';
+      }
+      return foto;
     },
-    eliminarAdjunto: (id: string) => commit([del('adjuntos', id)]),
+    eliminarAdjunto(id: string) {
+      fotosRecientes.delete(`${familyId}:${id}`);
+      commit([del('adjuntos', id)]);
+    },
 
     /** Escritura masiva (importación). */
     async importar(items: { coll: ColeccionNombre; obj: Base }[], settings?: Settings) {

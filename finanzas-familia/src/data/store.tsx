@@ -247,6 +247,8 @@ export function FamiliaProvider({ familyId, children, renderEstado }: {
   }, [doc, sal, familyId, llave, probarClave]);
 
   const settingsEnc = doc?.settingsEnc;
+  const settingsEncRef = useRef(settingsEnc);
+  settingsEncRef.current = settingsEnc;
   useEffect(() => {
     if (!llave || !settingsEnc) return;
     let vivo = true;
@@ -274,6 +276,10 @@ export function FamiliaProvider({ familyId, children, renderEstado }: {
     if (!key || !user) return null;
     return crearAcciones({
       backend, familyId, llave: key, user, onError: error,
+      onSettings: setSettings,
+      revertirSettings: () => {
+        if (settingsEncRef.current) descifrar<Settings>(key, settingsEncRef.current).then(setSettings).catch(() => undefined);
+      },
       get boletas() { return boletasRef.current; },
       get deudas() { return deudasRef.current; },
     });

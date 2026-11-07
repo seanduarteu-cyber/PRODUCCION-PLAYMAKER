@@ -124,6 +124,8 @@ export interface PagoBoleta {
   gastoId: string;
   fecha: Fecha;
   monto: number;
+  /** Foto del comprobante (la misma del gasto). */
+  adjuntoId?: string;
 }
 
 export type EstadoBoleta = 'pendiente' | 'pagada' | 'traspasada';

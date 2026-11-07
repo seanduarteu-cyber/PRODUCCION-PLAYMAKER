@@ -15,10 +15,12 @@ La lógica de cálculo replica la planilla `PRESUPUESTO_CASA` (hojas Presupuesto
 | Pantalla | Para qué sirve |
 |---|---|
 | **Resumen** | Saldo proyectado a fin de mes, ya pagado, por pagar, saldo hoy, estado del mes (superávit / ajustado / déficit), distribución Esencial-Deudas-Prescindible-Ahorro contra metas, avance por categoría, ingresos del mes y alertas de boletas vencidas o cuotas pendientes. |
-| **Gastos** | Registro diario: monto, categoría, descripción, fecha, medio de pago y foto de la boleta. Muestra quién registró cada gasto. Búsqueda y filtros por categoría o persona. **"Pagar en cuotas"** convierte una compra con tarjeta en un plan de cuotas futuras. |
-| **Boletas** | Cuentas por pagar (luz, agua, gas, colegio…). Pagos parciales, boletas vencidas ("VENCIDA hace N días: pedir monto actualizado"), traspasadas (convenio / boleta nueva). Lo no pagado se arrastra a los meses siguientes. |
+| **Gastos** | Registro diario: monto, categoría (se puede crear una nueva ahí mismo con “＋ Nueva categoría”), descripción, fecha, medio de pago y foto de la boleta (cámara o galería). Muestra quién registró cada gasto. Búsqueda y filtros por categoría o persona. **"Pagar en cuotas"** convierte una compra con tarjeta en un plan de cuotas futuras. |
+| **Boletas** | Cuentas por pagar (luz, agua, gas, colegio…). Foto de la boleta y del comprobante de cada pago (se ven en el detalle de la boleta). Pagos parciales, boletas vencidas ("VENCIDA hace N días: pedir monto actualizado"), traspasadas (convenio / boleta nueva). Lo no pagado se arrastra a los meses siguientes. |
 | **Cuotas** | Deudas, convenios, préstamos y compras en cuotas. Cuotas del mes con botón "Pagar", deuda restante, % del ingreso (alerta sobre 30%), prioridad por tasa (estrategia avalancha) y **proyección de 12 meses**. Admite cuotas variables por mes y cierre anticipado. |
 | **Más** | Presupuesto por categoría, ingresos fijos, metas; familia y miembros (invitar, roles); **Excel y PDF** del mes, del año o de un rango; **importar planilla**; privacidad. |
+
+**Fotos: se guardan 60 días.** Luego se borran solas para ahorrar espacio en la nube (la app lo avisa al subir cada foto y ofrece “Guardar copia” en el teléfono). El borrado lo hace la base de datos: cada vez que la familia guarda algo y, además, una tarea diaria (`pg_cron`) que crea el script `supabase/esquema.sql`.
 
 Los cambios de un miembro aparecen **al instante** en el teléfono de los demás. Además: modo oscuro, montos en pesos chilenos y botón "atrás" de Android. Para registrar se necesita internet.
 

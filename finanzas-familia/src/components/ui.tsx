@@ -18,6 +18,7 @@ export const Icon = {
   chevron: <svg viewBox="0 0 24 24">{p('M9 5l7 7-7 7')}</svg>,
   down: <svg viewBox="0 0 24 24">{p('M6 9l6 6 6-6')}</svg>,
   camera: <svg viewBox="0 0 24 24">{p('M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z')}</svg>,
+  image: <svg viewBox="0 0 24 24">{p('M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M15.5 9h.01')}</svg>,
   file: <svg viewBox="0 0 24 24">{p('M14 3H6v18h12V7zM14 3v4h4M9 13h6M9 17h6')}</svg>,
   share: <svg viewBox="0 0 24 24">{p('M12 3v13M7 8l5-5 5 5M5 13v8h14v-8')}</svg>,
   copy: <svg viewBox="0 0 24 24">{p('M9 9h11v11H9zM5 15H4V4h11v1')}</svg>,
@@ -179,17 +180,25 @@ export function MontoInput({ value, onChange, grande, autoFocus, placeholder, id
   );
 }
 
-export function CategoriaSelect({ settings, value, onChange, id }: { settings: Settings; value: string; onChange: (id: string) => void; id?: string }) {
+const OPCION_NUEVA = '__nueva__';
+
+export function CategoriaSelect({ settings, value, onChange, id, onNueva }: {
+  settings: Settings; value: string; onChange: (id: string) => void; id?: string; onNueva?: () => void;
+}) {
   const grupos = TIPOS.map((t) => [t, settings.categorias.filter((c) => c.tipo === t)] as [Tipo, Categoria[]]).filter(([, cs]) => cs.length);
   const existe = settings.categorias.some((c) => c.id === value);
   return (
-    <select id={id} className="input" value={existe ? value : ''} onChange={(e) => onChange(e.target.value)}>
+    <select id={id} className="input" value={existe ? value : ''} onChange={(e) => {
+      if (e.target.value === OPCION_NUEVA) onNueva?.();
+      else onChange(e.target.value);
+    }}>
       {!existe && <option value="">Elige una categoría…</option>}
       {grupos.map(([t, cs]) => (
         <optgroup key={t} label={t}>
           {cs.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
         </optgroup>
       ))}
+      {onNueva && <option value={OPCION_NUEVA}>＋ Crear categoría nueva…</option>}
     </select>
   );
 }

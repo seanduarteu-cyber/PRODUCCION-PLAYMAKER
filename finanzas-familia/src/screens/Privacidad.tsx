@@ -13,6 +13,7 @@ export function Privacidad({ onBack }: { onBack: () => void }) {
         <h2>Cifrado de extremo a extremo</h2>
         <p className="small">Montos, descripciones, categorías, presupuestos, boletas, deudas y fotos se cifran en tu teléfono (AES-256) con la <b>clave de la familia</b> antes de subirse. La clave nunca se envía al servidor, así que en la nube solo queda texto ilegible, incluso para quien administra el proyecto.</p>
         <p className="small">Lo único visible en el servidor es lo mínimo para que funcione: el correo y nombre de cada cuenta, el nombre de la familia, quién es miembro, y el mes y la fecha de creación de cada registro (no su contenido).</p>
+        <p className="small">Las fotos de boletas y comprobantes se guardan <b>60 días</b> y luego se borran automáticamente de la nube para ahorrar espacio. Si necesitas una por más tiempo, usa “Guardar copia”.</p>
       </div>
       <div className="card stack">
         <h2>Tu responsabilidad</h2>

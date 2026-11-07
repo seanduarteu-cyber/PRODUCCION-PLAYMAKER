@@ -276,6 +276,18 @@ textarea.input { min-height: 70px; resize: vertical; }
 .thumb { width: 100%; max-height: 260px; object-fit: contain; border-radius: var(--radius-sm); background: var(--surface-2); }
 .foto-btn { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; border: 1px dashed var(--border); border-radius: 11px; color: var(--muted); cursor: pointer; background: var(--surface); }
 .foto-btn input { display: none; }
+.foto-btn svg { width: 20px; height: 20px; flex: none; }
+.foto-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.foto-btns .foto-btn { font-weight: 600; color: var(--text); font-size: 14.5px; padding: 0 8px; text-align: center; }
+.thumb { cursor: zoom-in; }
+.thumb.sm { max-height: 170px; }
+.foto-cargando { min-height: 120px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); background: var(--surface-2); color: var(--muted); font-size: 13px; }
+.foto-cargando.sm { min-height: 80px; }
+.visor { position: fixed; inset: 0; z-index: 70; background: rgba(0, 0, 0, 0.92); display: flex; align-items: center; justify-content: center; padding: calc(58px + var(--safe-t)) 8px calc(16px + var(--safe-b)); animation: fade 0.15s ease-out; }
+.visor img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.visor .cerrar { position: absolute; top: calc(8px + var(--safe-t)); right: 8px; color: #fff; }
+.field-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.field-h > label { font-size: 13px; font-weight: 600; color: var(--muted); }
 .empty { text-align: center; color: var(--muted); padding: 28px 16px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
 .empty .icono { width: 52px; height: 52px; font-size: 24px; }
 .link:disabled { opacity: 0.5; cursor: default; }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CategoriaSheet } from '../components/Categoria';
 import { Campo, EMOJI_TIPO, MontoInput, Sheet, SubPagina } from '../components/ui';
 import { useApp, useFamilia } from '../data/store';
 import { nuevoId } from '../lib/defaults';
@@ -92,33 +93,6 @@ export function Presupuesto({ onBack }: { onBack: () => void }) {
       }} />}
       {metas && <MetasSheet onClose={() => setMetas(false)} onSave={(m) => guardar({ ...s, metas: m })} />}
     </SubPagina>
-  );
-}
-
-function CategoriaSheet({ categoria, onClose, onSave }: { categoria: Categoria | null; onClose: () => void; onSave: (c: Categoria, borrar?: boolean) => void }) {
-  const [nombre, setNombre] = useState(categoria?.nombre ?? '');
-  const [tipo, setTipo] = useState<Tipo>(categoria?.tipo ?? 'Esencial');
-  const [presupuesto, setPresupuesto] = useState<number | null>(categoria?.presupuesto ?? null);
-  const listo = () => {
-    if (!nombre.trim()) return;
-    onSave({ id: categoria?.id ?? nuevoId(), nombre: nombre.trim(), tipo, presupuesto: presupuesto || null });
-    onClose();
-  };
-  return (
-    <Sheet titulo={categoria ? 'Editar categoría' : 'Nueva categoría'} onClose={onClose} pie={
-      <>
-        {categoria && <button className="btn danger" onClick={() => {
-          if (confirm('¿Eliminar la categoría? Los gastos que la usan quedarán como “Sin categoría”.')) { onSave(categoria, true); onClose(); }
-        }}>Eliminar</button>}
-        <button className="btn primary" disabled={!nombre.trim()} onClick={listo}>Guardar</button>
-      </>
-    }>
-      <Campo label="Nombre"><input className="input" value={nombre} onChange={(e) => setNombre(e.target.value)} autoFocus={!categoria} /></Campo>
-      <Campo label="Tipo">
-        <div className="chips">{TIPOS.map((t) => <button key={t} className={'chip' + (tipo === t ? ' on' : '')} onClick={() => setTipo(t)}>{EMOJI_TIPO[t]} {t}</button>)}</div>
-      </Campo>
-      <Campo label="Presupuesto mensual" ayuda="Déjalo vacío si no quieres asignar un monto."><MontoInput value={presupuesto} onChange={setPresupuesto} /></Campo>
-    </Sheet>
   );
 }
 

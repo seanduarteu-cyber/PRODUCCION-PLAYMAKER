@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
-import { Campo, CategoriaSelect, Cargando, Icon, MontoInput, Sheet, Vacio } from '../components/ui';
+import { CategoriaCampo } from '../components/Categoria';
+import { Campo, Cargando, Icon, MontoInput, Sheet, Vacio } from '../components/ui';
 import { useApp, useFamilia } from '../data/store';
 import {
   cuotaDeuda, etiquetaCuota, mesesParaPagar, proyeccion, restanteDeuda, totalIngresos, ultimoMesDeuda,
@@ -257,9 +258,7 @@ function DeudaForm({ deuda, onClose }: { deuda?: Deuda; onClose: () => void }) {
       {!sinTermino && montoCuota && numCuotas > 0 && (
         <p className="muted small">Última cuota: {nombreMes(sumarMeses(primerMes, numCuotas - 1))} · total {fmtCLP(montoCuota * numCuotas)}</p>
       )}
-      <Campo label="Categoría del presupuesto" ayuda="Las cuotas se suman a lo presupuestado de esta categoría cada mes.">
-        <CategoriaSelect settings={f.settings} value={categoriaId} onChange={setCategoriaId} />
-      </Campo>
+      <CategoriaCampo label="Categoría del presupuesto" ayuda="Las cuotas se suman a lo presupuestado de esta categoría cada mes." value={categoriaId} onChange={setCategoriaId} />
 
       <details className="card">
         <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Más opciones (tasa, saldo, cuotas variables)</summary>

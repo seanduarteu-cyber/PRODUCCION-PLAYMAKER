@@ -2,19 +2,32 @@
 // Requiere Supabase local con el esquema aplicado:
 //   npx supabase start   →   psql ... -f supabase/esquema.sql
 //   SUPABASE_URL=http://127.0.0.1:54321 SUPABASE_ANON_KEY=... npm run test:supabase
+// Opcional (solo Supabase LOCAL): SUPABASE_SECRET_KEY=... crea usuarios ya confirmados
+// y permite probar el borrado de fotos de más de 60 días.
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { randomUUID } from 'node:crypto';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 const URL = process.env.SUPABASE_URL || 'http://127.0.0.1:54321';
 const KEY = process.env.SUPABASE_ANON_KEY || '';
+const SECRETA = process.env.SUPABASE_SECRET_KEY || '';
+const admin = SECRETA ? createClient(URL, SECRETA, { auth: { persistSession: false, autoRefreshToken: false } }) : null;
 const run = Date.now().toString(36);
 
 async function usuario(nombre: string): Promise<{ sb: SupabaseClient; uid: string }> {
   const sb = createClient(URL, KEY, { auth: { persistSession: false, autoRefreshToken: false } });
-  const { data, error } = await sb.auth.signUp({ email: `${nombre}-${run}@ejemplo.cl`, password: 'clave-segura-123', options: { data: { nombre } } });
+  const email = `${nombre}-${run}@ejemplo.cl`;
+  const password = 'clave-segura-123';
+  if (admin) {
+    const c = await admin.auth.admin.createUser({ email, password, email_confirm: true, user_metadata: { nombre } });
+    if (c.error) throw c.error;
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return { sb, uid: data.user!.id };
+  }
+  const { data, error } = await sb.auth.signUp({ email, password, options: { data: { nombre } } });
   if (error) throw error;
-  if (!data.session) throw new Error('El Supabase de pruebas debe tener desactivada la confirmación de correo');
+  if (!data.session) throw new Error('El Supabase de pruebas debe tener desactivada la confirmación de correo (o usa SUPABASE_SECRET_KEY)');
   return { sb, uid: data.user!.id };
 }
 
@@ -149,14 +162,52 @@ describe('tiempo real', () => {
     await rosa.sb.realtime.setAuth((await rosa.sb.auth.getSession()).data.session!.access_token);
     const [offD, offR] = await Promise.all([suscribir('dani', dani.sb), suscribir('rosa', rosa.sb)]);
     await new Promise((r) => setTimeout(r, 1500));
-    await sean.sb.rpc('aplicar_cambios', { p_familia: casa, p_ops: [gasto('rt1')] });
-    await sean.sb.rpc('aplicar_cambios', { p_familia: casa, p_ops: [{ op: 'delete', coll: 'gastos', id: 'rt1' }] });
+    expect((await sean.sb.rpc('aplicar_cambios', { p_familia: casa, p_ops: [gasto('rt1')] })).error).toBeNull();
+    await new Promise((r) => setTimeout(r, 500));
+    expect((await sean.sb.rpc('aplicar_cambios', { p_familia: casa, p_ops: [{ op: 'delete', coll: 'gastos', id: 'rt1' }] })).error).toBeNull();
     for (let i = 0; i < 40 && recibido.dani.length < 2; i++) await new Promise((r) => setTimeout(r, 250));
     await new Promise((r) => setTimeout(r, 1000));
     offD();
     offR();
-    expect(recibido.dani).toHaveLength(2);
-    expect(recibido.dani[1]).toMatchObject({ id: 'rt1', borrado: true, enc: null });
+    // Solo cuentan los eventos de esta prueba (un Supabase recién encendido puede reenviar cambios anteriores).
+    const deDani = recibido.dani.filter((x) => (x as { id?: string }).id === 'rt1');
+    expect(deDani).toHaveLength(2);
+    expect(deDani[1]).toMatchObject({ id: 'rt1', borrado: true, enc: null });
     expect(recibido.rosa).toHaveLength(0);
   }, 30000);
+});
+
+describe('fotos (se guardan 60 días)', () => {
+  const foto = (id: string) => ({ op: 'set', coll: 'adjuntos', id, enc: 'FOTO-CIFRADA', creado_en: 1 });
+  const fotosDe = async (sb: SupabaseClient, fam: string) =>
+    ((await sb.from('adjuntos').select('id').eq('familia_id', fam).order('id')).data ?? []).map((x) => x.id);
+
+  it('la fecha de la foto la pone el servidor, no el teléfono', async () => {
+    const r = await sean.sb.rpc('aplicar_cambios', { p_familia: casa, p_ops: [foto('foto-hoy')] });
+    expect(r.error).toBeNull();
+    const a = await sean.sb.from('adjuntos').select('creado_en').eq('familia_id', casa).eq('id', 'foto-hoy').single();
+    expect(Math.abs(Number(a.data!.creado_en) - Date.now())).toBeLessThan(5 * 60000);
+  });
+  it('otra familia no ve las fotos y nadie puede lanzar el borrado general', async () => {
+    expect(await fotosDe(rosa.sb, casa)).toEqual([]);
+    expect((await sean.sb.rpc('borrar_fotos_antiguas')).error).toBeTruthy();
+    expect((await rosa.sb.rpc('borrar_fotos_antiguas')).error).toBeTruthy();
+  });
+  it.runIf(!!admin)('las fotos de más de 60 días se borran solas', async () => {
+    await sean.sb.rpc('aplicar_cambios', { p_familia: casa, p_ops: [foto('foto-vieja'), foto('foto-59')] });
+    await rosa.sb.rpc('aplicar_cambios', { p_familia: perez, p_ops: [foto('foto-vieja-perez')] });
+    const dia = 86400000;
+    await admin!.from('adjuntos').update({ creado_en: Date.now() - 61 * dia }).in('id', ['foto-vieja', 'foto-vieja-perez']);
+    await admin!.from('adjuntos').update({ creado_en: Date.now() - 59 * dia }).eq('id', 'foto-59');
+    // Al guardar cualquier cosa, se borran las fotos vencidas de esa familia.
+    const r = await sean.sb.rpc('aplicar_cambios', { p_familia: casa, p_ops: [gasto('g-foto')] });
+    expect(r.error).toBeNull();
+    expect(await fotosDe(sean.sb, casa)).toEqual(['foto-59', 'foto-hoy']);
+    expect(await fotosDe(rosa.sb, perez)).toEqual(['foto-vieja-perez']);
+    // La tarea diaria borra las de todas las familias.
+    const t = await admin!.rpc('borrar_fotos_antiguas');
+    expect(t.error).toBeNull();
+    expect(await fotosDe(rosa.sb, perez)).toEqual([]);
+    expect(await fotosDe(sean.sb, casa)).toEqual(['foto-59', 'foto-hoy']);
+  });
 });
