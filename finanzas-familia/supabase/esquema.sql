@@ -259,7 +259,7 @@ end $$;
 -- las fotos antiguas también se borran cada vez que la familia guarda algo.
 do $$
 begin
-  create extension if not exists pg_cron;
+  create extension if not exists pg_cron with schema pg_catalog;
   perform cron.schedule('borrar-fotos-antiguas', '17 4 * * *', 'select public.borrar_fotos_antiguas()');
 exception when others then
   raise notice 'No se programó el borrado diario de fotos (pg_cron no disponible): %', sqlerrm;

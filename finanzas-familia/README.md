@@ -20,7 +20,14 @@ La lógica de cálculo replica la planilla `PRESUPUESTO_CASA` (hojas Presupuesto
 | **Cuotas** | Deudas, convenios, préstamos y compras en cuotas. Cuotas del mes con botón "Pagar", deuda restante, % del ingreso (alerta sobre 30%), prioridad por tasa (estrategia avalancha) y **proyección de 12 meses**. Admite cuotas variables por mes y cierre anticipado. |
 | **Más** | Presupuesto por categoría, ingresos fijos, metas; familia y miembros (invitar, roles); **Excel y PDF** del mes, del año o de un rango; **importar planilla**; privacidad. |
 
-**Fotos: se guardan 60 días.** Luego se borran solas para ahorrar espacio en la nube (la app lo avisa al subir cada foto y ofrece “Guardar copia” en el teléfono). El borrado lo hace la base de datos: cada vez que la familia guarda algo y, además, una tarea diaria (`pg_cron`) que crea el script `supabase/esquema.sql`.
+**Fotos: se guardan 60 días.** Luego se borran solas para ahorrar espacio en la nube (la app lo avisa al subir cada foto y ofrece “Guardar copia” en el teléfono). El borrado lo hace la base de datos: cada vez que la familia guarda algo y, además, una tarea diaria (`pg_cron`) que crea el script `supabase/esquema.sql`. Si `select jobname from cron.job;` da error, activa la tarea con:
+
+```sql
+create extension if not exists pg_cron with schema pg_catalog;
+select cron.schedule('borrar-fotos-antiguas', '17 4 * * *', 'select public.borrar_fotos_antiguas()');
+```
+
+(o en Supabase › Integrations › Cron › Enable, y luego solo la segunda línea).
 
 Los cambios de un miembro aparecen **al instante** en el teléfono de los demás. Además: modo oscuro, montos en pesos chilenos y botón "atrás" de Android. Para registrar se necesita internet.
 
