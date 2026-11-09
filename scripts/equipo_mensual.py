@@ -42,6 +42,22 @@ FRASE_RESULTADO = 'De cada 100 metros, cerca de 4 fueron para repetir. En septie
 META_SIG_TXT = 'PRÓXIMA META · NOVIEMBRE ≤6% (≤121 m)  ·  ya estamos bajo la meta de diciembre (5%)'
 MENSAJE_MEJORA = ['¡FELICITACIONES, EQUIPO!', 'De 13,9% a 4,1% en dos meses: ya estamos bajo la meta de diciembre.', 'Este logro es de todos.']
 DESAFIO = 'PRÓXIMO DESAFÍO: MANTENERNOS BAJO EL 5%   ·   NOVIEMBRE ≤6%'
+PUNTOS_TRABAJO = [  # (título, párrafos, dato que lo respalda) — puntos de mejora del mes
+    ('REVISAR SEGÚN LA ETAPA',
+     ['Reforzamos la revisión de cada proyecto según la etapa en la que está.',
+      'Si evitamos que un pendiente pase a la etapa siguiente, evitamos el reproceso.'],
+     'Pendientes en taller fue la causa n.º 1 de octubre: 9 de 28 pedidos.'),
+    ('DISEÑO: CRITERIOS COMUNES',
+     ['Aunamos criterios: todo el equipo de diseño trabaja con los criterios de toda el área.',
+      'No hay criterios que solo algunos conozcan.'],
+     'Diseño / ficha bajó de 7 pedidos a 0 en octubre. Con criterios comunes, lo mantenemos.')]
+# ================================================================== ACUERDOS DEL EQUIPO (cambiar solo si cambian)
+HORA_LLEGADA = '9:00'
+COLACION = ['13:00 a 14:00', '14:00 a 15:00']       # dos turnos
+REUNION = ('Lunes a viernes', '9:15')
+TRES_PREGUNTAS = ['¿Qué hice ayer?', '¿Qué haré hoy?', '¿Hay alguna condición que me impida cumplir con mi tarea de hoy?']
+AGRADECIMIENTO = 'Gracias a cada uno de ustedes por la dedicación que han puesto en sus tareas.'
+MEJORA_CONTINUA = ('Siempre hay algo que podemos mejorar: ', 'eso es mejora continua.')
 # ==================================================================
 
 SRC, OUT = sys.argv[1], sys.argv[2]
@@ -207,10 +223,12 @@ tb(sl, 0.45, 1.45, 9.1, 1.5, ['¿CÓMO NOS FUE', f'EN {ACT[0]}?'], size=44, bold
 tb(sl, 0.45, 3.15, 9, 0.3, 'Revisión mensual de calidad de producción', size=13, color=GREY, italic=True)
 rect(sl, 0.45, 3.70, 5.6, 0.85, PANEL)
 tb(sl, 0.65, 3.82, 5.3, 0.65, [f'Hoy:  qué medimos  →  cómo venimos  →  qué pasó en {ACT[0].lower()}',
-                               [('y al final, ', {}), ('el resultado.', {'bold': True, 'color': ORANGE})]], size=11, color=LIGHT, space=4)
+                               [('→  ', {}), ('el resultado', {'bold': True, 'color': ORANGE}), ('  →  cómo seguimos mejorando.', {})]],
+   size=11, color=LIGHT, space=4)
 tb(sl, 6.6, 4.95, 3.0, 0.25, 'UN CLUB, UNA FAMILIA', size=9, color=ORANGE, bold=True, align='r')
 tb(sl, 6.6, 5.20, 3.0, 0.22, 'www.playmaker.cl', size=8.5, color=GREY, italic=True, align='r')
-notes(sl, f'Abrir con la pregunta. Orden: qué medimos, cómo venimos, qué pasó en {ACT[0].lower()} y, al final, el resultado.')
+notes(sl, f'Abrir con la pregunta. Orden: qué medimos, cómo venimos, qué pasó en {ACT[0].lower()}, el resultado '
+          'y, para cerrar, los puntos de mejora.')
 
 # ================================================================== 2. QUÉ ESTAMOS MIDIENDO
 sl = new_slide(); base(sl, '1 · QUÉ ESTAMOS MIDIENDO', 'EL NÚMERO QUE SEGUIMOS CADA MES')
@@ -355,7 +373,7 @@ notes(sl, 'Metas por mes: septiembre ≤11%, octubre ≤8%, noviembre ≤6% y di
 # ================================================================== 5. EL MES EN NÚMEROS (comparativa 3 meses)
 sl = new_slide(); base(sl, f'4 · QUÉ PASÓ EN {ACT[0]}', f'{ACT[0]} EN NÚMEROS')
 max_prod = max(h[1] for h in HIST)
-prod_txt = 'impresos: el mes de mayor producción desde mayo' if ACT[1] > max_prod else 'impresos en el mes'
+prod_txt = 'de producción: el mes más alto desde mayo' if ACT[1] > max_prod else 'de producción en el mes'
 evs = [D.MESES[k]['ev'] for k in W3]
 for i, (big, small, col) in enumerate([(num(ACT[1]) + ' m', prod_txt, WHITE),
                                        (str(ACT[4]), 'pedidos de reimpresión en el chat  (' + ' → '.join(map(str, evs)) + ' en 3 meses)', ORANGE)]):
@@ -391,7 +409,7 @@ for i, (col, ico, t, d) in enumerate(LECTURAS):
     tb(sl, X + 0.52, y + 0.10, 2.8, 0.25, t.upper(), size=10, bold=True, color=col)
     tb(sl, X + 0.52, y + 0.36, 2.83, 0.55, d, size=9.5, color=LIGHT)
 tb(sl, X, 4.72, 3.45, 0.25, CIERRE_NUMEROS, size=10.5, bold=True)
-notes(sl, f'{ACT[0].capitalize()}: {num(ACT[1])} m impresos y {ACT[4]} pedidos en el chat. Comparar los últimos 3 meses por etapa '
+notes(sl, f'{ACT[0].capitalize()}: {num(ACT[1])} m de producción y {ACT[4]} pedidos en el chat. Comparar los últimos 3 meses por etapa '
           '(hablar de procesos, no de personas). Reconocer el uso de la línea ETAPA.')
 
 # ================================================================== 6. EL RESULTADO (corto y largo plazo)
@@ -422,16 +440,72 @@ r.text_frame.margin_left = r.text_frame.margin_right = E(0.12)
 notes(sl, f'Revelar: {ACT[0].lower()} cerró en {pct(PCT)} (meta del mes ≤{META_MES}%: ' + ('cumplida' if META_OK else 'no alcanzada') + '). '
           'Corto plazo: comparar los últimos 3 meses. Largo plazo: mirar el gráfico de 12 meses completo, ahora con el mes revelado.')
 
-# ================================================================== 7. MENSAJE FINAL
+# ================================================================== 7. PUNTOS DE MEJORA: EL TRABAJO
+sl = new_slide(); base(sl, '6 · PUNTOS DE MEJORA', 'CÓMO EVITAMOS EL PRÓXIMO REPROCESO')
+ETAPAS = ['DISEÑO / FICHA', 'IMPRESIÓN', 'ARMADO DE MESA', 'SUBLIMACIÓN', 'CORTE', 'CONFECCIÓN']
+bw, gap = 1.25, 0.32
+for i, et in enumerate(ETAPAS):
+    x = 0.45 + i * (bw + gap)
+    rect(sl, x, 1.25, bw, 0.62, PANEL)
+    rect(sl, x, 1.25, bw, 0.05, GREEN)
+    tb(sl, x + 0.04, 1.36, bw - 0.08, 0.25, et, size=9, bold=True, align='c')
+    tb(sl, x + 0.04, 1.60, bw - 0.08, 0.22, '✓ revisado', size=8.5, bold=True, color=GREEN, align='c')
+    if i:
+        tb(sl, x - gap, 1.25, gap, 0.62, '→', size=14, bold=True, color=ORANGE, align='c', anchor='m')
+tb(sl, 0.45, 1.98, 9.1, 0.25, 'Revisamos cada proyecto en la etapa en que está, antes de pasarlo a la siguiente.',
+   size=10, color=GREY, italic=True)
+for i, (tit, parrafos, dato) in enumerate(PUNTOS_TRABAJO):
+    x = 0.45 + i * 4.65
+    rect(sl, x, 2.40, 4.45, 2.55, PANEL)
+    rect(sl, x, 2.40, 4.45, 0.06, ORANGE)
+    tb(sl, x + 0.22, 2.55, 0.5, 0.55, str(i + 1), size=30, bold=True, color=ORANGE)
+    tb(sl, x + 0.80, 2.64, 3.45, 0.3, tit, size=13, bold=True)
+    tb(sl, x + 0.80, 3.02, 3.45, 1.15, parrafos, size=11, color=LIGHT, space=5)
+    rect(sl, x + 0.22, 4.28, 4.01, 0.52, PANEL2)
+    tb(sl, x + 0.35, 4.28, 3.78, 0.52, dato, size=9.5, bold=True, color=ORANGE, anchor='m')
+notes(sl, 'Puntos de mejora en el trabajo. (1) Revisar cada proyecto según la etapa en que está: un pendiente que no pasa a la '
+          'etapa siguiente es un reproceso que no ocurre. (2) Diseño: criterios comunes para toda el área; '
+          'ningún criterio debe depender de que solo algunos lo conozcan.')
+
+# ================================================================== 8. PUNTOS DE MEJORA: NUESTRO DÍA
+sl = new_slide(); base(sl, '6 · PUNTOS DE MEJORA', 'NUESTRO DÍA: HORARIOS Y PLANIFICACIÓN')
+bloques = [([HORA_LLEGADA], 'LLEGADA', 'Todo el equipo de producción'),
+           ([REUNION[1]], 'REUNIÓN DE PLANIFICACIÓN', REUNION[0]),
+           (COLACION, 'COLACIÓN', 'En dos turnos')]
+for i, (horas, lab, sub) in enumerate(bloques):
+    x = 0.45 + i * 3.1
+    rect(sl, x, 1.25, 2.9, 1.30, PANEL)
+    rect(sl, x, 1.25, 0.06, 1.30, ORANGE)
+    tb(sl, x + 0.25, 1.32, 2.5, 0.62, horas, size=30 if len(horas) == 1 else 15, bold=True, color=ORANGE, anchor='m')
+    tb(sl, x + 0.25, 1.98, 2.5, 0.25, lab, size=10.5, bold=True)
+    tb(sl, x + 0.25, 2.22, 2.5, 0.25, sub, size=9.5, color=GREY)
+tb(sl, 0.45, 2.80, 9.1, 0.25, f'A LA REUNIÓN DE LAS {REUNION[1]} LLEGAMOS CLAROS EN TRES PREGUNTAS', size=10.5, bold=True, color=ORANGE)
+for i, q in enumerate(TRES_PREGUNTAS):
+    x = 0.45 + i * 3.1
+    rect(sl, x, 3.12, 2.9, 1.30, PANEL)
+    tb(sl, x + 0.18, 3.12, 0.5, 1.30, str(i + 1), size=30, bold=True, color=ORANGE, anchor='m')
+    tb(sl, x + 0.70, 3.12, 2.05, 1.30, q, size=13, bold=True, anchor='m')
+tb(sl, 0.45, 4.62, 9.1, 0.3, 'Si algo nos impide avanzar, la reunión es el momento para decirlo y resolverlo juntos.',
+   size=10.5, color=LIGHT, italic=True)
+notes(sl, f'Reforzar con todo el equipo de producción: llegada a las {HORA_LLEGADA}; colación en dos turnos '
+          f'({COLACION[0]} y {COLACION[1]}). Reunión de planificación {REUNION[0].lower()} a las {REUNION[1]}: '
+          'cada uno llega con sus tres respuestas claras.')
+
+# ================================================================== 9. MENSAJE FINAL
 sl = new_slide(); base(sl, None, None, tag=False)
-panel = rect(sl, 0.85, 0.95, 8.3, 2.95, BAND)
-write(panel, [[(FINAL[0], {'size': 34, 'bold': True})], [(' ', {'size': 8})], [(FINAL[1], {'size': 16})], [(FINAL[2], {'size': 16, 'bold': True})]],
+panel = rect(sl, 0.85, 0.75, 8.3, 2.95, BAND)
+write(panel, [[(FINAL[0], {'size': 34, 'bold': True})], [(' ', {'size': 8})], [(FINAL[1], {'size': 16})],
+              [(FINAL[2], {'size': 16, 'bold': True})], [(' ', {'size': 8})], [(AGRADECIMIENTO, {'size': 14, 'italic': True})]],
       color=WHITE, align='c', anchor='m', space=2)
 panel.text_frame.margin_left = panel.text_frame.margin_right = E(0.3)
-tb(sl, 0.85, 4.15, 8.3, 0.35, DESAFIO, size=15, bold=True, color=ORANGE, align='c')
-tb(sl, 0.85, 4.75, 8.3, 0.25, 'UN CLUB, UNA FAMILIA', size=10, bold=True, color=GREY, align='c')
+tb(sl, 0.85, 3.92, 8.3, 0.3, [[(MEJORA_CONTINUA[0], {}), (MEJORA_CONTINUA[1], {'bold': True, 'color': ORANGE})]],
+   size=14, color=WHITE, align='c')
+tb(sl, 0.85, 4.35, 8.3, 0.35, DESAFIO, size=15, bold=True, color=ORANGE, align='c')
+tb(sl, 0.85, 4.92, 8.3, 0.25, 'UN CLUB, UNA FAMILIA', size=10, bold=True, color=GREY, align='c')
 click_fade(sl, panel)
 notes(sl, f'RESULTADO DEL MES: {ESTADO} ({pct(PCT_ANT)} → {pct(PCT)}). El mensaje aparece con un clic.\n\n'
+          'SIEMPRE, cualquiera sea el resultado: agradecer a cada uno su dedicación e invitar a seguir mejorando '
+          '(mejora continua: siempre hay algo que podemos mejorar).\n\n'
           'CÓMO ELEGIR EL MENSAJE CADA MES (comparar el % de reproceso con el mes anterior):\n'
           '• MEJORÓ (bajó 0,5 puntos o más) → felicitar (panel verde).\n'
           '• SE MANTUVO (cambio menor a 0,5 puntos) → invitar a mejorar (panel naranja): "Mantuvimos el nivel. Vamos por más."\n'
