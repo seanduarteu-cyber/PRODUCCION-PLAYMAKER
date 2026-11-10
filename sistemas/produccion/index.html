@@ -2660,19 +2660,24 @@ function claveDeFicha(moldeVal, manga) {
   return claveMolde(+num, /larga/i.test(manga || '') && !sinMangas);
 }
 // Prendas de la ficha que no tienen molde (del catálogo o ingresado a mano) para algún calce que lleva
+// Personas con talla en un diseño que no tiene molde para su calce (ej: niños cargados en un diseño que solo tiene molde
+// masculino). Dice el diseño (su nombre en la ficha), el calce y cuántas personas, para encontrarlo en el panel.
 function moldesFaltantes(cot) {
   const f = FICHAS_MAP[cot]; if (!f) return [];
-  const specs = jsonDe(f.specs) || {}; const faltan = new Set();
+  const specs = jsonDe(f.specs) || {}, its = (jsonDe(f.items) || []).map(i => i.prenda), faltan = {};
   (DETS_MAP[cot] || []).forEach(d => {
     const t = jsonDe(d.tallas) || {};
     Object.keys(t).forEach(pr => {
       if (!t[pr] || esMediasFicha(pr)) return;                       // las medias no llevan molde
       const v = ((specs[pr] || {}).moldes || {})[d.calce] || '';
       const manual = /\|manual$/.test(v);
-      if (!v || (manual && !v.split('|')[0].trim())) faltan.add((nomPrendaFicha(pr)) + ' ' + String(d.calce || 'sin calce').toLowerCase());
+      if (v && !(manual && !v.split('|')[0].trim())) return;
+      const nom = (specs[pr] || {}).nombre ? '«' + specs[pr].nombre + '» (' + nomPrendaFicha(pr) + ')' : nomPrendaFicha(pr);
+      const k = nom + ' ' + String(d.calce || 'sin calce').toLowerCase() + (its.indexOf(pr) < 0 ? ', prenda que ya no está en la ficha' : ', sin molde ' + String(d.calce || '').toLowerCase());
+      faltan[k] = (faltan[k] || 0) + 1;
     });
   });
-  return Array.from(faltan);
+  return Object.keys(faltan).map(k => k + ': ' + faltan[k] + (faltan[k] === 1 ? ' persona' : ' personas'));
 }
 function codigoPorMolde(prenda, moldeVal, manga) {
   prenda = basePrendaFicha(prenda);
@@ -3216,7 +3221,7 @@ async function guardarFicha() {
   if (ef.tipo === 'sin') return alert(`${cot} no puede ingresar a producción: no tiene ficha de tallas.\n\nCrea la ficha en el panel de Fichas y envíale el link al cliente.`);
   // Regla: cada prenda debe tener su molde del catálogo vigente (o ingresado a mano en la ficha técnica)
   const sinMolde = moldesFaltantes(cot);
-  if (sinMolde.length) return alert(`${cot} no puede ingresar a producción: falta definir el molde de ${sinMolde.join(', ')}.\n\nElígelo en la ficha técnica del panel de Fichas (del catálogo, o «Otro» para ingresarlo a mano).`);
+  if (sinMolde.length) return alert(`${cot} no puede ingresar a producción: hay personas en un calce sin molde.\n\n• ${sinMolde.join('\n• ')}\n\nEn el panel de Fichas, «Editar prendas y moldes»: agrega a ese diseño el molde de ese calce («+ Agregar calce a este diseño»), o cambia el calce de esas personas en el listado.`);
   const sinAsignar = PEND_ASIG.filter(p => !p.hecho).reduce((s, p) => s + p.cant, 0);
   if (sinAsignar && !confirm(`Quedan ${sinAsignar} prendas de la ficha sin código asignado y no están en el desglose.\n\n¿Continuar igual?`)) return;
   const r = planificar({ ingreso, entrega, estampado: est, sublimacion: sub, interno: FORM_INTERNO });

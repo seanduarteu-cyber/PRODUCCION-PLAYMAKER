@@ -1,3 +1,6 @@
+2026-11-10  Un diseño puede llevar un molde por calce (masculino, femenino e infantil): «+ Agregar calce a este diseño» y unir diseños cargados por separado sin volver a cargar personas; una sola hoja por diseño en la ficha de producción, con el calce y el molde de cada persona
+2026-11-10  Personas en un calce sin molde: Planificación dice qué diseño, calce y cuántas personas; el panel lo avisa en la ficha y en «Prendas y moldes»; la hoja muestra el montaje igual
+2026-11-10  Ficha técnica: copiar la configuración de telas (tela, aplicación y telas de cada pieza) a los diseños que se marquen
 2026-11-06  Ficha de producción: el detalle va en orden #, calce, talla, manga, N° y nombre a estampar; sin la columna adulto / infantil (el calce dice Infantil)
 2026-11-06  Panel: «Cambiar molde» en cada diseño (Editar prendas y moldes) sin perder personas, tallas, montajes ni ficha técnica; el despiece pasa al molde nuevo con sus telas y la ficha técnica avisa para revisar
 2026-11-06  E02 (rugby sin mangas) pasa a código RB-HOMUCC03 en los tres sistemas; SQL 19B lo cambia en la base y en las fichas guardadas

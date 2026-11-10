@@ -340,6 +340,8 @@ tr:last-child td { border-bottom: none; }
 .fp .tp td.chk, .fp .tp th.chk { width: 16px; text-align: center; }
 .fp .tp td.chk::before { content: ''; display: inline-block; width: 9px; height: 9px; border: 1px solid #555; }
 .fp .tp td.obs { white-space: normal; }
+.fp .mol { font-weight: 400; color: #666; font-size: .85em; white-space: nowrap; }
+.fp .mol.sin { color: #b42318; font-weight: 600; }
 .fp .tp tfoot td { font-weight: 600; background: #f6f6f6; }
 .fp .alerta { margin-top: 8px; font-size: 10px; border-left: 3px solid var(--rojo); background: #fff3f3; padding: 5px 8px; }
 .fp-com .caja { border: 1px solid #bbb; min-height: 16mm; padding: 5px 7px; font-size: 10px; white-space: pre-wrap; }
@@ -473,6 +475,16 @@ tr:last-child td { border-bottom: none; }
 .lm-item.cambiado { border-color: var(--negro); }
 .lm-item.reemplazando { box-shadow: 0 0 0 2px var(--naranja); }
 .cat-actual { font-size: 12.5px; margin-bottom: 10px; line-height: 1.45; }
+/* un diseño con varios calces (un molde por calce) y diseños que se unen */
+.lm-union { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; color: var(--naranja); font-weight: 600; }
+.linea-item .lm-union .btn.chico, .linea-item .lm-sinm .btn.chico { width: auto; max-width: 100%; height: auto; margin: 0; padding: 6px 10px; font-size: 12px; color: var(--negro); flex: none; white-space: normal; }
+.lm-sinm { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; color: var(--rojo); font-weight: 600; }
+.cat-unir { margin: 6px 0 12px; }
+.cat-unir .cat-fila .btn { white-space: normal; }
+.copiar-conf { margin-top: 14px; border: 1px dashed var(--linea); border-radius: 12px; padding: 8px 12px; }
+.copiar-conf summary { cursor: pointer; font-size: 13px; font-weight: 600; }
+.copiar-conf .copia-lista { max-height: 260px; overflow-y: auto; }
+.spec-prenda .copiar-conf label.chk-ft { margin-top: 8px; font-size: 13px; }
 .cat-mol { margin-top: 14px; border: 1px solid var(--linea); border-radius: 14px; padding: 12px; background: var(--blanco); }
 .cat-tit { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
 .cat-tit2 { font-weight: 600; font-size: 13px; margin-bottom: 6px; }
@@ -1003,6 +1015,15 @@ const PMK_ACCESO = (() => {
   const asignadas = (dets, id, f) => { const c = porCantidad(id) ? cantidadesDe(f, id) : null;
     return c ? sumaCant(c) : dets.reduce((n, d) => n + (tallasDe(d)[id] ? 1 : 0), 0); };
   const habilitado = (f, id) => { const it = items(f).find(x => x.prenda === id); return it ? it.cant : 0; };
+  // personas con talla en un diseño que no tiene molde para su calce: Planificación no deja ingresar el pedido
+  const calcesSinMolde = (f, dets) => { const out = [], specs = specsDe(f);
+    prendasEnJuego(f, dets).filter(id => necesitaMolde(id) && !porCantidad(id)).forEach(id => {
+      const mo = (specs[id] || {}).moldes || {}, cnt = {};
+      dets.forEach(d => { if (!tallasDe(d)[id]) return; const v = mo[d.calce] || '';
+        if (v && !(esManual(v) && !String(v).split('|')[0].trim())) return; const c = d.calce || 'Sin calce'; cnt[c] = (cnt[c] || 0) + 1; });
+      Object.keys(cnt).forEach(c => out.push({ id: id, calce: c, n: cnt[c], fuera: !items(f).some(i => i.prenda === id) }));
+    });
+    return out; };
   function prendasEnJuego(f, dets) {
     const ids = items(f).map(i => i.prenda);
     dets.forEach(d => { const t = tallasDe(d); Object.keys(t).forEach(k => { if (t[k] && ids.indexOf(k) < 0) ids.push(k); }); });
@@ -1082,6 +1103,19 @@ const PMK_ACCESO = (() => {
     nuevo.piezas.forEach(q => { const a = prev.find(x => norm(x.pieza) === norm(q.pieza)); if (a) { if (a.tela) q.tela = a.tela; if (a.detalle) q.detalle = a.detalle; } });
     return nuevo;
   };
+  // copiar la configuración de telas de un diseño a otro: tela principal, aplicación, (shorts) proceso y cierre,
+  // y la tela y el proceso de cada pieza que se llama igual (si el otro no tiene piezas: las de su molde, o las del diseño de origen)
+  const CAMPOS_TELA = ['tela', 'telaDetalle', 'aplicacion', 'proceso', 'conAplic', 'aplicTela', 'cierre'];
+  const copiarConfigTelas = (src, dst, id) => {
+    CAMPOS_TELA.forEach(c => { if (src[c] !== undefined && src[c] !== '') dst[c] = src[c]; else delete dst[c]; });
+    const sp = src.despiece && Array.isArray(src.despiece.piezas) ? src.despiece.piezas.filter(q => q && typeof q === 'object') : [];
+    if (esShort(id) || !sp.length) return;
+    const norm = s => String(s || '').trim().toLowerCase();
+    let dd = dst.despiece && Array.isArray(dst.despiece.piezas) && dst.despiece.piezas.length ? dst.despiece : despieceInicial(dst);
+    if (!dd) dd = { molde: '', nombre: '', piezas: sp.map(q => ({ pieza: q.pieza, cant: q.cant || 1, tela: q.tela || '', detalle: q.detalle || '' })) };
+    else dd.piezas.forEach(q => { const a = sp.find(x => norm(x.pieza) === norm(q.pieza)); if (a) { q.tela = a.tela || ''; q.detalle = a.detalle || ''; } });
+    dst.despiece = dd;
+  };
   // ¿el despiece guardado es de otro molde que el actual? (su etiqueta: «18 · FUTHOMU02»)
   const despieceDeOtroMolde = (sp, dp) => { const base = moldeBase(sp); if (!base || !dp || !dp.molde) return false;
     return String(dp.molde).split(' · ')[0].replace(/^N°\s*/, '').trim() !== etqMolde(base.n); };
@@ -1110,7 +1144,12 @@ const PMK_ACCESO = (() => {
     let h = '<div id="lineas">';
     if (!lineas.length) h += '<div class="lm-vacio">Aún no hay moldes. Agrégalos desde el catálogo.</div>';
     // personas cargadas en ese molde (si se cambió a otro calce y se pasan, también las del calce anterior)
-    const cargadas = l => dets ? dets.filter(d => tallasDe(d)[l.prenda] && (!l.calce || d.calce === l.calce || (l.antes && l.moverCalce && d.calce === l.antes.calce))).length : null;
+    // ids de un diseño: el suyo y los de los diseños que se le unen (sus personas tienen la talla con ese id hasta guardar)
+    const idsDis = id => [id].concat(lineas.filter(x => x.prenda === id && x.unidoDe && x.unidoDe !== id).map(x => x.unidoDe));
+    const deDis = id => dets ? dets.filter(d => idsDis(id).some(k => tallasDe(d)[k])) : [];
+    // calce con que queda una persona en ese diseño (si se cambió el molde a otro calce y se pasan, el nuevo)
+    const calceEf = (d, id) => { const x = lineas.find(y => y.prenda === id && y.antes && y.moverCalce && y.antes.calce !== y.calce && d.calce === y.antes.calce); return x ? x.calce : d.calce; };
+    const cargadas = l => dets ? deDis(l.prenda).filter(d => !l.calce || calceEf(d, l.prenda) === l.calce).length : null;
     const nomLinea = l => String(l.disNom || '').trim() || prendaDe(l.prenda).nom;
     lineas.forEach((l, i) => {
       let txt, sub;
@@ -1154,8 +1193,24 @@ const PMK_ACCESO = (() => {
               ', que no tiene molde ' + esc(a) + ': si también está mal, cámbiale el molde.</div>' : '') + '</div>';
         }
       }
+      // un diseño puede llevar un molde por calce (masculino, femenino e infantil): una sola hoja en la ficha de producción
+      const calcesDis = esM ? lineas.filter(x => x.prenda === l.prenda && esMoldeLinea(x)).map(x => x.calce) : [];
+      const enCalce = st.agregaCalce && st.agregaCalce.i === i;
       const acc = esM ? '<div class="lm-acc"><button type="button" class="btn plano chico" data-cambiar-molde="' + i + '">' +
-        (st.reemplazo === i ? 'Cancelar el cambio' : 'Cambiar molde') + '</button></div>' : '';
+        (st.reemplazo === i ? 'Cancelar el cambio' : 'Cambiar molde') + '</button>' +
+        (primera && calcesDis.length < CALCES.length ? '<button type="button" class="btn plano chico" data-agregar-calce="' + i + '">' +
+          (enCalce ? 'Cancelar' : '+ Agregar calce a este diseño') + '</button>' : '') + '</div>' : '';
+      // se une a este diseño (otro diseño de la ficha con otro calce): se puede separar antes de guardar
+      const union = l.unidoDe && l.unidoDe !== l.prenda ? '<div class="lm-union">Se une a este diseño (antes «' + esc(l.disNomAntes || prendaDe(l.unidoDe).nom) + '»)' +
+        '<button type="button" class="btn plano chico" data-separar="' + i + '">Separar</button></div>' : '';
+      // personas del diseño en un calce sin molde (Planificación no deja ingresar el pedido así)
+      let sinM = '';
+      if (primera && esM && dets) {
+        const cnt = {}; deDis(l.prenda).forEach(d => { const c = calceEf(d, l.prenda) || 'Sin calce'; if (calcesDis.indexOf(c) < 0) cnt[c] = (cnt[c] || 0) + 1; });
+        sinM = Object.keys(cnt).map(c => '<div class="lm-sinm">⚠ ' + cnt[c] + (cnt[c] === 1 ? ' persona cargada' : ' personas cargadas') +
+          (c === 'Sin calce' ? ' sin calce: indícalo en «Editar el listado de personas».' : ' como ' + esc(c.toLowerCase()) + ' y este diseño no tiene molde ' + esc(c.toLowerCase()) + '.' +
+            '<button type="button" class="btn plano chico" data-agregar-calce="' + i + '" data-calce="' + esc(c) + '">+ Agregar molde ' + esc(c.toLowerCase()) + '</button>') + '</div>').join('');
+      }
       const falta = !l.cant ? (med ? 'Define cuántos pares (o los pares por talla)' : 'Define cuántas prendas lleva este molde') : l.confirmar ? 'Cantidad sugerida: confírmala o cámbiala' : '';
       const ct = l.cants || {}, sumaM = sumaCant(ct);
       const grilla = med ? '<div class="lm-med"><div class="lm-med-t">Pares por talla <span>(opcional: si no los defines, los indica el cliente)</span></div>' +
@@ -1165,7 +1220,8 @@ const PMK_ACCESO = (() => {
       // montaje en la línea de cada molde: los ya guardados y los adjuntados (se suben al crear la ficha o al guardar).
       // Si un diseño tiene más de un molde (fichas antiguas: masculino y femenino juntos), cada línea muestra los de su molde.
       const vL = l.tipo === 'molde' || l.tipo === 'manual' ? valorMolde(l) : '', varios = lineas.filter(x => x.prenda === l.prenda).length > 1;
-      const ya = l.tipo !== 'prenda' || med ? (imgs || []).filter((x, k, a) => prendasImg(x).indexOf(l.prenda) >= 0 && (!varios || !moldesImg(x).length || moldesImg(x).indexOf(vL) >= 0) &&
+      const idsL = [l.prenda].concat(l.unidoDe && l.unidoDe !== l.prenda ? [l.unidoDe] : []);
+      const ya = l.tipo !== 'prenda' || med ? (imgs || []).filter((x, k, a) => idsL.some(id => prendasImg(x).indexOf(id) >= 0) && (!varios || !moldesImg(x).length || moldesImg(x).indexOf(vL) >= 0) &&
         a.findIndex(y => (y.grupo || y.path) === (x.grupo || x.path)) === k) : [];
       const mj = l.tipo !== 'prenda' || med ? '<div class="lm-mj">' +
         ya.map(x => '<a class="lm-mj-img" href="' + esc(x.pdf || x.url) + '" target="_blank" rel="noopener" title="Montaje guardado"><img src="' + esc(x.url) + '" alt="">' + (x.origen === 'pdf' ? '<em>PDF</em>' : '') + '</a>').join('') +
@@ -1173,8 +1229,8 @@ const PMK_ACCESO = (() => {
           '<button type="button" data-mj-quitar="' + i + '|' + k + '" aria-label="Quitar montaje">×</button></span>').join('') +
         '<button type="button" class="btn plano chico" data-mj-linea="' + i + '">+ Adjuntar montaje (imagen o PDF)</button>' +
         ((l.mj || []).length ? '<span class="lm-mj-nota">Se sube al ' + (st.pant === 'crear' ? 'crear la ficha' : 'guardar') + '</span>' : '') + '</div>' : '';
-      h += '<div class="linea-item lm-item' + (falta ? ' confirmar' : '') + (l.antes ? ' cambiado' : '') + (st.reemplazo === i ? ' reemplazando' : '') + '" data-linea="' + i + '"><div class="lm-txt">' + nom + txt +
-        '<div class="lm-sub">' + sub + '</div>' + (falta ? '<div class="lm-falta">' + falta + '</div>' : '') + cambio + acc + grilla + mj + '</div>' +
+      h += '<div class="linea-item lm-item' + (falta ? ' confirmar' : '') + (l.antes || union ? ' cambiado' : '') + (st.reemplazo === i || enCalce ? ' reemplazando' : '') + '" data-linea="' + i + '"><div class="lm-txt">' + nom + txt +
+        '<div class="lm-sub">' + sub + '</div>' + (falta ? '<div class="lm-falta">' + falta + '</div>' : '') + union + sinM + cambio + acc + grilla + mj + '</div>' +
         '<input type="number" min="1" max="999" value="' + (l.cant || '') + '" placeholder="¿Cuántas?" data-campo="cant" aria-label="Unidades">' +
         '<button type="button" data-quitar="' + i + '" aria-label="Quitar">×</button></div>';
     });
@@ -1184,7 +1240,11 @@ const PMK_ACCESO = (() => {
   }
   function catalogoMoldes(lineas) {
     // cambiar el molde de una línea: solo moldes de la misma prenda (el diseño sigue siendo el mismo)
-    const rl = st.reemplazo != null ? lineas[st.reemplazo] : null, tipoR = rl ? basePrenda(rl.prenda) : '';
+    const rl = st.reemplazo != null ? lineas[st.reemplazo] : null;
+    // agregar un calce a un diseño: moldes de la misma prenda para los calces que aún no tiene, o unir otro diseño de la ficha
+    const ac = !rl && st.agregaCalce ? lineas[st.agregaCalce.i] : null;
+    if (ac) return catalogoCalce(lineas, ac);
+    const tipoR = rl ? basePrenda(rl.prenda) : '';
     const f = st.catMol || (st.catMol = rl ? { deporte: deporteDeLinea(rl) || deporteProyecto(lineas), prenda: tipoR, calce: rl.calce || '', q: '' }
       : { deporte: deporteProyecto(lineas), prenda: '', calce: '', q: '' });   // filtros del catálogo de moldes
     const sel = (k, nom, ops) => '<label>' + nom + '<select data-cf="' + k + '"><option value="">Todos</option>' +
@@ -1224,6 +1284,47 @@ const PMK_ACCESO = (() => {
       '<label>Calce<select id="mo-calce">' + CALCES.map(c => '<option>' + c + '</option>').join('') + '</select></label></div>' +
       '<button class="btn plano chico" id="mo-agregar">Agregar otro molde</button></div>' +
       '<button class="btn plano chico" id="cat-cerrar">Cerrar catálogo</button></div>';
+  }
+  // diseños de la ficha que se pueden unir a otro como sus otros calces: misma prenda, todos sus moldes en calces que el otro no tiene
+  const unibles = (lineas, id) => {
+    const cals = lineas.filter(x => x.prenda === id && esMoldeLinea(x)).map(x => x.calce);
+    return Array.from(new Set(lineas.filter(x => x.prenda !== id && esMoldeLinea(x) && basePrenda(x.prenda) === basePrenda(id)).map(x => x.prenda)))
+      .filter(k => { const ls = lineas.filter(x => x.prenda === k); return ls.every(esMoldeLinea) && ls.every(x => cals.indexOf(x.calce) < 0) &&
+        new Set(ls.map(x => x.calce)).size === ls.length; });
+  };
+  function catalogoCalce(lineas, ac) {
+    const id = ac.prenda, tipoR = basePrenda(id), nomA = String(ac.disNom || '').trim() || prendaDe(id).nom;
+    const cals = lineas.filter(x => x.prenda === id && esMoldeLinea(x)).map(x => x.calce), faltan = CALCES.filter(c => cals.indexOf(c) < 0);
+    const f = st.catMol || (st.catMol = { deporte: deporteDeLinea(ac) || deporteProyecto(lineas), prenda: tipoR,
+      calce: st.agregaCalce.calce && faltan.indexOf(st.agregaCalce.calce) >= 0 ? st.agregaCalce.calce : (faltan[0] || ''), q: '' });
+    const sel = (k, nom, ops) => '<label>' + nom + '<select data-cf="' + k + '"><option value="">Todos</option>' +
+      ops.map(o => '<option value="' + esc(o[0]) + '"' + (f[k] === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>').join('') + '</select></label>';
+    const deps = Array.from(new Set(MOLDES.map(m => m.d).filter(Boolean))), q = f.q.trim().toLowerCase();
+    const lista = MOLDES.filter(m => (!f.deporte || m.d === f.deporte || (!paraTodoDeporte(f.deporte) && sirveATodos(m))) && prendaDeMolde(m) === tipoR &&
+      (!f.calce || calceDeMolde(m) === f.calce) && (!q || m.e.toLowerCase().indexOf(q) >= 0))
+      .sort((a, b) => (f.deporte ? (b.d === f.deporte) - (a.d === f.deporte) : 0) || ordenMolde(a) - ordenMolde(b));
+    const otros = unibles(lineas, id);
+    let h = '<div class="cat-mol" id="cat-mol"><div class="cat-tit">Agregar calce a «' + esc(nomA) + '»</div>' +
+      '<div class="cat-actual">Ya tiene: <b>' + esc(cals.map(c => c.toLowerCase()).join(', ')) + '</b>. Cada calce lleva su propio molde y todo queda en un solo diseño: ' +
+      'una sola hoja en la ficha de producción, con el calce y el molde de cada persona.</div>';
+    if (otros.length) h += '<div class="cat-tit2">Unir un diseño que ya está en la ficha</div><div class="cat-unir">' + otros.map(k => {
+      const ls = lineas.filter(x => x.prenda === k), dn = String(ls[0].disNom || '').trim() || prendaDe(k).nom;
+      return '<div class="cat-fila"><div class="lm-txt"><b>' + esc(dn) + '</b><div class="lm-sub">' + ls.map(x => esc(x.calce) + ': ' + esc(moldeTxt(valorMolde(x)))).join(' · ') + '</div></div>' +
+        '<button class="btn chico" data-unir="' + esc(k) + '">Unir a «' + esc(nomA) + '»</button></div>'; }).join('') +
+      '<div class="mini">Sus personas, tallas, montajes y cantidades pasan a este diseño. Se puede separar antes de guardar.</div></div>';
+    h += '<div class="cat-tit2">O elige el molde del catálogo</div><div class="cat-filtros">' + sel('deporte', 'Deporte', deps.map(d => [d, d])) +
+      '<label>Prenda<select disabled><option>' + esc(prendaDe(tipoR).nom) + '</option></select></label>' + sel('calce', 'Calce', faltan.map(c => [c, c])) +
+      '<label>Buscar<input data-cf="q" value="' + esc(f.q) + '" placeholder="Código o descripción"></label></div><div class="cat-lista">';
+    if (!lista.length) h += '<div class="lm-vacio">No hay moldes con estos filtros. Si no existe, agrégalo abajo como otro.</div>';
+    lista.forEach(m => { const ca = calceDeMolde(m), ya = cals.indexOf(ca) >= 0;
+      h += '<div class="cat-fila"><div class="lm-txt">' + partesMolde(m) + '<div class="lm-sub">' + esc(prendaDe(prendaDeMolde(m)).nom) + ' · ' + ca + '</div></div>' +
+        (ya ? '<button class="btn chico plano" disabled>Ya tiene molde ' + esc(ca.toLowerCase()) + '</button>'
+          : '<button class="btn chico" data-calce-molde="' + m.n + '">Usar para ' + esc(ca.toLowerCase()) + '</button>') + '</div>'; });
+    return h + '</div><div class="cat-otro"><div class="cat-tit2">¿No está en el catálogo? Usa otro</div>' +
+      '<label>Nombre completo del molde<input id="mo-nombre" maxlength="60" placeholder="Ej: FUTMUJP01 — Fútbol, cuello polo"></label>' +
+      '<div class="cat-filtros"><label>Calce<select id="mo-calce">' + faltan.map(c => '<option' + (c === f.calce ? ' selected' : '') + '>' + c + '</option>').join('') + '</select></label></div>' +
+      '<button class="btn plano chico" id="mo-calce-usar">Usar este otro molde</button></div>' +
+      '<button class="btn plano chico" id="cat-cerrar">Cancelar</button></div>';
   }
   function bindMoldesProyecto(lineas, vendido, alCambiar) {
     if (st.catScroll) { st.catScroll = false; const cm = document.getElementById('cat-mol'); if (cm && cm.scrollIntoView) cm.scrollIntoView({ block: 'start' }); }
@@ -1270,7 +1371,7 @@ const PMK_ACCESO = (() => {
     };
     app.querySelectorAll('[data-linea] select, [data-linea] input').forEach(el => { el.addEventListener('change', sync); el.addEventListener('input', sync); });
     app.querySelectorAll('[data-quitar]').forEach(b => b.addEventListener('click', () => { sync(); (lineas[+b.dataset.quitar].mj || []).forEach(liberarMontaje); lineas.splice(+b.dataset.quitar, 1);
-      if (st.reemplazo != null) { st.reemplazo = null; st.catAbierto = st.pant === 'crear'; st.catMol = null; } render(); }));
+      if (st.reemplazo != null || st.agregaCalce) { st.reemplazo = null; st.agregaCalce = null; st.catAbierto = st.pant === 'crear'; st.catMol = null; } render(); }));
     // cambiar el molde de una línea: mismo diseño (mismo id), así que no se pierden personas, tallas, montajes ni ficha técnica
     const reemplazar = (i, nueva) => {
       const l = lineas[i]; if (!l) return;
@@ -1283,8 +1384,46 @@ const PMK_ACCESO = (() => {
       else { l.antes = antes; if (l.moverCalce == null) l.moverCalce = true; }
       st.reemplazo = null; st.catAbierto = st.pant === 'crear'; st.catMol = null;   // al crear, el catálogo sigue abierto para agregar
     };
+    // agregar un calce al diseño (u otro diseño de la ficha como su calce)
+    const detsFicha = () => st.pant === 'editar' ? (st.dets || []) : [];
+    const despuesDe = id => { let k = -1; lineas.forEach((x, j) => { if (x.prenda === id) k = j; }); return k + 1; };
+    const ponerCalce = (ac, nueva) => {
+      if (lineas.some(x => x.prenda === ac.prenda && esMoldeLinea(x) && x.calce === nueva.calce)) { st.error = 'Este diseño ya tiene molde ' + nueva.calce.toLowerCase() + '.'; return; }
+      const n = detsFicha().filter(d => tallasDe(d)[ac.prenda] && d.calce === nueva.calce).length;
+      // esas personas ya estaban contadas en el único molde del diseño: se descuentan de él (el total del diseño no cambia)
+      const base = lineas.filter(x => x.prenda === ac.prenda && esMoldeLinea(x));
+      if (n && base.length === 1 && base[0].cant > n) { base[0].cant -= n; base[0].confirmar = true; }
+      lineas.splice(despuesDe(ac.prenda), 0, Object.assign({ prenda: ac.prenda, calce: nueva.calce, cant: n || null, confirmar: !!n, disNom: ac.disNom || '' }, nueva));
+      st.agregaCalce = null; st.catAbierto = st.pant === 'crear'; st.catMol = null;
+    };
+    app.querySelectorAll('[data-agregar-calce]').forEach(b => b.addEventListener('click', () => {
+      sync(); st.error = ''; const i = +b.dataset.agregarCalce;
+      if (st.agregaCalce && st.agregaCalce.i === i && !b.dataset.calce) { st.agregaCalce = null; st.catAbierto = st.pant === 'crear'; }
+      else { st.agregaCalce = { i: i, calce: b.dataset.calce || '' }; st.reemplazo = null; st.catAbierto = true; st.catScroll = true; }
+      st.catMol = null; render();
+    }));
+    app.querySelectorAll('[data-calce-molde]').forEach(b => b.addEventListener('click', () => {
+      sync(); st.error = ''; const ac = st.agregaCalce && lineas[st.agregaCalce.i], m = MOLDES.find(x => x.n === +b.dataset.calceMolde); if (!ac || !m) return;
+      ponerCalce(ac, { tipo: 'molde', n: m.n, calce: calceDeMolde(m) }); render();
+    }));
+    app.querySelectorAll('[data-unir]').forEach(b => b.addEventListener('click', () => {
+      sync(); st.error = ''; const ac = st.agregaCalce && lineas[st.agregaCalce.i], src = b.dataset.unir; if (!ac || !src) return;
+      const tgt = ac.prenda, ids = k => [k].concat(lineas.filter(x => x.prenda === k && x.unidoDe && x.unidoDe !== k).map(x => x.unidoDe));
+      const ambos = detsFicha().filter(d => ids(src).some(k => tallasDe(d)[k]) && ids(tgt).some(k => tallasDe(d)[k]));
+      if (ambos.length) { st.error = 'No se pueden unir: ' + ambos.length + (ambos.length === 1 ? ' persona tiene' : ' personas tienen') + ' talla en los dos diseños (' +
+        ambos.slice(0, 5).map(nomPersona).join(', ') + (ambos.length > 5 ? '…' : '') + '). Corrígelo en «Editar el listado de personas».'; render(); return; }
+      const mov = lineas.filter(x => x.prenda === src);
+      mov.forEach(x => { if (!x.unidoDe) x.unidoDe = src; if (x.disNomAntes == null) x.disNomAntes = String(x.disNom || '').trim() || prendaDe(src).nom; x.prenda = tgt; x.disNom = ac.disNom || ''; });
+      mov.forEach(x => lineas.splice(lineas.indexOf(x), 1)); lineas.splice(despuesDe(tgt), 0, ...mov);
+      st.agregaCalce = null; st.catAbierto = st.pant === 'crear'; st.catMol = null; render();
+    }));
+    app.querySelectorAll('[data-separar]').forEach(b => b.addEventListener('click', () => {
+      sync(); const l = lineas[+b.dataset.separar]; if (!l || !l.unidoDe) return; const src = l.unidoDe, tgt = l.prenda;
+      lineas.filter(x => x.prenda === tgt && x.unidoDe === src).forEach(x => { x.prenda = src; x.disNom = x.disNomAntes || ''; delete x.unidoDe; delete x.disNomAntes; });
+      render();
+    }));
     app.querySelectorAll('[data-cambiar-molde]').forEach(b => b.addEventListener('click', () => {
-      sync(); st.error = ''; const i = +b.dataset.cambiarMolde;
+      sync(); st.error = ''; const i = +b.dataset.cambiarMolde; st.agregaCalce = null;
       if (st.reemplazo === i) { st.reemplazo = null; st.catAbierto = st.pant === 'crear'; } else { st.reemplazo = i; st.catAbierto = true; st.catScroll = true; }
       st.catMol = null; render();
     }));
@@ -1323,8 +1462,14 @@ const PMK_ACCESO = (() => {
       liberarMontaje(l.mj[k]); l.mj.splice(k, 1); render();
     }));
     const clic = (id, fn) => { const e = document.getElementById(id); if (e) e.addEventListener('click', () => { sync(); st.error = ''; fn(); render(); }); };
-    clic('btn-catalogo', () => { if (st.reemplazo != null) st.catMol = null; st.reemplazo = null; st.catAbierto = true; });
-    clic('cat-cerrar', () => { const eraCambio = st.reemplazo != null; if (eraCambio) st.catMol = null; st.reemplazo = null; st.catAbierto = eraCambio && st.pant === 'crear'; });
+    clic('btn-catalogo', () => { if (st.reemplazo != null || st.agregaCalce) st.catMol = null; st.reemplazo = null; st.agregaCalce = null; st.catAbierto = true; });
+    clic('cat-cerrar', () => { const eraCambio = st.reemplazo != null || !!st.agregaCalce; if (eraCambio) st.catMol = null; st.reemplazo = null; st.agregaCalce = null;
+      st.catAbierto = eraCambio && st.pant === 'crear'; });
+    clic('mo-calce-usar', () => {
+      const nombre = document.getElementById('mo-nombre').value.replace(/\|/g, ' ').trim(), ac = st.agregaCalce && lineas[st.agregaCalce.i];
+      if (!nombre) { st.error = 'Escribe el nombre completo del molde.'; return; }
+      if (ac) ponerCalce(ac, { tipo: 'manual', nombre: nombre, calce: document.getElementById('mo-calce').value });
+    });
     clic('mo-usar', () => {
       const nombre = document.getElementById('mo-nombre').value.replace(/\|/g, ' ').trim();
       if (!nombre) { st.error = 'Escribe el nombre completo del molde.'; return; }
@@ -1959,7 +2104,7 @@ const PMK_ACCESO = (() => {
       await cargarMoldes();
     }
     const imp = st.importado;
-    if (!st.lineas) { st.lineas = []; st.idsUsados = []; st.catMol = null; st.catAbierto = true; st.crearCab = {}; st.reemplazo = null; }
+    if (!st.lineas) { st.lineas = []; st.idsUsados = []; st.catMol = null; st.catAbierto = true; st.crearCab = {}; st.reemplazo = null; st.agregaCalce = null; }
     // lo escrito en la cabecera se conserva al agregar o quitar moldes (la pantalla se vuelve a dibujar)
     const cab = st.crearCab || (st.crearCab = {});
     const vCab = k => cab[k] != null ? ' value="' + esc(cab[k]) + '"' : '';
@@ -2131,7 +2276,7 @@ const PMK_ACCESO = (() => {
       }
     }
     if (!st.lineas) {
-      st.lineas = lineasDeFicha(f, dets); st.catAbierto = false; st.catMol = null; st.reemplazo = null;
+      st.lineas = lineasDeFicha(f, dets); st.catAbierto = false; st.catMol = null; st.reemplazo = null; st.agregaCalce = null;
       // ids con datos en la ficha: un diseño nuevo nunca los toma (heredaría personas, ficha técnica o montajes)
       st.idsUsados = Array.from(new Set(Object.keys(specsDe(f)).filter(k => k[0] !== '_').concat(items(f).map(i => i.prenda))
         .concat(dets.reduce((a, d) => a.concat(Object.keys(tallasDe(d))), [])).concat(imgsDe(f).reduce((a, i) => a.concat(prendasImg(i)), []))));
@@ -2165,28 +2310,46 @@ const PMK_ACCESO = (() => {
       lineas.forEach(l => { const it = nuevos.find(x => x.prenda === l.prenda); if (it) it.cant += l.cant; else nuevos.push({ prenda: l.prenda, cant: l.cant }); });
       // ficha técnica: cada prenda con moldes queda con el molde y la cantidad de cada calce; lo demás de la prenda se conserva
       const specs = JSON.parse(JSON.stringify(specsDe(f)));
+      // diseños unidos a otro (como sus otros calces): sus personas, montajes y ficha técnica pasan al diseño que queda
+      const union = {};
+      lineas.forEach(l => { if (l.unidoDe && l.unidoDe !== l.prenda && nuevos.some(i => i.prenda === l.prenda)) union[l.unidoDe] = l.prenda; });
+      const ambos = dets.filter(d => Object.keys(union).some(s => tallasDe(d)[s] && tallasDe(d)[union[s]]));
+      if (ambos.length) { st.error = 'No se pueden unir los diseños: ' + ambos.length + (ambos.length === 1 ? ' persona tiene' : ' personas tienen') + ' talla en los dos (' +
+        ambos.slice(0, 5).map(nomPersona).join(', ') + '). Corrígelo en «Editar el listado de personas».'; return render(); }
+      const personasUn = [];
+      const detsUn = dets.map(d => { const t = tallasDe(d), ss = Object.keys(union).filter(s => t[s]); if (!ss.length) return d;
+        const nt = Object.assign({}, t), nd = Object.assign({}, disenosDe(d));
+        ss.forEach(s => { nt[union[s]] = t[s]; delete nt[s]; if (nd[s] != null) { nd[union[s]] = nd[s]; delete nd[s]; } });
+        const r = Object.assign({}, d, { tallas: nt, disenos: nd }); personasUn.push(r); return r; });
+      Object.keys(union).forEach(s => { const a = specs[s], b = specs[union[s]] || (specs[union[s]] = {}); if (!a) return;
+        ['tela', 'telaDetalle', 'aplicacion', 'nota', 'despiece', 'deporte', 'numero', 'proceso', 'conAplic', 'aplicTela', 'cierre', 'entrega']
+          .forEach(k => { if ((b[k] === undefined || b[k] === '' || b[k] === null) && a[k] !== undefined) b[k] = a[k]; }); });
       const quitadas = Object.keys(specs).filter(k => k[0] !== '_' && !nuevos.some(i => i.prenda === k));
-      // los montajes de un diseño que se quita se van con él (si eran de varios, quedan en los otros)
-      const fueraIds = Array.from(new Set(items(f).map(i => i.prenda).concat(quitadas))).filter(k => !nuevos.some(i => i.prenda === k));
-      const imgsAntes = imgsDe(f);
+      // los montajes de un diseño que se quita se van con él (si eran de varios, quedan en los otros); los de uno unido pasan al que queda
+      const fueraIds = Array.from(new Set(items(f).map(i => i.prenda).concat(quitadas))).filter(k => !nuevos.some(i => i.prenda === k) && !union[k]);
+      const imgsAntes = imgsDe(f).map(i => { const ps = prendasImg(i); if (!ps.some(k => union[k])) return i;
+        const r = Array.from(new Set(ps.map(k => union[k] || k))); return Object.assign({}, i, { prendas: r, prenda: r[0] }); });
+      const imgsUnidas = imgsAntes.some((i, k) => i !== imgsDe(f)[k]);
       const imgsQuedan = imgsAntes.map(i => { const ps = prendasImg(i); if (!ps.some(k => fueraIds.indexOf(k) >= 0)) return i;
         const r = ps.filter(k => fueraIds.indexOf(k) < 0); return r.length ? Object.assign({}, i, { prendas: r, prenda: r[0] }) : null; });
       const imgsFuera = imgsAntes.filter((i, k) => !imgsQuedan[k]);
       // moldes cambiados: el mismo diseño (mismo id) con otro molde; sus personas, tallas, montajes y ficha técnica se conservan
       const cambiados = lineas.filter(l => l.antes && esMoldeLinea(l) && nuevos.some(i => i.prenda === l.prenda));
       const aMover = [];   // personas que pasan al calce del molde nuevo
-      cambiados.forEach(l => { if (l.antes.calce !== l.calce && l.moverCalce) dets.forEach(d => {
+      cambiados.forEach(l => { if (l.antes.calce !== l.calce && l.moverCalce) detsUn.forEach(d => {
         if (tallasDe(d)[l.prenda] && d.calce === l.antes.calce && !aMover.some(x => x.id === d.id)) aMover.push({ id: d.id, calce: l.calce }); }); });
-      const detsDesp = dets.map(d => { const m = aMover.find(x => x.id === d.id); return m ? Object.assign({}, d, { calce: m.calce }) : d; });
+      const detsDesp = detsUn.map(d => { const m = aMover.find(x => x.id === d.id); return m ? Object.assign({}, d, { calce: m.calce }) : d; });
       // los montajes marcados con el molde anterior quedan con el nuevo
       const reemplazos = cambiados.map(l => ({ id: l.prenda, de: l.antes.valor, a: valorMolde(l) })).filter(r => r.de !== r.a);
       const imgsFinal = imgsQuedan.map(i => { if (!i) return i; const ms = moldesImg(i); if (!ms.length) return i;
         const nm = ms.map(v => { const r = reemplazos.find(x => x.de === v && prendasImg(i).indexOf(x.id) >= 0); return r ? r.a : v; });
         return nm.some((v, k) => v !== ms[k]) ? Object.assign({}, i, { moldes: nm }) : i; });
-      const imgsCambian = imgsFinal.some((i, k) => i !== imgsQuedan[k]);
+      const imgsCambian = imgsUnidas || imgsFinal.some((i, k) => i !== imgsQuedan[k]);
       const fuera = detsDesp.filter(d => Object.keys(tallasDe(d)).some(k => tallasDe(d)[k] && necesitaMolde(k) && lineas.some(l => l.prenda === k && esMoldeLinea(l)) &&
         !lineas.some(l => l.prenda === k && esMoldeLinea(l) && l.calce === d.calce)));
-      const avisos = [fueraIds.length && 'Se quita de la ficha: ' + fueraIds.map(k => nomDeSpecs(specs, k)).join(', ') + ' (con su ficha técnica' +
+      const avisos = [Object.keys(union).length && 'Se unen: ' + Object.keys(union).map(s => '«' + nomDeSpecs(specs, s) + '» pasa a «' + nomDeSpecs(specs, union[s]) + '»').join(', ') +
+          (personasUn.length ? ' (' + personasUn.length + (personasUn.length === 1 ? ' persona' : ' personas') + ' con sus tallas)' : '') + '.',
+        fueraIds.length && 'Se quita de la ficha: ' + fueraIds.map(k => nomDeSpecs(specs, k)).join(', ') + ' (con su ficha técnica' +
           (imgsFuera.length ? ' y ' + imgsFuera.length + (imgsFuera.length === 1 ? ' imagen de montaje' : ' imágenes de montaje') : '') + ').',
         fuera.length && fuera.length + (fuera.length === 1 ? ' persona cargada por el cliente queda' : ' personas cargadas por el cliente quedan') + ' en un calce sin molde.'].filter(Boolean);
       if (avisos.length && !confirm(avisos.join('\n') + '\n\n¿Guardar igual?')) return;
@@ -2225,9 +2388,12 @@ const PMK_ACCESO = (() => {
       const b = document.getElementById('btn-guardar-items');
       b.disabled = true; b.textContent = 'Guardando…';
       try {
+        // primero las personas de los diseños unidos (si algo falla después, ninguna queda sin su diseño)
+        if (personasUn.length) { b.textContent = 'Pasando personas al diseño unido…'; await API.guardarPersonas(personasUn); st.dets = detsUn; }
         await API.itemsYSpecs(f.ref, nuevos, specs);
         const fn = Object.assign({}, f, { items: nuevos, specs: specs });
-        let detsFin = dets;
+        for (const s of Object.keys(union)) { try { await API.borrarAviso(f.ref + ':' + s); } catch (e4) {} }
+        let detsFin = detsUn;
         if (aMover.length) {
           b.textContent = 'Pasando personas al calce nuevo…';
           const porCalce = {}; aMover.forEach(x => (porCalce[x.calce] = porCalce[x.calce] || []).push(x.id));
@@ -2249,7 +2415,7 @@ const PMK_ACCESO = (() => {
           lineas.forEach(l => (l.mj || []).forEach(liberarMontaje));
         }
         await sincronizarAvisos(fn, detsFin);
-        st.ficha = fn; st.lineas = null; st.specsBorrador = null; st.error = ''; st.reemplazo = null;
+        st.ficha = fn; st.lineas = null; st.specsBorrador = null; st.error = ''; st.reemplazo = null; st.agregaCalce = null;
         // con un molde cambiado se abre la ficha técnica en ese diseño, para revisar despiece, telas y montaje
         if (cambiados.length) { st.tecAbiertos = { especif: true }; cambiados.forEach(l => { st.tecAbiertos['p-' + l.prenda] = true; }); st.pant = 'tecnica'; }
         else st.pant = 'ficha';
@@ -2556,6 +2722,20 @@ const PMK_ACCESO = (() => {
         h += '<button class="btn plano chico" data-dp-add="' + it.prenda + '">Agregar pieza</button></div>';
       }
 
+      // copiar la configuración de telas a otros diseños de la misma prenda (proyectos con muchos moldes iguales)
+      const otrosMismo = p.origen ? [] : its.filter(x => x.prenda !== it.prenda && !prendaDe(x.prenda).origen && basePrenda(x.prenda) === basePrenda(it.prenda));
+      if (otrosMismo.length) {
+        const marc = (st.copiaSel || {})[it.prenda] || [];
+        h += '<details class="copiar-conf" data-sec="c-' + it.prenda + '"' + (abiertos['c-' + it.prenda] ? ' open' : '') + '><summary>Copiar esta configuración de telas a otros diseños</summary>' +
+          '<div class="ayuda">Copia la tela principal, la aplicación y la tela y el proceso de cada pieza (en las piezas que se llaman igual) a los diseños que marques. ' +
+          'No cambia sus moldes, nombres, fechas, notas ni montajes.</div>' +
+          '<label class="chk-ft"><input type="checkbox" data-copia-todos="' + it.prenda + '"' + (marc.length === otrosMismo.length ? ' checked' : '') + '> Todos (' + otrosMismo.length + ')</label>' +
+          '<div class="copia-lista">' + otrosMismo.map(x => '<label class="chk-ft"><input type="checkbox" data-copia="' + it.prenda + '" value="' + esc(x.prenda) + '"' +
+            (marc.indexOf(x.prenda) >= 0 ? ' checked' : '') + '> ' + esc(nomDMSpecs(specs, x.prenda)) + ' <span class="mini">· ' + esc((specs[x.prenda] || {}).tela || 'sin tela') + '</span></label>').join('') + '</div>' +
+          '<button class="btn plano chico" data-copiar-conf="' + it.prenda + '">Copiar a los diseños marcados</button>' +
+          (st.copiaMsg && st.copiaMsg.id === it.prenda ? '<div class="aviso ok">' + esc(st.copiaMsg.t) + '</div>' : '') + '</details>';
+      }
+
       // e · montaje de este diseño
       h += '<div class="montaje-dis">' + paso('Montaje') + bloqueMontaje(it.prenda) + '</div></details>';
     });
@@ -2681,6 +2861,20 @@ const PMK_ACCESO = (() => {
     app.querySelectorAll('[data-dp]').forEach(el => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => {
       const dp = specs[el.dataset.dp] && specs[el.dataset.dp].despiece; if (!dp) return;
       const q = dp.piezas[+el.dataset.i]; q[el.dataset.k] = el.dataset.k === 'cant' ? Math.max(1, parseInt(el.value, 10) || 1) : el.value;
+    }));
+    // copiar la configuración de telas
+    const marcados = id => Array.from(app.querySelectorAll('[data-copia="' + id + '"]:checked')).map(x => x.value);
+    app.querySelectorAll('[data-copia-todos]').forEach(cb => cb.addEventListener('change', () => {
+      const id = cb.dataset.copiaTodos; app.querySelectorAll('[data-copia="' + id + '"]').forEach(x => { x.checked = cb.checked; });
+      (st.copiaSel = st.copiaSel || {})[id] = marcados(id);
+    }));
+    app.querySelectorAll('[data-copia]').forEach(cb => cb.addEventListener('change', () => { (st.copiaSel = st.copiaSel || {})[cb.dataset.copia] = marcados(cb.dataset.copia); }));
+    app.querySelectorAll('[data-copiar-conf]').forEach(b => b.addEventListener('click', () => {
+      const id = b.dataset.copiarConf, dest = marcados(id);
+      if (!dest.length) { st.copiaMsg = { id: id, t: 'Marca a qué diseños copiar.' }; return render(); }
+      dest.forEach(k => copiarConfigTelas(specs[id] || {}, specs[k] || (specs[k] = {}), k));
+      st.copiaMsg = { id: id, t: 'Copiado a ' + dest.length + (dest.length === 1 ? ' diseño' : ' diseños') + '. Se guarda con «Guardar ficha técnica».' };
+      st.copiaSel[id] = []; render();
     }));
     app.querySelectorAll('[data-dp-nuevo]').forEach(b => b.addEventListener('click', () => {
       const pr = b.dataset.dpNuevo, dp = specs[pr] ? despieceConTelas(specs[pr], specs[pr].despiece) : null; if (dp) specs[pr].despiece = dp; render();
@@ -3241,6 +3435,12 @@ const PMK_ACCESO = (() => {
 
     if (st.pest === 'avance') {
       h += avisoSinDiseno(f, dets);
+      const csm = calcesSinMolde(f, dets);
+      if (csm.length) h += '<div class="aviso error" id="aviso-sin-molde"><b>Planificación no puede ingresar este pedido:</b> hay personas en un calce sin molde.<br>' +
+        csm.map(x => '• «' + esc(nomDT(f, x.id)) + '»: ' + x.n + (x.n === 1 ? ' persona ' : ' personas ') + esc(x.calce.toLowerCase()) +
+          (x.fuera ? ' (esa prenda ya no está en la ficha)' : ', sin molde ' + esc(x.calce.toLowerCase()))).join('<br>') +
+        '<br>Agrega el molde de ese calce al diseño («+ Agregar calce a este diseño») o cambia el calce de esas personas en el listado.' +
+        '<br><button class="btn plano chico" data-ir="editar" style="margin-top:8px">Corregir en «Prendas y moldes»</button></div>';
       const mcs = items(f).filter(it => (specsDe(f)[it.prenda] || {}).moldeCambiado);
       if (mcs.length) h += '<div class="aviso" id="aviso-molde-cambiado">Se cambió el molde de ' + mcs.map(it => '«' + esc(nomDT(f, it.prenda)) + '»').join(', ') +
         ': revisa su despiece, telas y montaje en la ficha técnica.<br><button class="btn plano chico" data-ir="tecnica" style="margin-top:8px">Ir a la ficha técnica</button></div>';
@@ -3782,21 +3982,17 @@ const PMK_ACCESO = (() => {
       if (!con.length) return;
       const hayArq = con.some(d => d.arquero);
       const mangas = p.manga ? ORDEN_MANGA.filter(m => con.some(d => mangaEn(f, id, d) === m)) : [null];
-      // Una hoja por cada montaje: si los montajes de la prenda son de un molde en particular, una hoja por molde
-      // (cada una con su montaje y sus tallas); y si el molde tiene varios diseños, una por diseño (0 = no indicado)
-      const mDe = d => moldeDe(f, id, d.calce);
-      const moldesP = Array.from(new Set(con.map(mDe))).sort((a, b) =>
-        Math.min(...con.filter(d => mDe(d) === a).map(d => idxOr(ORDEN_CALCE, d.calce))) - Math.min(...con.filter(d => mDe(d) === b).map(d => idxOr(ORDEN_CALCE, d.calce))));
-      const porMolde = moldesP.length > 1 && imgsDe(f).some(i => prendasImg(i).indexOf(id) >= 0 && moldesImg(i).length);
+      // Una sola hoja por diseño, con todos sus calces (cada persona con el calce y el molde que le corresponde);
+      // aparte solo el largo de manga y, en fichas antiguas, el «Diseño N» de un molde (0 = no indicado)
       const dz = d => disenoPersona(f, d, id);
-      (porMolde ? moldesP : [null]).forEach(mv => {
-        const conM = mv === null ? con : con.filter(d => mDe(d) === mv);
+      [null].forEach(mv => {
+        const conM = con;
         const disenos = Array.from(new Set(conM.map(dz))).sort((a, b) => (a === null ? -1 : a === 0 ? 99 : a) - (b === null ? -1 : b === 0 ? 99 : b));
         mangas.forEach(m => disenos.forEach(dis => [false, true].forEach(arq => {
           const grupo = conM.filter(d => (m === null || mangaEn(f, id, d) === m) && !!d.arquero === arq && dz(d) === dis);
           if (!grupo.length) return;
           const titulo = (tieneNombreD(f, id) ? tipoDe(id) : p.nom) + (m ? (m === 'Sin mangas' ? ' sin mangas' : ' manga ' + m.toLowerCase()) : '');
-          res.push({ id: id, p: p, manga: m, arquero: arq, diseno: dis, molde: mv, titulo: titulo,
+          res.push({ id: id, p: p, manga: m, arquero: arq, diseno: dis, molde: mv, titulo: titulo, hayArq: hayArq,
             grupo: [mv === null ? '' : mv ? moldeTxt(mv) : 'Sin molde', dis === null ? '' : dis ? 'Diseño ' + dis : 'Diseño sin indicar',
               hayArq ? (arq ? 'Arqueros' : 'Jugadores') : ''].filter(Boolean).join(' · '), dets: grupo });
         })));
@@ -3806,7 +4002,8 @@ const PMK_ACCESO = (() => {
   }
 
   // Resumen de tallas como en la planilla: adulto (masculino / femenino) al lado de infantil
-  function tablaTallas(fi) {
+  function tablaTallas(fi, mo) {
+    const molTh = c => mo && mo[c] ? '<br><span class="mol">' + esc(moldeCorto(mo[c])) + '</span>' : '';
     const id = fi.id, p = fi.p, cnt = {};
     fi.dets.forEach(d => { const t = tallasDe(d)[id], c = d.calce || 'Sin calce';
       (cnt[c] = cnt[c] || {})[t] = (cnt[c][t] || 0) + 1; });
@@ -3819,7 +4016,7 @@ const PMK_ACCESO = (() => {
         orden.map(t => '<tr><td>' + esc(t) + '</td>' + celda(todas[t]) + '</tr>').join('') +
         '</tbody><tfoot><tr><td>Total</td><td class="num">' + fi.dets.length + '</td></tr></tfoot></table>';
     }
-    let h = '<table class="tt"><thead><tr><th>Talla</th><th>Masculino</th><th>Femenino</th><th class="sep">Talla</th><th>Infantil</th></tr></thead><tbody>';
+    let h = '<table class="tt"><thead><tr><th>Talla</th><th>Masculino' + molTh('Masculino') + '</th><th>Femenino' + molTh('Femenino') + '</th><th class="sep">Talla</th><th>Infantil' + molTh('Infantil') + '</th></tr></thead><tbody>';
     const AD = TALLAS_AD.filter(t => (t !== 'XXS' && t !== 'XXXXL') || n('Masculino', t) || n('Femenino', t));   // XXS y XXXXL solo si alguien la pidió
     for (let i = 0; i < Math.max(AD.length, TALLAS_INF.length); i++) {
       const ta = AD[i], ti = TALLAS_INF[i];
@@ -3888,11 +4085,19 @@ const PMK_ACCESO = (() => {
     const tela = sp.tela ? sp.tela + (sp.telaDetalle ? ' / ' + sp.telaDetalle : '') : '';
     // jugadores: los montajes de jugador · arqueros o líberos: el suyo (si no se cargó, el de jugador, con aviso)
     // montajes de esta hoja: de la prenda, de los moldes de estas personas y, si hay varios diseños, del suyo
+    // un montaje marcado con un molde que ya no es del diseño (se cambió el molde) vale para todo el diseño
+    const vigentes = ORDEN_CALCE.map(c => mo[c]).filter(Boolean), tagsDe = i => moldesImg(i).filter(v => vigentes.indexOf(v) >= 0);
     const vs = fi.dets.map(d => moldeDe(f, fi.id, d.calce)).filter(Boolean);
-    const deLaPrenda = imgsDe(f).filter(i => prendasImg(i).indexOf(fi.id) >= 0 && (!moldesImg(i).length || moldesImg(i).some(v => vs.indexOf(v) >= 0)) &&
+    const deLaPrenda = imgsDe(f).filter(i => prendasImg(i).indexOf(fi.id) >= 0 && (!tagsDe(i).length || !vs.length || tagsDe(i).some(v => vs.indexOf(v) >= 0)) &&
       (!fi.diseno || disenoImg(i) === fi.diseno)), deArq = deLaPrenda.filter(i => i.arquero);
     const conDiseno = fi.diseno !== null && fi.diseno !== undefined;
-    const imgs = fi.arquero ? (deArq.length ? deArq : deLaPrenda) : deLaPrenda.filter(i => !i.arquero);
+    // montajes marcados como de arquero (fichas antiguas): si el diseño no tiene arqueros, valen para todos
+    const imgs = fi.arquero ? (deArq.length ? deArq : deLaPrenda) : fi.hayArq ? deLaPrenda.filter(i => !i.arquero) : deLaPrenda;
+    // diseño con varios calces: el montaje de un calce lo dice en su pie
+    const calcesImg = i => vigentes.length > 1 ? ORDEN_CALCE.filter(c => mo[c] && tagsDe(i).indexOf(mo[c]) >= 0) : [];
+    const calceTxt = d => { const c = ['Masculino', 'Femenino', 'Infantil'].indexOf(d.calce) >= 0 ? d.calce : '—', v = mo[d.calce];
+      return esc(c) + (v ? ' <span class="mol">(' + esc(moldeCorto(v).replace(/^Molde /, 'molde ')) + ')</span>' : c !== '—' ? ' <span class="mol sin">(sin molde)</span>' : ''); };
+    const sinMol = fi.dets.filter(d => !mo[d.calce]);
     const sinMontajeArq = fi.arquero && !deArq.length && imgs.length;
 
     // personas ordenadas como se corta: calce, talla y número
@@ -3910,7 +4115,7 @@ const PMK_ACCESO = (() => {
     const conNumero = lleva !== null ? lleva : (!!fi.p.estampado || orden.some(d => String(d.numero || '').trim()));
     // orden de las columnas: #, calce (masculino, femenino o infantil), talla, manga, número y nombre a estampar
     const filas = orden.map((d, i) => '<tr><td class="chk"></td><td class="num">' + (i + 1) + '</td>' +
-      '<td>' + (['Masculino', 'Femenino', 'Infantil'].indexOf(d.calce) >= 0 ? d.calce : '—') + '</td>' +
+      '<td>' + calceTxt(d) + '</td>' +
       '<td class="num"><b>' + esc(tallasDe(d)[fi.id] || '') + '</b></td>' +
       (conManga ? '<td>' + esc(mangaEn(f, fi.id, d)) + '</td>' : '') +
       (conNumero ? '<td class="num"><b>' + esc(d.numero || '') + '</b></td>' : '') +
@@ -3938,10 +4143,13 @@ const PMK_ACCESO = (() => {
         (fi.diseno === 0 ? '<div class="aprob">Estas personas no tienen el diseño indicado. Arriba van los montajes de todos los diseños de este molde: ' +
           'indica el de cada una en «Editar todo el listado» y vuelve a descargar la ficha.</div>' : '') +
         (imgs.length ? '<div class="mj' + (imgs.length > 1 ? ' dos' : '') + '">' + imgs.slice(0, 4).map(i => '<figure><img src="' + esc(i.url) + '" alt="">' +
-          '<figcaption>' + esc((i.vista || i.nombre || '') + (conDiseno ? ' · Diseño ' + disenoImg(i) : '') + (i.arquero ? ' · ' + nombreArq(f) : '')) + '</figcaption></figure>').join('') + '</div>'
+          '<figcaption>' + esc((i.vista || i.nombre || '') + (conDiseno ? ' · Diseño ' + disenoImg(i) : '') + (i.arquero && fi.hayArq ? ' · ' + nombreArq(f) : '') +
+            (calcesImg(i).length && calcesImg(i).length < vigentes.length ? ' · ' + calcesImg(i).join(' y ') : '')) + '</figcaption></figure>').join('') + '</div>'
           : '<div class="vacio">Sin montaje cargado para esta prenda</div>') + '</div>' +
-        '<div class="fp-tallas"><h3>' + tit('Resumen de tallas') + '</h3>' + tablaTallas(fi) + '</div></div>' +
+        '<div class="fp-tallas"><h3>' + tit('Resumen de tallas') + '</h3>' + tablaTallas(fi, mo) + '</div></div>' +
       (fi.p.origen ? '' : '<h3>' + tit('Despiece y telas', true) + '</h3>' + despiece) +
+      (sinMol.length ? '<div class="alerta">⚠ ' + sinMol.length + (sinMol.length === 1 ? ' persona en un calce' : ' personas en un calce') + ' sin molde en este diseño (' +
+        esc(Array.from(new Set(sinMol.map(d => (d.calce || 'sin calce').toLowerCase()))).join(', ')) + '): agrega ese molde al diseño en «Editar prendas y moldes».</div>' : '') +
       (rep.length ? '<div class="alerta">⚠ Número repetido: ' + rep.map(nu => 'N° ' + esc(nu) + ' (' + porNum[nu].length + ' veces' + (porNum[nu].some(Boolean) ? ': ' + esc(porNum[nu].map(x => x || 'sin nombre').join(', ')) : '') + ')').join(' · ') + '</div>' : '') +
       '<h3>Detalle de ' + (nd ? esc(nd) + ' · ' : '') + esc(fi.titulo.toLowerCase()) + (fi.grupo ? ' · ' + fi.grupo.toLowerCase() : '') + '</h3>' +
       '<table class="tp"><thead><tr><th class="chk">✓</th><th>#</th><th>Calce</th><th class="num">Talla</th>' +

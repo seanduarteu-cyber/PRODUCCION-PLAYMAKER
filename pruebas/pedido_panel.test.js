@@ -69,7 +69,7 @@ const datos = { tablas: { fichas_tallas: [ficha], fichas_detalle: personas, fich
     const tb = s && s.querySelector('table.tp'); return tb ? { th: [...tb.querySelectorAll('th')].map(x => x.textContent), fila: [...tb.querySelectorAll('tbody tr')].map(r => [...r.children].map(c => c.textContent))
       .find(c => c[6]) } : null; });
   ok(det && det.th.join('|') === '✓|#|Calce|Talla|Manga|N°|Nombre a estampar', 'columnas del detalle: ' + (det ? det.th.join(' | ') : 'sin tabla'));
-  ok(det && det.fila && det.fila[2] === 'Masculino' && /^[SML]$/.test(det.fila[3]) && det.fila[4] === 'Corta' && /^\d+$/.test(det.fila[5]) && /^JUG\d+$/.test(det.fila[6]), 'fila del detalle en ese orden: ' + (det && det.fila ? det.fila.join(' | ') : ''));
+  ok(det && det.fila && det.fila[2] === 'Masculino (molde 18)' && /^[SML]$/.test(det.fila[3]) && det.fila[4] === 'Corta' && /^\d+$/.test(det.fila[5]) && /^JUG\d+$/.test(det.fila[6]), 'fila del detalle en ese orden: ' + (det && det.fila ? det.fila.join(' | ') : ''));
   const portada = await p.innerText('section.portada');
   ok(!/Arqueros o líberos/.test(portada) && /10 pares/.test(portada), 'portada: sin fila de arqueros; las medias en pares');
 
