@@ -60,6 +60,30 @@
       {"logo": "isotipo", "zona": [1114, 88, 1198, 160], "blanco": true},
       {"logo": "playmaker", "zona": [372, 82, 454, 122], "blanco": true, "minimo": 85}
     ],
+    "img/09_poleron_medio_cierre_granate.jpg": [
+      {"logo": "escudo", "caja": [480, 267, 593, 372], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [252, 282, 330, 348], "blanco": true},
+      {"logo": "isotipo", "zona": [1104, 116, 1176, 178], "blanco": true},
+      {"logo": "playmaker", "zona": [380, 54, 442, 92], "blanco": true, "minimo": 85}
+    ],
+    "img/09_poleron_medio_cierre_negro.jpg": [
+      {"logo": "escudo", "caja": [465, 247, 574, 351], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [248, 252, 328, 318], "blanco": true},
+      {"logo": "isotipo", "zona": [1112, 126, 1186, 184], "blanco": true},
+      {"logo": "playmaker", "zona": [376, 88, 434, 131], "blanco": true, "minimo": 85}
+    ],
+    "img/09_poleron_medio_cierre_verde.jpg": [
+      {"logo": "escudo", "caja": [497, 280, 610, 391], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [258, 296, 342, 366], "blanco": true},
+      {"logo": "isotipo", "zona": [1080, 146, 1156, 210], "blanco": true},
+      {"logo": "playmaker", "zona": [394, 58, 462, 97], "blanco": true, "minimo": 85}
+    ],
+    "img/11_sudadera_sin_mangas.jpg": [
+      {"logo": "escudo", "caja": [475, 186, 617, 328], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [262, 198, 348, 264], "blanco": true},
+      {"logo": "isotipo", "zona": [1092, 508, 1138, 542]},
+      {"logo": "isotipo", "zona": [400, 54, 448, 90]}
+    ],
     "img/13_polo_granate.jpg": [
       {"logo": "escudo", "caja": [479, 247, 587, 350], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [236, 246, 320, 326], "blanco": true},

@@ -21,8 +21,17 @@
     "OGR-04": {
       "imagen": "img/montaje_final/05_short_de_juego.jpg"
     },
+    "OGR-05": {
+      "imagen": "img/montaje_final/06_medias.jpg"
+    },
     "OGR-06": {
       "imagen": "img/montaje_final/07_camiseta_llegada.jpg"
+    },
+    "OGR-07": {
+      "imagen": "img/montaje_final/09_poleron_medio_cierre.jpg"
+    },
+    "OGR-08": {
+      "imagen": "img/montaje_final/11_sudadera_sin_mangas.jpg"
     },
     "OGR-09": {
       "imagen": "img/montaje_final/13_polo_pique.jpg"

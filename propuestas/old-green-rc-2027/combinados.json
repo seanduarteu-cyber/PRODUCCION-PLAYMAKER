@@ -124,6 +124,20 @@
         "ESPALDA",
         "derecha"
       ]
+    ],
+    "img/montaje_final/09_poleron_medio_cierre.jpg": [
+      [
+        "img/montaje_final/09_poleron_medio_cierre_verde.jpg",
+        "VERDE"
+      ],
+      [
+        "img/montaje_final/09_poleron_medio_cierre_granate.jpg",
+        "GRANATE"
+      ],
+      [
+        "img/montaje_final/09_poleron_medio_cierre_negro.jpg",
+        "NEGRO"
+      ]
     ]
   }
 }

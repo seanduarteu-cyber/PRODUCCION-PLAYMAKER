@@ -31,9 +31,9 @@ GRIS = (110, 114, 128)
 def recortar(img, color, margen=12, mitad=None):
     a = np.asarray(img).astype(int)
     prenda = np.abs(a - color).sum(axis=2) > 30
-    if mitad:  # corta por la columna vacía más cercana al centro (entre frente y espalda)
-        vacias = np.where(~prenda.any(axis=0))[0]
-        corte = vacias[np.argmin(np.abs(vacias - img.width / 2))]
+    if mitad:  # corta entre frente y espalda: la columna con menos prenda en el tercio central
+        ini = img.width // 3
+        corte = ini + int(np.argmin(prenda[:, ini:2 * ini].sum(axis=0)))
         x0, x1 = (0, corte) if mitad == "izquierda" else (corte, img.width)
         return recortar(img.crop((x0, 0, x1, img.height)), color, margen)
     ys, xs = np.where(prenda)
