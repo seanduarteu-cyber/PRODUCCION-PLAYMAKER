@@ -1,0 +1,12 @@
+{
+  "base": "base/Propuesta_Old_Green_Rugby_Club_2027_base.pdf",
+  "salida": "Propuesta_Old_Green_Rugby_Club_2027.pdf",
+  "iva": 0.19,
+  "precios_con_iva": true,
+  "precios": { "OGR-01": 29900, "OGR-02": 29900, "OGR-03": 29900, "OGR-04": 29900, "OGR-05": 19900, "OGR-06": 10900, "OGR-07": 21900, "OGR-08": 22900, "OGR-09": 34900, "OGR-10": 28900, "OGR-11": 21900, "OGR-12": 19900, "OGR-13": 23900, "OGR-14": 37900, "OGR-15": 40900, "OGR-16": 22900, "OGR-17": 31900, "OGR-18": 47900, "OGR-19": 17900, "OGR-20": 21900, "OGR-21": 25900, "OGR-22": 79900 },
+  "escudo_portada": {
+    "pdf": "img/escudo_old_green.pdf",
+    "alto": 160
+  },
+  "renders": {}
+}

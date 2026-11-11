@@ -1,0 +1,25 @@
+{
+  "base": "../gauchos-rc-2027/base/Propuesta_Gauchos_Rugby_Club_2027_base_v2.pdf",
+  "salida": "base/Propuesta_Old_Green_Rugby_Club_2027_base.pdf",
+  "codigo": ["GAU", "OGR"],
+  "reemplazos": [
+    ["Gauchos Rugby Club", "Old Green Rugby Club"],
+    ["Gauchos", "Old Green"],
+    ["GAUCHOS", "OLD GREEN"],
+    ["Santiago, 9 de octubre de 2026", "Santiago, 11 de noviembre de 2026"]
+  ],
+  "paleta": [["Verde", "#1F5B3A"], ["Blanco", "#FFFFFF"], ["Negro", "#1C1C1C"], ["Dorado", "#C9A646"]],
+  "fichas": {
+    "01": {
+      "bajada": "Verde con rayas verticales tonales y vivos blancos",
+      "bloques": [
+        ["CUELLO", "Cuello polo en verde con vivo blanco; abertura en V."],
+        ["MANGA", "Manga corta con puño a franjas verde y blanco."],
+        ["CUERPO", "Base verde con rayas verticales tonales sublimadas."],
+        ["APLICACIONES", "Escudo Old Green al pecho derecho, isotipo Playmaker al pecho izquierdo y auspiciadores sublimados."],
+        ["ESPALDA", "Número en tipografía del club y auspiciador al pie."],
+        ["TELA", "Línea PRO — 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."]
+      ]
+    }
+  }
+}

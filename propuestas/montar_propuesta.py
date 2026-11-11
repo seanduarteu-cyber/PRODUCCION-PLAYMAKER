@@ -5,7 +5,7 @@ Uso:
 
 La propuesta base (PDF) trae en cada ficha un "ESPACIO RESERVADO PARA RENDER" y
 los valores como marcadores "$[00.000]" / "[00]". Este script:
-  1. Pone cada render del JSON en el espacio reservado de su ficha (GAU-XX).
+  1. Pone cada render del JSON en el espacio reservado de su ficha (GAU-XX, OGR-XX...).
   2. Reemplaza los marcadores por campos de formulario editables:
      - Valor unitario: un solo campo por producto, visible en su ficha y en el
        cuadro de valores (se escribe una vez y aparece en ambos lugares).
@@ -59,6 +59,8 @@ JS_NUM = ('var d = this;'
 
 # ---------------------------------------------------------------- lectura de la base
 
+CODIGO = r"[A-Z]{2,4}-\d+"  # código de producto: GAU-01, OGR-01...
+
 def _bbox(w):
     return (w["x0"], w["top"], w["x1"], w["bottom"])
 
@@ -71,7 +73,7 @@ def analizar_base(ruta):
             words = page.extract_words(extra_attrs=["size"])
             texts = [w["text"] for w in words]
             if "ESPACIO" in texts and "RESERVADO" in texts:
-                code = next(w["text"] for w in words if re.fullmatch(r"GAU-\d+", w["text"]) and w["top"] < 100)
+                code = next(w["text"] for w in words if re.fullmatch(CODIGO, w["text"]) and w["top"] < 100)
                 box = next(r for r in page.rects if r["fill"] and r["width"] > 300 and r["height"] > 150
                            and tuple(round(c, 3) for c in r["non_stroking_color"]) == tuple(round(c, 3) for c in FONDO_RENDER))
                 valor = next(w for w in words if w["text"] == "$[00.000]")
@@ -80,7 +82,7 @@ def analizar_base(ruta):
             elif "CANTIDAD" in texts and texts.count("[00]") > 1:
                 filas = {}
                 for w in words:
-                    if re.fullmatch(r"GAU-\d+", w["text"]):
+                    if re.fullmatch(CODIGO, w["text"]):
                         mismas = [o for o in words if abs(o["top"] - w["top"]) < 2]
                         cant = next(o for o in mismas if o["text"] == "[00]")
                         valor = next(o for o in mismas if o["text"] == "$[00.000]")
