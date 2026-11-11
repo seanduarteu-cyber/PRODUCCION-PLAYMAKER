@@ -161,6 +161,32 @@
         ]
       ]
     },
+    "07": {
+      "titulo": "Camiseta de llegada",
+      "bajada": "Verde con trama tonal y mangas granate",
+      "bloques": [
+        [
+          "CUELLO",
+          "Cuello redondo acanalado al tono, con interior granate."
+        ],
+        [
+          "MANGAS",
+          "Manga raglán granate con trama tonal y vivo blanco en la unión."
+        ],
+        [
+          "CUERPO",
+          "Verde con trama geométrica tonal sublimada, adelante y atrás."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green al pecho izquierdo e isotipo Playmaker al pecho derecho y en la espalda."
+        ],
+        [
+          "TELA",
+          "Softlock + micromesh, 100% poliéster, de secado rápido."
+        ]
+      ]
+    },
     "13": {
       "bajada": "En granate, gris, verde y negro, con paneles laterales en los colores del club",
       "bloques": [

@@ -54,6 +54,12 @@
       {"logo": "isotipo", "zona": [1156, 442, 1254, 518], "blanco": true},
       {"logo": "isotipo", "zona": [1822, 442, 1920, 516], "blanco": true}
     ],
+    "img/07_camiseta_llegada.jpg": [
+      {"logo": "escudo", "caja": [490, 232, 605, 349], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [236, 240, 324, 324], "blanco": true},
+      {"logo": "isotipo", "zona": [1114, 88, 1198, 160], "blanco": true},
+      {"logo": "playmaker", "zona": [372, 82, 454, 122], "blanco": true, "minimo": 85}
+    ],
     "img/13_polo_granate.jpg": [
       {"logo": "escudo", "caja": [479, 247, 587, 350], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [236, 246, 320, 326], "blanco": true},
@@ -66,14 +72,14 @@
       {"logo": "isotipo", "zona": [1120, 110, 1196, 174], "blanco": true},
       {"logo": "playmaker", "zona": [366, 84, 434, 129], "blanco": true, "minimo": 85}
     ],
-    "img/13_polo_verde.jpg": [
-      {"logo": "escudo", "caja": [472, 250, 582, 355], "franjas": true, "por_ancho": true},
+    "img/13_polo_negro.jpg": [
+      {"logo": "escudo", "caja": [469, 250, 584, 357], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [236, 246, 320, 326], "blanco": true},
       {"logo": "isotipo", "zona": [1120, 110, 1196, 174], "blanco": true},
       {"logo": "playmaker", "zona": [364, 84, 434, 129], "blanco": true, "minimo": 85}
     ],
-    "img/13_polo_negro.jpg": [
-      {"logo": "escudo", "caja": [469, 250, 584, 357], "franjas": true, "por_ancho": true},
+    "img/13_polo_verde.jpg": [
+      {"logo": "escudo", "caja": [472, 250, 582, 355], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [236, 246, 320, 326], "blanco": true},
       {"logo": "isotipo", "zona": [1120, 110, 1196, 174], "blanco": true},
       {"logo": "playmaker", "zona": [364, 84, 434, 129], "blanco": true, "minimo": 85}
