@@ -27,11 +27,17 @@
     "OGR-13": {
       "imagen": "img/montaje_final/13_polo_pique.jpg"
     },
+    "OGR-16": {
+      "imagen": "img/montaje_final/16_poleron_basic.jpg"
+    },
     "OGR-19": {
       "imagen": "img/montaje_final/19_polera_algodon.jpg"
     },
     "OGR-20": {
       "imagen": "img/montaje_final/20_short_presentacion.jpg"
+    },
+    "OGR-21": {
+      "imagen": "img/montaje_final/21_pantalon_buzo.jpg"
     }
   }
 }

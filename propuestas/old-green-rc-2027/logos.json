@@ -84,6 +84,30 @@
       {"logo": "isotipo", "zona": [1120, 110, 1196, 174], "blanco": true},
       {"logo": "playmaker", "zona": [364, 84, 434, 129], "blanco": true, "minimo": 85}
     ],
+    "img/16_poleron_basic_granate.jpg": [
+      {"logo": "escudo", "caja": [566, 175, 682, 281], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [334, 186, 418, 258], "blanco": true},
+      {"logo": "isotipo", "zona": [1252, 48, 1322, 102], "blanco": true},
+      {"logo": "playmaker", "zona": [472, 36, 532, 77], "blanco": true, "minimo": 85}
+    ],
+    "img/16_poleron_basic_gris.jpg": [
+      {"logo": "escudo", "caja": [566, 172, 685, 282], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [333, 184, 419, 258]},
+      {"logo": "isotipo", "zona": [1270, 40, 1370, 125]},
+      {"logo": "playmaker", "zona": [472, 36, 532, 76], "blanco": true, "minimo": 85}
+    ],
+    "img/16_poleron_basic_negro.jpg": [
+      {"logo": "escudo", "caja": [566, 172, 684, 280], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [333, 184, 419, 258], "blanco": true},
+      {"logo": "isotipo", "zona": [1252, 45, 1322, 102], "blanco": true},
+      {"logo": "playmaker", "zona": [470, 33, 532, 75], "blanco": true, "minimo": 85}
+    ],
+    "img/16_poleron_basic_verde.jpg": [
+      {"logo": "escudo", "caja": [482, 250, 597, 357], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [248, 255, 330, 330], "blanco": true},
+      {"logo": "isotipo", "zona": [1114, 112, 1188, 174], "blanco": true},
+      {"logo": "playmaker", "zona": [386, 98, 442, 139], "blanco": true, "minimo": 85}
+    ],
     "img/19_polera_algodon_blanca.jpg": [
       {"logo": "escudo", "zona": [718, 248, 916, 452], "por_ancho": true},
       {"logo": "isotipo", "zona": [425, 265, 550, 405]},
@@ -112,6 +136,10 @@
     "img/20_short_presentacion.jpg": [
       {"logo": "escudo", "zona": [570, 672, 735, 832], "por_ancho": true},
       {"logo": "isotipo", "zona": [68, 712, 200, 815], "blanco": true}
+    ],
+    "img/21_pantalon_buzo.jpg": [
+      {"logo": "escudo", "caja": [477, 265, 562, 347], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [208, 262, 280, 326], "blanco": true}
     ]
   }
 }

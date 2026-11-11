@@ -81,6 +81,27 @@
           "VERDE"
         ]
       ]
+    },
+    "img/montaje_final/16_poleron_basic.jpg": {
+      "columnas": 2,
+      "piezas": [
+        [
+          "img/montaje_final/16_poleron_basic_granate.jpg",
+          "GRANATE"
+        ],
+        [
+          "img/montaje_final/16_poleron_basic_negro.jpg",
+          "NEGRO"
+        ],
+        [
+          "img/montaje_final/16_poleron_basic_gris.jpg",
+          "GRIS"
+        ],
+        [
+          "img/montaje_final/16_poleron_basic_verde.jpg",
+          "VERDE"
+        ]
+      ]
     }
   }
 }

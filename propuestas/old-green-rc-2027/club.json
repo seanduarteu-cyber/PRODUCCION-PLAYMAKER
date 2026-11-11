@@ -212,6 +212,32 @@
         ]
       ]
     },
+    "16": {
+      "titulo": "Polerón algodón basic",
+      "bajada": "Cuello redondo, en granate, negro, gris jaspeado y verde",
+      "bloques": [
+        [
+          "CUELLO",
+          "Cuello redondo con puño y pretina acanalados."
+        ],
+        [
+          "CUERPO",
+          "Corte holgado de hombro caído, de uso diario."
+        ],
+        [
+          "COLORES",
+          "Granate, negro, gris jaspeado y verde."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green al pecho izquierdo e isotipo Playmaker al pecho derecho y en la espalda."
+        ],
+        [
+          "TELA",
+          "Cottonpoly pesado 260 gr: 80% algodón y 20% poliéster."
+        ]
+      ]
+    },
     "19": {
       "bajada": "En blanco, granate, gris jaspeado, negro y verde, con escudo al pecho",
       "bloques": [
@@ -256,6 +282,32 @@
         [
           "TELA",
           "Microfibra SQ, 100% poliéster."
+        ]
+      ]
+    },
+    "21": {
+      "titulo": "Pantalón de buzo antifluido",
+      "bajada": "Negro, con bolsillos con cierre y panel de malla en la pierna",
+      "bloques": [
+        [
+          "CALCE",
+          "Calce entallado con pretina elasticada."
+        ],
+        [
+          "BOLSILLOS",
+          "Dos bolsillos laterales con cierre."
+        ],
+        [
+          "TERMINACIONES",
+          "Panel lateral de malla en la pierna para ventilación."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green en el muslo izquierdo e isotipo Playmaker en el derecho."
+        ],
+        [
+          "TELA",
+          "Tela antifluido que repele el agua, 100% poliéster."
         ]
       ]
     }
