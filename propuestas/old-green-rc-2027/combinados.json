@@ -138,6 +138,30 @@
         "img/montaje_final/09_poleron_medio_cierre_negro.jpg",
         "NEGRO"
       ]
+    ],
+    "img/montaje_final/15_cortaviento.jpg": [
+      [
+        "img/montaje_final/15_cortaviento_sin_capucha.jpg",
+        "SIN CAPUCHA"
+      ],
+      [
+        "img/montaje_final/15_cortaviento_con_capucha.jpg",
+        "CON CAPUCHA"
+      ]
+    ],
+    "img/montaje_final/17_hoodie.jpg": [
+      [
+        "img/montaje_final/17_hoodie_verde.jpg",
+        "VERDE"
+      ],
+      [
+        "img/montaje_final/17_hoodie_granate.jpg",
+        "GRANATE"
+      ],
+      [
+        "img/montaje_final/17_hoodie_gris.jpg",
+        "GRIS"
+      ]
     ]
   }
 }

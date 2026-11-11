@@ -108,6 +108,18 @@
       {"logo": "isotipo", "zona": [1120, 110, 1196, 174], "blanco": true},
       {"logo": "playmaker", "zona": [364, 84, 434, 129], "blanco": true, "minimo": 85}
     ],
+    "img/15_cortaviento_con_capucha.jpg": [
+      {"logo": "escudo", "caja": [507, 282, 632, 402], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [285, 298, 375, 370], "blanco": true},
+      {"logo": "isotipo", "zona": [1082, 265, 1166, 338], "blanco": true},
+      {"logo": "playmaker", "zona": [400, 104, 487, 150], "blanco": true, "minimo": 85}
+    ],
+    "img/15_cortaviento_sin_capucha.jpg": [
+      {"logo": "escudo", "caja": [498, 265, 625, 395], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [272, 288, 378, 355], "blanco": true},
+      {"logo": "isotipo", "zona": [1098, 205, 1185, 285], "blanco": true},
+      {"logo": "playmaker", "zona": [390, 86, 480, 134], "blanco": true, "minimo": 85}
+    ],
     "img/16_poleron_basic_granate.jpg": [
       {"logo": "escudo", "caja": [566, 175, 682, 281], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [334, 186, 418, 258], "blanco": true},
@@ -131,6 +143,21 @@
       {"logo": "isotipo", "zona": [248, 255, 330, 330], "blanco": true},
       {"logo": "isotipo", "zona": [1114, 112, 1188, 174], "blanco": true},
       {"logo": "playmaker", "zona": [386, 98, 442, 139], "blanco": true, "minimo": 85}
+    ],
+    "img/17_hoodie_granate.jpg": [
+      {"logo": "escudo", "caja": [700, 345, 860, 518], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [385, 368, 500, 472], "blanco": true},
+      {"logo": "playmaker", "zona": [545, 75, 660, 136], "blanco": true, "minimo": 85}
+    ],
+    "img/17_hoodie_gris.jpg": [
+      {"logo": "escudo", "caja": [700, 345, 860, 518], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [385, 368, 500, 472], "blanco": true, "minimo": 215},
+      {"logo": "playmaker", "zona": [540, 82, 662, 140], "blanco": true, "minimo": 150}
+    ],
+    "img/17_hoodie_verde.jpg": [
+      {"logo": "escudo", "caja": [700, 345, 860, 518], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [385, 368, 500, 472], "blanco": true},
+      {"logo": "playmaker", "zona": [545, 75, 660, 136], "blanco": true, "minimo": 85}
     ],
     "img/19_polera_algodon_blanca.jpg": [
       {"logo": "escudo", "zona": [718, 248, 916, 452], "por_ancho": true},
