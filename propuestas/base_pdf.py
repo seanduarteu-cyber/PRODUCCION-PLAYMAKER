@@ -169,8 +169,9 @@ def partir(capa, estilo, texto, ancho_max):
     return lineas + [actual]
 
 
-def guardar(doc, tachar, borrar_graficos, capa, salida, metadata):
-    """Borra lo reemplazado (tachar: rects por página), superpone la capa y escribe el PDF."""
+def guardar(doc, tachar, borrar_graficos, capa, salida, metadata, quitar=()):
+    """Borra lo reemplazado (tachar: rects por página), superpone la capa y escribe el PDF sin las
+    páginas de quitar."""
     for i, rects in tachar.items():
         if not rects:
             continue
@@ -186,6 +187,8 @@ def guardar(doc, tachar, borrar_graficos, capa, salida, metadata):
     writer = PdfWriter(clone_from=PdfReader(limpio))
     for page, over in zip(writer.pages, capa.lector().pages):
         page.merge_page(over)
+    for i in sorted(quitar, reverse=True):
+        writer.remove_page(i)
     writer.add_metadata(metadata)
     with open(salida, "wb") as fh:
         writer.write(fh)

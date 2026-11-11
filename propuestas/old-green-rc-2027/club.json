@@ -21,6 +21,10 @@
     [
       "Santiago, 9 de octubre de 2026",
       "Santiago, 11 de noviembre de 2026"
+    ],
+    [
+      "Veintidós líneas",
+      "Dieciséis líneas"
     ]
   ],
   "paleta": [
@@ -44,6 +48,14 @@
       "Verde claro",
       "#419822"
     ]
+  ],
+  "quitar": [
+    "04",
+    "08",
+    "10",
+    "12",
+    "14",
+    "18"
   ],
   "fichas": {
     "01": {
@@ -161,6 +173,28 @@
         ]
       ]
     },
+    "06": {
+      "titulo": "Medias personalizadas",
+      "bajada": "En verde y granate, con franja de contraste y “OLD GREEN RC” atrás",
+      "bloques": [
+        [
+          "MODELO VERDE",
+          "Media verde con franja granate entre vivos blancos y “OLD GREEN RC” en la pantorrilla."
+        ],
+        [
+          "MODELO GRANATE",
+          "Media granate con franja verde entre vivos blancos y “OLD GREEN RC” en la pantorrilla."
+        ],
+        [
+          "CONSTRUCCIÓN",
+          "Media tejida personalizada de calidad PRO, con refuerzo en talón y punta."
+        ],
+        [
+          "USO",
+          "Alto rendimiento, para uso en competencia."
+        ]
+      ]
+    },
     "07": {
       "titulo": "Camiseta de llegada",
       "bajada": "Verde con trama tonal y mangas granate",
@@ -184,6 +218,61 @@
         [
           "TELA",
           "Softlock + micromesh, 100% poliéster, de secado rápido."
+        ]
+      ]
+    },
+    "09": {
+      "bajada": "En verde, granate y negro, con trama tonal y mangas en contraste",
+      "bloques": [
+        [
+          "CUELLO",
+          "Cuello alto con medio cierre al tono."
+        ],
+        [
+          "CUERPO",
+          "Trama topográfica tonal sublimada, con vivos blancos en las costuras raglán."
+        ],
+        [
+          "MANGAS",
+          "Franja de contraste a lo largo de la manga; puños y pretina acanalados."
+        ],
+        [
+          "COLORES",
+          "Verde con mangas granate, granate con mangas verdes y negro con mangas verde y granate."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green al pecho izquierdo e isotipo Playmaker al pecho derecho y en la espalda."
+        ],
+        [
+          "TELA",
+          "Confortex, 100% poliéster, elástica y respirable."
+        ]
+      ]
+    },
+    "11": {
+      "titulo": "Sudadera sin mangas",
+      "bajada": "Verde, con gráfica sublimada en verde claro, rojo y blanco",
+      "bloques": [
+        [
+          "CUELLO",
+          "Cuello redondo y sisas con ribete verde claro."
+        ],
+        [
+          "CUERPO",
+          "Gráfica geométrica sublimada adelante y atrás, con tramas de puntos y de rejilla."
+        ],
+        [
+          "ESPALDA",
+          "“OLD GREEN” y número sublimados, con la leyenda “#unavidaparaGaspar” al pie."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green al pecho izquierdo e isotipo Playmaker al pecho derecho y bajo el número."
+        ],
+        [
+          "TELA",
+          "Zerotex + mesh, 100% poliéster."
         ]
       ]
     },
@@ -212,6 +301,36 @@
         ]
       ]
     },
+    "15": {
+      "titulo": "Cortaviento",
+      "bajada": "Granate y verde, con franja blanca al pecho; con y sin capucha",
+      "bloques": [
+        [
+          "VERSIONES",
+          "Con capucha integrada o con cuello alto."
+        ],
+        [
+          "CIERRE",
+          "Cierre completo central y dos bolsillos laterales con cierre."
+        ],
+        [
+          "CUERPO",
+          "Parte alta granate y baja verde, separadas por una franja blanca curva."
+        ],
+        [
+          "ESPALDA",
+          "“OLD GREEN RUGBY CLUB” en blanco sobre el granate, con isotipo Playmaker."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green al pecho izquierdo e isotipo Playmaker al pecho derecho."
+        ],
+        [
+          "TELA",
+          "Water performer, 100% poliéster, repelente al agua y al viento."
+        ]
+      ]
+    },
     "16": {
       "titulo": "Polerón algodón basic",
       "bajada": "Cuello redondo, en granate, negro, gris jaspeado y verde",
@@ -235,6 +354,32 @@
         [
           "TELA",
           "Cottonpoly pesado 260 gr: 80% algodón y 20% poliéster."
+        ]
+      ]
+    },
+    "17": {
+      "titulo": "Polerón hoodie",
+      "bajada": "En negro, verde, granate y gris jaspeado, con escudo al pecho",
+      "bloques": [
+        [
+          "CAPUCHA",
+          "Capucha con cordón de ajuste al tono."
+        ],
+        [
+          "CUERPO",
+          "Bolsillo canguro; puños y pretina acanalados."
+        ],
+        [
+          "COLORES",
+          "Negro, verde, granate y gris jaspeado."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green al pecho izquierdo e isotipo Playmaker al pecho derecho."
+        ],
+        [
+          "TELA",
+          "Polydry + polyfleece, 100% poliéster."
         ]
       ]
     },

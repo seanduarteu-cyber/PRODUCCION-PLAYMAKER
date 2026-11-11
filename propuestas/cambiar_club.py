@@ -12,6 +12,10 @@ club.json (rutas relativas al JSON):
     "paleta":     [["Verde", "#1F5B3A"], ...]  colores del recuadro PALETA DEL CLUB (hasta 6)
     "fichas":     {"01": {"titulo": "...", "bajada": "...", "bloques": [["CUELLO", "..."], ...]}}
                   bajada y bloques (hasta 6, en dos columnas) de cada ficha; titulo es opcional
+    "quitar":     ["04", "08"]  fichas que no van: salen sus páginas y sus filas del catálogo y del
+                  cuadro de valores, y las demás se renumeran (ficha, código y página)
+Las fichas se nombran siempre con el número de la base de origen; el resultado lleva la numeración
+nueva (la que usa propuesta.json).
 
 Los textos nuevos se dibujan con las mismas fuentes, tamaños, colores y espaciado que la base.
 """
@@ -62,6 +66,7 @@ def main(cfg_path):
     with pdfplumber.open(base) as pdf:
         R = [runs_de(p) for p in pdf.pages]
         rects = [p.rects for p in pdf.pages]
+        trazos = [p.lines for p in pdf.pages]
         w, h = pdf.pages[0].width, pdf.pages[0].height
 
     doc = pymupdf.open(base)
@@ -146,22 +151,94 @@ def main(cfg_path):
             for k, linea in enumerate(lineas):
                 capa.texto(pag, cuerpo, linea, celda.x0, celda.base - salto - k * interlinea)
 
-    for pag, runs in enumerate(R):  # productos renombrados en el catálogo y el cuadro de valores
+    # 2. Fichas que salen: el resto sube de número (ficha, código y página)
+    quitar = sorted(cfg.get("quitar", []))
+    if any(n not in fichas for n in quitar):
+        sys.exit(f"La base no tiene alguna de las fichas a quitar: {quitar}")
+    nuevo_num = {n: f"{k + 1:02d}" for k, n in enumerate(n for n in sorted(fichas) if n not in quitar)}
+    paginas_fuera = [fichas[n] for n in quitar]
+    paginas = [i for i in range(len(R)) if i not in paginas_fuera]
+    patron = re.compile(rf"\b{viejo_cod}-(\d+)")
+
+    def codigo_nuevo(texto):
+        return patron.sub(lambda m: f"{nuevo_cod}-{nuevo_num.get(m.group(1), m.group(1))}", texto)
+
+    for num, nuevo in nuevo_num.items():
+        if nuevo != num:
+            r = next(r for r in R[fichas[num]] if r.top < 100 and r.texto.startswith(f"FICHA {num}"))
+            borrar(fichas[num], r)
+            capa.texto(fichas[num], r, r.texto.replace(f"FICHA {num}", f"FICHA {nuevo}", 1), r.x0, r.base)
+    for k, pag in enumerate(paginas):  # número de página del pie
+        num = next((r for r in R[pag] if r.top > 790 and r.texto.isdigit()), None)
+        if num and int(num.texto) != k + 1:
+            borrar(pag, num)
+            capa.texto(pag, num, f"{k + 1:02d}", num.x1, num.base, "der")
+
+    # 3. Catálogo y cuadro de valores: sin las filas que salen, todo lo de abajo sube y se renumera
+    for pag, runs in enumerate(R):
+        filas = sorted([r for r in runs if r.top > 100 and patron.fullmatch(r.texto)], key=lambda r: r.top)
+        if len(filas) < 5:
+            continue
+        paso = min(b.top - a.top for a, b in zip(filas, filas[1:]))
+        ini, fin = filas[0].top - 30, 770
+        bandas = [(r.top - 6, r.top - 6 + paso) for r in filas if patron.fullmatch(r.texto).group(1) in quitar]
+
+        def mover(top):  # nuevo top, o None si el elemento es de una fila que sale
+            if any(a <= top < b for a, b in bandas):
+                return None
+            return top - paso * sum(1 for a, b in bandas if b <= top)
+
+        tachar[pag].append((30, ini, w - 30, fin))
+        borrar_graficos.add(pag)
+        cebra = [r for r in rects[pag] if r["fill"] and ini <= r["top"] <= fin and r["height"] < 20
+                 and r["width"] > 400 and min(r["non_stroking_color"]) > 0.9]
+        for r in rects[pag]:
+            if r in cebra or not ini <= r["top"] <= fin or (top := mover(r["top"])) is None:
+                continue
+            if r["fill"]:
+                capa.rect(pag, r["non_stroking_color"], r["x0"], top, r["x1"], top + r["height"])
+            if r["stroke"]:
+                capa.marco(pag, r["stroking_color"], r["linewidth"], r["x0"], top, r["x1"], top + r["height"])
+        for ln in trazos[pag]:
+            if ini <= ln["top"] <= fin and (top := mover(ln["top"])) is not None:
+                capa.linea(pag, ln["stroking_color"], ln["linewidth"], ln["x0"], ln["x1"], top)
+        quedan = []  # filas que quedan, con su categoría, para volver a poner la cebra
+        categoria = None
+        for r in sorted((r for r in runs if ini <= r.top <= fin), key=lambda r: r.top):
+            hecho.add(id(r))
+            if (top := mover(r.top)) is None:
+                continue
+            if r.fuente == "Poppins-SemiBold" and r.texto.isupper() and r.x0 < X0 + 1:
+                categoria = r
+            texto = codigo_nuevo(productos.get(r.texto, r.texto))
+            if re.fullmatch(r"Ficha \d+", texto):
+                texto = f"Ficha {nuevo_num[texto[-2:]]}"
+            if patron.fullmatch(r.texto):
+                quedan.append((categoria, top))
+            modo, x = alinear(r)
+            capa.texto(pag, r, texto, x, r.base + (r.top - top), modo)
+        if cebra:
+            fila0 = min(filas, key=lambda r: abs(r.top - cebra[0]["top"]))
+            arriba, alto, c0 = fila0.top - cebra[0]["top"], cebra[0]["height"], cebra[0]
+            for k, (cat, top) in enumerate(quedan):
+                if sum(1 for c, _ in quedan[:k] if c is cat) % 2 == 0:
+                    capa.rect(pag, c0["non_stroking_color"], c0["x0"], top - arriba, c0["x1"], top - arriba + alto)
+
+    for pag, runs in enumerate(R):  # productos renombrados en el resto del documento
         for r in runs:
             if id(r) not in hecho and r.texto in productos:
                 borrar(pag, r)
                 capa.texto(pag, r, productos[r.texto], r.x0, r.base)
 
-    # 2. Códigos de producto (encabezado de ficha, catálogo y cuadro de valores)
-    patron = re.compile(rf"\b{viejo_cod}-(?=\d)")
+    # 4. Códigos de producto en el encabezado de cada ficha
     for pag, runs in enumerate(R):
         for r in runs:
             if id(r) not in hecho and patron.search(r.texto):
                 borrar(pag, r)
                 modo, x = alinear(r)
-                capa.texto(pag, r, patron.sub(f"{nuevo_cod}-", r.texto), x, r.base, modo)
+                capa.texto(pag, r, codigo_nuevo(r.texto), x, r.base, modo)
 
-    # 3. Nombre del club y demás textos: cada párrafo que cambia se vuelve a armar
+    # 5. Nombre del club y demás textos: cada párrafo que cambia se vuelve a armar
     for pag, runs in enumerate(R):
         for lineas in parrafos_de([r for r in runs if id(r) not in hecho]):
             texto = " ".join(r.texto for r in lineas)
@@ -174,7 +251,7 @@ def main(cfg_path):
             if n > len(lineas):
                 print(f"    Aviso: página {pag + 1}, «{nuevo[:50]}…» pasa de {len(lineas)} a {n} líneas")
 
-    # 4. Paleta del club
+    # 6. Paleta del club
     paleta = cfg.get("paleta")
     if paleta:
         pag = next(i for i, runs in enumerate(R) if any(r.texto == "PALETA DEL CLUB" for r in runs))
@@ -209,15 +286,18 @@ def main(cfg_path):
                 if f0["stroke"]:
                     capa.marco(0, f0["stroking_color"], f0["linewidth"], x0, f0["top"], x0 + tramo, f0["bottom"])
 
-    # 5. Lo que quedó con el nombre del club de origen (para revisarlo a mano)
+    # 7. Lo que quedó con el nombre del club de origen (para revisarlo a mano)
     for pag, runs in enumerate(R):
         for r in runs:
             if id(r) not in hecho and any(v in r.texto for v, _ in reemplazos):
                 print(f"    Aviso: página {pag + 1} sin cambiar: «{r.texto[:60]}»")
 
     salida.parent.mkdir(parents=True, exist_ok=True)
-    n = guardar(doc, tachar, borrar_graficos, capa, salida, PdfReader(base).metadata)
-    print(f"OK  {salida.relative_to(cfg_path.parent)}  ({n} páginas, {len(cfg.get('fichas', {}))} fichas reescritas)")
+    n = guardar(doc, tachar, borrar_graficos, capa, salida, PdfReader(base).metadata, paginas_fuera)
+    print(f"OK  {salida.relative_to(cfg_path.parent)}  ({n} páginas, {len(cfg.get('fichas', {}))} fichas reescritas"
+          f"{f', sin las fichas ' + ', '.join(quitar) if quitar else ''})")
+    if quitar:
+        print("    Códigos nuevos: " + ", ".join(f"{viejo_cod}-{a} -> {nuevo_cod}-{b}" for a, b in nuevo_num.items()))
 
 
 if __name__ == "__main__":
