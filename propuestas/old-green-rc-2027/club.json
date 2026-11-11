@@ -432,11 +432,11 @@
     },
     "21": {
       "titulo": "Pantalón de buzo antifluido",
-      "bajada": "Negro, con bolsillos con cierre y panel de malla en la pierna",
+      "bajada": "Negro, con forro interior, bolsillos con cierre y panel de malla en la pierna",
       "bloques": [
         [
           "CALCE",
-          "Calce entallado con pretina elasticada."
+          "Calce entallado con pretina elasticada y forro interior en todo el pantalón."
         ],
         [
           "BOLSILLOS",
@@ -452,7 +452,7 @@
         ],
         [
           "TELA",
-          "Tela antifluido que repele el agua, 100% poliéster."
+          "Exterior antifluido que repele el agua, 100% poliéster, con forro interior."
         ]
       ]
     },

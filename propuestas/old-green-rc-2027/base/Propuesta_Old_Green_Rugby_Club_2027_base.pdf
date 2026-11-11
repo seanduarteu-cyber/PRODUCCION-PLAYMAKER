@@ -6713,7 +6713,7 @@ endstream
 endobj
 210 0 obj
 <<
-/Length 2042
+/Length 2308
 >>
 stream
 q
@@ -6739,7 +6739,7 @@ BT
 0.541176 0.52549 0.447059 rg
 /F6+0-0 11 Tf
 13.2 TL
-(Negro\054 con bolsillos con cierre y panel de malla en la pierna) Tj
+(Negro\054 con forro interior\054 bolsillos con cierre y panel de malla en la pierna) Tj
 ET
 BT
 1 0 0 1 58 339.8898 Tm
@@ -6755,7 +6755,15 @@ BT
 0.227451 0.247059 0.321569 rg
 /F3+0 8.1 Tf
 9.72 TL
-(Calce entallado con pretina elasticada\056) Tj
+(Calce entallado con pretina elasticada y forro interior) Tj
+ET
+BT
+1 0 0 1 58 316.2898 Tm
+0 Tc
+0.227451 0.247059 0.321569 rg
+/F3+0 8.1 Tf
+9.72 TL
+(en todo el pantal\004n\056) Tj
 ET
 BT
 1 0 0 1 303.6378 339.8898 Tm
@@ -6827,7 +6835,15 @@ BT
 0.227451 0.247059 0.321569 rg
 /F3+0 8.1 Tf
 9.72 TL
-(Tela antifluido que repele el agua\054 100\045 poli\007ster\056) Tj
+(Exterior antifluido que repele el agua\054 100\045 poli\007ster\054 con) Tj
+ET
+BT
+1 0 0 1 58 196.2898 Tm
+0 Tc
+0.227451 0.247059 0.321569 rg
+/F3+0 8.1 Tf
+9.72 TL
+(forro interior\056) Tj
 ET
 BT
 1 0 0 1 58 763.8898 Tm
@@ -8157,23 +8173,23 @@ xref
 0000476608 00000 n 
 0000478526 00000 n 
 0000483191 00000 n 
-0000485287 00000 n 
-0000489950 00000 n 
-0000492847 00000 n 
-0000496617 00000 n 
-0000506147 00000 n 
-0000512818 00000 n 
-0000514254 00000 n 
-0000520502 00000 n 
-0000521093 00000 n 
-0000525986 00000 n 
+0000485553 00000 n 
+0000490216 00000 n 
+0000493113 00000 n 
+0000496883 00000 n 
+0000506413 00000 n 
+0000513084 00000 n 
+0000514520 00000 n 
+0000520768 00000 n 
+0000521359 00000 n 
+0000526252 00000 n 
 trailer
 <<
 /Size 221
 /Root 1 0 R
 /Info 141 0 R
-/ID [ <1d26bc7f8050556d7d23cc63dc098788> <fffe4400e14547580929bb86443ddfeb634e> ]
+/ID [ <1d26bc7f8050556d7d23cc63dc098788> <6ffdab74013115b14e0496680f80a521> ]
 >>
 startxref
-526208
+526474
 %%EOF
