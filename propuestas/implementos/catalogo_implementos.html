@@ -1,0 +1,320 @@
+<!doctype html>
+<!--
+  Catálogo técnico de balones e implementos de rugby (Playmaker).
+  Regenerar el PDF:  bash propuestas/implementos/exportar.sh
+  Textos: editar cada .ficha; lo pendiente va en <span class="conf">.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Catálogo de implementos de rugby · Playmaker</title>
+<style>
+  @font-face { font-family: "Poppins"; font-weight: 400; src: url("../_recursos/fonts/Poppins-Regular.ttf"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; src: url("../_recursos/fonts/Poppins-SemiBold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 700; src: url("../_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 400; src: url("../_recursos/fonts/PlayfairDisplay-Regular.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+  @page { size: A4; margin: 0; }
+  :root {
+    --navy: #141E3C; --oro: #B1A542; --marfil: #F7F3E7; --panel: #FAF9F5;
+    --texto: #1C2233; --suave: #3A3F52; --gris: #6E7280; --linea: #DCD8CB;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #fff; }
+  body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always;
+          padding: 21mm 20mm 0; background: #fff; }
+  .page:last-child { page-break-after: auto; }
+  .page::before { content: ""; position: absolute; inset: 7mm; border: 0.6pt solid var(--oro); pointer-events: none; }
+
+  /* encabezado y pie */
+  .cab { display: flex; justify-content: space-between; font-size: 6.6pt; letter-spacing: 2.4px;
+         padding-bottom: 7px; border-bottom: 0.6pt solid var(--linea); }
+  .cab b { color: var(--oro); font-weight: 600; }
+  .cab span { color: var(--gris); }
+  .pie { position: absolute; left: 20mm; right: 20mm; bottom: 12mm; display: flex; align-items: center;
+         justify-content: space-between; border-top: 0.6pt solid var(--linea); padding-top: 6px;
+         font-size: 5.6pt; letter-spacing: 1.6px; color: var(--gris); }
+  .pie img { height: 9px; filter: brightness(0); opacity: .85; }
+  .pie .num { font-family: "Playfair"; font-size: 8.5pt; letter-spacing: 0; color: var(--navy); }
+
+  h1 { font-family: "Playfair"; font-weight: 700; font-size: 23pt; color: var(--navy); margin-top: 16px; line-height: 1.15; }
+  .bajada { font-family: "Playfair"; font-style: italic; font-size: 11pt; color: #8A8672; margin-top: 4px; }
+  .intro { font-size: 9pt; line-height: 1.65; color: var(--texto); margin-top: 14px; }
+
+  /* fotos */
+  .fotos { display: grid; gap: 6px; height: 122mm; margin-top: 18px; background: var(--panel);
+           border: 0.6pt solid var(--linea); padding: 6px; }
+  .fotos img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 0; }
+  .fotos.grande { grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; }
+  .fotos.grande img:first-child { grid-row: 1 / 3; }
+  .fotos.tres { grid-template-columns: 1fr 1fr 1fr; }
+  .fotos.dos { grid-template-columns: 1fr 1fr; }
+  .leyenda { font-size: 7pt; color: var(--gris); margin-top: 5px; font-style: italic; }
+
+  /* uso y bloques técnicos */
+  .uso { display: flex; gap: 14px; align-items: baseline; margin-top: 16px; padding-bottom: 12px;
+         border-bottom: 0.6pt solid var(--linea); }
+  .uso b { font-size: 6.8pt; letter-spacing: 2.2px; color: var(--oro); font-weight: 600; flex: none; width: 58px; }
+  .uso p { font-size: 9.4pt; line-height: 1.55; }
+  .bloques { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; row-gap: 15px; margin-top: 16px; }
+  .bloque h3 { font-size: 7pt; letter-spacing: 1.8px; color: var(--navy); font-weight: 600; margin-bottom: 3px; }
+  .bloque p { font-size: 8.7pt; line-height: 1.5; color: var(--suave); }
+  .bloque.ancho { grid-column: 1 / 3; }
+  .conf { background: #FFF2A8; color: #5A4A00; font-weight: 600; font-size: 6.6pt; letter-spacing: .4px;
+          padding: 1px 4px; white-space: nowrap; font-style: normal; }
+
+  .medidas { margin-top: 14px; border: 0.6pt solid var(--linea); }
+  .medidas .tit { background: var(--navy); color: var(--marfil); font-size: 6.4pt; letter-spacing: 1.6px;
+                  font-weight: 600; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center; }
+  .medidas .fila { display: grid; grid-template-columns: repeat(5, 1fr); }
+  .medidas .fila div { padding: 7px 10px; border-right: 0.6pt solid var(--linea); }
+  .medidas .fila div:last-child { border-right: 0; }
+  .medidas small { display: block; font-size: 6pt; letter-spacing: 1px; color: var(--gris); text-transform: uppercase; }
+  .medidas strong { font-size: 9pt; font-weight: 600; color: var(--navy); }
+
+  /* portada */
+  .portada { background: var(--navy); color: var(--marfil); padding: 0; text-align: center; }
+  .portada::before { border-color: var(--oro); inset: 7mm; }
+  .portada::after { content: ""; position: absolute; inset: 9.5mm; border: 0.4pt solid rgba(177,165,66,.55); pointer-events: none; }
+  .portada .logo { height: 34px; margin-top: 30mm; }
+  .portada .kicker { margin-top: 26mm; font-size: 8.5pt; font-weight: 600; letter-spacing: 4px; color: var(--oro); }
+  .portada h1 { color: var(--marfil); font-size: 34pt; margin-top: 12px; }
+  .portada .sub { font-family: "Playfair"; font-style: italic; font-size: 12.5pt; color: #C9C4B4; margin: 12px auto 0; width: 128mm; line-height: 1.45; }
+  .portada .tira { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; width: 150mm; height: 62mm; margin: 22mm auto 0;
+                   padding: 5px; border: 0.6pt solid var(--oro); }
+  .portada .tira img { width: 100%; height: 100%; object-fit: cover; }
+  .portada .estado { margin-top: 16mm; font-size: 7pt; letter-spacing: 2.6px; color: var(--oro); font-weight: 600; }
+  .portada .estado span { display: block; margin-top: 6px; color: #A9A492; font-weight: 400; letter-spacing: 1px; }
+  .portada .pie { border-top-color: rgba(247,243,231,.25); color: #C9C4B4; }
+  .portada .pie img { filter: none; opacity: 1; }
+  .portada .pie .num { color: var(--marfil); }
+
+  /* línea de productos */
+  table { width: 100%; border-collapse: collapse; margin-top: 18px; }
+  th { background: var(--navy); color: var(--marfil); font-size: 6.4pt; letter-spacing: 1.6px; font-weight: 600;
+       text-align: left; padding: 7px 10px; }
+  td { font-size: 8.4pt; padding: 8px 10px; border-bottom: 0.6pt solid var(--linea); vertical-align: top; line-height: 1.45; }
+  td.cod { font-family: "Playfair"; color: var(--gris); white-space: nowrap; }
+  td.prod { font-weight: 600; color: var(--navy); white-space: nowrap; }
+  td.fic { text-align: right; color: var(--gris); white-space: nowrap; }
+  tr:nth-child(even) td { background: #F6F5F1; }
+  .criterios { background: var(--navy); margin: 22px -6mm 0; padding: 18px 6mm 16px; position: relative; }
+  .criterios::before { content: ""; position: absolute; inset: 6px; border: 0.6pt solid var(--oro); }
+  .criterios h2 { font-size: 7.4pt; letter-spacing: 2.4px; color: var(--oro); font-weight: 600; margin: 4px 0 12px 4mm; }
+  .criterios .fila { display: grid; grid-template-columns: 34mm 1fr; padding: 0 4mm; margin-bottom: 9px; position: relative; }
+  .criterios .fila b { font-size: 6.6pt; letter-spacing: 1.4px; color: var(--marfil); font-weight: 600; padding-top: 1px; }
+  .criterios .fila p { font-size: 8.1pt; line-height: 1.5; color: #C9C4B4; }
+  .nota { margin-top: 18px; }
+  .nota b { font-size: 7pt; letter-spacing: 2.2px; color: var(--oro); font-weight: 600; }
+  .nota p { font-size: 8.4pt; line-height: 1.55; color: var(--suave); margin-top: 4px; }
+
+  /* notas de revisión */
+  .revision ol { margin: 16px 0 0 16px; }
+  .revision li { font-size: 8.8pt; line-height: 1.6; margin-bottom: 7px; color: var(--suave); }
+  .revision li::marker { color: var(--oro); font-weight: 600; }
+  .revision h2 { font-size: 7.4pt; letter-spacing: 2.4px; color: var(--oro); font-weight: 600; margin-top: 22px;
+                 padding-bottom: 6px; border-bottom: 0.6pt solid var(--linea); }
+  .aviso { margin-top: 14px; background: #FFF8D6; border-left: 3px solid var(--oro); padding: 10px 12px; font-size: 8.2pt; line-height: 1.5; color: var(--suave); }
+</style>
+</head>
+<body>
+
+<!-- 01 · portada -->
+<section class="page portada">
+  <img class="logo" src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker">
+  <div class="kicker">CATÁLOGO TÉCNICO</div>
+  <h1>Balones e implementos<br>de rugby</h1>
+  <p class="sub">Equipamiento de entrenamiento y cancha, personalizado con los colores y el escudo de cada club</p>
+  <div class="tira">
+    <img src="fotos/balon_match_proeza_crouch_bind_set.jpg" style="object-position: 50% 50%" alt="">
+    <img src="fotos/escudo_tackle_palestina.jpg" style="object-position: 50% 40%" alt="">
+    <img src="fotos/aro_tackle_frente.jpg" style="object-position: 50% 55%" alt="">
+    <img src="fotos/protector_poste_curico.jpg" style="object-position: 50% 45%" alt="">
+  </div>
+  <div class="estado">BORRADOR PARA REVISIÓN<span>Noviembre 2026</span></div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><span class="num">01</span></div>
+</section>
+
+<!-- 02 · la línea -->
+<section class="page">
+  <div class="cab"><b>SECCIÓN 01</b><span>LÍNEA DE EQUIPAMIENTO</span></div>
+  <h1>Equipamiento para entrenar y jugar</h1>
+  <p class="intro">Cinco productos para cubrir el entrenamiento de contacto y la cancha del club: balones, escudos, sacos y
+    aros de tackle, y protectores de poste. Cada pieza se fabrica a pedido, con los colores, el escudo y el nombre del
+    club, y con materiales pensados para el uso diario a la intemperie.</p>
+  <table>
+    <tr><th>CÓDIGO</th><th>PRODUCTO</th><th>USO</th><th style="text-align:right">FICHA</th></tr>
+    <tr><td class="cod">IMP-01</td><td class="prod">Balón de rugby Match</td><td>Partido y entrenamiento en todas las categorías</td><td class="fic">Ficha 01</td></tr>
+    <tr><td class="cod">IMP-02</td><td class="prod">Escudo de tackle</td><td>Contacto, tackle y ruck: un jugador lo sostiene y recibe el impacto</td><td class="fic">Ficha 02</td></tr>
+    <tr><td class="cod">IMP-03</td><td class="prod">Saco de tackle</td><td>Tackle y llevada al suelo sin un compañero que sostenga</td><td class="fic">Ficha 03</td></tr>
+    <tr><td class="cod">IMP-04</td><td class="prod">Aro de tackle</td><td>Tackle sobre un objetivo en movimiento</td><td class="fic">Ficha 04</td></tr>
+    <tr><td class="cod">IMP-05</td><td class="prod">Protector de poste</td><td>Protección de los jugadores en la base de los postes de las H</td><td class="fic">Ficha 05</td></tr>
+  </table>
+  <div class="criterios">
+    <h2>CRITERIOS COMUNES A TODA LA LÍNEA</h2>
+    <div class="fila"><b>EXTERIOR</b><p>Lona de PVC con trama antidesgarro o cuero sintético: impermeable, lavable y resistente a la abrasión.</p></div>
+    <div class="fila"><b>RELLENO</b><p>Espuma de alta densidad que absorbe el impacto sin deformarse.</p></div>
+    <div class="fila"><b>COSTURAS</b><p>Costuras reforzadas en uniones, asas y correas, que son las zonas de mayor exigencia.</p></div>
+    <div class="fila"><b>PERSONALIZACIÓN</b><p>Colores, escudo, nombre del club y auspiciadores en cada pieza.</p></div>
+    <div class="fila"><b>FABRICACIÓN</b><p>A pedido, con el diseño aprobado por el club antes de producir.</p></div>
+  </div>
+  <div class="nota"><b>FOTOS DE REFERENCIA</b>
+    <p>Las fotos de este catálogo muestran trabajos realizados para otros clubes y sirven como referencia de forma y
+      terminaciones. Cada pedido se produce con el diseño propio del club.</p></div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><span class="num">02</span></div>
+</section>
+
+<!-- 03 · balón -->
+<section class="page">
+  <div class="cab"><b>FICHA 01 · BALONES</b><span>IMP-01</span></div>
+  <h1>Balón de rugby Match</h1>
+  <p class="bajada">Talla 5, de caucho con grip en relieve y diseño a pedido</p>
+  <div class="fotos grande">
+    <img src="fotos/balon_match_proeza.jpg" alt="">
+    <img src="fotos/balon_condor_cara.jpg" style="object-position: 50% 60%" alt="">
+    <img src="fotos/balon_fucsia_turquesa_1.jpg" style="object-position: 50% 52%" alt="">
+  </div>
+  <p class="leyenda">Diseños de referencia. Cada balón se produce con los colores, el escudo y las frases del club.</p>
+  <div class="uso"><b>USO</b><p>Partido y entrenamiento en todas las categorías.</p></div>
+  <div class="bloques">
+    <div class="bloque"><h3>CONSTRUCCIÓN</h3><p>4 paneles cosidos a máquina.</p></div>
+    <div class="bloque"><h3>CUBIERTA</h3><p>Caucho sintético con grip de puntos en relieve en toda la superficie, para un agarre firme con lluvia y barro.</p></div>
+    <div class="bloque"><h3>INTERIOR</h3><p>Capas de tela laminada que mantienen la forma y cámara con válvula. <span class="conf">A CONFIRMAR: MATERIAL DE LA CÁMARA</span></p></div>
+    <div class="bloque"><h3>PERSONALIZACIÓN</h3><p>Diseño completo de la cubierta: colores, escudo, nombre y frases del club.</p></div>
+    <div class="bloque ancho"><h3>TALLAS</h3><p>Talla 5 para juveniles y adultos. Tallas 3 y 4 para infantiles. <span class="conf">A CONFIRMAR</span></p></div>
+  </div>
+  <div class="medidas">
+    <div class="tit"><span>MEDIDAS DE REFERENCIA · TALLA 5 · REGLAMENTO WORLD RUGBY</span><span class="conf">A CONFIRMAR CON FICHA DEL TALLER</span></div>
+    <div class="fila">
+      <div><small>Largo</small><strong>280–300 mm</strong></div>
+      <div><small>Circ. longitudinal</small><strong>740–770 mm</strong></div>
+      <div><small>Circ. transversal</small><strong>580–620 mm</strong></div>
+      <div><small>Peso</small><strong>410–460 g</strong></div>
+      <div><small>Presión</small><strong>9,5–10 psi</strong></div>
+    </div>
+  </div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><span class="num">03</span></div>
+</section>
+
+<!-- 04 · escudo de tackle -->
+<section class="page">
+  <div class="cab"><b>FICHA 02 · CONTACTO</b><span>IMP-02</span></div>
+  <h1>Escudo de tackle</h1>
+  <p class="bajada">Perfil anatómico, lona de PVC y relleno de alta densidad</p>
+  <div class="fotos tres">
+    <img src="fotos/escudo_tackle_old_gergel_frente.jpg" style="object-position: 50% 45%" alt="">
+    <img src="fotos/escudo_tackle_frances_espalda.jpg" style="object-position: 50% 50%" alt="">
+    <img src="fotos/escudo_tackle_palestina.jpg" style="object-position: 50% 45%" alt="">
+  </div>
+  <p class="leyenda">Lateral con nombre del club, espalda con correas y versión en otros colores. Trabajos realizados para otros clubes.</p>
+  <div class="uso"><b>USO</b><p>Entrenamiento de contacto, tackle y ruck: un jugador lo sostiene y recibe el impacto.</p></div>
+  <div class="bloques">
+    <div class="bloque"><h3>FORMA</h3><p>Perfil anatómico con cabezal más grueso arriba, que protege la cabeza y el hombro de quien lo sostiene.</p></div>
+    <div class="bloque"><h3>EXTERIOR</h3><p>Cara de impacto y laterales en lona de PVC con trama antidesgarro; espalda en cuero sintético liso, más cómoda contra el cuerpo.</p></div>
+    <div class="bloque"><h3>RELLENO</h3><p>Espuma de alta densidad que absorbe el golpe sin deformarse. <span class="conf">A CONFIRMAR: DENSIDAD Y ESPESOR</span></p></div>
+    <div class="bloque"><h3>VENTILACIÓN</h3><p>Perforaciones en los laterales que dejan salir el aire con cada impacto: el escudo no rebota y las costuras no se revientan.</p></div>
+    <div class="bloque"><h3>AGARRE</h3><p>Dos correas para los brazos en la espalda y manilla lateral de traslado, en cinta de polipropileno con costura reforzada en cruz.</p></div>
+    <div class="bloque"><h3>PERSONALIZACIÓN</h3><p>Color de la cara de impacto, nombre del club en vertical en el lateral y escudo.</p></div>
+    <div class="bloque ancho"><h3>MEDIDAS</h3><p>Alto 80–90 cm; ancho 40 cm; espesor 20 cm en el cuerpo y 30 cm en el cabezal. <span class="conf">A CONFIRMAR</span></p></div>
+  </div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><span class="num">04</span></div>
+</section>
+
+<!-- 05 · saco de tackle -->
+<section class="page">
+  <div class="cab"><b>FICHA 03 · CONTACTO</b><span>IMP-03</span></div>
+  <h1>Saco de tackle</h1>
+  <p class="bajada">Cilindro de contacto en dos alturas, para tacklear y llevar al suelo</p>
+  <div class="fotos dos">
+    <img src="fotos/sacos_y_protector_stade_francais.jpg" style="object-position: 50% 72%" alt="">
+    <img src="fotos/saco_y_escudo_varc.jpg" style="object-position: 50% 55%" alt="">
+  </div>
+  <p class="leyenda">Pedidos en lona de PVC (azul, en varias alturas) y en cuero sintético (negro). Trabajos realizados para otros clubes.</p>
+  <div class="uso"><b>USO</b><p>Práctica de tackle y llevada al suelo sin un compañero que sostenga.</p></div>
+  <div class="bloques">
+    <div class="bloque"><h3>FORMA</h3><p>Cilindro con tapa y fondo cosidos y manilla en la tapa para trasladarlo.</p></div>
+    <div class="bloque"><h3>EXTERIOR</h3><p>Lona de PVC con trama antidesgarro o cuero sintético; impermeable y lavable.</p></div>
+    <div class="bloque"><h3>RELLENO</h3><p>Espuma de alta densidad en capas, firme y sin zonas blandas. <span class="conf">A CONFIRMAR</span></p></div>
+    <div class="bloque"><h3>ALTURAS</h3><p>Saco alto para juveniles y adultos; saco corto para infantiles o trabajo de ruck.</p></div>
+    <div class="bloque"><h3>PERSONALIZACIÓN</h3><p>Color del cuerpo y escudo o nombre del club en gran formato.</p></div>
+    <div class="bloque"><h3>MEDIDAS</h3><p>Alto 1,2–1,4 m (saco alto) y 50–60 cm (saco corto); diámetro 35–40 cm. <span class="conf">A CONFIRMAR</span></p></div>
+  </div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><span class="num">05</span></div>
+</section>
+
+<!-- 06 · aro de tackle -->
+<section class="page">
+  <div class="cab"><b>FICHA 04 · CONTACTO</b><span>IMP-04</span></div>
+  <h1>Aro de tackle</h1>
+  <p class="bajada">Anillo acolchado para tacklear un objetivo en movimiento</p>
+  <div class="fotos dos">
+    <img src="fotos/aro_tackle_frente.jpg" style="object-position: 50% 52%" alt="">
+    <img src="fotos/aro_tackle_lateral.jpg" style="object-position: 50% 50%" alt="">
+  </div>
+  <p class="leyenda">Vista frontal y lateral. Trabajo realizado para otro club.</p>
+  <div class="uso"><b>USO</b><p>Se hace rodar para que el jugador lo persiga y lo tacklee en movimiento; trabaja lectura, timing y técnica de tackle.</p></div>
+  <div class="bloques">
+    <div class="bloque"><h3>FORMA</h3><p>Anillo de gran diámetro con centro abierto, firme para rodar recto.</p></div>
+    <div class="bloque"><h3>EXTERIOR</h3><p>Lona de PVC con trama antidesgarro y costuras perimetrales reforzadas.</p></div>
+    <div class="bloque"><h3>RELLENO</h3><p>Espuma de alta densidad.</p></div>
+    <div class="bloque"><h3>PERSONALIZACIÓN</h3><p>Nombre y logo del club en ambas caras.</p></div>
+    <div class="bloque ancho"><h3>MEDIDAS</h3><p>Diámetro exterior 1 m; espesor del anillo 25–30 cm. <span class="conf">A CONFIRMAR</span></p></div>
+  </div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><span class="num">06</span></div>
+</section>
+
+<!-- 07 · protector de poste -->
+<section class="page">
+  <div class="cab"><b>FICHA 05 · CANCHA</b><span>IMP-05</span></div>
+  <h1>Protector de poste</h1>
+  <p class="bajada">Funda acolchada de sección cuadrada, con cuatro caras para el club y sus auspiciadores</p>
+  <div class="fotos dos">
+    <img src="fotos/protector_poste_curico.jpg" style="object-position: 50% 48%" alt="">
+    <img src="fotos/protector_poste_auspiciador.jpg" style="object-position: 50% 50%" alt="">
+  </div>
+  <p class="leyenda">Cara con el escudo del club y cara con auspiciador. Trabajos realizados para otros clubes.</p>
+  <div class="uso"><b>USO</b><p>Protege a los jugadores en los choques contra la base de los postes de las H.</p></div>
+  <div class="bloques">
+    <div class="bloque"><h3>FORMA</h3><p>Sección cuadrada con abertura central para el poste y tapa superior.</p></div>
+    <div class="bloque"><h3>EXTERIOR</h3><p>Lona de PVC con trama antidesgarro, apta para estar a la intemperie.</p></div>
+    <div class="bloque"><h3>RELLENO</h3><p>Espuma de alta densidad.</p></div>
+    <div class="bloque"><h3>CIERRE</h3><p>A lo largo de una arista, para instalarlo y retirarlo. <span class="conf">A CONFIRMAR: VELCRO O CIERRE</span></p></div>
+    <div class="bloque"><h3>REGLAMENTO</h3><p>World Rugby permite que el acolchado sobresalga como máximo 300 mm desde la línea de gol.</p></div>
+    <div class="bloque"><h3>PERSONALIZACIÓN</h3><p>Las cuatro caras se imprimen con escudo, nombre del club y auspiciadores; un auspiciador puede financiar el set.</p></div>
+    <div class="bloque ancho"><h3>VENTA Y MEDIDAS</h3><p>Set de 4 protectores por cancha, dos por cada H. Alto 1,5–1,8 m. <span class="conf">A CONFIRMAR</span></p></div>
+  </div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><span class="num">07</span></div>
+</section>
+
+<!-- 08 · notas de revisión (no va en la versión final) -->
+<section class="page revision">
+  <div class="cab"><b>PARA REVISIÓN INTERNA</b><span>NO VA EN LA VERSIÓN FINAL</span></div>
+  <h1>Notas para la revisión</h1>
+  <p class="intro">Lo marcado en amarillo en las fichas está estimado desde las fotos o es un estándar de la industria.
+    Antes de enviar el catálogo hay que validarlo con el taller.</p>
+  <h2>POR CONFIRMAR CON EL TALLER</h2>
+  <ol>
+    <li>Medidas reales y peso de cada producto.</li>
+    <li>Densidad y espesor de la espuma; gramaje de la lona de PVC.</li>
+    <li>Material de la cámara del balón y tallas disponibles (3, 4 y 5).</li>
+    <li>Tipo de cierre del protector de poste: velcro o cierre.</li>
+    <li>Si la pieza cuadrada del pedido de Stade Français es un protector de poste o un saco de sección cuadrada.</li>
+    <li>Si el tee de pateo azul que aparece bajo los balones también es parte de la oferta.</li>
+    <li>Costo, mínimo por diseño personalizado y plazo de entrega de cada producto.</li>
+  </ol>
+  <h2>ANTES DE ENVIARLO A UN CLUB</h2>
+  <ol>
+    <li>Las fotos muestran la marca del taller y el nombre de otros clubes. Para la versión final: montajes con los colores y
+      el escudo del club, o permiso de esos clubes para mostrarlos como trabajos realizados.</li>
+    <li>Agregar precios por producto, o por set (por ejemplo, set de 4 protectores de poste).</li>
+  </ol>
+  <div class="aviso">Los balones les sirven a los socios y pueden ir en la preventa del club. Escudos, sacos, aros y
+    protectores los compra el club: conviene presentarlos como una línea aparte de equipamiento institucional.</div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><span class="num">08</span></div>
+</section>
+
+</body>
+</html>

@@ -6,7 +6,13 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 MD="$DIR/Base_Conocimiento_Futbol_Playmaker.md"
 HTML="$DIR/.Base_Conocimiento_Futbol_Playmaker.html"
 PDF="$DIR/Base_Conocimiento_Futbol_Playmaker.pdf"
-CHROME="${CHROME:-/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell}"
+# Chromium sin interfaz del entorno (la versión instalada puede cambiar entre sesiones)
+if [ -z "${CHROME:-}" ]; then
+  for c in /opt/pw-browsers/chromium_headless_shell-*/chrome-*/{headless_shell,chrome-headless-shell}; do
+    [ -x "$c" ] && CHROME="$c" && break
+  done
+fi
+[ -n "${CHROME:-}" ] || { echo "No se encontró Chromium en /opt/pw-browsers" >&2; exit 1; }
 
 cuerpo="$(pandoc -f gfm -t html "$MD" \
   | sed 's|\[PEGAR AQUÍ EL ENLACE DE DRIVE DE LA GUÍA DE TALLAS\]|<span class="pendiente">[PEGAR AQUÍ EL ENLACE DE DRIVE DE LA GUÍA DE TALLAS]</span>|')"
