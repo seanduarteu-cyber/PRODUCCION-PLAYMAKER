@@ -11,6 +11,8 @@ combinados.json (rutas relativas al JSON):
 
 Cada montaje se recorta a sus prendas, se ponen en fila a la misma altura con su rótulo debajo y la
 imagen queda con las proporciones del espacio del render en la ficha (aspecto = ancho / alto).
+Con muchas piezas (p. ej. cinco colores de una polera), en vez de la lista va
+{"columnas": 3, "piezas": [...]} y se arman varias filas.
 """
 
 import json
@@ -40,24 +42,30 @@ def rotulo(draw, texto, cx, y, fuente, espaciado):
         x += a + espaciado
 
 
-def combinar(piezas, aspecto, color):
+def combinar(piezas, aspecto, color, columnas=None):
     alto_total = round(ANCHO / aspecto)
     margen, separacion = 70, 150
     alto_rotulo = 110
     recortes = [(recortar(im, color), texto) for im, texto in piezas]
+    columnas = columnas or len(recortes)
+    filas = [recortes[i:i + columnas] for i in range(0, len(recortes), columnas)]
     # misma altura para todas las piezas, lo más grandes que quepan en ancho y en alto
-    alto = min((ANCHO - 2 * margen - separacion * (len(recortes) - 1)) / sum(r.width / r.height for r, _ in recortes),
-               alto_total - 2 * margen - alto_rotulo)
+    alto = min(min((ANCHO - 2 * margen - separacion * (len(f) - 1)) / sum(r.width / r.height for r, _ in f)
+                   for f in filas),
+               (alto_total - 2 * margen - separacion / 2 * (len(filas) - 1)) / len(filas) - alto_rotulo)
     lienzo = Image.new("RGB", (ANCHO, alto_total), tuple(color))
     draw = ImageDraw.Draw(lienzo)
     fuente = ImageFont.truetype(str(FUENTE), 34)
-    anchos = [r.width * alto / r.height for r, _ in recortes]
-    x = (ANCHO - sum(anchos) - separacion * (len(recortes) - 1)) / 2
-    y = (alto_total - alto - alto_rotulo) / 2
-    for (r, texto), w in zip(recortes, anchos):
-        lienzo.paste(r.resize((round(w), round(alto)), Image.LANCZOS), (round(x), round(y)))
-        rotulo(draw, texto, x + w / 2, y + alto + 55, fuente, 9)
-        x += w + separacion
+    alto_fila = alto + alto_rotulo + separacion / 2
+    y = (alto_total - len(filas) * alto_fila + separacion / 2) / 2
+    for fila in filas:
+        anchos = [r.width * alto / r.height for r, _ in fila]
+        x = (ANCHO - sum(anchos) - separacion * (len(fila) - 1)) / 2
+        for (r, texto), w in zip(fila, anchos):
+            lienzo.paste(r.resize((round(w), round(alto)), Image.LANCZOS), (round(x), round(y)))
+            rotulo(draw, texto, x + w / 2, y + alto + 55, fuente, 9)
+            x += w + separacion
+        y += alto_fila
     return lienzo
 
 
@@ -67,8 +75,11 @@ def main(cfg_path):
     cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
     color = cfg.get("color", [250, 249, 245])
     for salida, piezas in cfg["combinados"].items():
+        columnas = None
+        if isinstance(piezas, dict):
+            columnas, piezas = piezas.get("columnas"), piezas["piezas"]
         imgs = [(Image.open(d / ruta).convert("RGB"), texto) for ruta, texto in piezas]
-        combinar(imgs, cfg["aspecto"], color).save(d / salida, quality=93, subsampling=0)
+        combinar(imgs, cfg["aspecto"], color, columnas).save(d / salida, quality=93, subsampling=0)
         print(f"OK  {salida}  ({len(piezas)} montajes)")
 
 

@@ -26,19 +26,23 @@
   "paleta": [
     [
       "Verde",
-      "#114A26"
+      "#02551D"
     ],
     [
-      "Verde claro",
-      "#419822"
+      "Café",
+      "#773508"
+    ],
+    [
+      "Blanco",
+      "#FFFFFF"
     ],
     [
       "Granate",
       "#7A1430"
     ],
     [
-      "Blanco",
-      "#FFFFFF"
+      "Verde claro",
+      "#419822"
     ]
   ],
   "fichas": {
@@ -107,8 +111,8 @@
       "bajada": "Blanca con franjas horizontales verde y granate, mangas granate y costados verdes",
       "bloques": [
         [
-          "CUELLO",
-          "Cuello polo verde con vivos blancos y tapeta blanca de tres botones."
+          "CORTES",
+          "Hombre: cuello polo verde con vivos blancos y tapeta blanca de tres botones. Mujer: corte entallado y cuello redondo granate."
         ],
         [
           "MANGA",
@@ -129,6 +133,31 @@
         [
           "TELA",
           "Línea PRO — 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
+        ]
+      ]
+    },
+    "05": {
+      "bajada": "En blanco, granate y verde, para combinar con cada camiseta",
+      "bloques": [
+        [
+          "CALCE",
+          "Calce deportivo de rugby con pretina elasticada."
+        ],
+        [
+          "COLORES",
+          "Blanco con paneles granate, granate con paneles verdes y verde con paneles granate."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green en la pierna derecha e isotipo Playmaker en la izquierda."
+        ],
+        [
+          "TERMINACIONES",
+          "Costuras reforzadas en zonas de mayor exigencia."
+        ],
+        [
+          "TELA",
+          "Línea PRO — 100% poliéster sublimado, de secado rápido."
         ]
       ]
     }

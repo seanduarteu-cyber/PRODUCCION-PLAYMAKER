@@ -16,7 +16,10 @@
       "imagen": "img/montaje_final/02_camiseta_visita_01.jpg"
     },
     "OGR-03": {
-      "imagen": "img/montaje_final/03_camiseta_visita_02_hombre.jpg"
+      "imagen": "img/montaje_final/03_camiseta_visita_02.jpg"
+    },
+    "OGR-05": {
+      "imagen": "img/montaje_final/05_short_de_juego.jpg"
     }
   }
 }

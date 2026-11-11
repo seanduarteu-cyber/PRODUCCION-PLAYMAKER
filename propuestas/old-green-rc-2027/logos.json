@@ -1,5 +1,9 @@
 {
   "logos": {
+    "escudo": {
+      "archivo": "img/escudo_old_green.png",
+      "color": "original"
+    },
     "isotipo": {
       "archivo": "../_recursos/playmaker_isotipo_blanco.png",
       "color": "tinta"
@@ -13,24 +17,42 @@
   "salida": "img/con_logos",
   "renders": {
     "img/01_camiseta_local_hombre.jpg": [
+      {"logo": "escudo", "caja": [490, 247, 598, 352], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [245, 250, 330, 322], "blanco": true},
       {"logo": "playmaker", "zona": [384, 92, 438, 123], "blanco": true, "minimo": 85}
     ],
     "img/01_camiseta_local_mujer.jpg": [
+      {"logo": "escudo", "caja": [488, 200, 606, 308], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [262, 220, 340, 285], "blanco": true},
       {"logo": "playmaker", "zona": [390, 72, 447, 102], "blanco": true, "minimo": 85}
     ],
     "img/02_camiseta_visita_01_hombre.jpg": [
+      {"logo": "escudo", "caja": [483, 253, 596, 366], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [238, 268, 326, 340], "blanco": true},
       {"logo": "playmaker", "zona": [374, 84, 449, 122], "blanco": true, "minimo": 85}
     ],
     "img/02_camiseta_visita_01_mujer.jpg": [
+      {"logo": "escudo", "caja": [488, 198, 605, 305], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [262, 220, 338, 284], "blanco": true},
       {"logo": "playmaker", "zona": [387, 72, 452, 101], "blanco": true, "minimo": 85}
     ],
     "img/03_camiseta_visita_02_hombre.jpg": [
+      {"logo": "escudo", "caja": [484, 247, 599, 361], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [242, 266, 326, 338], "blanco": true},
       {"logo": "playmaker", "zona": [382, 92, 450, 124], "blanco": true, "minimo": 85}
+    ],
+    "img/03_camiseta_visita_02_mujer.jpg": [
+      {"logo": "escudo", "caja": [484, 195, 601, 308], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [258, 214, 336, 280], "blanco": true},
+      {"logo": "playmaker", "zona": [386, 70, 452, 104], "blanco": true, "minimo": 85}
+    ],
+    "img/05_short_de_juego.jpg": [
+      {"logo": "escudo", "caja": [84, 437, 197, 535], "franjas": true, "por_ancho": true},
+      {"logo": "escudo", "caja": [754, 432, 864, 532], "franjas": true, "por_ancho": true},
+      {"logo": "escudo", "caja": [1424, 432, 1530, 532], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [488, 442, 584, 516]},
+      {"logo": "isotipo", "zona": [1156, 442, 1254, 518], "blanco": true},
+      {"logo": "isotipo", "zona": [1822, 442, 1920, 516], "blanco": true}
     ]
   }
 }

@@ -1,14 +1,40 @@
 {
   "aspecto": 1.93,
-  "color": [250, 249, 245],
+  "color": [
+    250,
+    249,
+    245
+  ],
   "combinados": {
     "img/montaje_final/01_camiseta_local.jpg": [
-      ["img/montaje_final/01_camiseta_local_hombre.jpg", "HOMBRE"],
-      ["img/montaje_final/01_camiseta_local_mujer.jpg", "MUJER"]
+      [
+        "img/montaje_final/01_camiseta_local_hombre.jpg",
+        "HOMBRE"
+      ],
+      [
+        "img/montaje_final/01_camiseta_local_mujer.jpg",
+        "MUJER"
+      ]
     ],
     "img/montaje_final/02_camiseta_visita_01.jpg": [
-      ["img/montaje_final/02_camiseta_visita_01_hombre.jpg", "HOMBRE"],
-      ["img/montaje_final/02_camiseta_visita_01_mujer.jpg", "MUJER"]
+      [
+        "img/montaje_final/02_camiseta_visita_01_hombre.jpg",
+        "HOMBRE"
+      ],
+      [
+        "img/montaje_final/02_camiseta_visita_01_mujer.jpg",
+        "MUJER"
+      ]
+    ],
+    "img/montaje_final/03_camiseta_visita_02.jpg": [
+      [
+        "img/montaje_final/03_camiseta_visita_02_hombre.jpg",
+        "HOMBRE"
+      ],
+      [
+        "img/montaje_final/03_camiseta_visita_02_mujer.jpg",
+        "MUJER"
+      ]
     ]
   }
 }

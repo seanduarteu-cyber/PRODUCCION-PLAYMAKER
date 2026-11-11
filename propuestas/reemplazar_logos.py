@@ -20,6 +20,10 @@ logos.json:
 - "blanco": el logo anterior es blanco (o gris claro) y la zona cruza tela de distintos colores
   (franjas): se ubica por su color y no por el contraste con la tela. "minimo" (140 por defecto) es
   el brillo mínimo del logo; más bajo para letras grises, como las de la etiqueta del cuello.
+- "franjas" (con "caja"): la tela alrededor del logo tiene varios colores (franjas); se borra solo lo
+  que no se parece a ninguno de los colores de tela que hay alrededor de la caja.
+- "por_ancho" (con "caja"): el logo nuevo toma el ancho de la caja en vez del alto (para que su cinta
+  cubra la del escudo anterior).
 - "borrar": borra la gráfica que hay dentro de la zona (sin los trazos chicos, p. ej. letras
   vecinas) y no pone nada.
 - color "original": se pega con sus colores (blanco ajustado al brillo del render);
@@ -108,6 +112,24 @@ def mascara_caja(img, caja, pad=3, tela=None):
     return cv2.bitwise_and(mascara, recorte)
 
 
+def mascara_franjas(img, caja, anillo=12):
+    """Logo sobre tela de varios colores: píxeles de la caja lejos de todos los colores de tela vecinos."""
+    h, w = img.shape[:2]
+    x0, y0, x1, y1 = caja
+    X0, Y0, X1, Y1 = max(x0 - anillo, 0), max(y0 - anillo, 0), min(x1 + anillo, w), min(y1 + anillo, h)
+    fuera = np.ones((Y1 - Y0, X1 - X0), bool)
+    fuera[y0 - Y0:y1 - Y0, x0 - X0:x1 - X0] = False
+    px = img[Y0:Y1, X0:X1][fuera].reshape(-1, 3).astype(np.float32)
+    criterio = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 1.0)
+    _, etiquetas, centros = cv2.kmeans(px, 4, None, criterio, 3, cv2.KMEANS_PP_CENTERS)
+    telas = [c for k, c in enumerate(centros) if (etiquetas == k).mean() >= 0.08]
+    zona = img[y0:y1, x0:x1].astype(int)
+    lejos = np.all([np.abs(zona - t).sum(axis=2) > UMBRAL for t in telas], axis=0)
+    mascara = np.zeros((h, w), np.uint8)
+    mascara[y0:y1, x0:x1] = lejos.astype(np.uint8) * 255
+    return cv2.dilate(mascara, np.ones((3, 3), np.uint8), iterations=1)
+
+
 def color_tinta(img, mascara, tela=None):
     """Color del logo anterior: mediana de sus píxeles más contrastados."""
     ys, xs = np.where(mascara > 0)
@@ -146,7 +168,7 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
                 total = cv2.bitwise_or(total, cv2.dilate(m, np.ones((5, 5), np.uint8)))
             elif "caja" in op:
                 caja = op["caja"]
-                m = mascara_caja(img, caja, pad=4)
+                m = mascara_franjas(img, caja) if op.get("franjas") else mascara_caja(img, caja, pad=4)
             elif op.get("blanco"):
                 caja, m = ubicar_blanco(img, op["zona"], op.get("minimo", 140))
             else:
@@ -182,7 +204,10 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
         logo, cfg_logo = logos[nombre]
         x0, y0, x1, y1 = op.get("pegar_en", caja)[:4]
         bw, bh = x1 - x0, y1 - y0
-        if "caja" in op:  # escudos marcados a mano: misma altura que el anterior
+        if "caja" in op and op.get("por_ancho"):  # escudo con cinta más ancha que el cuerpo: cubrir la anterior
+            ancho = bw * 1.03
+            alto = ancho * logo.height / logo.width
+        elif "caja" in op:  # escudos marcados a mano: misma altura que el anterior
             alto = bh * 1.04
             ancho = alto * logo.width / logo.height * op.get("angosto", 1.0)
         elif cfg_logo.get("ajuste") == "contener":  # logos con texto: que quepan en la caja
