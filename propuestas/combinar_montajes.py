@@ -12,7 +12,8 @@ combinados.json (rutas relativas al JSON):
 Cada montaje se recorta a sus prendas, se ponen en fila a la misma altura con su rótulo debajo y la
 imagen queda con las proporciones del espacio del render en la ficha (aspecto = ancho / alto).
 Con muchas piezas (p. ej. cinco colores de una polera), en vez de la lista va
-{"columnas": 3, "piezas": [...]} y se arman varias filas.
+{"columnas": 3, "piezas": [...]} y se arman varias filas. Una pieza con un tercer valor
+("izquierda" o "derecha") usa solo esa prenda de un montaje que trae frente y espalda.
 """
 
 import json
@@ -27,9 +28,15 @@ FUENTE = Path(__file__).parent / "_recursos" / "fonts" / "Poppins-SemiBold.ttf"
 GRIS = (110, 114, 128)
 
 
-def recortar(img, color, margen=12):
+def recortar(img, color, margen=12, mitad=None):
     a = np.asarray(img).astype(int)
-    ys, xs = np.where(np.abs(a - color).sum(axis=2) > 30)
+    prenda = np.abs(a - color).sum(axis=2) > 30
+    if mitad:  # corta por la columna vacía más cercana al centro (entre frente y espalda)
+        vacias = np.where(~prenda.any(axis=0))[0]
+        corte = vacias[np.argmin(np.abs(vacias - img.width / 2))]
+        x0, x1 = (0, corte) if mitad == "izquierda" else (corte, img.width)
+        return recortar(img.crop((x0, 0, x1, img.height)), color, margen)
+    ys, xs = np.where(prenda)
     return img.crop((max(xs.min() - margen, 0), max(ys.min() - margen, 0),
                      min(xs.max() + margen, img.width), min(ys.max() + margen, img.height)))
 
@@ -46,7 +53,7 @@ def combinar(piezas, aspecto, color, columnas=None):
     alto_total = round(ANCHO / aspecto)
     margen, separacion = 70, 150
     alto_rotulo = 110
-    recortes = [(recortar(im, color), texto) for im, texto in piezas]
+    recortes = [(recortar(im, color, mitad=mitad), texto) for im, texto, mitad in piezas]
     columnas = columnas or len(recortes)
     filas = [recortes[i:i + columnas] for i in range(0, len(recortes), columnas)]
     # misma altura para todas las piezas, lo más grandes que quepan en ancho y en alto
@@ -78,7 +85,7 @@ def main(cfg_path):
         columnas = None
         if isinstance(piezas, dict):
             columnas, piezas = piezas.get("columnas"), piezas["piezas"]
-        imgs = [(Image.open(d / ruta).convert("RGB"), texto) for ruta, texto in piezas]
+        imgs = [(Image.open(d / p[0]).convert("RGB"), p[1], p[2] if len(p) > 2 else None) for p in piezas]
         combinar(imgs, cfg["aspecto"], color, columnas).save(d / salida, quality=93, subsampling=0)
         print(f"OK  {salida}  ({len(piezas)} montajes)")
 

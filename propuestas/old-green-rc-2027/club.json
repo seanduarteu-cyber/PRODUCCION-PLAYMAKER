@@ -310,6 +310,36 @@
           "Tela antifluido que repele el agua, 100% poliéster."
         ]
       ]
+    },
+    "22": {
+      "titulo": "Parka larga impermeable",
+      "bajada": "En negro, verde y granate, con capucha y franja de contraste en las mangas",
+      "bloques": [
+        [
+          "CAPUCHA",
+          "Capucha fija acolchada con cordón de ajuste."
+        ],
+        [
+          "CIERRE",
+          "Cierre central con tapeta de broches y dos bolsillos laterales con cierre."
+        ],
+        [
+          "CUERPO",
+          "Acolchada, de largo a medio muslo, con franja de contraste en las mangas."
+        ],
+        [
+          "PUÑOS",
+          "Puños acanalados que cierran el paso del frío."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green al pecho izquierdo, isotipo Playmaker al pecho derecho y en la capucha, y “OLD GREEN” a la espalda."
+        ],
+        [
+          "TELA",
+          "Exterior impermeable, 100% poliéster, con relleno térmico."
+        ]
+      ]
     }
   }
 }

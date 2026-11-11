@@ -140,6 +140,21 @@
     "img/21_pantalon_buzo.jpg": [
       {"logo": "escudo", "caja": [477, 265, 562, 347], "franjas": true, "por_ancho": true},
       {"logo": "isotipo", "zona": [208, 262, 280, 326], "blanco": true}
+    ],
+    "img/22_parka_granate.jpg": [
+      {"logo": "escudo", "caja": [482, 252, 582, 345], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [282, 258, 368, 328], "blanco": true},
+      {"logo": "isotipo", "zona": [1082, 88, 1168, 158], "blanco": true}
+    ],
+    "img/22_parka_negra.jpg": [
+      {"logo": "escudo", "caja": [482, 250, 582, 342], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [282, 258, 368, 328], "blanco": true},
+      {"logo": "isotipo", "zona": [1082, 88, 1168, 158], "blanco": true}
+    ],
+    "img/22_parka_verde.jpg": [
+      {"logo": "escudo", "caja": [485, 252, 580, 345], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [282, 258, 368, 328], "blanco": true},
+      {"logo": "isotipo", "zona": [1082, 88, 1168, 158], "blanco": true}
     ]
   }
 }

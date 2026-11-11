@@ -102,6 +102,28 @@
           "VERDE"
         ]
       ]
-    }
+    },
+    "img/montaje_final/22_parka_larga.jpg": [
+      [
+        "img/montaje_final/22_parka_negra.jpg",
+        "NEGRA",
+        "izquierda"
+      ],
+      [
+        "img/montaje_final/22_parka_verde.jpg",
+        "VERDE",
+        "izquierda"
+      ],
+      [
+        "img/montaje_final/22_parka_granate.jpg",
+        "GRANATE",
+        "izquierda"
+      ],
+      [
+        "img/montaje_final/22_parka_negra.jpg",
+        "ESPALDA",
+        "derecha"
+      ]
+    ]
   }
 }
