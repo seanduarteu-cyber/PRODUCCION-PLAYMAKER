@@ -118,6 +118,7 @@ def main(cfg_path):
     ancho_col = celdas[1].x0 - celdas[0].x0 - 18
     alto_celda = celdas[0].base - celdas[2].base  # distancia entre filas de bloques (base PDF crece hacia arriba)
 
+    productos = {}  # nombre anterior -> nombre nuevo, para el catálogo y el cuadro de valores
     for num, f in cfg.get("fichas", {}).items():
         if num not in fichas:
             sys.exit(f"La base no tiene la ficha {num}")
@@ -126,6 +127,7 @@ def main(cfg_path):
         if f.get("titulo"):
             borrar(pag, titulo, alto=1.0)  # la bajada en cursiva va justo debajo
             capa.texto(pag, titulo, f["titulo"], titulo.x0, titulo.base)
+            productos[titulo.texto] = f["titulo"]
         bajada = next(r for r in runs if r.fuente == "PlayfairDisplay-Italic" and titulo.top < r.top < titulo.top + 50)
         if capa.ancho(bajada, f["bajada"]) > X1 - X0:
             sys.exit(f"Ficha {num}: la bajada no cabe en una línea")
@@ -143,6 +145,12 @@ def main(cfg_path):
                 sys.exit(f"Ficha {num}, {etq}: el texto ocupa {len(lineas)} líneas y no cabe")
             for k, linea in enumerate(lineas):
                 capa.texto(pag, cuerpo, linea, celda.x0, celda.base - salto - k * interlinea)
+
+    for pag, runs in enumerate(R):  # productos renombrados en el catálogo y el cuadro de valores
+        for r in runs:
+            if id(r) not in hecho and r.texto in productos:
+                borrar(pag, r)
+                capa.texto(pag, r, productos[r.texto], r.x0, r.base)
 
     # 2. Códigos de producto (encabezado de ficha, catálogo y cuadro de valores)
     patron = re.compile(rf"\b{viejo_cod}-(?=\d)")

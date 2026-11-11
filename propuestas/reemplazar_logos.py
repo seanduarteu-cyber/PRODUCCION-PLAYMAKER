@@ -17,6 +17,9 @@ logos.json:
 - "lateral": vista de costado; el logo se angosta al ancho del anterior (o al factor indicado).
 - "tela": color RGB de la prenda, cuando el logo está al borde y la zona no puede quedar solo sobre tela.
 - "pegar_en": caja donde pegar el logo nuevo, si no debe ir exactamente donde estaba el anterior.
+- "blanco": el logo anterior es blanco (o gris claro) y la zona cruza tela de distintos colores
+  (franjas): se ubica por su color y no por el contraste con la tela. "minimo" (140 por defecto) es
+  el brillo mínimo del logo; más bajo para letras grises, como las de la etiqueta del cuello.
 - "borrar": borra la gráfica que hay dentro de la zona (sin los trazos chicos, p. ej. letras
   vecinas) y no pone nada.
 - color "original": se pega con sus colores (blanco ajustado al brillo del render);
@@ -76,6 +79,23 @@ def ubicar(img, zona, rel_min=0.04, incluir_borde=False, tela=None, borde_ok=Fal
     return caja, mascara
 
 
+def ubicar_blanco(img, zona, minimo=140):
+    """Logo blanco dentro de una zona, aunque la tela de alrededor tenga franjas de varios colores."""
+    x0, y0, x1, y1 = zona
+    z = img[y0:y1, x0:x1].astype(int)
+    m = (z.min(axis=2) > minimo) & (z.max(axis=2) - z.min(axis=2) < 70)
+    n, etiquetas, stats, _ = cv2.connectedComponentsWithStats(m.astype(np.uint8), connectivity=8)
+    validos = [i for i in range(1, n) if stats[i, 4] >= 4]
+    if not validos:
+        raise ValueError(f"No se encontró un logo blanco dentro de la zona {zona}")
+    comp = np.isin(etiquetas, validos)
+    ys, xs = np.where(comp)
+    caja = [x0 + xs.min(), y0 + ys.min(), x0 + xs.max() + 1, y0 + ys.max() + 1]
+    mascara = np.zeros(img.shape[:2], np.uint8)
+    mascara[y0:y1, x0:x1] = comp.astype(np.uint8) * 255
+    return caja, cv2.dilate(mascara, np.ones((3, 3), np.uint8), iterations=2)  # incluye el borde suavizado
+
+
 def mascara_caja(img, caja, pad=3, tela=None):
     h, w = img.shape[:2]
     x0, y0, x1, y1 = caja
@@ -127,6 +147,8 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
             elif "caja" in op:
                 caja = op["caja"]
                 m = mascara_caja(img, caja, pad=4)
+            elif op.get("blanco"):
+                caja, m = ubicar_blanco(img, op["zona"], op.get("minimo", 140))
             else:
                 caja, comp = ubicar(img, op["zona"], rel_min=op.get("rel_min", 0.04), tela=tela,
                                     borde_ok="tela" in op)

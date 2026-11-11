@@ -1,0 +1,36 @@
+{
+  "logos": {
+    "isotipo": {
+      "archivo": "../_recursos/playmaker_isotipo_blanco.png",
+      "color": "tinta"
+    },
+    "playmaker": {
+      "archivo": "../_recursos/playmaker_logo_blanco.png",
+      "color": "tinta",
+      "ajuste": "contener"
+    }
+  },
+  "salida": "img/con_logos",
+  "renders": {
+    "img/01_camiseta_local_hombre.jpg": [
+      {"logo": "isotipo", "zona": [245, 250, 330, 322], "blanco": true},
+      {"logo": "playmaker", "zona": [384, 92, 438, 123], "blanco": true, "minimo": 85}
+    ],
+    "img/01_camiseta_local_mujer.jpg": [
+      {"logo": "isotipo", "zona": [262, 220, 340, 285], "blanco": true},
+      {"logo": "playmaker", "zona": [390, 72, 447, 102], "blanco": true, "minimo": 85}
+    ],
+    "img/02_camiseta_visita_01_hombre.jpg": [
+      {"logo": "isotipo", "zona": [238, 268, 326, 340], "blanco": true},
+      {"logo": "playmaker", "zona": [374, 84, 449, 122], "blanco": true, "minimo": 85}
+    ],
+    "img/02_camiseta_visita_01_mujer.jpg": [
+      {"logo": "isotipo", "zona": [262, 220, 338, 284], "blanco": true},
+      {"logo": "playmaker", "zona": [387, 72, 452, 101], "blanco": true, "minimo": 85}
+    ],
+    "img/03_camiseta_visita_02_hombre.jpg": [
+      {"logo": "isotipo", "zona": [242, 266, 326, 338], "blanco": true},
+      {"logo": "playmaker", "zona": [382, 92, 450, 124], "blanco": true, "minimo": 85}
+    ]
+  }
+}

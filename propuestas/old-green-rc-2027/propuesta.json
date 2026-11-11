@@ -8,5 +8,15 @@
     "pdf": "img/escudo_old_green.pdf",
     "alto": 160
   },
-  "renders": {}
+  "renders": {
+    "OGR-01": {
+      "imagen": "img/montaje_final/01_camiseta_local.jpg"
+    },
+    "OGR-02": {
+      "imagen": "img/montaje_final/02_camiseta_visita_01.jpg"
+    },
+    "OGR-03": {
+      "imagen": "img/montaje_final/03_camiseta_visita_02_hombre.jpg"
+    }
+  }
 }
