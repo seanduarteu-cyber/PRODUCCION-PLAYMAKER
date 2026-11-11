@@ -22,8 +22,8 @@ logos.json:
   el brillo mínimo del logo; más bajo para letras grises, como las de la etiqueta del cuello.
 - "franjas" (con "caja"): la tela alrededor del logo tiene varios colores (franjas); se borra solo lo
   que no se parece a ninguno de los colores de tela que hay alrededor de la caja.
-- "por_ancho" (con "caja"): el logo nuevo toma el ancho de la caja en vez del alto (para que su cinta
-  cubra la del escudo anterior).
+- "por_ancho": el logo nuevo toma el ancho del anterior en vez del alto (para que su cinta cubra la
+  del escudo anterior); con "caja" o con "zona" sobre tela de un solo color.
 - "borrar": borra la gráfica que hay dentro de la zona (sin los trazos chicos, p. ej. letras
   vecinas) y no pone nada.
 - color "original": se pega con sus colores (blanco ajustado al brillo del render);
@@ -204,7 +204,7 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
         logo, cfg_logo = logos[nombre]
         x0, y0, x1, y1 = op.get("pegar_en", caja)[:4]
         bw, bh = x1 - x0, y1 - y0
-        if "caja" in op and op.get("por_ancho"):  # escudo con cinta más ancha que el cuerpo: cubrir la anterior
+        if op.get("por_ancho"):  # escudo con cinta más ancha que el cuerpo: cubrir la anterior
             ancho = bw * 1.03
             alto = ancho * logo.height / logo.width
         elif "caja" in op:  # escudos marcados a mano: misma altura que el anterior

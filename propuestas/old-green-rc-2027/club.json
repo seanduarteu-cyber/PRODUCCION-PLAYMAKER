@@ -160,6 +160,78 @@
           "Línea PRO — 100% poliéster sublimado, de secado rápido."
         ]
       ]
+    },
+    "13": {
+      "bajada": "En granate, gris, verde y negro, con paneles laterales en los colores del club",
+      "bloques": [
+        [
+          "CUELLO",
+          "Cuello polo con franjas en los colores del club y tapeta de tres botones al tono."
+        ],
+        [
+          "CUERPO",
+          "Mangas raglán y paneles laterales curvos con vivos blancos; puños a franjas."
+        ],
+        [
+          "COLORES",
+          "Granate con paneles verdes, gris y negro con paneles verdes y granate, y verde con paneles granate."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green al pecho izquierdo e isotipo Playmaker al pecho derecho y en la espalda."
+        ],
+        [
+          "TELA",
+          "Piqué polycotton: 65% poliéster y 35% algodón."
+        ]
+      ]
+    },
+    "19": {
+      "bajada": "En blanco, granate, gris jaspeado, negro y verde, con escudo al pecho",
+      "bloques": [
+        [
+          "CUELLO",
+          "Cuello redondo acanalado."
+        ],
+        [
+          "CUERPO",
+          "Corte recto de uso diario."
+        ],
+        [
+          "COLORES",
+          "Blanca, granate, gris jaspeada, negra y verde."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green al pecho izquierdo e isotipo Playmaker al pecho derecho."
+        ],
+        [
+          "TELA",
+          "100% algodón."
+        ]
+      ]
+    },
+    "20": {
+      "titulo": "Short de presentación",
+      "bajada": "Negro, de uso diario, con bolsillos con cierre",
+      "bloques": [
+        [
+          "CALCE",
+          "Calce holgado con pretina elasticada y aberturas laterales en el ruedo."
+        ],
+        [
+          "BOLSILLOS",
+          "Dos bolsillos laterales con cierre."
+        ],
+        [
+          "APLICACIONES",
+          "Escudo Old Green en la pierna izquierda e isotipo Playmaker en la derecha."
+        ],
+        [
+          "TELA",
+          "Microfibra SQ, 100% poliéster."
+        ]
+      ]
     }
   }
 }

@@ -35,6 +35,52 @@
         "img/montaje_final/03_camiseta_visita_02_mujer.jpg",
         "MUJER"
       ]
-    ]
+    ],
+    "img/montaje_final/13_polo_pique.jpg": {
+      "columnas": 2,
+      "piezas": [
+        [
+          "img/montaje_final/13_polo_granate.jpg",
+          "GRANATE"
+        ],
+        [
+          "img/montaje_final/13_polo_gris.jpg",
+          "GRIS"
+        ],
+        [
+          "img/montaje_final/13_polo_verde.jpg",
+          "VERDE"
+        ],
+        [
+          "img/montaje_final/13_polo_negro.jpg",
+          "NEGRO"
+        ]
+      ]
+    },
+    "img/montaje_final/19_polera_algodon.jpg": {
+      "columnas": 3,
+      "piezas": [
+        [
+          "img/montaje_final/19_polera_algodon_blanca.jpg",
+          "BLANCA"
+        ],
+        [
+          "img/montaje_final/19_polera_algodon_granate.jpg",
+          "GRANATE"
+        ],
+        [
+          "img/montaje_final/19_polera_algodon_gris.jpg",
+          "GRIS"
+        ],
+        [
+          "img/montaje_final/19_polera_algodon_negra.jpg",
+          "NEGRA"
+        ],
+        [
+          "img/montaje_final/19_polera_algodon_verde.jpg",
+          "VERDE"
+        ]
+      ]
+    }
   }
 }

@@ -53,6 +53,59 @@
       {"logo": "isotipo", "zona": [488, 442, 584, 516]},
       {"logo": "isotipo", "zona": [1156, 442, 1254, 518], "blanco": true},
       {"logo": "isotipo", "zona": [1822, 442, 1920, 516], "blanco": true}
+    ],
+    "img/13_polo_granate.jpg": [
+      {"logo": "escudo", "caja": [479, 247, 587, 350], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [236, 246, 320, 326], "blanco": true},
+      {"logo": "isotipo", "zona": [1120, 110, 1196, 174], "blanco": true},
+      {"logo": "playmaker", "zona": [374, 86, 434, 129], "blanco": true, "minimo": 85}
+    ],
+    "img/13_polo_gris.jpg": [
+      {"logo": "escudo", "caja": [470, 257, 581, 357], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [236, 246, 320, 326], "blanco": true},
+      {"logo": "isotipo", "zona": [1120, 110, 1196, 174], "blanco": true},
+      {"logo": "playmaker", "zona": [366, 84, 434, 129], "blanco": true, "minimo": 85}
+    ],
+    "img/13_polo_verde.jpg": [
+      {"logo": "escudo", "caja": [472, 250, 582, 355], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [236, 246, 320, 326], "blanco": true},
+      {"logo": "isotipo", "zona": [1120, 110, 1196, 174], "blanco": true},
+      {"logo": "playmaker", "zona": [364, 84, 434, 129], "blanco": true, "minimo": 85}
+    ],
+    "img/13_polo_negro.jpg": [
+      {"logo": "escudo", "caja": [469, 250, 584, 357], "franjas": true, "por_ancho": true},
+      {"logo": "isotipo", "zona": [236, 246, 320, 326], "blanco": true},
+      {"logo": "isotipo", "zona": [1120, 110, 1196, 174], "blanco": true},
+      {"logo": "playmaker", "zona": [364, 84, 434, 129], "blanco": true, "minimo": 85}
+    ],
+    "img/19_polera_algodon_blanca.jpg": [
+      {"logo": "escudo", "zona": [718, 248, 916, 452], "por_ancho": true},
+      {"logo": "isotipo", "zona": [425, 265, 550, 405]},
+      {"logo": "playmaker", "zona": [610, 82, 712, 131]}
+    ],
+    "img/19_polera_algodon_granate.jpg": [
+      {"logo": "escudo", "zona": [718, 248, 916, 452], "por_ancho": true},
+      {"logo": "isotipo", "zona": [425, 265, 550, 405], "blanco": true},
+      {"logo": "playmaker", "zona": [598, 72, 714, 130], "blanco": true, "minimo": 85}
+    ],
+    "img/19_polera_algodon_gris.jpg": [
+      {"logo": "escudo", "zona": [718, 248, 916, 452], "por_ancho": true},
+      {"logo": "isotipo", "zona": [425, 265, 550, 405]},
+      {"logo": "playmaker", "zona": [600, 80, 712, 134]}
+    ],
+    "img/19_polera_algodon_negra.jpg": [
+      {"logo": "escudo", "zona": [718, 248, 916, 452], "por_ancho": true},
+      {"logo": "isotipo", "zona": [425, 265, 550, 405], "blanco": true},
+      {"logo": "playmaker", "zona": [606, 80, 708, 134]}
+    ],
+    "img/19_polera_algodon_verde.jpg": [
+      {"logo": "escudo", "zona": [718, 248, 916, 452], "por_ancho": true},
+      {"logo": "isotipo", "zona": [425, 265, 550, 405], "blanco": true},
+      {"logo": "playmaker", "zona": [598, 72, 714, 130], "blanco": true, "minimo": 85}
+    ],
+    "img/20_short_presentacion.jpg": [
+      {"logo": "escudo", "zona": [570, 672, 735, 832], "por_ancho": true},
+      {"logo": "isotipo", "zona": [68, 712, 200, 815], "blanco": true}
     ]
   }
 }
