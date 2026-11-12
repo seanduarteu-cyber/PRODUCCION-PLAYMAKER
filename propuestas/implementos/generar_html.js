@@ -1,5 +1,7 @@
 // Arma catalogo_implementos.html (la fuente del PDF) desde catalogo.json y estilo_catalogo.css.
 // Uso: node propuestas/implementos/generar_html.js   (exportar.sh lo corre antes de imprimir el PDF)
+//      node propuestas/implementos/generar_html.js --anexo 24   -> catalogo_implementos_anexo.html: portada de
+//      anexo de una propuesta, con las páginas numeradas desde la 24
 
 const fs = require("fs");
 const path = require("path");
@@ -9,13 +11,16 @@ const C = JSON.parse(fs.readFileSync(path.join(DIR, "catalogo.json"), "utf8"));
 
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const dos = n => String(n).padStart(2, "0");
+const k = process.argv.indexOf("--anexo");
+const ANEXO = k > 0;
+const INICIO = ANEXO ? Number(process.argv[k + 1]) : 1;  // número de la primera página
 const mayus = s => esc(s.toUpperCase());
 
 function pie(num) {
   return `<div class="pie"><span>UN CLUB, UNA FAMILIA.</span><span class="marcas">` +
     `<img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><i></i>` +
     `<img class="proeza" src="../_recursos/proeza_logo_blanco.png" alt="Proeza"></span>` +
-    `<span class="num">${dos(num)}</span></div>`;
+    `<span class="num">${dos(num + INICIO - 1)}</span></div>`;
 }
 
 // lo pendiente de una especificación: tercer valor (texto vacío = solo "a confirmar")
@@ -30,10 +35,11 @@ function portada() {
   const p = C.portada;
   return `<section class="page portada">
   <div class="marcas-portada"><img src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><i></i><img class="proeza" src="../_recursos/proeza_logo_blanco.png" alt="Proeza"></div>
-  <div class="kicker">${mayus(p.kicker)}</div>
+  <div class="kicker">${mayus(ANEXO ? C.anexo.kicker : p.kicker)}</div>
   <h1>${p.titulo.map(esc).join("<br>")}</h1>
   <p class="sub">${esc(p.subtitulo)}</p>
   <div class="tira">${p.tira.map(foto).join("")}</div>
+  ${ANEXO ? `<p class="nota-portada">${esc(C.anexo.nota)}</p>` : ""}
   <div class="estado">${p.estado ? mayus(p.estado) : ""}<span>${esc(p.fecha)}</span></div>
   ${pie(1)}
 </section>`;
@@ -45,7 +51,7 @@ function linea() {
     `<td>${esc(f.usoCorto)}</td><td class="fic">Ficha ${dos(i + 1)}</td></tr>`).join("\n    ");
   const criterios = l.criterios.map(([k, v]) => `<div class="fila"><b>${mayus(k)}</b><p>${esc(v)}</p></div>`).join("\n    ");
   return `<section class="page">
-  <div class="cab"><b>SECCIÓN 01</b><span>LÍNEA DE EQUIPAMIENTO</span></div>
+  <div class="cab"><b>${ANEXO ? "ANEXO" : "SECCIÓN 01"}</b><span>LÍNEA DE EQUIPAMIENTO</span></div>
   <h1>${esc(l.titulo)}</h1>
   <p class="intro">${esc(l.intro)}</p>
   <table>
@@ -56,6 +62,7 @@ function linea() {
     <h2>CRITERIOS COMUNES A TODA LA LÍNEA</h2>
     ${criterios}
   </div>
+  <div class="nota"><b>PRECIOS</b><p>${esc(l.notaPrecios)}</p></div>
   <div class="nota"><b>FOTOS DE REFERENCIA</b><p>${esc(l.notaFotos)}</p></div>
   ${pie(2)}
 </section>`;
@@ -126,10 +133,11 @@ ${linea()}
 
 ${C.fichas.map(ficha).join("\n\n")}
 
-${C.revision.incluir === false ? "" : revision(C.fichas.length + 3)}
+${C.revision.incluir === false || ANEXO ? "" : revision(C.fichas.length + 3)}
 
 </body>
 </html>
 `;
-fs.writeFileSync(path.join(DIR, "catalogo_implementos.html"), html);
-console.log(`OK  ${path.join(DIR, "catalogo_implementos.html")}`);
+const salida = path.join(DIR, ANEXO ? "catalogo_implementos_anexo.html" : "catalogo_implementos.html");
+fs.writeFileSync(salida, html);
+console.log(`OK  ${salida}`);

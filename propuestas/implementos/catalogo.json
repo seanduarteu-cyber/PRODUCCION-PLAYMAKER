@@ -27,6 +27,10 @@
       }
     ]
   },
+  "anexo": {
+    "kicker": "Anexo de la propuesta",
+    "nota": "Este anexo no incluye precios: el valor de cada producto varía según la cantidad del pedido, por lo que se cotiza por separado."
+  },
   "linea": {
     "titulo": "Equipamiento para entrenar y jugar",
     "intro": "Productos para cubrir el entrenamiento de contacto y la cancha del club: balones de marca propia o personalizados, escudos, sacos y ruedas de tackle, y cubre postes. Cada pieza se fabrica a pedido, con los colores, el escudo y el nombre del club, y con materiales de gran calidad y durabilidad, pensados para el uso diario.",
@@ -52,7 +56,8 @@
         "A pedido, con el diseño aprobado por el club antes de producir."
       ]
     ],
-    "notaFotos": "Las fotos de este catálogo muestran trabajos realizados para otros clubes y sirven como referencia de forma y terminaciones. Cada pedido se produce con el diseño propio del club."
+    "notaFotos": "Las fotos de este catálogo muestran trabajos realizados para otros clubes y sirven como referencia de forma y terminaciones. Cada pedido se produce con el diseño propio del club.",
+    "notaPrecios": "Los productos de este catálogo no incluyen precio, porque el valor varía según la cantidad del pedido. Se cotizan por separado."
   },
   "fichas": [
     {

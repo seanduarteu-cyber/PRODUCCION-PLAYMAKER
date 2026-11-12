@@ -13,6 +13,8 @@ los valores como marcadores "$[00.000]" / "[00]". Este script:
      - Subtotal neto, IVA y total, calculados solos en Acrobat / Chrome / Edge /
        Firefox (Vista Previa de macOS no ejecuta cálculos: ahí se escriben a mano).
   3. Si el JSON trae "precios", los deja escritos en los campos (siguen editables).
+     Una ficha con más de un precio (p. ej. con y sin capucha) se declara en "variantes":
+     {"OGR-10": ["OGR-10A", "OGR-10B"]}, códigos en el orden de sus precios de izquierda a derecha.
      Con "precios_con_iva": true, los precios incluyen IVA: el total con IVA es la suma de
      cantidad × precio, y el subtotal neto y el IVA se calculan desde ese total.
 """
@@ -59,7 +61,7 @@ JS_NUM = ('var d = this;'
 
 # ---------------------------------------------------------------- lectura de la base
 
-CODIGO = r"[A-Z]{2,4}-\d+"  # código de producto: GAU-01, OGR-01...
+CODIGO = r"[A-Z]{2,4}-\d+[A-Z]?"  # código de producto: GAU-01, OGR-01, OGR-10A (variante)...
 
 def _bbox(w):
     return (w["x0"], w["top"], w["x1"], w["bottom"])
@@ -76,9 +78,9 @@ def analizar_base(ruta):
                 code = next(w["text"] for w in words if re.fullmatch(CODIGO, w["text"]) and w["top"] < 100)
                 box = next(r for r in page.rects if r["fill"] and r["width"] > 300 and r["height"] > 150
                            and tuple(round(c, 3) for c in r["non_stroking_color"]) == tuple(round(c, 3) for c in FONDO_RENDER))
-                valor = next(w for w in words if w["text"] == "$[00.000]")
+                valores = sorted((w for w in words if w["text"] == "$[00.000]"), key=lambda w: w["x0"])
                 fichas[code] = {"page": i, "box": (box["x0"], box["top"], box["x1"], box["bottom"]),
-                                "valor": _bbox(valor), "size": valor["size"]}
+                                "valores": [_bbox(v) for v in valores], "size": valores[0]["size"]}
             elif "CANTIDAD" in texts and texts.count("[00]") > 1:
                 filas = {}
                 for w in words:
@@ -136,7 +138,7 @@ def construir_capa(base_path, cfg_dir, cfg, fichas, cuadro, portada, n_paginas, 
     escala = 3
     parches = {}  # page -> [(bbox, color)]
     for code, f in fichas.items():
-        parches.setdefault(f["page"], []).append(f["valor"])
+        parches.setdefault(f["page"], []).extend(f["valores"])
     if cuadro:
         for fila in cuadro["filas"].values():
             parches.setdefault(cuadro["page"], []).extend([fila["cant"], fila["valor"]])
@@ -342,6 +344,18 @@ def campo_simple(writer, page, nombre, ayuda, rect, da, aa):
     return ref
 
 
+def precios_en_fichas(fichas, variantes):
+    """Código de cada marcador de precio de las fichas: el de la ficha, o sus variantes de izquierda a derecha."""
+    lugares = {}
+    for code, f in fichas.items():
+        codigos = variantes.get(code, [code])
+        if len(codigos) != len(f["valores"]):
+            sys.exit(f"La ficha {code} tiene {len(f['valores'])} precios y {len(codigos)} códigos")
+        for c, bbox in zip(codigos, f["valores"]):
+            lugares[c] = {"page": f["page"], "valor": bbox, "size": f["size"]}
+    return lugares
+
+
 def agregar_formulario(writer, fichas, cuadro, iva, h, fuentes, precios=None, con_iva=False):
     campos, orden_calculo = ArrayObject(), ArrayObject()
     codigos = sorted(set(fichas) | set(cuadro["filas"] if cuadro else []))
@@ -446,7 +460,8 @@ def main(cfg_path):
 
     fuentes = DictionaryObject({NameObject("/" + k): fuente_truetype(writer, v, k) for k, v in FUENTES.items()})
     precios = cfg.get("precios", {})
-    campos, orden = agregar_formulario(writer, fichas, cuadro, cfg.get("iva", 0.19), h, fuentes,
+    campos, orden = agregar_formulario(writer, precios_en_fichas(fichas, cfg.get("variantes", {})), cuadro,
+                                       cfg.get("iva", 0.19), h, fuentes,
                                        precios, cfg.get("precios_con_iva", False))
     writer._root_object[NameObject("/AcroForm")] = writer._add_object(DictionaryObject({
         NameObject("/Fields"): campos,
@@ -466,7 +481,8 @@ def main(cfg_path):
     print(f"OK  {salida}  ({salida.stat().st_size / 1024:.0f} KB)")
     print(f"    Con render: {con_render}")
     print(f"    Sin render: {sin_render or '—'}")
-    print(f"    Campos: {len(campos)} (valor unitario x{len(fichas)}, cantidades, subtotal, IVA, total)")
+    n_valores = len(set(precios_en_fichas(fichas, cfg.get("variantes", {}))) | set(cuadro["filas"] if cuadro else []))
+    print(f"    Campos: {len(campos)} (valor unitario x{n_valores}, cantidades, subtotal, IVA, total)")
     if precios:
         print(f"    Precios cargados: {len(precios)} ({'con IVA' if cfg.get('precios_con_iva') else 'netos'})")
 

@@ -12,6 +12,10 @@ club.json (rutas relativas al JSON):
     "paleta":     [["Verde", "#1F5B3A"], ...]  colores del recuadro PALETA DEL CLUB (hasta 6)
     "fichas":     {"01": {"titulo": "...", "bajada": "...", "bloques": [["CUELLO", "..."], ...]}}
                   bajada y bloques (hasta 6, en dos columnas) de cada ficha; titulo es opcional
+    "variantes":  {"15": [{"rotulo": "SIN CAPUCHA", "codigo": "OGR-10A", "producto": "Cortaviento sin capucha",
+                           "fila": "14"}, ...]}  ficha con un precio por variante (de izquierda a derecha); en el
+                  cuadro de valores, cada variante ocupa la fila de la ficha "fila" de la base (aunque esa
+                  ficha salga), con su código y su nombre
     "simbolos":   [[" · ", "   "]]  se cambian en todo texto que se escribe (incluidos los que no cambian de
                   otro modo), después de los reemplazos
     "quitar":     ["04", "08"]  fichas que no van: salen sus páginas y sus filas del catálogo y del
@@ -184,6 +188,21 @@ def main(cfg_path):
             for k, linea in enumerate(lineas):
                 capa.texto(pag, cuerpo, linea, celda.x0, celda.base - salto - k * interlinea)
 
+    variantes = cfg.get("variantes", {})
+    for num, lista in variantes.items():  # un rótulo y un marcador de precio por variante
+        pag = fichas[num]
+        rotulo = next(r for r in R[pag] if getattr(r, "fin_derecha", False))
+        marcador = next(r for r in R[pag] if r.texto.startswith("$[") and abs(r.top - rotulo.top) < 3)
+        separacion = marcador.x0 - rotulo.x1
+        borrar(pag, rotulo)
+        derecha = marcador.x1  # el último usa el marcador que ya está; los anteriores van a su izquierda
+        for k, v in enumerate(reversed(lista)):
+            if k:
+                capa.texto(pag, marcador, "$[00.000]", derecha, marcador.base, "der")
+            fin_rotulo = derecha - (marcador.x1 - marcador.x0) - separacion
+            capa.texto(pag, rotulo, v["rotulo"], fin_rotulo, rotulo.base, "der")
+            derecha = fin_rotulo - capa.ancho(rotulo, v["rotulo"]) - 24
+
     # 2. Fichas que salen: el resto sube de número (ficha, código y página)
     quitar = sorted(cfg.get("quitar", []))
     if any(n not in fichas for n in quitar):
@@ -214,7 +233,18 @@ def main(cfg_path):
             continue
         paso = min(b.top - a.top for a, b in zip(filas, filas[1:]))
         ini, fin = filas[0].top - 30, 770
-        bandas = [(r.top - 6, r.top - 6 + paso) for r in filas if patron.fullmatch(r.texto).group(1) in quitar]
+        en_cuadro = any(r.texto == "CANTIDAD" for r in runs)
+        # en el cuadro, las variantes ocupan las filas indicadas (aunque su ficha salga) con código y nombre propios
+        por_fila = {v["fila"]: v for lista in variantes.values() for v in lista} if en_cuadro else {}
+        textos_variante = {}
+        for r in filas:
+            v = por_fila.get(patron.fullmatch(r.texto).group(1))
+            if v:
+                textos_variante[id(r)] = v["codigo"]
+                nombre = next(o for o in runs if abs(o.top - r.top) < 3 and r.x1 < o.x0 < 300)
+                textos_variante[id(nombre)] = v["producto"]
+        bandas = [(r.top - 6, r.top - 6 + paso) for r in filas
+                  if patron.fullmatch(r.texto).group(1) in quitar and patron.fullmatch(r.texto).group(1) not in por_fila]
 
         def mover(top):  # nuevo top, o None si el elemento es de una fila que sale
             if any(a <= top < b for a, b in bandas):
@@ -243,7 +273,7 @@ def main(cfg_path):
                 continue
             if r.fuente == "Poppins-SemiBold" and r.texto.isupper() and r.x0 < X0 + 1:
                 categoria = r
-            texto = codigo_nuevo(productos.get(r.texto, r.texto))
+            texto = textos_variante.get(id(r)) or codigo_nuevo(productos.get(r.texto, r.texto))
             if re.fullmatch(r"Ficha \d+", texto):
                 texto = f"Ficha {nuevo_num[texto[-2:]]}"
             if patron.fullmatch(r.texto):

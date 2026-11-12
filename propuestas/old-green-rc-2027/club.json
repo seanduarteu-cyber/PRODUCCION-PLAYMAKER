@@ -99,6 +99,22 @@
     "14",
     "18"
   ],
+  "variantes": {
+    "15": [
+      {
+        "rotulo": "SIN CAPUCHA",
+        "codigo": "OGR-10A",
+        "producto": "Cortaviento sin capucha",
+        "fila": "14"
+      },
+      {
+        "rotulo": "CON CAPUCHA",
+        "codigo": "OGR-10B",
+        "producto": "Cortaviento con capucha",
+        "fila": "15"
+      }
+    ]
+  },
   "fichas": {
     "01": {
       "titulo": "Camiseta de juego Local",

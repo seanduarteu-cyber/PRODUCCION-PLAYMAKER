@@ -168,7 +168,9 @@ function linea() {
     tabla(col, [filaCabecera(["Código", "Producto", "Uso", "Ficha"], col, [, , , AlignmentType.RIGHT]), ...filas]),
     new Paragraph({ spacing: { before: 400, after: 140 }, children: [etiqueta("Criterios comunes a toda la línea")] }),
     tabla(colC, criterios, { borders: { top: SIN_BORDE, bottom: SIN_BORDE, left: SIN_BORDE, right: SIN_BORDE, insideHorizontal: SIN_BORDE, insideVertical: SIN_BORDE } }),
-    new Paragraph({ spacing: { before: 360, after: 80 }, children: [etiqueta("Fotos de referencia")] }),
+    new Paragraph({ spacing: { before: 360, after: 80 }, children: [etiqueta("Precios")] }),
+    parrafo(CATALOGO.linea.notaPrecios),
+    new Paragraph({ spacing: { before: 240, after: 80 }, children: [etiqueta("Fotos de referencia")] }),
     parrafo(CATALOGO.linea.notaFotos),
     salto(),
   ];
