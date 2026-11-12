@@ -34,7 +34,7 @@ function portada() {
   <h1>${p.titulo.map(esc).join("<br>")}</h1>
   <p class="sub">${esc(p.subtitulo)}</p>
   <div class="tira">${p.tira.map(foto).join("")}</div>
-  <div class="estado">${mayus(p.estado)}<span>${esc(p.fecha)}</span></div>
+  <div class="estado">${p.estado ? mayus(p.estado) : ""}<span>${esc(p.fecha)}</span></div>
   ${pie(1)}
 </section>`;
 }
@@ -126,7 +126,7 @@ ${linea()}
 
 ${C.fichas.map(ficha).join("\n\n")}
 
-${revision(C.fichas.length + 3)}
+${C.revision.incluir === false ? "" : revision(C.fichas.length + 3)}
 
 </body>
 </html>

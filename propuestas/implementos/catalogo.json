@@ -6,7 +6,7 @@
       "de rugby"
     ],
     "subtitulo": "Equipamiento de entrenamiento y cancha, personalizado con los colores y el escudo de cada club",
-    "estado": "Borrador para revisión",
+    "estado": "",
     "fecha": "Noviembre 2026",
     "tira": [
       {
@@ -327,6 +327,7 @@
     }
   ],
   "revision": {
+    "incluir": false,
     "intro": "Las especificaciones técnicas ya están confirmadas con el taller. Antes de enviar el catálogo a un club queda pendiente:",
     "pendientes": [
       "Precios por producto, o por set (por ejemplo, set de 4 cubre postes).",

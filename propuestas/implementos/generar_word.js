@@ -140,8 +140,8 @@ function portada() {
       children: [t(p.subtitulo,
         { font: TITULO, size: 24, italics: true, color: "8A8672" })] }),
     fotos(p.tira.map(f => f.archivo), 230),
-    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 900, after: 80 }, children: [etiqueta(p.estado, ORO, 15)] }),
-    new Paragraph({ alignment: AlignmentType.CENTER, children: [t(p.fecha, { size: 16, color: GRIS })] }),
+    ...(p.estado ? [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 900, after: 80 }, children: [etiqueta(p.estado, ORO, 15)] })] : []),
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: p.estado ? 0 : 900 }, children: [t(p.fecha, { size: 16, color: GRIS })] }),
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 200 },
       children: [t(`${c.length} productos · ${c.map(f => f.codigo).join(" · ")}`, { size: 14, color: GRIS })] }),
     salto(),
@@ -203,7 +203,7 @@ function ficha(f, i) {
       ], colM[j], { borders: { top: BORDE_FINO, bottom: BORDE_FINO, left: BORDE_FINO, right: BORDE_FINO } })) })]),
     );
   }
-  bloques.push(salto());
+  if (i < CATALOGO.fichas.length - 1 || CATALOGO.revision.incluir !== false) bloques.push(salto()); // sin hoja en blanco al final
   return bloques;
 }
 
@@ -247,7 +247,7 @@ const doc = new Document({
     properties: { titlePage: true, page: { size: { width: 11906, height: 16838 }, margin: { top: 1134, bottom: 1000, left: 1134, right: 1134, header: 560, footer: 500 } } },
     headers: { default: cabecera, first: new Header({ children: [vacio()] }) },
     footers: { default: pie, first: new Footer({ children: [vacio()] }) },
-    children: [...portada(), ...linea(), ...CATALOGO.fichas.flatMap(ficha), ...revision()],
+    children: [...portada(), ...linea(), ...CATALOGO.fichas.flatMap(ficha), ...(CATALOGO.revision.incluir === false ? [] : revision())],
   }],
 });
 
