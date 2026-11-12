@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# Exporta el catálogo de implementos a PDF con el Chromium del entorno.
+# Exporta el catálogo de implementos a PDF y a Word desde catalogo.json.
 # Uso: bash propuestas/implementos/exportar.sh
 set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
+node "$DIR/generar_html.js"
+node "$DIR/generar_word.js"
 # Chromium sin interfaz del entorno (la versión instalada puede cambiar entre sesiones)
 if [ -z "${CHROME:-}" ]; then
   for c in /opt/pw-browsers/chromium_headless_shell-*/chrome-*/{headless_shell,chrome-headless-shell}; do

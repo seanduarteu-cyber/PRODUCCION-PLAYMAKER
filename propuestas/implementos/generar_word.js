@@ -1,6 +1,6 @@
 // Catálogo técnico de implementos en Word (editable), con el diseño del catálogo PDF.
 // Uso: node propuestas/implementos/generar_word.js   ->  Catalogo_Implementos_Rugby.docx
-// Textos: editar CATALOGO, más abajo. Las fotos salen de fotos/ y los logos de ../_recursos/.
+// Textos: catalogo.json (compartido con el PDF). Las fotos salen de fotos/ y los logos de ../_recursos/.
 
 const fs = require("fs");
 const path = require("path");
@@ -19,126 +19,9 @@ const PX = ANCHO / 15; // ancho útil en píxeles de imagen (1 px = 15 DXA)
 
 // ---------------------------------------------------------------- contenido
 
+// mismo contenido que el PDF (generar_html.js): textos, fotos y especificaciones
+const CATALOGO = JSON.parse(fs.readFileSync(path.join(DIR, "catalogo.json"), "utf8"));
 const CONFIRMAR = "a confirmar";
-const CATALOGO = {
-  intro: "Cinco productos para cubrir el entrenamiento de contacto y la cancha del club: balones, escudos, " +
-    "sacos y aros de tackle, y protectores de poste. Cada pieza se fabrica a pedido, con los colores, el escudo " +
-    "y el nombre del club, y con materiales pensados para el uso diario a la intemperie.",
-  criterios: [
-    ["Exterior", "Lona de PVC con trama antidesgarro o cuero sintético: impermeable, lavable y resistente a la abrasión."],
-    ["Relleno", "Espuma de alta densidad que absorbe el impacto sin deformarse."],
-    ["Costuras", "Costuras reforzadas en uniones, asas y correas, que son las zonas de mayor exigencia."],
-    ["Personalización", "Colores, escudo, nombre del club y auspiciadores en cada pieza."],
-    ["Fabricación", "A pedido, con el diseño aprobado por el club antes de producir."],
-  ],
-  notaFotos: "Las fotos de este catálogo muestran trabajos realizados para otros clubes y sirven como referencia " +
-    "de forma y terminaciones. Cada pedido se produce con el diseño propio del club.",
-  fichas: [
-    {
-      codigo: "IMP-01", categoria: "BALONES", titulo: "Balón de rugby Match",
-      bajada: "Talla 5, de caucho con grip en relieve y diseño a pedido",
-      usoCorto: "Partido y entrenamiento en todas las categorías",
-      fotos: ["balon_match_proeza.jpg", "balon_condor_cara.jpg", "balon_fucsia_turquesa_1.jpg"], altoFotos: 220,
-      leyenda: "Diseños de referencia. Cada balón se produce con los colores, el escudo y las frases del club.",
-      uso: "Partido y entrenamiento en todas las categorías.",
-      specs: [
-        ["Construcción", "4 paneles cosidos a máquina."],
-        ["Cubierta", "Caucho sintético con grip de puntos en relieve en toda la superficie, para un agarre firme con lluvia y barro."],
-        ["Interior", "Capas de tela laminada que mantienen la forma y cámara con válvula.", "material de la cámara"],
-        ["Personalización", "Diseño completo de la cubierta: colores, escudo, nombre y frases del club."],
-        ["Tallas", "Talla 5 para juveniles y adultos; tallas 3 y 4 para infantiles.", ""],
-      ],
-      medidas: {
-        titulo: "Medidas de referencia · talla 5 · reglamento World Rugby",
-        nota: "con la ficha del taller",
-        valores: [["Largo", "280–300 mm"], ["Circ. longitudinal", "740–770 mm"], ["Circ. transversal", "580–620 mm"],
-                  ["Peso", "410–460 g"], ["Presión", "9,5–10 psi"]],
-      },
-    },
-    {
-      codigo: "IMP-02", categoria: "CONTACTO", titulo: "Escudo de tackle",
-      bajada: "Perfil anatómico, lona de PVC y relleno de alta densidad",
-      usoCorto: "Contacto, tackle y ruck: un jugador lo sostiene y recibe el impacto",
-      fotos: ["escudo_tackle_old_gergel_frente.jpg", "escudo_tackle_frances_espalda.jpg", "escudo_tackle_palestina.jpg"], altoFotos: 300,
-      leyenda: "Lateral con nombre del club, espalda con correas y versión en otros colores. Trabajos realizados para otros clubes.",
-      uso: "Entrenamiento de contacto, tackle y ruck: un jugador lo sostiene y recibe el impacto.",
-      specs: [
-        ["Forma", "Perfil anatómico con cabezal más grueso arriba, que protege la cabeza y el hombro de quien lo sostiene."],
-        ["Exterior", "Cara de impacto y laterales en lona de PVC con trama antidesgarro; espalda en cuero sintético liso, más cómoda contra el cuerpo."],
-        ["Relleno", "Espuma de alta densidad que absorbe el golpe sin deformarse.", "densidad y espesor"],
-        ["Ventilación", "Perforaciones en los laterales que dejan salir el aire con cada impacto: el escudo no rebota y las costuras no se revientan."],
-        ["Agarre", "Dos correas para los brazos en la espalda y manilla lateral de traslado, en cinta de polipropileno con costura reforzada en cruz."],
-        ["Personalización", "Color de la cara de impacto, nombre del club en vertical en el lateral y escudo."],
-        ["Medidas", "Alto 80–90 cm; ancho 40 cm; espesor 20 cm en el cuerpo y 30 cm en el cabezal.", ""],
-      ],
-    },
-    {
-      codigo: "IMP-03", categoria: "CONTACTO", titulo: "Saco de tackle",
-      bajada: "Cilindro de contacto en dos alturas, para tacklear y llevar al suelo",
-      usoCorto: "Tackle y llevada al suelo sin un compañero que sostenga",
-      fotos: ["sacos_y_protector_stade_francais.jpg", "saco_y_escudo_varc.jpg"], altoFotos: 360,
-      leyenda: "Pedidos en lona de PVC (azul, en varias alturas) y en cuero sintético (negro). Trabajos realizados para otros clubes.",
-      uso: "Práctica de tackle y llevada al suelo sin un compañero que sostenga.",
-      specs: [
-        ["Forma", "Cilindro con tapa y fondo cosidos y manilla en la tapa para trasladarlo."],
-        ["Exterior", "Lona de PVC con trama antidesgarro o cuero sintético; impermeable y lavable."],
-        ["Relleno", "Espuma de alta densidad en capas, firme y sin zonas blandas.", ""],
-        ["Alturas", "Saco alto para juveniles y adultos; saco corto para infantiles o trabajo de ruck."],
-        ["Personalización", "Color del cuerpo y escudo o nombre del club en gran formato."],
-        ["Medidas", "Alto 1,2–1,4 m (saco alto) y 50–60 cm (saco corto); diámetro 35–40 cm.", ""],
-      ],
-    },
-    {
-      codigo: "IMP-04", categoria: "CONTACTO", titulo: "Aro de tackle",
-      bajada: "Anillo acolchado para tacklear un objetivo en movimiento",
-      usoCorto: "Tackle sobre un objetivo en movimiento",
-      fotos: ["aro_tackle_frente.jpg", "aro_tackle_lateral.jpg"], altoFotos: 360,
-      leyenda: "Vista frontal y lateral. Trabajo realizado para otro club.",
-      uso: "Se hace rodar para que el jugador lo persiga y lo tacklee en movimiento; trabaja lectura, timing y técnica de tackle.",
-      specs: [
-        ["Forma", "Anillo de gran diámetro con centro abierto, firme para rodar recto."],
-        ["Exterior", "Lona de PVC con trama antidesgarro y costuras perimetrales reforzadas."],
-        ["Relleno", "Espuma de alta densidad."],
-        ["Personalización", "Nombre y logo del club en ambas caras."],
-        ["Medidas", "Diámetro exterior 1 m; espesor del anillo 25–30 cm.", ""],
-      ],
-    },
-    {
-      codigo: "IMP-05", categoria: "CANCHA", titulo: "Protector de poste",
-      bajada: "Funda acolchada de sección cuadrada, con cuatro caras para el club y sus auspiciadores",
-      usoCorto: "Protección de los jugadores en la base de los postes de las H",
-      fotos: ["protector_poste_curico.jpg", "protector_poste_auspiciador.jpg"], altoFotos: 360,
-      leyenda: "Cara con el escudo del club y cara con auspiciador. Trabajos realizados para otros clubes.",
-      uso: "Protege a los jugadores en los choques contra la base de los postes de las H.",
-      specs: [
-        ["Forma", "Sección cuadrada con abertura central para el poste y tapa superior."],
-        ["Exterior", "Lona de PVC con trama antidesgarro, apta para estar a la intemperie."],
-        ["Relleno", "Espuma de alta densidad."],
-        ["Cierre", "A lo largo de una arista, para instalarlo y retirarlo.", "velcro o cierre"],
-        ["Reglamento", "World Rugby permite que el acolchado sobresalga como máximo 300 mm desde la línea de gol."],
-        ["Personalización", "Las cuatro caras se imprimen con escudo, nombre del club y auspiciadores; un auspiciador puede financiar el set."],
-        ["Venta y medidas", "Set de 4 protectores por cancha, dos por cada H; alto 1,5–1,8 m.", ""],
-      ],
-    },
-  ],
-  revision: {
-    taller: [
-      "Medidas reales y peso de cada producto.",
-      "Densidad y espesor de la espuma; gramaje de la lona de PVC.",
-      "Material de la cámara del balón y tallas disponibles (3, 4 y 5).",
-      "Tipo de cierre del protector de poste: velcro o cierre.",
-      "Si la pieza cuadrada del pedido de Stade Français es un protector de poste o un saco de sección cuadrada.",
-      "Si el tee de pateo azul que aparece bajo los balones también es parte de la oferta.",
-      "Costo, mínimo por diseño personalizado y plazo de entrega de cada producto.",
-    ],
-    antesDeEnviar: [
-      "Las fotos muestran el nombre y el escudo de otros clubes. Para la versión final: montajes con los colores y el escudo del club, o permiso de esos clubes para mostrarlos como trabajos realizados.",
-      "Agregar precios por producto, o por set (por ejemplo, set de 4 protectores de poste).",
-    ],
-    aviso: "Los balones les sirven a los socios y pueden ir en la preventa del club. Escudos, sacos, aros y " +
-      "protectores los compra el club: conviene presentarlos como una línea aparte de equipamiento institucional.",
-  },
-};
 
 // ---------------------------------------------------------------- utilidades
 
@@ -247,20 +130,18 @@ const salto = () => new Paragraph({ children: [new PageBreak()] });
 // ---------------------------------------------------------------- páginas
 
 function portada() {
-  const c = CATALOGO.fichas;
-  const tira = ["balon_match_proeza_crouch_bind_set.jpg", "escudo_tackle_palestina.jpg", "aro_tackle_frente.jpg", "protector_poste_curico.jpg"];
+  const c = CATALOGO.fichas, p = CATALOGO.portada;
   return [
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 600, after: 1400 }, children: marcas(44, 27) }),
-    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 200 }, children: [etiqueta("Catálogo técnico", ORO, 17)] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 200 }, children: [etiqueta(p.kicker, ORO, 17)] }),
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 200 },
-      children: [t("Balones e implementos", { font: TITULO, size: 64, bold: true, color: NAVY }),
-                 t("de rugby", { font: TITULO, size: 64, bold: true, color: NAVY, break: 1 })] }),
+      children: p.titulo.map((linea, k) => t(linea, { font: TITULO, size: 64, bold: true, color: NAVY, ...(k ? { break: 1 } : {}) })) }),
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 900 },
-      children: [t("Equipamiento de entrenamiento y cancha, personalizado con los colores y el escudo de cada club",
+      children: [t(p.subtitulo,
         { font: TITULO, size: 24, italics: true, color: "8A8672" })] }),
-    fotos(tira, 230),
-    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 900, after: 80 }, children: [etiqueta("Borrador para revisión", ORO, 15)] }),
-    new Paragraph({ alignment: AlignmentType.CENTER, children: [t("Noviembre 2026", { size: 16, color: GRIS })] }),
+    fotos(p.tira.map(f => f.archivo), 230),
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 900, after: 80 }, children: [etiqueta(p.estado, ORO, 15)] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, children: [t(p.fecha, { size: 16, color: GRIS })] }),
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 200 },
       children: [t(`${c.length} productos · ${c.map(f => f.codigo).join(" · ")}`, { size: 14, color: GRIS })] }),
     salto(),
@@ -276,19 +157,19 @@ function linea() {
     celda([new Paragraph({ alignment: AlignmentType.RIGHT, children: [t(`Ficha ${String(i + 1).padStart(2, "0")}`, { size: 17, color: GRIS })] })], col[3], { borders: bordesFila }),
   ] }));
   const colC = [2400, ANCHO - 2400];
-  const criterios = CATALOGO.criterios.map(([k, v]) => new TableRow({ children: [
+  const criterios = CATALOGO.linea.criterios.map(([k, v]) => new TableRow({ children: [
     celda([new Paragraph({ children: [etiqueta(k, MARFIL, 13)] })], colC[0], { shading: { type: ShadingType.CLEAR, color: "auto", fill: NAVY }, borders: SIN_BORDES }),
     celda([new Paragraph({ children: [t(v, { size: 18, color: "C9C4B4" })] })], colC[1], { shading: { type: ShadingType.CLEAR, color: "auto", fill: NAVY }, borders: SIN_BORDES }),
   ] }));
   return [
     kicker("Sección 01", "Línea de equipamiento"),
-    titulo("Equipamiento para entrenar y jugar"),
-    parrafo(CATALOGO.intro),
+    titulo(CATALOGO.linea.titulo),
+    parrafo(CATALOGO.linea.intro),
     tabla(col, [filaCabecera(["Código", "Producto", "Uso", "Ficha"], col, [, , , AlignmentType.RIGHT]), ...filas]),
     new Paragraph({ spacing: { before: 400, after: 140 }, children: [etiqueta("Criterios comunes a toda la línea")] }),
     tabla(colC, criterios, { borders: { top: SIN_BORDE, bottom: SIN_BORDE, left: SIN_BORDE, right: SIN_BORDE, insideHorizontal: SIN_BORDE, insideVertical: SIN_BORDE } }),
     new Paragraph({ spacing: { before: 360, after: 80 }, children: [etiqueta("Fotos de referencia")] }),
-    parrafo(CATALOGO.notaFotos),
+    parrafo(CATALOGO.linea.notaFotos),
     salto(),
   ];
 }
@@ -304,7 +185,7 @@ function ficha(f, i) {
     kicker(`Ficha ${String(i + 1).padStart(2, "0")} · ${f.categoria}`, f.codigo),
     titulo(f.titulo),
     bajada(f.bajada),
-    fotos(f.fotos, f.altoFotos),
+    fotos(f.fotos.archivos.map(x => x.archivo), f.fotos.altoWord),
     new Paragraph({ spacing: { before: 80, after: 220 }, children: [t(f.leyenda, { size: 14, italics: true, color: GRIS })] }),
     new Paragraph({ spacing: { after: 200 }, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: LINEA, space: 6 } },
       tabStops: [{ type: TabStopType.LEFT, position: 1100 }], indent: { left: 1100, hanging: 1100 },
@@ -315,7 +196,7 @@ function ficha(f, i) {
     const n = f.medidas.valores.length, c = Math.floor(ANCHO / n);
     const colM = Array.from({ length: n }, (_, k) => (k === n - 1 ? ANCHO - c * (n - 1) : c));
     bloques.push(
-      new Paragraph({ spacing: { before: 300, after: 100 }, children: [etiqueta(f.medidas.titulo, NAVY, 13), t("  "), confirmar(f.medidas.nota)] }),
+      new Paragraph({ spacing: { before: 300, after: 100 }, children: [etiqueta(f.medidas.titulo, NAVY, 13), ...(f.medidas.pendiente !== undefined ? [t("  "), confirmar(f.medidas.pendiente)] : [])] }),
       tabla(colM, [new TableRow({ children: f.medidas.valores.map(([k, v], j) => celda([
         new Paragraph({ children: [t(k.toUpperCase(), { size: 12, color: GRIS, characterSpacing: 20 })] }),
         new Paragraph({ children: [t(v, { size: 19, bold: true, color: NAVY })] }),
@@ -332,9 +213,9 @@ function revision() {
   return [
     kicker("Para revisión interna", "No va en la versión final"),
     titulo("Notas para la revisión"),
-    parrafo("Lo marcado en amarillo en las fichas está estimado desde las fotos o es un estándar de la industria. Antes de enviar el catálogo hay que validarlo con el taller."),
-    new Paragraph({ spacing: { before: 240, after: 120 }, children: [etiqueta("Por confirmar con el taller")] }),
-    ...lista(r.taller, "taller"),
+    parrafo(r.intro),
+    new Paragraph({ spacing: { before: 240, after: 120 }, children: [etiqueta("Pendiente")] }),
+    ...lista(r.pendientes, "pendientes"),
     new Paragraph({ spacing: { before: 240, after: 120 }, children: [etiqueta("Antes de enviarlo a un club")] }),
     ...lista(r.antesDeEnviar, "enviar"),
     new Paragraph({ spacing: { before: 300 }, shading: { type: ShadingType.CLEAR, color: "auto", fill: "FFF8D6" },
@@ -354,7 +235,7 @@ const pie = new Footer({ children: [new Paragraph({
 })] });
 const vacio = () => new Paragraph({ children: [] });
 
-const numeracion = ["taller", "enviar"].map(reference => ({ reference, levels: [{ level: 0, format: LevelFormat.DECIMAL, text: "%1.",
+const numeracion = ["pendientes", "enviar"].map(reference => ({ reference, levels: [{ level: 0, format: LevelFormat.DECIMAL, text: "%1.",
   alignment: AlignmentType.LEFT, style: { run: { color: ORO, bold: true, font: CUERPO }, paragraph: { indent: { left: 400, hanging: 300 } } } }] }));
 
 const doc = new Document({
