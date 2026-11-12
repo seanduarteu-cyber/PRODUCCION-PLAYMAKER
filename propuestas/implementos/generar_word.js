@@ -143,7 +143,7 @@ function portada() {
     ...(p.estado ? [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 900, after: 80 }, children: [etiqueta(p.estado, ORO, 15)] })] : []),
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: p.estado ? 0 : 900 }, children: [t(p.fecha, { size: 16, color: GRIS })] }),
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 200 },
-      children: [t(`${c.length} productos · ${c.map(f => f.codigo).join(" · ")}`, { size: 14, color: GRIS })] }),
+      children: [t(`${c.length} productos: ${c.slice(0, -1).map(f => f.codigo).join(", ")} y ${c[c.length - 1].codigo}`, { size: 14, color: GRIS })] }),
     salto(),
   ];
 }
@@ -182,7 +182,7 @@ function ficha(f, i) {
       col[1], { borders: bordesFila, verticalAlign: VerticalAlign.TOP }),
   ] }));
   const bloques = [
-    kicker(`Ficha ${String(i + 1).padStart(2, "0")} · ${f.categoria}`, f.codigo),
+    kicker(`Ficha ${String(i + 1).padStart(2, "0")}    ${f.categoria}`, f.codigo),
     titulo(f.titulo),
     bajada(f.bajada),
     fotos(f.fotos.archivos.map(x => x.archivo), f.fotos.altoWord),
@@ -239,7 +239,7 @@ const numeracion = ["pendientes", "enviar"].map(reference => ({ reference, level
   alignment: AlignmentType.LEFT, style: { run: { color: ORO, bold: true, font: CUERPO }, paragraph: { indent: { left: 400, hanging: 300 } } } }] }));
 
 const doc = new Document({
-  creator: "Playmaker · Proeza",
+  creator: "Playmaker y Proeza",
   title: "Catálogo técnico: balones e implementos de rugby",
   styles: { default: { document: { run: { font: CUERPO, size: 18, color: TEXTO } } } },
   numbering: { config: numeracion },

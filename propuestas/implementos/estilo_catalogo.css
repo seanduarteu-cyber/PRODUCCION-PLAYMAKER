@@ -24,6 +24,7 @@ body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-co
        padding-bottom: 7px; border-bottom: 0.6pt solid var(--linea); }
 .cab b { color: var(--oro); font-weight: 600; }
 .cab span { color: var(--gris); }
+.cab b .sep { display: inline-block; width: 16px; }
 .pie { position: absolute; left: 20mm; right: 20mm; bottom: 12mm; display: flex; align-items: center;
        justify-content: space-between; border-top: 0.6pt solid var(--linea); padding-top: 6px;
        font-size: 5.6pt; letter-spacing: 1.6px; color: var(--gris); }

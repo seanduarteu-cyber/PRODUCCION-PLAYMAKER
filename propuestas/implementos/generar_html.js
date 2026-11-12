@@ -73,7 +73,7 @@ function ficha(f, i) {
     </div>
   </div>` : "";
   return `<section class="page">
-  <div class="cab"><b>FICHA ${dos(i + 1)} · ${mayus(f.categoria)}</b><span>${esc(f.codigo)}</span></div>
+  <div class="cab"><b>FICHA ${dos(i + 1)}<span class="sep"></span>${mayus(f.categoria)}</b><span>${esc(f.codigo)}</span></div>
   <h1>${esc(f.titulo)}</h1>
   <p class="bajada">${esc(f.bajada)}</p>
   <div class="fotos ${f.fotos.diseno}">
@@ -114,7 +114,7 @@ const html = `<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Catálogo de implementos de rugby · Playmaker y Proeza</title>
+<title>Catálogo de implementos de rugby de Playmaker y Proeza</title>
 <style>
 ${css}</style>
 </head>

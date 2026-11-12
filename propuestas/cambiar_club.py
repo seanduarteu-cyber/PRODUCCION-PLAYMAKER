@@ -12,6 +12,8 @@ club.json (rutas relativas al JSON):
     "paleta":     [["Verde", "#1F5B3A"], ...]  colores del recuadro PALETA DEL CLUB (hasta 6)
     "fichas":     {"01": {"titulo": "...", "bajada": "...", "bloques": [["CUELLO", "..."], ...]}}
                   bajada y bloques (hasta 6, en dos columnas) de cada ficha; titulo es opcional
+    "simbolos":   [[" · ", "   "]]  se cambian en todo texto que se escribe (incluidos los que no cambian de
+                  otro modo), después de los reemplazos
     "quitar":     ["04", "08"]  fichas que no van: salen sus páginas y sus filas del catálogo y del
                   cuadro de valores, y las demás se renumeran (ficha, código y página)
 Las fichas se nombran siempre con el número de la base de origen; el resultado lleva la numeración
@@ -29,7 +31,7 @@ import pdfplumber
 import pymupdf
 from pypdf import PdfReader
 
-from base_pdf import Capa, Estilo, guardar, partir, runs_de
+from base_pdf import Capa, Estilo, Run, guardar, partir, runs_de
 
 X0, X1 = 58.0, 537.3  # caja de texto de la base
 ZONA_BLOQUES = (480, 700)  # top de etiquetas y textos de los bloques de una ficha
@@ -56,6 +58,24 @@ def parrafos_de(runs):
     return parrafos
 
 
+def separar_marcador(runs):
+    """El rótulo del precio y su marcador "$[00.000]" vienen en un mismo tramo: se separan para poder
+    reescribir el rótulo sin tocar el marcador (que después reemplaza montar_propuesta.py)."""
+    salida = []
+    for r in runs:
+        k = r.texto.find("$[")
+        if k > 0 and r.texto[:k].strip():
+            izq = r.chars[:k]
+            while izq and izq[-1]["text"] == " ":
+                izq = izq[:-1]
+            rotulo = Run(izq)
+            rotulo.fin_derecha = True  # el rótulo nuevo termina donde terminaba el anterior
+            salida += [rotulo, Run(r.chars[k:])]
+        else:
+            salida.append(r)
+    return salida
+
+
 def main(cfg_path):
     cfg_path = Path(cfg_path).resolve()
     cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
@@ -64,13 +84,22 @@ def main(cfg_path):
     reemplazos = cfg.get("reemplazos", [])
 
     with pdfplumber.open(base) as pdf:
-        R = [runs_de(p) for p in pdf.pages]
+        R = [separar_marcador(runs_de(p)) for p in pdf.pages]
         rects = [p.rects for p in pdf.pages]
         trazos = [p.lines for p in pdf.pages]
         w, h = pdf.pages[0].width, pdf.pages[0].height
 
     doc = pymupdf.open(base)
     capa = Capa(len(doc), w, h)
+    simbolos = cfg.get("simbolos", [])
+
+    def limpiar(texto):
+        for viejo, nuevo in simbolos:
+            texto = texto.replace(viejo, nuevo)
+        return texto
+
+    dibujar = capa.texto  # todo lo que se escribe pasa por la limpieza de símbolos
+    capa.texto = lambda pag, e, texto, x, base, modo="izq": dibujar(pag, e, limpiar(texto), x, base, modo)
     tachar = {i: [] for i in range(len(doc))}
     borrar_graficos = set()
     hecho = set()  # tramos ya reescritos (id)
@@ -80,6 +109,8 @@ def main(cfg_path):
         hecho.add(id(run))
 
     def alinear(run, pag):
+        if getattr(run, "fin_derecha", False):
+            return "der", run.x1
         # centrado: su centro es el de la página y no comparte el margen izquierdo con otro texto
         margen_comun = any(o is not run and abs(o.x0 - run.x0) < 1 for o in R[pag])
         if abs((run.x0 + run.x1) / 2 - w / 2) < 3 and run.x0 > X0 + 5 and not margen_comun:
@@ -240,20 +271,7 @@ def main(cfg_path):
                 modo, x = alinear(r, pag)
                 capa.texto(pag, r, codigo_nuevo(r.texto), x, r.base, modo)
 
-    # 5. Nombre del club y demás textos: cada párrafo que cambia se vuelve a armar
-    for pag, runs in enumerate(R):
-        for lineas in parrafos_de([r for r in runs if id(r) not in hecho]):
-            texto = " ".join(r.texto for r in lineas)
-            nuevo = texto
-            for viejo, reemplazo in reemplazos:
-                nuevo = nuevo.replace(viejo, reemplazo)
-            if nuevo == texto:
-                continue
-            n = escribir_parrafo(pag, lineas, nuevo)
-            if n > len(lineas):
-                print(f"    Aviso: página {pag + 1}, «{nuevo[:50]}…» pasa de {len(lineas)} a {n} líneas")
-
-    # 6. Paleta del club
+    # 5. Paleta del club (antes de los textos: sus etiquetas anteriores no se reescriben)
     paleta = cfg.get("paleta")
     if paleta:
         pag = next(i for i, runs in enumerate(R) if any(r.texto == "PALETA DEL CLUB" for r in runs))
@@ -272,7 +290,7 @@ def main(cfg_path):
             color = tuple(int(hexa.lstrip("#")[j:j + 2], 16) / 255 for j in (0, 2, 4))
             capa.rect(pag, color, x0, m0["top"], x0 + m0["width"], m0["bottom"])
             capa.marco(pag, m0["stroking_color"], m0["linewidth"], x0, m0["top"], x0 + m0["width"], m0["bottom"])
-            capa.texto(pag, estilo, f"{nombre} · {hexa.upper()}", x0 + m0["width"] / 2, nombres[0].base, "centro")
+            capa.texto(pag, estilo, f"{nombre} {hexa.upper()}", x0 + m0["width"] / 2, nombres[0].base, "centro")
         # franja de colores bajo el emblema de la portada: mismo largo, un tramo por color
         franja = sorted([r for r in rects[0] if r["fill"] and r["height"] < 12 and r["width"] < 100],
                         key=lambda r: r["x0"])
@@ -288,10 +306,24 @@ def main(cfg_path):
                 if f0["stroke"]:
                     capa.marco(0, f0["stroking_color"], f0["linewidth"], x0, f0["top"], x0 + tramo, f0["bottom"])
 
+    # 6. Nombre del club y demás textos: cada párrafo que cambia se vuelve a armar
+    for pag, runs in enumerate(R):
+        for lineas in parrafos_de([r for r in runs if id(r) not in hecho]):
+            texto = " ".join(r.texto for r in lineas)
+            nuevo = texto
+            for viejo, reemplazo in reemplazos:
+                nuevo = nuevo.replace(viejo, reemplazo)
+            nuevo = limpiar(nuevo)
+            if nuevo == texto:
+                continue
+            n = escribir_parrafo(pag, lineas, nuevo)
+            if n > len(lineas):
+                print(f"    Aviso: página {pag + 1}, «{nuevo[:50]}…» pasa de {len(lineas)} a {n} líneas")
+
     # 7. Lo que quedó con el nombre del club de origen (para revisarlo a mano)
     for pag, runs in enumerate(R):
         for r in runs:
-            if id(r) not in hecho and any(v in r.texto for v, _ in reemplazos):
+            if id(r) not in hecho and any(v in r.texto for v, _ in reemplazos + simbolos):
                 print(f"    Aviso: página {pag + 1} sin cambiar: «{r.texto[:60]}»")
 
     salida.parent.mkdir(parents=True, exist_ok=True)

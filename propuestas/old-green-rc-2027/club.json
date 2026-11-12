@@ -41,6 +41,32 @@
     [
       "Confección en planta propia según lo aprobado, con entregas consolidadas al club.",
       "Al cierre de cada preventa se confecciona lo vendido y se entrega consolidado en el club."
+    ],
+    [
+      "PRECIO SOCIO · IVA INCL.",
+      "PRECIO SOCIO CON IVA"
+    ],
+    [
+      "Playmaker SpA · sduarte@playmaker.cl · +56 9 3928 3323",
+      "Playmaker SpA, sduarte@playmaker.cl, +56 9 3928 3323"
+    ],
+    [
+      " · Validez 30 días",
+      ". Validez: 30 días"
+    ],
+    [
+      "sduarte@playmaker.cl · +56 9 3928 3323 · www.playmaker.cl",
+      "sduarte@playmaker.cl, +56 9 3928 3323, www.playmaker.cl"
+    ],
+    [
+      "—juego, entrenamiento, presentación y abrigo— manteniendo",
+      "(juego, entrenamiento, presentación y abrigo), manteniendo"
+    ]
+  ],
+  "simbolos": [
+    [
+      " · ",
+      "   "
     ]
   ],
   "paleta": [
@@ -75,7 +101,7 @@
   ],
   "fichas": {
     "01": {
-      "titulo": "Camiseta de juego — Local",
+      "titulo": "Camiseta de juego Local",
       "bajada": "Franjas horizontales verde oscuro y verde claro, con mangas y costados granate",
       "bloques": [
         [
@@ -100,12 +126,12 @@
         ],
         [
           "TELA",
-          "Línea PRO — 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
+          "Línea PRO: 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
         ]
       ]
     },
     "02": {
-      "titulo": "Camiseta de juego — Visita 01",
+      "titulo": "Camiseta de juego Visita 01",
       "bajada": "Franjas horizontales granate y verde, con mangas y costados verdes",
       "bloques": [
         [
@@ -130,12 +156,12 @@
         ],
         [
           "TELA",
-          "Línea PRO — 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
+          "Línea PRO: 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
         ]
       ]
     },
     "03": {
-      "titulo": "Camiseta de juego — Visita 02",
+      "titulo": "Camiseta de juego Visita 02",
       "bajada": "Blanca con franjas horizontales verde y granate, mangas granate y costados verdes",
       "bloques": [
         [
@@ -160,7 +186,7 @@
         ],
         [
           "TELA",
-          "Línea PRO — 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
+          "Línea PRO: 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
         ]
       ]
     },
@@ -185,7 +211,7 @@
         ],
         [
           "TELA",
-          "Línea PRO — 100% poliéster sublimado, de secado rápido."
+          "Línea PRO: 100% poliéster sublimado, de secado rápido."
         ]
       ]
     },
