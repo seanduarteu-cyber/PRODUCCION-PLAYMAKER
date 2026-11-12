@@ -1,123 +1,328 @@
 {
   "portada": {
     "kicker": "Catálogo técnico",
-    "titulo": ["Balones e implementos", "de rugby"],
+    "titulo": [
+      "Balones e implementos",
+      "de rugby"
+    ],
     "subtitulo": "Equipamiento de entrenamiento y cancha, personalizado con los colores y el escudo de cada club",
     "estado": "Borrador para revisión",
     "fecha": "Noviembre 2026",
     "tira": [
-      {"archivo": "balon_match_proeza_crouch_bind_set.jpg", "pos": "50% 50%"},
-      {"archivo": "escudo_tackle_palestina.jpg", "pos": "50% 40%"},
-      {"archivo": "aro_tackle_frente.jpg", "pos": "50% 55%"},
-      {"archivo": "protector_poste_curico.jpg", "pos": "50% 45%"}
+      {
+        "archivo": "balon_match_proeza_crouch_bind_set.jpg",
+        "pos": "50% 50%"
+      },
+      {
+        "archivo": "escudo_tackle_palestina.jpg",
+        "pos": "50% 40%"
+      },
+      {
+        "archivo": "aro_tackle_frente.jpg",
+        "pos": "50% 55%"
+      },
+      {
+        "archivo": "protector_poste_curico.jpg",
+        "pos": "50% 45%"
+      }
     ]
   },
   "linea": {
     "titulo": "Equipamiento para entrenar y jugar",
     "intro": "Productos para cubrir el entrenamiento de contacto y la cancha del club: balones de marca propia o personalizados, escudos, sacos y ruedas de tackle, y cubre postes. Cada pieza se fabrica a pedido, con los colores, el escudo y el nombre del club, y con materiales de gran calidad y durabilidad, pensados para el uso diario.",
     "criterios": [
-      ["Exterior", "Lona de PVC 10000, impermeable y lavable; en los escudos, tela de boxeo premium en el lado externo y la espalda."],
-      ["Relleno", "Espuma densidad 21 a 25, firme para el contacto; a pedido, espuma de mayor densidad."],
-      ["Costuras", "Costuras reforzadas en uniones, asas y correas, que son las zonas de mayor exigencia."],
-      ["Personalización", "Colores, escudo, nombre del club y auspiciadores en cada pieza."],
-      ["Fabricación", "A pedido, con el diseño aprobado por el club antes de producir."]
+      [
+        "Exterior",
+        "Lona de PVC 10000, de alto gramaje: resistente, impermeable y lavable."
+      ],
+      [
+        "Relleno",
+        "Espuma densidad 21 a 25, firme para el contacto; a pedido, espuma de mayor densidad."
+      ],
+      [
+        "Costuras",
+        "Costuras reforzadas en uniones, asas y correas, que son las zonas de mayor exigencia."
+      ],
+      [
+        "Personalización",
+        "Colores, escudo, nombre del club y auspiciadores en cada pieza."
+      ],
+      [
+        "Fabricación",
+        "A pedido, con el diseño aprobado por el club antes de producir."
+      ]
     ],
     "notaFotos": "Las fotos de este catálogo muestran trabajos realizados para otros clubes y sirven como referencia de forma y terminaciones. Cada pedido se produce con el diseño propio del club."
   },
   "fichas": [
     {
-      "codigo": "IMP-01", "categoria": "Balones", "titulo": "Balón de rugby Match y entrenamiento",
+      "codigo": "IMP-01",
+      "categoria": "Balones",
+      "titulo": "Balón de rugby Match y entrenamiento",
       "bajada": "Tallas 3, 4 y 5, de caucho premium, con diseño propio o personalizado",
       "usoCorto": "Partido y entrenamiento en todas las categorías",
       "uso": "Partido y entrenamiento en todas las categorías.",
-      "fotos": {"diseno": "grande", "altoWord": 220, "archivos": [
-        {"archivo": "balon_match_proeza.jpg", "pos": "50% 50%"},
-        {"archivo": "balon_condor_cara.jpg", "pos": "50% 60%"},
-        {"archivo": "balon_fucsia_turquesa_1.jpg", "pos": "50% 52%"}]},
+      "fotos": {
+        "diseno": "grande",
+        "altoWord": 220,
+        "archivos": [
+          {
+            "archivo": "balon_match_proeza.jpg",
+            "pos": "50% 50%"
+          },
+          {
+            "archivo": "balon_condor_cara.jpg",
+            "pos": "50% 60%"
+          },
+          {
+            "archivo": "balon_fucsia_turquesa_1.jpg",
+            "pos": "50% 52%"
+          }
+        ]
+      },
       "leyenda": "Diseños de referencia. Hay diseños propios disponibles, o cada balón se produce con los colores, el escudo y las frases del club.",
       "specs": [
-        ["Construcción", "4 paneles cosidos a mano, con la válvula en las costuras."],
-        ["Cubierta", "Caucho premium de gran calidad: multigrip en tallas 5 y 4, y grip tradicional en talla 3. Pensado para todo clima (sol, lluvia, nieve y playa) y para pasto, pasto sintético, tierra y barro."],
-        ["Interior", "Capas de tela laminada que mantienen la forma."],
-        ["Personalización", "A pedido, con los colores, el escudo y los elementos que identifican a la institución. Si no se requiere personalización, hay diseños propios disponibles."],
-        ["Tallas", "Talla 5: match y entrenamiento. Tallas 4 y 3: entrenamiento."]
+        [
+          "Construcción",
+          "4 paneles cosidos a mano, con la válvula en las costuras."
+        ],
+        [
+          "Cubierta",
+          "Caucho premium de gran calidad: multigrip en tallas 5 y 4, y grip tradicional en talla 3. Pensado para todo clima (sol, lluvia, nieve y playa) y para pasto, pasto sintético, tierra y barro."
+        ],
+        [
+          "Interior",
+          "Capas de tela laminada que mantienen la forma."
+        ],
+        [
+          "Personalización",
+          "A pedido, con los colores, el escudo y los elementos que identifican a la institución. Si no se requiere personalización, hay diseños propios disponibles."
+        ],
+        [
+          "Tallas",
+          "Talla 5: match y entrenamiento. Tallas 4 y 3: entrenamiento."
+        ]
       ],
       "medidas": {
         "titulo": "Medidas · talla 5 · dentro del reglamento World Rugby",
-        "valores": [["Circ. longitudinal", "750 mm aprox."], ["Circ. transversal", "595 mm aprox."], ["Peso", "457–460 g"], ["Presión", "9,5–10 psi"]]
+        "valores": [
+          [
+            "Circ. longitudinal",
+            "750 mm aprox."
+          ],
+          [
+            "Circ. transversal",
+            "595 mm aprox."
+          ],
+          [
+            "Peso",
+            "457–460 g"
+          ],
+          [
+            "Presión",
+            "9,5–10 psi"
+          ]
+        ]
       }
     },
     {
-      "codigo": "IMP-02", "categoria": "Contacto", "titulo": "Escudo de tackle",
-      "bajada": "Doble pestaña y perfil anatómico, en PVC 10000 y tela de boxeo premium",
+      "codigo": "IMP-02",
+      "categoria": "Contacto",
+      "titulo": "Escudo de tackle",
+      "bajada": "Doble pestaña y perfil anatómico, en lona de PVC 10000 y relleno densidad 21",
       "usoCorto": "Prácticas de contacto y ejercicios varios",
       "uso": "Entrenamiento de contacto y ejercicios varios.",
-      "fotos": {"diseno": "tres", "altoWord": 300, "archivos": [
-        {"archivo": "escudo_tackle_old_gergel_frente.jpg", "pos": "50% 45%"},
-        {"archivo": "escudo_tackle_frances_espalda.jpg", "pos": "50% 50%"},
-        {"archivo": "escudo_tackle_palestina.jpg", "pos": "50% 45%"}]},
+      "fotos": {
+        "diseno": "tres",
+        "altoWord": 300,
+        "archivos": [
+          {
+            "archivo": "escudo_tackle_old_gergel_frente.jpg",
+            "pos": "50% 45%"
+          },
+          {
+            "archivo": "escudo_tackle_frances_espalda.jpg",
+            "pos": "50% 50%"
+          },
+          {
+            "archivo": "escudo_tackle_palestina.jpg",
+            "pos": "50% 45%"
+          }
+        ]
+      },
       "leyenda": "Lateral con nombre del club, espalda con correas y versión en otros colores. Trabajos realizados para otros clubes.",
       "specs": [
-        ["Forma", "Doble pestaña y perfil anatómico, con cabezal más grueso arriba que protege la cabeza y el hombro de quien lo sostiene."],
-        ["Exterior", "Frente en lona de PVC 10000; lado externo y espalda en tela de boxeo premium. Todo con costuras reforzadas."],
-        ["Relleno", "Espuma densidad 21, probada para un contacto firme y más cómodo para el tackleador. A pedido, espuma de mayor densidad."],
-        ["Ventilación", "20 perforaciones en los laterales que dejan salir el aire con cada impacto: el escudo no rebota y las costuras no se revientan."],
-        ["Agarre", "Dos correas para los brazos en la espalda y manilla lateral de traslado, en cinta de polipropileno con costura reforzada en cruz."],
-        ["Personalización", "Color de la cara de impacto, nombre del club en vertical en el lateral y escudo."],
-        ["Medidas", "Alto 80–90 cm; ancho 40 cm; espesor 20 cm en el cuerpo y 30 cm en el cabezal."]
+        [
+          "Forma",
+          "Doble pestaña y perfil anatómico, con cabezal más grueso arriba que protege la cabeza y el hombro de quien lo sostiene."
+        ],
+        [
+          "Exterior",
+          "Lona de PVC 10000 en todas sus caras, con costuras reforzadas."
+        ],
+        [
+          "Relleno",
+          "Espuma densidad 21, probada para un contacto firme y más cómodo para el tackleador. A pedido, espuma de mayor densidad."
+        ],
+        [
+          "Ventilación",
+          "20 perforaciones en los laterales que dejan salir el aire con cada impacto: el escudo no rebota y las costuras no se revientan."
+        ],
+        [
+          "Agarre",
+          "Dos correas para los brazos en la espalda y manilla lateral de traslado, en cinta de polipropileno con costura reforzada en cruz."
+        ],
+        [
+          "Personalización",
+          "Color de la cara de impacto, nombre del club en vertical en el lateral y escudo."
+        ],
+        [
+          "Medidas",
+          "Alto 80–90 cm; ancho 40 cm; espesor 20 cm en el cuerpo y 30 cm en el cabezal."
+        ]
       ]
     },
     {
-      "codigo": "IMP-03", "categoria": "Contacto", "titulo": "Saco de tackle",
+      "codigo": "IMP-03",
+      "categoria": "Contacto",
+      "titulo": "Saco de tackle",
       "bajada": "Cilindro de contacto en distintas medidas, para tacklear y llevar al suelo",
       "usoCorto": "Prácticas de contacto y ejercicios varios",
       "uso": "Práctica de tackle y llevada al suelo sin un compañero que sostenga, y ejercicios varios.",
-      "fotos": {"diseno": "dos", "altoWord": 360, "archivos": [
-        {"archivo": "sacos_y_protector_stade_francais.jpg", "pos": "50% 72%"},
-        {"archivo": "saco_y_escudo_varc.jpg", "pos": "50% 55%"}]},
+      "fotos": {
+        "diseno": "dos",
+        "altoWord": 360,
+        "archivos": [
+          {
+            "archivo": "sacos_y_protector_stade_francais.jpg",
+            "pos": "50% 72%"
+          },
+          {
+            "archivo": "saco_y_escudo_varc.jpg",
+            "pos": "50% 55%"
+          }
+        ]
+      },
       "leyenda": "Pedidos en distintas medidas y colores. Trabajos realizados para otros clubes.",
       "specs": [
-        ["Forma", "Cilindro con tapa y fondo cosidos y manilla en la tapa para trasladarlo."],
-        ["Exterior", "Lona de PVC 10000; impermeable y lavable."],
-        ["Relleno", "Espuma densidad 25. A pedido, otros tipos de espuma de mayor densidad."],
-        ["Personalización", "Color del cuerpo y escudo o nombre del club en gran formato."],
-        ["Medidas (alto × diámetro)", "Según pedido: 140 × 40 o 45 cm; 120 × 40 cm; 100 × 40 cm; 80 × 45 cm."]
+        [
+          "Forma",
+          "Cilindro con tapa y fondo cosidos y manilla en la tapa para trasladarlo."
+        ],
+        [
+          "Exterior",
+          "Lona de PVC 10000; impermeable y lavable."
+        ],
+        [
+          "Relleno",
+          "Espuma densidad 25. A pedido, otros tipos de espuma de mayor densidad."
+        ],
+        [
+          "Personalización",
+          "Color del cuerpo y escudo o nombre del club en gran formato."
+        ],
+        [
+          "Medidas (alto × diámetro)",
+          "Según pedido: 140 × 40 o 45 cm; 120 × 40 cm; 100 × 40 cm; 80 × 45 cm."
+        ]
       ]
     },
     {
-      "codigo": "IMP-04", "categoria": "Contacto", "titulo": "Rueda de tackle",
+      "codigo": "IMP-04",
+      "categoria": "Contacto",
+      "titulo": "Rueda de tackle",
       "bajada": "Rueda acolchada para tacklear un objetivo en movimiento",
       "usoCorto": "Prácticas de contacto, salida de balón del medio scrum y ejercicios varios",
       "uso": "Se hace rodar para que el jugador la persiga y la tacklee en movimiento; también se usa para la salida de balón del medio scrum y en ejercicios varios.",
-      "fotos": {"diseno": "dos", "altoWord": 360, "archivos": [
-        {"archivo": "aro_tackle_frente.jpg", "pos": "50% 52%"},
-        {"archivo": "aro_tackle_lateral.jpg", "pos": "50% 50%"}]},
+      "fotos": {
+        "diseno": "dos",
+        "altoWord": 360,
+        "archivos": [
+          {
+            "archivo": "aro_tackle_frente.jpg",
+            "pos": "50% 52%"
+          },
+          {
+            "archivo": "aro_tackle_lateral.jpg",
+            "pos": "50% 50%"
+          }
+        ]
+      },
       "leyenda": "Vista frontal y lateral. Trabajo realizado para otro club.",
       "specs": [
-        ["Forma", "Rueda con centro abierto, firme para rodar recto."],
-        ["Exterior", "Lona de PVC 10000 con trama antidesgarro y costuras perimetrales reforzadas."],
-        ["Relleno", "Espuma densidad 21."],
-        ["Personalización", "Nombre y logo del club en una o dos caras, según pedido."],
-        ["Medidas", "Diámetro exterior 90 cm; espesor de la rueda 25 cm."]
+        [
+          "Forma",
+          "Rueda con centro abierto, firme para rodar recto."
+        ],
+        [
+          "Exterior",
+          "Lona de PVC 10000 con trama antidesgarro y costuras perimetrales reforzadas."
+        ],
+        [
+          "Relleno",
+          "Espuma densidad 21."
+        ],
+        [
+          "Personalización",
+          "Nombre y logo del club en una o dos caras, según pedido."
+        ],
+        [
+          "Medidas",
+          "Diámetro exterior 90 cm; espesor de la rueda 25 cm."
+        ]
       ]
     },
     {
-      "codigo": "IMP-05", "categoria": "Cancha", "titulo": "Cubre poste",
+      "codigo": "IMP-05",
+      "categoria": "Cancha",
+      "titulo": "Cubre poste",
       "bajada": "Funda acolchada de sección cuadrada, de 2 a 4 caras para el club y sus auspiciadores",
       "usoCorto": "Protección de los jugadores en la base de los postes de las H",
       "uso": "Protege a los jugadores en los choques contra la base de los postes de las H.",
-      "fotos": {"diseno": "dos", "altoWord": 360, "archivos": [
-        {"archivo": "protector_poste_curico.jpg", "pos": "50% 48%"},
-        {"archivo": "protector_poste_auspiciador.jpg", "pos": "50% 50%"}]},
+      "fotos": {
+        "diseno": "dos",
+        "altoWord": 360,
+        "archivos": [
+          {
+            "archivo": "protector_poste_curico.jpg",
+            "pos": "50% 48%"
+          },
+          {
+            "archivo": "protector_poste_auspiciador.jpg",
+            "pos": "50% 50%"
+          }
+        ]
+      },
       "leyenda": "Cara con el escudo del club y cara con auspiciador. Trabajos realizados para otros clubes.",
       "specs": [
-        ["Forma", "Sección cuadrada con abertura central para el poste y tapa superior."],
-        ["Exterior", "Lona de PVC 10000 con trama antidesgarro, apta para estar a la intemperie."],
-        ["Relleno", "Espuma densidad 21."],
-        ["Cierre", "Cierre interno y velcro."],
-        ["Terminaciones", "Hecho para distintas zonas climáticas, con costuras reforzadas y telas de gran calidad que disminuyen la entrada de agua a la espuma."],
-        ["Personalización", "De 2 a 4 caras se estampan con escudo, nombre del club y auspiciadores; un auspiciador puede financiar el set."],
-        ["Venta y medidas", "Set de 4 cubre postes por cancha, dos por cada H; alto 1,8 m y 50 cm por cara."]
+        [
+          "Forma",
+          "Sección cuadrada con abertura central para el poste y tapa superior."
+        ],
+        [
+          "Exterior",
+          "Lona de PVC 10000 con trama antidesgarro, apta para estar a la intemperie."
+        ],
+        [
+          "Relleno",
+          "Espuma densidad 21."
+        ],
+        [
+          "Cierre",
+          "Cierre interno y velcro."
+        ],
+        [
+          "Terminaciones",
+          "Hecho para distintas zonas climáticas, con costuras reforzadas y telas de gran calidad que disminuyen la entrada de agua a la espuma."
+        ],
+        [
+          "Personalización",
+          "De 2 a 4 caras se estampan con escudo, nombre del club y auspiciadores; un auspiciador puede financiar el set."
+        ],
+        [
+          "Venta y medidas",
+          "Set de 4 cubre postes por cancha, dos por cada H; alto 1,8 m y 50 cm por cara."
+        ]
       ]
     }
   ],
@@ -128,7 +333,7 @@
       "Mínimo por diseño personalizado y plazo de entrega de cada producto.",
       "Si la pieza cuadrada del pedido de Stade Français es un cubre poste o un saco de sección cuadrada.",
       "Si el tee de pateo azul que aparece bajo los balones también es parte de la oferta.",
-      "Si el saco de tackle también se ofrece en cuero sintético, como el saco negro de la foto."
+      "Si el saco negro (VARC) y la espalda del escudo (Francés) de las fotos son de cuero sintético, que ya no se fabrica: en ese caso, cambiarlas por fotos de piezas en PVC 10000."
     ],
     "antesDeEnviar": [
       "Las fotos muestran el nombre y el escudo de otros clubes. Para la versión final: montajes con los colores y el escudo del club, o permiso de esos clubes para mostrarlos como trabajos realizados.",
