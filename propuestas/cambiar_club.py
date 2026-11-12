@@ -79,8 +79,10 @@ def main(cfg_path):
         tachar[pag].append((run.x0 - 1, run.top - 1.5, run.x1 + 1, run.top + run.size * alto))
         hecho.add(id(run))
 
-    def alinear(run):
-        if abs((run.x0 + run.x1) / 2 - w / 2) < 3 and run.x0 > X0 + 5:
+    def alinear(run, pag):
+        # centrado: su centro es el de la página y no comparte el margen izquierdo con otro texto
+        margen_comun = any(o is not run and abs(o.x0 - run.x0) < 1 for o in R[pag])
+        if abs((run.x0 + run.x1) / 2 - w / 2) < 3 and run.x0 > X0 + 5 and not margen_comun:
             return "centro", w / 2
         if abs(run.x1 - X1) < 1.5 and run.x0 > X0 + 5:
             return "der", run.x1
@@ -92,7 +94,7 @@ def main(cfg_path):
         for r in lineas:
             borrar(pag, r, alto=1.35)
         if len(lineas) == 1:
-            modo, x = alinear(e)
+            modo, x = alinear(e, pag)
             if modo != "izq" or capa.ancho(e, texto) <= (ancho or X1 - e.x0):
                 capa.texto(pag, e, texto, x, e.base, modo)
                 return 1
@@ -215,7 +217,7 @@ def main(cfg_path):
                 texto = f"Ficha {nuevo_num[texto[-2:]]}"
             if patron.fullmatch(r.texto):
                 quedan.append((categoria, top))
-            modo, x = alinear(r)
+            modo, x = alinear(r, pag)
             capa.texto(pag, r, texto, x, r.base + (r.top - top), modo)
         if cebra:
             fila0 = min(filas, key=lambda r: abs(r.top - cebra[0]["top"]))
@@ -235,7 +237,7 @@ def main(cfg_path):
         for r in runs:
             if id(r) not in hecho and patron.search(r.texto):
                 borrar(pag, r)
-                modo, x = alinear(r)
+                modo, x = alinear(r, pag)
                 capa.texto(pag, r, codigo_nuevo(r.texto), x, r.base, modo)
 
     # 5. Nombre del club y demás textos: cada párrafo que cambia se vuelve a armar
