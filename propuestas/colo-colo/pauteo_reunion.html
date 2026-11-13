@@ -1,0 +1,297 @@
+<!doctype html>
+<!--
+  Pauteo de la reunión con Edmundo Valladares, presidente del CSD Colo-Colo (para imprimir).
+  Exportar a PDF:  bash propuestas/html_a_pdf.sh propuestas/colo-colo/pauteo_reunion.html propuestas/colo-colo/Pauteo_Reunion_CSD_Colo_Colo.pdf
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pauteo de reunión con el CSD Colo-Colo</title>
+<style>
+  @font-face { font-family: "Poppins"; font-weight: 400; src: url("../_recursos/fonts/Poppins-Regular.ttf"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; src: url("../_recursos/fonts/Poppins-SemiBold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 700; src: url("../_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+  @page { size: A4; margin: 0; }
+  :root { --navy: #141E3C; --oro: #B1A542; --marfil: #F7F3E7; --texto: #1C2233; --suave: #3A3F52; --gris: #6E7280; --linea: #CFCABB; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #fff; }
+  body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; padding: 14mm 16mm 0; page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+
+  .cab { display: flex; justify-content: space-between; align-items: center; padding-bottom: 7px; border-bottom: 0.8pt solid var(--oro); }
+  .cab img { height: 15px; }
+  .cab span { font-size: 6.6pt; letter-spacing: 2.4px; color: var(--gris); }
+  .kicker { font-size: 7.4pt; font-weight: 600; letter-spacing: 3px; color: var(--oro); margin-top: 11px; }
+  h1 { font-family: "Playfair"; font-weight: 700; font-size: 21pt; color: var(--navy); line-height: 1.15; margin-top: 4px; }
+  .bajada { font-family: "Playfair"; font-style: italic; font-size: 10.5pt; color: #8A8672; margin-top: 3px; }
+
+  .ficha { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 11px; border: 0.6pt solid var(--linea); }
+  .ficha div { padding: 6px 9px; border-right: 0.6pt solid var(--linea); }
+  .ficha div:last-child { border-right: 0; }
+  .ficha small { display: block; font-size: 6pt; letter-spacing: 1.6px; color: var(--gris); font-weight: 600; }
+  .ficha p { font-size: 8.2pt; line-height: 1.4; margin-top: 2px; }
+
+  .caja-navy { margin-top: 11px; background: var(--navy); color: var(--marfil); padding: 10px 13px; font-size: 8.8pt; line-height: 1.55; }
+  .caja-navy b { color: var(--oro); font-size: 6.8pt; letter-spacing: 2px; display: block; margin-bottom: 3px; }
+  .caja-navy .cita { font-family: "Playfair"; font-style: italic; font-size: 10.5pt; line-height: 1.5; }
+
+  h2 { font-size: 7.4pt; font-weight: 600; letter-spacing: 2.4px; color: var(--oro); margin-top: 13px; padding-bottom: 5px; border-bottom: 0.6pt solid var(--linea); }
+  h2 em { font-style: normal; color: var(--navy); margin-right: 8px; }
+  h3 { font-size: 7pt; font-weight: 600; letter-spacing: 1.6px; color: var(--navy); margin: 8px 0 3px; }
+  p.texto { font-size: 8.4pt; line-height: 1.55; color: var(--suave); margin-top: 6px; }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  ul.puntos { list-style: none; margin-top: 6px; }
+  ul.puntos li { font-size: 8.1pt; line-height: 1.45; color: var(--suave); padding-left: 11px; position: relative; margin-bottom: 4px; }
+  ul.puntos li::before { content: ""; position: absolute; left: 0; top: 5px; width: 4px; height: 4px; background: var(--oro); }
+  ul.puntos.no li::before { background: #B4483A; }
+  ul.check { list-style: none; margin-top: 6px; }
+  ul.check li { font-size: 8.1pt; line-height: 1.45; color: var(--suave); padding-left: 16px; position: relative; margin-bottom: 5px; }
+  ul.check li::before { content: ""; position: absolute; left: 0; top: 2px; width: 8px; height: 8px; border: 0.8pt solid var(--navy); }
+  b.si { color: #2F6B3A; } b.ojo { color: #9A6A00; } b.no { color: #B4483A; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 7px; }
+  th { background: var(--navy); color: var(--marfil); font-size: 6.4pt; letter-spacing: 1.4px; font-weight: 600; padding: 5px 8px; text-align: left; }
+  td { border-bottom: 0.6pt solid var(--linea); padding: 6px 8px; font-size: 8pt; line-height: 1.45; color: var(--suave); vertical-align: top; }
+  td.min { width: 15mm; font-weight: 600; color: var(--navy); white-space: nowrap; }
+  td.que { width: 40mm; font-weight: 600; color: var(--navy); }
+  tr:nth-child(even) td { background: #F7F6F2; }
+
+  .guion { margin-top: 8px; background: var(--marfil); border-left: 3px solid var(--oro); padding: 10px 13px; }
+  .guion p { font-family: "Playfair"; font-style: italic; font-size: 10pt; line-height: 1.6; color: var(--texto); margin-bottom: 6px; }
+  .guion p:last-child { margin-bottom: 0; }
+  .nota { font-size: 7.4pt; color: var(--gris); margin-top: 5px; font-style: italic; }
+
+  .preg { margin-top: 6px; }
+  .preg p { font-size: 8.1pt; line-height: 1.45; color: var(--suave); padding: 4px 0; border-bottom: 0.4pt dotted var(--linea); }
+  .lineas div { height: 6.6mm; border-bottom: 0.6pt solid var(--linea); }
+
+  .pie { position: absolute; left: 16mm; right: 16mm; bottom: 10mm; display: flex; justify-content: space-between;
+         border-top: 0.6pt solid var(--linea); padding-top: 5px; font-size: 6pt; letter-spacing: 1.4px; color: var(--gris); }
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="page">
+  <div class="cab"><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span>USO INTERNO</span></div>
+  <div class="kicker">PAUTEO DE REUNIÓN</div>
+  <h1>Reunión con Edmundo Valladares, presidente del CSD Colo-Colo</h1>
+  <p class="bajada">Postular a vestir las ramas del club desde la temporada 2027</p>
+
+  <div class="ficha">
+    <div><small>LUGAR</small><p>Estadio Monumental, Av. Marathon 5300, Macul</p></div>
+    <div><small>FECHA Y HORA</small><p>&nbsp;</p></div>
+    <div><small>ASISTE</small><p>Sean Duarte, dueño y CEO de Playmaker</p></div>
+    <div><small>DURACIÓN</small><p>30 a 40 minutos</p></div>
+  </div>
+
+  <div class="caja-navy"><b>OBJETIVO</b>Volver a estar en la conversación para vestir las ramas del CSD desde 2027, ahora que termina
+    el contrato con Macron, y salir con un siguiente paso concreto: proceso de decisión, reunión técnica y fecha para presentar la propuesta.</div>
+
+  <div class="caja-navy"><b>MENSAJE CENTRAL</b><span class="cita">"En 2022 usted confió en Playmaker para vestir las ramas del club.
+    Con el cambio de directiva se fue a otra marca. Hoy queremos volver y postular a la temporada 2027, con todo lo que crecimos desde entonces."</span></div>
+
+  <div class="dos">
+    <div>
+      <h2>CÓMO IR VESTIDO</h2>
+      <p class="texto">Como dueño de la marca, lo que te pongas también presenta a Playmaker. La idea es verte cómodo, ordenado
+        y fiel a una marca deportiva: sin camisa ni zapatos, pero con todo en buen estado y en los colores correctos.</p>
+      <ul class="puntos">
+        <li><b>Arriba:</b> polo o polera de buena calidad en negro, idealmente de Playmaker, con el logo discreto.</li>
+        <li><b>Abrigo, si hace falta:</b> polerón de medio cierre o chaqueta liviana en negro o gris oscuro.</li>
+        <li><b>Abajo:</b> jeans negros o gris oscuro, o chino gris, sin roturas.</li>
+        <li><b>Zapatillas:</b> urbanas de cuero, blancas o negras, limpias y sin logos grandes.</li>
+        <li><b>Detalles:</b> reloj sobrio y nada de jockey.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>QUÉ EVITAR EN LA ROPA</h2>
+      <ul class="puntos no">
+        <li><b>Azul en cualquier tono,</b> sobre todo azul marino o rey: es el color de la U. Por eso, nada del jeans azul con polera azul marino.</li>
+        <li><b>Logos de otras marcas,</b> en especial Macron, la marca actual de las ramas.</li>
+        <li><b>Camisetas o colores de otros clubes,</b> incluidos los que viste Playmaker.</li>
+        <li><b>Ropa de entrenamiento o zapatillas de running:</b> se ve descuidado para una reunión con el presidente.</li>
+      </ul>
+      <h2>QUÉ LLEVAR</h2>
+      <ul class="check">
+        <li>Polera de regalo para él, en negro o blanco, con su nombre y una tarjeta escrita a mano.</li>
+        <li>Muestras de futsal, vóleibol y básquetbol, ordenadas por rama.</li>
+        <li>Hoja resumen para dejarle y tarjetas de presentación.</li>
+        <li>Renders de concepto de las tres ramas en blanco y negro (opcional).</li>
+        <li>Libreta y lápiz para anotar acuerdos.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pie"><span>PLAYMAKER SPA. PAUTEO DE REUNIÓN PARA USO INTERNO.</span><span>1 DE 4</span></div>
+</section>
+
+<!-- 2 -->
+<section class="page">
+  <div class="cab"><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span>CSD COLO-COLO</span></div>
+
+  <div class="dos">
+    <div>
+      <h2>A QUIÉN VAS A VER</h2>
+      <ul class="puntos">
+        <li>Edmundo Valladares, periodista nacido en Chiloé en 1981, con magíster en Comunicación Estratégica.</li>
+        <li>Socio desde 1996. Viene del mundo de los hinchas: participó en el movimiento "19 de Abril" tras la quiebra de 2002 y fundó la Filial Ñuñoa.</li>
+        <li>Presidió el CSD entre 2019 y 2022, y volvió el 31 de marzo de 2025 con una votación amplia.</li>
+        <li>Director en Blanco y Negro desde 2018; fue su presidente entre 2021 y 2022.</li>
+        <li>Fue quien trajo a Playmaker a las ramas en 2022.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>LO QUE LE IMPORTA</h2>
+      <ul class="puntos">
+        <li>Fortalecer el CSD para recuperar la mayoría del club en 2035.</li>
+        <li>Que Colo-Colo no sea solo el fútbol masculino: ramas, fútbol femenino, socios y filiales.</li>
+        <li>La institucionalidad: reforma de estatutos con grupos de trabajo por filial y cabildos.</li>
+        <li>Rechaza que un solo accionista controle Blanco y Negro.</li>
+        <li>Como periodista, valora la historia, la identidad y un relato bien contado.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>CONTEXTO DE LA OPORTUNIDAD</h2>
+  <ul class="puntos">
+    <li>Desde julio de 2022 Playmaker vistió las ramas de futsal, vóleibol y básquetbol, con la campaña "A morir por el Colo" y venta en la tienda del CSD.</li>
+    <li>Con el cambio de directiva, desde 2024 las ramas pasaron a Macron (futsal, básquetbol, vóleibol y patín carrera). Fue un cambio de directiva, no de desempeño.</li>
+    <li>Valladares volvió en 2025 y el contrato con Macron termina a fines de 2026: el club tiene que definir proveedor para 2027.</li>
+    <li>Hoy Playmaker no viste ninguna rama del CSD; ha tenido acercamientos con jugadores, no con las ramas.</li>
+    <li>El primer equipo lo maneja Blanco y Negro y lo viste Adidas hasta 2032. No es tema de esta reunión.</li>
+  </ul>
+
+  <h2>PAUTEO MINUTO A MINUTO</h2>
+  <table>
+    <tr><th>MINUTO</th><th>QUÉ</th><th>CÓMO</th></tr>
+    <tr><td class="min">-15</td><td class="que">Llegada</td><td>Llega 15 minutos antes, con las muestras ordenadas y el regalo listo. Celular en silencio.</td></tr>
+    <tr><td class="min">0 a 3</td><td class="que">Saludo y regalo</td><td>Apretón de manos, gracias por recibirte y entrega del regalo en un minuto, sin discurso. Trátalo de usted hasta que él te tutee.</td></tr>
+    <tr><td class="min">3 a 6</td><td class="que">Tu presentación</td><td>El guion de la página 3, con tus palabras. Termina con una pregunta para que hable él.</td></tr>
+    <tr><td class="min">6 a 18</td><td class="que">Escuchar</td><td>Las preguntas clave. Anota, repregunta y no interrumpas. Es la parte más importante.</td></tr>
+    <tr><td class="min">18 a 25</td><td class="que">Muestras</td><td>Una rama a la vez. Que toque las telas mientras explicas en una frase cada tecnología.</td></tr>
+    <tr><td class="min">25 a 32</td><td class="que">Tus ideas</td><td>Volver a vestir las ramas en 2027 y, además, la línea para socios y filiales con royalty para el CSD.</td></tr>
+    <tr><td class="min">32 a 35</td><td class="que">Cierre</td><td>Repite en voz alta los acuerdos, con responsables y fechas. Entrega la hoja resumen.</td></tr>
+    <tr><td class="min">Mismo día</td><td class="que">Seguimiento</td><td>Mensaje corto de agradecimiento. En 48 horas, correo con el resumen y los acuerdos.</td></tr>
+  </table>
+  <div class="pie"><span>PLAYMAKER SPA. PAUTEO DE REUNIÓN PARA USO INTERNO.</span><span>2 DE 4</span></div>
+</section>
+
+<!-- 3 -->
+<section class="page">
+  <div class="cab"><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span>CSD COLO-COLO</span></div>
+
+  <h2><em>1</em>TU PRESENTACIÓN (GUION BASE)</h2>
+  <div class="guion">
+    <p>"Edmundo, muchas gracias por recibirme. Soy Sean Duarte, dueño de Playmaker. Somos una marca chilena de indumentaria
+      deportiva: diseñamos y fabricamos en nuestra propia planta en Santiago, con sublimación propia. Eso nos permite controlar
+      la calidad y los plazos de principio a fin."</p>
+    <p>"Usted nos conoce: en 2022 vestimos las ramas de futsal, vóleibol y básquetbol del club, con la campaña 'A morir por el Colo'.
+      Con el cambio de directiva el club se fue a otra marca, y hoy, con su regreso y el contrato actual terminando a fin de año,
+      quiero que Playmaker vuelva a estar en la conversación para 2027."</p>
+    <p>"Antes de mostrarle nada, me gustaría escucharlo: ¿qué necesita hoy el club de su proveedor?"</p>
+  </div>
+  <p class="nota">No lo leas: apréndete las ideas y dilo con tus palabras. Debe durar menos de dos minutos.</p>
+
+  <h2><em>2</em>PREGUNTAS CLAVE</h2>
+  <div class="dos">
+    <div class="preg">
+      <h3>EL PROCESO</h3>
+      <p>¿Cuándo termina exactamente el contrato con Macron y qué incluye?</p>
+      <p>¿Cómo van a elegir al proveedor de 2027: licitación, invitación a marcas o decisión del directorio?</p>
+      <p>¿Quién más participa: gerencia, comisión de ramas, entrenadores?</p>
+      <p>¿Para qué fecha necesitan la ropa de la temporada 2027?</p>
+    </div>
+    <div class="preg">
+      <h3>LAS NECESIDADES</h3>
+      <p>¿Qué ramas entran y cuántos jugadores y staff tiene cada una?</p>
+      <p>¿Qué les funcionó y qué no con la marca actual?</p>
+      <p>¿Qué es lo más importante para usted en un proveedor: precio, calidad, plazos o diseño?</p>
+      <p>¿Cómo funciona hoy la tienda del CSD y qué le gustaría mejorar?</p>
+    </div>
+  </div>
+
+  <h2><em>3</em>LAS MUESTRAS (UNA FRASE POR RAMA)</h2>
+  <ul class="puntos">
+    <li><b>Futsal:</b> tela liviana de secado rápido y sublimación total: el diseño no se despega ni se agrieta con el uso o el lavado.</li>
+    <li><b>Vóleibol:</b> corte ajustado para hombre y mujer, y espalda microperforada para respirar mejor.</li>
+    <li><b>Básquetbol:</b> camiseta sin mangas con tela y malla de secado rápido; también se puede hacer reversible para entrenar.</li>
+  </ul>
+
+  <h2><em>4</em>TUS IDEAS PARA EL CLUB</h2>
+  <div class="dos">
+    <div>
+      <h3>VESTIR LAS RAMAS DESDE 2027</h3>
+      <ul class="puntos">
+        <li>Diseño propio para cada rama, aprobado por el club.</li>
+        <li>Producción en Santiago, en 10 a 15 días hábiles.</li>
+        <li>Venta de las camisetas de las ramas en la tienda del CSD.</li>
+        <li>La propuesta formal (canje, precios y cantidades) va por escrito, después de la reunión técnica.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>LÍNEA PARA SOCIOS Y FILIALES</h3>
+      <ul class="puntos">
+        <li>Preventa oficial en playmaker.cl, sin stock para el club.</li>
+        <li>Royalty por tramos para el CSD, con liquidación transparente de cada venta.</li>
+        <li>Líneas por filial con el escudo oficial, aprobadas por el CSD.</li>
+        <li>No compite con Adidas y le da un ingreso propio a la corporación.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pie"><span>PLAYMAKER SPA. PAUTEO DE REUNIÓN PARA USO INTERNO.</span><span>3 DE 4</span></div>
+</section>
+
+<!-- 4 -->
+<section class="page">
+  <div class="cab"><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span>CSD COLO-COLO</span></div>
+
+  <h2><em>5</em>QUÉ DECIR DE OTROS CLUBES</h2>
+  <table>
+    <tr><th>CLUB</th><th>QUÉ HACER</th><th>POR QUÉ</th></tr>
+    <tr><td class="que">Boston College (vóleibol)</td><td><b class="si">Mencionarlo</b></td><td>Es una referencia vigente, en una de sus ramas y sin rivalidad.</td></tr>
+    <tr><td class="que">Universidad de Chile (futsal)</td><td><b class="ojo">Solo si pregunta</b></td><td>Es el rival histórico y en la misma rama. Si sale, sé transparente: cada club tiene diseños propios y todo se maneja con confidencialidad.</td></tr>
+    <tr><td class="que">Los Leones de Quilpué (básquetbol)</td><td><b class="no">No mencionarlo</b></td><td>Es una conversación en curso, y es el rival con el que la rama de básquetbol tuvo incidentes en la final de 2025.</td></tr>
+  </table>
+  <p class="nota">Frase sugerida: "Vestimos clubes de primera división en vóleibol y futsal, como Boston College, y equipos de varias disciplinas en todo Chile."</p>
+
+  <h2><em>6</em>SI TE PREGUNTA</h2>
+  <table>
+    <tr><th>PREGUNTA</th><th>RESPUESTA SUGERIDA</th></tr>
+    <tr><td class="que">¿Por qué volver a Playmaker?</td><td>Conocemos al club y su identidad, fabricamos en Chile con control total de plazos y calidad, y hoy tenemos más experiencia que en 2022.</td></tr>
+    <tr><td class="que">¿Cuánto cuesta?</td><td>Depende de las ramas, cantidades y prendas. Lo presentamos por escrito después de la reunión técnica, en la fecha que acordemos.</td></tr>
+    <tr><td class="que">¿Pueden cumplir los plazos?</td><td>Producimos en nuestra planta en Santiago, en 10 a 15 días hábiles desde la aprobación del diseño.</td></tr>
+    <tr><td class="que">¿Qué ofrecen en canje?</td><td>Lo vemos en la propuesta, según las ramas y sus necesidades. Hoy vengo a escuchar.</td></tr>
+  </table>
+
+  <div class="dos">
+    <div>
+      <h2><em>7</em>TEMAS A EVITAR</h2>
+      <ul class="puntos no">
+        <li>Política interna: Blanco y Negro, Mosa, la elección o el primer equipo. Si él lo saca, escucha sin opinar.</li>
+        <li>Hablar mal de Macron o de la directiva anterior.</li>
+        <li>Prometer montos, canjes o exclusividades en esta reunión.</li>
+        <li>Los incidentes de la rama de básquetbol.</li>
+      </ul>
+    </div>
+    <div>
+      <h2><em>8</em>NO TE VAYAS SIN</h2>
+      <ul class="check">
+        <li>El proceso y la fecha de decisión del proveedor 2027.</li>
+        <li>Las bases o requisitos, si existen.</li>
+        <li>Una reunión técnica con quien coordina las ramas.</li>
+        <li>Una fecha para entregar tu propuesta, en dos o tres semanas.</li>
+        <li>El contacto directo de quien hará el seguimiento.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>ACUERDOS DE LA REUNIÓN</h2>
+  <div class="lineas"><div></div><div></div><div></div><div></div><div></div></div>
+  <div class="pie"><span>PLAYMAKER SPA. PAUTEO DE REUNIÓN PARA USO INTERNO.</span><span>4 DE 4</span></div>
+</section>
+
+</body>
+</html>
