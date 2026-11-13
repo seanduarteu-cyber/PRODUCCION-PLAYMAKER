@@ -1,0 +1,125 @@
+<!doctype html>
+<!--
+  Minuta de la primera reunión (virtual) con Club Deportivo Colegio Los Leones de Quilpué.
+  Se puede compartir con el club; después de la reunión se completan los acuerdos y se envía como acta.
+  Exportar a PDF:  bash propuestas/html_a_pdf.sh propuestas/leones-quilpue/minuta_reunion.html propuestas/leones-quilpue/Minuta_Reunion_Leones_Quilpue.pdf
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Minuta de reunión con Los Leones de Quilpué</title>
+<style>
+  @font-face { font-family: "Poppins"; font-weight: 400; src: url("../_recursos/fonts/Poppins-Regular.ttf"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; src: url("../_recursos/fonts/Poppins-SemiBold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 700; src: url("../_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+  @page { size: A4; margin: 0; }
+  :root { --navy: #141E3C; --oro: #B1A542; --marfil: #F7F3E7; --texto: #1C2233; --suave: #3A3F52; --gris: #6E7280; --linea: #CFCABB; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #fff; }
+  body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; padding: 14mm 16mm 0; }
+
+  .cab { display: flex; justify-content: space-between; align-items: center; padding-bottom: 7px; border-bottom: 0.8pt solid var(--oro); }
+  .cab img { height: 15px; }
+  .cab span { font-size: 6.6pt; letter-spacing: 2.4px; color: var(--gris); }
+  .kicker { font-size: 7.4pt; font-weight: 600; letter-spacing: 3px; color: var(--oro); margin-top: 11px; }
+  h1 { font-family: "Playfair"; font-weight: 700; font-size: 20pt; color: var(--navy); line-height: 1.15; margin-top: 4px; }
+  .bajada { font-family: "Playfair"; font-style: italic; font-size: 10.5pt; color: #8A8672; margin-top: 3px; }
+
+  .ficha { display: grid; grid-template-columns: 1fr 1fr 1.25fr 1.25fr; margin-top: 10px; border: 0.6pt solid var(--linea); }
+  .ficha div { padding: 6px 9px; border-right: 0.6pt solid var(--linea); }
+  .ficha div:last-child { border-right: 0; }
+  .ficha small { display: block; font-size: 6pt; letter-spacing: 1.6px; color: var(--gris); font-weight: 600; }
+  .ficha p { font-size: 8.2pt; line-height: 1.4; margin-top: 2px; min-height: 11px; }
+
+  .objetivo { margin-top: 10px; background: var(--navy); color: var(--marfil); padding: 9px 13px; font-size: 8.8pt; line-height: 1.55; }
+  .objetivo b { color: var(--oro); font-size: 6.8pt; letter-spacing: 2px; display: block; margin-bottom: 2px; }
+
+  h2 { font-size: 7.4pt; font-weight: 600; letter-spacing: 2.4px; color: var(--oro); margin-top: 12px; padding-bottom: 5px; border-bottom: 0.6pt solid var(--linea); }
+  table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  th { background: var(--navy); color: var(--marfil); font-size: 6.4pt; letter-spacing: 1.4px; font-weight: 600; padding: 5px 8px; text-align: left; }
+  td { border-bottom: 0.6pt solid var(--linea); padding: 5px 8px; font-size: 8.1pt; line-height: 1.45; color: var(--suave); vertical-align: top; }
+  td.min { width: 22mm; font-weight: 600; color: var(--navy); white-space: nowrap; }
+  td.que { width: 58mm; font-weight: 600; color: var(--navy); }
+  tr:nth-child(even) td { background: #F7F6F2; }
+
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  ul.puntos { list-style: none; margin-top: 6px; }
+  ul.puntos li { font-size: 8.1pt; line-height: 1.45; color: var(--suave); padding-left: 11px; position: relative; margin-bottom: 4px; }
+  ul.puntos li::before { content: ""; position: absolute; left: 0; top: 5px; width: 4px; height: 4px; background: var(--oro); }
+  ul.puntos li b { color: var(--navy); }
+
+  table.acuerdos td { height: 8.4mm; }
+  table.acuerdos td:nth-child(1) { width: 8mm; color: var(--gris); font-weight: 600; }
+  table.acuerdos td:nth-child(3) { width: 45mm; }
+  table.acuerdos td:nth-child(4) { width: 30mm; }
+  table.acuerdos tr:nth-child(even) td { background: none; }
+
+  .pie { position: absolute; left: 16mm; right: 16mm; bottom: 10mm; display: flex; justify-content: space-between;
+         border-top: 0.6pt solid var(--linea); padding-top: 5px; font-size: 6pt; letter-spacing: 1.4px; color: var(--gris); }
+</style>
+</head>
+<body>
+<section class="page">
+  <div class="cab"><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span>MINUTA DE REUNIÓN</span></div>
+  <div class="kicker">PRIMERA REUNIÓN</div>
+  <h1>Playmaker y Club Deportivo Colegio Los Leones de Quilpué</h1>
+  <p class="bajada">Indumentaria del club para la temporada 2027</p>
+
+  <div class="ficha">
+    <div><small>FECHA</small><p>13 de noviembre de 2026</p></div>
+    <div><small>FORMATO</small><p>Videollamada, 45 minutos</p></div>
+    <div><small>POR PLAYMAKER</small><p>Sean Duarte, dueño y CEO</p></div>
+    <div><small>POR EL CLUB</small><p>&nbsp;</p></div>
+  </div>
+
+  <div class="objetivo"><b>OBJETIVO</b>Conocer los objetivos del club para 2027 y sus necesidades de indumentaria, presentar a Playmaker
+    y acordar los próximos pasos para preparar una propuesta a la medida del club.</div>
+
+  <h2>AGENDA</h2>
+  <table>
+    <tr><th>MINUTOS</th><th>TEMA</th><th>CONTENIDO</th></tr>
+    <tr><td class="min">0 a 5</td><td class="que">Presentación de los participantes</td><td>Quiénes participan por cada parte y su rol.</td></tr>
+    <tr><td class="min">5 a 10</td><td class="que">Playmaker</td><td>Quiénes somos, cómo trabajamos y con qué clubes trabajamos.</td></tr>
+    <tr><td class="min">10 a 30</td><td class="que">El club y sus necesidades</td><td>Objetivos para 2027, indumentaria actual y lo que necesitan en cada equipo y categoría.</td></tr>
+    <tr><td class="min">30 a 40</td><td class="que">Ideas de trabajo conjunto</td><td>Primeros equipos, categorías formativas y tienda oficial para hinchas.</td></tr>
+    <tr><td class="min">40 a 45</td><td class="que">Acuerdos y próximos pasos</td><td>Responsables y fechas.</td></tr>
+  </table>
+
+  <div class="dos">
+    <div>
+      <h2>TEMAS A CONVERSAR</h2>
+      <ul class="puntos">
+        <li><b>Objetivos 2027:</b> primeros equipos femenino y masculino, categorías formativas y competencias.</li>
+        <li><b>Indumentaria actual:</b> qué incluye, qué ha funcionado y qué mejorarían, y cuándo termina el acuerdo vigente.</li>
+        <li><b>Necesidades:</b> prendas por jugador y por cuerpo técnico, cantidades por equipo y categoría, y fechas de entrega.</li>
+        <li><b>Proceso de decisión:</b> quiénes participan y en qué plazos.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>LO QUE PLAYMAKER PUEDE APORTAR</h2>
+      <ul class="puntos">
+        <li><b>Primeros equipos y cuerpo técnico:</b> equipamiento de juego, entrenamiento y presentación.</li>
+        <li><b>Categorías formativas:</b> precios preferenciales y pedidos por categoría.</li>
+        <li><b>Tienda oficial para hinchas:</b> preventa en playmaker.cl, sin stock para el club y con un porcentaje de cada venta para el club.</li>
+        <li><b>Diseño y fabricación propios:</b> planta en Santiago y entregas en 10 a 15 días hábiles.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>ACUERDOS Y PRÓXIMOS PASOS</h2>
+  <table class="acuerdos">
+    <tr><th></th><th>ACUERDO</th><th>RESPONSABLE</th><th>FECHA</th></tr>
+    <tr><td>1</td><td></td><td></td><td></td></tr>
+    <tr><td>2</td><td></td><td></td><td></td></tr>
+    <tr><td>3</td><td></td><td></td><td></td></tr>
+    <tr><td>4</td><td></td><td></td><td></td></tr>
+    <tr><td>5</td><td></td><td></td><td></td></tr>
+    <tr><td>6</td><td></td><td></td><td></td></tr>
+  </table>
+  <div class="pie"><span>PLAYMAKER SPA. SDUARTE@PLAYMAKER.CL. +56 9 3928 3323. WWW.PLAYMAKER.CL</span><span>MINUTA DE REUNIÓN</span></div>
+</section>
+</body>
+</html>
