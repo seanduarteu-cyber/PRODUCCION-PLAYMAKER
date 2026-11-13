@@ -1,0 +1,103 @@
+<!doctype html>
+<!-- Generado por generar_pauteo.py: no editar a mano. -->
+<html lang="es"><head><meta charset="utf-8"><title>Pauteo de reunión con Los Leones de Quilpué</title>
+<style>
+/* Estilo del pauteo rellenable (lo usa generar_pauteo.py). */
+@font-face { font-family: "Poppins"; font-weight: 400; src: url("../_recursos/fonts/Poppins-Regular.ttf"); }
+@font-face { font-family: "Poppins"; font-weight: 600; src: url("../_recursos/fonts/Poppins-SemiBold.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 700; src: url("../_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+@page { size: A4; margin: 0; }
+:root { --navy: #141E3C; --oro: #B1A542; --marfil: #F7F3E7; --texto: #1C2233; --suave: #3A3F52; --gris: #6E7280; --linea: #CFCABB; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: #fff; }
+body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; padding: 13mm 16mm 0; page-break-after: always; }
+.page:last-child { page-break-after: auto; }
+
+.cab { display: flex; justify-content: space-between; align-items: center; padding-bottom: 7px; border-bottom: 0.8pt solid var(--oro); }
+.cab img { height: 15px; }
+.cab span { font-size: 6.6pt; letter-spacing: 2.4px; color: var(--gris); }
+.kicker { font-size: 7.4pt; font-weight: 600; letter-spacing: 3px; color: var(--oro); margin-top: 10px; }
+h1 { font-family: "Playfair"; font-weight: 700; font-size: 19pt; color: var(--navy); line-height: 1.15; margin-top: 3px; }
+.bajada { font-family: "Playfair"; font-style: italic; font-size: 10pt; color: #8A8672; margin-top: 2px; }
+
+/* recuadros de respuesta: el fondo exacto identifica dónde va cada campo del PDF */
+.resp { background: rgb(252, 251, 247); border: 0.6pt solid var(--linea); height: 7.5mm; }
+.resp.alta { height: 13.5mm; }
+.resp.celda { height: 6.5mm; border: 0; }
+.resp.corta { height: 7mm; width: 62mm; }
+.resp.casilla { background: rgb(255, 255, 254); width: 4mm; height: 4mm; border: 0.8pt solid var(--navy); flex: none; }
+.resp.notas { height: 33mm; margin-top: 6px; }
+
+.ficha { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: 10px; margin-top: 8px; }
+.ficha small { display: block; font-size: 6pt; letter-spacing: 1.6px; color: var(--gris); font-weight: 600; margin-bottom: 2px; }
+
+.objetivo { margin-top: 9px; background: var(--navy); color: var(--marfil); padding: 8px 12px; font-size: 8.5pt; line-height: 1.5; }
+.objetivo b { color: var(--oro); font-size: 6.8pt; letter-spacing: 2px; display: block; margin-bottom: 2px; }
+
+h2 { font-size: 7.4pt; font-weight: 600; letter-spacing: 2.4px; color: var(--oro); margin-top: 11px; padding-bottom: 5px; border-bottom: 0.6pt solid var(--linea); }
+h2.primero { margin-top: 10px; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+th { background: var(--navy); color: var(--marfil); font-size: 6.2pt; letter-spacing: 1.4px; font-weight: 600; padding: 4px 7px; text-align: left; }
+.agenda td { border-bottom: 0.6pt solid var(--linea); padding: 4px 7px; font-size: 7.9pt; line-height: 1.4; color: var(--suave); }
+.agenda td.min { width: 18mm; font-weight: 600; color: var(--navy); white-space: nowrap; }
+.agenda td.que { width: 34mm; font-weight: 600; color: var(--navy); }
+
+.puntos { display: grid; grid-template-columns: 1fr; row-gap: 5px; margin-top: 6px; }
+.punto { display: grid; grid-template-columns: 66mm 1fr; gap: 10px; align-items: center; }
+.punto .resp { height: 11mm; }
+.punto .resp.celda { height: 7.5mm; }
+.punto p { margin-bottom: 0; min-height: 0; }
+.punto p, .pregunta p { font-size: 8pt; line-height: 1.35; color: var(--texto); margin-bottom: 3px; min-height: 22px; display: flex; gap: 6px; }
+.punto p b, .pregunta p b { color: var(--oro); font-weight: 600; flex: none; width: 10px; }
+.punto.ancho { display: block; }
+.punto.ancho p { margin-bottom: 3px; }
+table.cat th { text-align: center; }
+table.cat td { border: 0.6pt solid var(--linea); padding: 0; background: rgb(252, 251, 247); }
+table.cat td.rama { width: 22mm; padding: 0 7px; font-size: 7.9pt; font-weight: 600; color: var(--navy); background: #fff; }
+
+.preguntas { display: grid; grid-template-columns: 1fr; row-gap: 5px; margin-top: 6px; }
+.pregunta p { min-height: 0; }
+
+.cierres { margin-top: 6px; }
+.cierre { display: flex; align-items: center; gap: 9px; margin-bottom: 5px; font-size: 8.2pt; }
+.cierre span { flex: 1; }
+
+.pie { position: absolute; left: 16mm; right: 16mm; bottom: 9mm; display: flex; justify-content: space-between;
+       border-top: 0.6pt solid var(--linea); padding-top: 5px; font-size: 6pt; letter-spacing: 1.4px; color: var(--gris); }
+</style></head><body>
+
+<section class="page">
+  <div class="cab"><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span>USO INTERNO</span></div>
+  <div class="kicker">PAUTEO DE REUNIÓN VIRTUAL</div>
+  <h1>Club Deportivo Colegio Los Leones de Quilpué</h1>
+  <p class="bajada">Primera reunión, 13 de noviembre de 2026</p>
+  <div class="ficha"><div><small>FECHA Y HORA</small><div class="resp "></div></div><div><small>PARTICIPANTES DEL CLUB</small><div class="resp "></div></div><div><small>PLATAFORMA</small><div class="resp "></div></div></div>
+  <div class="objetivo"><b>OBJETIVO</b>Conocer los objetivos y necesidades del club para 2027, presentar a Playmaker y salir con
+    los datos para preparar la propuesta, el escudo y la fecha de la siguiente reunión.</div>
+  <h2>MINUTO A MINUTO</h2>
+  <table class="agenda"><tr><th>MINUTOS</th><th>QUÉ</th><th>CÓMO</th></tr><tr><td class="min">0 a 5</td><td class="que">Presentaciones</td><td>Quiénes participan y su rol. Agradecer el espacio.</td></tr>
+<tr><td class="min">5 a 10</td><td class="que">Playmaker</td><td>Quiénes somos, planta propia en Santiago y clubes con los que trabajamos.</td></tr>
+<tr><td class="min">10 a 30</td><td class="que">Escuchar al club</td><td>Puntos a definir y preguntas clave. Anotar todo.</td></tr>
+<tr><td class="min">30 a 40</td><td class="que">Ideas de trabajo</td><td>Primeros equipos, formativas y tienda oficial para hinchas.</td></tr>
+<tr><td class="min">40 a 45</td><td class="que">Cierre</td><td>Acuerdos, escudo y fecha de la siguiente reunión.</td></tr></table>
+  <h2>PUNTOS A DEFINIR</h2>
+  <div class="puntos"><div class="punto"><p><b>1</b>Fecha de término del contrato actual</p><div class="resp "></div></div><div class="punto"><p><b>2</b>Qué incluye hoy el canje (prendas por jugador y por staff)</p><div class="resp "></div></div><div class="punto"><p><b>3</b>Jugadores por equipo adulto (damas y varones) y staff</p><div class="resp "></div></div><div class="punto ancho"><p><b>4</b>Jugadores por categoría formativa</p><table class="cat"><tr><th></th><th>SUB-11</th><th>SUB-13</th><th>SUB-14</th><th>SUB-16</th><th>SUB-18</th><th>SUB-20</th></tr><tr><td class='rama'>Damas</td><td><div class="resp celda"></div></td><td><div class="resp celda"></div></td><td><div class="resp celda"></div></td><td><div class="resp celda"></div></td><td><div class="resp celda"></div></td><td><div class="resp celda"></div></td></tr><tr><td class='rama'>Varones</td><td><div class="resp celda"></div></td><td><div class="resp celda"></div></td><td><div class="resp celda"></div></td><td><div class="resp celda"></div></td><td><div class="resp celda"></div></td><td><div class="resp celda"></div></td></tr></table></div><div class="punto"><p><b>5</b>Qué compran hoy las formativas y a qué precio</p><div class="resp "></div></div><div class="punto"><p><b>6</b>Quién decide el proveedor y en qué plazo</p><div class="resp "></div></div><div class="punto"><p><b>7</b>Fecha en que necesitan la ropa para 2027</p><div class="resp "></div></div><div class="punto"><p><b>8</b>Siguiente reunión y fecha de entrega de la propuesta</p><div class="resp "></div></div></div>
+  <div class="pie"><span>PLAYMAKER SPA. PAUTEO DE REUNIÓN PARA USO INTERNO.</span><span>1 DE 2</span></div>
+</section>
+
+<section class="page">
+  <div class="cab"><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span>LOS LEONES DE QUILPUÉ</span></div>
+  <h2 class="primero">PREGUNTAS CLAVE</h2>
+  <div class="preguntas"><div class="pregunta"><p><b>1</b>¿Cuáles son los objetivos del club para 2027?</p><div class="resp alta"></div></div><div class="pregunta"><p><b>2</b>¿Qué incluye hoy su acuerdo de indumentaria y cuándo termina?</p><div class="resp alta"></div></div><div class="pregunta"><p><b>3</b>¿Qué les ha funcionado y qué mejorarían?</p><div class="resp alta"></div></div><div class="pregunta"><p><b>4</b>¿Qué paga el club y qué pagan las familias en formativas?</p><div class="resp alta"></div></div><div class="pregunta"><p><b>5</b>¿Cuántos jugadores tienen por equipo y por categoría?</p><div class="resp alta"></div></div><div class="pregunta"><p><b>6</b>¿Venden indumentaria a hinchas hoy? ¿Cuánto y cómo?</p><div class="resp alta"></div></div><div class="pregunta"><p><b>7</b>¿Qué haría ganadora una propuesta para ustedes?</p><div class="resp alta"></div></div><div class="pregunta"><p><b>8</b>¿Quién toma la decisión y cuándo?</p><div class="resp alta"></div></div><div class="pregunta"><p><b>9</b>¿Les interesa incluir al colegio, con buzos y ropa de educación física?</p><div class="resp alta"></div></div></div>
+  <h2>ANTES DE CORTAR</h2>
+  <div class="cierres"><div class="cierre"><div class="resp casilla"></div><span>Escudo en alta resolución pedido</span><div class="resp corta"></div></div><div class="cierre"><div class="resp casilla"></div><span>Siguiente reunión agendada</span><div class="resp corta"></div></div><div class="cierre"><div class="resp casilla"></div><span>Fecha de entrega de la propuesta acordada</span><div class="resp corta"></div></div></div>
+  <h2>NOTAS</h2>
+  <div class="resp notas"></div>
+  <div class="pie"><span>PLAYMAKER SPA. PAUTEO DE REUNIÓN PARA USO INTERNO.</span><span>2 DE 2</span></div>
+</section>
+
+</body></html>
