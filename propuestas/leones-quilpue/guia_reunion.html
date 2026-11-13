@@ -1,0 +1,181 @@
+<!doctype html>
+<!--
+  Guía de reunión con Club Deportivo Colegio Los Leones de Quilpué (para imprimir).
+  Exportar a PDF:  bash propuestas/leones-quilpue/exportar_guia.sh
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Guía de reunión con Los Leones de Quilpué</title>
+<style>
+  @font-face { font-family: "Poppins"; font-weight: 400; src: url("../_recursos/fonts/Poppins-Regular.ttf"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; src: url("../_recursos/fonts/Poppins-SemiBold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 700; src: url("../_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+  @page { size: A4; margin: 0; }
+  :root { --navy: #141E3C; --oro: #B1A542; --marfil: #F7F3E7; --texto: #1C2233; --suave: #3A3F52; --gris: #6E7280; --linea: #CFCABB; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #fff; }
+  body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; padding: 15mm 16mm 0; page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+
+  .cab { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 0.8pt solid var(--oro); }
+  .cab img { height: 15px; }
+  .cab span { font-size: 6.6pt; letter-spacing: 2.4px; color: var(--gris); }
+  .kicker { font-size: 7.4pt; font-weight: 600; letter-spacing: 3px; color: var(--oro); margin-top: 12px; }
+  h1 { font-family: "Playfair"; font-weight: 700; font-size: 21pt; color: var(--navy); line-height: 1.15; margin-top: 4px; }
+  .bajada { font-family: "Playfair"; font-style: italic; font-size: 10.5pt; color: #8A8672; margin-top: 3px; }
+
+  .datos-reunion { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 14px; margin-top: 9px; }
+  .campo small { display: block; font-size: 6pt; letter-spacing: 1.6px; color: var(--gris); font-weight: 600; }
+  .campo div { border-bottom: 0.6pt solid var(--linea); height: 7mm; font-size: 8.5pt; padding-top: 2.5mm; }
+
+  .objetivo { margin-top: 10px; background: var(--navy); color: var(--marfil); padding: 9px 12px; font-size: 8.6pt; line-height: 1.5; }
+  .objetivo b { color: var(--oro); font-size: 6.8pt; letter-spacing: 2px; display: block; margin-bottom: 2px; }
+
+  h2 { font-size: 7.4pt; font-weight: 600; letter-spacing: 2.4px; color: var(--oro); margin-top: 11px; padding-bottom: 5px; border-bottom: 0.6pt solid var(--linea); }
+  h2 em { font-style: normal; color: var(--navy); margin-right: 8px; }
+  .dos { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; }
+  ul.puntos { list-style: none; margin-top: 7px; }
+  ul.puntos li { font-size: 7.9pt; line-height: 1.4; color: var(--suave); padding-left: 11px; position: relative; margin-bottom: 3px; }
+  ul.puntos li::before { content: ""; position: absolute; left: 0; top: 5px; width: 4px; height: 4px; background: var(--oro); }
+  ul.check { list-style: none; margin-top: 7px; }
+  ul.check li { font-size: 7.9pt; line-height: 1.45; color: var(--suave); padding-left: 16px; position: relative; margin-bottom: 5px; }
+  ul.check li::before { content: ""; position: absolute; left: 0; top: 2px; width: 8px; height: 8px; border: 0.8pt solid var(--navy); }
+
+  .preguntas { margin-top: 4px; }
+  .pregunta { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 14px; padding: 4px 0 3px; border-bottom: 0.4pt dotted var(--linea); }
+  .pregunta p { font-size: 8.3pt; line-height: 1.45; color: var(--texto); padding-top: 2px; }
+  .lineas.notas div { height: 7mm; }
+  .lineas div { height: 6mm; border-bottom: 0.6pt solid var(--linea); }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  th { background: var(--navy); color: var(--marfil); font-size: 6.4pt; letter-spacing: 1.4px; font-weight: 600; padding: 5px 6px; text-align: center; }
+  th:first-child { text-align: left; }
+  td { border: 0.6pt solid var(--linea); height: 7mm; font-size: 7.6pt; padding: 0 6px; color: var(--suave); }
+  .tabla-datos td:first-child { width: 47%; }
+  .ofrece { margin-top: 12px; background: var(--marfil); border-left: 3px solid var(--oro); padding: 9px 12px; }
+  .ofrece b { font-size: 6.8pt; letter-spacing: 2px; color: var(--oro); display: block; margin-bottom: 4px; }
+  .ofrece ul.puntos { margin-top: 0; }
+
+  .pie { position: absolute; left: 16mm; right: 16mm; bottom: 10mm; display: flex; justify-content: space-between;
+         border-top: 0.6pt solid var(--linea); padding-top: 5px; font-size: 6pt; letter-spacing: 1.4px; color: var(--gris); }
+</style>
+</head>
+<body>
+
+<section class="page">
+  <div class="cab"><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span>USO INTERNO</span></div>
+  <div class="kicker">GUÍA DE REUNIÓN</div>
+  <h1>Club Deportivo Colegio Los Leones de Quilpué</h1>
+  <p class="bajada">Propuesta de proveedor técnico oficial para la temporada 2027</p>
+
+  <div class="datos-reunion">
+    <div class="campo"><small>FECHA</small><div></div></div>
+    <div class="campo"><small>LUGAR</small><div></div></div>
+    <div class="campo"><small>ASISTENTES DEL CLUB</small><div></div></div>
+  </div>
+
+  <div class="objetivo"><b>OBJETIVO DE LA REUNIÓN</b>Entender qué busca el club, qué tiene hoy con su proveedor actual y por qué
+    está abierto a otra marca, para preparar una propuesta que calce con lo que necesita.</div>
+
+  <div class="dos">
+    <div>
+      <h2>LO QUE SABEMOS (FUENTES PÚBLICAS)</h2>
+      <ul class="puntos">
+        <li>Fundado en 2009 al alero del Colegio Los Leones, como parte de la formación de sus alumnos.</li>
+        <li>Rama masculina: campeón de la Liga Nacional en 2024, Clausura 2025 y Apertura 2026. Semifinalista esta temporada, con cuatro jugadores en la preselección nacional.</li>
+        <li>Rama femenina: finalista de la Liga Nacional Femenina 2026.</li>
+        <li>Formativas en damas y varones, y escuela para niños y niñas de 7 a 15 años.</li>
+        <li>Proveedor actual: Zeus Sport en 2025 y 2026, que también figura como auspiciador.</li>
+        <li>Camiseta oficial a la venta en $25.000 y $28.000. Colores rojo, blanco y negro.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>HIPÓTESIS A VALIDAR</h2>
+      <ul class="check">
+        <li>El contrato con la marca actual vence y quieren comparar ofertas.</li>
+        <li>El club creció y necesita más calidad, diseño o entregas confiables para dos primeros equipos.</li>
+        <li>No están aprovechando la venta a hinchas y socios.</li>
+        <li>Las formativas y las familias necesitan mejores precios o atención.</li>
+        <li>Les interesa sumar al colegio con buzos y ropa de educación física.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2><em>1</em>PROPÓSITO DEL CLUB</h2>
+  <div class="preguntas">
+    <div class="pregunta"><p>¿Qué rol cumple el club para el colegio: competir, formar alumnos o representar a la comuna?</p><div class="lineas"><div></div><div></div></div></div>
+    <div class="pregunta"><p>¿Cuáles son las metas para 2027: títulos, Liga Sudamericana, rama femenina, formativas?</p><div class="lineas"><div></div><div></div></div></div>
+    <div class="pregunta"><p>¿Quién decide el proveedor: el directorio del club, el colegio o ambos?</p><div class="lineas"><div></div><div></div></div></div>
+  </div>
+
+  <h2><em>2</em>QUÉ TIENEN HOY</h2>
+  <div class="preguntas">
+    <div class="pregunta"><p>¿Qué incluye el canje actual? Prendas y cantidades por jugador, por staff y por equipo.</p><div class="lineas"><div></div><div></div></div></div>
+    <div class="pregunta"><p>¿Qué paga el club y qué pagan las familias en formativas? ¿A qué precios?</p><div class="lineas"><div></div><div></div></div></div>
+    <div class="pregunta"><p>¿Qué contraprestaciones entregan hoy: logo en la camiseta, gimnasio, redes sociales?</p><div class="lineas"><div></div><div></div></div></div>
+    <div class="pregunta"><p>¿Cuándo vence el contrato? ¿La marca actual ya ofreció renovar?</p><div class="lineas"><div></div><div></div></div></div>
+    <div class="pregunta"><p>¿Cuánto venden a hinchas al año y cómo lo hacen?</p><div class="lineas"><div></div><div></div></div></div>
+  </div>
+  <div class="pie"><span>PLAYMAKER SPA. GUÍA DE REUNIÓN PARA USO INTERNO.</span><span>1 DE 2</span></div>
+</section>
+
+<section class="page">
+  <div class="cab"><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span>LOS LEONES DE QUILPUÉ</span></div>
+
+  <h2><em>3</em>POR QUÉ ESTÁN ABIERTOS A OTRA MARCA</h2>
+  <div class="preguntas">
+    <div class="pregunta"><p>¿Qué no les ha funcionado: calidad, plazos, diseño, tallas o atención?</p><div class="lineas"><div></div><div></div></div></div>
+    <div class="pregunta"><p>¿Qué les gustaría que fuera distinto con el próximo proveedor?</p><div class="lineas"><div></div><div></div></div></div>
+    <div class="pregunta"><p>¿Están evaluando otras marcas? ¿Cuándo deciden?</p><div class="lineas"><div></div><div></div></div></div>
+  </div>
+
+  <h2><em>4</em>QUÉ ESPERAN DE PLAYMAKER</h2>
+  <div class="preguntas">
+    <div class="pregunta"><p>¿Qué haría ganadora una propuesta para ellos: más canje, ingresos por ventas, diseño o rapidez?</p><div class="lineas"><div></div><div></div></div></div>
+    <div class="pregunta"><p>¿Qué necesitan para la temporada 2027 y para qué fecha?</p><div class="lineas"><div></div><div></div></div></div>
+    <div class="pregunta"><p>¿Les interesa incluir al colegio con buzos y ropa de educación física?</p><div class="lineas"><div></div><div></div></div></div>
+  </div>
+
+  <h2>DATOS QUE NOS TENEMOS QUE LLEVAR</h2>
+  <table class="tabla-datos">
+    <tr><td>Jugadores por equipo adulto (femenino y masculino)</td><td></td></tr>
+    <tr><td>Staff técnico por equipo</td><td></td></tr>
+    <tr><td>Prendas del canje por jugador y por staff</td><td></td></tr>
+    <tr><td>Fecha de vencimiento del contrato actual</td><td></td></tr>
+    <tr><td>Quién decide (nombre, cargo, correo y teléfono)</td><td></td></tr>
+  </table>
+  <table>
+    <tr><th>JUGADORES POR CATEGORÍA</th><th>SUB-11</th><th>SUB-13</th><th>SUB-14</th><th>SUB-16</th><th>SUB-18</th><th>SUB-20</th><th>PRECIO ACTUAL</th></tr>
+    <tr><td>Rama masculina</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Rama femenina</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+
+  <div class="dos">
+    <div class="ofrece"><b>LO QUE PLAYMAKER PUEDE OFRECER (PARA EL CIERRE)</b>
+      <ul class="puntos">
+        <li>Canje para los dos primeros equipos y el staff, con tope por temporada.</li>
+        <li>Precios preferenciales para formativas, con pedido por categoría.</li>
+        <li>Preventa oficial para hinchas en playmaker.cl, con royalty de 11% a 15% para el club.</li>
+        <li>Producción propia en Santiago, en 10 a 15 días hábiles.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>ANTES DE CERRAR LA REUNIÓN</h2>
+      <ul class="check">
+        <li>Pedir el escudo y el manual de marca en alta resolución.</li>
+        <li>Acordar la fecha para presentar la propuesta.</li>
+        <li>Confirmar a quién enviar el resumen de la reunión.</li>
+      </ul>
+    </div>
+  </div>
+  <h2>NOTAS</h2>
+  <div class="lineas notas"><div></div><div></div><div></div><div></div><div></div></div>
+  <div class="pie"><span>PLAYMAKER SPA. GUÍA DE REUNIÓN PARA USO INTERNO.</span><span>2 DE 2</span></div>
+</section>
+
+</body>
+</html>
