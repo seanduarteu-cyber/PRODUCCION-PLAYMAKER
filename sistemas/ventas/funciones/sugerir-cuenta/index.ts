@@ -141,13 +141,24 @@ const env = (k) => (typeof Deno !== "undefined" ? Deno.env.get(k) : undefined);
 const responder = (cuerpo, estado = 200) =>
   new Response(JSON.stringify(cuerpo), { status: estado, headers: { ...CORS, "Content-Type": "application/json" } });
 
+// Llave de servicio de la base: la de siempre (SUPABASE_SERVICE_ROLE_KEY) o, en proyectos con las llaves nuevas
+// de Supabase, la secreta (sb_secret_…, que va solo en el encabezado apikey)
+function llaveServicio() {
+  const vieja = env("SUPABASE_SERVICE_ROLE_KEY");
+  if (vieja) return vieja;
+  try {
+    const nuevas = JSON.parse(env("SUPABASE_SECRET_KEYS") || "{}");
+    const k = nuevas.default || Object.values(nuevas)[0];
+    if (k) return String(k);
+  } catch (_e) { /* sin llaves nuevas */ }
+  return env("SUPABASE_SECRET_KEY") || "";
+}
 async function rpc(fn, args) {
-  const url = env("SUPABASE_URL"), llave = env("SUPABASE_SERVICE_ROLE_KEY");
-  const r = await fetch(`${url}/rest/v1/rpc/${fn}`, {
-    method: "POST",
-    headers: { apikey: llave, Authorization: `Bearer ${llave}`, "Content-Type": "application/json" },
-    body: JSON.stringify(args),
-  });
+  const url = env("SUPABASE_URL"), llave = llaveServicio();
+  if (!llave) throw new Error("La función no encuentra la llave de servicio de Supabase.");
+  const headers = { apikey: llave, "Content-Type": "application/json" };
+  if (!llave.startsWith("sb_")) headers.Authorization = `Bearer ${llave}`;
+  const r = await fetch(`${url}/rest/v1/rpc/${fn}`, { method: "POST", headers, body: JSON.stringify(args) });
   const t = await r.text();
   if (!r.ok) throw new Error(t || `HTTP ${r.status}`);
   return t ? JSON.parse(t) : null;

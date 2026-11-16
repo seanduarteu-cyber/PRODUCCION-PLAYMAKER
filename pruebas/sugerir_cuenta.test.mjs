@@ -19,7 +19,9 @@ const psql = sql => execFileSync(PSQL, [...PG, '-q', '-At', '-v', 'ON_ERROR_STOP
 const lit = v => '$J$' + String(v).replace(/\$J\$/g, '') + '$J$';
 
 // ── Supabase simulado: /rest/v1/rpc/<fn> como service_role contra el Postgres local ──
+const sbHeaders = [];
 const sb = http.createServer((req, res) => {
+  sbHeaders.push(req.headers);
   let cuerpo = ''; req.on('data', d => cuerpo += d); req.on('end', () => {
     const fn = req.url.match(/\/rest\/v1\/rpc\/(\w+)/)[1], args = JSON.parse(cuerpo || '{}');
     try {
@@ -101,6 +103,15 @@ psql(`update gestion_parametros set valor = '100' where clave = 'ia_tope_diario'
 delete vars.ANTHROPIC_API_KEY;
 r = await llamar({ modo: 'sugerir', gasto });
 ok(r.status === 500 && /Falta el secreto ANTHROPIC_API_KEY/.test(r.j.error), 'sin el secreto: lo dice');
+// proyectos con las llaves nuevas de Supabase: la secreta va solo en «apikey»
+vars.ANTHROPIC_API_KEY = 'sk-ant-prueba'; delete vars.SUPABASE_SERVICE_ROLE_KEY; vars.SUPABASE_SECRET_KEYS = JSON.stringify({ default: 'sb_secret_prueba' });
+respuesta = mensaje(JSON.stringify({ cuenta: '3.04', confianza: 0.9, motivo: 'x', alternativa: 'ninguna' }));
+sbHeaders.length = 0;
+r = await llamar({ modo: 'prueba', modelo: 'claude-haiku-5-5', lote: 'L2', gasto });
+ok(r.status === 200 && sbHeaders.length >= 3 && sbHeaders.every(h => h.apikey === 'sb_secret_prueba' && !h.authorization), 'con las llaves nuevas de Supabase usa la secreta, solo en «apikey»');
+delete vars.SUPABASE_SECRET_KEYS;
+r = await llamar({ modo: 'prueba', modelo: 'claude-haiku-5-5', gasto });
+ok(r.status === 500 && /no encuentra la llave de servicio/.test(r.j.error), 'sin ninguna llave de servicio: lo dice');
 r = await F.atender(new Request('http://x/', { method: 'OPTIONS' }));
 ok(r.status === 200 && r.headers.get('access-control-allow-origin') === '*', 'responde el permiso del navegador (CORS)');
 
