@@ -10,6 +10,13 @@ QUÉ CAMBIA
 - Cada gasto tiene «Mes al que corresponde» (sueldos, arriendo y servicios pueden pagarse en otro mes).
 - Todo cambio queda en la auditoría (quién, qué, cuándo, antes y después).
 
+COSTO DIRECTO Y GASTO GENERAL
+- Costo directo (nivel 2): se asigna a cada pedido según lo que consume (tela, taller, papel y tinta,
+  aplicaciones, avíos, packaging, prendas para reventa, comisiones, despachos).
+- Gasto general (niveles 3, 4 y 5): no se asigna a un pedido; entra en el % de gasto general del costeo.
+  Nivel 3 = gasto general de producción (sueldos de producción y diseño, leyes sociales, jornales, arriendo,
+  servicios, mantención…), nivel 4 = de venta y marketing, nivel 5 = de administración.
+
 CÓMO SE CLASIFICA (en este orden)
 1. Reglas (Gastos › Reglas). Las iniciales, de la sección 8 del documento y de las respuestas D2 y S3:
      «estampado» en la descripción → Jornales de producción (cualquier categoría; «estampadora» no cuenta)

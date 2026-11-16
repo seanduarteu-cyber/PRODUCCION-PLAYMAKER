@@ -198,7 +198,7 @@ function atender(req, u) {
   // ── Plan de cuentas: traducción de una categoría ──
   await p.click('[data-gsub="plan"]'); await p.waitForTimeout(200);
   await p.screenshot({ path: path.join(__dirname, 'clasif_plan.png') });
-  ok(/Nivel 2 · Costo directo variable[\s\S]*= Margen de contribución[\s\S]*= Margen bruto[\s\S]*= EBITDA[\s\S]*Fuera del estado de resultados/.test(await p.textContent('#gsub-plan')), 'plan de cuentas por niveles con sus resultados');
+  ok(/Nivel 2 · Costo directo variable[\s\S]*= Margen de contribución[\s\S]*Nivel 3 · Gasto general de producción[\s\S]*= Margen bruto[\s\S]*Nivel 4 · Gasto general de venta y marketing[\s\S]*Nivel 5 · Gasto general de administración[\s\S]*= EBITDA[\s\S]*Fuera del estado de resultados/.test(await p.textContent('#gsub-plan')), 'plan de cuentas por niveles con sus resultados');
   const cats = await p.evaluate(() => JSON.parse(document.getElementById('gsub-plan').dataset.alias));
   const iTaller = cats.indexOf('TALLER EXTERNO');
   await p.check('#al-r-' + iTaller);

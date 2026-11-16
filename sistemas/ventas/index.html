@@ -2700,7 +2700,7 @@ function eliminarCategoria(i){ const cats=getCategorias(); if(!confirm(`\u00bfEl
 let CUENTAS=[], ALIAS_CAT=[], REGLAS_G=[], CLASIF={}, PARAMS_G={};
 let clasifEstado="sin_cargar", clasifPromesa=null, gastosSub="lista";
 let gfSug=null, gfCuentaTocada=false, gfCuentaFija=false, gfMesTocado=false, revFiltro="", revPagina=1, revQ="";
-const NIVELES_CTA={"1":"Ingresos","2":"Costo directo variable","3":"Costos de producción","4":"Gastos de venta y marketing","5":"Gastos de administración","6":"Bajo el EBITDA","F":"Fuera del estado de resultados"};
+const NIVELES_CTA={"1":"Ingresos","2":"Costo directo variable","3":"Gasto general de producción","4":"Gasto general de venta y marketing","5":"Gasto general de administración","6":"Bajo el EBITDA","F":"Fuera del estado de resultados"};
 const RESULTADO_TRAS={"2":"Margen de contribución","3":"Margen bruto","5":"EBITDA"};
 const TIPO_NIVEL={"1":"ingreso","2":"variable","3":"semifijo","4":"fijo","5":"fijo","6":"bajo_ebitda","F":"fuera"};
 const TIPOS_DOC={afecta:"Factura afecta",exenta:"Factura exenta",honorarios:"Boleta de honorarios",sin_documento:"Sin documento (sueldos, leyes sociales, banco)"};
@@ -3091,7 +3091,7 @@ function renderPlanCuentas(){
   const propias=new Set(CUENTAS.map(c=>normTxt(c.nombre)));
   const alias=ALIAS_CAT.filter(a=>!propias.has(normTxt(a.categoria))).sort((a,b)=>(nCat[normTxt(b.categoria)]||0)-(nCat[normTxt(a.categoria)]||0));
   el.innerHTML=`
-    <div class="search-bar"><span class="cta-sub" style="flex:1">Montos desde ${mesTxt(ini)}, solo gastos ya clasificados (con impuestos incluidos). El IVA se separa en la Fase 3.</span>
+    <div class="search-bar"><span class="cta-sub" style="flex:1"><b>Costo directo</b> (nivel 2): se asigna a cada pedido seg&#250;n lo que consume. <b>Gasto general</b> (niveles 3, 4 y 5): no se asigna a un pedido; entra en el % de gasto general del costeo. Montos desde ${mesTxt(ini)}, solo gastos ya clasificados (con impuestos incluidos; el IVA se separa en la Fase 3).</span>
       <button class="btn btn-primary btn-sm" onclick="abrirCuentaForm('')">+ Nueva cuenta</button></div>
     <div class="card"><div class="tbl-wrap"><table class="pc-tabla"><thead><tr><th>C&#243;digo</th><th>Cuenta</th><th>Qu&#233; entra</th><th>Trato</th><th>Gastos</th><th></th></tr></thead><tbody>${filas}</tbody></table></div></div>
     <div class="card"><div class="card-header"><h2>Traducci&#243;n de las categor&#237;as antiguas</h2></div>
@@ -3243,7 +3243,7 @@ async function renderConciliacionGastos(){
     if(!c)f.rev+=m;else f.n[c.nivel]=(f.n[c.nivel]||0)+m;
   });
   const orden=Object.keys(meses).sort();
-  const cab={"2":"Costo directo","3":"Producci&#243;n","4":"Venta y marketing","5":"Administraci&#243;n","6":"Bajo EBITDA","1":"Devoluciones","F":"Fuera del resultado"};
+  const cab={"2":"Costo directo","3":"Gasto general<br>producci&#243;n","4":"Gasto general<br>venta y marketing","5":"Gasto general<br>administraci&#243;n","6":"Bajo EBITDA","1":"Devoluciones","F":"Fuera del resultado"};
   el.innerHTML=`<div id="conc-kpis" class="kpi-grid"><div class="kpi"><label>Conciliaci&#243;n</label><div class="val" style="font-size:14px;color:#9CA3AF">Consultando la base&#8230;</div></div></div>
     <div class="card"><div class="card-header"><h2>Por mes al que corresponde (desde ${mesTxt(ini)})</h2></div>
       <p class="cta-sub" style="padding:10px 16px 0">Montos con impuestos. &#171;En revisi&#243;n&#187; todav&#237;a no tiene cuenta. Total = suma de las columnas.</p>
