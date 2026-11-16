@@ -51,6 +51,9 @@ for base, d in sorted(grupo('TELA_').items()):
     if d.get('iva'): poner(P, r, 6, 'Sí' if d['iva'].strip().upper().startswith('S') else 'No', f"IVA {d['nombre']}")
     poner(P, r, 7, num(d.get('kgm')), f"kilos por metro {d['nombre']}")
     poner(P, r, 8, num(d.get('ancho')), f"ancho útil {d['nombre']}")
+    if d.get('proveedor_ok'): poner(P, r, 3, d['proveedor_ok'].strip(), f"proveedor {d['nombre']}")
+    extra = ' '.join(x for x in (('NO SE USA.' if d.get('se_usa', '').strip().upper().startswith('N') else ''), d.get('obs', '').strip()) if x)
+    if extra and extra not in str(P.cell(r, 12).value or ''): poner(P, r, 12, (str(P.cell(r, 12).value or '') + ' ' + extra).strip(), f"nota {d['nombre']}")
 # B. Impresión
 for key, row in (('papel_rollo', 5), ('papel_metros', 6), ('tinta_litro', 7), ('tinta_ml', 8), ('proteccion', 9)):
     poner(P, row, 21, num(f.get(f'IMP__{key}')), key)
