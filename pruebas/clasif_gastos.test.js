@@ -7,6 +7,7 @@ const fs = require('fs'), path = require('path'), { execFileSync } = require('ch
 const HTML = fs.readFileSync(path.resolve(__dirname, '../sistemas/ventas/index.html'));
 const SQL21 = fs.readFileSync(path.resolve(__dirname, '../sql/SQL_21A_VENTAS_clasificacion_gastos.sql'), 'utf8');
 const SQL21B = fs.readFileSync(path.resolve(__dirname, '../sql/SQL_21B_VENTAS_neto_y_socios.sql'), 'utf8');
+const SQL21C = fs.readFileSync(path.resolve(__dirname, '../sql/SQL_21C_VENTAS_claude_sugiere_cuenta.sql'), 'utf8');
 const PSQL = process.env.PSQL || '/usr/lib/postgresql/16/bin/psql';
 const PG = ['-h', process.env.PGHOST || '/home/postgres', '-p', process.env.PGPORT || '5499', '-U', 'postgres'];
 const BASE = 'ventas_prueba_21a';
@@ -77,6 +78,13 @@ ok(psql(`select nombre from plan_cuentas where codigo = 'F.06'`) === 'Retiros de
 const neto = id => uno(`select row_to_json(v) from v_gastos_neto v where gasto_id = ${ID0 + id * 1000}`);
 ok(neto(16).monto_neto === 2100840 && neto(16).iva_credito === 399160 && neto(16).origen_iva === 'cuenta' && neto(21).monto_neto === 2200000,
   'neto: tela con IVA habitual de la cuenta (2.500.000 → 2.100.840); arriendo sin IVA recuperable queda igual');
+// ── SQL 21C: Claude sugiere la cuenta (registro, tope diario y contexto) ──
+psql(`do $$ begin if not exists (select 1 from pg_roles where rolname = 'service_role') then create role service_role nologin bypassrls; end if; end $$`, 'postgres');
+const finC = psql(SQL21C).split('\n').pop().split('|');
+ok(finC[0] === 'SQL 21C listo' && finC[1] === 'claude-opus-5-5' && +finC[2] === 100 && +finC[3] === 52, 'SQL 21C: corre (' + finC.join(' | ') + ')');
+ok(psql(SQL21C).split('\n').pop().split('|')[0] === 'SQL 21C listo', 'SQL 21C: se puede volver a correr');
+let errC = ''; try { psql(`set role anon; select gasto_ia_reservar('sugerir', 'claude-opus-5-5', 1, 'x');`); } catch (e) { errC = String(e.stderr || e.message); }
+ok(/permission denied/.test(errC), 'la página (llave pública) no puede usar las funciones de Claude: solo la función de Supabase');
 let err = ''; try { psql(`set role anon; update gasto_raw set monto_bruto = 1;`); } catch (e) { err = String(e.stderr || e.message); }
 ok(/permission denied/.test(err), 'la llave pública no puede modificar el dato crudo');
 err = ''; try { psql(`delete from gasto_raw where id = 1;`); } catch (e) { err = String(e.stderr || e.message); }
@@ -84,13 +92,27 @@ ok(/no se modifica ni se borra/.test(err), 'ni siquiera el dueño de la base pue
 
 // ── Supabase de mentira atendido por Postgres: lo justo de PostgREST que usa Ventas ──
 const PK = { gastos: 'id', proveedores: 'id', pedidos: 'id', plan_cuentas: 'codigo', gasto_cuenta_alias: 'categoria', gestion_parametros: 'clave', gasto_clasif: 'gasto_id', gasto_reglas: 'id' };
-let sinSQL21 = false, sin21B = false; const llamadas = [], cuerpos = {};
+let sinSQL21 = false, sin21B = false, fnModo = 'ok'; const llamadas = [], cuerpos = {}, fnPedidos = [];
+// Función «sugerir-cuenta» simulada (la real se prueba en sugerir_cuenta.test.mjs): responde y registra como ella
+function funcionClaude(b) {
+  fnPedidos.push(b);
+  if (fnModo === '404') return [404, { code: 'NOT_FOUND', message: 'Requested function was not found' }];
+  const g = b.gasto || {}, d = String(g.descripcion || '').toUpperCase(), modelo = b.modelo || 'claude-opus-5-5';
+  let cuenta = '5.04', conf = 0.6, motivo = 'Parece insumo de oficina.';
+  if (/EMBALAJE|BOLSA/.test(d)) { cuenta = '2.06'; conf = 0.88; motivo = 'Material de embalaje de pedidos.'; }
+  else if (b.modo === 'prueba' && modelo === 'claude-opus-5-5') { cuenta = b.cuenta_real; conf = 0.92; motivo = 'Coincide con el historial.'; }
+  const id = +psql(`insert into gasto_ia_consultas (modo, lote, grupo, modelo, modelo_respuesta, gasto_id, cuenta_real, cuenta_sugerida, confianza, motivo, costo_usd, duracion_ms, usuario)
+    values (${lit(b.modo)}, ${b.lote ? lit(b.lote) : 'null'}, ${b.grupo ? lit(b.grupo) : 'null'}, ${lit(modelo)}, ${lit(modelo)}, ${g.id || 'null'}, ${b.cuenta_real ? lit(b.cuenta_real) : 'null'},
+            ${lit(cuenta)}, ${conf}, ${lit(motivo)}, ${modelo === 'claude-haiku-5-5' ? 0.0008 : 0.006}, 1500, ${lit(b.usuario || '')}) returning id`).split('\n').pop();
+  return [200, { id, cuenta, nombre: psql(`select nombre from plan_cuentas where codigo = ${lit(cuenta)}`), confianza: conf, motivo, alternativa: null, modelo, costo_usd: 0.006 }];
+}
 function filtros(u) {
   const w = [];
   for (const [c, v] of u.searchParams) { if (['select', 'order', 'limit', 'offset', 'on_conflict'].includes(c)) continue; const m = v.match(/^eq\.(.*)$/); if (m) w.push(`"${c}" = ${lit(m[1])}`); }
   return w.length ? ' where ' + w.join(' and ') : '';
 }
 function atender(req, u) {
+  if (u.pathname === '/functions/v1/sugerir-cuenta') return req.method() === 'OPTIONS' ? [200, null] : funcionClaude(JSON.parse(req.postData() || '{}'));
   const m = u.pathname.match(/^\/rest\/v1\/(rpc\/)?([a-z_0-9]+)$/); if (!m) return [404, { message: 'ruta' }];
   const t = m[2], met = req.method();
   llamadas.push(met + ' ' + t);
@@ -105,6 +127,7 @@ function atender(req, u) {
     let lim = ''; const r = req.headers()['range']; if (r) { const [a, z] = r.split('-').map(Number); lim = ` limit ${z - a + 1} offset ${a}`; }
     if (u.searchParams.get('limit')) lim = ' limit ' + (+u.searchParams.get('limit'));
     let filas = uno(`set role anon; select coalesce(jsonb_agg(x), '[]') from (select * from public.${t}${filtros(u)}${orden ? ' order by ' + orden : ''}${lim}) x`);
+    if (sin21B && t === 'gestion_parametros') filas = filas.filter(x => !/^ia_/.test(x.clave));
     if (sin21B && t === 'plan_cuentas') filas = filas.filter(c => c.codigo !== '5.10').map(c => { const x = { ...c }; delete x.iva_recuperable; return x; });
     return [200, filas];
   }
@@ -139,7 +162,7 @@ function atender(req, u) {
       if (/fonts/.test(u.host)) return r.fulfill({ body: '' });
       return r.abort();
     });
-    const p = await ctx.newPage(); p.errores = []; p.on('pageerror', e => p.errores.push(e.message)); p.on('dialog', d => d.accept());
+    const p = await ctx.newPage(); p.errores = []; p.on('pageerror', e => p.errores.push(e.message)); p.on('dialog', d => { if (process.env.DEPURAR) console.log('DIALOGO', d.message()); d.accept(); });
     await p.goto('https://ventas-playmaker.netlify.app/#pmk_acceso=tok1');
     await p.waitForFunction(() => typeof DB !== "undefined" && DB.length >= 1 && typeof GASTOS !== 'undefined' && GASTOS.length > 0, null, { timeout: 30000 });
     await p.evaluate(() => showView('gastos'));
@@ -274,6 +297,46 @@ function atender(req, u) {
   const conc = (await p.textContent('#conc-kpis')).replace(/\s+/g, ' ');
   ok(/Diferencia\s*\$0\s*✓ Cuadra/.test(conc), 'conciliación: diferencia $0 y cuadra (' + conc.slice(0, 160) + '…)');
   ok(/Oct 2026/.test(await p.textContent('#gsub-conciliacion')) && !/Mar 2026/.test(await p.textContent('#gsub-conciliacion')), 'por mes desde abril (marzo no aparece)');
+
+  // ── Claude: formulario, Revisión y prueba de precisión ──
+  await p.click('[data-gsub="lista"]');
+  ok(await p.isVisible('[data-gsub="claude"]'), 'con el SQL 21C aparece la pestaña «Claude»');
+  await p.evaluate(() => abrirNuevoGasto());
+  await p.fill('#g-fecha', '2026-11-12'); await p.fill('#g-monto', '23800');
+  await p.fill('#g-prov', 'DISTRIBUIDORA NUEVA'); await p.fill('#g-desc', 'Cinta de embalaje');
+  await p.click('#modal-gasto-body >> text=Preguntar a Claude'); await p.waitForSelector('.g-ia-res');
+  ok(/Claude sugiere 2\.06 · Packaging \(88%\)/.test(await p.textContent('#g-ia')) && await p.inputValue('#g-cta') !== '2.06', 'formulario: Claude sugiere y no cambia nada hasta usarla');
+  const idPedido = fnPedidos[fnPedidos.length - 1].gasto.id;
+  await p.click('text=Usar esta cuenta');
+  ok(await p.inputValue('#g-cta') === '2.06' && /Usando la sugerencia de Claude: 2\.06 · Packaging \(88%\)/.test(await p.textContent('#g-ia')), '«Usar esta cuenta» la pone en el gasto y lo dice');
+  await p.click('#modal-gasto-body button:has-text("Guardar gasto")'); await p.waitForTimeout(400);
+  const kIA = uno(`select row_to_json(c) from gasto_clasif c join gastos g on g.id = c.gasto_id where g.descripcion = 'Cinta de embalaje'`);
+  ok(kIA && kIA.cuenta_codigo === '2.06' && kIA.origen === 'ia' && +kIA.confianza === 0.88 && /^Claude \(88%\)/.test(kIA.motivo) && String(kIA.gasto_id) === String(idPedido),
+    'guardado con origen «Claude», su confianza y el mismo id que la consulta: ' + JSON.stringify(kIA && { c: kIA.cuenta_codigo, o: kIA.origen, m: kIA.motivo }));
+  await p.click('[data-gsub="revision"]'); await p.waitForTimeout(200);
+  const idBolsas = ID0 + 25 * 1000;
+  await p.check(`[data-rev-sel="${idBolsas}"]`);
+  await p.click('text=Preguntar a Claude por los seleccionados'); await p.waitForSelector(`tr[data-rev="${idBolsas}"] .rev-ia`);
+  ok(/Claude: 2\.06 · Packaging \(88%\)/.test(await p.textContent(`tr[data-rev="${idBolsas}"]`)) && await p.inputValue('#rev-c-' + idBolsas) === '2.06', 'Revisión: Claude responde por los seleccionados y deja su cuenta elegida');
+  await p.click(`tr[data-rev="${idBolsas}"] button:has-text("Aceptar")`); await p.waitForTimeout(400);
+  ok(psql(`select cuenta_codigo || '|' || origen || '|' || confianza from gasto_clasif where gasto_id = ${idBolsas}`) === '2.06|ia|0.88', 'aceptar la sugerencia de Claude queda con origen «Claude»');
+  await p.click('[data-gsub="claude"]'); await p.waitForSelector('#ia-estimado');
+  await p.fill('#ia-n', '12'); await p.dispatchEvent('#ia-n', 'input');
+  ok(/12 gastos × 2 modelos = 24 consultas · costo estimado entre US\$0,07 y US\$0,38/.test(await p.textContent('#ia-estimado')), 'prueba: avisa cuántas consultas y el costo estimado: ' + await p.textContent('#ia-estimado'));
+  await p.click('#ia-iniciar');
+  await p.waitForFunction(() => /Listo: 24 consultas/.test((document.getElementById('ia-progreso') || {}).textContent || ''), null, { timeout: 30000 });
+  const res = await p.$$eval('#ia-resultado tbody tr', trs => trs.map(t => t.innerText.replace(/\s+/g, ' ')));
+  ok(res.length === 2 && /^Claude Opus 5\.5 12 100% 12 de 12/.test(res.find(x => /Opus/.test(x)) || '') && /^Claude Haiku 5\.5 12 \d+%/.test(res.find(x => /Haiku/.test(x)) || ''), 'resultado por modelo: aciertos, difíciles, fáciles, confianza alta y costo: ' + res.join(' / '));
+  ok(+psql(`select count(*) from gasto_ia_consultas where modo = 'prueba' and grupo = 'dificil'`) > 0 && +psql(`select count(distinct gasto_id) from gasto_ia_consultas where modo = 'prueba'`) === 12, 'la prueba usa 12 gastos distintos, con «difíciles»');
+  ok(psql(`select count(*) from gasto_clasif where origen = 'ia'`) === '2', 'la prueba no cambia ningún gasto');
+  await p.click('#ia-resultado ~ div button:has-text("Haiku")').catch(() => {});
+  await p.selectOption('#ia-modelo', 'claude-haiku-5-5'); await p.waitForTimeout(300);
+  ok(psql(`select valor #>> '{}' from gestion_parametros where clave = 'ia_modelo'`) === 'claude-haiku-5-5', 'se puede cambiar el modelo en uso');
+  fnModo = '404';
+  await p.click('[data-gsub="lista"]'); await p.evaluate(() => abrirNuevoGasto());
+  await p.fill('#g-desc', 'Algo'); await p.click('#modal-gasto-body >> text=Preguntar a Claude'); await p.waitForTimeout(300);
+  ok(/todavía no está creada en Supabase/.test(await p.textContent('#g-ia')), 'si la función no está creada, lo dice');
+  await p.evaluate(() => closeGastoModal()); fnModo = 'ok';
   ok(p.errores.length === 0, 'sin errores en la página ' + JSON.stringify(p.errores));
   await p.setViewportSize({ width: 390, height: 844 }); await p.click('[data-gsub="revision"]'); await p.waitForTimeout(200);
   await p.screenshot({ path: path.join(__dirname, 'clasif_revision_movil.png') });
@@ -286,7 +349,7 @@ function atender(req, u) {
   await r.evaluate(() => abrirNuevoGasto());
   await r.fill('#g-fecha', '2026-11-08'); await r.fill('#g-monto', '20000');
   await r.fill('#g-prov', 'SEAN DUARTE'); await r.fill('#g-desc', 'Estacionamiento');
-  ok(!(await r.$('#g-doc')) && await r.isHidden('#g-socio'), 'sin SQL 21B: el formulario no muestra documento ni la pregunta del socio');
+  ok(!(await r.$('#g-doc')) && await r.isHidden('#g-socio') && !(await r.$('#modal-gasto-body >> text=Preguntar a Claude')), 'sin SQL 21B ni 21C: el formulario no muestra documento, pregunta del socio ni Claude');
   await r.selectOption('#g-cta', '5.09'); await r.click('#modal-gasto-body button.btn-primary'); await r.waitForTimeout(400);
   ok(psql(`select count(*) from gastos where descripcion = 'Estacionamiento'`) === '1' && !('documento' in cuerpos.gasto_clasif[0]), 'sin SQL 21B: el gasto se guarda (sin enviar «documento»)');
   ok(r.errores.length === 0, 'sin SQL 21B: sin errores ' + JSON.stringify(r.errores));

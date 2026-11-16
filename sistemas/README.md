@@ -10,7 +10,7 @@ Código fuente de los sistemas web. Cada carpeta se publica en Netlify arrastran
 | `ventas/` | ventas-playmaker | Ventas `nnisdusdujcpkrbjqnhe` | `index.html` |
 
 - **Página principal:** `https://planificacion-playmaker.netlify.app/sistemas.html`. Ahí se hace el ingreso único (usuario de Planificación). Fichas y Ventas reciben la sesión desde ahí.
-- **Detalle de cambios:** `HISTORIAL.txt` (lista de cambios), `LEEME_acceso_unico.txt`, `LEEME_velocidad.txt`, `LEEME_costeo.txt` y `LEEME_clasificacion_gastos.txt`.
+- **Detalle de cambios:** `HISTORIAL.txt` (lista de cambios), `LEEME_acceso_unico.txt`, `LEEME_velocidad.txt`, `LEEME_costeo.txt` y `LEEME_clasificacion_gastos.txt` (incluye cómo crear la función de Claude).
 
 ## SQL (`../sql/`)
 
@@ -30,6 +30,7 @@ Se corren una vez en el SQL Editor de la base indicada en cada archivo.
 | `SQL_20A_PRODUCCION_costeo_prendas.sql` | Producción | Costeo de prendas: tablas `plan_costeo` (por molde: kilos de tela y merma del corte, metros de ploteo, otros costos) y `plan_insumos_molde` (consumo de insumos por prenda, por molde y común). Detalle: `LEEME_costeo.txt`. |
 | `SQL_21A_VENTAS_clasificacion_gastos.sql` | Ventas | Clasificación de gastos (Fase 1 del costeo): plan de cuentas, traducción de las categorías actuales, reglas, dato original inmutable (`gasto_raw`), clasificación (`gasto_clasif`), parámetros, auditoría y conciliación; clasifica los gastos que ya existen. Detalle: `LEEME_clasificacion_gastos.txt`. |
 | `SQL_21B_VENTAS_neto_y_socios.sql` | Ventas | Requiere el 21A. Neto de cada gasto (vista `v_gastos_neto`: sin el IVA de la factura afecta, según el documento del gasto, del proveedor o el habitual de la cuenta) y pagos a socios: cuenta 5.10 «Remuneración de socios» y F.06 «Retiros de socios». Lo usa el gasto general del Costeo. |
+| `SQL_21C_VENTAS_claude_sugiere_cuenta.sql` | Ventas | Requiere 21A y 21B. Claude sugiere la cuenta de un gasto: registro de consultas con su costo (`gasto_ia_consultas`), tope diario y el contexto que lee Claude; solo lo usa la función `sugerir-cuenta` de Supabase (`ventas/funciones/sugerir-cuenta/index.ts`, se crea en Edge Functions con el secreto `ANTHROPIC_API_KEY`). |
 | `SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql` | Fichas | Solo revisa: compara los 95 moldes del catálogo completo con la tabla moldes (falta, desactivado, código o sección distinta). |
 | `SQL_17D_FICHAS_orden_catalogo_completo.sql` | Fichas | Catálogo completo: orden y sección de los 95 moldes (los 01 al 10 al inicio de Fútbol). |
 
@@ -57,7 +58,8 @@ Las pruebas usan Playwright con las bases simuladas: no tocan Supabase ni Netlif
 | `cambiar_molde.test.js` | Panel: cambiar el molde de un diseño sin perder personas, montajes ni ficha técnica. |
 | `calces_diseno.test.js` | Un diseño con varios calces, unir diseños, aviso de calce sin molde (Planificación) y copiar la configuración de telas. |
 | `costeo.test.js` | Costeo en Planificación, por molde: kilos de cada molde y tela en el corte, metros de cada molde en el ploteo, costo total y por prenda de cada molde, gasto general desde la clasificación de Ventas (neto, cada mes y 3 meses anteriores), consumo por molde. |
-| `clasif_gastos.test.js` | Clasificación de gastos de punta a punta **contra un Postgres local** (corre el SQL 21A y atiende la página con psql): reglas, dato original inmutable, sugerencias, Revisión, Plan, Reglas, Proveedores, Conciliación y Ventas sin el SQL 21A. |
+| `clasif_gastos.test.js` | Clasificación de gastos de punta a punta **contra un Postgres local** (corre los SQL 21A, 21B y 21C y atiende la página con psql): reglas, dato original inmutable, sugerencias, Revisión, Plan, Reglas, Proveedores, Conciliación, neto y socios, Claude (formulario, Revisión y prueba de precisión, con la función simulada) y Ventas sin los SQL. |
+| `sugerir_cuenta.test.mjs` | La función `sugerir-cuenta` en Node con el SDK oficial de Anthropic (Anthropic simulado, Supabase atendido por Postgres local): qué se envía, respuesta obligada a una cuenta del plan, registro y costo, tope diario y errores. Requiere `SDK` (carpeta de `@anthropic-ai/sdk` 1.8.0) y `PGBASE` (base con los SQL 21A–21C). |
 | `ventas_movil.js`, `fichas_movil.js`, `plan_movil.js` | Revisión en tamaño celular: que nada quede cortado. |
 
 `tiempos.js` y `tiempos_ventas.js` comparan con la versión anterior, que esperan en `pruebas/antes/`. Esa versión se saca del historial de git.

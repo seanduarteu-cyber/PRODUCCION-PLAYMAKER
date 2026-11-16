@@ -62,9 +62,34 @@ NETO Y PAGOS A SOCIOS (SQL 21B)
   El SQL 21B pasa a 5.10 los gastos de la categoría REMUNERACIÓN DE SOCIOS que estaban en «Pagos a socios».
 - No se suma un sueldo de gerencia fijo: la remuneración de socios ya refleja ese costo.
 
+CLAUDE SUGIERE LA CUENTA (SQL 21C + función «sugerir-cuenta»)
+- Botón «Preguntar a Claude» en el formulario de gasto y en Revisión (por fila o por los seleccionados). Solo
+  pregunta al apretarlo (C2) y nunca guarda solo: «Usar esta cuenta» (o «Aceptar» en Revisión) y se guarda con
+  origen «Claude» y su confianza. Si se elige otra cuenta, queda como elegida por una persona.
+- Claude lee el plan de cuentas (qué entra en cada una), las reglas, los 3 gastos clasificados más recientes de cada
+  cuenta y los últimos 10 del mismo proveedor. Solo puede responder una cuenta del plan (lista cerrada). Con Claude
+  Opus 5.5, si declinara una consulta por seguridad, responde otro modelo automáticamente (respaldo del servidor).
+- Pestaña «✨ Claude»: consultas de hoy y tope diario (100, editable), costo del mes, modelo en uso (Opus 5.5 o
+  Haiku 5.5) y la PRUEBA DE PRECISIÓN: toma gastos ya clasificados desde abril (60% difíciles: proveedor con varias
+  cuentas o sin proveedor), le pregunta a cada modelo sin mostrarle la cuenta y muestra aciertos (total, difíciles,
+  fáciles, con confianza ≥ 90%), costo y tiempo, y los errores. No cambia ningún gasto. Tope de la prueba: 800 al día.
+- La clave de Anthropic vive SOLO como secreto de la función en Supabase (ANTHROPIC_API_KEY). La página llama a la
+  función con la llave pública; las funciones de la base que usa Claude solo las puede usar la función.
+- Cada consulta queda en gasto_ia_consultas con tokens y costo (precios de lista: Opus 5.5 US$4 / US$20 por millón de
+  tokens de entrada / salida; Haiku 5.5 US$0,10 / US$0,50).
+
+CÓMO CREAR LA FUNCIÓN EN SUPABASE (una vez)
+1. Secreto: Supabase › proyecto Ventas › Edge Functions › Secrets › ANTHROPIC_API_KEY = la clave de Anthropic.
+2. Edge Functions › Functions › «Deploy a new function» › «Via Editor». Nombre: sugerir-cuenta.
+3. Borrar el ejemplo, pegar todo sistemas/ventas/funciones/sugerir-cuenta/index.ts y «Deploy function».
+   Dejar activada la verificación JWT (viene así): Ventas llama con la llave pública.
+4. SQL Editor: correr SQL_21C_VENTAS_claude_sugiere_cuenta.sql (debe decir «SQL 21C listo»).
+5. Subir el zip de Ventas y abrir Gastos › ✨ Claude.
+
 PARÁMETROS (gestion_parametros, de las respuestas)
   inicio_analisis 2026-04-01 (D9) · sueldo_gerencia_mensual 4.500.000 (D5, hoy no se usa) · prorrateo_local 80/10/10 (D7)
   umbral_inversion 300.000 (D8) · tasa_iva 0,19 · regimen_tributario Pro Pyme General (S5)
+  ia_modelo claude-opus-5-5 · ia_tope_diario 100 (C4) · ia_tope_prueba 800 (SQL 21C)
 - Las comisiones de Sean y Silvia son solo un costo de referencia (D6): no son gasto.
 
 QUÉ TOCA EL SQL 21A DE LO QUE YA EXISTE EN VENTAS (nada más)

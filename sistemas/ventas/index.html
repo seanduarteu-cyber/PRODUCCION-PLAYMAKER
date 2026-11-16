@@ -86,6 +86,8 @@ label.lbl{font-size:11px;font-weight:700;color:#374151;display:block;margin-bott
 .gsub-aviso{background:#FFF7ED;color:#9A3412;border:1px solid #FED7AA;margin:0}
 .cta-sub{font-size:11px;color:#6B7280;margin-top:2px;line-height:1.35}
 .g-sug{font-size:11px;line-height:1.4}.g-sug-ok{color:#166534}.g-sug-otra{color:#6B7280}.g-sug-aviso{color:#9A3412;font-weight:600;margin-bottom:2px}
+.g-ia{margin:6px 0 4px}.g-ia-res{background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.4}
+.rev-ia{font-size:11px;color:#5B21B6;margin-top:3px;line-height:1.3}
 .g-neto{font-size:13px;padding:6px 0;line-height:1.3}
 .g-regla{background:#FFF7ED;border:1px solid #FED7AA;border-radius:8px;padding:10px 12px;margin-bottom:12px}
 .rev-masivo{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid #E5E7EB;background:#FAFAFA}
@@ -689,6 +691,7 @@ const PMK_ACCESO = (() => {
   <div id="gsub-reglas" style="display:none"></div>
   <div id="gsub-proveedores" style="display:none"></div>
   <div id="gsub-conciliacion" style="display:none"></div>
+  <div id="gsub-claude" style="display:none"></div>
 </div>
 
 <!-- FLUJO DE CAJA -->
@@ -2857,10 +2860,11 @@ function renderGastosSubNav(){
   }else{
     const ini=inicioAnalisis();
     const nRev=GASTOS.filter(g=>(g.fecha||"")>=ini&&enRevision(g)).length;
-    const subs=[["lista","Gastos"],["revision","Revisi&#243;n"+(nRev?` <b>${nRev}</b>`:"")],["plan","Plan de cuentas"],["reglas","Reglas"],["proveedores","Proveedores"],["conciliacion","Conciliaci&#243;n"]];
+    const subs=[["lista","Gastos"],["revision","Revisi&#243;n"+(nRev?` <b>${nRev}</b>`:"")],["plan","Plan de cuentas"],["reglas","Reglas"],["proveedores","Proveedores"],["conciliacion","Conciliaci&#243;n"]].concat(iaActiva()?[["claude","&#10024; Claude"]]:[]);
     bar.innerHTML=subs.map(([k,t])=>`<button class="canal-chip${gastosSub===k?" on":""}" data-gsub="${k}" onclick="verGastosSub('${k}')">${t}</button>`).join("");
   }
-  ["lista","revision","plan","reglas","proveedores","conciliacion"].forEach(k=>{const el=document.getElementById("gsub-"+k);if(el)el.style.display=gastosSub===k?"":"none";});
+  if(gastosSub==="claude"&&!iaActiva())gastosSub="lista";
+  ["lista","revision","plan","reglas","proveedores","conciliacion","claude"].forEach(k=>{const el=document.getElementById("gsub-"+k);if(el)el.style.display=gastosSub===k?"":"none";});
   const th=document.getElementById("th-cat-g");if(th)th.innerHTML=clasifActiva()?"Cuenta":"Categor&#237;a";
 }
 function verGastosSub(s){gastosSub=s;revPagina=1;renderGastos();}
@@ -2870,6 +2874,7 @@ function renderGastosSub(){
   else if(gastosSub==="reglas")renderReglasGastos();
   else if(gastosSub==="proveedores")renderProveedoresGastos();
   else if(gastosSub==="conciliacion")renderConciliacionGastos();
+  else if(gastosSub==="claude")renderClaudeGastos();
 }
 
 // ── Formulario de gasto con cuenta ──
@@ -2877,6 +2882,7 @@ function renderGastoFormCuentas(g){
   const k=g.id!=null?CLASIF[String(g.id)]:null;
   const cod=k?(k.cuenta_codigo||k.sugerencia_codigo||""):"";
   gfCuentaFija=!!(k&&k.cuenta_codigo);gfCuentaTocada=false;gfMesTocado=!!(k&&k.periodo_devengo);gfSug=null;
+  gfIA=null;gfIdNuevo=g.id!=null?null:Date.now()*1000+Math.floor(Math.random()*1000);
   const fecha=g.fecha||new Date().toISOString().split("T")[0];
   const mes=(k&&k.periodo_devengo?k.periodo_devengo:fecha).slice(0,7);
   const met=["Transferencia electrónica","Depósito bancario","Efectivo","Tarjeta","Cheque"];
@@ -2900,6 +2906,7 @@ function renderGastoFormCuentas(g){
       <div style="margin-bottom:6px"><label class="lbl">Cuenta *</label>
         <select id="g-cta" onchange="gfCuentaTocada=true;gfCuentaFija=true;gfActualizar()"><option value="">&#8212; elegir cuenta &#8212;</option>${opcionesCuentas(cod)}</select></div>
       <div id="g-sug" class="g-sug"></div>
+      ${iaActiva()?`<div class="g-ia"><button type="button" class="btn btn-ghost btn-sm" onclick="gfPreguntarClaude()">&#10024; Preguntar a Claude</button><div id="g-ia" style="margin-top:6px"></div></div>`:""}
       <div id="g-que" class="cta-sub" style="margin:4px 0 12px"></div>
       <div class="form-grid-2" style="margin-bottom:12px">
         <div><label class="lbl">Mes al que corresponde</label><input type="month" id="g-mes" value="${mes}" onchange="gfMesTocado=true"><div id="g-mes-nota" class="cta-sub"></div></div>
@@ -2983,13 +2990,15 @@ async function guardarGastoCuentas(){
   if(chk&&chk.checked&&!prov&&!palabra.trim()){alert("Para crear la regla escribe la palabra que debe tener la descripción.");return;}
   const previo=gastoEditId?GASTOS.find(x=>x.id===gastoEditId):null;
   const kPrev=previo?CLASIF[String(previo.id)]:null;
-  const gasto={id:gastoEditId||(Date.now()*1000+Math.floor(Math.random()*1000)),fecha,monto,descripcion:desc,categoria:c.nombre,proveedor:prov,metodo_pago:metodo,observaciones:previo?(previo.observaciones||""):""};
+  const gasto={id:gastoEditId||gfIdNuevo||(Date.now()*1000+Math.floor(Math.random()*1000)),fecha,monto,descripcion:desc,categoria:c.nombre,proveedor:prov,metodo_pago:metodo,observaciones:previo?(previo.observaciones||""):""};
   const usuario=usuarioActual(), s=gfSug||{};
   let origen="manual",reglaId=null,motivo=null;
   if(kPrev&&kPrev.estado==="clasificado"&&kPrev.cuenta_codigo===cod&&!gfCuentaTocada){origen=kPrev.origen||"manual";reglaId=kPrev.regla_id||null;motivo=kPrev.motivo||null;}
   else if(s.codigo===cod){origen=s.origen||"manual";reglaId=s.regla?s.regla.id:null;motivo=s.txt||null;}
+  let confianza=null;
+  if(gfIA&&gfIA.cuenta===cod){origen="ia";reglaId=null;confianza=gfIA.confianza;motivo="Claude"+(gfIA.confianza!=null?" ("+pctTxt(gfIA.confianza)+")":"")+": "+(gfIA.motivo||"");}
   if(socio){origen="manual";reglaId=null;motivo="Pago a socio: "+PAGO_SOCIO[socio].txt.split(":")[0].split(" (")[0].toLowerCase();}
-  const clasif={gasto_id:gasto.id,cuenta_codigo:cod,periodo_devengo:mes.slice(0,7)+"-01",origen,regla_id:reglaId,estado:"clasificado",motivo,sugerencia_codigo:null,actualizado_por:usuario};
+  const clasif={gasto_id:gasto.id,cuenta_codigo:cod,periodo_devengo:mes.slice(0,7)+"-01",origen,regla_id:reglaId,confianza:origen==="ia"?confianza:null,estado:"clasificado",motivo,sugerencia_codigo:null,actualizado_por:usuario};
   if(netoActivo())clasif.documento=(document.getElementById("g-doc")||{}).value||null;
   try{await sbUpsert("gastos",gasto);}catch(e){alert("Error al guardar el gasto: "+e.message);return;}
   if(previo){const idx=GASTOS.findIndex(x=>x.id===gastoEditId);if(idx>=0)GASTOS[idx]=gasto;}else GASTOS.push(gasto);
@@ -3063,6 +3072,7 @@ function renderRevisionGastos(){
       <span style="font-size:12px;color:#6B7280">o cargarlos a</span>
       <select id="rev-masivo-cta" style="max-width:260px"><option value="">&#8212; cuenta &#8212;</option>${opcionesCuentas("")}</select>
       <button class="btn btn-primary btn-sm" onclick="aplicarCuentaRevision()">Aplicar</button>
+      ${iaActiva()?`<button class="btn btn-ghost btn-sm" onclick="revPreguntarClaude(seleccionadosRevision().map(g=>g.id))">&#10024; Preguntar a Claude por los seleccionados</button><span id="rev-ia-estado" class="cta-sub"></span>`:""}
     </div>
     <div class="tbl-wrap"><table><thead><tr><th></th><th>Fecha</th><th>Descripci&#243;n</th><th>Proveedor</th><th>Monto</th><th>Motivo</th><th>Cuenta</th><th></th></tr></thead><tbody>
     ${pag.map(g=>{const k=clasifDe(g);return `<tr data-rev="${g.id}">
@@ -3072,9 +3082,10 @@ function renderRevisionGastos(){
       <td>${escH(g.proveedor)||"&#8212;"}</td>
       <td style="text-align:right;font-weight:700;white-space:nowrap">${clp(g.monto||0)}</td>
       <td style="max-width:220px;font-size:11px;color:#9A3412">${escH(motivoRevision(g))}</td>
-      <td style="min-width:200px"><select id="rev-c-${g.id}"><option value="">&#8212; elegir &#8212;</option>${opcionesCuentas(k&&k.sugerencia_codigo||"")}</select>
+      <td style="min-width:200px"><select id="rev-c-${g.id}"><option value="">&#8212; elegir &#8212;</option>${opcionesCuentas((IA_SUG[String(g.id)]&&IA_SUG[String(g.id)].cuenta)||(k&&k.sugerencia_codigo)||"")}</select>
+        ${IA_SUG[String(g.id)]?`<div class="rev-ia">${IA_SUG[String(g.id)].error?"&#9888; "+escH(IA_SUG[String(g.id)].error):"&#10024; Claude: "+txtSugIA(IA_SUG[String(g.id)])}</div>`:""}
         ${g.proveedor?`<label class="cta-sub" style="display:flex;gap:4px;align-items:center;margin-top:3px"><input type="checkbox" id="rev-r-${g.id}" style="width:auto"> y crear regla para este proveedor</label>`:""}</td>
-      <td><button class="btn btn-primary btn-sm" onclick="aceptarRevision(${g.id})">Aceptar</button></td></tr>`;}).join("")||'<tr><td colspan="8" class="no-results">No hay gastos por revisar &#127881;</td></tr>'}
+      <td style="white-space:nowrap"><button class="btn btn-primary btn-sm" onclick="aceptarRevision(${g.id})">Aceptar</button>${iaActiva()?` <button class="btn btn-ghost btn-sm" title="Preguntar a Claude" onclick="revPreguntarClaude([${g.id}])">&#10024;</button>`:""}</td></tr>`;}).join("")||'<tr><td colspan="8" class="no-results">No hay gastos por revisar &#127881;</td></tr>'}
     </tbody></table></div>
     ${pags>1?`<div class="pagination">${Array.from({length:pags},(_,i)=>`<button class="page-btn${i+1===revPagina?" active":""}" onclick="revPagina=${i+1};renderRevisionGastos()">${i+1}</button>`).join("")}<span style="margin-left:auto;color:#6B7280">${vis.length} gastos</span></div>`:""}
     </div>`;
@@ -3085,8 +3096,9 @@ function revBuscar(v){
 }
 function filaRevisada(g,cod){
   const k=clasifDe(g)||{};
-  return {gasto_id:g.id,cuenta_codigo:cod,periodo_devengo:k.periodo_devengo||((g.fecha||"").slice(0,7)+"-01"),origen:"manual",regla_id:null,
-    estado:"clasificado",motivo:"Revisado por "+usuarioActual(),sugerencia_codigo:null,actualizado_por:usuarioActual()};
+  const ia=IA_SUG[String(g.id)], deIA=!!(ia&&!ia.error&&ia.cuenta===cod);
+  return {gasto_id:g.id,cuenta_codigo:cod,periodo_devengo:k.periodo_devengo||((g.fecha||"").slice(0,7)+"-01"),origen:deIA?"ia":"manual",regla_id:null,
+    confianza:deIA?ia.confianza:null,estado:"clasificado",motivo:deIA?"Claude ("+pctTxt(ia.confianza)+"): "+(ia.motivo||""):"Revisado por "+usuarioActual(),sugerencia_codigo:null,actualizado_por:usuarioActual()};
 }
 async function guardarRevisadas(filas){
   if(!filas.length)return false;
@@ -3321,6 +3333,208 @@ async function renderConciliacionGastos(){
     <div class="kpi"><label>Dato original (crudo)</label><div class="val">${clp(v.total_crudo)}</div><div class="sub">${Number(v.gastos_sin_crudo)?`<b style="color:#DC2626">${v.gastos_sin_crudo} sin dato original</b>`:"todos con dato original"}</div></div>
     <div class="kpi"><label>Clasificado + en revisi&#243;n</label><div class="val">${clp(Number(v.total_clasificado)+Number(v.total_en_revision))}</div><div class="sub">${clp(v.total_clasificado)} + ${clp(v.total_en_revision)} (${v.gastos_en_revision} gastos)</div></div>
     <div class="kpi" style="border-color:${cuadra?"#16A34A":"#DC2626"}"><label>Diferencia</label><div class="val" style="color:${cuadra?"#16A34A":"#DC2626"}">${clp(dif)}</div><div class="sub">${cuadra?"&#10003; Cuadra":"&#10007; No cuadra: revisar antes de avanzar"}${Number(v.gastos_sin_clasificacion)?" · "+v.gastos_sin_clasificacion+" sin clasificaci&#243;n":""}</div></div>`;
+}
+
+// ── CLAUDE SUGIERE LA CUENTA (SQL 21C + función «sugerir-cuenta» de Supabase) ──────────────────────────────
+// Solo pregunta al apretar el botón (C2). Nunca guarda solo: la persona usa la sugerencia o elige otra cuenta.
+// La clave de Anthropic vive como secreto de la función; la página solo llama a la función con la llave pública.
+const FN_SUGERIR=SUPABASE_URL+"/functions/v1/sugerir-cuenta";
+const MODELOS_IA={"claude-opus-5-5":"Claude Opus 5.5","claude-haiku-5-5":"Claude Haiku 5.5"};
+const COSTO_IA={"claude-opus-5-5":[0.005,0.03],"claude-haiku-5-5":[0.0005,0.002]};   // US$ por consulta (con y sin caché)
+let gfIA=null, gfIdNuevo=null, IA_SUG={}, IA_PRUEBA=null, IA_DATOS=null, iaLote="", iaModeloVer="";
+function iaActiva(){return clasifActiva()&&("ia_tope_diario" in PARAMS_G);}
+function pctTxt(x){return Math.round((Number(x)||0)*100)+"%";}
+function usd(x){const n=Number(x)||0;return "US$"+(n<0.01?n.toFixed(4):n.toFixed(2)).replace(".",",");}
+async function preguntarClaude(gasto,extra){
+  let res;
+  try{
+    res=await fetch(FN_SUGERIR,{method:"POST",headers:{"Content-Type":"application/json",apikey:SUPABASE_KEY,Authorization:"Bearer "+SUPABASE_KEY},
+      body:JSON.stringify({modo:"sugerir",usuario:usuarioActual(),gasto,...(extra||{})})});
+  }catch(e){throw new Error("No se pudo conectar con la función de Claude. Revisa tu conexión.");}
+  let j=null;try{j=await res.json();}catch(e){}
+  if(!res.ok||!j||j.error){
+    const e=new Error(j&&j.error?j.error:res.status===404?"La función «sugerir-cuenta» todavía no está creada en Supabase.":"No se pudo consultar a Claude (HTTP "+res.status+").");
+    e.status=res.status;throw e;
+  }
+  return j;
+}
+function txtSugIA(j){
+  return `<b>${escH(j.cuenta)} · ${escH(j.nombre||nombreCuenta(j.cuenta))}</b> (${pctTxt(j.confianza)})${j.motivo?` · ${escH(j.motivo)}`:""}`;
+}
+
+// ── Formulario: «Preguntar a Claude» ──
+async function gfPreguntarClaude(){
+  const box=document.getElementById("g-ia");if(!box)return;
+  const desc=document.getElementById("g-desc").value.trim();
+  if(!desc){alert("Escribe primero la descripción del gasto.");return;}
+  const gasto={id:gastoEditId||gfIdNuevo,fecha:document.getElementById("g-fecha").value,monto:parseFloat(document.getElementById("g-monto").value)||0,
+    descripcion:desc,proveedor:document.getElementById("g-prov").value.trim()};
+  box.innerHTML=`<span class="cta-sub">Consultando a Claude&#8230;</span>`;
+  try{
+    const j=await preguntarClaude(gasto);
+    box.dataset.r=JSON.stringify(j);
+    box.innerHTML=`<div class="g-ia-res">&#10024; Claude sugiere ${txtSugIA(j)}
+      <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn btn-primary btn-sm" onclick="gfUsarIA(false)">Usar esta cuenta</button>
+      ${j.alternativa?`<button type="button" class="btn btn-ghost btn-sm" onclick="gfUsarIA(true)">Usar la alternativa: ${escH(j.alternativa)} · ${escH(j.alternativa_nombre||nombreCuenta(j.alternativa))}</button>`:""}</div></div>`;
+  }catch(e){box.innerHTML=`<div class="g-sug-aviso">&#9888; ${escH(e.message)}</div>`;}
+}
+function gfUsarIA(alt){
+  const box=document.getElementById("g-ia"), sel=document.getElementById("g-cta");if(!box||!sel)return;
+  const j=JSON.parse(box.dataset.r||"null");if(!j)return;
+  const cod=alt?j.alternativa:j.cuenta;if(!cuentaDe(cod))return;
+  sel.value=cod;gfCuentaTocada=true;gfCuentaFija=true;
+  gfIA={id:j.id,cuenta:cod,confianza:alt?null:j.confianza,motivo:alt?"alternativa de Claude":j.motivo};
+  box.innerHTML=`<div class="g-ia-res">&#10003; Usando ${alt?"la alternativa":"la sugerencia"} de Claude: <b>${escH(cod)} · ${escH(nombreCuenta(cod))}</b>${!alt&&j.confianza!=null?" ("+pctTxt(j.confianza)+")":""}</div>`;
+  gfActualizar();
+}
+
+// ── Revisión: preguntar por una fila o por las seleccionadas ──
+async function revPreguntarClaude(ids){
+  ids=ids.filter(id=>GASTOS.some(g=>String(g.id)===String(id)));
+  if(!ids.length){alert("Selecciona gastos");return;}
+  const est=document.getElementById("rev-ia-estado");
+  let hechos=0,error=null;const cola=ids.slice();
+  const pinta=()=>{if(est)est.textContent=`Claude: ${hechos} de ${ids.length}…`;};
+  pinta();
+  const trabajador=async()=>{while(cola.length&&!error){
+    const id=cola.shift(), g=GASTOS.find(x=>String(x.id)===String(id));
+    try{IA_SUG[String(id)]=await preguntarClaude({id:g.id,fecha:g.fecha,monto:g.monto,descripcion:g.descripcion,proveedor:g.proveedor});}
+    catch(e){if(e.status===429||e.status===404||e.status===500)error=e.message;else IA_SUG[String(id)]={error:e.message};}
+    hechos++;pinta();
+  }};
+  await Promise.all([trabajador(),trabajador(),trabajador()]);
+  renderRevisionGastos();
+  const est2=document.getElementById("rev-ia-estado");
+  if(est2)est2.innerHTML=error?`<span style="color:#B91C1C">${escH(error)}</span>`:`Claude respondi&#243; ${hechos} gasto${hechos===1?"":"s"}: revisa y acepta.`;
+}
+
+// ── Pestaña «Claude»: uso, costo, modelo y prueba de precisión ──
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function mezclar(arr,semilla){const r=mulberry(semilla),a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+// Muestra: gastos ya clasificados desde abril (no por Claude). 60% «difíciles»: proveedor con varias cuentas o sin proveedor.
+function muestraPrueba(n){
+  const ini=inicioAnalisis();
+  const cand=GASTOS.filter(g=>{const k=clasifDe(g);return (g.fecha||"")>=ini&&k&&k.estado==="clasificado"&&k.cuenta_codigo&&k.origen!=="ia";});
+  const ctas={};cand.forEach(g=>{const p=normTxt(g.proveedor);(ctas[p]=ctas[p]||new Set()).add(cuentaDeGasto(g));});
+  const dificil=g=>!normTxt(g.proveedor)||ctas[normTxt(g.proveedor)].size>1;
+  const D=mezclar(cand.filter(dificil),2026), Fa=mezclar(cand.filter(g=>!dificil(g)),2027);
+  let nD=Math.min(D.length,Math.round(n*0.6)), nF=Math.min(Fa.length,n-nD);
+  if(nD+nF<n)nD=Math.min(D.length,n-nF);
+  return D.slice(0,nD).map(g=>({g,grupo:"dificil"})).concat(Fa.slice(0,nF).map(g=>({g,grupo:"facil"})));
+}
+async function cargarDatosIA(){
+  try{IA_DATOS=await sbTodo("gasto_ia_consultas","select=*","id.desc");}catch(e){IA_DATOS=null;}
+  return IA_DATOS;
+}
+function resumenLote(filas){
+  const M={};
+  filas.forEach(f=>{const m=M[f.modelo]=M[f.modelo]||{n:0,err:0,ok:0,dn:0,dok:0,fn:0,fok:0,alta:0,altaOk:0,costo:0,ms:0,nms:0};
+    m.costo+=Number(f.costo_usd)||0;
+    if(f.error||!f.cuenta_sugerida){m.err++;return;}
+    const bien=f.cuenta_sugerida===f.cuenta_real;
+    m.n++;if(bien)m.ok++;
+    if(f.grupo==="dificil"){m.dn++;if(bien)m.dok++;}else{m.fn++;if(bien)m.fok++;}
+    if(Number(f.confianza)>=0.9){m.alta++;if(bien)m.altaOk++;}
+    if(f.duracion_ms){m.ms+=f.duracion_ms;m.nms++;}
+  });
+  return M;
+}
+async function renderClaudeGastos(){
+  const el=document.getElementById("gsub-claude");if(!el)return;
+  if(!IA_DATOS)await cargarDatosIA();
+  const D=IA_DATOS||[], hoy=new Date().toISOString().slice(0,10), mes=hoy.slice(0,7);
+  const hoyN=D.filter(f=>f.modo==="sugerir"&&String(f.created_at).slice(0,10)===hoy).length;
+  const costoMes=D.filter(f=>String(f.created_at).slice(0,7)===mes).reduce((s,f)=>s+(Number(f.costo_usd)||0),0);
+  const modelo=typeof PARAMS_G.ia_modelo==="string"?PARAMS_G.ia_modelo:"claude-opus-5-5", tope=Number(PARAMS_G.ia_tope_diario)||100;
+  const lotes=[...new Set(D.filter(f=>f.modo==="prueba"&&f.lote).map(f=>f.lote))];
+  if(!iaLote||!lotes.includes(iaLote))iaLote=lotes[0]||"";
+  const filasLote=D.filter(f=>f.lote===iaLote&&f.modo==="prueba"), R=resumenLote(filasLote);
+  const modelosLote=Object.keys(R);if(!iaModeloVer||!R[iaModeloVer])iaModeloVer=modelosLote[0]||"";
+  const nom=id=>{const g=GASTOS.find(x=>String(x.id)===String(id));return g?g:{};};
+  const fallos=filasLote.filter(f=>f.modelo===iaModeloVer&&f.cuenta_sugerida&&f.cuenta_sugerida!==f.cuenta_real).slice(0,80);
+  const ultimas=D.filter(f=>f.modo==="sugerir").slice(0,30);
+  const n=IA_PRUEBA?IA_PRUEBA.n:300;
+  el.innerHTML=`
+    <div class="kpi-grid">
+      <div class="kpi"><label>Consultas hoy</label><div class="val">${hoyN} <span style="font-size:13px;color:#9CA3AF">de ${tope}</span></div><div class="sub">tope diario (sin contar la prueba)</div></div>
+      <div class="kpi"><label>Costo este mes</label><div class="val">${usd(costoMes)}</div><div class="sub">seg&#250;n los tokens de cada consulta</div></div>
+      <div class="kpi"><label>Modelo en uso</label><div class="val" style="font-size:14px">
+        <select id="ia-modelo" onchange="guardarParamIA('ia_modelo',this.value)">${Object.entries(MODELOS_IA).map(([k,t])=>`<option value="${k}" ${k===modelo?"selected":""}>${t}</option>`).join("")}</select></div><div class="sub">se decide con la prueba</div></div>
+      <div class="kpi"><label>Tope diario</label><div class="val" style="font-size:14px"><input id="ia-tope" type="number" min="0" value="${tope}" style="max-width:110px" onchange="guardarParamIA('ia_tope_diario',Number(this.value)||0)"></div><div class="sub">consultas por d&#237;a</div></div>
+    </div>
+    <div class="card"><div class="card-header"><h2>Prueba de precisi&#243;n</h2></div><div style="padding:14px 16px">
+      <p class="cta-sub" style="margin-bottom:10px">Se toman gastos ya clasificados desde ${mesTxt(inicioAnalisis())} (60% &#171;dif&#237;ciles&#187;: proveedor que usa varias cuentas o sin proveedor), se le pregunta a cada modelo sin mostrarle la cuenta y se compara. No cambia ning&#250;n gasto.</p>
+      <div class="search-bar" style="margin-bottom:8px">
+        <label class="cta-sub" style="display:flex;gap:6px;align-items:center">Gastos <input id="ia-n" type="number" min="10" max="400" value="${n}" style="max-width:90px" oninput="estimarPruebaIA()"></label>
+        ${Object.entries(MODELOS_IA).map(([k,t])=>`<label class="cf-chk" style="margin:0"><input type="checkbox" data-ia-mod="${k}" checked onchange="estimarPruebaIA()"> ${t}</label>`).join("")}
+        <button class="btn btn-primary btn-sm" id="ia-iniciar" onclick="iniciarPruebaIA()" ${IA_PRUEBA&&IA_PRUEBA.corriendo?"disabled":""}>Iniciar prueba</button>
+        <button class="btn btn-ghost btn-sm" onclick="if(IA_PRUEBA)IA_PRUEBA.parar=true" ${IA_PRUEBA&&IA_PRUEBA.corriendo?"":"disabled"}>Detener</button>
+      </div>
+      <div id="ia-estimado" class="cta-sub"></div>
+      <div id="ia-progreso" class="cta-sub" style="margin-top:6px;font-weight:600">${IA_PRUEBA&&IA_PRUEBA.corriendo?`Probando: ${IA_PRUEBA.hechos} de ${IA_PRUEBA.total}…`:""}</div>
+    </div></div>
+    ${lotes.length?`<div class="card"><div class="card-header"><h2>Resultado</h2>
+        <select style="max-width:260px" onchange="iaLote=this.value;iaModeloVer='';renderClaudeGastos()">${lotes.map(l=>`<option value="${escH(l)}" ${l===iaLote?"selected":""}>Prueba del ${escH(fechaLote(l))}</option>`).join("")}</select></div>
+      <div class="tbl-wrap"><table id="ia-resultado"><thead><tr><th>Modelo</th><th style="text-align:right">Respondidas</th><th style="text-align:right">Aciertos</th><th style="text-align:right">Dif&#237;ciles</th><th style="text-align:right">F&#225;ciles</th><th style="text-align:right">Con confianza &#8805; 90%</th><th style="text-align:right">Costo</th><th style="text-align:right">Por consulta</th><th style="text-align:right">Tiempo</th></tr></thead><tbody>
+      ${modelosLote.map(m=>{const x=R[m];const p=(a,b)=>b?Math.round(a/b*100)+"%":"&#8212;";return `<tr><td><b>${MODELOS_IA[m]||escH(m)}</b>${x.err?`<div class="cta-sub" style="color:#B91C1C">${x.err} con error</div>`:""}</td>
+        <td style="text-align:right">${x.n}</td><td style="text-align:right;font-weight:700">${p(x.ok,x.n)}<div class="cta-sub">${x.ok} de ${x.n}</div></td>
+        <td style="text-align:right">${p(x.dok,x.dn)}<div class="cta-sub">${x.dok} de ${x.dn}</div></td><td style="text-align:right">${p(x.fok,x.fn)}<div class="cta-sub">${x.fok} de ${x.fn}</div></td>
+        <td style="text-align:right">${p(x.altaOk,x.alta)} acierta<div class="cta-sub">${x.alta} gastos (${p(x.alta,x.n)} del total)</div></td>
+        <td style="text-align:right">${usd(x.costo)}</td><td style="text-align:right">${usd(x.n+x.err?x.costo/(x.n+x.err):0)}</td><td style="text-align:right">${x.nms?(x.ms/x.nms/1000).toFixed(1).replace(".",",")+" s":"&#8212;"}</td></tr>`;}).join("")}
+      </tbody></table></div>
+      <p class="cta-sub" style="padding:8px 16px">&#171;Con confianza &#8805; 90%&#187;: cu&#225;ntos gastos responder&#237;a con 90% o m&#225;s de confianza y cu&#225;ntos de esos acierta. Con eso se decide si alg&#250;n d&#237;a se aplica sola (C3).</p>
+      ${modelosLote.length?`<div style="padding:0 16px 8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span class="cta-sub">Errores de</span>${modelosLote.map(m=>`<button class="canal-chip${m===iaModeloVer?" on":""}" onclick="iaModeloVer='${m}';renderClaudeGastos()">${MODELOS_IA[m]||escH(m)}</button>`).join("")}</div>
+      <div class="tbl-wrap"><table><thead><tr><th>Gasto</th><th>Proveedor</th><th>Cuenta real</th><th>Claude dijo</th><th>Motivo</th></tr></thead><tbody>
+        ${fallos.map(f=>{const g=nom(f.gasto_id);return `<tr><td>${escH(g.descripcion||"")}<div class="cta-sub">${fmtFecha(g.fecha)} · ${clp(g.monto||0)}</div></td><td>${escH(g.proveedor||"")}</td>
+          <td>${escH(f.cuenta_real)} · ${escH(nombreCuenta(f.cuenta_real))}</td><td>${escH(f.cuenta_sugerida)} · ${escH(nombreCuenta(f.cuenta_sugerida))} (${pctTxt(f.confianza)})</td><td style="font-size:11px">${escH(f.motivo||"")}</td></tr>`;}).join("")||'<tr><td colspan="5" class="no-results">Sin errores</td></tr>'}
+      </tbody></table></div>`:""}</div>`:""}
+    <div class="card"><div class="card-header"><h2>&#218;ltimas consultas</h2></div><div class="tbl-wrap"><table><thead><tr><th>Cu&#225;ndo</th><th>Gasto</th><th>Claude sugiri&#243;</th><th>Qued&#243; en</th><th style="text-align:right">Costo</th></tr></thead><tbody>
+      ${ultimas.map(f=>{const g=nom(f.gasto_id), k=CLASIF[String(f.gasto_id)], fin=k&&k.estado==="clasificado"?k.cuenta_codigo:null;
+        return `<tr><td style="white-space:nowrap">${new Date(f.created_at).toLocaleString("es-CL")}</td><td>${escH(g.descripcion||"(gasto no guardado)")}<div class="cta-sub">${escH(g.proveedor||"")}</div></td>
+        <td>${f.error?`<span style="color:#B91C1C">${escH(f.error)}</span>`:`${escH(f.cuenta_sugerida||"")} · ${escH(nombreCuenta(f.cuenta_sugerida))} (${pctTxt(f.confianza)})`}</td>
+        <td>${fin?(fin===f.cuenta_sugerida?"&#10003; ":"")+escH(nombreCuenta(fin)):"&#8212;"}</td><td style="text-align:right">${usd(f.costo_usd)}</td></tr>`;}).join("")||'<tr><td colspan="5" class="no-results">Todav&#237;a no hay consultas</td></tr>'}
+    </tbody></table></div></div>`;
+  estimarPruebaIA();
+}
+function fechaLote(l){const t=Number(String(l).replace(/^P/,""));return t?new Date(t).toLocaleString("es-CL"):l;}
+function modelosPrueba(){return [...document.querySelectorAll("[data-ia-mod]:checked")].map(c=>c.dataset.iaMod);}
+function estimarPruebaIA(){
+  const el=document.getElementById("ia-estimado");if(!el)return;
+  const n=Math.max(0,Math.min(400,parseInt((document.getElementById("ia-n")||{}).value)||0)), ms=modelosPrueba();
+  const disp=muestraPrueba(n).length;
+  let a=0,b=0;ms.forEach(m=>{a+=disp*COSTO_IA[m][0];b+=disp*COSTO_IA[m][1];});
+  el.innerHTML=ms.length?`${disp} gastos × ${ms.length} modelo${ms.length===1?"":"s"} = ${disp*ms.length} consultas · costo estimado entre ${usd(a)} y ${usd(b)}`:"Elige al menos un modelo.";
+}
+async function guardarParamIA(clave,valor){
+  try{await sbUpsert("gestion_parametros",{clave,valor,actualizado_por:usuarioActual(),updated_at:new Date().toISOString()});PARAMS_G[clave]=valor;showToast("Guardado");}
+  catch(e){alert("No se pudo guardar: "+e.message);}
+}
+async function iniciarPruebaIA(){
+  if(IA_PRUEBA&&IA_PRUEBA.corriendo)return;
+  const n=Math.max(10,Math.min(400,parseInt(document.getElementById("ia-n").value)||300)), ms=modelosPrueba();
+  if(!ms.length){alert("Elige al menos un modelo");return;}
+  const muestra=muestraPrueba(n);
+  if(!muestra.length){alert("No hay gastos clasificados para probar");return;}
+  let a=0,b=0;ms.forEach(m=>{a+=muestra.length*COSTO_IA[m][0];b+=muestra.length*COSTO_IA[m][1];});
+  if(!confirm(`Se harán ${muestra.length*ms.length} consultas a Claude (${muestra.length} gastos × ${ms.length} modelo${ms.length===1?"":"s"}).\nCosto estimado: entre ${usd(a)} y ${usd(b)}.\n¿Iniciar la prueba?`))return;
+  const lote="P"+Date.now(), cola=[];
+  ms.forEach(m=>muestra.forEach(x=>cola.push({m,x})));
+  IA_PRUEBA={n,lote,total:cola.length,hechos:0,corriendo:true,parar:false,error:null};
+  iaLote=lote;renderClaudeGastos();
+  const pinta=()=>{const p=document.getElementById("ia-progreso");if(p)p.textContent=`Probando: ${IA_PRUEBA.hechos} de ${IA_PRUEBA.total}…`;};
+  const trabajador=async()=>{while(cola.length&&!IA_PRUEBA.parar&&!IA_PRUEBA.error){
+    const {m,x}=cola.shift(), g=x.g;
+    try{await preguntarClaude({id:g.id,fecha:g.fecha,monto:g.monto,descripcion:g.descripcion,proveedor:g.proveedor},
+      {modo:"prueba",modelo:m,lote,grupo:x.grupo,cuenta_real:cuentaDeGasto(g)});}
+    catch(e){if(e.status===429||e.status===404||(e.status===500&&/clave|secreto|plan/i.test(e.message)))IA_PRUEBA.error=e.message;}
+    IA_PRUEBA.hechos++;pinta();
+  }};
+  await Promise.all([trabajador(),trabajador(),trabajador(),trabajador()]);
+  IA_PRUEBA.corriendo=false;
+  await cargarDatosIA();
+  renderClaudeGastos();
+  const p=document.getElementById("ia-progreso");
+  if(p)p.innerHTML=IA_PRUEBA.error?`<span style="color:#B91C1C">Se detuvo: ${escH(IA_PRUEBA.error)}</span>`:IA_PRUEBA.parar?`Detenida en ${IA_PRUEBA.hechos} de ${IA_PRUEBA.total}.`:`Listo: ${IA_PRUEBA.hechos} consultas.`;
 }
 
 function normalizarMetodo(metodo){

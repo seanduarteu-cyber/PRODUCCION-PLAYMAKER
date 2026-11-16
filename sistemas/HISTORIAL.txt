@@ -1,3 +1,4 @@
+2026-11-16  Claude sugiere la cuenta de un gasto (Ventas › Gastos): botón «Preguntar a Claude» en el formulario y en Revisión (solo al apretarlo, nunca guarda solo) y pestaña «Claude» con uso, costo, modelo, tope diario y prueba de precisión (Opus 5.5 vs Haiku 5.5). SQL 21C y función sugerir-cuenta de Supabase
 2026-11-16  Costeo → Gasto general lee la clasificación de Ventas: niveles 3, 4 y 5 en neto, cada mes por separado (producción, venta y marketing, administración) y el % de los 3 meses anteriores al cierre de la venta; provisorio si hay gastos en revisión
 2026-11-16  Ventas › Gastos: neto de cada gasto (documento del gasto, del proveedor o IVA habitual de la cuenta) y pregunta obligatoria al pagar a un socio (remuneración, reembolso, gasto personal o retiro); cuenta 5.10 Remuneración de socios. SQL 21B
 2026-11-16  Plan de cuentas: los niveles 3, 4 y 5 se llaman «Gasto general de producción / de venta y marketing / de administración» (no son costo directo)
