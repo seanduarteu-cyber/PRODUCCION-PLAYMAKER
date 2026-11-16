@@ -289,41 +289,81 @@
   "tipo": "Pro",
   "prov": "Aymtex",
   "u": "kg",
-  "act": 8425,
+  "act": 9497,
   "iva": "No",
   "kgm": 0.3,
-  "an": 1.85
+  "an": 1.85,
+  "reg": 8425,
+  "nota": "Precio actualizado en la receta 4 del usuario (16-11-2026)."
  },
  {
   "n": "MALLA MESH BLANCO",
   "tipo": "Nacional",
   "prov": "Aymtex",
   "u": "kg",
-  "act": 8163,
+  "act": 9497,
   "iva": "No",
   "kgm": 0.27,
-  "an": 1.85
+  "an": 1.85,
+  "reg": 8163,
+  "nota": "Precio actualizado en la receta 4 del usuario (16-11-2026)."
  },
  {
-  "n": "AVENTURA BRILLANTE",
+  "n": "ARGENTINA BRILLANTE",
   "tipo": "Pro",
   "prov": "Aymtex",
   "u": "kg",
-  "act": 10236,
+  "act": 11366,
   "iva": "No",
   "kgm": 0.26,
   "an": 1.85,
-  "duda": "En la hoja parece decir 'Argentina Brillante': confirmar el nombre."
+  "reg": 10236,
+  "nota": "Precio actualizado en la receta 4 del usuario (16-11-2026)."
  },
  {
   "n": "DRY BLANCO (CIRE)",
-  "tipo": "Nacional",
+  "tipo": "Pro",
   "prov": "Aymtex",
   "u": "kg",
-  "act": 7426,
+  "act": 8572,
   "iva": "No",
   "kgm": null,
   "an": 1.85,
+  "duda": "Falta kilos por metro.",
+  "reg": 7426,
+  "nota": "Precio actualizado en la receta 4 del usuario (16-11-2026)."
+ },
+ {
+  "n": "U CENTENARIO",
+  "tipo": "Pro",
+  "prov": "Aymtex",
+  "u": "kg",
+  "act": 9284,
+  "iva": "No",
+  "kgm": null,
+  "an": 1.6,
+  "duda": "Falta kilos por metro."
+ },
+ {
+  "n": "WIN ESPIGA",
+  "tipo": "Pro",
+  "prov": "Aymtex",
+  "u": "kg",
+  "act": 9284,
+  "iva": "No",
+  "kgm": null,
+  "an": 1.6,
+  "duda": "Falta kilos por metro."
+ },
+ {
+  "n": "PUMA",
+  "tipo": "Pro",
+  "prov": "Aymtex",
+  "u": "kg",
+  "act": 9284,
+  "iva": "No",
+  "kgm": null,
+  "an": 1.6,
   "duda": "Falta kilos por metro."
  },
  {
@@ -395,14 +435,13 @@
   "duda": "Falta kilos por metro."
  },
  {
-  "n": "JACQUARD CAÑO",
+  "n": "JACQUARD CAMO",
   "prov": "Lafayette",
   "u": "metro",
   "act": 4563,
   "iva": "No",
   "kgm": null,
-  "an": 1.55,
-  "duda": "Nombre leído como 'Jacquard caño'(?)."
+  "an": 1.55
  },
  {
   "n": "BAHIA",
