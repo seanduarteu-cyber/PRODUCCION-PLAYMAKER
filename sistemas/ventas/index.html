@@ -81,6 +81,19 @@ label.lbl{font-size:11px;font-weight:700;color:#374151;display:block;margin-bott
 .chart-bar{height:20px;border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:11px;color:#fff;font-weight:600;min-width:30px}
 .com-det td{background:#FAFAFA;font-size:12px}#com-tabla-foot td{padding:10px 12px;border-top:2px solid #E5E7EB}.com-det summary{cursor:pointer;color:var(--pmk-orange);font-weight:600}
 .canal-chip{border:1px solid #E5E7EB;background:#fff;border-radius:99px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit}.canal-chip b{color:var(--pmk-orange)}.canal-chip.on{background:#111;color:#fff;border-color:#111}.canal-chip.on b{color:#fff}
+/* Gastos: plan de cuentas (SQL 21A) */
+.gsub-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center}.gsub-bar .canal-chip b{margin-left:3px}
+.gsub-aviso{background:#FFF7ED;color:#9A3412;border:1px solid #FED7AA;margin:0}
+.cta-sub{font-size:11px;color:#6B7280;margin-top:2px;line-height:1.35}
+.g-sug{font-size:11px;line-height:1.4}.g-sug-ok{color:#166534}.g-sug-otra{color:#6B7280}.g-sug-aviso{color:#9A3412;font-weight:600;margin-bottom:2px}
+.g-regla{background:#FFF7ED;border:1px solid #FED7AA;border-radius:8px;padding:10px 12px;margin-bottom:12px}
+.rev-masivo{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid #E5E7EB;background:#FAFAFA}
+.pc-nivel td{background:#111;color:#ED6C23;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.pc-resultado td{background:#FFF7ED;color:#9A3412;font-weight:700;font-size:11px;text-align:right}
+.capa-gastos{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:450;display:flex;align-items:center;justify-content:center}
+.capa-caja{background:#fff;border-radius:12px;padding:22px;max-width:95vw;max-height:90vh;overflow-y:auto;font-family:'Poppins',Arial,sans-serif}
+.capa-tit{font-size:14px;font-weight:700;margin-bottom:12px}.cf-chk{display:flex;gap:8px;align-items:center;font-size:12px;margin:6px 0;cursor:pointer}.cf-chk input{width:auto}
+@media(max-width:760px){.rev-masivo select{max-width:none!important;flex:1 1 180px}#gsub-revision .kpi-grid{grid-template-columns:1fr 1fr!important}}
 .pagination{display:flex;align-items:center;gap:6px;padding:10px 16px;border-top:1px solid #E5E7EB;font-size:12px;flex-wrap:wrap}
 .page-btn{padding:4px 10px;border:1px solid #D1D5DB;border-radius:4px;background:#fff;cursor:pointer;font-size:12px}
 .page-btn:disabled{opacity:.4;cursor:default}
@@ -642,6 +655,8 @@ const PMK_ACCESO = (() => {
 
 <!-- GASTOS -->
 <div id="view-gastos" class="view">
+  <div id="gsub-bar" class="gsub-bar"></div>
+  <div id="gsub-lista">
   <div class="search-bar">
     <input type="text" id="search-gastos" placeholder="Buscar gasto, proveedor..." oninput="pages.gastos=1;renderGastos()">
     <select id="filter-year-g" onchange="pages.gastos=1;renderGastos()"><option value="">A&#241;o</option></select>
@@ -660,13 +675,19 @@ const PMK_ACCESO = (() => {
   <div class="card">
     <table>
       <thead><tr>
-        <th>Fecha</th><th>Descripci&#243;n</th><th>Categor&#237;a</th><th>Proveedor</th>
+        <th>Fecha</th><th>Descripci&#243;n</th><th id="th-cat-g">Categor&#237;a</th><th>Proveedor</th>
         <th>M&#233;todo</th><th>Monto</th><th></th>
       </tr></thead>
       <tbody id="tabla-gastos"></tbody>
     </table>
     <div class="pagination" id="pag-gastos"></div>
   </div>
+  </div>
+  <div id="gsub-revision" style="display:none"></div>
+  <div id="gsub-plan" style="display:none"></div>
+  <div id="gsub-reglas" style="display:none"></div>
+  <div id="gsub-proveedores" style="display:none"></div>
+  <div id="gsub-conciliacion" style="display:none"></div>
 </div>
 
 <!-- FLUJO DE CAJA -->
@@ -2517,7 +2538,13 @@ function poblarFiltrosGastos(){
   if(flujoYear){const allYears=[...new Set([...GASTOS.map(g=>g.fecha?g.fecha.split("-")[0]:""),...DB.map(r=>r.fecha?r.fecha.split("-")[0]:"")].filter(Boolean))].sort().reverse();flujoYear.innerHTML='<option value="">A&#241;o</option>'+allYears.map(y=>`<option value="${y}">${y}</option>`).join("");}
   // Categorias
   const catSel=document.getElementById("filter-cat-g");
-  if(catSel){catSel.innerHTML='<option value="">Todas las categor&#237;as</option>'+getCategorias().map(c=>`<option value="${c}">${c}</option>`).join("");}
+  if(catSel){
+    const prev=catSel.value;
+    catSel.innerHTML=clasifActiva()
+      ?'<option value="">Todas las cuentas</option><option value="__rev">En revisi&#243;n</option>'+opcionesCuentas("")
+      :'<option value="">Todas las categor&#237;as</option>'+getCategorias().map(c=>`<option value="${c}">${c}</option>`).join("");
+    if([...catSel.options].some(o=>o.value===prev))catSel.value=prev;
+  }
 }
 
 function filteredGastos(){
@@ -2530,13 +2557,16 @@ function filteredGastos(){
     const fm=g.fecha?g.fecha.split("-")[1]:"";
     if(year&&fy!==year)return false;
     if(mes&&fm!==mes)return false;
-    if(cat&&g.categoria!==cat)return false;
-    if(q&&!(g.descripcion||"").toLowerCase().includes(q)&&!(g.proveedor||"").toLowerCase().includes(q))return false;
+    if(cat&&clasifActiva()){if(cat==="__rev"?!enRevision(g):cuentaDeGasto(g)!==cat)return false;}
+    else if(cat&&g.categoria!==cat)return false;
+    if(q&&!(g.descripcion||"").toLowerCase().includes(q)&&!(g.proveedor||"").toLowerCase().includes(q)&&!(clasifActiva()&&nombreCuenta(cuentaDeGasto(g)).toLowerCase().includes(q)))return false;
     return true;
   }).sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
 }
 
 function renderGastos(){
+  renderGastosSubNav();
+  if(gastosSub!=="lista"){renderGastosSub();return;}
   poblarFiltrosGastos();
   const data=filteredGastos();
   const total=data.reduce((s,g)=>s+(g.monto||0),0);
@@ -2545,7 +2575,7 @@ function renderGastos(){
   document.getElementById("tabla-gastos").innerHTML=slice.map(g=>`<tr>
     <td>${fmtFecha(g.fecha)}</td>
     <td style="font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${g.descripcion||""}">${g.descripcion||"&#8212;"}</td>
-    <td><span class="badge badge-pmk">${g.categoria||"&#8212;"}</span></td>
+    <td>${clasifActiva()?celdaCuenta(g):`<span class="badge badge-pmk">${g.categoria||"&#8212;"}</span>`}</td>
     <td>${g.proveedor||"&#8212;"}</td>
     <td style="font-size:11px;color:#6B7280">${g.metodo_pago||"&#8212;"}</td>
     <td style="text-align:right;color:#DC2626;font-weight:700">${clp(g.monto)}</td>
@@ -2563,6 +2593,7 @@ function editarGasto(id){ const g=GASTOS.find(x=>x.id===id); if(!g)return; gasto
 function closeGastoModal(){ document.getElementById("modal-gasto-overlay").classList.remove("open"); gastoEditId=null; }
 
 function renderGastoForm(g){
+  if(clasifActiva())return renderGastoFormCuentas(g);
   const cats=getCategorias();
   document.getElementById("modal-gasto-body").innerHTML=`
     <div style="padding:4px 0">
@@ -2603,6 +2634,7 @@ function renderGastoForm(g){
 }
 
 async function guardarGasto(){
+  if(clasifActiva()&&document.getElementById("g-cta"))return guardarGastoCuentas();
   const fecha=document.getElementById("g-fecha").value;
   const monto=parseFloat(document.getElementById("g-monto").value)||0;
   const desc=document.getElementById("g-desc").value.trim();
@@ -2628,8 +2660,10 @@ async function eliminarGasto(id){
   const g=GASTOS.find(x=>x.id===id);if(!g)return;
   if(!confirm(`\u00bfEliminar gasto "${g.descripcion}" de ${clp(g.monto)}?`))return;
   try{
-    await sbDelete("gastos", id);
+    const res=await sbDelete("gastos", id);
+    if(res&&res.ok===false)throw new Error("HTTP "+res.status);
     GASTOS=GASTOS.filter(x=>x.id!==id);
+    delete CLASIF[String(id)];
     renderGastos();renderFlujo();
     showToast("Gasto eliminado");
   }catch(e){alert("Error al eliminar");}
@@ -2657,6 +2691,578 @@ function abrirGestorCategorias(){
 function cerrarGestorCategorias(){ const o=document.getElementById("cat-overlay"); if(o)o.remove(); poblarFiltrosGastos(); if(document.getElementById("g-cat")){const cats=getCategorias();const cur=document.getElementById("g-cat").value;document.getElementById("g-cat").innerHTML=cats.map(c=>`<option value="${c}" ${c===cur?'selected':''}>${c}</option>`).join("");} }
 function agregarCategoria(){ const v=document.getElementById("nueva-cat").value.trim(); if(!v)return; const cats=getCategorias(); if(cats.some(c=>c.toLowerCase()===v.toLowerCase())){alert("Ya existe");return;} cats.push(v); saveCategorias(cats); cerrarGestorCategorias(); abrirGestorCategorias(); }
 function eliminarCategoria(i){ const cats=getCategorias(); if(!confirm(`\u00bfEliminar "${cats[i]}"?`))return; cats.splice(i,1); saveCategorias(cats); cerrarGestorCategorias(); abrirGestorCategorias(); }
+
+// ── CLASIFICACIÓN DE GASTOS · PLAN DE CUENTAS (SQL 21A) ──────────────────────────────────────────────
+// Cada gasto se carga a una cuenta del plan (igual para todos, guardado en la base). El gasto tal como se ingresó
+// queda guardado aparte y nunca se modifica (gasto_raw). Orden para sugerir la cuenta: regla → cuenta habitual del
+// proveedor → historial del proveedor → la persona elige. Si la base todavía no tiene las tablas (no se ha corrido
+// el SQL 21A), Gastos funciona igual que antes, con categorías.
+let CUENTAS=[], ALIAS_CAT=[], REGLAS_G=[], CLASIF={}, PARAMS_G={};
+let clasifEstado="sin_cargar", clasifPromesa=null, gastosSub="lista";
+let gfSug=null, gfCuentaTocada=false, gfCuentaFija=false, gfMesTocado=false, revFiltro="", revPagina=1, revQ="";
+const NIVELES_CTA={"1":"Ingresos","2":"Costo directo variable","3":"Costos de producción","4":"Gastos de venta y marketing","5":"Gastos de administración","6":"Bajo el EBITDA","F":"Fuera del estado de resultados"};
+const RESULTADO_TRAS={"2":"Margen de contribución","3":"Margen bruto","5":"EBITDA"};
+const TIPO_NIVEL={"1":"ingreso","2":"variable","3":"semifijo","4":"fijo","5":"fijo","6":"bajo_ebitda","F":"fuera"};
+const TIPOS_DOC={afecta:"Factura afecta",exenta:"Factura exenta",honorarios:"Boleta de honorarios",sin_documento:"Sin documento (sueldos, leyes sociales, banco)"};
+const ORIGEN_TXT={alias:"Traducción de su categoría",regla:"Regla",historial:"Historial del proveedor",manual:"Elegida por una persona",ia:"Sugerencia de Claude"};
+
+function clasifActiva(){return clasifEstado==="ok";}
+function escH(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+// Igual que pmk_norm en la base: mayúsculas, sin tildes, un solo espacio
+function normTxt(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toUpperCase().replace(/\s+/g," ").trim();}
+// La descripción contiene la palabra o frase completa («estampadora» no calza con «estampado»)
+function contienePalabra(texto,palabra){
+  const p=normTxt(palabra); if(!p)return false;
+  return new RegExp("(^|[^A-Z0-9_])"+p.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"($|[^A-Z0-9_])").test(normTxt(texto));
+}
+function provCalza(prov,patron){const p=normTxt(patron);return !!p&&normTxt(prov).startsWith(p);}
+function usuarioActual(){return sessionStorage.getItem("pmk_user")||"Usuario";}
+function inicioAnalisis(){const v=PARAMS_G.inicio_analisis;return typeof v==="string"&&/^\d{4}-\d{2}/.test(v)?v.slice(0,10):"2026-04-01";}
+function mesTxt(ym){const p=String(ym||"").split("-");return p.length>=2?(MESES_N[p[1]]||p[1])+" "+p[0]:"";}
+function cuentaDe(cod){return CUENTAS.find(c=>c.codigo===cod)||null;}
+function nombreCuenta(cod){const c=cuentaDe(cod);return c?c.nombre:(cod||"");}
+function clasifDe(g){return clasifActiva()?CLASIF[String(g.id)]||null:null;}
+function cuentaDeGasto(g){const k=clasifDe(g);return k&&k.estado==="clasificado"?k.cuenta_codigo:null;}
+function enRevision(g){const k=clasifDe(g);return clasifActiva()&&(!k||k.estado!=="clasificado");}
+function condicionRegla(r){
+  if(r.tipo==="palabra")return "la descripción dice «"+r.palabra+"»";
+  if(r.tipo==="proveedor")return "el proveedor es «"+r.proveedor+"»";
+  return "el proveedor es «"+r.proveedor+"» y la descripción dice «"+r.palabra+"»";
+}
+function reglaQueAplica(g){
+  return REGLAS_G.filter(r=>r.activa).sort((a,b)=>(a.prioridad-b.prioridad)||(a.id-b.id)).find(r=>
+    r.tipo==="palabra"?contienePalabra(g.descripcion,r.palabra):
+    r.tipo==="proveedor"?provCalza(g.proveedor,r.proveedor):
+    provCalza(g.proveedor,r.proveedor)&&contienePalabra(g.descripcion,r.palabra))||null;
+}
+
+// ── Lectura y escritura en la base ──
+async function sbTodo(tabla,params,orden){
+  let all=[],from=0;const size=1000;
+  while(true){
+    const res=await sbFetch("/rest/v1/"+tabla+"?"+(params?params+"&":"")+"order="+orden,{headers:{"Range":from+"-"+(from+size-1)}});
+    if(!res.ok){const e=new Error("HTTP "+res.status);e.status=res.status;throw e;}
+    const chunk=await res.json();
+    all=all.concat(chunk);
+    if(!Array.isArray(chunk)||chunk.length<size)break;
+    from+=size;
+  }
+  return all;
+}
+async function sbRespuesta(res){
+  if(!res.ok){let d="";try{d=(await res.text()).slice(0,200);}catch(e){}throw new Error("Supabase respondió "+res.status+(d?" — "+d:""));}
+  const t=await res.text();return t?JSON.parse(t):null;
+}
+async function sbPatch(tabla,filtro,datos){return sbRespuesta(await sbFetch("/rest/v1/"+tabla+"?"+filtro,{method:"PATCH",body:JSON.stringify(datos)}));}
+async function sbInsertar(tabla,datos){return sbRespuesta(await sbFetch("/rest/v1/"+tabla,{method:"POST",headers:{"Prefer":"return=representation"},body:JSON.stringify(datos)}));}
+
+function asegurarClasif(forzar){
+  if(clasifPromesa&&!forzar)return clasifPromesa;
+  if(clasifEstado!=="ok")clasifEstado="cargando";
+  clasifPromesa=(async()=>{
+    try{
+      const [c,a,r,k,p]=await Promise.all([
+        sbTodo("plan_cuentas","select=*","orden.asc,codigo.asc"),
+        sbTodo("gasto_cuenta_alias","select=*","categoria.asc"),
+        sbTodo("gasto_reglas","select=*","prioridad.asc,id.asc"),
+        sbTodo("gasto_clasif","select=*","gasto_id.asc"),
+        sbTodo("gestion_parametros","select=*","clave.asc")]);
+      CUENTAS=c;ALIAS_CAT=a;REGLAS_G=r;CLASIF={};k.forEach(x=>{CLASIF[String(x.gasto_id)]=x;});
+      PARAMS_G={};p.forEach(x=>{PARAMS_G[x.clave]=x.valor;});
+      clasifEstado="ok";
+    }catch(e){
+      console.warn("Plan de cuentas no disponible:",e);
+      clasifEstado=(e.status===404||e.status===400)?"no_existe":"error";
+      clasifPromesa=null;
+    }
+    return clasifEstado;
+  })();
+  return clasifPromesa;
+}
+async function reclasificarGastos(){
+  const r=await sbRpc("gasto_reclasificar",{p_usuario:usuarioActual()});
+  await asegurarClasif(true);
+  return r||{};
+}
+
+// ── Sugerencia de cuenta: regla → cuenta habitual del proveedor → historial del proveedor ──
+function sugerirCuenta(desc,prov,excluirId){
+  const r=reglaQueAplica({descripcion:desc,proveedor:prov});
+  if(r&&r.accion==="clasificar"&&cuentaDe(r.cuenta_codigo))
+    return {codigo:r.cuenta_codigo,origen:"regla",regla:r,txt:"Regla: "+condicionRegla(r)+" → "+nombreCuenta(r.cuenta_codigo)+(r.motivo?". "+r.motivo:"")};
+  const aviso=r&&r.accion==="revisar"?(r.motivo||"Este gasto se debe revisar."):null;
+  const np=normTxt(prov);
+  if(np){
+    const pv=PROVEEDORES.find(x=>normTxt(x.nombre)===np);
+    if(pv&&pv.cuenta_codigo&&cuentaDe(pv.cuenta_codigo))return {codigo:pv.cuenta_codigo,origen:"manual",txt:"Cuenta habitual del proveedor",aviso};
+    const cnt={};let n=0;
+    GASTOS.forEach(x=>{if(String(x.id)===String(excluirId)||normTxt(x.proveedor)!==np)return;const c=cuentaDeGasto(x);if(!c)return;cnt[c]=(cnt[c]||0)+1;n++;});
+    const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0];
+    if(top)return {codigo:top[0],origen:"historial",aviso,
+      txt:"Historial: "+top[1]+" de "+n+" gasto"+(n===1?"":"s")+" de este proveedor"+(top[1]<n?" (también usa otras cuentas: revisa que sea la correcta)":"")};
+  }
+  return {codigo:null,aviso,txt:"Sin regla ni historial para este gasto: elige la cuenta."};
+}
+
+// ── Lista de gastos ──
+function opcionesCuentas(sel){
+  const grupos={};
+  CUENTAS.filter(c=>c.activa||c.codigo===sel).forEach(c=>{(grupos[c.nivel]=grupos[c.nivel]||[]).push(c);});
+  return Object.keys(NIVELES_CTA).filter(n=>grupos[n]).map(n=>`<optgroup label="${n==="F"?"":"Nivel "+n+" · "}${NIVELES_CTA[n]}">${
+    grupos[n].map(c=>`<option value="${c.codigo}" ${c.codigo===sel?"selected":""}>${c.codigo} · ${escH(c.nombre)}</option>`).join("")}</optgroup>`).join("");
+}
+function celdaCuenta(g){
+  const k=clasifDe(g);
+  if(!k)return `<span class="badge badge-orange">Sin clasificar</span>`;
+  if(k.estado!=="clasificado")return `<span class="badge badge-orange" title="${escH(k.motivo)}">En revisi&#243;n</span>${k.sugerencia_codigo?`<div class="cta-sub">&#191;${escH(nombreCuenta(k.sugerencia_codigo))}?</div>`:""}`;
+  const c=cuentaDe(k.cuenta_codigo);
+  return `<span class="badge badge-pmk" title="${escH((ORIGEN_TXT[k.origen]||"")+(k.motivo?" · "+k.motivo:""))}">${escH(c?c.nombre:k.cuenta_codigo)}</span>${
+    k.periodo_devengo&&g.fecha&&k.periodo_devengo.slice(0,7)!==g.fecha.slice(0,7)?`<div class="cta-sub">corresponde a ${mesTxt(k.periodo_devengo)}</div>`:""}`;
+}
+function renderGastosSubNav(){
+  const bar=document.getElementById("gsub-bar");
+  if(!bar)return;
+  if(!clasifActiva()){
+    gastosSub="lista";
+    bar.innerHTML=clasifEstado==="cargando"?`<span class="cta-sub">Cargando el plan de cuentas&#8230;</span>`:
+      clasifEstado==="no_existe"?`<div class="alert gsub-aviso">El plan de cuentas todav&#237;a no est&#225; en la base: hay que correr el <b>SQL 21A</b> en Supabase de Ventas. Mientras tanto, los gastos funcionan como siempre, con categor&#237;as.</div>`:
+      clasifEstado==="error"?`<div class="alert gsub-aviso">No se pudo cargar el plan de cuentas. <button class="btn btn-ghost btn-sm" onclick="asegurarClasif(true).then(()=>renderGastos())">Reintentar</button></div>`:"";
+  }else{
+    const ini=inicioAnalisis();
+    const nRev=GASTOS.filter(g=>(g.fecha||"")>=ini&&enRevision(g)).length;
+    const subs=[["lista","Gastos"],["revision","Revisi&#243;n"+(nRev?` <b>${nRev}</b>`:"")],["plan","Plan de cuentas"],["reglas","Reglas"],["proveedores","Proveedores"],["conciliacion","Conciliaci&#243;n"]];
+    bar.innerHTML=subs.map(([k,t])=>`<button class="canal-chip${gastosSub===k?" on":""}" data-gsub="${k}" onclick="verGastosSub('${k}')">${t}</button>`).join("");
+  }
+  ["lista","revision","plan","reglas","proveedores","conciliacion"].forEach(k=>{const el=document.getElementById("gsub-"+k);if(el)el.style.display=gastosSub===k?"":"none";});
+  const th=document.getElementById("th-cat-g");if(th)th.innerHTML=clasifActiva()?"Cuenta":"Categor&#237;a";
+}
+function verGastosSub(s){gastosSub=s;revPagina=1;renderGastos();}
+function renderGastosSub(){
+  if(gastosSub==="revision")renderRevisionGastos();
+  else if(gastosSub==="plan")renderPlanCuentas();
+  else if(gastosSub==="reglas")renderReglasGastos();
+  else if(gastosSub==="proveedores")renderProveedoresGastos();
+  else if(gastosSub==="conciliacion")renderConciliacionGastos();
+}
+
+// ── Formulario de gasto con cuenta ──
+function renderGastoFormCuentas(g){
+  const k=g.id!=null?CLASIF[String(g.id)]:null;
+  const cod=k?(k.cuenta_codigo||k.sugerencia_codigo||""):"";
+  gfCuentaFija=!!(k&&k.cuenta_codigo);gfCuentaTocada=false;gfMesTocado=!!(k&&k.periodo_devengo);gfSug=null;
+  const fecha=g.fecha||new Date().toISOString().split("T")[0];
+  const mes=(k&&k.periodo_devengo?k.periodo_devengo:fecha).slice(0,7);
+  const met=["Transferencia electrónica","Depósito bancario","Efectivo","Tarjeta","Cheque"];
+  document.getElementById("modal-gasto-body").innerHTML=`
+    <div style="padding:4px 0">
+      ${k&&k.estado!=="clasificado"?`<div class="alert gsub-aviso" style="margin-bottom:12px">En revisi&#243;n: ${escH(k.motivo||"")}</div>`:""}
+      <div class="form-grid-2" style="margin-bottom:12px">
+        <div><label class="lbl">Fecha de pago *</label><input type="date" id="g-fecha" value="${fecha}" onchange="gfFechaCambio()"></div>
+        <div><label class="lbl">Monto (con impuestos) *</label><input type="number" id="g-monto" value="${g.monto||''}" placeholder="$0" min="0"></div>
+      </div>
+      <div style="margin-bottom:12px"><label class="lbl">Descripci&#243;n *</label><input type="text" id="g-desc" value="${escH(g.descripcion||'')}" placeholder="Detalle del gasto" oninput="gfActualizar()"></div>
+      <div style="margin-bottom:12px;position:relative">
+        <label class="lbl">Proveedor</label>
+        <input type="text" id="g-prov" value="${escH(g.proveedor||'')}" placeholder="Buscar proveedor..." autocomplete="off" oninput="filtrarProveedores();gfActualizar()" onfocus="filtrarProveedores()">
+        <div id="prov-autocomplete" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #D1D5DB;border-radius:6px;max-height:180px;overflow-y:auto;z-index:50;box-shadow:0 4px 12px rgba(0,0,0,.1)"></div>
+      </div>
+      <div style="margin-bottom:6px"><label class="lbl">Cuenta *</label>
+        <select id="g-cta" onchange="gfCuentaTocada=true;gfCuentaFija=true;gfActualizar()"><option value="">&#8212; elegir cuenta &#8212;</option>${opcionesCuentas(cod)}</select></div>
+      <div id="g-sug" class="g-sug"></div>
+      <div id="g-que" class="cta-sub" style="margin:4px 0 12px"></div>
+      <div class="form-grid-2" style="margin-bottom:12px">
+        <div><label class="lbl">Mes al que corresponde</label><input type="month" id="g-mes" value="${mes}" onchange="gfMesTocado=true"><div id="g-mes-nota" class="cta-sub"></div></div>
+        <div><label class="lbl">M&#233;todo de pago</label>
+          <select id="g-metodo"><option value="">&#8212; seleccionar &#8212;</option>${met.map(m=>`<option value="${m}" ${g.metodo_pago===m?"selected":""}>${m}</option>`).join("")}</select></div>
+      </div>
+      <div id="g-regla" class="g-regla" style="display:none"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap">
+        ${g.id!=null?`<button type="button" class="btn btn-ghost btn-sm" style="margin-right:auto" onclick="verHistorialGasto(${g.id})">Ver dato original</button>`:""}
+        <button class="btn btn-ghost" onclick="closeGastoModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardarGasto()">Guardar gasto</button>
+      </div>
+    </div>`;
+  gfActualizar();
+}
+function gfFechaCambio(){
+  if(gfMesTocado)return;
+  const f=document.getElementById("g-fecha").value, m=document.getElementById("g-mes");
+  if(f&&m)m.value=f.slice(0,7);
+}
+function gfActualizar(){
+  const sel=document.getElementById("g-cta");if(!sel)return;
+  const desc=document.getElementById("g-desc").value, prov=document.getElementById("g-prov").value;
+  gfSug=sugerirCuenta(desc,prov,gastoEditId);
+  if(!gfCuentaFija&&gfSug.codigo)sel.value=gfSug.codigo;
+  const cod=sel.value, c=cuentaDe(cod);
+  const acepta=gfSug.codigo&&gfSug.codigo===cod;
+  document.getElementById("g-sug").innerHTML=
+    (gfSug.aviso?`<div class="g-sug-aviso">&#9888; ${escH(gfSug.aviso)}</div>`:"")+
+    (gfSug.codigo?`<div class="${acepta?"g-sug-ok":"g-sug-otra"}">${acepta?"&#10003; ":"Sugerida: <b>"+escH(nombreCuenta(gfSug.codigo))+"</b> · "}${escH(gfSug.txt)}</div>`:
+     `<div class="g-sug-otra">${escH(gfSug.txt)}</div>`);
+  document.getElementById("g-que").textContent=c&&c.que_entra?c.que_entra:"";
+  document.getElementById("g-mes-nota").textContent=c&&c.devengo_servicio?"Sueldos, arriendo y servicios van al mes al que corresponden, aunque se paguen en otro.":"";
+  // Corrección: ofrecer una regla para la próxima vez
+  const box=document.getElementById("g-regla");
+  const corrige=cod&&(gfSug.codigo?gfSug.codigo!==cod:gfCuentaTocada)&&(prov.trim()||desc.trim());
+  if(!corrige){box.style.display="none";box.innerHTML="";box.dataset.clave="";return;}
+  const clave=cod+"|"+prov.trim();
+  if(box.dataset.clave===clave&&box.innerHTML){box.style.display="";return;}
+  box.dataset.clave=clave;box.style.display="";
+  box.innerHTML=`<label style="display:flex;gap:8px;align-items:flex-start;font-size:12px;cursor:pointer"><input type="checkbox" id="g-regla-chk" style="width:auto;margin-top:2px">
+      <span>Crear regla: ${prov.trim()?`los gastos de <b>${escH(prov.trim())}</b>`:"los gastos"} van a <b>${escH(c?c.nombre:cod)}</b></span></label>
+    <div style="display:flex;gap:6px;align-items:center;margin-top:6px;font-size:11px;color:#6B7280">${prov.trim()?"solo si la descripci&#243;n dice":"cuando la descripci&#243;n dice"}
+      <input type="text" id="g-regla-palabra" placeholder="${prov.trim()?"(opcional) ej: estampado":"palabra o frase"}" style="flex:1;max-width:220px;padding:5px 8px"></div>`;
+}
+async function guardarGastoCuentas(){
+  const fecha=document.getElementById("g-fecha").value;
+  const monto=parseFloat(document.getElementById("g-monto").value)||0;
+  const desc=document.getElementById("g-desc").value.trim();
+  const prov=document.getElementById("g-prov").value.trim();
+  const metodo=document.getElementById("g-metodo").value;
+  const cod=document.getElementById("g-cta").value;
+  const mes=document.getElementById("g-mes").value||fecha.slice(0,7);
+  if(!fecha||!monto||!desc){alert("Completa fecha, monto y descripción");return;}
+  const c=cuentaDe(cod);if(!c){alert("Elige la cuenta del gasto");return;}
+  const chk=document.getElementById("g-regla-chk"), palabra=(document.getElementById("g-regla-palabra")||{}).value||"";
+  if(chk&&chk.checked&&!prov&&!palabra.trim()){alert("Para crear la regla escribe la palabra que debe tener la descripción.");return;}
+  const previo=gastoEditId?GASTOS.find(x=>x.id===gastoEditId):null;
+  const kPrev=previo?CLASIF[String(previo.id)]:null;
+  const gasto={id:gastoEditId||(Date.now()*1000+Math.floor(Math.random()*1000)),fecha,monto,descripcion:desc,categoria:c.nombre,proveedor:prov,metodo_pago:metodo,observaciones:previo?(previo.observaciones||""):""};
+  const usuario=usuarioActual(), s=gfSug||{};
+  let origen="manual",reglaId=null,motivo=null;
+  if(kPrev&&kPrev.estado==="clasificado"&&kPrev.cuenta_codigo===cod&&!gfCuentaTocada){origen=kPrev.origen||"manual";reglaId=kPrev.regla_id||null;motivo=kPrev.motivo||null;}
+  else if(s.codigo===cod){origen=s.origen||"manual";reglaId=s.regla?s.regla.id:null;motivo=s.txt||null;}
+  const clasif={gasto_id:gasto.id,cuenta_codigo:cod,periodo_devengo:mes.slice(0,7)+"-01",origen,regla_id:reglaId,estado:"clasificado",motivo,sugerencia_codigo:null,actualizado_por:usuario};
+  try{await sbUpsert("gastos",gasto);}catch(e){alert("Error al guardar el gasto: "+e.message);return;}
+  if(previo){const idx=GASTOS.findIndex(x=>x.id===gastoEditId);if(idx>=0)GASTOS[idx]=gasto;}else GASTOS.push(gasto);
+  let aviso="Gasto guardado en "+c.nombre;
+  try{await sbUpsert("gasto_clasif",clasif);CLASIF[String(gasto.id)]={...(CLASIF[String(gasto.id)]||{}),...clasif};}
+  catch(e){aviso="El gasto se guardó, pero la cuenta no: queda en Revisión";console.warn(e);}
+  if(chk&&chk.checked){
+    try{
+      const r=await crearReglaGasto({proveedor:prov,palabra:palabra.trim(),cuenta:cod,origenId:gasto.id});
+      aviso+=" · regla creada"+(r&&r.cambiados?" ("+r.cambiados+" gasto"+(r.cambiados===1?"":"s")+" reclasificado"+(r.cambiados===1?"":"s")+")":"");
+    }catch(e){alert("El gasto se guardó, pero la regla no: "+e.message);}
+  }
+  closeGastoModal();renderGastos();renderFlujo();showToast(aviso);
+}
+async function crearReglaGasto({proveedor,palabra,cuenta,origenId,prioridad,motivo,accion}){
+  const tipo=proveedor&&palabra?"proveedor_palabra":proveedor?"proveedor":"palabra";
+  const fila={tipo,proveedor:proveedor||null,palabra:palabra||null,accion:accion||"clasificar",cuenta_codigo:cuenta||null,
+    prioridad:prioridad||20,motivo:motivo||("Creada por "+usuarioActual()+" al corregir un gasto"),creada_por:usuarioActual(),origen_gasto_id:origenId||null,activa:true};
+  await sbInsertar("gasto_reglas",fila);
+  return reclasificarGastos();
+}
+async function verHistorialGasto(id){
+  let filas=[];
+  try{filas=await sbTodo("gasto_raw","select=*&gasto_id=eq."+id,"version.asc");}catch(e){alert("No se pudo leer el dato original: "+e.message);return;}
+  const OP={carga_inicial:"Carga inicial",alta:"Ingresado",edicion:"Editado",baja:"Eliminado"};
+  abrirCapaGastos("capa-historial",`<h3 class="capa-tit">Dato original del gasto</h3>
+    <p class="cta-sub" style="margin-bottom:10px">Cada vez que el gasto se ingresa, se edita o se elimina queda una versi&#243;n nueva. Las anteriores nunca se modifican.</p>
+    <div class="tbl-wrap"><table><thead><tr><th>Versi&#243;n</th><th>Qu&#233; pas&#243;</th><th>Cu&#225;ndo</th><th>Fecha pago</th><th>Descripci&#243;n</th><th>Proveedor</th><th>Categor&#237;a</th><th>Monto</th></tr></thead><tbody>
+    ${filas.map(r=>`<tr><td>${r.version}</td><td>${OP[r.operacion]||r.operacion}</td><td>${new Date(r.fecha_carga).toLocaleString("es-CL")}</td><td>${fmtFecha(r.fecha_pago)}</td><td>${escH(r.descripcion)}</td><td>${escH(r.proveedor)}</td><td>${escH(r.categoria_original)}</td><td style="text-align:right">${clp(r.monto_bruto||0)}</td></tr>`).join("")||'<tr><td colspan="8" class="no-results">Sin registro</td></tr>'}
+    </tbody></table></div>`,760);
+}
+function abrirCapaGastos(id,html,ancho){
+  cerrarCapaGastos(id);
+  const o=document.createElement("div");o.id=id;o.className="capa-gastos";
+  o.innerHTML=`<div class="capa-caja" style="width:${ancho||460}px">${html}<div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn btn-ghost" onclick="cerrarCapaGastos('${id}')">Cerrar</button></div></div>`;
+  o.addEventListener("click",e=>{if(e.target===o)cerrarCapaGastos(id);});
+  document.body.appendChild(o);return o;
+}
+function cerrarCapaGastos(id){const o=document.getElementById(id);if(o)o.remove();}
+
+// ── Revisión: gastos sin cuenta desde el inicio del análisis ──
+function motivoRevision(g){const k=clasifDe(g);return k?(k.motivo||"Sin motivo"):"Sin clasificar";}
+function renderRevisionGastos(){
+  const el=document.getElementById("gsub-revision");if(!el)return;
+  const ini=inicioAnalisis();
+  const todos=GASTOS.filter(enRevision);
+  const lista=todos.filter(g=>(g.fecha||"")>=ini);
+  const antes=todos.length-lista.length;
+  const motivos={};lista.forEach(g=>{const m=motivoRevision(g);motivos[m]=(motivos[m]||0)+1;});
+  if(revFiltro&&!motivos[revFiltro])revFiltro="";
+  const q=revQ;
+  const vis=lista.filter(g=>(!revFiltro||motivoRevision(g)===revFiltro)&&(!q||normTxt((g.descripcion||"")+" "+(g.proveedor||"")).includes(normTxt(q))))
+    .sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
+  const POR=50, pags=Math.max(1,Math.ceil(vis.length/POR));if(revPagina>pags)revPagina=pags;
+  const pag=vis.slice((revPagina-1)*POR,revPagina*POR);
+  const total=lista.reduce((s,g)=>s+(Number(g.monto)||0),0);
+  el.innerHTML=`
+    <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="kpi"><label>Por revisar desde ${mesTxt(ini)}</label><div class="val" style="color:var(--pmk-orange)">${lista.length}</div><div class="sub">${clp(total)}</div></div>
+      <div class="kpi"><label>Motivos</label><div class="val">${Object.keys(motivos).length}</div><div class="sub">filtra abajo</div></div>
+      <div class="kpi"><label>Anteriores a ${mesTxt(ini)}</label><div class="val" style="color:#9CA3AF">${antes}</div><div class="sub">no se usan en el an&#225;lisis</div></div>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="rev-buscar" placeholder="Buscar descripci&#243;n o proveedor" value="${escH(q)}" oninput="revBuscar(this.value)">
+      <select id="rev-motivo" style="max-width:340px" onchange="revFiltro=this.value;revPagina=1;renderRevisionGastos()"><option value="">Todos los motivos (${lista.length})</option>
+        ${Object.entries(motivos).sort((a,b)=>b[1]-a[1]).map(([m,n])=>`<option value="${escH(m)}" ${m===revFiltro?"selected":""}>${escH(m)} (${n})</option>`).join("")}</select>
+    </div>
+    <div class="card"><div class="rev-masivo">
+      <label style="display:flex;gap:6px;align-items:center;font-size:12px"><input type="checkbox" id="rev-todos" style="width:auto" onchange="document.querySelectorAll('[data-rev-sel]').forEach(c=>c.checked=this.checked)"> Seleccionar los de esta p&#225;gina</label>
+      <button class="btn btn-ghost btn-sm" onclick="aceptarSugerenciasRevision()">Aceptar la sugerencia de los seleccionados</button>
+      <span style="font-size:12px;color:#6B7280">o cargarlos a</span>
+      <select id="rev-masivo-cta" style="max-width:260px"><option value="">&#8212; cuenta &#8212;</option>${opcionesCuentas("")}</select>
+      <button class="btn btn-primary btn-sm" onclick="aplicarCuentaRevision()">Aplicar</button>
+    </div>
+    <div class="tbl-wrap"><table><thead><tr><th></th><th>Fecha</th><th>Descripci&#243;n</th><th>Proveedor</th><th>Monto</th><th>Motivo</th><th>Cuenta</th><th></th></tr></thead><tbody>
+    ${pag.map(g=>{const k=clasifDe(g);return `<tr data-rev="${g.id}">
+      <td><input type="checkbox" data-rev-sel="${g.id}" style="width:auto"></td>
+      <td style="white-space:nowrap">${fmtFecha(g.fecha)}</td>
+      <td style="max-width:220px"><b>${escH(g.descripcion)||"&#8212;"}</b><div class="cta-sub">categor&#237;a: ${escH(g.categoria)||"&#8212;"}</div></td>
+      <td>${escH(g.proveedor)||"&#8212;"}</td>
+      <td style="text-align:right;font-weight:700;white-space:nowrap">${clp(g.monto||0)}</td>
+      <td style="max-width:220px;font-size:11px;color:#9A3412">${escH(motivoRevision(g))}</td>
+      <td style="min-width:200px"><select id="rev-c-${g.id}"><option value="">&#8212; elegir &#8212;</option>${opcionesCuentas(k&&k.sugerencia_codigo||"")}</select>
+        ${g.proveedor?`<label class="cta-sub" style="display:flex;gap:4px;align-items:center;margin-top:3px"><input type="checkbox" id="rev-r-${g.id}" style="width:auto"> y crear regla para este proveedor</label>`:""}</td>
+      <td><button class="btn btn-primary btn-sm" onclick="aceptarRevision(${g.id})">Aceptar</button></td></tr>`;}).join("")||'<tr><td colspan="8" class="no-results">No hay gastos por revisar &#127881;</td></tr>'}
+    </tbody></table></div>
+    ${pags>1?`<div class="pagination">${Array.from({length:pags},(_,i)=>`<button class="page-btn${i+1===revPagina?" active":""}" onclick="revPagina=${i+1};renderRevisionGastos()">${i+1}</button>`).join("")}<span style="margin-left:auto;color:#6B7280">${vis.length} gastos</span></div>`:""}
+    </div>`;
+}
+function revBuscar(v){
+  revQ=v;revPagina=1;renderRevisionGastos();
+  const i=document.getElementById("rev-buscar");if(i){i.focus();i.setSelectionRange(v.length,v.length);}
+}
+function filaRevisada(g,cod){
+  const k=clasifDe(g)||{};
+  return {gasto_id:g.id,cuenta_codigo:cod,periodo_devengo:k.periodo_devengo||((g.fecha||"").slice(0,7)+"-01"),origen:"manual",regla_id:null,
+    estado:"clasificado",motivo:"Revisado por "+usuarioActual(),sugerencia_codigo:null,actualizado_por:usuarioActual()};
+}
+async function guardarRevisadas(filas){
+  if(!filas.length)return false;
+  try{await sbUpsert("gasto_clasif",filas);}catch(e){alert("No se pudo guardar: "+e.message);return false;}
+  filas.forEach(f=>{CLASIF[String(f.gasto_id)]={...(CLASIF[String(f.gasto_id)]||{}),...f};});
+  return true;
+}
+async function aceptarRevision(id){
+  const g=GASTOS.find(x=>String(x.id)===String(id));if(!g)return;
+  const cod=document.getElementById("rev-c-"+id).value;
+  if(!cod){alert("Elige la cuenta");return;}
+  const regla=document.getElementById("rev-r-"+id);
+  if(!(await guardarRevisadas([filaRevisada(g,cod)])))return;
+  let msg="Gasto cargado a "+nombreCuenta(cod);
+  if(regla&&regla.checked){
+    try{const r=await crearReglaGasto({proveedor:g.proveedor,cuenta:cod,origenId:g.id});msg+=" · regla creada"+(r&&r.cambiados?" ("+r.cambiados+" reclasificados)":"");}
+    catch(e){alert("La cuenta se guardó, pero la regla no: "+e.message);}
+  }
+  renderGastos();showToast(msg);
+}
+function seleccionadosRevision(){return [...document.querySelectorAll("[data-rev-sel]:checked")].map(c=>GASTOS.find(g=>String(g.id)===c.dataset.revSel)).filter(Boolean);}
+async function aceptarSugerenciasRevision(){
+  const sel=seleccionadosRevision();if(!sel.length){alert("Selecciona gastos");return;}
+  const filas=sel.map(g=>{const k=clasifDe(g);return k&&k.sugerencia_codigo?filaRevisada(g,k.sugerencia_codigo):null;}).filter(Boolean);
+  if(!filas.length){alert("Los seleccionados no tienen sugerencia: elige la cuenta.");return;}
+  if(!confirm("¿Cargar "+filas.length+" gasto"+(filas.length===1?"":"s")+" a la cuenta sugerida?"+(filas.length<sel.length?" ("+(sel.length-filas.length)+" no tienen sugerencia y quedan igual)":"")))return;
+  if(await guardarRevisadas(filas)){renderGastos();showToast(filas.length+" gastos clasificados");}
+}
+async function aplicarCuentaRevision(){
+  const cod=document.getElementById("rev-masivo-cta").value;if(!cod){alert("Elige la cuenta");return;}
+  const sel=seleccionadosRevision();if(!sel.length){alert("Selecciona gastos");return;}
+  if(!confirm("¿Cargar "+sel.length+" gasto"+(sel.length===1?"":"s")+" a "+nombreCuenta(cod)+"?"))return;
+  if(await guardarRevisadas(sel.map(g=>filaRevisada(g,cod)))){renderGastos();showToast(sel.length+" gastos cargados a "+nombreCuenta(cod));}
+}
+
+// ── Plan de cuentas y traducción de categorías ──
+function totalesPorCuenta(){
+  const ini=inicioAnalisis(), t={};
+  GASTOS.forEach(g=>{if((g.fecha||"")<ini)return;const c=cuentaDeGasto(g);if(!c)return;t[c]=t[c]||{n:0,m:0};t[c].n++;t[c].m+=Number(g.monto)||0;});
+  return t;
+}
+function renderPlanCuentas(){
+  const el=document.getElementById("gsub-plan");if(!el)return;
+  const t=totalesPorCuenta(), ini=inicioAnalisis();
+  const filas=Object.keys(NIVELES_CTA).map(n=>{
+    const cs=CUENTAS.filter(c=>c.nivel===n);if(!cs.length)return "";
+    const sub=cs.reduce((s,c)=>s+(t[c.codigo]?t[c.codigo].m:0),0);
+    return `<tr class="pc-nivel"><td colspan="4">${n==="F"?"":"Nivel "+n+" · "}${NIVELES_CTA[n]}</td><td style="text-align:right">${clp(sub)}</td><td></td></tr>`+
+      cs.map(c=>`<tr style="${c.activa?"":"opacity:.5"}">
+        <td style="white-space:nowrap;font-weight:700">${c.codigo}</td>
+        <td><b>${escH(c.nombre)}</b>${c.activa?"":' <span class="badge badge-red">inactiva</span>'}${c.supuesto?`<div class="cta-sub" style="color:#9A3412">&#9888; ${escH(c.supuesto)}</div>`:""}</td>
+        <td style="font-size:11px;color:#4B5563;max-width:360px">${escH(c.que_entra||"")}</td>
+        <td style="font-size:11px;white-space:nowrap">${c.prorrateo==="local"?"Reparto 80/10/10<br>":c.prorrateo==="sueldos"?"Reparto por sueldos<br>":""}${c.devengo_servicio?"Mes al que corresponde<br>":""}${c.es_activo?"Activo (umbral)":""}</td>
+        <td style="text-align:right;white-space:nowrap">${t[c.codigo]?clp(t[c.codigo].m)+`<div class="cta-sub">${t[c.codigo].n} gasto${t[c.codigo].n===1?"":"s"}</div>`:"&#8212;"}</td>
+        <td><button class="btn btn-ghost btn-sm" onclick="abrirCuentaForm('${c.codigo}')">Editar</button></td></tr>`).join("")+
+      (RESULTADO_TRAS[n]?`<tr class="pc-resultado"><td colspan="6">= ${RESULTADO_TRAS[n]}</td></tr>`:"");
+  }).join("");
+  const nCat={};GASTOS.forEach(g=>{const k=normTxt(g.categoria);nCat[k]=(nCat[k]||0)+1;});
+  const propias=new Set(CUENTAS.map(c=>normTxt(c.nombre)));
+  const alias=ALIAS_CAT.filter(a=>!propias.has(normTxt(a.categoria))).sort((a,b)=>(nCat[normTxt(b.categoria)]||0)-(nCat[normTxt(a.categoria)]||0));
+  el.innerHTML=`
+    <div class="search-bar"><span class="cta-sub" style="flex:1">Montos desde ${mesTxt(ini)}, solo gastos ya clasificados (con impuestos incluidos). El IVA se separa en la Fase 3.</span>
+      <button class="btn btn-primary btn-sm" onclick="abrirCuentaForm('')">+ Nueva cuenta</button></div>
+    <div class="card"><div class="tbl-wrap"><table class="pc-tabla"><thead><tr><th>C&#243;digo</th><th>Cuenta</th><th>Qu&#233; entra</th><th>Trato</th><th>Gastos</th><th></th></tr></thead><tbody>${filas}</tbody></table></div></div>
+    <div class="card"><div class="card-header"><h2>Traducci&#243;n de las categor&#237;as antiguas</h2></div>
+      <p class="cta-sub" style="padding:10px 16px 0">Cada gasto que se ingres&#243; con una categor&#237;a antigua se carga a la cuenta de esta tabla, salvo que una regla diga otra cosa o una persona lo haya elegido. Si marcas &#171;revisar&#187;, cada gasto de esa categor&#237;a pasa por Revisi&#243;n.</p>
+      <div class="tbl-wrap"><table><thead><tr><th>Categor&#237;a</th><th>Gastos</th><th>Cuenta</th><th>Revisar</th><th></th></tr></thead><tbody>
+      ${alias.map((a,i)=>`<tr><td><b>${escH(a.categoria)}</b>${a.nota?`<div class="cta-sub">${escH(a.nota)}</div>`:""}</td><td>${nCat[normTxt(a.categoria)]||0}</td>
+        <td style="min-width:220px"><select id="al-c-${i}"><option value="">&#8212; sin cuenta: a revisi&#243;n &#8212;</option>${opcionesCuentas(a.cuenta_codigo||"")}</select></td>
+        <td><input type="checkbox" id="al-r-${i}" style="width:auto" ${a.revisar?"checked":""}></td>
+        <td><button class="btn btn-ghost btn-sm" onclick="guardarAlias(${i})">Guardar</button></td></tr>`).join("")}
+      </tbody></table></div></div>`;
+  el.dataset.alias=JSON.stringify(alias.map(a=>a.categoria));
+}
+async function guardarAlias(i){
+  const cats=JSON.parse(document.getElementById("gsub-plan").dataset.alias||"[]");const cat=cats[i];if(!cat)return;
+  const cod=document.getElementById("al-c-"+i).value||null, rev=document.getElementById("al-r-"+i).checked;
+  try{
+    await sbUpsert("gasto_cuenta_alias",{categoria:cat,cuenta_codigo:cod,revisar:rev,actualizado_por:usuarioActual(),updated_at:new Date().toISOString()});
+    const r=await reclasificarGastos();
+    renderGastos();showToast("Traducción guardada · "+(r.cambiados||0)+" gastos reclasificados");
+  }catch(e){alert("No se pudo guardar: "+e.message);}
+}
+function abrirCuentaForm(cod){
+  const c=cod?cuentaDe(cod):{codigo:"",nombre:"",nivel:"5",prorrateo:null,devengo_servicio:false,es_activo:false,que_entra:"",supuesto:"",activa:true};
+  if(!c)return;
+  abrirCapaGastos("capa-cuenta",`<h3 class="capa-tit">${cod?"Editar cuenta":"Nueva cuenta"}</h3>
+    <div class="form-grid-2"><div><label class="lbl">C&#243;digo *</label><input id="cf-cod" value="${escH(c.codigo)}" ${cod?"disabled":""} placeholder="ej: 5.10"></div>
+      <div><label class="lbl">Nivel *</label><select id="cf-nivel">${Object.entries(NIVELES_CTA).map(([n,t])=>`<option value="${n}" ${n===c.nivel?"selected":""}>${n==="F"?"Fuera":n} · ${t}</option>`).join("")}</select></div></div>
+    <div style="margin-bottom:12px"><label class="lbl">Nombre *</label><input id="cf-nom" value="${escH(c.nombre)}"></div>
+    <div style="margin-bottom:12px"><label class="lbl">Qu&#233; entra y qu&#233; no</label><textarea id="cf-que" rows="3">${escH(c.que_entra||"")}</textarea></div>
+    <div class="form-grid-2"><div><label class="lbl">Reparto</label><select id="cf-pro"><option value="">Sin reparto</option><option value="local" ${c.prorrateo==="local"?"selected":""}>Local: 80% producci&#243;n, 10% ventas, 10% administraci&#243;n</option><option value="sueldos" ${c.prorrateo==="sueldos"?"selected":""}>Seg&#250;n los sueldos de cada &#225;rea</option></select></div>
+      <div><label class="lbl">Por confirmar</label><input id="cf-sup" value="${escH(c.supuesto||"")}" placeholder="(opcional)"></div></div>
+    <label class="cf-chk"><input type="checkbox" id="cf-dev" ${c.devengo_servicio?"checked":""}> Va al mes al que corresponde (sueldos, arriendo, servicios)</label>
+    <label class="cf-chk"><input type="checkbox" id="cf-act" ${c.es_activo?"checked":""}> Es inversi&#243;n (activo): bajo el umbral de $300.000 se revisa</label>
+    <label class="cf-chk"><input type="checkbox" id="cf-on" ${c.activa?"checked":""}> Activa (se puede elegir al ingresar gastos)</label>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn btn-primary" onclick="guardarCuenta(${cod?"true":"false"})">Guardar cuenta</button></div>`,520);
+}
+async function guardarCuenta(editando){
+  const v=id=>document.getElementById(id);
+  const codigo=v("cf-cod").value.trim(), nombre=v("cf-nom").value.trim(), nivel=v("cf-nivel").value;
+  if(!codigo||!nombre){alert("Código y nombre son obligatorios");return;}
+  if(!editando&&cuentaDe(codigo)){alert("Ya existe la cuenta "+codigo);return;}
+  if(CUENTAS.some(c=>c.codigo!==codigo&&normTxt(c.nombre)===normTxt(nombre))){alert("Ya existe una cuenta con ese nombre");return;}
+  const previa=cuentaDe(codigo);
+  const fila={codigo,nombre,nivel,tipo:TIPO_NIVEL[nivel],prorrateo:v("cf-pro").value||null,devengo_servicio:v("cf-dev").checked,es_activo:v("cf-act").checked,
+    que_entra:v("cf-que").value.trim()||null,supuesto:v("cf-sup").value.trim()||null,activa:v("cf-on").checked,
+    orden:previa?previa.orden:(Math.round(parseFloat(codigo.replace("F","9"))*100)||999),actualizado_por:usuarioActual(),updated_at:new Date().toISOString()};
+  try{await sbUpsert("plan_cuentas",fila);}catch(e){alert("No se pudo guardar: "+e.message);return;}
+  cerrarCapaGastos("capa-cuenta");
+  await asegurarClasif(true);
+  renderGastos();showToast("Cuenta "+codigo+" guardada");
+}
+
+// ── Reglas ──
+function renderReglasGastos(){
+  const el=document.getElementById("gsub-reglas");if(!el)return;
+  const usos={};Object.values(CLASIF).forEach(k=>{if(k.regla_id)usos[k.regla_id]=(usos[k.regla_id]||0)+1;});
+  const reglas=[...REGLAS_G].sort((a,b)=>(a.prioridad-b.prioridad)||(a.id-b.id));
+  el.innerHTML=`
+    <p class="cta-sub" style="margin-bottom:10px">Las reglas se aplican antes que la categor&#237;a, en orden de prioridad (menor primero), y nunca cambian un gasto que eligi&#243; una persona. Al crear, activar o desactivar una regla se vuelven a clasificar los gastos autom&#225;ticos.</p>
+    <div class="card"><div class="card-header"><h2>Nueva regla</h2></div><div style="padding:14px 16px">
+      <div class="form-grid"><div><label class="lbl">Si</label><select id="nr-tipo" onchange="probarReglaNueva()"><option value="palabra">La descripci&#243;n dice&#8230;</option><option value="proveedor">El proveedor es&#8230;</option><option value="proveedor_palabra">El proveedor es&#8230; y la descripci&#243;n dice&#8230;</option></select></div>
+        <div><label class="lbl">Proveedor</label><input id="nr-prov" placeholder="ej: FERROSTAAL" oninput="probarReglaNueva()"></div>
+        <div><label class="lbl">Palabra o frase</label><input id="nr-pal" placeholder="ej: estampado" oninput="probarReglaNueva()"></div></div>
+      <div class="form-grid"><div><label class="lbl">Entonces</label><select id="nr-acc" onchange="probarReglaNueva()"><option value="clasificar">Cargar a la cuenta&#8230;</option><option value="revisar">Mandar a revisi&#243;n</option></select></div>
+        <div><label class="lbl">Cuenta</label><select id="nr-cta"><option value="">&#8212; cuenta &#8212;</option>${opcionesCuentas("")}</select></div>
+        <div><label class="lbl">Prioridad</label><input id="nr-pri" type="number" value="20" min="1"></div></div>
+      <div style="margin-bottom:10px"><label class="lbl">Motivo (se ve en cada gasto)</label><input id="nr-mot" placeholder="ej: el estampado es jornal de producci&#243;n"></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span id="nr-prueba" class="cta-sub" style="flex:1"></span><button class="btn btn-primary" onclick="guardarReglaNueva()">Guardar regla</button></div>
+    </div></div>
+    <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Prioridad</th><th>Si&#8230;</th><th>Entonces</th><th>Motivo</th><th>Creada por</th><th>Gastos</th><th>Activa</th></tr></thead><tbody>
+    ${reglas.map(r=>`<tr style="${r.activa?"":"opacity:.5"}"><td>${r.prioridad}</td><td>${escH(condicionRegla(r))}</td>
+      <td>${r.accion==="revisar"?'<span class="badge badge-orange">A revisi&#243;n</span>':`<span class="badge badge-pmk">${escH(nombreCuenta(r.cuenta_codigo))}</span>`}</td>
+      <td style="font-size:11px;max-width:280px">${escH(r.motivo||"")}</td><td style="font-size:11px">${escH(r.creada_por||"")}</td><td>${usos[r.id]||0}</td>
+      <td><input type="checkbox" style="width:auto" ${r.activa?"checked":""} onchange="activarReglaGasto(${r.id},this.checked)"></td></tr>`).join("")||'<tr><td colspan="7" class="no-results">Sin reglas</td></tr>'}
+    </tbody></table></div></div>`;
+  probarReglaNueva();
+}
+function leerReglaNueva(){
+  const v=id=>document.getElementById(id);
+  const tipo=v("nr-tipo").value;
+  return {tipo,proveedor:tipo!=="palabra"?v("nr-prov").value.trim():"",palabra:tipo!=="proveedor"?v("nr-pal").value.trim():"",
+    accion:v("nr-acc").value,cuenta_codigo:v("nr-cta").value,prioridad:parseInt(v("nr-pri").value)||20,motivo:v("nr-mot").value.trim(),activa:true,id:0};
+}
+function probarReglaNueva(){
+  const el=document.getElementById("nr-prueba");if(!el)return;
+  const r=leerReglaNueva();
+  document.getElementById("nr-prov").disabled=r.tipo==="palabra";document.getElementById("nr-pal").disabled=r.tipo==="proveedor";
+  document.getElementById("nr-cta").disabled=r.accion==="revisar";
+  if((r.tipo!=="palabra"&&!r.proveedor)||(r.tipo!=="proveedor"&&!r.palabra)){el.textContent="";return;}
+  const ini=inicioAnalisis();
+  const calza=GASTOS.filter(g=>r.tipo==="palabra"?contienePalabra(g.descripcion,r.palabra):r.tipo==="proveedor"?provCalza(g.proveedor,r.proveedor):provCalza(g.proveedor,r.proveedor)&&contienePalabra(g.descripcion,r.palabra));
+  const manuales=calza.filter(g=>{const k=clasifDe(g);return k&&["manual","historial","ia"].includes(k.origen);}).length;
+  el.textContent="Calza con "+calza.length+" gasto"+(calza.length===1?"":"s")+" ("+calza.filter(g=>(g.fecha||"")>=ini).length+" desde "+mesTxt(ini)+")"+(manuales?"; "+manuales+" elegidos por una persona no cambian":"")+".";
+}
+async function guardarReglaNueva(){
+  const r=leerReglaNueva();
+  if(r.tipo!=="palabra"&&!r.proveedor){alert("Escribe el proveedor");return;}
+  if(r.tipo!=="proveedor"&&!r.palabra){alert("Escribe la palabra o frase");return;}
+  if(r.accion==="clasificar"&&!r.cuenta_codigo){alert("Elige la cuenta");return;}
+  try{
+    const res=await crearReglaGasto({proveedor:r.proveedor,palabra:r.palabra,cuenta:r.accion==="clasificar"?r.cuenta_codigo:null,accion:r.accion,prioridad:r.prioridad,motivo:r.motivo||null});
+    renderGastos();showToast("Regla guardada · "+(res.cambiados||0)+" gastos reclasificados");
+  }catch(e){alert("No se pudo guardar la regla: "+e.message);}
+}
+async function activarReglaGasto(id,activa){
+  try{
+    await sbPatch("gasto_reglas","id=eq."+id,{activa,updated_at:new Date().toISOString()});
+    const res=await reclasificarGastos();
+    renderGastos();showToast("Regla "+(activa?"activada":"desactivada")+" · "+(res.cambiados||0)+" gastos reclasificados");
+  }catch(e){alert("No se pudo cambiar la regla: "+e.message);renderGastos();}
+}
+
+// ── Proveedores: tipo de documento, cuenta habitual y si es socio ──
+function renderProveedoresGastos(){
+  const el=document.getElementById("gsub-proveedores");if(!el)return;
+  const ini=inicioAnalisis(), n={};
+  GASTOS.forEach(g=>{if((g.fecha||"")<ini)return;const k=normTxt(g.proveedor);n[k]=(n[k]||0)+1;});
+  const lista=[...PROVEEDORES].sort((a,b)=>(n[normTxt(b.nombre)]||0)-(n[normTxt(a.nombre)]||0)||String(a.nombre).localeCompare(String(b.nombre)));
+  const sinDoc=lista.filter(p=>!p.tipo_documento).length;
+  el.innerHTML=`<p class="cta-sub" style="margin-bottom:10px">El tipo de documento define c&#243;mo se separa el IVA (Fase 3): con factura afecta el IVA es cr&#233;dito; con boleta o sin documento el IVA es costo. ${sinDoc?`<b>${sinDoc} proveedor${sinDoc===1?"":"es"} sin tipo de documento.</b>`:""} Los cambios se guardan al elegir.</p>
+    <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Proveedor</th><th>Gastos desde ${mesTxt(ini)}</th><th>Tipo de documento</th><th>Cuenta habitual</th><th>Socio o relacionado</th></tr></thead><tbody>
+    ${lista.map(p=>`<tr><td><b>${escH(p.nombre)}</b>${p.rut?`<div class="cta-sub">${escH(p.rut)}</div>`:""}</td><td>${n[normTxt(p.nombre)]||0}</td>
+      <td style="min-width:190px"><select onchange="guardarCampoProveedor(${p.id},'tipo_documento',this.value||null)"><option value="">&#8212; por definir &#8212;</option>${Object.entries(TIPOS_DOC).map(([k,t])=>`<option value="${k}" ${p.tipo_documento===k?"selected":""}>${t}</option>`).join("")}</select></td>
+      <td style="min-width:220px"><select onchange="guardarCampoProveedor(${p.id},'cuenta_codigo',this.value||null)"><option value="">&#8212; sin cuenta habitual &#8212;</option>${opcionesCuentas(p.cuenta_codigo||"")}</select></td>
+      <td><input type="checkbox" style="width:auto" ${p.es_socio?"checked":""} onchange="guardarCampoProveedor(${p.id},'es_socio',this.checked)"></td></tr>`).join("")||'<tr><td colspan="5" class="no-results">Sin proveedores registrados</td></tr>'}
+    </tbody></table></div></div>`;
+}
+async function guardarCampoProveedor(id,campo,valor){
+  const p=PROVEEDORES.find(x=>x.id===id);if(!p)return;
+  const datos={[campo]:valor};
+  if(campo==="cuenta_codigo")datos.centro_costo=valor?nombreCuenta(valor):null;
+  try{await sbPatch("proveedores","id=eq."+id,datos);Object.assign(p,datos);showToast("Proveedor actualizado");}
+  catch(e){alert("No se pudo guardar: "+e.message);renderProveedoresGastos();}
+}
+
+// ── Conciliación: crudo = gastos = clasificado + en revisión, y avance por mes ──
+async function renderConciliacionGastos(){
+  const el=document.getElementById("gsub-conciliacion");if(!el)return;
+  const ini=inicioAnalisis();
+  // Por mes al que corresponde, desde el inicio del análisis (vista previa del estado de resultados)
+  const cols=["2","3","4","5","6","1","F"], meses={};
+  GASTOS.forEach(g=>{
+    const k=clasifDe(g), m=Number(g.monto)||0;
+    const mes=(k&&k.periodo_devengo?k.periodo_devengo:(g.fecha||"")).slice(0,7);
+    if(!mes||mes<ini.slice(0,7))return;
+    const f=meses[mes]=meses[mes]||{tot:0,rev:0,n:{}};
+    f.tot+=m;
+    const c=cuentaDe(cuentaDeGasto(g));
+    if(!c)f.rev+=m;else f.n[c.nivel]=(f.n[c.nivel]||0)+m;
+  });
+  const orden=Object.keys(meses).sort();
+  const cab={"2":"Costo directo","3":"Producci&#243;n","4":"Venta y marketing","5":"Administraci&#243;n","6":"Bajo EBITDA","1":"Devoluciones","F":"Fuera del resultado"};
+  el.innerHTML=`<div id="conc-kpis" class="kpi-grid"><div class="kpi"><label>Conciliaci&#243;n</label><div class="val" style="font-size:14px;color:#9CA3AF">Consultando la base&#8230;</div></div></div>
+    <div class="card"><div class="card-header"><h2>Por mes al que corresponde (desde ${mesTxt(ini)})</h2></div>
+      <p class="cta-sub" style="padding:10px 16px 0">Montos con impuestos. &#171;En revisi&#243;n&#187; todav&#237;a no tiene cuenta. Total = suma de las columnas.</p>
+      <div class="tbl-wrap"><table><thead><tr><th>Mes</th>${cols.map(c=>`<th style="text-align:right">${cab[c]}</th>`).join("")}<th style="text-align:right">En revisi&#243;n</th><th style="text-align:right">Total</th></tr></thead><tbody>
+      ${orden.map(m=>{const f=meses[m];return `<tr><td style="white-space:nowrap;font-weight:700">${mesTxt(m)}</td>${cols.map(c=>`<td style="text-align:right">${f.n[c]?clp(f.n[c]):"&#8212;"}</td>`).join("")}
+        <td style="text-align:right;color:${f.rev?"#C2410C":"#9CA3AF"}">${f.rev?clp(f.rev):"&#8212;"}</td><td style="text-align:right;font-weight:700">${clp(f.tot)}</td></tr>`;}).join("")||'<tr><td colspan="10" class="no-results">Sin gastos</td></tr>'}
+      </tbody></table></div></div>`;
+  let v=null;
+  try{const r=await sbTodo("v_gastos_conciliacion","select=*","gastos.asc");v=r&&r[0];}catch(e){console.warn(e);}
+  const box=document.getElementById("conc-kpis");if(!box)return;
+  if(!v){box.innerHTML=`<div class="alert gsub-aviso" style="grid-column:1/-1">No se pudo consultar la conciliaci&#243;n en la base.</div>`;return;}
+  const dif=Number(v.total_gastos)-Number(v.total_clasificado)-Number(v.total_en_revision), difCrudo=Number(v.total_gastos)-Number(v.total_crudo);
+  const cuadra=Math.round(dif)===0&&Math.round(difCrudo)===0&&!Number(v.gastos_sin_crudo)&&!Number(v.gastos_sin_clasificacion);
+  box.innerHTML=`
+    <div class="kpi"><label>Gastos en Ventas</label><div class="val">${clp(v.total_gastos)}</div><div class="sub">${v.gastos} gastos</div></div>
+    <div class="kpi"><label>Dato original (crudo)</label><div class="val">${clp(v.total_crudo)}</div><div class="sub">${Number(v.gastos_sin_crudo)?`<b style="color:#DC2626">${v.gastos_sin_crudo} sin dato original</b>`:"todos con dato original"}</div></div>
+    <div class="kpi"><label>Clasificado + en revisi&#243;n</label><div class="val">${clp(Number(v.total_clasificado)+Number(v.total_en_revision))}</div><div class="sub">${clp(v.total_clasificado)} + ${clp(v.total_en_revision)} (${v.gastos_en_revision} gastos)</div></div>
+    <div class="kpi" style="border-color:${cuadra?"#16A34A":"#DC2626"}"><label>Diferencia</label><div class="val" style="color:${cuadra?"#16A34A":"#DC2626"}">${clp(dif)}</div><div class="sub">${cuadra?"&#10003; Cuadra":"&#10007; No cuadra: revisar antes de avanzar"}${Number(v.gastos_sin_clasificacion)?" · "+v.gastos_sin_clasificacion+" sin clasificaci&#243;n":""}</div></div>`;
+}
 
 function normalizarMetodo(metodo){
   const m=(metodo||"").toLowerCase();
@@ -2785,7 +3391,7 @@ function renderFlujo(){
   
   // Gastos por categoria
   const porCat={};
-  gastosFiltrados.forEach(g=>{const c=g.categoria||"Sin categor\u00eda";porCat[c]=(porCat[c]||0)+(g.monto||0);});
+  gastosFiltrados.forEach(g=>{const c=clasifActiva()?(cuentaDeGasto(g)?nombreCuenta(cuentaDeGasto(g)):"En revisi\u00f3n"):(g.categoria||"Sin categor\u00eda");porCat[c]=(porCat[c]||0)+(g.monto||0);});
   const catsSorted=Object.entries(porCat).sort((a,b)=>b[1]-a[1]);
   const maxCat=catsSorted.length?catsSorted[0][1]:1;
   document.getElementById("flujo-por-categoria").innerHTML=catsSorted.length?catsSorted.map(([c,v])=>`
@@ -2801,7 +3407,9 @@ async function descargarExcelGastos(){
   try{await cargarXLSX();}catch(e){showToast("No se pudo preparar el Excel. Revisa tu conexión.");return;}
   const rows=data.map(g=>({
     "Fecha":g.fecha||"","Descripci\u00f3n":g.descripcion||"","Categor\u00eda":g.categoria||"",
-    "Proveedor":g.proveedor||"","M\u00e9todo":g.metodo_pago||"","Monto":g.monto||0
+    "Proveedor":g.proveedor||"","M\u00e9todo":g.metodo_pago||"","Monto":g.monto||0,
+    ...(clasifActiva()?(()=>{const k=clasifDe(g)||{},c=cuentaDe(cuentaDeGasto(g));return {"C\u00f3digo":c?c.codigo:"","Cuenta":c?c.nombre:"","Nivel":c?(c.nivel==="F"?"":"Nivel "+c.nivel+" \u00b7 ")+NIVELES_CTA[c.nivel]:"",
+      "Mes al que corresponde":(k.periodo_devengo||"").slice(0,7),"Estado":c?"Clasificado":"En revisi\u00f3n","Origen":ORIGEN_TXT[k.origen]||"","Motivo":k.motivo||""};})():{})
   }));
   const ws=XLSX.utils.json_to_sheet(rows);
   ws["!cols"]=[{wch:12},{wch:30},{wch:18},{wch:20},{wch:18},{wch:14}];
@@ -2840,6 +3448,7 @@ function seleccionarProveedor(id){
   const p=PROVEEDORES.find(x=>x.id===id);if(!p)return;
   document.getElementById("g-prov").value=p.nombre;
   document.getElementById("prov-autocomplete").style.display="none";
+  if(clasifActiva()&&document.getElementById("g-cta")){gfActualizar();return;}
   // Auto-fill category if proveedor has centro_costo
   if(p.centro_costo){
     const catSel=document.getElementById("g-cat");
@@ -2866,9 +3475,13 @@ function abrirNuevoProveedor(){
   overlay.innerHTML=`<div style="background:#fff;border-radius:12px;padding:24px;width:460px;max-width:95vw;font-family:'Poppins',Arial,sans-serif;max-height:90vh;overflow-y:auto">
     <h3 style="font-size:14px;font-weight:700;margin-bottom:16px">Nuevo proveedor</h3>
     <div style="margin-bottom:12px"><label class="lbl">Nombre *</label><input type="text" id="np-nombre" value="${prefill.replace(/"/g,'&quot;')}" placeholder="Nombre del proveedor"></div>
-    <div style="margin-bottom:12px"><label class="lbl">Centro de costo / Categor&#237;a</label>
-      <select id="np-centro"><option value="">&#8212; sin asignar &#8212;</option>${cats.map(c=>`<option value="${c}">${c}</option>`).join("")}</select>
+    ${clasifActiva()?`<div class="form-grid-2" style="margin-bottom:12px">
+      <div><label class="lbl">Tipo de documento *</label><select id="np-doc"><option value="">&#8212; elegir &#8212;</option>${Object.entries(TIPOS_DOC).map(([k,t])=>`<option value="${k}">${t}</option>`).join("")}</select></div>
+      <div><label class="lbl">Cuenta habitual</label><select id="np-cta"><option value="">&#8212; sin cuenta habitual &#8212;</option>${opcionesCuentas("")}</select></div>
     </div>
+    <label class="cf-chk" style="margin-bottom:12px"><input type="checkbox" id="np-socio"> Es socio o relacionado</label>`:`<div style="margin-bottom:12px"><label class="lbl">Centro de costo / Categor&#237;a</label>
+      <select id="np-centro"><option value="">&#8212; sin asignar &#8212;</option>${cats.map(c=>`<option value="${c}">${c}</option>`).join("")}</select>
+    </div>`}
     <div class="form-grid-2" style="margin-bottom:12px">
       <div><label class="lbl">RUT</label><input type="text" id="np-rut" placeholder="12.345.678-9"></div>
       <div><label class="lbl">Tel&#233;fono</label><input type="text" id="np-tel" placeholder="+56 9 ..."></div>
@@ -2889,10 +3502,14 @@ async function guardarProveedor(){
   const nombre=document.getElementById("np-nombre").value.trim();
   if(!nombre){alert("El nombre es obligatorio");return;}
   if(PROVEEDORES.some(p=>p.nombre.toLowerCase()===nombre.toLowerCase())){alert("Ya existe un proveedor con ese nombre");return;}
+  const conCuentas=clasifActiva()&&!!document.getElementById("np-doc");
+  if(conCuentas&&!document.getElementById("np-doc").value){alert("Elige el tipo de documento del proveedor (factura afecta, exenta, honorarios o sin documento)");return;}
+  const ctaProv=conCuentas?document.getElementById("np-cta").value:"";
   const prov={
     id: Date.now()*1000+Math.floor(Math.random()*1000),
     nombre,
-    centro_costo: document.getElementById("np-centro").value,
+    centro_costo: conCuentas?(ctaProv?nombreCuenta(ctaProv):""):document.getElementById("np-centro").value,
+    ...(conCuentas?{tipo_documento:document.getElementById("np-doc").value,cuenta_codigo:ctaProv||null,es_socio:document.getElementById("np-socio").checked}:{}),
     rut: document.getElementById("np-rut").value.trim(),
     telefono: document.getElementById("np-tel").value.trim(),
     email: document.getElementById("np-email").value.trim(),
@@ -2904,7 +3521,8 @@ async function guardarProveedor(){
     document.getElementById("prov-overlay").remove();
     // Select it in the gasto form
     document.getElementById("g-prov").value=prov.nombre;
-    if(prov.centro_costo){
+    if(conCuentas&&document.getElementById("g-cta")){gfActualizar();}
+    else if(prov.centro_costo){
       const catSel=document.getElementById("g-cat");
       if(catSel)catSel.value=prov.centro_costo;
     }
@@ -3747,6 +4365,12 @@ function showView(v){
       showView("dashboard");
       return;
     }
+  }
+  if(v==="gastos"||v==="flujo"){
+    asegurarClasif().then(()=>{
+      if(document.getElementById("view-gastos").classList.contains("active"))renderGastos();
+      if(document.getElementById("view-flujo").classList.contains("active"))renderFlujo();
+    });
   }
   if(v==="gastos")renderGastos();
   if(v==="flujo")renderFlujo();

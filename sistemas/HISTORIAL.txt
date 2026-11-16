@@ -1,3 +1,4 @@
+2026-11-16  Gastos con plan de cuentas (Ventas, Fase 1 del costeo SCR-PMK): cada gasto a una cuenta del plan, igual para todos; el gasto original queda guardado y nunca se modifica; reglas (estampado, tintas, confección…), sugerencia por historial del proveedor, Revisión, Plan de cuentas, Reglas, Proveedores (tipo de documento) y Conciliación. SQL 21A
 2026-11-16  Costeo → Precios: todas las telas por kg y todos los insumos por unidad en una sola lista, con guardado al salir de cada casilla
 2026-11-16  Costeo por molde: el corte se pesa y el ploteo se anota por cada molde; el resultado es el costo total y por prenda de cada molde, y «Por molde» resume el período
 2026-11-16  Costeo de prendas en Planificación: kilos de tela y merma al terminar Corte, metros al terminar Ploteo, consumo de insumos por molde, confección del taller, gasto general de los 3 meses anteriores (Ventas), margen y precio sugerido

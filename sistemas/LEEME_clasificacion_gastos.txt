@@ -1,0 +1,60 @@
+CLASIFICACIÓN DE GASTOS CON PLAN DE CUENTAS (Ventas › Gastos) · Fase 1 del sistema de costeo SCR-PMK
+====================================================================================================
+
+QUÉ CAMBIA
+- Cada gasto se carga a una CUENTA del plan de cuentas (sección 6 del documento SCR-PMK). El plan está en la
+  base: es el mismo en todos los computadores. Antes, cada navegador tenía su propia lista de categorías, y por
+  eso había 63 y se repetían.
+- El gasto tal como se ingresó queda guardado aparte (gasto_raw) y NUNCA se modifica: cada edición o
+  eliminación agrega una versión nueva. Botón «Ver dato original» al editar un gasto.
+- Cada gasto tiene «Mes al que corresponde» (sueldos, arriendo y servicios pueden pagarse en otro mes).
+- Todo cambio queda en la auditoría (quién, qué, cuándo, antes y después).
+
+CÓMO SE CLASIFICA (en este orden)
+1. Reglas (Gastos › Reglas). Las iniciales, de la sección 8 del documento y de las respuestas D2 y S3:
+     «estampado» en la descripción → Jornales de producción (cualquier categoría; «estampadora» no cuenta)
+     «tintas Mimaki» → Papel y tinta de sublimación · «confección de prendas» → Talleres de confección
+     «compra tela» → Telas · «honorarios contador» → Contabilidad y asesorías
+     Antonia Hermosilla + «honorarios» → Comisiones de venta (D2)
+     Rodolfo Riquelme + «eléctrico» → Mejoras al local (activo, S3)
+     «no sé», «no me acuerdo», «reembolso» y pagos a Sean Duarte → a Revisión
+2. Traducción de la categoría que tenía el gasto (Plan de cuentas › Traducción de las categorías antiguas).
+   Ej.: TALLER EXTERNO y TALLER PMK → Talleres de confección; UBER, COMBUSTIBLE → Movilización.
+   POR IDENTIFICAR, OTROS e INSUMOS PRODUCCION van a Revisión.
+3. Inversión bajo $300.000 (D8) → Revisión: ¿es gasto o parte de una obra mayor?
+4. Lo que elige una persona nunca lo cambia una regla.
+
+AL INGRESAR UN GASTO
+- La cuenta se precarga y se ve por qué: regla → cuenta habitual del proveedor → historial del proveedor
+  («Historial: 12 de 12 gastos de este proveedor»). Si se elige otra cuenta, se ofrece crear una regla para
+  la próxima vez; al crearla, se vuelven a clasificar los gastos automáticos que calzan.
+- Proveedor nuevo: hay que elegir el tipo de documento (factura afecta, exenta, boleta de honorarios o sin
+  documento). Los ya registrados se completan en Gastos › Proveedores. Se usa en la Fase 3 para el IVA.
+- Fase 1b (pendiente): sugerencia de Claude cuando no hay regla ni historial.
+
+PANTALLAS (Gastos, solo gerencia)
+  Gastos · Revisión · Plan de cuentas · Reglas · Proveedores · Conciliación
+- Revisión: los gastos sin cuenta desde abril 2026 (D9: los meses anteriores no se usan), con su motivo y la
+  cuenta sugerida. Se aceptan de a uno o en grupo.
+- Conciliación: total de gastos = total del dato original = clasificado + en revisión. Debe decir
+  «Diferencia $0 ✓ Cuadra» para pasar de fase. Abajo, cada mes por nivel del plan (vista previa del estado
+  de resultados).
+
+PARÁMETROS (gestion_parametros, de las respuestas)
+  inicio_analisis 2026-04-01 (D9) · sueldo_gerencia_mensual 4.500.000 (D5) · prorrateo_local 80/10/10 (D7)
+  umbral_inversion 300.000 (D8) · tasa_iva 0,19 · regimen_tributario Pro Pyme General (S5)
+- Pagos a socios (Remuneración de socios) quedan fuera del resultado; el resultado usará el sueldo de
+  gerencia fijo (Fase 2). Las comisiones de Sean y Silvia son solo un costo de referencia (D6): no son gasto.
+
+PARA PUBLICAR
+1. Supabase de Ventas → SQL Editor → pegar SQL_21A_VENTAS_clasificacion_gastos.sql → Run.
+   Debe terminar con «clasificación lista» y diferencia 0. Se puede volver a correr.
+2. Subir a Netlify (ventas-playmaker) el zip con index.html.
+   Si se sube la página antes del SQL, Gastos sigue funcionando como siempre (con categorías) y avisa que
+   falta el SQL 21A. Si se corre el SQL antes de subir la página, la página anterior sigue funcionando y los
+   gastos nuevos se clasifican solos.
+
+PRUEBA
+  pruebas/clasif_gastos.test.js (necesita Postgres local).
+  Con los 1.703 gastos reales (21-ene al 13-nov): $372.280.699 en el dato original = clasificado + en revisión,
+  diferencia $0; quedan 135 gastos por revisar desde abril ($16,6 M), la mayoría pagos a Sean Duarte (58).
