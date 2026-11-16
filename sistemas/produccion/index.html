@@ -164,6 +164,7 @@ textarea{min-height:70px;resize:vertical}
 .mini{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
 .mini td,.mini th{padding:7px 8px;border-bottom:1px solid #EEF0F2;text-align:left}
 .mini th{font-size:12px;color:var(--suave);font-weight:600}
+@media (max-width:600px){#pr-ins th:nth-child(2),#pr-ins td:nth-child(2){display:none}#pr-ins input,#pr-telas input{width:92px!important}}
 @media (max-width:600px){.rc-tab tr:first-child{display:none}.rc-tab tr{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;padding:8px 0;border-bottom:1px solid #EEF0F2}
   .rc-tab td{border:0;padding:0;text-align:left!important}.rc-tab td:nth-child(1),.rc-tab td:nth-child(2),.rc-tab td:nth-child(5){grid-column:1/-1}
   .rc-tab td input{width:100%!important}.rc-tab td[data-l]::before{content:attr(data-l);display:block;font-size:11px;color:var(--suave);font-weight:600}
@@ -5084,6 +5085,7 @@ async function descontarTelas(row, cot) {
 }
 // Vista de insumos: solo el stock de cada uno; el detalle de compras y consumos se descarga por insumo
 function renderInsumos() {
+  if (TAB === 'costeo') return cargarInsumos().then(() => renderCosteo());   // insumo nuevo creado desde Costeo → Precios
   const v = $('view-inventario');
   if (INSUMOS_OK == null) v.innerHTML = chipsInv() + '<h1>Insumos</h1><p class="hint">Cargando…</p>';
   cargarInsumos().then(pintarInsumos);
@@ -5969,11 +5971,11 @@ async function stockPloteo(p, m) {
 /* pestaña Costeo */
 function renderCosteo() {
   const v = $('view-costeo'); if (!v) return;
-  const chips = `<div class="chips" style="margin-bottom:10px">${[['pedidos', 'Pedidos'], ['moldes', 'Por molde'], ['consumo', 'Consumo por molde'], ['gg', 'Gasto general'], ['valores', 'Valores']]
+  const chips = `<div class="chips" style="margin-bottom:10px">${[['pedidos', 'Pedidos'], ['moldes', 'Por molde'], ['precios', 'Precios'], ['consumo', 'Consumo por molde'], ['gg', 'Gasto general'], ['valores', 'Valores']]
     .map(([k, t]) => `<button class="chip ${COSTEO_MODO === k ? 'on' : ''}" onclick="COSTEO_MODO='${k}';renderCosteo()">${t}</button>`).join('')}</div>`;
   if (!puedeVerCosteo()) { v.innerHTML = '<h1>Costeo</h1><p class="hint">Solo administración y producción.</p>'; return; }
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + '<p class="hint">Cargando…</p>';
-  const pintar = { pedidos: pintarCosteoPedidos, moldes: pintarCosteoMoldes, consumo: pintarConsumoMolde, gg: pintarGG, valores: pintarValoresCosteo }[COSTEO_MODO] || pintarCosteoPedidos;
+  const pintar = { pedidos: pintarCosteoPedidos, moldes: pintarCosteoMoldes, precios: pintarPrecios, consumo: pintarConsumoMolde, gg: pintarGG, valores: pintarValoresCosteo }[COSTEO_MODO] || pintarCosteoPedidos;
   pintar(v, chips).catch(e => { v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + `<div class="aviso warn">No se pudo cargar: ${esc(String(e.message).slice(0, 200))}</div>`; });
 }
 const avisoSql20 = () => COSTEO_OK === false ? '<div class="aviso warn">Falta correr el <b>SQL 20A</b> (costeo) en Supabase de Producción: sin él no se guardan los kilos del corte, los metros de ploteo ni el consumo por molde.</div>' : '';
@@ -6135,6 +6137,71 @@ function exportarCosteo() {
     'Margen del pedido', 'Falta'].join(';') + '\n' + filas.map(f => f.map(esc2).join(';')).join('\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
   a.download = `Costeo_PMK_${D.d1}_${D.d2}.csv`; a.click(); URL.revokeObjectURL(a.href);
+}
+// precios de todas las telas (por kg) y de todos los insumos (por su unidad), en una sola lista
+let PRECIOS_Q = '', PRECIOS_SIN = false;
+async function pintarPrecios(v, chips) {
+  await cargarInsumos();
+  if (INSUMOS_OK === false) { v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + '<div class="aviso warn">Falta correr el SQL 5A de insumos en Supabase de Producción.</div>'; return; }
+  const q = normIns(PRECIOS_Q), act = INS.filter(i => i.activo !== false), ve = i => (!q || normIns(i.nombre).includes(q)) && (!PRECIOS_SIN || !(+i.precio > 0));
+  const telas = act.filter(i => i.categoria === 'Tela'), otros = act.filter(i => i.categoria !== 'Tela');
+  const conP = l => l.filter(i => +i.precio > 0).length;
+  const kgDe = i => { const k = precioKg(i); return k != null ? Math.round(k * 100) / 100 : ''; };
+  v.innerHTML = '<h1>Costeo de prendas</h1>' + chips +
+    `<p class="hint">Precios <b>sin IVA</b> de todas las telas (por kilo) y de todos los insumos (por su unidad). Se guardan al salir de cada casilla y quedan en Inventario → Insumos. Cada compra registrada con costo también actualiza el precio.</p>
+    <div class="resumen">${dato('Telas con precio', conP(telas) + ' de ' + telas.length, conP(telas) < telas.length, '')}${dato('Insumos con precio', conP(otros) + ' de ' + otros.length, conP(otros) < otros.length, '')}</div>
+    <div class="toolbar"><input id="pr-q" placeholder="Buscar tela o insumo" value="${esc(PRECIOS_Q)}" oninput="PRECIOS_Q=this.value;renderCosteo()">
+      <label class="btn" style="display:inline-flex;align-items:center;gap:6px;margin:0;color:var(--tinta)"><input type="checkbox" style="flex:0 0 auto;min-width:0;width:auto;margin:0" ${PRECIOS_SIN ? 'checked' : ''} onchange="PRECIOS_SIN=this.checked;renderCosteo()"> Solo sin precio</label>
+      <button class="btn pri" onclick="abrirNuevoInsumo()">+ Nuevo insumo</button></div>
+    <h2>Telas · precio por kg</h2>
+    <p class="hint">El rendimiento (metros por kg) hace falta en las telas que se llevan en metros, y para estimar en kg el consumo teórico de los moldes.</p>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="pr-telas"><tr><th>Tela</th><th style="text-align:right">Precio por kg</th><th style="text-align:right">Rendimiento (m por kg)</th><th style="text-align:right">Equivale a</th><th></th></tr>
+      ${telas.filter(ve).map(i => `<tr data-ins="${i.id}"><td><b>${esc(i.nombre)}</b><div class="hint">stock en ${esc(i.unidad)}${i.proveedor ? ' · ' + esc(i.proveedor) : ''}</div></td>
+        <td style="text-align:right"><input id="pr-kg-${i.id}" type="number" inputmode="decimal" min="0" step="any" value="${kgDe(i)}" placeholder="$ por kg" style="width:120px;text-align:right" onchange="guardarPrecioTela(${i.id})"></td>
+        <td style="text-align:right"><input id="pr-rd-${i.id}" type="number" inputmode="decimal" min="0" step="any" value="${+i.rendimiento > 0 ? +i.rendimiento : ''}" placeholder="m por kg" style="width:110px;text-align:right" onchange="guardarPrecioTela(${i.id})"></td>
+        <td style="text-align:right" class="hint" id="pr-eq-${i.id}">${precioM(i) != null ? pesos(precioM(i)) + '/m' : ''}</td><td class="hint" id="pr-st-${i.id}"></td></tr>`).join('') || '<tr><td colspan="5" class="hint">Sin telas.</td></tr>'}
+    </table></div>
+    <h2>Insumos · precio por unidad</h2>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="pr-ins"><tr><th>Insumo</th><th>Categoría</th><th style="text-align:right">Precio</th><th></th></tr>
+      ${otros.filter(ve).map(i => `<tr data-ins="${i.id}"><td><b>${esc(i.nombre)}</b>${i.proveedor ? `<div class="hint">${esc(i.proveedor)}</div>` : ''}</td><td class="hint">${esc(i.categoria)}</td>
+        <td style="text-align:right;white-space:nowrap"><input id="pr-u-${i.id}" type="number" inputmode="decimal" min="0" step="any" value="${+i.precio > 0 ? +i.precio : ''}" placeholder="$" style="width:120px;text-align:right" onchange="guardarPrecioInsumo(${i.id})"> <span class="hint">por ${esc(i.unidad)}</span></td>
+        <td class="hint" id="pr-st-${i.id}"></td></tr>`).join('') || '<tr><td colspan="4" class="hint">Sin insumos.</td></tr>'}
+    </table></div>`;
+  const qi = $('pr-q'); if (qi && PRECIOS_Q) { qi.focus(); qi.setSelectionRange(qi.value.length, qi.value.length); }
+}
+const marcarPrecio = (id, txt, mal) => { const c = $('pr-st-' + id); if (c) { c.textContent = txt; c.style.color = mal ? '#A8121E' : '#1B6B3E'; } };
+async function guardarPrecioCambio(i, precio, rend, cambios) {
+  if (!cambios.length) return marcarPrecio(i.id, '');
+  marcarPrecio(i.id, 'Guardando…');
+  let completo;
+  try { completo = await patchInsumo(i.id, { precio: precio || null, rendimiento: rend || null, updated_at: new Date().toISOString() }); }
+  catch (e) { return marcarPrecio(i.id, 'No se pudo guardar', true); }
+  if (!completo) return marcarPrecio(i.id, 'Falta correr otra vez el SQL 5A (precios)', true);
+  await registrarEdicion(i, cambios);
+  i.precio = precio || null; i.rendimiento = rend || null; marcarPrecio(i.id, 'Guardado ✓');
+}
+// tela: se ingresa el precio por kg; si la tela se lleva en metros, se guarda por metro con su rendimiento (precio por kg ÷ m por kg)
+async function guardarPrecioTela(id) {
+  const i = insumoDe(id); if (!i) return;
+  const kg = numIn('pr-kg-' + id), rd = numIn('pr-rd-' + id);
+  if ((kg != null && kg < 0) || (rd != null && rd < 0)) return marcarPrecio(id, 'No puede ser negativo', true);
+  const r1 = rd > 0 ? rd : 0;
+  let p1 = 0;
+  if (kg > 0) {
+    if (i.unidad === 'm') { if (!r1) return marcarPrecio(id, 'Anota el rendimiento: esta tela se lleva en metros', true); p1 = Math.round(kg / r1 * 10000) / 10000; }
+    else p1 = kg;
+  }
+  const p0 = +i.precio > 0 ? +i.precio : 0, r0 = +i.rendimiento > 0 ? +i.rendimiento : 0, cambios = [];
+  if (Math.abs(p0 - p1) > 1e-6) cambios.push(`precio ${p0 ? pesos(precioKg(i) != null ? precioKg(i) : p0) : 'sin precio'} → ${kg > 0 ? pesos(kg) : 'sin precio'} por kg`);
+  if (r0 !== r1) cambios.push(`rendimiento ${r0 ? numCL(r0) + ' m/kg' : 'sin dato'} → ${r1 ? numCL(r1) + ' m/kg' : 'sin dato'}`);
+  await guardarPrecioCambio(i, p1, r1, cambios);
+  const eq = $('pr-eq-' + id); if (eq) eq.textContent = precioM(i) != null ? pesos(precioM(i)) + '/m' : '';
+}
+async function guardarPrecioInsumo(id) {
+  const i = insumoDe(id); if (!i) return;
+  const p = numIn('pr-u-' + id); if (p != null && p < 0) return marcarPrecio(id, 'No puede ser negativo', true);
+  const p0 = +i.precio > 0 ? +i.precio : 0, p1 = p > 0 ? p : 0;
+  await guardarPrecioCambio(i, p1, +i.rendimiento > 0 ? +i.rendimiento : 0, p0 !== p1 ? [`precio ${p0 ? pesos(p0) : 'sin precio'} → ${p1 ? pesos(p1) : 'sin precio'} por ${i.unidad}`] : []);
 }
 // consumo de insumos por molde: lo común a todas las prendas y lo de cada molde
 async function pintarConsumoMolde(v, chips) {

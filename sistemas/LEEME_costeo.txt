@@ -47,7 +47,10 @@ Costo total del molde = tela + insumos por consumo + confección + ploteo y subl
    costo directo por prenda ÷ (1 − % gasto general − margen). El margen se define en Costeo → Valores.
 
 LO QUE NECESITAN CARGAR
-- Precio (y rendimiento m/kg si va en metros) de cada tela e insumo en Inventario → Insumos.
+- Precios en Costeo → «Precios»: una sola lista con todas las telas (precio POR KG, sin IVA) y todos los insumos (precio
+  por su unidad). Se guardan al salir de cada casilla y quedan en Inventario → Insumos (con su historial).
+  Las telas que se llevan en metros necesitan su rendimiento (m por kg): el precio por kg se guarda como precio por metro
+  (precio por kg ÷ m por kg). «Solo sin precio» muestra lo que falta.
 - Papel de ploteo, tinta (y cuánta tinta por metro) y papel de protección como insumos; elegirlos en Costeo → Valores.
 - El consumo de insumos por molde (y el común).
 - Revisar la clasificación de las categorías de gastos en Costeo → Gasto general.

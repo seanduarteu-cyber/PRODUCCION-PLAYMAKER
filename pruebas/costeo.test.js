@@ -32,7 +32,8 @@ const insumos = [
   { id: 5, nombre: 'Bolsa', categoria: 'Embalaje', unidad: 'unid', precio: 80, stock: 1000, activo: true },
   { id: 6, nombre: 'Papel sublimación', categoria: 'Papel', unidad: 'm', precio: 400, stock: 500, activo: true },
   { id: 7, nombre: 'Tinta', categoria: 'Tinta', unidad: 'litro', precio: 20000, stock: 10, activo: true },
-  { id: 8, nombre: 'Papel protección', categoria: 'Papel', unidad: 'm', precio: 150, stock: 500, activo: true }];
+  { id: 8, nombre: 'Papel protección', categoria: 'Papel', unidad: 'm', precio: 150, stock: 500, activo: true },
+  { id: 9, nombre: 'Dry fit', categoria: 'Tela', unidad: 'm', precio: null, rendimiento: null, stock: 0, activo: true }];
 let costeo = [], cid = 1;
 let bom = [{ id: 1, molde: '*', insumo_id: 4, cantidad: 1 }, { id: 2, molde: '*', insumo_id: 5, cantidad: 1 }, { id: 3, molde: '46', insumo_id: 3, cantidad: 0.9 }], bid = 4;
 let movs = [{ id: 1, insumo_id: 1, tipo: 'consumo', cantidad: -2.7, planificacion_id: 1, cot: 'COT-4000', nota: 'Consumo del pedido al ingresar a producción' }], mid = 2;
@@ -67,8 +68,8 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
     const m = v.match(/^(eq|in)\.(.*)$/); if (!m) continue;
     const vals = m[1] === 'eq' ? [m[2]] : m[2].replace(/^\(|\)$/g, '').split(',').map(x => x.replace(/^"|"$/g, ''));
     r = r.filter(x => vals.includes(String(x[k]))); } return r; };
-  const tablaViva = { plan_costeo: () => costeo, plan_insumos_molde: () => bom, plan_insumos_mov: () => movs, plan_config: () => config, planificacion_etapas: () => etapas, plan_asignaciones: () => asignaciones };
-  await ctx.route(/ygcsqrylpibhofvetdyh\.supabase\.co\/rest\/v1\/(plan_costeo|plan_insumos_molde|plan_insumos_mov|plan_config|planificacion_etapas|plan_asignaciones)/, r => {
+  const tablaViva = { plan_costeo: () => costeo, plan_insumos_molde: () => bom, plan_insumos_mov: () => movs, plan_config: () => config, planificacion_etapas: () => etapas, plan_asignaciones: () => asignaciones, plan_insumos: () => insumos };
+  await ctx.route(/ygcsqrylpibhofvetdyh\.supabase\.co\/rest\/v1\/(plan_costeo|plan_insumos_molde|plan_insumos_mov|plan_config|planificacion_etapas|plan_asignaciones|plan_insumos(?=\?|$))/, r => {
     const q = r.request(), u = new URL(q.url()), t = u.pathname.split('/').pop(), filas = tablaViva[t]();
     const d = q.postData() ? JSON.parse(q.postData()) : null;
     if (q.method() !== 'GET') envios.push({ m: q.method(), t, u: decodeURIComponent(u.search), d });
@@ -161,7 +162,24 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   await p.check('[data-bom-copia][value="17"]'); await p.click('text=Copiar a los marcados'); await p.waitForTimeout(900);
   ok(bom.some(x => x.molde === '17' && x.insumo_id === 3 && x.cantidad === 0.5), 'se copia al molde 17');
 
-  // 6 · valores
+  // 6 · precios: todas las telas por kg y todos los insumos en una sola lista
+  await p.evaluate(() => { COSTEO_MODO = 'precios'; renderCosteo(); }); await p.waitForTimeout(900);
+  ok(await p.inputValue('#pr-kg-1') === '9000' && await p.inputValue('#pr-kg-2') === '10000' && /\$2\.500\/m/.test(await p.textContent('#pr-eq-2')),
+    'telas por kg: Pro $9.000/kg; Nacional (se lleva en metros) $10.000/kg = $2.500/m con 4 m/kg');
+  { const tx = (await p.innerText('#view-costeo')).replace(/\s+/g, ' '); ok(/2 de 3 Telas con precio/.test(tx) && /6 de 6 Insumos con precio/.test(tx), 'resumen: 2 de 3 telas y 6 de 6 insumos con precio'); }
+  await p.fill('#pr-kg-2', '12000'); await p.dispatchEvent('#pr-kg-2', 'change'); await p.waitForTimeout(700);
+  ok(insumos.find(i => i.id === 2).precio === 3000 && /Guardado/.test(await p.textContent('#pr-st-2')) && /\$3\.000\/m/.test(await p.textContent('#pr-eq-2')), 'Nacional a $12.000/kg queda guardado como $3.000 por metro (12.000 ÷ 4 m/kg)');
+  await p.fill('#pr-kg-9', '8000'); await p.dispatchEvent('#pr-kg-9', 'change'); await p.waitForTimeout(500);
+  ok(!(insumos.find(i => i.id === 9).precio > 0) && /rendimiento/.test(await p.textContent('#pr-st-9')), 'tela en metros sin rendimiento: pide el rendimiento antes de guardar');
+  await p.fill('#pr-rd-9', '5'); await p.dispatchEvent('#pr-rd-9', 'change'); await p.waitForTimeout(700);
+  ok(insumos.find(i => i.id === 9).precio === 1600 && insumos.find(i => i.id === 9).rendimiento === 5, 'con 5 m/kg se guarda: $8.000/kg = $1.600/m');
+  await p.fill('#pr-u-3', '350'); await p.dispatchEvent('#pr-u-3', 'change'); await p.waitForTimeout(700);
+  ok(insumos.find(i => i.id === 3).precio === 350 && movs.some(m => m.insumo_id === 3 && m.tipo === 'edicion' && /\$300 → \$350 por m/.test(m.nota)), 'insumo: elástico a $350/m, y queda en el historial del insumo');
+  await p.evaluate(() => { PRECIOS_SIN = true; renderCosteo(); }); await p.waitForTimeout(700);
+  ok(await p.$$eval('#pr-telas tr[data-ins], #pr-ins tr[data-ins]', t => t.length) === 0, '«Solo sin precio»: ya no queda ninguno sin precio');
+  await p.evaluate(() => { PRECIOS_SIN = false; });
+
+  // 7 · valores
   await p.evaluate(() => { COSTEO_MODO = 'valores'; renderCosteo(); }); await p.waitForTimeout(700);
   await p.fill('#cv-margen', '40'); await p.click('text=Guardar valores'); await p.waitForTimeout(700);
   ok(JSON.parse(config.find(c => c.clave === 'costeo_valores').valor).margen === 40, 'el margen para el precio sugerido se guarda');
