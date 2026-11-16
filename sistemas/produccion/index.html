@@ -945,7 +945,7 @@ const textoCantMedias = c => TALLAS_MEDIAS.concat(Object.keys(c || {}).filter(t 
 // código de Producción según la talla: infantil → MEDIAS-INF; S, M, L o adulto → MEDIAS-ADL
 const codigoMedias = t => /infantil/i.test(t) ? 'MEDIAS-INF' : 'MEDIAS-ADL';
 const codigosMedias = c => Array.from(new Set(Object.keys(c || {}).filter(t => parseInt(c[t], 10) > 0).map(codigoMedias)));
-const NOM_ACC = { ficha_ingresada: 'Ficha ingresada', ingreso_forzado: 'Ingreso forzado', devuelto: 'Devuelto', diseno_aprobacion_deshecha: 'Devuelto a Diseño', diseno_parte_editada: 'Prendas de Diseño corregidas', inicio: 'Inicio', termino: 'Terminado', bloqueo: 'Bloqueo', desbloqueo: 'Desbloqueo', replanificacion: 'Replanificación', cambio_fecha_entrega: 'Cambio de fecha de entrega', cambio_tipo: 'Cambio de tipo', cambio_desglose: 'Cambio de desglose', listo_entrega: 'Listo para entrega', entregado: 'Terminado', recalculo: 'Recálculo' };
+const NOM_ACC = { ficha_ingresada: 'Ficha ingresada', ingreso_forzado: 'Ingreso forzado', devuelto: 'Devuelto', diseno_aprobacion_deshecha: 'Devuelto a Diseño', diseno_parte_editada: 'Prendas de Diseño corregidas', inicio: 'Inicio', termino: 'Terminado', bloqueo: 'Bloqueo', desbloqueo: 'Desbloqueo', replanificacion: 'Replanificación', cambio_fecha_entrega: 'Cambio de fecha de entrega', cambio_tipo: 'Cambio de tipo', cambio_desglose: 'Cambio de desglose', listo_entrega: 'Listo para entrega', entregado: 'Terminado', recalculo: 'Recálculo', reingreso: 'Devuelto a una etapa' };
 const TAB_NOMBRE = { proyectos: 'Proyectos', estado: 'Estado', calendario: 'Calendario', area: 'Mi área', fichas: 'Ingreso a producción', diseno: 'Diseño', tallas: 'Fichas de pedidos', gerencia: 'Gerencia', talleres: 'Talleres', rendimiento: 'Rendimiento', costeo: 'Costeo', inventario: 'Inventario', moldes: 'Moldes', config: 'Configuración' };
 
 let USER = null, TAB = null, AREA_SEL = 'ARMADO';
@@ -1351,7 +1351,7 @@ async function cargarTodo() {
   const ids = PROY.map(p => p.id);
   // etapas, quién tomó cada etapa y pedidos divididos: se piden a la vez, en tandas de 100 pedidos
   const tandas = []; for (let i = 0; i < ids.length; i += 100) tandas.push(ids.slice(i, i + 100).join(','));
-  const asig = {}, divididos = new Set();
+  const asig = {}, divididos = new Set(), reing = {};
   await Promise.all([
     Promise.all(tandas.map(t => todasLasFilas(api, `planificacion_etapas?select=*&planificacion_id=in.(${t})&order=id.asc`)))
       .then(ls => ls.forEach(ets => ets.forEach(e => { if (byId[e.planificacion_id]) byId[e.planificacion_id].et[e.etapa] = e; }))),
@@ -1359,12 +1359,16 @@ async function cargarTodo() {
     Promise.all(tandas.map(t => todasLasFilas(api, `plan_asignaciones?select=planificacion_id,etapa,ejecutante_id,ejecutante&planificacion_id=in.(${t})&order=id.asc`)))
       .then(ls => ls.forEach(as => as.forEach(a => { const m = asig[a.planificacion_id] = asig[a.planificacion_id] || {}; (m[a.etapa] = m[a.etapa] || []).push(a); })))
       .catch(() => {}),
-    Promise.all(tandas.map(t => api(`planificacion_log?select=planificacion_id&accion=in.(parte_cerrada,parte_creada)&planificacion_id=in.(${t})`)))
-      .then(ls => ls.forEach(l => (l || []).forEach(x => divididos.add(x.planificacion_id))))
+    // pedidos divididos y pedidos devueltos a una etapa (su último reingreso: qué falta)
+    Promise.all(tandas.map(t => api(`planificacion_log?select=planificacion_id,accion,etapa,observacion,created_at&accion=in.(parte_cerrada,parte_creada,reingreso)&planificacion_id=in.(${t})&order=created_at.asc`)))
+      .then(ls => ls.forEach(l => (l || []).forEach(x => {
+        if (x.accion === 'reingreso') reing[x.planificacion_id] = { etapa: x.etapa, falta: String(x.observacion || '').replace(/^Falta: /, ''), fecha: x.created_at };
+        else divididos.add(x.planificacion_id);
+      })))
       .catch(() => {}),
     cargarEjecutantes()
   ]);
-  ASIG_PLAN = asig; DIVIDIDOS = divididos;
+  ASIG_PLAN = asig; DIVIDIDOS = divididos; REING = reing;
 }
 async function recargar(silencioso) {
   // no dependen entre sí: se piden a la vez (cada una maneja sus propios errores)
@@ -1510,7 +1514,7 @@ function renderListaEstado() {
       const dondePend = [...new Set(pend.map(x => x.etapa))].sort((x, y) => ((ETAPAS[x] || {}).orden || 99) - ((ETAPAS[y] || {}).orden || 99))
         .map(x => ETAPAS[x] ? ETAPAS[x].corto : x).join(', ');
       return `<tr class="fila-est" onclick="verProyecto(${p.id})" title="${esc(p.cot)} · ${esc(etapaActualTexto(p))}">
-        <td class="est-ped"><b>${esc(p.cot)}</b><small>${esc(p.cliente || '')}</small><small>${esc(etapaActualTexto(p))}</small>${nP ? `<span class="chip-pend">${nP} por rehacer · ${esc(dondePend)}</span>` : ''}</td>
+        <td class="est-ped"><b>${esc(p.cot)}</b><small>${esc(p.cliente || '')}</small><small>${esc(etapaActualTexto(p))}</small>${REING[p.id] ? `<span class="chip-pend" style="color:#7A3E00;background:#FFF1DC" title="${esc('Falta: ' + REING[p.id].falta)}">↺ Reingreso</span>` : ''}${nP ? `<span class="chip-pend">${nP} por rehacer · ${esc(dondePend)}</span>` : ''}</td>
         <td class="est-ent">${F.corta(p.fecha_entrega_cliente)}<i style="color:${pr.color}">${esc(pr.label)}</i></td>
         ${ETAPAS_ESTADO.map(k => { const s = estadoCelda(p, k); return `<td><span class="ce ${s.c}" title="${esc(ETAPAS[k].nombre + ': ' + s.d)}" aria-label="${esc(ETAPAS[k].nombre + ': ' + s.d)}">${s.t}</span></td>`; }).join('')}
       </tr>`; }).join('')}</tbody></table></div>`;
@@ -1534,7 +1538,7 @@ function renderListaProyectos() {
     return `<div class="fila" style="--c:${PRIO[pr].color}" onclick="verProyecto(${p.id})">
       <div class="band"></div>
       <div><div class="t">${esc(p.cot)} · ${esc(p.cliente)}</div><div class="s">${p.prendas} prendas ${p.tipo === 'express' ? '<span class="tag exp">Express</span>' : ''} ${p.requiere_estampado ? '<span class="tag est">Estampado</span>' : ''} ${p.requiere_sublimacion === false ? '<span class="tag est">Sin sublimación</span>' : ''}</div></div>
-      <div><div class="t" style="font-weight:600">${etapaActualTexto(p)}</div><div class="s">${b ? '<span class="tag bloq">Bloqueado</span>' : ''} ${nPendientes(p.cot) ? `<span class="tag" style="background:#A8121E;color:#fff">${nPendientes(p.cot)} por rehacer</span>` : ''} ${r === 'CRITICO' ? '<b style="color:#C8102E">Riesgo crítico</b>' : r === 'SIN_MARGEN' ? '<b style="color:#7A5B00">Sin margen</b>' : ''}</div></div>
+      <div><div class="t" style="font-weight:600">${etapaActualTexto(p)}</div><div class="s">${b ? '<span class="tag bloq">Bloqueado</span>' : ''} ${REING[p.id] ? `<span class="tag" style="background:#FFF1DC;color:#7A3E00" title="${esc('Falta: ' + REING[p.id].falta)}">↺ Reingreso</span>` : ''} ${nPendientes(p.cot) ? `<span class="tag" style="background:#A8121E;color:#fff">${nPendientes(p.cot)} por rehacer</span>` : ''} ${r === 'CRITICO' ? '<b style="color:#C8102E">Riesgo crítico</b>' : r === 'SIN_MARGEN' ? '<b style="color:#7A5B00">Sin margen</b>' : ''}</div></div>
       <div>${pill(pr)}</div>
       <div><div class="s">Entrega cliente</div><div class="t">${F.corta(p.fecha_entrega_cliente)}</div></div>
     </div>`;
@@ -2000,7 +2004,7 @@ async function renderTerminados() {
     </table></div>`;
   devolverFoco('q-ar', foco);
 }
-// Ficha de un proyecto terminado: solo para ver (sin acciones)
+// Ficha de un proyecto terminado: para ver; el encargado de ingreso y el Administrador pueden reabrirlo (devolver a una etapa)
 async function verTerminado(pid) {
   const p = (TERM || []).find(x => x.id === pid); if (!p) return;
   const fecha = x => x ? F.corta(String(x).slice(0, 10)) : '—';
@@ -2018,6 +2022,7 @@ async function verTerminado(pid) {
     <table class="mini"><tr><th>Ingreso a producción</th><th>Entrega comprometida</th><th>Terminado</th></tr>
       <tr><td>${fecha(p.fecha_ingreso_ficha)}</td><td>${fecha(p.fecha_entrega_cliente)}</td><td><b>${fecha(p.fin)}</b></td></tr></table>
     ${resumenDesglose(p.desglose) ? `<p class="desg" style="margin-top:10px"><b>Desglose:</b> ${esc(resumenDesglose(p.desglose))}</p>` : ''}
+    ${puedeEditarProyecto() ? `<div class="acciones" style="justify-content:flex-start;margin-top:10px"><button class="btn pri" onclick="abrirReingreso(${pid})" title="Vuelve a producción para completar lo que falta">Reabrir: devolver a una etapa</button></div>` : ''}
     ${p.resumido_at ? '<div class="aviso" style="margin-top:10px">El detalle de este proyecto (etapas, ficha e historial) se borró a los 90 días de su ingreso a producción. Queda este resumen hasta 6 meses después de terminado.</div>'
       : `${pdf ? `<div class="acciones" style="justify-content:flex-start;margin-top:10px"><a class="btn" style="text-decoration:none" href="${pdf}" target="_blank" rel="noopener">Ver ficha (PDF)</a></div>` : ''}
       <div class="tl">${ks.map(k => { const e = et[k]; return `<div class="paso ${e.estado === 'terminado' ? 'hecho' : ''}"><div class="ic">${e.estado === 'terminado' ? '✓' : ETAPAS[k].orden}</div><div><div class="nom">${ETAPAS[k].nombre}</div>
@@ -2155,6 +2160,7 @@ function tarjetaTarea(p, k, n) {
       <div class="limite">${k === 'ENTREGA' ? 'Entrega ' : ''}${textoLimite(e.fecha_limite)}</div>
       <div class="meta"><span>Límite <b>${F.corta(e.fecha_limite)}</b></span><span>Entrega cliente <b>${F.corta(p.fecha_entrega_cliente)}</b></span><span>Prendas <b>${p.prendas}</b></span><span>Estado <b>${estadoTxt}</b></span></div>
       ${bloq && e.observaciones ? `<div class="motivo">Motivo: ${esc(e.observaciones)}</div>` : ''}
+      ${avisoReingreso(p)}
       ${esTaller() ? `<div class="desg"><b>Tu parte:</b> ${esc(miParte(p.cot).map(a => `${a.tipo_prenda} ${a.cantidad}`).join(' · '))}${miMonto(p.cot) ? ` · ${money(miMonto(p.cot))}` : ''}</div>`
         : resumenDesglose(p.desglose) ? `<div class="desg">${esc(resumenDesglose(p.desglose))}</div>` : ''}
       ${moldesCorto(p.moldes).map(t => `<div class="desg" style="color:var(--suave)">${esc(t)}</div>`).join('')}
@@ -2457,6 +2463,7 @@ async function verProyecto(pid) {
       <tr><td>${F.corta(p.fecha_ingreso_ficha)}</td><td>${F.corta(T)}</td><td><b>${F.corta(p.fecha_entrega_cliente)}</b></td>
       <td>${r === 'CRITICO' ? '<b style="color:#C8102E">Riesgo crítico de incumplimiento</b>' : r === 'SIN_MARGEN' ? '<b style="color:#7A5B00">Sin margen (usa colchón)</b>' : '<b style="color:#1B6B3E">Dentro del plazo</b>'}</td></tr></table>
     ${resumenDesglose(p.desglose) ? `<p class="desg" style="margin-top:10px"><b>Desglose:</b> ${esc(resumenDesglose(p.desglose))}</p>` : ''}
+    ${REING[p.id] ? `<div class="aviso warn" style="margin-top:10px">↺ <b>Reingreso</b> (${F.corta(REING[p.id].fecha.slice(0, 10))}, vuelve a ${esc((ETAPAS[REING[p.id].etapa] || {}).nombre || '')}): falta ${esc(REING[p.id].falta)}</div>` : ''}
     ${nPendientes(p.cot) ? `<div class="aviso crit" style="margin-top:10px"><b>${nPendientes(p.cot)} pendiente(s) por rehacer:</b> ${esc(pendientesDe(p.cot).map(x => `${ETAPAS[x.etapa].nombre} · ${detallePend(x)}${x.tipo_pendiente ? ' (' + x.tipo_pendiente + ')' : ''}${x.ejecutante ? ' (' + x.ejecutante + ')' : ''}`).join(' · '))}</div>` : ''}
     ${(p.moldes && p.moldes.length) ? `<h3 style="font-size:20px;margin:14px 0 0">Moldes y tallas</h3>${tablaMoldes(p.moldes)}` : ''}
     ${p.ficha ? `<p class="desg" style="margin-top:6px"><b>Ficha de tallas:</b> ${p.ficha.estado === 'confirmado' ? 'confirmada' : 'abierta'}${p.ficha.montaje_aprobado_por ? ' · diseño aprobado por ' + esc(p.ficha.montaje_aprobado_por) : ''}${p.ficha.entrega_cliente ? ' · las fechas se definen en Fichas' : ''}</p>` : ''}
@@ -2471,6 +2478,7 @@ async function verProyecto(pid) {
       ${p.ficha && p.ficha.entrega_cliente ? '' : `<button class="btn" onclick="abrirCambioFecha(${p.id})">Cambiar fecha de entrega</button>`}
       <button class="btn" onclick="cambiarTipo(${p.id})">Cambiar a ${p.tipo === 'express' ? 'Normal' : 'Express'}</button>
       <button class="btn" onclick="recalcular(${p.id})">Recalcular fechas</button>
+      <button class="btn" onclick="abrirReingreso(${p.id})" title="Volver a una etapa anterior para completar lo que falta">Devolver a una etapa</button>
       <button class="btn" onclick="abrirDevolver(${p.id})" title="Error de diseño u otro problema: sacarlo de producción y volverlo a Diseño o a Ingreso">Devolver a Diseño o Ingreso</button>
       ${tienePerfil('admin') ? `<button class="btn" onclick="eliminarProyecto(${p.id})" style="color:#A8121E;border-color:#EFA6AF">Eliminar pedido</button>` : ''}</div>` : ''}
     <div id="inv-pedido"></div>
@@ -3421,6 +3429,169 @@ function exportarEntregas() {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = `Entregas_PMK_${hoy}.csv`; a.click(); URL.revokeObjectURL(a.href);
   toast(`✓ ${data.length} pedidos exportados`);
+}
+
+/* ---------- Devolver a una etapa (reingreso) ----------
+   Un pedido en curso o ya terminado vuelve a una etapa anterior para completar lo que falta (una parte que no salió,
+   prendas que vuelven del cliente, un error que se detecta más adelante). La etapa elegida y las que dependen de ella
+   quedan pendientes; las demás quedan como estaban (las terminadas, con sus fechas). Se pide qué falta: se ve como
+   «Reingreso: falta …» en el pedido y en cada área hasta que se vuelve a terminar. Si estaba terminado, su primera
+   fecha de término queda en el historial y Gerencia mide el cumplimiento con ella.
+   Para sacarlo de producción y volverlo a Diseño o a Ingreso está «Devolver a Diseño o Ingreso». */
+let REING = {};   // planificacion_id → último reingreso { etapa, falta, fecha }
+let RE = null;    // modal abierto: { p, sel: etapas elegidas, term: estaba terminado }
+const descendientesDe = (k, c) => new Set(etapasDe(c).filter(x => x !== k && ancestrosDe(x, c).has(k)));
+const fechaDMA = s => s ? s.slice(8, 10) + '-' + s.slice(5, 7) + '-' + s.slice(0, 4) : '';
+const avisoReingreso = p => REING[p.id] ? `<div class="motivo" style="color:#7A3E00">↺ Reingreso: falta ${esc(REING[p.id].falta)}</div>` : '';
+// el pedido con sus etapas, leído de la base (los terminados no están en PROY)
+async function leerPedido(pid) {
+  const [row] = await api(`planificacion?select=*&id=eq.${pid}`) || [];
+  if (!row) return null;
+  const p = { ...row, et: {} };
+  (await api(`planificacion_etapas?select=*&planificacion_id=eq.${pid}`) || []).forEach(e => { p.et[e.etapa] = e; });
+  return p;
+}
+async function abrirReingreso(pid) {
+  if (!puedeEditarProyecto()) return toast('Solo el encargado de ingreso o el Administrador pueden devolver un pedido a una etapa', 'err');
+  abrirModal('<p class="hint">Cargando…</p>', pid);
+  let p;
+  try { p = await leerPedido(pid); } catch (e) { return abrirModal(`<div class="aviso crit">No se pudo leer el pedido: ${esc(e.message)}</div>`, pid); }
+  if ($('modal').dataset.pid != pid) return;
+  if (!p) return abrirModal('<div class="aviso warn">Este pedido ya no está en Planificación.</div>', pid);
+  const term = p.estado_general === 'entregado', c = ctxDe(p), ks = etapasDe(c);
+  RE = { p, sel: new Set(), term };
+  const fin = term ? String((p.et.ENTREGA && p.et.ENTREGA.fecha_termino_real) || p.terminado_at || '').slice(0, 10) : '';
+  const vencida = p.fecha_entrega_cliente < F.hoy();
+  const estTxt = k => { const e = p.et[k]; return !e ? (term ? 'terminada' : 'pendiente') : e.estado === 'terminado' ? 'terminada' : e.estado === 'en_proceso' ? 'en proceso' : e.estado === 'bloqueado' ? 'bloqueada' : 'pendiente'; };
+  abrirModal(`<h3 style="padding-right:80px">Devolver a una etapa · ${esc(p.cot)} · ${esc(p.cliente || '')}</h3>
+    <p class="hint">Hoy: <b>${term ? 'Terminado' + (fin ? ' el ' + F.corta(fin) : '') : esc(etapaActualTexto(p))}</b>. La etapa elegida y las que dependen de ella se vuelven a hacer; las demás quedan como están, las terminadas con sus fechas.</p>
+    ${p.resumido_at ? '<div class="aviso warn">El detalle de este pedido se borró a los 90 días: sus etapas se vuelven a crear (las que no se rehacen quedan terminadas, sin fecha). Su ficha ya no está en Fichas.</div>' : ''}
+    <label for="re-dest">¿A qué etapa vuelve?</label>
+    <select id="re-dest" onchange="elegirDestinoReingreso(this.value)"><option value="">Elige la etapa…</option>
+      ${ks.map(k => `<option value="${k}">${esc(ETAPAS[k].nombre)} (hoy ${estTxt(k)})</option>`).join('')}
+      <option value="TODO">Desde el inicio: todas las etapas</option></select>
+    <label style="margin-top:10px">Se vuelven a hacer</label>
+    <div id="re-etapas"></div>
+    <p class="hint" id="re-res" style="margin-top:4px"></p>
+    <label for="re-falta">¿Qué falta?</label>
+    <input id="re-falta" maxlength="300" placeholder="Ej.: 8 camisetas talla M y 2 shorts">
+    <label for="re-fecha">Entrega al cliente</label>
+    <input id="re-fecha" type="date" value="${vencida ? '' : esc(p.fecha_entrega_cliente)}" min="${F.hoy()}" oninput="$('re-fecha-av').textContent=avisoEntrega(this.value)">
+    <div class="hint" id="re-fecha-av" style="color:#9E0C24;font-weight:600"></div>
+    <p class="hint" style="margin-top:2px">${vencida ? `La entrega comprometida (${F.corta(p.fecha_entrega_cliente)}) ya pasó: pon la nueva fecha. ` : ''}Si el pedido tiene ficha, la fecha se cambia también allá.${term ? ' En Gerencia, el cumplimiento de este pedido se sigue midiendo con su primera fecha de término.' : ''}</p>
+    <div id="re-err"></div>
+    <div class="acciones"><button class="btn" onclick="${term ? 'verTerminado(' + pid + ')' : 'verProyecto(' + pid + ')'}">Volver</button><button class="btn pri" id="re-ok" onclick="guardarReingreso()">Devolver a la etapa</button></div>
+    ${!term && !esParteDeArea(p) ? `<p class="hint" style="margin-top:10px">¿Tiene que salir de producción para corregir el diseño o volver a ingresarlo? Usa <a href="#" onclick="abrirDevolver(${pid});return false">Devolver a Diseño o Ingreso</a>.</p>` : ''}`, pid);
+  pintarReingreso();
+}
+// lo que se rehace: las etapas elegidas y todas las que dependen de ellas
+function cierreReingreso() {
+  const c = ctxDe(RE.p), out = new Set();
+  RE.sel.forEach(k => { out.add(k); descendientesDe(k, c).forEach(x => out.add(x)); });
+  return out;
+}
+function pintarReingreso() {
+  if (!RE || !$('re-etapas')) return;
+  const p = RE.p, c = ctxDe(p), ks = etapasDe(c), todo = cierreReingreso();
+  $('re-etapas').innerHTML = ks.map(k => {
+    const forz = todo.has(k) && !RE.sel.has(k);
+    const por = forz ? [...RE.sel].filter(s => descendientesDe(s, c).has(k)).map(s => ETAPAS[s].nombre).join(' y ') : '';
+    return `<label style="display:flex;gap:8px;align-items:center;margin:2px 0;font-weight:400"><input type="checkbox" style="width:auto" data-k="${k}" ${todo.has(k) ? 'checked' : ''} ${forz ? 'disabled' : ''}
+      onchange="marcarReingreso('${k}',this.checked)"><span>${esc(ETAPAS[k].nombre)}${forz ? ` <span class="hint">· viene después de ${esc(por)}</span>` : ''}</span></label>`;
+  }).join('');
+  const quedan = ks.filter(k => !todo.has(k) && p.et[k] && p.et[k].estado === 'terminado').map(k => ETAPAS[k].nombre);
+  $('re-res').textContent = !todo.size ? 'Elige la etapa; también puedes marcar otras (por ejemplo, Corte, que va en paralelo).'
+    : quedan.length ? 'Quedan terminadas: ' + quedan.join(', ') + '.' : '';
+}
+function marcarReingreso(k, on) { if (on) RE.sel.add(k); else RE.sel.delete(k); $('re-dest').value = ''; pintarReingreso(); }
+function elegirDestinoReingreso(v) { RE.sel = new Set(v === 'TODO' ? etapasDe(ctxDe(RE.p)) : v ? [v] : []); pintarReingreso(); }
+async function guardarReingreso() {
+  if (!RE) return;
+  const p = RE.p, ks = etapasDe(ctxDe(p)), reabrir = cierreReingreso();
+  const err = m => { $('re-err').innerHTML = `<div class="aviso crit">${esc(m)}</div>`; };
+  const falta = $('re-falta').value.trim(), nueva = $('re-fecha').value;
+  if (!reabrir.size) return err('Elige a qué etapa vuelve.');
+  if (!RE.term && ![...reabrir].some(k => p.et[k] && p.et[k].estado !== 'pendiente')) return err('Esas etapas todavía no empiezan: no hay nada que devolver.');
+  if (!falta) return err('Escribe qué falta: se verá en el pedido y en cada área.');
+  if (!nueva) return err('Pon la fecha de entrega al cliente.');
+  if (nueva < F.hoy()) return err('Esa fecha de entrega ya pasó: elige la nueva.');
+  if (avisoEntrega(nueva)) return err(avisoEntrega(nueva));
+  const dest = ks.find(k => reabrir.has(k)), lista = ks.filter(k => reabrir.has(k)).map(k => ETAPAS[k].nombre).join(', ');
+  if (!confirm(`${p.cot} vuelve a ${ETAPAS[dest].nombre}.\n\nSe vuelven a hacer: ${lista}.\nFalta: ${falta}\n\n¿Continuar?`)) return;
+  const btn = $('re-ok'); btn.disabled = true; btn.textContent = 'Guardando…';
+  let aviso = '';
+  try { aviso = await devolverAEtapa(p, reabrir, falta, nueva); }
+  catch (e) { btn.disabled = false; btn.textContent = 'Devolver a la etapa'; return err('No se pudo devolver: ' + e.message); }
+  RE = null; TERM = null; ENTREGADOS = null;
+  await recargar();
+  if (PROY.some(x => x.id === p.id)) verProyecto(p.id); else cerrarModal();
+  if (aviso) alert(aviso);
+  toast(`${p.cot} volvió a ${ETAPAS[dest].nombre}`);
+}
+// Deja pendientes las etapas de «reabrir» (con la fecha de entrega nueva) y el pedido vuelve a producción
+async function devolverAEtapa(p, reabrir, falta, nueva) {
+  const term = p.estado_general === 'entregado', ahora = new Date().toISOString();
+  const c = ctxDe(p), ks = etapasDe(c), dest = ks.find(k => reabrir.has(k));
+  const fin = term ? String((p.et.ENTREGA && p.et.ENTREGA.fecha_termino_real) || p.terminado_at || '').slice(0, 10) : '';
+  // texto fijo: Gerencia lee de aquí la primera fecha de término y la entrega comprometida de entonces
+  const antes = term ? `Terminado${fin ? ' el ' + fechaDMA(fin) : ''} · entrega comprometida ${fechaDMA(p.fecha_entrega_cliente)}` : etapaActualTexto(p);
+  let aviso = '';
+  // 1 · fecha de entrega (también en la ficha, que es la que manda: si no, la sincronización la devolvería)
+  if (nueva !== p.fecha_entrega_cliente) {
+    const antesF = p.fecha_entrega_cliente, T = restarHabiles(nueva, CONFIG.margenHabiles);
+    await api(`planificacion?id=eq.${p.id}`, { method: 'PATCH', body: JSON.stringify({ fecha_entrega_cliente: nueva, fecha_termino_interno: T, updated_at: ahora }) });
+    p.fecha_entrega_cliente = nueva; p.fecha_termino_interno = T;
+    let enFicha = '';
+    try {
+      const fs = (await apiF(`fichas_tallas?select=ref,entrega_cliente,entrega_interna&ref=${inLista([p.cot, p.cot.replace(/^COT-/, '')])}`) || []).filter(f => normCot(f.ref) === p.cot);
+      for (const f of fs) {
+        if (f.entrega_cliente === nueva) continue;
+        const cambio = { entrega_cliente: nueva }; if (f.entrega_interna && (f.entrega_interna > nueva || f.entrega_interna < F.hoy())) cambio.entrega_interna = null;
+        await apiFPatch('fichas_tallas?ref=eq.' + encodeURIComponent(f.ref), cambio);
+        enFicha = ': también se actualizó en la ficha';
+      }
+    } catch (e) { aviso = `${p.cot} volvió a producción, pero no se pudo cambiar la fecha en la ficha (${e.message}).\n\nCámbiala también en el panel de Fichas para que no vuelva a la anterior.`; }
+    await log(p.id, p.cot, null, 'cambio_fecha_entrega', F.corta(antesF), F.corta(nueva), 'Al devolverlo a ' + ETAPAS[dest].nombre + enFicha);
+  }
+  // 2 · etapas que faltan (detalle borrado a los 90 días o flujo distinto): las que no se rehacen nacen terminadas
+  const faltan = ks.filter(k => !p.et[k]);
+  if (faltan.length) {
+    const r = planificar({ ingreso: F.hoy(), entrega: nueva, estampado: c.est, sublimacion: c.sub, interno: p.fecha_termino_interno });
+    const filas = faltan.map(k => {
+      const hecha = !reabrir.has(k) && term;
+      return { planificacion_id: p.id, etapa: k, orden: ETAPAS[k].orden, fecha_inicio_plan: (r.plan[k] || {}).inicio || null,
+        fecha_limite: (r.plan[k] || {}).limite || nueva, dias_asignados: (r.plan[k] || {}).dias || null, estado: hecha ? 'terminado' : 'pendiente',
+        responsable: hecha ? 'Antes del reingreso' : null };
+    });
+    const nuevas = await api('planificacion_etapas', { method: 'POST', headers: { Prefer: 'return=representation' }, body: JSON.stringify(filas) }) || [];
+    nuevas.forEach(e => { p.et[e.etapa] = e; });
+  }
+  // 3 · la etapa elegida y las que dependen de ella vuelven a pendiente
+  for (const k of ks) {
+    const e = p.et[k]; if (!e || !reabrir.has(k) || e.estado === 'pendiente') continue;
+    const cambio = { estado: 'pendiente', fecha_inicio_real: null, fecha_termino_real: null, responsable: null, observaciones: null };
+    await patchEtapa(e, cambio); Object.assign(e, cambio);
+  }
+  // 4 · vuelve a producción (o queda listo para entrega si solo se reabre la entrega)
+  const estado = cadena(c).every(k => p.et[k] && p.et[k].estado === 'terminado') ? 'listo_entrega' : 'en_produccion';
+  if (estado !== p.estado_general) {
+    const cambio = { estado_general: estado, updated_at: new Date().toISOString() };
+    try { await api(`planificacion?id=eq.${p.id}`, { method: 'PATCH', body: JSON.stringify('resumido_at' in p ? { ...cambio, resumido_at: null, terminado_at: null } : cambio) }); }
+    catch (e) { if (!('resumido_at' in p)) throw e; await api(`planificacion?id=eq.${p.id}`, { method: 'PATCH', body: JSON.stringify(cambio) }); }
+    p.estado_general = estado;
+  }
+  await log(p.id, p.cot, dest, 'reingreso', antes, 'Vuelve a ' + ETAPAS[dest].nombre + ' · se rehace: ' + ks.filter(k => reabrir.has(k)).map(k => ETAPAS[k].nombre).join(', '), 'Falta: ' + falta);
+  try { await aplicarReplan(p, replanificar(p, null), 'Devuelto a ' + ETAPAS[dest].nombre); } catch (e) { console.warn('replan reingreso', e); }
+  COTS_PLAN.add(p.cot);
+  return aviso;
+}
+// Gerencia: primera fecha de término y entrega comprometida de entonces, de un pedido reabierto (del historial)
+function primerTermino(logs) {
+  for (const x of logs) {
+    const m = String(x.valor_anterior || '').match(/^Terminado el (\d{2})-(\d{2})-(\d{4}) · entrega comprometida (\d{2})-(\d{2})-(\d{4})/);
+    if (m) return { fin: `${m[3]}-${m[2]}-${m[1]}`, entrega: `${m[6]}-${m[5]}-${m[4]}` };
+  }
+  return null;
 }
 
 /* ---------- Eliminar un pedido (administrador) ---------- */
@@ -5567,12 +5738,21 @@ async function renderGerencia() {
         ets.forEach(e => { if (byId[e.planificacion_id]) byId[e.planificacion_id].et[e.etapa] = e; });
       }
       ENTREGADOS.forEach(p => { if (!p.et.ENTREGA && p.terminado_at) p.et.ENTREGA = { etapa: 'ENTREGA', estado: 'terminado', fecha_termino_real: p.terminado_at }; });   // detalle ya borrado
+      // pedidos reabiertos: el cumplimiento se mide con su primera fecha de término y la entrega comprometida de entonces
+      const reab = {};
+      for (let i = 0; i < ids.length; i += 100) {
+        try { (await api(`planificacion_log?select=planificacion_id,valor_anterior&accion=eq.reingreso&planificacion_id=in.(${ids.slice(i, i + 100).join(',')})&order=created_at.asc`) || [])
+          .forEach(x => (reab[x.planificacion_id] = reab[x.planificacion_id] || []).push(x)); } catch (e) {}
+      }
+      ENTREGADOS.forEach(p => { const x = reab[p.id] && primerTermino(reab[p.id]); if (x) p.primer = x; });
     }
   } catch (e) { ENTREGADOS = []; }
-  const conFecha = ENTREGADOS.filter(p => p.et.ENTREGA && p.et.ENTREGA.fecha_termino_real);
-  const aTiempo = conFecha.filter(p => p.et.ENTREGA.fecha_termino_real.slice(0, 10) <= p.fecha_entrega_cliente);
+  // término y entrega comprometida que cuentan: los de la primera vez que se terminó (si se reabrió), o los actuales
+  const finG = p => p.primer ? p.primer.fin : p.et.ENTREGA.fecha_termino_real.slice(0, 10), compG = p => p.primer ? p.primer.entrega : p.fecha_entrega_cliente;
+  const conFecha = ENTREGADOS.filter(p => p.primer || (p.et.ENTREGA && p.et.ENTREGA.fecha_termino_real));
+  const aTiempo = conFecha.filter(p => finG(p) <= compG(p));
   const tarde = conFecha.filter(p => !aTiempo.includes(p));
-  const atrasoProm = tarde.length ? Math.round(tarde.reduce((s, p) => s + diffHabiles(p.fecha_entrega_cliente, p.et.ENTREGA.fecha_termino_real.slice(0, 10)), 0) / tarde.length) : 0;
+  const atrasoProm = tarde.length ? Math.round(tarde.reduce((s, p) => s + diffHabiles(compG(p), finG(p)), 0) / tarde.length) : 0;
   const cumpl = conFecha.length ? Math.round(aTiempo.length * 100 / conFecha.length) : null;
   const prendasEntregadas = conFecha.reduce((s, p) => s + (p.prendas || 0), 0);
   // cumplimiento por área, sumando pedidos entregados y activos
@@ -5605,8 +5785,8 @@ async function renderGerencia() {
     <h2>Últimas entregas</h2>
     <div class="panel"><table class="mini">
       <tr><th>Pedido</th><th>Cliente</th><th>Prendas</th><th>Comprometida</th><th>Entregada</th><th>Resultado</th></tr>
-      ${conFecha.slice(0, 15).map(p => { const real = p.et.ENTREGA.fecha_termino_real.slice(0, 10); const d = diffHabiles(p.fecha_entrega_cliente, real);
-        return `<tr><td>${esc(p.cot)}</td><td>${esc(p.cliente)}</td><td>${p.prendas}</td><td>${F.corta(p.fecha_entrega_cliente)}</td><td>${F.corta(real)}</td>
+      ${conFecha.slice(0, 15).map(p => { const real = finG(p); const d = diffHabiles(compG(p), real);
+        return `<tr><td>${esc(p.cot)}${p.primer ? ' <span class="hint" title="Se reabrió: cuenta la primera vez que se terminó">↺ reabierto</span>' : ''}</td><td>${esc(p.cliente)}</td><td>${p.prendas}</td><td>${F.corta(compG(p))}</td><td>${F.corta(real)}</td>
         <td style="color:${d > 0 ? '#A8121E' : '#23884F'};font-weight:700">${d > 0 ? d + ' días tarde' : 'A tiempo'}</td></tr>`; }).join('') ||
         '<tr><td colspan="6" class="hint">Aún no hay entregas registradas en este sistema.</td></tr>'}
     </table></div>`;
