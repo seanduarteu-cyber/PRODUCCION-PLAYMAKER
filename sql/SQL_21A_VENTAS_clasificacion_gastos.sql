@@ -18,25 +18,66 @@
 -- Al final clasifica todos los gastos que ya existen (primero las reglas, después la traducción de su categoría)
 -- y muestra la conciliación: total de gastos = total del dato crudo = clasificado + en revisión.
 -- Se puede volver a correr: no duplica nada ni pisa lo que se haya cambiado desde Ventas.
+--
+-- LO ÚNICO QUE TOCA DE LO QUE YA EXISTE EN VENTAS:
+--   gastos       se LEE y se le agrega un disparador (gastos_registrar): al guardar, editar o eliminar un gasto,
+--                copia la fila al dato crudo y la clasifica. No cambia ni borra ningún gasto, y si el disparador
+--                fallara, el gasto se guarda igual.
+--   proveedores  se le agregan 3 columnas vacías (tipo_documento, cuenta_codigo, es_socio). No cambia ningún dato.
+-- No toca pedidos, abonos, cobranza, facturación, comisiones, usuarios ni las funciones de ingreso (ventas_login…).
+-- Todo lo demás es nuevo: plan_cuentas, gestion_parametros y lo que empieza con gasto_ o v_gastos_.
+-- Va en una sola transacción: si algo falla, no queda ningún cambio. Antes de empezar revisa que no exista nada con
+-- esos nombres que no sea de este SQL; si lo hay, se detiene sin cambiar nada.
+
+begin;
+
+-- ── Control previo: base correcta y sin nada ajeno con los mismos nombres ──────────────────────────────
+do $$
+declare t record; f text;
+begin
+  if to_regclass('public.gastos') is null or to_regclass('public.proveedores') is null then
+    raise exception 'Esta base no tiene las tablas gastos y proveedores: el SQL 21A es para la base de VENTAS (nnisdusdujcpkrbjqnhe). No se cambió nada.';
+  end if;
+  for t in select * from (values ('plan_cuentas', 'devengo_servicio'), ('gasto_cuenta_alias', 'revisar'), ('gasto_reglas', 'accion'),
+                                 ('gestion_parametros', 'valor'), ('gasto_raw', 'operacion'), ('gasto_clasif', 'sugerencia_codigo'),
+                                 ('gasto_auditoria', 'antes'), ('v_gastos_conciliacion', 'total_crudo')) v (tabla, columna) loop
+    if to_regclass('public.' || t.tabla) is not null and not exists (
+         select 1 from information_schema.columns c where c.table_schema = 'public' and c.table_name = t.tabla and c.column_name = t.columna) then
+      raise exception 'Ya existe «%» en esta base y no es del SQL 21A. No se cambió nada: avisar antes de seguir.', t.tabla;
+    end if;
+  end loop;
+  select string_agg(p.proname, ', ') into f
+    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+   where n.nspname = 'public' and p.prosrc not like '%SQL21A%'
+     and p.proname in ('gasto_norm', 'gasto_palabra', 'gasto_prov_calza', 'gasto_fecha', 'gasto_num', 'gasto_clasificar_auto', 'gasto_raw_agregar',
+                       'gasto_registrar', 'gasto_inmutable', 'gasto_auditar', 'gasto_reclasificar');
+  if f is not null then
+    raise exception 'Ya existen funciones con el mismo nombre que no son del SQL 21A (%). No se cambió nada: avisar antes de seguir.', f;
+  end if;
+  if exists (select 1 from pg_trigger tg where tg.tgrelid = 'public.gastos'::regclass and tg.tgname = 'gastos_registrar'
+               and tg.tgfoid is distinct from to_regprocedure('public.gasto_registrar()')::oid) then
+    raise exception 'La tabla gastos ya tiene un disparador «gastos_registrar» que no es del SQL 21A. No se cambió nada: avisar antes de seguir.';
+  end if;
+end $$;
 
 -- ── 0. Funciones de apoyo ──────────────────────────────────────────────────────────────────────────────
 -- Texto para comparar: mayúsculas, sin tildes, un solo espacio
-create or replace function public.pmk_norm(t text) returns text language sql immutable as $$
+create or replace function public.gasto_norm(t text) returns text language sql immutable as $$ -- SQL21A
   select btrim(regexp_replace(upper(translate(coalesce(t, ''), 'ÁÉÍÓÚÜÑÀÈÌÒÙáéíóúüñàèìòù', 'AEIOUUNAEIOUaeiouunaeiou')), '\s+', ' ', 'g'))
 $$;
 -- La descripción contiene la palabra o frase completa (no «estampadora» cuando se busca «estampado»)
-create or replace function public.pmk_palabra(texto text, palabra text) returns boolean language sql immutable as $$
-  select coalesce(nullif(public.pmk_norm(palabra), ''), null) is not null
-     and public.pmk_norm(texto) ~ ('\m' || regexp_replace(public.pmk_norm(palabra), '([.^$*+?()\[\]{}|\\])', '\\\1', 'g') || '\M')
+create or replace function public.gasto_palabra(texto text, palabra text) returns boolean language sql immutable as $$ -- SQL21A
+  select coalesce(nullif(public.gasto_norm(palabra), ''), null) is not null
+     and public.gasto_norm(texto) ~ ('\m' || regexp_replace(public.gasto_norm(palabra), '([.^$*+?()\[\]{}|\\])', '\\\1', 'g') || '\M')
 $$;
 -- El proveedor empieza con el nombre de la regla («SEAN DUARTE (» calza con «SEAN DUARTE»)
-create or replace function public.pmk_prov(proveedor text, patron text) returns boolean language sql immutable as $$
-  select public.pmk_norm(patron) <> '' and left(public.pmk_norm(proveedor), length(public.pmk_norm(patron))) = public.pmk_norm(patron)
+create or replace function public.gasto_prov_calza(proveedor text, patron text) returns boolean language sql immutable as $$ -- SQL21A
+  select public.gasto_norm(patron) <> '' and left(public.gasto_norm(proveedor), length(public.gasto_norm(patron))) = public.gasto_norm(patron)
 $$;
 -- Conversiones que nunca fallan (un dato raro no puede impedir guardar un gasto)
-create or replace function public.pmk_fecha(t text) returns date language plpgsql immutable as $$
+create or replace function public.gasto_fecha(t text) returns date language plpgsql immutable as $$ -- SQL21A
 begin return nullif(btrim(t), '')::date; exception when others then return null; end $$;
-create or replace function public.pmk_num(t text) returns numeric language plpgsql immutable as $$
+create or replace function public.gasto_num(t text) returns numeric language plpgsql immutable as $$ -- SQL21A
 begin return nullif(btrim(t), '')::numeric; exception when others then return null; end $$;
 
 -- ── 1. Tablas ──────────────────────────────────────────────────────────────────────────────────────────
@@ -246,7 +287,7 @@ on conflict (categoria) do nothing;
 -- el nombre de cada cuenta también se traduce a sí mismo (los gastos nuevos guardan el nombre de la cuenta)
 insert into public.gasto_cuenta_alias (categoria, cuenta_codigo, revisar)
 select pc.nombre, pc.codigo, false from public.plan_cuentas pc
-where not exists (select 1 from public.gasto_cuenta_alias a where public.pmk_norm(a.categoria) = public.pmk_norm(pc.nombre));
+where not exists (select 1 from public.gasto_cuenta_alias a where public.gasto_norm(a.categoria) = public.gasto_norm(pc.nombre));
 
 -- ── 4. Reglas iniciales (sección 8 del documento y respuestas D2 y S3) · solo la primera vez ─────────────
 insert into public.gasto_reglas (tipo, proveedor, palabra, accion, cuenta_codigo, prioridad, motivo, creada_por)
@@ -278,21 +319,21 @@ on conflict (clave) do nothing;
 -- ── 6. Clasificación automática: reglas → traducción de la categoría → revisión ─────────────────────────
 create or replace function public.gasto_clasificar_auto(j jsonb)
 returns table (cuenta text, origen text, regla bigint, estado text, motivo text, sugerencia text)
-language plpgsql stable set search_path = public as $$
+language plpgsql stable set search_path = public as $$ -- SQL21A
 declare
-  d text := pmk_norm(j ->> 'descripcion');
-  p text := pmk_norm(j ->> 'proveedor');
-  c text := pmk_norm(j ->> 'categoria');
-  m numeric := pmk_num(j ->> 'monto');
+  d text := gasto_norm(j ->> 'descripcion');
+  p text := gasto_norm(j ->> 'proveedor');
+  c text := gasto_norm(j ->> 'categoria');
+  m numeric := gasto_num(j ->> 'monto');
   r record; a record; umbral numeric;
 begin
   select g.* into r from gasto_reglas g
    where g.activa and (
-     (g.tipo = 'palabra' and pmk_palabra(d, g.palabra)) or
-     (g.tipo = 'proveedor' and pmk_prov(p, g.proveedor)) or
-     (g.tipo = 'proveedor_palabra' and pmk_prov(p, g.proveedor) and pmk_palabra(d, g.palabra)))
+     (g.tipo = 'palabra' and gasto_palabra(d, g.palabra)) or
+     (g.tipo = 'proveedor' and gasto_prov_calza(p, g.proveedor)) or
+     (g.tipo = 'proveedor_palabra' and gasto_prov_calza(p, g.proveedor) and gasto_palabra(d, g.palabra)))
    order by g.prioridad, g.id limit 1;
-  select al.cuenta_codigo, al.revisar, al.nota into a from gasto_cuenta_alias al where pmk_norm(al.categoria) = c limit 1;
+  select al.cuenta_codigo, al.revisar, al.nota into a from gasto_cuenta_alias al where gasto_norm(al.categoria) = c limit 1;
   if r.id is not null and r.accion = 'clasificar' then
     cuenta := r.cuenta_codigo; origen := 'regla'; regla := r.id; estado := 'clasificado'; motivo := r.motivo; sugerencia := null;
   elsif r.id is not null then
@@ -305,7 +346,7 @@ begin
   end if;
   -- inversión bajo el umbral: puede ser gasto (mantención, oficina) o parte de una obra mayor
   if cuenta is not null and exists (select 1 from plan_cuentas pc where pc.codigo = cuenta and pc.es_activo) then
-    umbral := coalesce((select pmk_num(gp.valor #>> '{}') from gestion_parametros gp where gp.clave = 'umbral_inversion'), 300000);
+    umbral := coalesce((select gasto_num(gp.valor #>> '{}') from gestion_parametros gp where gp.clave = 'umbral_inversion'), 300000);
     if coalesce(m, 0) < umbral then
       sugerencia := cuenta; cuenta := null; estado := 'revision';
       motivo := 'Bajo el umbral de inversión ($' || replace(to_char(umbral, 'FM999,999,999'), ',', '.') || '): ¿es gasto o parte de una obra mayor?';
@@ -316,15 +357,15 @@ end $$;
 
 -- Agrega una versión al dato crudo (nunca modifica las anteriores)
 create or replace function public.gasto_raw_agregar(j jsonb, op text, archivo text, usuario text)
-returns bigint language plpgsql security definer set search_path = public as $$
-declare gid bigint := pmk_num(j ->> 'id')::bigint; v integer; nuevo bigint;
+returns bigint language plpgsql security definer set search_path = public as $$ -- SQL21A
+declare gid bigint := gasto_num(j ->> 'id')::bigint; v integer; nuevo bigint;
 begin
   select coalesce(max(version), 0) + 1 into v from gasto_raw where gasto_id = gid;
   insert into gasto_raw (gasto_id, version, operacion, fecha_pago, descripcion, proveedor, monto_bruto, categoria_original,
                          medio_pago, observaciones, dato, hash, archivo_origen, cargado_por)
-  values (gid, v, op, pmk_fecha(j ->> 'fecha'), j ->> 'descripcion', j ->> 'proveedor', pmk_num(j ->> 'monto'), j ->> 'categoria',
+  values (gid, v, op, gasto_fecha(j ->> 'fecha'), j ->> 'descripcion', j ->> 'proveedor', gasto_num(j ->> 'monto'), j ->> 'categoria',
           j ->> 'metodo_pago', j ->> 'observaciones', j,
-          md5(concat_ws('|', pmk_fecha(j ->> 'fecha'), pmk_num(j ->> 'monto'), pmk_norm(j ->> 'descripcion'), pmk_norm(j ->> 'proveedor'))),
+          md5(concat_ws('|', gasto_fecha(j ->> 'fecha'), gasto_num(j ->> 'monto'), gasto_norm(j ->> 'descripcion'), gasto_norm(j ->> 'proveedor'))),
           archivo, usuario)
   returning id into nuevo;
   return nuevo;
@@ -333,14 +374,14 @@ end $$;
 -- Cada vez que Ventas guarda, edita o elimina un gasto: versión nueva del crudo y clasificación automática si
 -- no tiene una. Si algo falla aquí, el gasto se guarda igual (la conciliación muestra lo que quedó sin crudo).
 create or replace function public.gasto_registrar() returns trigger
-language plpgsql security definer set search_path = public as $$
+language plpgsql security definer set search_path = public as $$ -- SQL21A
 declare j jsonb; gid bigint; rid bigint; op text; x record; ya record;
 begin
   begin
     if tg_op = 'DELETE' then j := to_jsonb(old); op := 'baja';
     else j := to_jsonb(new); op := case when tg_op = 'INSERT' then 'alta' else 'edicion' end; end if;
     if tg_op = 'UPDATE' and to_jsonb(old) = to_jsonb(new) then return null; end if;   -- se guardó igual: nada cambió
-    gid := pmk_num(j ->> 'id')::bigint;
+    gid := gasto_num(j ->> 'id')::bigint;
     rid := gasto_raw_agregar(j, op, null, null);
     if tg_op = 'DELETE' then
       delete from gasto_clasif where gasto_id = gid;
@@ -350,13 +391,13 @@ begin
     select * into x from gasto_clasificar_auto(j);
     if ya.gasto_id is null then
       insert into gasto_clasif (gasto_id, raw_id, cuenta_codigo, periodo_devengo, origen, regla_id, estado, motivo, sugerencia_codigo, actualizado_por)
-      values (gid, rid, x.cuenta, date_trunc('month', pmk_fecha(j ->> 'fecha'))::date, x.origen, x.regla, x.estado, x.motivo, x.sugerencia, 'automático');
+      values (gid, rid, x.cuenta, date_trunc('month', gasto_fecha(j ->> 'fecha'))::date, x.origen, x.regla, x.estado, x.motivo, x.sugerencia, 'automático');
     elsif ya.origen in ('alias', 'regla') then
       -- clasificación automática: se recalcula con el gasto editado
       update gasto_clasif set raw_id = rid, cuenta_codigo = x.cuenta, origen = x.origen, regla_id = x.regla, estado = x.estado,
              motivo = x.motivo, sugerencia_codigo = x.sugerencia, actualizado_por = 'automático', updated_at = now(),
-             periodo_devengo = case when date_trunc('month', pmk_fecha(to_jsonb(old) ->> 'fecha'))::date = periodo_devengo
-                                    then date_trunc('month', pmk_fecha(j ->> 'fecha'))::date else periodo_devengo end
+             periodo_devengo = case when date_trunc('month', gasto_fecha(to_jsonb(old) ->> 'fecha'))::date = periodo_devengo
+                                    then date_trunc('month', gasto_fecha(j ->> 'fecha'))::date else periodo_devengo end
        where gasto_id = gid;
     else
       update gasto_clasif set raw_id = rid where gasto_id = gid;   -- elegida por una persona: se respeta
@@ -372,20 +413,20 @@ create trigger gastos_registrar after insert or update or delete on public.gasto
   for each row execute function public.gasto_registrar();
 
 -- El dato crudo y la auditoría no se modifican ni se borran
-create or replace function public.pmk_inmutable() returns trigger language plpgsql as $$
+create or replace function public.gasto_inmutable() returns trigger language plpgsql as $$ -- SQL21A
 begin raise exception 'El registro de % no se modifica ni se borra: es el dato original.', tg_table_name; end $$;
 drop trigger if exists gasto_raw_inmutable on public.gasto_raw;
-create trigger gasto_raw_inmutable before update or delete on public.gasto_raw for each row execute function public.pmk_inmutable();
+create trigger gasto_raw_inmutable before update or delete on public.gasto_raw for each row execute function public.gasto_inmutable();
 drop trigger if exists gasto_raw_sin_truncate on public.gasto_raw;
-create trigger gasto_raw_sin_truncate before truncate on public.gasto_raw for each statement execute function public.pmk_inmutable();
+create trigger gasto_raw_sin_truncate before truncate on public.gasto_raw for each statement execute function public.gasto_inmutable();
 drop trigger if exists gasto_auditoria_inmutable on public.gasto_auditoria;
-create trigger gasto_auditoria_inmutable before update or delete on public.gasto_auditoria for each row execute function public.pmk_inmutable();
+create trigger gasto_auditoria_inmutable before update or delete on public.gasto_auditoria for each row execute function public.gasto_inmutable();
 drop trigger if exists gasto_auditoria_sin_truncate on public.gasto_auditoria;
-create trigger gasto_auditoria_sin_truncate before truncate on public.gasto_auditoria for each statement execute function public.pmk_inmutable();
+create trigger gasto_auditoria_sin_truncate before truncate on public.gasto_auditoria for each statement execute function public.gasto_inmutable();
 
 -- Auditoría: quién cambió qué, con el antes y el después
 create or replace function public.gasto_auditar() returns trigger
-language plpgsql security definer set search_path = public as $$
+language plpgsql security definer set search_path = public as $$ -- SQL21A
 declare n jsonb := case when tg_op = 'DELETE' then null else to_jsonb(new) end;
         o jsonb := case when tg_op = 'INSERT' then null else to_jsonb(old) end;
 begin
@@ -409,12 +450,12 @@ create trigger gestion_parametros_auditar after insert or update or delete on pu
 -- Vuelve a aplicar reglas y traducciones a los gastos clasificados automáticamente (nunca a los elegidos por
 -- una persona). Ventas lo usa al crear una regla o cambiar una traducción.
 create or replace function public.gasto_reclasificar(p_usuario text default null)
-returns jsonb language plpgsql security definer set search_path = public as $$
+returns jsonb language plpgsql security definer set search_path = public as $$ -- SQL21A
 declare n_rev integer; n_cambio integer;
 begin
   select count(*) into n_rev from gasto_clasif where origen in ('alias', 'regla');
   with s as (
-    select pmk_num(to_jsonb(g) ->> 'id')::bigint as gid, x.*
+    select gasto_num(to_jsonb(g) ->> 'id')::bigint as gid, x.*
       from gastos g cross join lateral gasto_clasificar_auto(to_jsonb(g)) x
   )
   update gasto_clasif c
@@ -430,9 +471,9 @@ end $$;
 
 -- Conciliación: total de gastos = total del dato crudo = clasificado + en revisión (diferencia $0)
 create or replace view public.v_gastos_conciliacion as
-with g as (select pmk_num(to_jsonb(x) ->> 'id')::bigint as id, coalesce(pmk_num(to_jsonb(x) ->> 'monto'), 0) as monto,
-                  pmk_fecha(to_jsonb(x) ->> 'fecha') as fecha from public.gastos x),
-     ini as (select coalesce(pmk_fecha((select valor #>> '{}' from public.gestion_parametros where clave = 'inicio_analisis')), date '2026-04-01') as d),
+with g as (select gasto_num(to_jsonb(x) ->> 'id')::bigint as id, coalesce(gasto_num(to_jsonb(x) ->> 'monto'), 0) as monto,
+                  gasto_fecha(to_jsonb(x) ->> 'fecha') as fecha from public.gastos x),
+     ini as (select coalesce(gasto_fecha((select valor #>> '{}' from public.gestion_parametros where clave = 'inicio_analisis')), date '2026-04-01') as d),
      r as (select distinct on (gasto_id) gasto_id, monto_bruto, operacion from public.gasto_raw order by gasto_id, version desc)
 select
   (select count(*) from g) as gastos,
@@ -449,12 +490,12 @@ select
 -- ── 7. Carga inicial: dato crudo y clasificación de los gastos que ya existen ───────────────────────────
 select public.gasto_raw_agregar(to_jsonb(g), 'carga_inicial', 'gastos de Ventas al ' || to_char(now(), 'DD-MM-YYYY'), 'SQL 21A')
   from public.gastos g
- where not exists (select 1 from public.gasto_raw r where r.gasto_id = public.pmk_num(to_jsonb(g) ->> 'id')::bigint);
+ where not exists (select 1 from public.gasto_raw r where r.gasto_id = public.gasto_num(to_jsonb(g) ->> 'id')::bigint);
 
 insert into public.gasto_clasif (gasto_id, raw_id, cuenta_codigo, periodo_devengo, origen, regla_id, estado, motivo, sugerencia_codigo, actualizado_por)
 select s.gid, (select max(r.id) from public.gasto_raw r where r.gasto_id = s.gid), s.cuenta,
        date_trunc('month', s.fecha)::date, s.origen, s.regla, s.estado, s.motivo, s.sugerencia, 'carga inicial'
-  from (select public.pmk_num(to_jsonb(g) ->> 'id')::bigint as gid, public.pmk_fecha(to_jsonb(g) ->> 'fecha') as fecha, x.*
+  from (select public.gasto_num(to_jsonb(g) ->> 'id')::bigint as gid, public.gasto_fecha(to_jsonb(g) ->> 'fecha') as fecha, x.*
           from public.gastos g cross join lateral public.gasto_clasificar_auto(to_jsonb(g)) x) s
  where not exists (select 1 from public.gasto_clasif c where c.gasto_id = s.gid);
 
@@ -491,6 +532,8 @@ revoke all on function public.gasto_raw_agregar(jsonb, text, text, text) from pu
 grant execute on function public.gasto_reclasificar(text) to anon, authenticated;
 
 notify pgrst, 'reload schema';
+
+commit;
 
 -- Revisión: debe decir «clasificación lista» y diferencia 0
 select 'clasificación lista' as estado, c.gastos, c.total_gastos, c.total_crudo, c.total_clasificado, c.total_en_revision,

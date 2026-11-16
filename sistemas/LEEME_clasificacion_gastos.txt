@@ -53,6 +53,15 @@ PARÁMETROS (gestion_parametros, de las respuestas)
 - Pagos a socios (Remuneración de socios) quedan fuera del resultado; el resultado usará el sueldo de
   gerencia fijo (Fase 2). Las comisiones de Sean y Silvia son solo un costo de referencia (D6): no son gasto.
 
+QUÉ TOCA EL SQL 21A DE LO QUE YA EXISTE EN VENTAS (nada más)
+- gastos: se lee y se le agrega un disparador que copia cada gasto guardado, editado o eliminado al dato
+  original y lo clasifica. No cambia ni borra ningún gasto; si el disparador fallara, el gasto se guarda igual.
+- proveedores: 3 columnas nuevas vacías (tipo_documento, cuenta_codigo, es_socio). No cambia ningún dato.
+- No toca pedidos, abonos, cobranza, facturación, comisiones, usuarios ni las funciones de ingreso.
+- Todo lo demás es nuevo (plan_cuentas, gestion_parametros y lo que empieza con gasto_ o v_gastos_).
+- Una sola transacción: si algo falla no queda ningún cambio. Si encuentra algo con esos nombres que no sea
+  suyo, o si se corre en otra base, se detiene sin cambiar nada.
+
 PARA PUBLICAR
 1. Supabase de Ventas → SQL Editor → pegar SQL_21A_VENTAS_clasificacion_gastos.sql → Run.
    Debe terminar con «clasificación lista» y diferencia 0. Se puede volver a correr.
