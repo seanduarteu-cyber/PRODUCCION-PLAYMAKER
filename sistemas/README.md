@@ -57,6 +57,7 @@ Las pruebas usan Playwright con las bases simuladas: no tocan Supabase ni Netlif
 | `pedido_cliente.test.js` | Sitio del cliente: basta con la talla, lista pegada desde Excel (columnas), cada prenda con su lista, sin arquero, medias por pares. |
 | `pedido_panel.test.js` | Panel y Planificación: medias por diseño con pares por talla y hoja propia, sin arquero ni número obligatorio. |
 | `catalogo.test.js` | Catálogo ordenado en el panel y en Planificación: orden, secciones, 83 y 84, moldes ya elegidos; con y sin el SQL 17A, y sin conexión. |
+| `moldes_despiece.test.js` | Despiece de moldes: botón en el inicio del panel, resumen del despiece en Planificación › Moldes y botón que abre el panel en el molde, lo guarda y vuelve a Planificación. |
 | `cambiar_molde.test.js` | Panel: cambiar el molde de un diseño sin perder personas, montajes ni ficha técnica. |
 | `calces_diseno.test.js` | Un diseño con varios calces, unir diseños, aviso de calce sin molde (Planificación) y copiar la configuración de telas. |
 | `costeo.test.js` | Costeo en Planificación, por molde: kilos de cada molde y tela en el corte, metros de cada molde en el ploteo, costo total y por prenda de cada molde, gasto general desde la clasificación de Ventas (neto, cada mes y 3 meses anteriores), consumo por molde. |

@@ -1861,9 +1861,10 @@ const PMK_ACCESO = (() => {
     st.error = ''; st.cambio = null; st.usuario = u.nombre; st.usuarioId = u.usuario || null; st.rol = u.rol || 'fichas'; st.token = u.token || null; st.central = u.central || null;
     PMK_ACCESO.ajustarBarra(u.central ? u : null, u.central);
     if (guardar !== false) guardarSesion(u);
-    const ref = refDeURL(), nuevo = paramURL('nuevo');
+    const ref = refDeURL(), nuevo = paramURL('nuevo'), molde = paramURL('molde');
     if (nuevo) { st.crearRef = nuevo; st.pant = 'crear'; }        // llega desde Producción para crear la ficha de ese pedido
     else if (ref) { st.ref = ref; st.ficha = null; st.dets = null; st.pant = 'ficha'; }
+    else if (molde) { st.pant = 'moldes'; st.moldesDesde = 'lista'; st.moldeAbrir = molde; st.moldeDesdePlan = !!paramURL('volver'); }   // desde Planificación › Moldes: despiece de ese molde
     else st.pant = 'lista';
     render();
     cargarMoldes();     // catálogo único de moldes, en segundo plano
@@ -1994,6 +1995,7 @@ const PMK_ACCESO = (() => {
     }
     h += '<button class="btn" data-ir="ventas">Abrir ficha desde Ventas</button>' +
       '<button class="btn plano" data-ir="crear">Crear ficha manual</button>' +
+      (st.rol !== 'vendedor' ? '<button class="btn plano" data-ir="moldes">Catálogo de moldes y despiece</button>' : '') +
       (st.rol === 'admin' && st.token ? '<button class="btn plano chico" data-ir="usuarios" style="margin-top:6px">Usuarios del panel</button>' : '') +
       '<button class="btn plano chico" id="btn-salir" style="margin-top:6px">Salir (' + esc(st.usuario || '') + ')</button>';
 
@@ -3125,6 +3127,9 @@ const PMK_ACCESO = (() => {
     return st.moldes;
   }
 
+  // datos de un molde del catálogo para editarlo (despiece incluido)
+  const edicionMolde = m => ({ nuevo: false, numero: m.numero, codigo: m.codigo, descripcion: m.descripcion, deporte: m.deporte || '', calce: m.calce || 'Unisex',
+    infantil: !!m.infantil, prenda: m.prenda, activo: m.activo !== false, piezas: JSON.parse(JSON.stringify(piezasDe(m))) });
   // próximo N° libre: normales 01–99 (siguen el catálogo) o especiales E01–E99 (guardados como 101–199)
   const sigMolde = especial => (st.moldes || []).filter(m => especial ? m.numero > 100 && m.numero < 200 : m.numero < 100)
     .reduce((n, m) => Math.max(n, m.numero), especial ? 100 : 0) + 1;
@@ -3132,14 +3137,19 @@ const PMK_ACCESO = (() => {
   async function pantMoldes() {
     if (!Array.isArray(st.cat)) { try { st.cat = await API.catalogo() || []; } catch (e) { st.cat = []; } }
     if (!st.moldes) {
-      app.innerHTML = barra('Catálogo de moldes', 'catalogo') + '<div class="pmk-wrap"><div class="cargando">Cargando moldes…</div></div>';
+      app.innerHTML = barra('Catálogo de moldes', st.ficha && st.moldesDesde !== 'lista' ? 'catalogo' : 'lista') + '<div class="pmk-wrap"><div class="cargando">Cargando moldes…</div></div>';
       await cargarMoldes();
       if (!st.moldes) {
-        app.innerHTML = barra('Catálogo de moldes', 'catalogo') + '<div class="pmk-wrap"><div class="aviso error">' +
+        app.innerHTML = barra('Catálogo de moldes', st.ficha && st.moldesDesde !== 'lista' ? 'catalogo' : 'lista') + '<div class="pmk-wrap"><div class="aviso error">' +
           (st.moldesError === 'falta-tabla' ? 'Falta crear la tabla de moldes en Supabase (archivo 2A_fichas_moldes.sql).' : 'No se pudo conectar. Revisa tu internet.') +
           '</div>' + pie + '</div>';
         return;
       }
+    }
+    // llegó con ?molde=N: se abre el despiece de ese molde (una vez)
+    if (st.moldeAbrir) {
+      const m = st.moldes.find(x => String(x.numero) === String(st.moldeAbrir)); st.moldeAbrir = null;
+      if (m) st.moldeEdit = edicionMolde(m);
     }
     const telas = telasPlanas(st.cat);
     const filtro = st.moldeFiltro || '';
@@ -3151,10 +3161,15 @@ const PMK_ACCESO = (() => {
     const seccionFila = m => hayOrden && ordenFila(m) >= 9000 ? 'Fuera del catálogo ordenado' : (deporteFila(m) || 'Sin deporte');
     const ed = st.moldeEdit;
 
-    let h = barra('Catálogo de moldes', 'catalogo') + '<div class="pmk-wrap">' +
+    // se vuelve a donde se estaba: las fichas (inicio o Planificación), la ficha técnica o el catálogo técnico
+    const volverA = !st.ficha || st.moldesDesde === 'lista' ? 'lista' : st.moldesDesde === 'tecnica' ? 'tecnica' : 'catalogo';
+    const txtVolver = { lista: 'Volver a las fichas', tecnica: 'Volver a la ficha técnica', catalogo: 'Volver al catálogo' }[volverA];
+    const aPlan = st.moldeDesdePlan ? '<a class="btn plano" style="display:block;box-sizing:border-box;text-align:center;text-decoration:none" href="' + esc(urlPlan()) + '">Volver a Planificación</a>' : '';
+    let h = barra('Catálogo de moldes', volverA) + '<div class="pmk-wrap">' +
       '<h1 class="tit">Catálogo de<br>moldes</h1>' +
       '<p class="bajada">El catálogo oficial de moldes vigentes. Es el mismo para el Panel y la Planificación: en las fichas solo se eligen moldes de esta lista ' +
-      '(o se ingresan a mano y quedan marcados). Aquí se define también el despiece de cada molde.</p>';
+      '(o se ingresan a mano y quedan marcados). Aquí se define también el despiece de cada molde.</p>' +
+      (st.moldeOk ? '<div class="aviso ok">' + esc(st.moldeOk) + '</div>' + (aPlan && !ed ? aPlan : '') : '');
 
     if (ed) {
       h += '<div class="campo molde-ed"><label>' + (ed.nuevo ? 'Nuevo molde N° ' + etqMolde(ed.numero) : 'Molde N° ' + etqMolde(ed.numero)) + '</label>' +
@@ -3216,7 +3231,7 @@ const PMK_ACCESO = (() => {
         (pz.length ? '<div class="mini">' + (pz.some(p => p.consumo) ? 'Consumo por prenda: ' + String(Math.round(pz.reduce((s2, p) => s2 + (+p.consumo || 0), 0) * 100) / 100).replace('.', ',') + ' m' + (pz.some(p => !p.consumo) ? ' (faltan piezas sin consumo)' : '') : 'Sin consumo de tela definido') + '</div>' : '') + '</div></div>';
     }).join('') : '<div class="mini">No hay moldes con este filtro.</div>';
     h += '</div>';
-    app.innerHTML = h + '<button class="btn plano" data-ir="catalogo">Volver al catálogo</button>' + pie + '</div>';
+    app.innerHTML = h + aPlan + '<button class="btn plano" data-ir="' + volverA + '">' + txtVolver + '</button>' + pie + '</div>';
 
     const fil = document.getElementById('me-filtro');
     fil.addEventListener('change', () => { st.moldeFiltro = fil.value; render(); });
@@ -3225,7 +3240,7 @@ const PMK_ACCESO = (() => {
       const prox = sigMolde(false);
       st.moldeEdit = { nuevo: true, numero: prox, codigo: '', descripcion: '', deporte: '', calce: 'Unisex', infantil: false, prenda: PRENDAS.some(p => p.id === filtro) ? filtro : 'camiseta', activo: true,
         piezas: [{ pieza: 'Frente', cant: 1, tela: '' }, { pieza: 'Espalda', cant: 1, tela: '' }] };
-      st.error = ''; render(); window.scrollTo(0, 0);
+      st.moldeOk = ''; st.error = ''; render(); window.scrollTo(0, 0);
     });
     const gs = document.getElementById('me-guias');
     if (gs) gs.addEventListener('change', async () => {
@@ -3244,8 +3259,7 @@ const PMK_ACCESO = (() => {
     });
     app.querySelectorAll('[data-me-editar]').forEach(b => b.addEventListener('click', () => {
       const m = st.moldes.find(x => x.numero === +b.dataset.meEditar);
-      st.moldeEdit = { nuevo: false, numero: m.numero, codigo: m.codigo, descripcion: m.descripcion, deporte: m.deporte || '', calce: m.calce || 'Unisex',
-        infantil: !!m.infantil, prenda: m.prenda, activo: m.activo !== false, piezas: JSON.parse(JSON.stringify(piezasDe(m))) };
+      st.moldeEdit = edicionMolde(m); st.moldeOk = '';
       st.error = ''; render(); window.scrollTo(0, 0);
     }));
     if (!ed) return;
@@ -3278,7 +3292,7 @@ const PMK_ACCESO = (() => {
       catch (e) { st.error = 'No se pudo subir la guía. ' + (e.message || '').slice(0, 120); }
       leer(); render();
     });
-    document.getElementById('me-cancelar').addEventListener('click', () => { st.moldeEdit = null; st.error = ''; render(); });
+    document.getElementById('me-cancelar').addEventListener('click', () => { st.moldeEdit = null; st.moldeOk = ''; st.error = ''; render(); });
     document.getElementById('me-guardar').addEventListener('click', async () => {
       leer();
       const consumoDe = v => { const n = parseFloat(String(v == null ? '' : v).replace(',', '.')); return isFinite(n) && n > 0 ? Math.round(n * 1000) / 1000 : null; };
@@ -3296,7 +3310,9 @@ const PMK_ACCESO = (() => {
         const antes = st.moldes.find(m => m.numero === fila.numero);   // conserva su orden en el catálogo
         st.moldes = st.moldes.filter(m => m.numero !== fila.numero).concat([Object.assign({ orden: antes ? antes.orden : null }, fila)]);
         MOLDES = moldesVigentes(st.moldes);
-        st.moldeEdit = null; st.error = ''; render();
+        st.moldeOk = 'Molde N° ' + etqMolde(fila.numero) + ' · ' + fila.codigo + ' guardado (' + (piezas.length ? piezas.length + ' pieza' + (piezas.length > 1 ? 's' : '') : 'sin piezas') + '). ' +
+          'Las fichas nuevas cargan este despiece y Planificación usa su consumo al ingresar los pedidos.';
+        st.moldeEdit = null; st.error = ''; render(); window.scrollTo(0, 0);   // la confirmación (y «Volver a Planificación») quedan arriba
       } catch (e) { st.error = 'No se pudo guardar. ' + (e.message || '').slice(0, 600); render(); }
     });
   }
@@ -4307,6 +4323,7 @@ const PMK_ACCESO = (() => {
     if (b.dataset.ir === 'ficha') { st.specsBorrador = null; (st.pendientes || []).forEach(x => { if (x.url) URL.revokeObjectURL(x.url); }); st.pendientes = null; st.editImg = null; }
     if (b.dataset.ir === 'listado-ed') { st.ed = null; st.edListo = null; }
     st.editPersona = null;
+    if (b.dataset.ir === 'moldes' && st.pant !== 'moldes') { st.moldesDesde = st.pant; st.moldeOk = ''; }   // para volver a donde se estaba
     st.pant = b.dataset.ir;
     render();
   });

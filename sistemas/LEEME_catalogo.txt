@@ -19,6 +19,19 @@ GUÍAS DE TALLAS
 - Si el catálogo cambia, se vuelven a generar desde el PDF nuevo.
 - Un molde nuevo que no esté en el catálogo: su guía se sube en el panel (Catálogo de moldes › Guías de tallas o al editar el molde).
 
+DESPIECE DE CADA MOLDE (piezas, cantidad, metros de tela por prenda y tela sugerida)
+- Se define una vez por molde en el panel de Fichas, en «Catálogo de moldes y despiece». Se llega:
+    · desde el inicio del panel (botón «Catálogo de moldes y despiece»);
+    · desde Planificación › Moldes: cada molde muestra su despiece y tiene «Definir despiece» o «Editar despiece», que
+      abre el panel directo en ese molde; al guardar, «Volver a Planificación» lleva de vuelta a Moldes. Arriba,
+      «Catálogo de moldes y despiece» abre la lista completa (también en Configuración › Moldes);
+    · desde una ficha técnica («Gestionar catálogo» o «Definir despiece en el catálogo»).
+- Las fichas nuevas cargan el despiece del molde; Planificación usa los metros por prenda para descontar la tela al
+  ingresar un pedido y para el costeo. Las fichas ya creadas guardan su copia: para actualizarla, «Volver a cargar las
+  piezas del molde» en su ficha técnica.
+- En Planificación ven los botones el Administrador, Producción y Fichas (los demás ven el despiece). En el inicio del
+  panel el botón no aparece a los vendedores.
+
 MANGAS (según el código del molde)
 - …01 = manga clásica y …02 = manga raglán: se hacen en manga corta o larga.
 - …03 = sin mangas (básquetbol, vóleibol, hockey 64 y 65, musculosas 81 y 82): solo sin mangas.

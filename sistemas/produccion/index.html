@@ -4333,7 +4333,7 @@ async function renderCatalogoPrendas() {
       <button class="btn sm" style="color:#9E0C24" onclick="eliminarPrenda('${esc(x.codigo)}')">Eliminar</button></td></tr>`;
   const sig = MOLDES_CFG.filter(m => m.numero < 100).reduce((n, m) => Math.max(n, m.numero), 0) + 1;   // los especiales (101…) van aparte
   const sigE = MOLDES_CFG.filter(m => m.numero > 100 && m.numero < 200).reduce((n, m) => Math.max(n, m.numero), 100) + 1;
-  c.innerHTML = `<p class="hint" style="margin:-2px 0 8px">${MOLDES_CFG.filter(m => m.activo !== false).length} moldes activos de ${MOLDES_CFG.length}. Son los mismos del panel de Fichas: un cambio aquí se ve en los tres sistemas. El despiece y la guía de tallas de cada molde se completan en Fichas → Catálogo de moldes.</p>` +
+  c.innerHTML = `<p class="hint" style="margin:-2px 0 8px">${MOLDES_CFG.filter(m => m.activo !== false).length} moldes activos de ${MOLDES_CFG.length}. Son los mismos del panel de Fichas: un cambio aquí se ve en los tres sistemas. <a href="${linkFichas('molde=todos')}" style="color:var(--marca);font-weight:600">Abrir el catálogo de moldes y despiece</a>. El despiece y la guía de tallas de cada molde se completan en Fichas → Catálogo de moldes.</p>` +
     Object.keys(deps).map(d => `<details style="border:1px solid var(--linea);border-radius:8px;margin-bottom:6px;background:#fff"><summary style="padding:9px 12px;font-weight:600;cursor:pointer">${esc(d)} · ${deps[d].length} moldes</summary>
       <div style="padding:0 12px 10px;overflow-x:auto"><table class="mini"><tr><th>N°</th><th>Código</th><th>Descripción</th><th>Prenda</th><th>Calce</th><th></th></tr>${deps[d].map(fila).join('')}</table></div></details>`).join('') +
     `<div class="panel" style="margin-top:10px;padding:12px;box-shadow:none;border:1px dashed var(--linea)"><b>Agregar molde</b>
@@ -6518,14 +6518,26 @@ function renderMoldes() {
     .sort((a, b) => a.o - b.o || a.n - b.n);
   const hayOrden = Object.values(MOLDES_INFO).some(i => i.orden != null);   // sin el SQL 17A: solo por deporte
   const seccion = m => hayOrden && m.o >= 9000 ? 'Fuera del catálogo ordenado' : (m.dep || 'Otros moldes');
+  // despiece de cada molde (piezas y consumo por prenda): se define en el panel de Fichas, al que se llega directo desde aquí
+  const conDesp = n => (MOLDES_PIEZAS[String(n)] || []).filter(q => q && q.pieza);
+  const edita = puedeEditarProyecto(), hayPiezas = Object.keys(MOLDES_PIEZAS).length > 0;
+  const sinDesp = Object.keys(MOLDES_FICHAS).filter(n => !conDesp(n).length).length;
+  const despTxt = n => { const pz = conDesp(n); if (!pz.length) return '<span style="color:#A86B00">Sin despiece</span>';
+    const m = Math.round(pz.reduce((s, q) => s + (+q.consumo || 0), 0) * 100) / 100;
+    return `${pz.length} pieza${pz.length > 1 ? 's' : ''}: ${esc(pz.map(q => q.pieza + (q.cant > 1 ? ' ×' + q.cant : '')).join(', '))}` +
+      (m ? ` · <b>${numCL(m)} m</b> por prenda${pz.some(q => !(+q.consumo > 0)) ? ' (piezas sin consumo)' : ''}` : ' · <span style="color:#A86B00">sin consumo de tela</span>'); };
   $('view-moldes').innerHTML = `<h1>Moldes vigentes</h1>
-    <p class="hint">Catálogo único de moldes vigentes con su guía de tallas: es el mismo del panel de Fichas (se administra allá, en Catálogo de moldes). Un pedido solo ingresa a producción si cada prenda tiene su molde.</p>
-    <div class="toolbar"><input id="q-moldes" placeholder="Buscar por código, deporte o calce" value="${esc(qTxt)}" oninput="renderMoldes()"></div>
-    <div class="panel"><table class="mini"><tr><th>N°</th><th>Molde</th><th>Guía de tallas</th></tr>
+    <p class="hint">Catálogo único de moldes vigentes con su guía de tallas y su despiece: es el mismo del panel de Fichas. El despiece (piezas, cantidad y metros de tela por prenda) lo cargan las fichas nuevas y Planificación lo usa para descontar la tela y para el costeo. Un pedido solo ingresa a producción si cada prenda tiene su molde.</p>
+    <div class="toolbar"><input id="q-moldes" placeholder="Buscar por código, deporte o calce" value="${esc(qTxt)}" oninput="renderMoldes()">
+      ${edita ? `<a class="btn" style="text-decoration:none" href="${linkFichas('molde=todos')}" title="Abre el catálogo de moldes en el panel de Fichas">Catálogo de moldes y despiece</a>` : ''}</div>
+    ${hayPiezas && sinDesp ? `<p class="hint" style="margin:0 0 8px">${sinDesp} molde${sinDesp > 1 ? 's' : ''} aún sin despiece.${edita ? ' Toca «Definir despiece» para cargarlo.' : ''}</p>` : ''}
+    <div class="panel" style="overflow-x:auto"><table class="mini"><tr><th>N°</th><th>Molde y despiece</th><th>Guía${edita ? ' y despiece' : ''}</th></tr>
       ${filas.map((m, k) => { const [cod, det] = m.e.split(' — ');
         const tit = !k || seccion(filas[k - 1]) !== seccion(m) ? `<tr><th colspan="3" style="text-align:left;padding-top:14px;font-size:15px">${esc(seccion(m))}</th></tr>` : '';
-        return `${tit}<tr><td><b>${etqMolde(m.n)}</b></td><td>${esc(cod.replace(/^E?\d+ · /, ''))}<div class="hint">${esc(det || '')}</div></td>
-        <td><a href="${URL_GUIA(m.n)}" target="_blank" rel="noopener" style="color:var(--marca);font-weight:600">Ver guía</a></td></tr>`; }).join('')}
+        return `${tit}<tr><td><b>${etqMolde(m.n)}</b></td><td>${esc(cod.replace(/^E?\d+ · /, ''))}<div class="hint">${esc(det || '')}</div>
+          ${hayPiezas ? `<div class="hint" style="text-transform:none">${despTxt(m.n)}</div>` : ''}</td>
+        <td style="white-space:nowrap"><a href="${URL_GUIA(m.n)}" target="_blank" rel="noopener" style="color:var(--marca);font-weight:600">Ver guía</a>
+          ${edita ? `<div style="margin-top:6px"><a class="btn sm" style="text-decoration:none" href="${linkFichas('molde=' + m.n)}">${conDesp(m.n).length ? 'Editar despiece' : 'Definir despiece'}</a></div>` : ''}</td></tr>`; }).join('')}
     </table></div>`;
   devolverFoco('q-moldes', foco);
 }
