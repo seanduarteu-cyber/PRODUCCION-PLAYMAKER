@@ -1,15 +1,20 @@
 COSTEO DE PRENDAS (Planificación → pestaña «Costeo»)
 ====================================================
 
-Antes de usarlo: correr el SQL 20A en la base de PRODUCCIÓN y subir el zip de Planificación.
-Lo ven solo los perfiles de administración y producción.
+Antes de usarlo: correr el SQL 20A en la base de PRODUCCIÓN (si ya se corrió la primera versión, correrlo de nuevo:
+agrega el molde a cada registro) y subir el zip de Planificación. Lo ven solo administración y producción.
 
-CÓMO SE CALCULA EL COSTO DE UNA PRENDA
-Costo total = tela + insumos por consumo + confección + ploteo y sublimación + otros costos del pedido + gasto general
+EL RESULTADO ES POR MOLDE: cada pedido se costea molde por molde (camisetas, shorts… por separado). Cada molde tiene su
+costo total y su costo por prenda; el pedido es la suma de sus moldes. «Por molde» muestra el costo por prenda de cada
+molde en el período (promedio entre los pedidos que lo llevan).
+
+CÓMO SE CALCULA EL COSTO DE CADA MOLDE
+Costo total del molde = tela + insumos por consumo + confección + ploteo y sublimación + otros costos + gasto general
 
 1. Tela (precio de Inventario → Insumos)
-   - Al terminar Corte se abre «Corte · COT-…»: por cada tela del despiece, kilos de TELA CORTADA y kilos de MERMA,
-     y las prendas cortadas. También se puede registrar antes con el botón «Registrar kilos» de la tarjeta.
+   - Al terminar Corte se abre «Corte · COT-…» con cada molde del pedido por separado: por cada tela de ese molde,
+     kilos de TELA CORTADA y kilos de MERMA, y las prendas cortadas de ese molde. También se puede registrar antes con
+     el botón «Registrar kilos» de la tarjeta.
    - Costo = (kg cortados + kg merma) × precio por kg. Si la tela se lleva en metros, precio por kg = precio por metro ×
      rendimiento (m por kg): cada tela necesita su precio y, si va en metros, su rendimiento.
    - Mientras no se registra el corte, la tela se estima con el consumo teórico del molde (consumo por pieza del
@@ -22,21 +27,23 @@ Costo total = tela + insumos por consumo + confección + ploteo y sublimación +
    - Cada molde: lo suyo (ej: elástico en los shorts). «Copiar estos insumos a otros moldes» para no repetirlo.
 3. Confección: lo asignado al taller (tarifa por molde, Talleres). Sin taller asignado se usa la tarifa del molde.
 4. Ploteo y sublimación
-   - Al terminar Ploteo se anotan los metros ploteados («Registrar metros»).
+   - Al terminar Ploteo se anotan los metros ploteados de cada molde («Registrar metros»).
    - Papel = metros × precio del papel; tinta = metros × tinta por metro × precio de la tinta;
      papel de protección = metros × factor (1 por defecto) × su precio. Se descuentan del stock de Insumos.
    - En Costeo → Valores se eligen los insumos de papel, tinta y protección (crearlos en Insumos, categorías Papel y Tinta).
-5. Otros costos del pedido: en el detalle de un pedido, «+ Otro costo del pedido» (bordado, medias compradas, despacho…).
+5. Otros costos: en el detalle de un pedido, «+ Otro costo» (bordado, medias compradas, despacho…), de un molde o de
+   todo el pedido (se reparte entre los moldes por prendas).
 6. Gasto general (Costeo → «Gasto general»)
    - % del mes = gastos generales ÷ ventas netas de los 3 MESES ANTERIORES, según Ventas.
      Ej: un pedido que entra en noviembre usa agosto, septiembre y octubre.
-   - Se aplica a la venta neta del pedido (si el pedido no está en Ventas, sobre el costo).
+   - Se aplica a la venta neta del pedido (si el pedido no está en Ventas, sobre el costo) y se reparte entre sus
+     moldes según el costo directo de cada uno.
    - Las horas de las áreas (revisión, sublimación…) están dentro de este gasto (remuneraciones).
    - Qué gastos cuentan: cada categoría de Ventas se clasifica como «Gasto general», «Ya es costo directo» (telas,
      insumos, talleres: no se cuentan dos veces) o «No es gasto de operación» (impuestos, inversión, socios…).
      Las boletas de HONORARIOS son de los talleres (costo directo), salvo las de Antonia Hermosilla (gasto general):
      queda como excepción por proveedor y se pueden agregar otras.
-7. Resultado: costo por pedido, por molde y por prenda; venta neta y margen; precio sugerido por prenda =
+7. Resultado: costo total de cada molde y por prenda; total del pedido, venta neta y margen; precio sugerido por prenda =
    costo directo por prenda ÷ (1 − % gasto general − margen). El margen se define en Costeo → Valores.
 
 LO QUE NECESITAN CARGAR

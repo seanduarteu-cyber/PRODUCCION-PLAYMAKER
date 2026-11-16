@@ -1,23 +1,25 @@
 -- SQL 20A · base de PRODUCCIÓN (ygcsqrylpibhofvetdyh) · SQL Editor → New query → pegar todo → Run
 -- Costeo de prendas (pestaña «Costeo» de Planificación). Crea dos tablas nuevas; no toca ninguna existente.
 --
--- 1) plan_costeo: lo que registra cada área de un pedido
---      CORTE  → una fila por tela del despiece: kg de tela cortada, kg de merma y prendas cortadas
---      PLOTEO → metros ploteados (papel y tinta; el papel de protección de sublimación sale de estos metros)
+-- 1) plan_costeo: lo que registra cada área de un pedido, POR MOLDE (camisetas y shorts se pesan por separado)
+--      CORTE  → una fila por molde y tela: kg de tela cortada, kg de merma y prendas cortadas de ese molde
+--      PLOTEO → metros ploteados de cada molde (papel y tinta; el papel de protección sale de estos metros)
 --      SUBL   → metros de papel de protección, solo si se quieren distintos a los del ploteo
---      OTRO   → otro costo del pedido (concepto y monto: bordado de escudos, medias compradas, despacho…)
+--      OTRO   → otro costo (concepto y monto: bordado de escudos, medias compradas, despacho…), de un molde o del pedido
+--      molde = el molde del desglose del pedido (ej: '18 · FUTHOMU02'); vacío = todo el pedido
 -- 2) plan_insumos_molde: lo que lleva UNA prenda de cada insumo (elástico, hilo, cierre, etiqueta, bolsa…)
 --      molde = N° del molde (ej: '18', '102' para la E02) o '*' = común a todas las prendas con molde
 --
 -- Precios: los de Inventario → Insumos. Los demás valores (insumos de papel, tinta y protección, margen y la
 -- clasificación de los gastos de Ventas para el gasto general) se guardan en plan_config desde la pestaña Costeo.
--- Se puede volver a correr sin problema.
+-- Se puede volver a correr sin problema. Si ya se corrió la primera versión (sin «molde»), volver a correrlo la actualiza.
 
 create table if not exists public.plan_costeo (
   id bigserial primary key,
   planificacion_id bigint not null,
   cot text,
   etapa text not null check (etapa in ('CORTE', 'PLOTEO', 'SUBL', 'OTRO')),
+  molde text not null default '',           -- molde del pedido (ej: '18 · FUTHOMU02'); vacío = todo el pedido
   tela text not null default '',            -- CORTE: la tela · OTRO: el concepto
   kg_cortado numeric check (kg_cortado is null or kg_cortado >= 0),
   kg_merma numeric check (kg_merma is null or kg_merma >= 0),
@@ -28,9 +30,13 @@ create table if not exists public.plan_costeo (
   nota text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  constraint plan_costeo_unico unique (planificacion_id, etapa, tela)
+  constraint plan_costeo_unico unique (planificacion_id, etapa, molde, tela)
 );
 create index if not exists plan_costeo_planificacion on public.plan_costeo (planificacion_id);
+-- primera versión de la tabla (sin «molde»): se agrega la columna y la regla pasa a ser por molde
+alter table public.plan_costeo add column if not exists molde text not null default '';
+alter table public.plan_costeo drop constraint if exists plan_costeo_unico;
+alter table public.plan_costeo add constraint plan_costeo_unico unique (planificacion_id, etapa, molde, tela);
 
 create table if not exists public.plan_insumos_molde (
   id bigserial primary key,
