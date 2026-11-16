@@ -396,6 +396,7 @@ main{position:relative;z-index:1}
   <section class="view" id="view-gerencia"></section>
   <section class="view" id="view-talleres"></section>
   <section class="view" id="view-rendimiento"></section>
+  <section class="view" id="view-costeo"></section>
   <section class="view" id="view-inventario"></section>
   <section class="view" id="view-moldes"></section>
   <section class="view" id="view-config"></section>
@@ -940,7 +941,7 @@ const textoCantMedias = c => TALLAS_MEDIAS.concat(Object.keys(c || {}).filter(t 
 const codigoMedias = t => /infantil/i.test(t) ? 'MEDIAS-INF' : 'MEDIAS-ADL';
 const codigosMedias = c => Array.from(new Set(Object.keys(c || {}).filter(t => parseInt(c[t], 10) > 0).map(codigoMedias)));
 const NOM_ACC = { ficha_ingresada: 'Ficha ingresada', ingreso_forzado: 'Ingreso forzado', devuelto: 'Devuelto', diseno_aprobacion_deshecha: 'Devuelto a Diseño', diseno_parte_editada: 'Prendas de Diseño corregidas', inicio: 'Inicio', termino: 'Terminado', bloqueo: 'Bloqueo', desbloqueo: 'Desbloqueo', replanificacion: 'Replanificación', cambio_fecha_entrega: 'Cambio de fecha de entrega', cambio_tipo: 'Cambio de tipo', cambio_desglose: 'Cambio de desglose', listo_entrega: 'Listo para entrega', entregado: 'Terminado', recalculo: 'Recálculo' };
-const TAB_NOMBRE = { proyectos: 'Proyectos', estado: 'Estado', calendario: 'Calendario', area: 'Mi área', fichas: 'Ingreso a producción', diseno: 'Diseño', tallas: 'Fichas de pedidos', gerencia: 'Gerencia', talleres: 'Talleres', rendimiento: 'Rendimiento', inventario: 'Inventario', moldes: 'Moldes', config: 'Configuración' };
+const TAB_NOMBRE = { proyectos: 'Proyectos', estado: 'Estado', calendario: 'Calendario', area: 'Mi área', fichas: 'Ingreso a producción', diseno: 'Diseño', tallas: 'Fichas de pedidos', gerencia: 'Gerencia', talleres: 'Talleres', rendimiento: 'Rendimiento', costeo: 'Costeo', inventario: 'Inventario', moldes: 'Moldes', config: 'Configuración' };
 
 let USER = null, TAB = null, AREA_SEL = 'ARMADO';
 let AGRUPAR = false;
@@ -1230,8 +1231,8 @@ async function resetClave(usuario) {
   toast(`Clave de ${x.nombre} restablecida a 1234`); renderUsuariosAdmin();
 }
 function tabsDeRol(rol) {
-  if (rol === 'admin') return ['proyectos', 'calendario', 'diseno', 'tallas', 'area', 'fichas', 'gerencia', 'talleres', 'rendimiento', 'inventario', 'moldes', 'config'];
-  if (rol === 'produccion') return ['proyectos', 'calendario', 'diseno', 'tallas', 'area', 'fichas', 'gerencia', 'talleres', 'rendimiento', 'inventario', 'moldes', 'config'];
+  if (rol === 'admin') return ['proyectos', 'calendario', 'diseno', 'tallas', 'area', 'fichas', 'gerencia', 'talleres', 'rendimiento', 'costeo', 'inventario', 'moldes', 'config'];
+  if (rol === 'produccion') return ['proyectos', 'calendario', 'diseno', 'tallas', 'area', 'fichas', 'gerencia', 'talleres', 'rendimiento', 'costeo', 'inventario', 'moldes', 'config'];
   if (rol === 'diseno') return ['diseno', 'proyectos', 'calendario', 'moldes'];
   if (rol === 'fichas') return ['fichas', 'diseno', 'tallas', 'area', 'proyectos', 'calendario', 'inventario', 'moldes'];   // también todas las áreas de producción
   if (rol === 'ventas') return ['proyectos', 'calendario', 'gerencia', 'moldes'];
@@ -1242,7 +1243,7 @@ function tabsDeRol(rol) {
 function tabsPara() {
   if (esTaller()) return ['area', 'moldes'];   // el taller ve lo suyo y puede consultar los moldes
   // orden del flujo: Diseño → Ingreso a producción (se crea la ficha con las tallas) → Áreas de producción
-  const orden = ['proyectos', 'estado', 'diseno', 'tallas', 'fichas', 'area', 'calendario', 'gerencia', 'talleres', 'rendimiento', 'inventario', 'moldes', 'config'];
+  const orden = ['proyectos', 'estado', 'diseno', 'tallas', 'fichas', 'area', 'calendario', 'gerencia', 'talleres', 'rendimiento', 'costeo', 'inventario', 'moldes', 'config'];
   const todas = new Set(perfiles().flatMap(tabsDeRol).concat('estado'));   // «Estado» la ven todos los perfiles
   return orden.filter(t => todas.has(t));
 }
@@ -1382,6 +1383,7 @@ function renderVista() {
   else if (TAB === 'gerencia') renderGerencia();
   else if (TAB === 'talleres') renderTalleres();
   else if (TAB === 'rendimiento') renderRendimiento();
+  else if (TAB === 'costeo') renderCosteo();
   else if (TAB === 'inventario') renderInventario();
   else if (TAB === 'moldes') renderMoldes();
   else if (TAB === 'config') renderConfig();
@@ -2131,6 +2133,7 @@ function tarjetaTarea(p, k, n) {
       }
       if (sePuedePartir(p, k)) botones += `<button class="btn" onclick="abrirParte(${p.id},'${k}')" title="Pedido grande que sale por partes: lo terminado pasa a la etapa siguiente como ${esc(p.cot)}-1">Cerrar una parte</button>`;
       if (puedeAsignar(p, k) && !(exigeResponsable(p, k) && e.estado === 'pendiente')) botones += `<button class="btn" onclick="abrirAsignacion(${p.id},'${k}')">${e.estado === 'pendiente' ? 'Asignar responsable' : 'Ver asignación'}</button>`;
+      if (COSTEO_REG[k] && COSTEO_OK !== false) botones += `<button class="btn" onclick="abrirRegistroCosteo(${p.id},'${k}')" title="Para el costeo de las prendas">${COSTEO_REG[k]}</button>`;
       botones += `<button class="btn bloq" onclick="abrirBloqueo(${p.id},'${k}')">Bloquear</button>`;
       botones += `<button class="btn" style="color:#A8121E;border-color:#EFA6AF" onclick="abrirPendiente(${p.id},'${k}')">Pendiente</button>`;
     }
@@ -2157,7 +2160,8 @@ function tarjetaTarea(p, k, n) {
 }
 
 /* ---------- Acciones sobre etapas ---------- */
-async function accionEtapa(pid, k, accion) {
+async function accionEtapa(pid, k, accion, op) {
+  op = op || {};
   const p = PROY.find(x => x.id === pid); if (!p) return;
   const e = p.et[k]; const nom = ETAPAS[k].nombre;
   if (!puedeOperar(k) && !(esTaller() && k === 'CONFEC' && MIS_ASIG[p.cot])) return toast(`Tu perfil no puede modificar ${nom}`, 'err');
@@ -2183,7 +2187,9 @@ async function accionEtapa(pid, k, accion) {
         if (suma < (p.prendas || 0) && !confirm(`Hay ${suma} de ${p.prendas} prendas asignadas en ${nom}.\n\n¿Terminar igual?`)) return;
       }
       if (k === 'ENTREGA' && nPendientes(p.cot) && !confirm(`${p.cot} tiene ${nPendientes(p.cot)} pendiente(s) por rehacer sin resolver.\n\n¿Marcarlo como terminado de todas formas?`)) return;
-      if (!confirm(k === 'ENTREGA' ? `¿Marcar ${p.cot} como terminado?\n\nSale de las áreas y pasa a la lista de Terminados.` : `¿Marcar ${nom} de ${p.cot} como terminado?`)) return;
+      // Corte y Ploteo registran lo que usaron (kilos de tela y merma, metros ploteados) para el costeo
+      if (COSTEO_REG[k] && !op.sinCosteo && await faltaCosteo(p, k)) return abrirRegistroCosteo(p.id, k, true);
+      if (!op.confirmado && !confirm(k === 'ENTREGA' ? `¿Marcar ${p.cot} como terminado?\n\nSale de las áreas y pasa a la lista de Terminados.` : `¿Marcar ${nom} de ${p.cot} como terminado?`)) return;
       const hoy = F.hoy(); const atraso = e.fecha_limite && hoy > e.fecha_limite ? diffHabiles(e.fecha_limite, hoy) : 0;
       await patchEtapa(e, { estado: 'terminado', fecha_inicio_real: e.fecha_inicio_real || now, fecha_termino_real: now, responsable: USER.nombre });
       await log(p.id, p.cot, k, 'termino', e.estado, 'terminado', atraso ? `Terminó con ${atraso} día(s) hábil(es) de atraso` : null);
@@ -4948,8 +4954,8 @@ async function aplicarOT() {
    así, al ingresar un pedido a producción, la tela se descuenta sola según el consumo de cada pieza del molde. */
 let INS = [], INSUMOS_OK = null, INV_MODO = 'insumos', FILTRO_INS = '', CONSUMO_SEL = null;
 let MOLDES_PIEZAS = {};   // N° de molde → piezas del catálogo (con su consumo por prenda)
-const CATEG_INS = ['Tela', 'Elástico', 'Hilo', 'Cierre', 'Otro'];
-const UNID_INS = ['m', 'kg', 'unid', 'rollo'];
+const CATEG_INS = ['Tela', 'Elástico', 'Hilo', 'Cierre', 'Etiqueta', 'Embalaje', 'Papel', 'Tinta', 'Servicio', 'Otro'];
+const UNID_INS = ['m', 'kg', 'unid', 'rollo', 'litro'];
 const normIns = x => String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
 const numCL = n => (Math.round((+n || 0) * 100) / 100).toLocaleString('es-CL', { maximumFractionDigits: 2 });
 const chipsInv = () => `<div class="chips" style="margin-bottom:10px">
@@ -5599,6 +5605,570 @@ async function renderGerencia() {
 // Guías de tallas: las de los moldes del catálogo vienen con este sitio (carpeta guias/, del catálogo completo);
 // un molde nuevo, fuera del catálogo, usa la que se subió en el panel de fichas (Storage)
 const URL_GUIA = n => SECCION_CATALOGO[+n] ? `guias/molde-${etqMolde(n)}.jpg` : `${FICHAS_URL}/storage/v1/object/public/montajes/moldes/molde-${etqMolde(n)}.jpg`;
+/* ---------- Costeo de prendas ----------
+   Costo de una prenda = tela (real del corte: kg cortados + merma, al precio del insumo; mientras no se corta, el
+   consumo teórico del molde) + insumos por consumo (lo que lleva cada prenda según su molde, más lo común a todas)
+   + confección (lo asignado al taller, con su tarifa por molde) + ploteo (papel y tinta por metro ploteado)
+   + sublimación (papel de protección) + otros costos del pedido; y el gasto general: el % que resulta de los
+   gastos y las ventas netas de Ventas de los 3 meses anteriores (sin lo que ya es costo directo), aplicado a la
+   venta neta del pedido. Las horas de las áreas (revisión, sublimación…) van en ese gasto general.
+   Lo que registra cada área queda en plan_costeo, el consumo por molde en plan_insumos_molde (SQL 20A) y los
+   valores en plan_config. Solo lo ven administración y producción. */
+const puedeVerCosteo = () => tienePerfil('admin') || tienePerfil('produccion');
+const COSTEO_REG = { CORTE: 'Registrar kilos', PLOTEO: 'Registrar metros' };   // áreas que registran al terminar
+let COSTEO_OK = null;   // false: falta el SQL 20A
+let COSTEO_VAL = { papel: '', tinta: '', tintaM: 0, prot: '', protF: 1, margen: 30 };
+let COSTEO_GASTOS = null, COSTEO_MODO = 'pedidos', COSTEO_DATOS = null, COSTEO_FICHAS = {}, BOM = null, GG_DATOS = null, REG_COSTEO = null, BOM_SEL = '*';
+// clasificación de las categorías de gastos de Ventas: «general» entra al gasto general; «directo» ya está en el
+// costo de la prenda (telas, insumos, talleres); «fuera» no es gasto de operación (impuestos, inversión, socios)
+const GASTOS_CLASE_DEF = {
+  general: ['REMUNERACIONES', 'LEYES SOCIALES', 'ARRIENDO', 'CONSUMOS BASICOS', 'ASEO', 'ALMUERZO', 'ASIGNACION MOVILIZACION', 'COMBUSTIBLE', 'UBER',
+    'ENVIOS', 'AGENCIA ADS', 'PUBLICIDAD GOOGLE', 'PUBLICIDAD META', 'RRSS', 'SOFTWARE', 'HOSTING', 'IA', 'INSUMOS DE OFICINA', 'MANTENCION CUENTA CORRIENTE EMPRESA', 'OTROS'],
+  // las boletas de honorarios son en su mayoría de los talleres que confeccionan: ya están en Confección
+  directo: ['TELAS', 'INSUMOS PRODUCCION', 'TALLER EXTERNO', 'TALLER PMK', 'SERVICIO DE BORDADOS', 'PROVEEDOR DE PRENDAS', 'PROVEEDOR INDUMENTARIAS',
+    'PROVEEDOR DE ARTICULOS DEPORTIVOS', 'HONORARIOS'],
+  fuera: ['IMPUESTO SII', 'INVERSION', 'REEMBOLSO SOCIO', 'DEVOLUCIÓN A CLIENTE', 'MOBILIARIO', 'INFRAESTRUCTURA/MOBILIARIO']
+};
+// excepciones por proveedor: los honorarios de Antonia Hermosilla son de producción (gasto general)
+const GASTOS_EXC_DEF = [{ cat: 'HONORARIOS', prov: 'Antonia Hermosilla', clase: 'general' }];
+const CLASE_TXT = { general: 'Gasto general', directo: 'Ya es costo directo', fuera: 'No es gasto de operación' };
+const claseGastos = () => { const c = {}; Object.entries(GASTOS_CLASE_DEF).forEach(([k, l]) => l.forEach(x => { c[x] = k; }));
+  return Object.assign(c, (COSTEO_GASTOS && COSTEO_GASTOS.cat) || {}); };
+const excGastos = () => COSTEO_GASTOS && Array.isArray(COSTEO_GASTOS.exc) ? COSTEO_GASTOS.exc : GASTOS_EXC_DEF;
+const catGasto = g => String(g.categoria || '').trim().toUpperCase() || 'SIN CATEGORÍA';
+function claseDeGasto(g, cls, exc) {
+  const cat = catGasto(g), txt = normIns((g.proveedor || '') + ' ' + (g.descripcion || ''));
+  const e = exc.find(x => String(x.cat || '').toUpperCase() === cat && x.prov && txt.includes(normIns(x.prov)));
+  return e ? e.clase : (cls[cat] || 'general');
+}
+const mesDe = s => String(s || '').slice(0, 7);
+const mesesAntes = (mes, n) => { let [y, m] = mes.split('-').map(Number); const out = []; for (let i = 0; i < n; i++) { m--; if (!m) { m = 12; y--; } out.push(y + '-' + String(m).padStart(2, '0')); } return out; };
+const NOM_MES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const mesTxt = m => m ? NOM_MES[+m.slice(5, 7) - 1] + ' ' + m.slice(0, 4) : '';
+const pct = x => x == null || !isFinite(x) ? '—' : (Math.round(x * 1000) / 10).toLocaleString('es-CL') + '%';
+// ventas netas y gastos de Ventas por mes, desde un mes
+async function cargarGG(desdeMes) {
+  if (GG_DATOS && GG_DATOS.desde <= desdeMes) return GG_DATOS;
+  const d = desdeMes + '-01';
+  try {
+    const [ps, gs] = await Promise.all([todasLasFilas(apiV, `pedidos?select=cot,fecha,neto&fecha=gte.${d}&order=fecha.asc`),
+      todasLasFilas(apiV, `gastos?select=fecha,monto,categoria,proveedor,descripcion&fecha=gte.${d}&order=fecha.asc`)]);
+    GG_DATOS = { desde: desdeMes, ps: ps || [], gs: gs || [], ok: true };
+  } catch (e) { GG_DATOS = { desde: desdeMes, ps: [], gs: [], ok: false, error: e.message }; }
+  return GG_DATOS;
+}
+// % de gasto general de un mes: gastos generales ÷ ventas netas de los 3 meses anteriores
+function calcularGG() {
+  const cls = claseGastos(), exc = excGastos(), ventas = {}, gastos = {};
+  if (!GG_DATOS) return { pct: () => ({ meses: [], ventas: 0, gastos: 0, pct: null }), ventas, gastos };
+  GG_DATOS.ps.forEach(p => { const k = mesDe(p.fecha); if (k) ventas[k] = (ventas[k] || 0) + (+p.neto || 0); });
+  GG_DATOS.gs.forEach(g => { const k = mesDe(g.fecha); if (k && claseDeGasto(g, cls, exc) === 'general') gastos[k] = (gastos[k] || 0) + (+g.monto || 0); });
+  const pctMes = mes => { const ms = mesesAntes(mes, 3), v = ms.reduce((s, x) => s + (ventas[x] || 0), 0), g = ms.reduce((s, x) => s + (gastos[x] || 0), 0);
+    return { meses: ms, ventas: v, gastos: g, pct: v > 0 ? g / v : null }; };
+  return { pct: pctMes, ventas, gastos };
+}
+// precio de un insumo por kg o por metro (las telas se compran en una de las dos; el rendimiento es m por kg)
+const precioKg = i => !i || !(+i.precio > 0) ? null : i.unidad === 'kg' ? +i.precio : i.unidad === 'm' && +i.rendimiento > 0 ? +i.precio * +i.rendimiento : null;
+const precioM = i => !i || !(+i.precio > 0) ? null : i.unidad === 'm' ? +i.precio : i.unidad === 'kg' && +i.rendimiento > 0 ? +i.precio / +i.rendimiento : null;
+const precioIns = i => i && +i.precio > 0 ? +i.precio : 0;
+// consumo de insumos por molde («*» = común a todas las prendas con molde)
+async function cargarBOM() { try { BOM = await todasLasFilas(api, 'plan_insumos_molde?select=*&order=molde.asc,id.asc') || []; } catch (e) { BOM = null; } return BOM; }
+const bomDe = molde => (BOM || []).filter(r => String(r.molde) === String(molde));
+function costoBOM(num) {
+  let costo = 0; const falta = [];
+  (BOM || []).filter(r => r.molde === '*' || (num != null && String(r.molde) === String(num))).forEach(r => {
+    const i = insumoDe(r.insumo_id); if (!i) return;
+    if (!(+i.precio > 0)) falta.push(i.nombre); costo += (+r.cantidad || 0) * precioIns(i);
+  });
+  return { costo, falta };
+}
+// ficha del pedido (Fichas): telas del despiece y molde de cada persona, para el consumo teórico y el reparto
+// pedido original de una parte (COT-4000-1 → COT-4000)
+const baseCot = cot => { const x = String(cot || '').match(/^(COT-[^-]+)-\d+$/i); return x ? x[1] : String(cot || ''); };
+async function fichaCosteo(cot) {
+  if (COSTEO_FICHAS[cot] !== undefined) return COSTEO_FICHAS[cot];
+  const refs = Array.from(new Set([cot, cot.replace(/^COT-/, ''), baseCot(cot), baseCot(cot).replace(/^COT-/, '')]));
+  let fc = null;
+  try {
+    const fs = await apiF(`fichas_tallas?select=ref,items,specs&ref=${inLista(refs)}`) || [];
+    const f = fs.find(x => normCot(x.ref) === normCot(cot)) || fs.find(x => normCot(x.ref) === normCot(baseCot(cot)));
+    if (f) fc = { f, dets: (await todasLasFilas(apiF, `fichas_detalle?select=ref,calce,manga,tallas&ref=${inLista([f.ref])}&order=created_at.asc,id.asc`) || []).filter(d => d.ref === f.ref) };
+  } catch (e) {}
+  return COSTEO_FICHAS[cot] = fc;
+}
+// fichas de varios pedidos a la vez (los que aún no registran el corte: su tela se estima con el consumo teórico)
+async function cargarFichasCosteo(cots) {
+  cots = cots.filter(c => COSTEO_FICHAS[c] === undefined);
+  for (let i = 0; i < cots.length; i += 40) {
+    const lote = cots.slice(i, i + 40), refs = Array.from(new Set(lote.concat(lote.map(baseCot)).flatMap(c => [c, c.replace(/^COT-/, '')])));
+    try {
+      const fs = await apiF(`fichas_tallas?select=ref,items,specs&ref=${inLista(refs)}`) || [];
+      const ds = fs.length ? await todasLasFilas(apiF, `fichas_detalle?select=ref,calce,manga,tallas&ref=${inLista(fs.map(f => f.ref))}&order=created_at.asc,id.asc`) || [] : [];
+      lote.forEach(c => { const f = fs.find(x => normCot(x.ref) === normCot(c)) || fs.find(x => normCot(x.ref) === normCot(baseCot(c)));
+        COSTEO_FICHAS[c] = f ? { f, dets: ds.filter(d => d.ref === f.ref) } : null; });
+    } catch (e) {}
+  }
+}
+// consumo teórico de tela (metros) por tela y por tipo de prenda (molde), y qué telas usa cada tipo
+function teoricoFicha(fc) {
+  const out = { porTela: {}, porTipo: {} }; if (!fc) return out;
+  const specs = jsonDe(fc.f.specs) || {};
+  fc.dets.forEach(d => {
+    const t = jsonDe(d.tallas) || {};
+    Object.keys(t).forEach(pr => {
+      if (!t[pr] || esMediasFicha(pr)) return;
+      const sp = specs[pr] || {}, mv = (sp.moldes || {})[d.calce] || '', tipo = claveDeFicha(mv, d.manga) || nomPrendaFicha(pr);
+      const x = out.porTipo[tipo] = out.porTipo[tipo] || { u: 0, telas: {} }; x.u++;
+      const n = numMolde(mv), piezas = ((n && MOLDES_PIEZAS[n]) || []).filter(q => +q.consumo > 0);
+      const desp = sp.despiece && Array.isArray(sp.despiece.piezas) ? sp.despiece.piezas.filter(Boolean) : [];
+      const principal = sp.tela ? sp.tela + (sp.telaDetalle ? SEP_TELA + sp.telaDetalle : '') : '';
+      if (piezas.length) piezas.forEach(q => {
+        const dq = desp.find(z => normIns(z.pieza) === normIns(q.pieza)), tela = (dq && dq.tela) || principal || q.tela || ''; if (!tela) return;
+        x.telas[tela] = (x.telas[tela] || 0) + (+q.consumo); out.porTela[tela] = (out.porTela[tela] || 0) + (+q.consumo);
+      });
+      else { const ts = new Set(desp.map(z => z.tela).filter(Boolean)); if (!ts.size && principal) ts.add(principal);
+        ts.forEach(tela => { if (!(tela in x.telas)) x.telas[tela] = 0; if (!(tela in out.porTela)) out.porTela[tela] = 0; }); }
+    });
+  });
+  return out;
+}
+// cálculo del costo de un pedido: c = { rows (plan_costeo), asig (Confección), fc (ficha), venta (neta), gg ({pct, meses…}) }
+function calcCosteo(p, c) {
+  const R = { faltan: [], telas: [], tipos: [] }, reg = e => c.rows.filter(r => r.etapa === e);
+  const corte = reg('CORTE'), teo = teoricoFicha(c.fc), tipos = tiposDe(p);
+  R.unidades = +((corte.find(r => +r.prendas > 0) || {}).prendas) || +p.prendas || tipos.reduce((s, t) => s + t.cant, 0) || 0;
+  if (corte.length) corte.forEach(r => {
+    const i = insumoPorNombre(r.tela), kgC = +r.kg_cortado || 0, kgM = +r.kg_merma || 0, kg = kgC + kgM, pk = precioKg(i);
+    R.telas.push({ tela: r.tela, kgC, kgM, kg, merma: kg ? kgM / kg : 0, pk, costo: pk == null ? 0 : kg * pk, teoM: teo.porTela[r.tela] || 0, real: true });
+    if (pk == null) R.faltan.push('precio por kg de ' + r.tela);
+  });
+  else {
+    Object.entries(teo.porTela).forEach(([t, m]) => { const pm = precioM(insumoPorNombre(t));
+      R.telas.push({ tela: t, teoM: m, pm, costo: pm == null ? 0 : m * pm, real: false }); if (pm == null || !m) R.faltan.push((m ? 'precio de ' : 'consumo teórico de ') + t); });
+    R.faltan.unshift('registro del corte (la tela es estimada)');
+  }
+  R.tela = R.telas.reduce((s, x) => s + x.costo, 0);
+  R.kgMerma = R.telas.reduce((s, x) => s + (x.kgM || 0), 0); R.kgTotal = R.telas.reduce((s, x) => s + (x.kg || 0), 0);
+  // insumos por consumo, por tipo de prenda (molde) y lo común
+  const bomT = {}; R.insumos = 0;
+  tipos.forEach(t => { const inf = infoClave(t.tipo), b = costoBOM(inf ? inf.numero : null); bomT[t.tipo] = b.costo; R.insumos += b.costo * t.cant;
+    b.falta.forEach(n => { if (R.faltan.indexOf('precio de ' + n) < 0) R.faltan.push('precio de ' + n); }); });
+  // confección: lo asignado al taller; sin asignación, la tarifa del molde
+  const confT = {};
+  if (c.asig.length) c.asig.forEach(a => { const v = (a.precio_unit != null ? +a.precio_unit : tarifaDe(a.tipo_prenda)) * (+a.cantidad || 0); confT[a.tipo_prenda] = (confT[a.tipo_prenda] || 0) + v; });
+  else { tipos.forEach(t => { confT[t.tipo] = tarifaDe(t.tipo) * t.cant; }); if (tipos.length) R.faltan.push('taller asignado (confección con la tarifa del molde)'); }
+  R.confeccion = Object.values(confT).reduce((s, v) => s + v, 0); R.confecReal = c.asig.length > 0;
+  tipos.filter(t => !tarifaDe(t.tipo) && !c.asig.length).forEach(t => R.faltan.push('tarifa de confección de ' + t.tipo));
+  // ploteo (papel y tinta) y sublimación (papel de protección)
+  const plo = reg('PLOTEO')[0], sub = reg('SUBL')[0], m = plo ? +plo.metros || 0 : 0;
+  const iPap = insumoDe(COSTEO_VAL.papel), iTin = insumoDe(COSTEO_VAL.tinta), iPro = insumoDe(COSTEO_VAL.prot);
+  R.metros = m; R.papel = m * precioIns(iPap); R.tinta = m * (+COSTEO_VAL.tintaM || 0) * precioIns(iTin);
+  R.mProt = sub && sub.metros != null ? +sub.metros : p.requiere_sublimacion !== false ? m * (COSTEO_VAL.protF === '' ? 1 : +COSTEO_VAL.protF) : 0;
+  R.prot = R.mProt * precioIns(iPro);
+  if (p.requiere_sublimacion !== false && !plo) R.faltan.push('metros de ploteo');
+  if (m && (!iPap || !iTin || (R.mProt && !iPro))) R.faltan.push('insumos de papel, tinta o protección (en Valores)');
+  R.otros = reg('OTRO').map(r => ({ concepto: r.tela, monto: +r.monto || 0 })); R.otrosT = R.otros.reduce((s, x) => s + x.monto, 0);
+  R.indirecto = R.papel + R.tinta + R.prot + R.otrosT;
+  R.directo = R.tela + R.insumos + R.confeccion + R.indirecto;
+  // gasto general: % del mes (3 meses anteriores) sobre la venta neta del pedido; sin venta, sobre el precio a costo
+  R.gg = c.gg || null; R.venta = c.venta;
+  const k = R.gg && R.gg.pct != null ? R.gg.pct : null;
+  R.ggMonto = k == null ? 0 : c.venta != null ? c.venta * k : R.directo * k / Math.max(0.05, 1 - k);
+  if (k == null) R.faltan.push('% de gasto general (sin ventas en Ventas para esos meses)');
+  if (c.venta == null) R.faltan.push('venta en Ventas (gasto general sobre el costo)');
+  R.total = R.directo + R.ggMonto;
+  const U = R.unidades;
+  R.porPrenda = U ? R.total / U : null; R.directoPrenda = U ? R.directo / U : null;
+  R.margen = c.venta != null ? c.venta - R.total : null; R.margenPct = c.venta ? R.margen / c.venta : null;
+  const den = 1 - (k || 0) - (+COSTEO_VAL.margen || 0) / 100;
+  R.sugerido = U && den > 0.05 ? R.directoPrenda / den : null;
+  // por tipo de prenda (molde): cada tela se reparte según su consumo teórico (o por unidades)
+  const totU = tipos.reduce((s, t) => s + t.cant, 0) || U || 1;
+  R.tipos = tipos.map(t => {
+    let tela = 0;
+    R.telas.forEach(x => {
+      const peso = y => (teo.porTipo[y.tipo] && teo.porTipo[y.tipo].telas[x.tela]) || 0, tot = tipos.reduce((s, y) => s + peso(y), 0);
+      const usan = tipos.filter(y => teo.porTipo[y.tipo] && x.tela in teo.porTipo[y.tipo].telas), uU = usan.reduce((s, y) => s + y.cant, 0);
+      tela += tot > 0 ? x.costo * peso(t) / tot : usan.length ? (usan.indexOf(t) >= 0 ? x.costo * t.cant / uU : 0) : x.costo * t.cant / totU;
+    });
+    const ins = (bomT[t.tipo] || 0) * t.cant, conf = confT[t.tipo] || 0, ind = R.indirecto * t.cant / totU, dir = tela + ins + conf + ind;
+    const gg = R.ggMonto * t.cant / totU, u = t.cant || 1;
+    return { tipo: t.tipo, cant: t.cant, tela: tela / u, insumos: ins / u, confeccion: conf / u, indirecto: ind / u, directo: dir / u, gg: gg / u, total: (dir + gg) / u,
+      sugerido: den > 0.05 ? dir / u / den : null };
+  });
+  return R;
+}
+
+/* registro de cada área al terminar: Corte (kilos por tela y merma) y Ploteo (metros) */
+async function faltaCosteo(p, k) {
+  if (COSTEO_OK === false) return false;
+  try { const r = await api(`plan_costeo?select=id&planificacion_id=eq.${p.id}&etapa=eq.${k}&limit=1`) || []; COSTEO_OK = true; return !r.length; }
+  catch (e) { COSTEO_OK = false; return false; }
+}
+const proyCosteo = pid => PROY.find(x => x.id === pid) || (COSTEO_DATOS && COSTEO_DATOS.proy.find(x => x.id === pid));
+async function abrirRegistroCosteo(pid, k, alTerminar) {
+  const p = proyCosteo(pid); if (!p) return;
+  let previas = [];
+  try { previas = await api(`plan_costeo?select=*&planificacion_id=eq.${pid}&order=id.asc`) || []; COSTEO_OK = true; }
+  catch (e) { COSTEO_OK = false; if (alTerminar) return accionEtapa(pid, k, 'terminar', { sinCosteo: true }); return toast('Falta correr el SQL 20A (costeo) en Supabase de Producción', 'err'); }
+  await cargarInsumos();
+  const acc = `<div class="acciones"><button class="btn" onclick="cerrarModal()">Cancelar</button>` +
+    (alTerminar ? `<button class="btn" onclick="terminarSinCosteo()">Terminar sin registrar</button>` : '') +
+    `<button class="btn pri" onclick="guardarRegistroCosteo()">${alTerminar ? 'Guardar y terminar' : 'Guardar'}</button></div>`;
+  if (k === 'CORTE') {
+    const fc = await fichaCosteo(p.cot), teo = teoricoFicha(fc);
+    const telas = Array.from(new Set(Object.keys(teo.porTela).concat(previas.filter(r => r.etapa === 'CORTE').map(r => r.tela))));
+    const valores = {}; previas.filter(r => r.etapa === 'CORTE').forEach(r => { valores[r.tela] = { c: r.kg_cortado != null ? String(r.kg_cortado) : '', m: r.kg_merma != null ? String(r.kg_merma) : '' }; });
+    REG_COSTEO = { pid, k, alTerminar, telas, previas: Object.keys(valores), teo: teo.porTela, valores };
+    const prev = previas.find(r => r.etapa === 'CORTE' && +r.prendas > 0);
+    abrirModal(`<h3>Corte · ${esc(p.cot)} · ${esc(p.cliente)}</h3>
+      <p class="hint">Pesa cada tela del despiece: la <b>tela cortada</b> (las piezas) y la <b>merma</b> (lo que sobra). Con eso se calcula el costo de tela por prenda y el stock de tela queda con lo que de verdad se usó.</p>
+      <div class="grid2"><div><label for="rc-prendas">Prendas cortadas</label><input id="rc-prendas" type="number" min="0" value="${prev ? prev.prendas : (p.prendas || '')}"></div><div></div></div>
+      <div id="rc-telas"></div>${acc}`, pid);
+    pintarTelasCorte();
+  } else {
+    const plo = previas.find(r => r.etapa === 'PLOTEO');
+    REG_COSTEO = { pid, k, alTerminar };
+    abrirModal(`<h3>Ploteo · ${esc(p.cot)} · ${esc(p.cliente)}</h3>
+      <p class="hint">Metros ploteados de este pedido (largo del rollo impreso, en metros lineales). Con eso se calcula el papel y la tinta, y el papel de protección de la sublimación.</p>
+      <label for="rc-metros">Metros ploteados</label><input id="rc-metros" type="number" min="0" step="0.1" value="${plo && plo.metros != null ? plo.metros : ''}" placeholder="Ej: 32,5">${acc}`, pid);
+  }
+}
+function pintarTelasCorte() {
+  const R = REG_COSTEO, c = $('rc-telas'); if (!R || !c) return;
+  // lo escrito en pantalla (al agregar otra tela) o lo registrado antes
+  const ya = {}; R.telas.forEach((t, i) => { const c = $('rc-c-' + i), m = $('rc-m-' + i); if (c || m) ya[t] = { c: c ? c.value : '', m: m ? m.value : '' }; });
+  const telasIns = INS.filter(i => i.activo !== false && i.categoria === 'Tela' && R.telas.indexOf(i.nombre) < 0);
+  c.innerHTML = `<table class="mini"><tr><th>Tela</th><th>Teórico</th><th style="text-align:right">Tela cortada (kg)</th><th style="text-align:right">Merma (kg)</th><th style="text-align:right">% merma</th></tr>` +
+    R.telas.map((t, i) => { const i2 = insumoPorNombre(t), m = R.teo[t] || 0, kgT = m && i2 && +i2.rendimiento > 0 ? m / +i2.rendimiento : null;
+      const v = ya[t] || (R.valores && R.valores[t]) || { c: '', m: '' };
+      return `<tr><td><b>${esc(t)}</b>${i2 ? (precioKg(i2) == null ? '<div class="hint" style="color:#A8121E">sin precio por kg en Insumos</div>' : `<div class="hint">${pesos(precioKg(i2))}/kg</div>`) : '<div class="hint" style="color:#A8121E">no está en Insumos</div>'}</td>
+        <td class="hint">${m ? numCL(m) + ' m' + (kgT != null ? ' · ' + numCL(kgT) + ' kg' : '') : '—'}</td>
+        <td style="text-align:right"><input id="rc-c-${i}" type="number" min="0" step="0.01" value="${esc(v.c)}" style="width:110px;text-align:right" oninput="mermaFila(${i})"></td>
+        <td style="text-align:right"><input id="rc-m-${i}" type="number" min="0" step="0.01" value="${esc(v.m)}" style="width:110px;text-align:right" oninput="mermaFila(${i})"></td>
+        <td style="text-align:right" id="rc-p-${i}"></td></tr>`; }).join('') +
+    `</table>${R.telas.length ? '' : '<p class="hint">Este pedido no tiene telas en su ficha: agrégalas abajo.</p>'}
+    <div class="toolbar" style="margin-top:8px"><select id="rc-nueva"><option value="">+ Agregar otra tela…</option>${telasIns.map(i => `<option>${esc(i.nombre)}</option>`).join('')}</select>
+      <button class="btn sm" onclick="agregarTelaCorte()">Agregar</button></div>`;
+  R.telas.forEach((t, i) => mermaFila(i));
+}
+function mermaFila(i) { const c = numIn('rc-c-' + i) || 0, m = numIn('rc-m-' + i) || 0, el = $('rc-p-' + i); if (el) el.textContent = c + m > 0 ? pct(m / (c + m)) : ''; }
+function agregarTelaCorte() {
+  const R = REG_COSTEO, s = $('rc-nueva'); if (!R || !s || !s.value) return;
+  R.telas.push(s.value); pintarTelasCorte();
+}
+async function terminarSinCosteo() {
+  const R = REG_COSTEO; if (!R) return;
+  if (!confirm('¿Terminar sin registrar? El costeo de este pedido quedará incompleto (se puede registrar después desde la pestaña Costeo).')) return;
+  cerrarModal(); return accionEtapa(R.pid, R.k, 'terminar', { sinCosteo: true, confirmado: true });
+}
+async function guardarRegistroCosteo() {
+  const R = REG_COSTEO, p = R && proyCosteo(R.pid); if (!p) return;
+  const ahora = new Date().toISOString(), up = filas => api('plan_costeo?on_conflict=planificacion_id,etapa,tela', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates' }, body: JSON.stringify(filas) });
+  let resumen = '';
+  try {
+    if (R.k === 'CORTE') {
+      const prendas = parseInt(($('rc-prendas') || {}).value, 10) || null;
+      const filas = R.telas.map((t, i) => ({ tela: t, c: numIn('rc-c-' + i), m: numIn('rc-m-' + i) }));
+      const con = filas.filter(x => (x.c || 0) + (x.m || 0) > 0);
+      if (!con.length) return toast('Anota los kilos de al menos una tela', 'warn');
+      await up(con.map(x => ({ planificacion_id: p.id, cot: p.cot, etapa: 'CORTE', tela: x.tela, kg_cortado: x.c || 0, kg_merma: x.m || 0, prendas, usuario: USER.nombre, updated_at: ahora })));
+      for (const x of filas.filter(x => !((x.c || 0) + (x.m || 0) > 0) && R.previas.indexOf(x.tela) >= 0))
+        await api(`plan_costeo?planificacion_id=eq.${p.id}&etapa=eq.CORTE&tela=eq.${encodeURIComponent(x.tela)}`, { method: 'DELETE' });
+      await stockCorte(p, con);
+      resumen = con.map(x => `${x.tela}: ${numCL(x.c || 0)} kg + ${numCL(x.m || 0)} kg merma`).join(' · ');
+    } else {
+      const m = numIn('rc-metros'); if (m == null || m < 0) return toast('Anota los metros ploteados', 'warn');
+      await up([{ planificacion_id: p.id, cot: p.cot, etapa: 'PLOTEO', tela: '', metros: m, usuario: USER.nombre, updated_at: ahora }]);
+      await stockPloteo(p, m);
+      resumen = numCL(m) + ' m ploteados';
+    }
+  } catch (e) { return toast('No se pudo guardar el registro: ' + String(e.message).slice(0, 160), 'err'); }
+  await log(p.id, p.cot, R.k, 'costeo', null, resumen);
+  cerrarModal(); toast(`${p.cot}: registro guardado`);
+  if (R.alTerminar) return accionEtapa(p.id, R.k, 'terminar', { sinCosteo: true, confirmado: true });
+  COSTEO_DATOS = null; if (TAB === 'costeo') renderCosteo();
+}
+// el stock de tela queda con el consumo real del corte (reemplaza el consumo teórico que se descontó al ingresar el pedido)
+async function stockCorte(p, con) {
+  if (INSUMOS_OK === false) return;
+  let teo = [];
+  try { teo = await api(`plan_insumos_mov?select=id&planificacion_id=eq.${p.id}&tipo=eq.consumo&limit=1`) || []; } catch (e) { return; }
+  if (!teo.length) return;   // pedido sin consumo descontado al ingresar (antiguo, o una parte): el stock no se toca
+  for (const x of con) {
+    const i = insumoPorNombre(x.tela); if (!i) continue;
+    const kg = (x.c || 0) + (x.m || 0), cant = i.unidad === 'kg' ? kg : i.unidad === 'm' && +i.rendimiento > 0 ? kg * +i.rendimiento : null;
+    if (cant == null) continue;
+    try {
+      await api(`plan_insumos_mov?planificacion_id=eq.${p.id}&tipo=eq.consumo&insumo_id=eq.${i.id}`, { method: 'DELETE' });
+      await api('plan_insumos_mov', { method: 'POST', body: JSON.stringify({ insumo_id: i.id, fecha: F.hoy(), tipo: 'consumo', cantidad: -Math.round(cant * 1000) / 1000, cot: p.cot,
+        planificacion_id: p.id, usuario: USER.nombre, nota: `Consumo real del corte: ${numCL(x.c || 0)} kg cortados + ${numCL(x.m || 0)} kg de merma` + (i.unidad === 'm' ? ` (× ${numCL(i.rendimiento)} m/kg)` : '') }) });
+    } catch (e) {}
+  }
+}
+// papel, tinta y papel de protección se descuentan del stock con los metros ploteados
+async function stockPloteo(p, m) {
+  if (INSUMOS_OK === false) return;
+  const usos = [[COSTEO_VAL.papel, m, 'papel'], [COSTEO_VAL.tinta, m * (+COSTEO_VAL.tintaM || 0), 'tinta'],
+    [COSTEO_VAL.prot, p.requiere_sublimacion !== false ? m * (COSTEO_VAL.protF === '' ? 1 : +COSTEO_VAL.protF) : 0, 'papel de protección']];
+  for (const [id, cant, que] of usos) {
+    const i = insumoDe(id); if (!i) continue;
+    try {
+      await api(`plan_insumos_mov?planificacion_id=eq.${p.id}&tipo=eq.consumo&insumo_id=eq.${i.id}`, { method: 'DELETE' });
+      if (cant > 0) await api('plan_insumos_mov', { method: 'POST', body: JSON.stringify({ insumo_id: i.id, fecha: F.hoy(), tipo: 'consumo', cantidad: -Math.round(cant * 1000) / 1000,
+        cot: p.cot, planificacion_id: p.id, usuario: USER.nombre, nota: `Ploteo: ${numCL(m)} m ploteados (${que})` }) });
+    } catch (e) {}
+  }
+}
+
+/* pestaña Costeo */
+function renderCosteo() {
+  const v = $('view-costeo'); if (!v) return;
+  const chips = `<div class="chips" style="margin-bottom:10px">${[['pedidos', 'Pedidos'], ['consumo', 'Consumo por molde'], ['gg', 'Gasto general'], ['valores', 'Valores']]
+    .map(([k, t]) => `<button class="chip ${COSTEO_MODO === k ? 'on' : ''}" onclick="COSTEO_MODO='${k}';renderCosteo()">${t}</button>`).join('')}</div>`;
+  if (!puedeVerCosteo()) { v.innerHTML = '<h1>Costeo</h1><p class="hint">Solo administración y producción.</p>'; return; }
+  v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + '<p class="hint">Cargando…</p>';
+  const pintar = { pedidos: pintarCosteoPedidos, consumo: pintarConsumoMolde, gg: pintarGG, valores: pintarValoresCosteo }[COSTEO_MODO] || pintarCosteoPedidos;
+  pintar(v, chips).catch(e => { v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + `<div class="aviso warn">No se pudo cargar: ${esc(String(e.message).slice(0, 200))}</div>`; });
+}
+const avisoSql20 = () => COSTEO_OK === false ? '<div class="aviso warn">Falta correr el <b>SQL 20A</b> (costeo) en Supabase de Producción: sin él no se guardan los kilos del corte, los metros de ploteo ni el consumo por molde.</div>' : '';
+async function pintarCosteoPedidos(v, chips) {
+  const hoy = F.hoy(), def1 = mesesAntes(mesDe(hoy), 1)[0] + '-01';
+  const d1 = ($('cs-desde') && $('cs-desde').value) || (COSTEO_DATOS && COSTEO_DATOS.d1) || def1, d2 = ($('cs-hasta') && $('cs-hasta').value) || (COSTEO_DATOS && COSTEO_DATOS.d2) || hoy;
+  const q = ($('cs-q') && $('cs-q').value) || '';
+  if (!COSTEO_DATOS || COSTEO_DATOS.d1 !== d1 || COSTEO_DATOS.d2 !== d2) {
+    const proy = await todasLasFilas(api, `planificacion?select=id,cot,cliente,prendas,desglose,fecha_ingreso_ficha,fecha_entrega_cliente,estado_general,requiere_sublimacion&fecha_ingreso_ficha=gte.${d1}&fecha_ingreso_ficha=lte.${d2}&order=fecha_ingreso_ficha.desc,id.desc`) || [];
+    const ids = proy.map(p => p.id), rows = [], asig = [], tandas = [];
+    for (let i = 0; i < ids.length; i += 100) tandas.push(ids.slice(i, i + 100).join(','));
+    await Promise.all([cargarInsumos(), cargarBOM(), cargarEjecutantes(), cargarGG(mesesAntes(mesDe(d1), 3)[2]),
+      Promise.all(tandas.map(t => todasLasFilas(api, `plan_costeo?select=*&planificacion_id=in.(${t})&order=id.asc`))).then(ls => { COSTEO_OK = true; ls.forEach(l => rows.push(...(l || []))); }).catch(() => { COSTEO_OK = false; }),
+      Promise.all(tandas.map(t => todasLasFilas(api, `plan_asignaciones?select=planificacion_id,tipo_prenda,cantidad,precio_unit,ejecutante&etapa=eq.CONFEC&planificacion_id=in.(${t})`))).then(ls => ls.forEach(l => asig.push(...(l || [])))).catch(() => {})]);
+    // venta neta de cada pedido (Ventas)
+    const ventas = {};
+    const cots = Array.from(new Set(proy.map(p => baseCot(p.cot))));
+    for (let i = 0; i < cots.length; i += 60) {
+      const lote = cots.slice(i, i + 60), refs = lote.concat(lote.map(c => c.replace(/^COT-/, '')));
+      try { (await apiV(`pedidos?select=cot,neto&cot=${inLista(refs)}`) || []).forEach(x => { const c = normCot(x.cot); ventas[c] = (ventas[c] || 0) + (+x.neto || 0); }); } catch (e) {}
+    }
+    await cargarFichasCosteo(proy.filter(p => !rows.some(r => r.planificacion_id === p.id && r.etapa === 'CORTE')).map(p => p.cot));
+    COSTEO_DATOS = { d1, d2, proy, rows, asig, ventas };
+  }
+  const D = COSTEO_DATOS, G = calcularGG();
+  const ctx = p => ({ rows: D.rows.filter(r => r.planificacion_id === p.id), asig: D.asig.filter(a => a.planificacion_id === p.id), fc: COSTEO_FICHAS[p.cot] || null,
+    venta: p.cot === baseCot(p.cot) && D.ventas[normCot(p.cot)] != null ? D.ventas[normCot(p.cot)] : null, gg: G.pct(mesDe(p.fecha_ingreso_ficha) || mesDe(hoy)) });
+  const lista = D.proy.filter(p => !q || coincideQ(q, p.cot, p.cliente)).map(p => ({ p, r: calcCosteo(p, ctx(p)) }));
+  const tot = k => lista.reduce((s, x) => s + (x.r[k] || 0), 0), U = tot('unidades'), T = tot('total'), V = lista.reduce((s, x) => s + (x.r.venta || 0), 0);
+  const conV = lista.filter(x => x.r.venta != null), margen = conV.reduce((s, x) => s + x.r.margen, 0), vConV = conV.reduce((s, x) => s + x.r.venta, 0);
+  const kgM = tot('kgMerma'), kgT = tot('kgTotal');
+  v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + avisoSql20() +
+    `<p class="hint">Pedidos ingresados a producción en el período. Tela real del corte (o estimada), insumos por consumo, confección, ploteo, sublimación y gasto general del mes.</p>
+    <div class="toolbar"><label style="margin:0">Desde <input id="cs-desde" type="date" value="${d1}" onchange="renderCosteo()"></label>
+      <label style="margin:0">Hasta <input id="cs-hasta" type="date" value="${d2}" onchange="renderCosteo()"></label>
+      <input id="cs-q" placeholder="Buscar pedido o cliente" value="${esc(q)}" oninput="renderCosteo()">
+      <button class="btn" onclick="exportarCosteo()" style="color:#1B6B3E;border-color:#A9D8BC">⬇ Excel</button></div>
+    <div class="resumen">${dato('Pedidos', lista.length, false, U.toLocaleString('es-CL') + ' prendas')}${dato('Costo total', pesosCorto(T), false, 'con gasto general')}
+      ${dato('Costo por prenda', U ? pesos(T / U) : '—', false, 'promedio')}${dato('Margen', vConV ? pct(margen / vConV) : '—', vConV && margen < 0, vConV ? pesosCorto(margen) + ' sobre ' + pesosCorto(vConV) : 'sin ventas')}
+      ${dato('Merma de tela', kgT ? pct(kgM / kgT) : '—', false, kgT ? numCL(kgM) + ' de ' + numCL(kgT) + ' kg' : 'sin registros de corte')}</div>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="cs-tabla"><tr><th style="min-width:190px">Pedido</th><th style="text-align:right">Prendas</th><th style="text-align:right">Tela</th><th style="text-align:right">Insumos</th>
+      <th style="text-align:right">Confección</th><th style="text-align:right">Ploteo y subl.</th><th style="text-align:right">Gasto general</th><th style="text-align:right">Total</th>
+      <th style="text-align:right">Por prenda</th><th style="text-align:right">Venta neta</th><th style="text-align:right">Margen</th><th></th></tr>
+      ${lista.map(({ p, r }) => `<tr><td><b>${esc(p.cot)}</b> · ${esc(p.cliente)}<div class="hint">${F.corta(p.fecha_ingreso_ficha)}${r.faltan.length ? ` · <span style="color:#A8121E">falta: ${esc(r.faltan.slice(0, 2).join(', '))}${r.faltan.length > 2 ? '…' : ''}</span>` : ''}</div></td>
+        <td style="text-align:right">${r.unidades}</td><td style="text-align:right">${pesos(r.tela)}${r.telas.some(x => x.real) ? '' : '<div class="hint">estimada</div>'}</td><td style="text-align:right">${pesos(r.insumos)}</td>
+        <td style="text-align:right">${pesos(r.confeccion)}${r.confecReal ? '' : '<div class="hint">tarifa</div>'}</td><td style="text-align:right">${pesos(r.indirecto)}</td>
+        <td style="text-align:right">${pesos(r.ggMonto)}<div class="hint">${pct(r.gg && r.gg.pct)}</div></td><td style="text-align:right"><b>${pesos(r.total)}</b></td>
+        <td style="text-align:right"><b>${r.porPrenda != null ? pesos(r.porPrenda) : '—'}</b></td><td style="text-align:right">${r.venta != null ? pesos(r.venta) : '—'}</td>
+        <td style="text-align:right;color:${r.margen != null && r.margen < 0 ? '#A8121E' : 'inherit'}">${r.margenPct != null ? pct(r.margenPct) : '—'}</td>
+        <td><button class="btn sm" onclick="verCosteo(${p.id})">Ver</button></td></tr>`).join('') || '<tr><td colspan="12" class="hint">No hay pedidos ingresados en este período.</td></tr>'}
+    </table></div>`;
+  const ip = $('cs-q'); if (ip && q) { ip.focus(); ip.setSelectionRange(ip.value.length, ip.value.length); }
+}
+async function verCosteo(pid) {
+  const D = COSTEO_DATOS, p = D && D.proy.find(x => x.id === pid); if (!p) return;
+  await fichaCosteo(p.cot);
+  const G = calcularGG(), r = calcCosteo(p, { rows: D.rows.filter(x => x.planificacion_id === pid), asig: D.asig.filter(a => a.planificacion_id === pid), fc: COSTEO_FICHAS[p.cot] || null,
+    venta: p.cot === baseCot(p.cot) && D.ventas[normCot(p.cot)] != null ? D.ventas[normCot(p.cot)] : null, gg: G.pct(mesDe(p.fecha_ingreso_ficha) || mesDe(F.hoy())) });
+  const fila = (t, v, nota) => `<tr><td>${t}${nota ? `<div class="hint">${nota}</div>` : ''}</td><td style="text-align:right">${v}</td></tr>`;
+  const asig = D.asig.filter(a => a.planificacion_id === pid), otros = r.otros;
+  abrirModal(`<h3>Costeo · ${esc(p.cot)} · ${esc(p.cliente)}</h3>
+    <p class="hint">${r.unidades} prendas · ingreso ${F.corta(p.fecha_ingreso_ficha)}${r.faltan.length ? `</p><div class="aviso warn">Falta: ${esc(r.faltan.join(' · '))}</div><p>` : ''}</p>
+    <h4 style="margin:14px 0 6px">Tela ${r.telas.some(x => x.real) ? '(registro del corte)' : '(estimada con el consumo teórico)'}</h4>
+    <table class="mini"><tr><th>Tela</th>${r.telas.some(x => x.real) ? '<th style="text-align:right">Cortada</th><th style="text-align:right">Merma</th><th style="text-align:right">% merma</th><th style="text-align:right">$/kg</th>' : '<th style="text-align:right">Metros</th><th style="text-align:right">$/m</th>'}<th style="text-align:right">Costo</th></tr>
+      ${r.telas.map(x => x.real ? `<tr><td>${esc(x.tela)}${x.teoM ? `<div class="hint">teórico ${numCL(x.teoM)} m</div>` : ''}</td><td style="text-align:right">${numCL(x.kgC)} kg</td><td style="text-align:right">${numCL(x.kgM)} kg</td><td style="text-align:right">${pct(x.merma)}</td><td style="text-align:right">${x.pk != null ? pesos(x.pk) : '<span style="color:#A8121E">sin precio</span>'}</td><td style="text-align:right">${pesos(x.costo)}</td></tr>`
+        : `<tr><td>${esc(x.tela)}</td><td style="text-align:right">${numCL(x.teoM)} m</td><td style="text-align:right">${x.pm != null ? pesos(x.pm) : '<span style="color:#A8121E">sin precio</span>'}</td><td style="text-align:right">${pesos(x.costo)}</td></tr>`).join('') || '<tr><td colspan="6" class="hint">Sin telas.</td></tr>'}
+    </table>
+    <div style="margin:6px 0"><button class="btn sm" onclick="abrirRegistroCosteo(${pid},'CORTE')">${r.telas.some(x => x.real) ? 'Editar' : 'Registrar'} kilos del corte</button>
+      <button class="btn sm" onclick="abrirRegistroCosteo(${pid},'PLOTEO')">${r.metros ? 'Editar' : 'Registrar'} metros de ploteo</button>
+      <button class="btn sm" onclick="agregarOtroCosto(${pid})">+ Otro costo del pedido</button></div>
+    <h4 style="margin:14px 0 6px">Resumen</h4>
+    <table class="mini">
+      ${fila('Tela', pesos(r.tela))}
+      ${fila('Insumos por consumo', pesos(r.insumos), 'lo que lleva cada prenda según su molde, más lo común')}
+      ${fila('Confección', pesos(r.confeccion), r.confecReal ? asig.map(a => `${esc(a.ejecutante || '—')}: ${a.cantidad} × ${esc(a.tipo_prenda)}`).join(' · ') : 'tarifa del molde (sin taller asignado)')}
+      ${fila('Papel y tinta de ploteo', pesos(r.papel + r.tinta), r.metros ? numCL(r.metros) + ' m ploteados' : 'sin metros registrados')}
+      ${fila('Papel de protección (sublimación)', pesos(r.prot), r.mProt ? numCL(r.mProt) + ' m' : '')}
+      ${otros.map((o, i) => fila(esc(o.concepto), pesos(o.monto) + ` <button class="btn sm" title="Quitar" onclick="quitarOtroCosto(${pid},${i})">×</button>`, 'otro costo del pedido')).join('')}
+      ${fila('<b>Costo directo</b>', '<b>' + pesos(r.directo) + '</b>')}
+      ${fila('Gasto general ' + pct(r.gg && r.gg.pct), pesos(r.ggMonto), r.gg && r.gg.meses.length ? `gastos ÷ ventas de ${r.gg.meses.slice().reverse().map(mesTxt).join(', ')}` + (r.venta != null ? ', sobre la venta neta' : ', sobre el costo (sin venta en Ventas)') : '')}
+      ${fila('<b>Costo total</b>', '<b>' + pesos(r.total) + '</b>')}
+      ${fila('<b>Por prenda</b>', '<b>' + (r.porPrenda != null ? pesos(r.porPrenda) : '—') + '</b>')}
+      ${fila('Venta neta', r.venta != null ? pesos(r.venta) : '—', r.venta != null ? 'Ventas' : (p.cot !== baseCot(p.cot) ? 'parte de un pedido: la venta está en ' + esc(baseCot(p.cot)) : 'no se encontró en Ventas'))}
+      ${fila('Margen', r.margen != null ? `${pesos(r.margen)} · ${pct(r.margenPct)}` : '—')}
+    </table>
+    <h4 style="margin:14px 0 6px">Por prenda, según su molde</h4>
+    <div style="overflow-x:auto"><table class="mini"><tr><th>Molde</th><th style="text-align:right">Cant.</th><th style="text-align:right">Tela</th><th style="text-align:right">Insumos</th><th style="text-align:right">Confección</th>
+      <th style="text-align:right">Ploteo y otros</th><th style="text-align:right">Directo</th><th style="text-align:right">Gasto gral.</th><th style="text-align:right">Total</th><th style="text-align:right">Precio sugerido</th></tr>
+      ${r.tipos.map(t => `<tr><td>${esc(t.tipo)}<div class="hint">${esc(nombrePrenda(t.tipo))}</div></td><td style="text-align:right">${t.cant}</td><td style="text-align:right">${pesos(t.tela)}</td><td style="text-align:right">${pesos(t.insumos)}</td>
+        <td style="text-align:right">${pesos(t.confeccion)}</td><td style="text-align:right">${pesos(t.indirecto)}</td><td style="text-align:right">${pesos(t.directo)}</td><td style="text-align:right">${pesos(t.gg)}</td>
+        <td style="text-align:right"><b>${pesos(t.total)}</b></td><td style="text-align:right">${t.sugerido != null ? pesos(t.sugerido) : '—'}</td></tr>`).join('') || '<tr><td colspan="10" class="hint">El pedido no tiene prendas por molde.</td></tr>'}
+    </table></div>
+    <p class="hint">Precio sugerido = costo directo por prenda ÷ (1 − ${pct(r.gg && r.gg.pct)} de gasto general − ${numCL(COSTEO_VAL.margen)}% de margen). El margen se cambia en Costeo → Valores.</p>`, pid);
+}
+async function agregarOtroCosto(pid) {
+  const p = proyCosteo(pid); if (!p) return;
+  const concepto = (prompt('Otro costo del pedido (ej: bordado de escudos, medias compradas, despacho):') || '').trim(); if (!concepto) return;
+  const monto = parseFloat(String(prompt(`Monto total de «${concepto}» para este pedido ($):`) || '').replace(/\./g, '').replace(',', '.'));
+  if (!isFinite(monto) || monto < 0) return toast('Monto no válido', 'warn');
+  try { await api('plan_costeo?on_conflict=planificacion_id,etapa,tela', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates' },
+    body: JSON.stringify([{ planificacion_id: p.id, cot: p.cot, etapa: 'OTRO', tela: concepto, monto, usuario: USER.nombre, updated_at: new Date().toISOString() }]) }); }
+  catch (e) { return toast('No se pudo guardar: ' + String(e.message).slice(0, 140), 'err'); }
+  COSTEO_DATOS.rows = COSTEO_DATOS.rows.filter(r => !(r.planificacion_id === pid && r.etapa === 'OTRO' && r.tela === concepto)).concat([{ planificacion_id: pid, etapa: 'OTRO', tela: concepto, monto }]);
+  verCosteo(pid); renderCosteo();
+}
+async function quitarOtroCosto(pid, i) {
+  const concepto = (COSTEO_DATOS.rows.filter(r => r.planificacion_id === pid && r.etapa === 'OTRO')[i] || {}).tela; if (concepto == null) return;
+  if (!confirm(`¿Quitar «${concepto}» del costo del pedido?`)) return;
+  try { await api(`plan_costeo?planificacion_id=eq.${pid}&etapa=eq.OTRO&tela=eq.${encodeURIComponent(concepto)}`, { method: 'DELETE' }); } catch (e) { return toast('No se pudo quitar', 'err'); }
+  COSTEO_DATOS.rows = COSTEO_DATOS.rows.filter(r => !(r.planificacion_id === pid && r.etapa === 'OTRO' && r.tela === concepto));
+  verCosteo(pid); renderCosteo();
+}
+function exportarCosteo() {
+  const D = COSTEO_DATOS; if (!D || !D.proy.length) return toast('Sin datos', 'warn');
+  const G = calcularGG(), esc2 = v => /[",;\n]/.test(String(v ?? '')) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v ?? '');
+  const n = x => x == null ? '' : Math.round(x);
+  const filas = D.proy.map(p => { const r = calcCosteo(p, { rows: D.rows.filter(x => x.planificacion_id === p.id), asig: D.asig.filter(a => a.planificacion_id === p.id), fc: COSTEO_FICHAS[p.cot] || null,
+    venta: p.cot === baseCot(p.cot) && D.ventas[normCot(p.cot)] != null ? D.ventas[normCot(p.cot)] : null, gg: G.pct(mesDe(p.fecha_ingreso_ficha) || mesDe(F.hoy())) });
+    return [p.cot, p.cliente, p.fecha_ingreso_ficha, r.unidades, n(r.tela), numCL(r.kgTotal), numCL(r.kgMerma), n(r.insumos), n(r.confeccion), numCL(r.metros), n(r.papel + r.tinta), n(r.prot), n(r.otrosT),
+      n(r.directo), r.gg && r.gg.pct != null ? pct(r.gg.pct) : '', n(r.ggMonto), n(r.total), n(r.porPrenda), n(r.venta), n(r.margen), r.margenPct != null ? pct(r.margenPct) : '', r.faltan.join(' · ')]; });
+  const csv = '﻿' + ['Pedido', 'Cliente', 'Ingreso', 'Prendas', 'Tela', 'Kg tela', 'Kg merma', 'Insumos', 'Confección', 'Metros ploteo', 'Papel y tinta', 'Papel protección', 'Otros',
+    'Costo directo', '% gasto general', 'Gasto general', 'Costo total', 'Costo por prenda', 'Venta neta', 'Margen', '% margen', 'Falta'].join(';') + '\n' + filas.map(f => f.map(esc2).join(';')).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+  a.download = `Costeo_PMK_${D.d1}_${D.d2}.csv`; a.click(); URL.revokeObjectURL(a.href);
+}
+// consumo de insumos por molde: lo común a todas las prendas y lo de cada molde
+async function pintarConsumoMolde(v, chips) {
+  await Promise.all([cargarInsumos(), cargarBOM()]);
+  if (BOM === null) COSTEO_OK = false;
+  const moldes = Object.values(MOLDES_INFO).sort((a, b) => ordenInfo(a) - ordenInfo(b) || a.numero - b.numero);
+  const sel = BOM_SEL, lista = bomDe(sel), insAct = INS.filter(i => i.activo !== false && i.categoria !== 'Tela');
+  const nomM = n => n === '*' ? 'Común a todas las prendas' : (MOLDES_FICHAS[n] || ('Molde ' + etqMolde(n)));
+  const cuenta = n => bomDe(n).length;
+  const unit = costoBOM(sel === '*' ? null : sel);
+  v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + avisoSql20() +
+    `<p class="hint">Lo que lleva <b>una prenda</b> de cada insumo (elástico, hilo, cierre, etiqueta, bolsa…), en la unidad del insumo. Lo <b>común</b> se suma a todas las prendas con molde; lo de cada molde, solo a ese molde. La tela no va aquí: sale del corte. El precio de cada insumo es el de Inventario → Insumos.</p>
+    <div class="toolbar"><select id="bom-molde" onchange="BOM_SEL=this.value;renderCosteo()" style="min-width:280px"><option value="*" ${sel === '*' ? 'selected' : ''}>Común a todas las prendas${cuenta('*') ? ' (' + cuenta('*') + ')' : ''}</option>
+      ${moldes.map(m => `<option value="${m.numero}" ${String(sel) === String(m.numero) ? 'selected' : ''}>${esc(MOLDES_FICHAS[String(m.numero)] || etqMolde(m.numero))}${cuenta(m.numero) ? ' (' + cuenta(m.numero) + ')' : ''}</option>`).join('')}</select></div>
+    <h2>${esc(nomM(sel))}</h2>
+    <div class="panel"><table class="mini"><tr><th>Insumo</th><th style="text-align:right">Por prenda</th><th style="text-align:right">Precio</th><th style="text-align:right">Costo por prenda</th><th></th></tr>
+      ${lista.map(r => { const i = insumoDe(r.insumo_id); return `<tr><td>${i ? esc(i.nombre) : 'Insumo ' + r.insumo_id}</td>
+        <td style="text-align:right;white-space:nowrap"><input type="number" min="0" step="0.001" value="${r.cantidad}" style="width:100px;text-align:right" onchange="guardarBOM('${esc(String(sel))}',${r.insumo_id},this.value)"> ${i ? esc(i.unidad) : ''}</td>
+        <td style="text-align:right">${i && +i.precio > 0 ? pesos(i.precio) + '/' + esc(i.unidad) : '<span style="color:#A8121E">sin precio</span>'}</td>
+        <td style="text-align:right">${pesos((+r.cantidad || 0) * precioIns(i))}</td><td style="text-align:right"><button class="btn sm" onclick="guardarBOM('${esc(String(sel))}',${r.insumo_id},0)">×</button></td></tr>`; }).join('') || '<tr><td colspan="5" class="hint">Sin insumos.</td></tr>'}
+      ${lista.length ? `<tr><td colspan="3"><b>${sel === '*' ? 'Común, por prenda' : 'De este molde, por prenda'}</b>${sel !== '*' ? '<div class="hint">más lo común a todas</div>' : ''}</td><td style="text-align:right"><b>${pesos(lista.reduce((s, r) => s + (+r.cantidad || 0) * precioIns(insumoDe(r.insumo_id)), 0))}</b></td><td></td></tr>` : ''}
+    </table>
+    <div class="toolbar" style="margin-top:10px"><select id="bom-ins"><option value="">+ Agregar insumo…</option>${insAct.filter(i => !lista.some(r => String(r.insumo_id) === String(i.id))).map(i => `<option value="${i.id}">${esc(i.nombre)} (${esc(i.unidad)})</option>`).join('')}</select>
+      <input id="bom-cant" type="number" min="0" step="0.001" placeholder="Cantidad por prenda" style="width:170px">
+      <button class="btn pri" onclick="agregarBOM()">Agregar</button></div>
+    ${sel !== '*' ? `<p class="hint" style="margin-top:10px">Total por prenda de este molde (con lo común): <b>${pesos(unit.costo)}</b>.</p>` : ''}</div>
+    ${lista.length && sel !== '*' ? `<details style="margin-top:12px" class="panel"><summary style="cursor:pointer;font-weight:600">Copiar estos insumos a otros moldes</summary>
+      <p class="hint">Marca los moldes que llevan lo mismo. Reemplaza las cantidades de estos insumos en esos moldes (sus otros insumos no cambian).</p>
+      <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" style="width:auto;min-width:0" onchange="document.querySelectorAll('[data-bom-copia]').forEach(x=>x.checked=this.checked)"> Todos</label>
+      <div style="max-height:260px;overflow-y:auto;columns:2">${moldes.filter(m => String(m.numero) !== String(sel)).map(m => `<label style="display:flex;gap:6px;align-items:center;font-weight:400"><input type="checkbox" data-bom-copia value="${m.numero}" style="width:auto;min-width:0"> ${esc(MOLDES_FICHAS[String(m.numero)] || etqMolde(m.numero))}</label>`).join('')}</div>
+      <button class="btn pri" style="margin-top:8px" onclick="copiarBOM('${esc(String(sel))}')">Copiar a los marcados</button></details>` : ''}`;
+}
+async function guardarBOM(molde, insumoId, cantidad) {
+  const c = parseFloat(String(cantidad).replace(',', '.')) || 0;
+  try {
+    if (c > 0) await api('plan_insumos_molde?on_conflict=molde,insumo_id', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates' },
+      body: JSON.stringify([{ molde: String(molde), insumo_id: insumoId, cantidad: c, updated_at: new Date().toISOString() }]) });
+    else await api(`plan_insumos_molde?molde=eq.${encodeURIComponent(molde)}&insumo_id=eq.${insumoId}`, { method: 'DELETE' });
+  } catch (e) { return toast(String(e.message).includes('plan_insumos_molde') ? 'Falta correr el SQL 20A en Supabase de Producción' : 'No se pudo guardar', 'err'); }
+  BOM = null; COSTEO_DATOS = null; toast('Consumo guardado'); renderCosteo();
+}
+function agregarBOM() {
+  const id = ($('bom-ins') || {}).value, c = numIn('bom-cant');
+  if (!id) return toast('Elige el insumo', 'warn'); if (!(c > 0)) return toast('Anota cuánto lleva una prenda', 'warn');
+  guardarBOM(BOM_SEL, +id, c);
+}
+async function copiarBOM(molde) {
+  const dest = Array.from(document.querySelectorAll('[data-bom-copia]:checked')).map(x => x.value), lista = bomDe(molde);
+  if (!dest.length) return toast('Marca a qué moldes copiar', 'warn');
+  const filas = []; dest.forEach(d => lista.forEach(r => filas.push({ molde: String(d), insumo_id: r.insumo_id, cantidad: r.cantidad, updated_at: new Date().toISOString() })));
+  try { await api('plan_insumos_molde?on_conflict=molde,insumo_id', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates' }, body: JSON.stringify(filas) }); }
+  catch (e) { return toast('No se pudo copiar', 'err'); }
+  BOM = null; COSTEO_DATOS = null; toast(`Copiado a ${dest.length} molde${dest.length !== 1 ? 's' : ''}`); renderCosteo();
+}
+// gasto general: % de cada mes y clasificación de las categorías de gastos de Ventas
+async function pintarGG(v, chips) {
+  const hoy = F.hoy(), meses = [mesDe(hoy)].concat(mesesAntes(mesDe(hoy), 11));
+  await cargarGG(mesesAntes(meses[meses.length - 1], 3)[2]);
+  const G = calcularGG(), cls = claseGastos(), exc = excGastos();
+  const cats = {}; GG_DATOS.gs.forEach(g => { const c = catGasto(g); (cats[c] = cats[c] || { n: 0, monto: 0 }); cats[c].n++; cats[c].monto += +g.monto || 0; });
+  Object.keys(cls).forEach(c => { if (!cats[c]) cats[c] = { n: 0, monto: 0 }; });
+  const sinCls = Object.keys(cats).filter(c => !cls[c]); CATS_GG = Object.keys(cats).sort();
+  v.innerHTML = '<h1>Costeo de prendas</h1>' + chips +
+    (GG_DATOS.ok ? '' : `<div class="aviso warn">No se pudieron leer las ventas y gastos de Ventas: ${esc(String(GG_DATOS.error || '').slice(0, 160))}</div>`) +
+    `<p class="hint">El % de gasto general de cada mes = gastos generales ÷ ventas netas de los <b>3 meses anteriores</b> (de Ventas). Se aplica a la venta neta de cada pedido según el mes en que entró a producción. Las horas de las áreas (revisión, sublimación…) están dentro de estos gastos (remuneraciones).</p>
+    <div class="panel"><table class="mini"><tr><th>Mes</th><th>Se calcula con</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">Gastos generales</th><th style="text-align:right">% gasto general</th></tr>
+      ${meses.map(m => { const x = G.pct(m); return `<tr><td><b>${mesTxt(m)}</b></td><td class="hint">${x.meses.slice().reverse().map(mesTxt).join(', ')}</td><td style="text-align:right">${pesos(x.ventas)}</td><td style="text-align:right">${pesos(x.gastos)}</td><td style="text-align:right"><b>${pct(x.pct)}</b></td></tr>`; }).join('')}
+    </table></div>
+    <h2>Qué gastos son gasto general</h2>
+    <p class="hint">Lo que ya es costo directo de la prenda (telas, insumos, talleres) no entra, para no contarlo dos veces. Las boletas de honorarios son de los talleres, salvo las excepciones de abajo.</p>
+    ${sinCls.length ? `<div class="aviso warn">Categorías nuevas sin clasificar (cuentan como gasto general): ${esc(sinCls.join(', '))}</div>` : ''}
+    <div class="panel"><table class="mini"><tr><th>Categoría en Ventas</th><th style="text-align:right">Últimos 15 meses</th><th>Clasificación</th></tr>
+      ${Object.keys(cats).sort().map(c => `<tr><td>${esc(c)}</td><td style="text-align:right">${pesos(cats[c].monto)}<div class="hint">${cats[c].n} gasto${cats[c].n !== 1 ? 's' : ''}</div></td>
+        <td><select onchange="clasificarGasto(${Object.keys(cats).sort().indexOf(c)},this.value)">${Object.entries(CLASE_TXT).map(([k, t]) => `<option value="${k}" ${(cls[c] || 'general') === k ? 'selected' : ''}>${t}</option>`).join('')}</select></td></tr>`).join('')}
+    </table></div>
+    <h2>Excepciones por proveedor</h2>
+    <p class="hint">Gastos de una categoría que, para un proveedor, se clasifican distinto (se busca el nombre en el proveedor y en la descripción del gasto).</p>
+    <div class="panel"><table class="mini"><tr><th>Categoría</th><th>Proveedor</th><th>Clasificación</th><th></th></tr>
+      ${exc.map((x, i) => `<tr><td>${esc(x.cat)}</td><td>${esc(x.prov)}</td><td>${CLASE_TXT[x.clase] || x.clase}</td><td style="text-align:right"><button class="btn sm" onclick="quitarExcGasto(${i})">×</button></td></tr>`).join('') || '<tr><td colspan="4" class="hint">Sin excepciones.</td></tr>'}
+    </table>
+    <div class="toolbar" style="margin-top:8px"><select id="exc-cat">${Object.keys(cats).sort().map(c => `<option ${c === 'HONORARIOS' ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select>
+      <input id="exc-prov" placeholder="Proveedor (ej: Antonia Hermosilla)"><select id="exc-clase">${Object.entries(CLASE_TXT).map(([k, t]) => `<option value="${k}">${t}</option>`).join('')}</select>
+      <button class="btn pri" onclick="agregarExcGasto()">Agregar</button></div></div>`;
+}
+async function guardarClasifGastos(g) { COSTEO_GASTOS = g; COSTEO_DATOS = null; await guardarConfig('costeo_gastos', JSON.stringify(g)); renderCosteo(); }
+let CATS_GG = [];
+function clasificarGasto(k, clase) { const cat = CATS_GG[k]; if (!cat) return; const g = { cat: Object.assign({}, (COSTEO_GASTOS && COSTEO_GASTOS.cat) || {}), exc: excGastos().slice() }; g.cat[cat] = clase; guardarClasifGastos(g); }
+function agregarExcGasto() {
+  const cat = ($('exc-cat') || {}).value, prov = (($('exc-prov') || {}).value || '').trim(), clase = ($('exc-clase') || {}).value;
+  if (!prov) return toast('Escribe el proveedor', 'warn');
+  guardarClasifGastos({ cat: (COSTEO_GASTOS && COSTEO_GASTOS.cat) || {}, exc: excGastos().concat([{ cat, prov, clase }]) });
+}
+function quitarExcGasto(i) { const e = excGastos().slice(); e.splice(i, 1); guardarClasifGastos({ cat: (COSTEO_GASTOS && COSTEO_GASTOS.cat) || {}, exc: e }); }
+// valores: insumos de papel, tinta y protección y el margen para el precio sugerido
+async function pintarValoresCosteo(v, chips) {
+  await cargarInsumos();
+  const opc = (sel, cats) => `<option value="">— Elegir insumo —</option>` + INS.filter(i => i.activo !== false && (!cats || cats.includes(i.categoria) || String(i.id) === String(sel)))
+    .map(i => `<option value="${i.id}" ${String(i.id) === String(sel) ? 'selected' : ''}>${esc(i.nombre)} · ${+i.precio > 0 ? pesos(i.precio) + '/' + esc(i.unidad) : 'sin precio'}</option>`).join('');
+  const V = COSTEO_VAL;
+  v.innerHTML = '<h1>Costeo de prendas</h1>' + chips +
+    `<p class="hint">Insumos que se usan con los metros ploteados. Crea en Inventario → Insumos el papel, la tinta y el papel de protección con su precio (categorías Papel y Tinta).</p>
+    <div class="panel" style="max-width:640px">
+      <label for="cv-papel">Papel de ploteo (se usa 1 por metro ploteado)</label><select id="cv-papel">${opc(V.papel, ['Papel'])}</select>
+      <div class="grid2"><div><label for="cv-tinta">Tinta</label><select id="cv-tinta">${opc(V.tinta, ['Tinta'])}</select></div>
+        <div><label for="cv-tintam">Tinta por metro ploteado (en la unidad de la tinta)</label><input id="cv-tintam" type="number" min="0" step="0.0001" value="${V.tintaM || ''}" placeholder="Ej: 0,008"></div></div>
+      <div class="grid2"><div><label for="cv-prot">Papel de protección (sublimación)</label><select id="cv-prot">${opc(V.prot, ['Papel'])}</select></div>
+        <div><label for="cv-protf">Metros de protección por metro ploteado</label><input id="cv-protf" type="number" min="0" step="0.1" value="${V.protF === '' ? 1 : V.protF}"></div></div>
+      <label for="cv-margen">Margen para el precio sugerido (%)</label><input id="cv-margen" type="number" min="0" max="90" step="1" value="${V.margen}">
+      <div class="acciones"><button class="btn pri" onclick="guardarValoresCosteo()">Guardar valores</button></div></div>`;
+}
+async function guardarValoresCosteo() {
+  const n = id => { const x = numIn(id); return x == null ? 0 : x; };
+  COSTEO_VAL = { papel: $('cv-papel').value, tinta: $('cv-tinta').value, tintaM: n('cv-tintam'), prot: $('cv-prot').value, protF: numIn('cv-protf') == null ? 1 : numIn('cv-protf'), margen: n('cv-margen') };
+  COSTEO_DATOS = null; await guardarConfig('costeo_valores', JSON.stringify(COSTEO_VAL)); renderCosteo();
+}
+
 function renderMoldes() {
   const qTxt = $('q-moldes') && $('q-moldes').value || '', q = qTxt.toLowerCase().trim();   // el campo conserva lo escrito (espacios incluidos)
   const foco = conFoco('q-moldes');
@@ -5626,6 +6196,8 @@ async function cargarConfig() {
     const rows = await api('plan_config?select=clave,valor') || [];
     rows.forEach(r => {
       if (r.clave === 'margenHabiles') CONFIG.margenHabiles = parseInt(r.valor) || CONFIG.margenHabiles;
+      else if (r.clave === 'costeo_valores') { try { Object.assign(COSTEO_VAL, JSON.parse(r.valor)); } catch (e) {} }
+      else if (r.clave === 'costeo_gastos') { try { COSTEO_GASTOS = JSON.parse(r.valor); } catch (e) {} }
       else if (CONFIG.tiempos[r.clave]) { const [mi, ma] = String(r.valor).split('-').map(n => parseInt(n)); if (mi) CONFIG.tiempos[r.clave] = { min: mi, max: ma || mi }; }
     });
   } catch (e) {}

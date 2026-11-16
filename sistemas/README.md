@@ -27,6 +27,7 @@ Se corren una vez en el SQL Editor de la base indicada en cada archivo.
 | `SQL_18B_FICHAS_ampliar_topes_ficha.sql` | Fichas | Amplía los topes de tamaño de la ficha (specs e imagenes a 200.000 caracteres, items a 20.000): fichas con muchos diseños y montajes. |
 | `SQL_19A_FICHAS_descripcion_mangas.sql` | Fichas | Descripción de la manga de cada camiseta según su código: …01 manga clásica, …02 manga raglán, …03 sin mangas. |
 | `SQL_19B_FICHAS_E02_codigo_sin_mangas.sql` | Fichas | La E02 (rugby sin mangas) pasa de RB-HOMUCC02 a RB-HOMUCC03 en la tabla de moldes y en las fichas ya guardadas. Se puede correr más de una vez. |
+| `SQL_20A_PRODUCCION_costeo_prendas.sql` | Producción | Costeo de prendas: tablas `plan_costeo` (kilos de tela y merma del corte, metros de ploteo, otros costos del pedido) y `plan_insumos_molde` (consumo de insumos por prenda, por molde y común). Detalle: `LEEME_costeo.txt`. |
 | `SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql` | Fichas | Solo revisa: compara los 95 moldes del catálogo completo con la tabla moldes (falta, desactivado, código o sección distinta). |
 | `SQL_17D_FICHAS_orden_catalogo_completo.sql` | Fichas | Catálogo completo: orden y sección de los 95 moldes (los 01 al 10 al inicio de Fútbol). |
 
@@ -51,6 +52,9 @@ Las pruebas usan Playwright con las bases simuladas: no tocan Supabase ni Netlif
 | `pedido_cliente.test.js` | Sitio del cliente: basta con la talla, lista pegada desde Excel (columnas), cada prenda con su lista, sin arquero, medias por pares. |
 | `pedido_panel.test.js` | Panel y Planificación: medias por diseño con pares por talla y hoja propia, sin arquero ni número obligatorio. |
 | `catalogo.test.js` | Catálogo ordenado en el panel y en Planificación: orden, secciones, 83 y 84, moldes ya elegidos; con y sin el SQL 17A, y sin conexión. |
+| `cambiar_molde.test.js` | Panel: cambiar el molde de un diseño sin perder personas, montajes ni ficha técnica. |
+| `calces_diseno.test.js` | Un diseño con varios calces, unir diseños, aviso de calce sin molde (Planificación) y copiar la configuración de telas. |
+| `costeo.test.js` | Costeo en Planificación: registro del corte y del ploteo, costo por pedido y por molde, gasto general de los 3 meses anteriores, consumo por molde. |
 | `ventas_movil.js`, `fichas_movil.js`, `plan_movil.js` | Revisión en tamaño celular: que nada quede cortado. |
 
 `tiempos.js` y `tiempos_ventas.js` comparan con la versión anterior, que esperan en `pruebas/antes/`. Esa versión se saca del historial de git.
