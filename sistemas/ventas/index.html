@@ -86,6 +86,7 @@ label.lbl{font-size:11px;font-weight:700;color:#374151;display:block;margin-bott
 .gsub-aviso{background:#FFF7ED;color:#9A3412;border:1px solid #FED7AA;margin:0}
 .cta-sub{font-size:11px;color:#6B7280;margin-top:2px;line-height:1.35}
 .g-sug{font-size:11px;line-height:1.4}.g-sug-ok{color:#166534}.g-sug-otra{color:#6B7280}.g-sug-aviso{color:#9A3412;font-weight:600;margin-bottom:2px}
+.g-neto{font-size:13px;padding:6px 0;line-height:1.3}
 .g-regla{background:#FFF7ED;border:1px solid #FED7AA;border-radius:8px;padding:10px 12px;margin-bottom:12px}
 .rev-masivo{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid #E5E7EB;background:#FAFAFA}
 .pc-nivel td{background:#111;color:#ED6C23;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
@@ -2578,7 +2579,7 @@ function renderGastos(){
     <td>${clasifActiva()?celdaCuenta(g):`<span class="badge badge-pmk">${g.categoria||"&#8212;"}</span>`}</td>
     <td>${g.proveedor||"&#8212;"}</td>
     <td style="font-size:11px;color:#6B7280">${g.metodo_pago||"&#8212;"}</td>
-    <td style="text-align:right;color:#DC2626;font-weight:700">${clp(g.monto)}</td>
+    <td style="text-align:right;color:#DC2626;font-weight:700">${clp(g.monto)}${netoActivo()?(()=>{const x=netoDeGasto(g);return x.iva?`<div class="cta-sub" style="font-weight:400">neto ${clp(x.neto)}</div>`:"";})():""}</td>
     <td style="white-space:nowrap">
       <button class="btn btn-ghost btn-sm" onclick="editarGasto(${g.id})">Editar</button>
       <button class="btn btn-danger btn-sm" onclick="eliminarGasto(${g.id})" style="margin-left:2px">&#x1F5D1;</button>
@@ -2703,10 +2704,36 @@ let gfSug=null, gfCuentaTocada=false, gfCuentaFija=false, gfMesTocado=false, rev
 const NIVELES_CTA={"1":"Ingresos","2":"Costo directo variable","3":"Gasto general de producción","4":"Gasto general de venta y marketing","5":"Gasto general de administración","6":"Bajo el EBITDA","F":"Fuera del estado de resultados"};
 const RESULTADO_TRAS={"2":"Margen de contribución","3":"Margen bruto","5":"EBITDA"};
 const TIPO_NIVEL={"1":"ingreso","2":"variable","3":"semifijo","4":"fijo","5":"fijo","6":"bajo_ebitda","F":"fuera"};
-const TIPOS_DOC={afecta:"Factura afecta",exenta:"Factura exenta",honorarios:"Boleta de honorarios",sin_documento:"Sin documento (sueldos, leyes sociales, banco)"};
+const TIPOS_DOC={afecta:"Factura afecta (IVA recuperable)",exenta:"Factura exenta",boleta:"Boleta (el IVA no se recupera)",honorarios:"Boleta de honorarios",sin_documento:"Sin documento (sueldos, leyes sociales, banco)"};
+// Socios: al pagarles, el formulario pregunta qué es el pago (SQL 21B)
+const SOCIOS_GASTO=["Sean Duarte","Silvia Urbina"];
+const PAGO_SOCIO={remuneracion:{cta:"5.10",txt:"Remuneración: abono por su trabajo en la empresa"},
+  reembolso:{cta:null,txt:"Reembolso de un gasto de la empresa, con boleta o factura (elige abajo la cuenta del gasto)"},
+  personal:{cta:"F.07",txt:"Gasto personal o de la casa"},retiro:{cta:"F.06",txt:"Retiro de utilidades"}};
+const CTAS_SOCIO=["5.10","F.06","F.07"];
 const ORIGEN_TXT={alias:"Traducción de su categoría",regla:"Regla",historial:"Historial del proveedor",manual:"Elegida por una persona",ia:"Sugerencia de Claude"};
 
 function clasifActiva(){return clasifEstado==="ok";}
+// SQL 21B: neto de cada gasto (sin el IVA recuperable) y pagos a socios
+function netoActivo(){return clasifActiva()&&CUENTAS.some(c=>"iva_recuperable" in c);}
+function tasaIva(){const t=Number(PARAMS_G.tasa_iva);return t>0&&t<1?t:0.19;}
+function proveedorDoc(nombre){
+  const n=normTxt(nombre);if(!n)return null;
+  return PROVEEDORES.filter(p=>normTxt(p.nombre)===n&&p.tipo_documento).sort((a,b)=>(b.id||0)-(a.id||0))[0]||null;
+}
+// Igual que v_gastos_neto: documento del gasto → del proveedor → IVA habitual de la cuenta (supuesto)
+function ivaDe(monto,doc,cod,prov){
+  const pv=proveedorDoc(prov), d=doc||(pv?pv.tipo_documento:null), c=cuentaDe(cod);
+  const rec=d?d==="afecta":!!(c&&c.iva_recuperable);
+  const m=Number(monto)||0, neto=rec?Math.round(m/(1+tasaIva())):m;
+  return {rec,doc:d,origen:doc?"gasto":pv?"proveedor":"cuenta",neto,iva:m-neto};
+}
+function netoDeGasto(g){const k=clasifDe(g)||{};return ivaDe(g.monto,k.documento,cuentaDeGasto(g),g.proveedor);}
+function esSocio(prov){
+  const n=normTxt(prov);if(!n||!cuentaDe("5.10"))return false;
+  if(PROVEEDORES.some(p=>p.es_socio&&normTxt(p.nombre)===n))return true;
+  return SOCIOS_GASTO.some(x=>n.startsWith(normTxt(x)));
+}
 function escH(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 // Igual que pmk_norm en la base: mayúsculas, sin tildes, un solo espacio
 function normTxt(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toUpperCase().replace(/\s+/g," ").trim();}
@@ -2858,13 +2885,17 @@ function renderGastoFormCuentas(g){
       ${k&&k.estado!=="clasificado"?`<div class="alert gsub-aviso" style="margin-bottom:12px">En revisi&#243;n: ${escH(k.motivo||"")}</div>`:""}
       <div class="form-grid-2" style="margin-bottom:12px">
         <div><label class="lbl">Fecha de pago *</label><input type="date" id="g-fecha" value="${fecha}" onchange="gfFechaCambio()"></div>
-        <div><label class="lbl">Monto (con impuestos) *</label><input type="number" id="g-monto" value="${g.monto||''}" placeholder="$0" min="0"></div>
+        <div><label class="lbl">Monto (con impuestos) *</label><input type="number" id="g-monto" value="${g.monto||''}" placeholder="$0" min="0" oninput="gfActualizar()"></div>
       </div>
       <div style="margin-bottom:12px"><label class="lbl">Descripci&#243;n *</label><input type="text" id="g-desc" value="${escH(g.descripcion||'')}" placeholder="Detalle del gasto" oninput="gfActualizar()"></div>
       <div style="margin-bottom:12px;position:relative">
         <label class="lbl">Proveedor</label>
         <input type="text" id="g-prov" value="${escH(g.proveedor||'')}" placeholder="Buscar proveedor..." autocomplete="off" oninput="filtrarProveedores();gfActualizar()" onfocus="filtrarProveedores()">
         <div id="prov-autocomplete" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #D1D5DB;border-radius:6px;max-height:180px;overflow-y:auto;z-index:50;box-shadow:0 4px 12px rgba(0,0,0,.1)"></div>
+      </div>
+      <div id="g-socio" class="g-regla" style="display:none">
+        <div class="lbl" style="margin-bottom:4px">&#191;Qu&#233; es este pago al socio? *</div>
+        ${Object.entries(PAGO_SOCIO).map(([k2,o])=>`<label class="cf-chk"><input type="radio" name="g-socio" value="${k2}" onchange="gfSocio('${k2}')"> ${o.txt}</label>`).join("")}
       </div>
       <div style="margin-bottom:6px"><label class="lbl">Cuenta *</label>
         <select id="g-cta" onchange="gfCuentaTocada=true;gfCuentaFija=true;gfActualizar()"><option value="">&#8212; elegir cuenta &#8212;</option>${opcionesCuentas(cod)}</select></div>
@@ -2875,6 +2906,10 @@ function renderGastoFormCuentas(g){
         <div><label class="lbl">M&#233;todo de pago</label>
           <select id="g-metodo"><option value="">&#8212; seleccionar &#8212;</option>${met.map(m=>`<option value="${m}" ${g.metodo_pago===m?"selected":""}>${m}</option>`).join("")}</select></div>
       </div>
+      ${netoActivo()?`<div class="form-grid-2" style="margin-bottom:12px">
+        <div><label class="lbl">Documento</label><select id="g-doc" onchange="gfActualizar()"><option value="">Seg&#250;n el proveedor o la cuenta</option>${Object.entries(TIPOS_DOC).map(([k2,t])=>`<option value="${k2}" ${k&&k.documento===k2?"selected":""}>${t}</option>`).join("")}</select></div>
+        <div><label class="lbl">Neto</label><div id="g-neto" class="g-neto"></div></div>
+      </div>`:""}
       <div id="g-regla" class="g-regla" style="display:none"></div>
       <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap">
         ${g.id!=null?`<button type="button" class="btn btn-ghost btn-sm" style="margin-right:auto" onclick="verHistorialGasto(${g.id})">Ver dato original</button>`:""}
@@ -2882,7 +2917,14 @@ function renderGastoFormCuentas(g){
         <button class="btn btn-primary" onclick="guardarGasto()">Guardar gasto</button>
       </div>
     </div>`;
+  const pr=document.querySelector(`[name="g-socio"][value="${socioDeCuenta(k&&k.cuenta_codigo)}"]`);if(pr)pr.checked=true;
   gfActualizar();
+}
+function socioDeCuenta(cod){return !cod?"":cod==="5.10"?"remuneracion":cod==="F.07"?"personal":cod==="F.06"?"retiro":"reembolso";}
+function gfSocio(v){
+  const sel=document.getElementById("g-cta"), o=PAGO_SOCIO[v];if(!sel||!o)return;
+  if(o.cta)sel.value=o.cta;else if(CTAS_SOCIO.includes(sel.value))sel.value="";
+  gfCuentaTocada=true;gfCuentaFija=true;gfActualizar();
 }
 function gfFechaCambio(){
   if(gfMesTocado)return;
@@ -2902,9 +2944,19 @@ function gfActualizar(){
      `<div class="g-sug-otra">${escH(gfSug.txt)}</div>`);
   document.getElementById("g-que").textContent=c&&c.que_entra?c.que_entra:"";
   document.getElementById("g-mes-nota").textContent=c&&c.devengo_servicio?"Sueldos, arriendo y servicios van al mes al que corresponden, aunque se paguen en otro.":"";
-  // Corrección: ofrecer una regla para la próxima vez
+  // Pago a un socio: qué es (remuneración, reembolso, gasto personal o retiro)
+  const socio=esSocio(prov), bs=document.getElementById("g-socio");
+  if(bs){bs.style.display=socio?"":"none";
+    // la respuesta la da una persona: solo se sincroniza si eligió la cuenta a mano
+    if(socio&&cod&&gfCuentaTocada){const r=document.querySelector(`[name="g-socio"][value="${socioDeCuenta(cod)}"]`);if(r&&!r.checked)r.checked=true;}}
+  // Neto: sin el IVA que se recupera con factura afecta
+  const gn=document.getElementById("g-neto");
+  if(gn){const x=ivaDe(document.getElementById("g-monto").value,document.getElementById("g-doc").value,cod,prov);
+    const de=x.origen==="gasto"?"":x.origen==="proveedor"?" (documento del proveedor)":" (habitual de la cuenta, supuesto)";
+    gn.innerHTML=x.rec?`<b>${clp(x.neto)}</b> · IVA cr&#233;dito ${clp(x.iva)}<div class="cta-sub">Factura afecta${de}</div>`:`<b>${clp(x.neto)}</b><div class="cta-sub">Sin IVA que recuperar${de}</div>`;}
+  // Corrección: ofrecer una regla para la próxima vez (no para pagos a socios)
   const box=document.getElementById("g-regla");
-  const corrige=cod&&(gfSug.codigo?gfSug.codigo!==cod:gfCuentaTocada)&&(prov.trim()||desc.trim());
+  const corrige=!socio&&cod&&(gfSug.codigo?gfSug.codigo!==cod:gfCuentaTocada)&&(prov.trim()||desc.trim());
   if(!corrige){box.style.display="none";box.innerHTML="";box.dataset.clave="";return;}
   const clave=cod+"|"+prov.trim();
   if(box.dataset.clave===clave&&box.innerHTML){box.style.display="";return;}
@@ -2924,6 +2976,9 @@ async function guardarGastoCuentas(){
   const mes=document.getElementById("g-mes").value||fecha.slice(0,7);
   if(!fecha||!monto||!desc){alert("Completa fecha, monto y descripción");return;}
   const c=cuentaDe(cod);if(!c){alert("Elige la cuenta del gasto");return;}
+  const socio=esSocio(prov)?((document.querySelector('[name="g-socio"]:checked')||{}).value||""):null;
+  if(socio===""){alert("Indica qué es este pago al socio: remuneración, reembolso, gasto personal o retiro.");return;}
+  if(socio==="reembolso"&&CTAS_SOCIO.includes(cod)){alert("Para un reembolso elige la cuenta del gasto que se reembolsa (ej.: Movilización, Telas).");return;}
   const chk=document.getElementById("g-regla-chk"), palabra=(document.getElementById("g-regla-palabra")||{}).value||"";
   if(chk&&chk.checked&&!prov&&!palabra.trim()){alert("Para crear la regla escribe la palabra que debe tener la descripción.");return;}
   const previo=gastoEditId?GASTOS.find(x=>x.id===gastoEditId):null;
@@ -2933,7 +2988,9 @@ async function guardarGastoCuentas(){
   let origen="manual",reglaId=null,motivo=null;
   if(kPrev&&kPrev.estado==="clasificado"&&kPrev.cuenta_codigo===cod&&!gfCuentaTocada){origen=kPrev.origen||"manual";reglaId=kPrev.regla_id||null;motivo=kPrev.motivo||null;}
   else if(s.codigo===cod){origen=s.origen||"manual";reglaId=s.regla?s.regla.id:null;motivo=s.txt||null;}
+  if(socio){origen="manual";reglaId=null;motivo="Pago a socio: "+PAGO_SOCIO[socio].txt.split(":")[0].split(" (")[0].toLowerCase();}
   const clasif={gasto_id:gasto.id,cuenta_codigo:cod,periodo_devengo:mes.slice(0,7)+"-01",origen,regla_id:reglaId,estado:"clasificado",motivo,sugerencia_codigo:null,actualizado_por:usuario};
+  if(netoActivo())clasif.documento=(document.getElementById("g-doc")||{}).value||null;
   try{await sbUpsert("gastos",gasto);}catch(e){alert("Error al guardar el gasto: "+e.message);return;}
   if(previo){const idx=GASTOS.findIndex(x=>x.id===gastoEditId);if(idx>=0)GASTOS[idx]=gasto;}else GASTOS.push(gasto);
   let aviso="Gasto guardado en "+c.nombre;
@@ -3082,7 +3139,7 @@ function renderPlanCuentas(){
         <td style="white-space:nowrap;font-weight:700">${c.codigo}</td>
         <td><b>${escH(c.nombre)}</b>${c.activa?"":' <span class="badge badge-red">inactiva</span>'}${c.supuesto?`<div class="cta-sub" style="color:#9A3412">&#9888; ${escH(c.supuesto)}</div>`:""}</td>
         <td style="font-size:11px;color:#4B5563;max-width:360px">${escH(c.que_entra||"")}</td>
-        <td style="font-size:11px;white-space:nowrap">${c.prorrateo==="local"?"Reparto 80/10/10<br>":c.prorrateo==="sueldos"?"Reparto por sueldos<br>":""}${c.devengo_servicio?"Mes al que corresponde<br>":""}${c.es_activo?"Activo (umbral)":""}</td>
+        <td style="font-size:11px;white-space:nowrap">${c.prorrateo==="local"?"Reparto 80/10/10<br>":c.prorrateo==="sueldos"?"Reparto por sueldos<br>":""}${c.devengo_servicio?"Mes al que corresponde<br>":""}${c.es_activo?"Activo (umbral)<br>":""}${netoActivo()&&c.iva_recuperable?"IVA recuperable (habitual)":""}</td>
         <td style="text-align:right;white-space:nowrap">${t[c.codigo]?clp(t[c.codigo].m)+`<div class="cta-sub">${t[c.codigo].n} gasto${t[c.codigo].n===1?"":"s"}</div>`:"&#8212;"}</td>
         <td><button class="btn btn-ghost btn-sm" onclick="abrirCuentaForm('${c.codigo}')">Editar</button></td></tr>`).join("")+
       (RESULTADO_TRAS[n]?`<tr class="pc-resultado"><td colspan="6">= ${RESULTADO_TRAS[n]}</td></tr>`:"");
@@ -3125,6 +3182,7 @@ function abrirCuentaForm(cod){
       <div><label class="lbl">Por confirmar</label><input id="cf-sup" value="${escH(c.supuesto||"")}" placeholder="(opcional)"></div></div>
     <label class="cf-chk"><input type="checkbox" id="cf-dev" ${c.devengo_servicio?"checked":""}> Va al mes al que corresponde (sueldos, arriendo, servicios)</label>
     <label class="cf-chk"><input type="checkbox" id="cf-act" ${c.es_activo?"checked":""}> Es inversi&#243;n (activo): bajo el umbral de $300.000 se revisa</label>
+    ${netoActivo()?`<label class="cf-chk"><input type="checkbox" id="cf-iva" ${c.iva_recuperable?"checked":""}> Habitualmente con factura afecta: el neto descuenta el IVA (supuesto si el gasto y el proveedor no dicen otra cosa)</label>`:""}
     <label class="cf-chk"><input type="checkbox" id="cf-on" ${c.activa?"checked":""}> Activa (se puede elegir al ingresar gastos)</label>
     <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn btn-primary" onclick="guardarCuenta(${cod?"true":"false"})">Guardar cuenta</button></div>`,520);
 }
@@ -3137,6 +3195,7 @@ async function guardarCuenta(editando){
   const previa=cuentaDe(codigo);
   const fila={codigo,nombre,nivel,tipo:TIPO_NIVEL[nivel],prorrateo:v("cf-pro").value||null,devengo_servicio:v("cf-dev").checked,es_activo:v("cf-act").checked,
     que_entra:v("cf-que").value.trim()||null,supuesto:v("cf-sup").value.trim()||null,activa:v("cf-on").checked,
+    ...(v("cf-iva")?{iva_recuperable:v("cf-iva").checked}:{}),
     orden:previa?previa.orden:(Math.round(parseFloat(codigo.replace("F","9"))*100)||999),actualizado_por:usuarioActual(),updated_at:new Date().toISOString()};
   try{await sbUpsert("plan_cuentas",fila);}catch(e){alert("No se pudo guardar: "+e.message);return;}
   cerrarCapaGastos("capa-cuenta");
@@ -3409,7 +3468,8 @@ async function descargarExcelGastos(){
     "Fecha":g.fecha||"","Descripci\u00f3n":g.descripcion||"","Categor\u00eda":g.categoria||"",
     "Proveedor":g.proveedor||"","M\u00e9todo":g.metodo_pago||"","Monto":g.monto||0,
     ...(clasifActiva()?(()=>{const k=clasifDe(g)||{},c=cuentaDe(cuentaDeGasto(g));return {"C\u00f3digo":c?c.codigo:"","Cuenta":c?c.nombre:"","Nivel":c?(c.nivel==="F"?"":"Nivel "+c.nivel+" \u00b7 ")+NIVELES_CTA[c.nivel]:"",
-      "Mes al que corresponde":(k.periodo_devengo||"").slice(0,7),"Estado":c?"Clasificado":"En revisi\u00f3n","Origen":ORIGEN_TXT[k.origen]||"","Motivo":k.motivo||""};})():{})
+      "Mes al que corresponde":(k.periodo_devengo||"").slice(0,7),"Estado":c?"Clasificado":"En revisi\u00f3n","Origen":ORIGEN_TXT[k.origen]||"","Motivo":k.motivo||"",
+      ...(netoActivo()?(()=>{const x=netoDeGasto(g);return {"Documento":x.doc?TIPOS_DOC[x.doc]||x.doc:(x.rec?"Factura afecta (supuesto de la cuenta)":"Sin IVA recuperable (supuesto de la cuenta)"),"Neto":x.neto,"IVA cr\u00e9dito":x.iva};})():{})};})():{})
   }));
   const ws=XLSX.utils.json_to_sheet(rows);
   ws["!cols"]=[{wch:12},{wch:30},{wch:18},{wch:20},{wch:18},{wch:14}];

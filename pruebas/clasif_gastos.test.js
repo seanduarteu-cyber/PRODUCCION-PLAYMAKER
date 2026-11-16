@@ -6,6 +6,7 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const fs = require('fs'), path = require('path'), { execFileSync } = require('child_process');
 const HTML = fs.readFileSync(path.resolve(__dirname, '../sistemas/ventas/index.html'));
 const SQL21 = fs.readFileSync(path.resolve(__dirname, '../sql/SQL_21A_VENTAS_clasificacion_gastos.sql'), 'utf8');
+const SQL21B = fs.readFileSync(path.resolve(__dirname, '../sql/SQL_21B_VENTAS_neto_y_socios.sql'), 'utf8');
 const PSQL = process.env.PSQL || '/usr/lib/postgresql/16/bin/psql';
 const PG = ['-h', process.env.PGHOST || '/home/postgres', '-p', process.env.PGPORT || '5499', '-U', 'postgres'];
 const BASE = 'ventas_prueba_21a';
@@ -64,8 +65,18 @@ ok(k(2).cuenta_codigo === '2.03' && k(3).cuenta_codigo === 'F.02' && k(4).estado
 ok(k(5).cuenta_codigo === '2.02' && k(6).cuenta_codigo === '2.01' && k(7).cuenta_codigo === 'F.01', 'confección → talleres; compra de tela en IVA → telas; pago de IVA fuera del resultado');
 ok(k(8).cuenta_codigo === '2.09' && k(9).cuenta_codigo === '2.11', 'Antonia Hermosilla: honorarios → comisiones de venta; envíos → despachos');
 ok(k(10).cuenta_codigo === 'F.03' && k(11).estado === 'revision' && k(12).estado === 'revision', 'eléctrico Taller PMK → mejoras al local; «no sé» y «por identificar» → revisión');
-ok(k(14).estado === 'revision' && k(14).sugerencia_codigo === 'F.06' && k(13).estado === 'revision', 'pagos a Sean Duarte → revisión con sugerencia «Pagos a socios»');
+ok(k(14).estado === 'revision' && k(14).sugerencia_codigo === 'F.06' && k(13).estado === 'revision', 'SQL 21A: pagos a Sean Duarte → revisión con sugerencia «Pagos a socios»');
 ok(k(17).cuenta_codigo === '2.02' && k(21).cuenta_codigo === '3.07' && k(25).estado === 'revision' && k(25).sugerencia_codigo === '2.05', 'TALLER EXTERNO → talleres; arriendo; insumos producción → revisión (avíos o packaging)');
+// ── SQL 21B: neto y pagos a socios ──
+psql(`update gasto_clasif set cuenta_codigo = 'F.06', estado = 'clasificado', origen = 'manual', sugerencia_codigo = null where gasto_id = ${ID0 + 15000}`);   // ya revisado como «Pagos a socios»
+const finB = psql(SQL21B).split('\n').pop().split('|');
+ok(finB[0] === 'SQL 21B listo' && +finB[7] === 0, 'SQL 21B: corre y la conciliación sigue en 0 (' + finB.join(' | ') + ')');
+ok(psql(SQL21B).split('\n').pop().split('|')[0] === 'SQL 21B listo' && +psql(`select count(*) from plan_cuentas where codigo = '5.10'`) === 1, 'SQL 21B: se puede volver a correr');
+ok(psql(`select nombre from plan_cuentas where codigo = 'F.06'`) === 'Retiros de socios' && k(14).sugerencia_codigo === '5.10' && k(15).cuenta_codigo === '5.10' && /SQL 21B/.test(k(15).motivo),
+  'pagos a socios: F.06 pasa a «Retiros de socios»; los anticipos sugieren y pasan a «Remuneración de socios» (5.10)');
+const neto = id => uno(`select row_to_json(v) from v_gastos_neto v where gasto_id = ${ID0 + id * 1000}`);
+ok(neto(16).monto_neto === 2100840 && neto(16).iva_credito === 399160 && neto(16).origen_iva === 'cuenta' && neto(21).monto_neto === 2200000,
+  'neto: tela con IVA habitual de la cuenta (2.500.000 → 2.100.840); arriendo sin IVA recuperable queda igual');
 let err = ''; try { psql(`set role anon; update gasto_raw set monto_bruto = 1;`); } catch (e) { err = String(e.stderr || e.message); }
 ok(/permission denied/.test(err), 'la llave pública no puede modificar el dato crudo');
 err = ''; try { psql(`delete from gasto_raw where id = 1;`); } catch (e) { err = String(e.stderr || e.message); }
@@ -73,7 +84,7 @@ ok(/no se modifica ni se borra/.test(err), 'ni siquiera el dueño de la base pue
 
 // ── Supabase de mentira atendido por Postgres: lo justo de PostgREST que usa Ventas ──
 const PK = { gastos: 'id', proveedores: 'id', pedidos: 'id', plan_cuentas: 'codigo', gasto_cuenta_alias: 'categoria', gestion_parametros: 'clave', gasto_clasif: 'gasto_id', gasto_reglas: 'id' };
-let sinSQL21 = false; const llamadas = [];
+let sinSQL21 = false, sin21B = false; const llamadas = [], cuerpos = {};
 function filtros(u) {
   const w = [];
   for (const [c, v] of u.searchParams) { if (['select', 'order', 'limit', 'offset', 'on_conflict'].includes(c)) continue; const m = v.match(/^eq\.(.*)$/); if (m) w.push(`"${c}" = ${lit(m[1])}`); }
@@ -93,10 +104,12 @@ function atender(req, u) {
     const orden = (u.searchParams.get('order') || '').split(',').filter(Boolean).map(o => { const [c, d] = o.split('.'); return `"${c}" ${d === 'desc' ? 'desc' : 'asc'}`; }).join(', ');
     let lim = ''; const r = req.headers()['range']; if (r) { const [a, z] = r.split('-').map(Number); lim = ` limit ${z - a + 1} offset ${a}`; }
     if (u.searchParams.get('limit')) lim = ' limit ' + (+u.searchParams.get('limit'));
-    return [200, uno(`set role anon; select coalesce(jsonb_agg(x), '[]') from (select * from public.${t}${filtros(u)}${orden ? ' order by ' + orden : ''}${lim}) x`)];
+    let filas = uno(`set role anon; select coalesce(jsonb_agg(x), '[]') from (select * from public.${t}${filtros(u)}${orden ? ' order by ' + orden : ''}${lim}) x`);
+    if (sin21B && t === 'plan_cuentas') filas = filas.filter(c => c.codigo !== '5.10').map(c => { const x = { ...c }; delete x.iva_recuperable; return x; });
+    return [200, filas];
   }
   if (met === 'POST') {
-    let body = JSON.parse(req.postData()); const filas = Array.isArray(body) ? body : [body]; const cols = Object.keys(filas[0]).map(c => `"${c}"`);
+    let body = JSON.parse(req.postData()); const filas = Array.isArray(body) ? body : [body]; cuerpos[t] = filas; const cols = Object.keys(filas[0]).map(c => `"${c}"`);
     const conflicto = /merge-duplicates/.test(req.headers()['prefer'] || '') ? ` on conflict ("${PK[t]}") do update set ${cols.filter(c => c !== `"${PK[t]}"`).map(c => `${c} = excluded.${c}`).join(', ')}` : '';
     const res = uno(`set role anon; with x as (insert into public.${t} (${cols}) select ${cols} from json_populate_recordset(null::public.${t}, ${lit(JSON.stringify(filas))})${conflicto} returning *) select coalesce(jsonb_agg(x), '[]') from x`);
     return [201, /return=representation/.test(req.headers()['prefer'] || '') ? res : null];
@@ -136,7 +149,7 @@ function atender(req, u) {
   await p.waitForSelector('[data-gsub="revision"]', { timeout: 10000 });
   ok(await p.textContent('#th-cat-g') === 'Cuenta', 'la lista de gastos muestra la cuenta');
   ok(/Jornales de producci/.test(await p.textContent('#tabla-gastos')), 'el gasto de estampado aparece en Jornales de producción');
-  ok(/Revisi.n\s*7/.test(await p.textContent('#gsub-bar')), 'la barra muestra 7 gastos por revisar desde abril (el de marzo no cuenta): «' + (await p.textContent('#gsub-bar')).replace(/\s+/g, ' ') + '»');
+  ok(/Revisi.n\s*6/.test(await p.textContent('#gsub-bar')), 'la barra muestra 6 gastos por revisar desde abril (el de marzo no cuenta): «' + (await p.textContent('#gsub-bar')).replace(/\s+/g, ' ') + '»');
 
   // ── Gasto nuevo: la regla precarga la cuenta ──
   await p.evaluate(() => abrirNuevoGasto());
@@ -166,16 +179,49 @@ function atender(req, u) {
   // ── Revisión ──
   await p.click('[data-gsub="revision"]'); await p.waitForTimeout(200);
   const filasRev = await p.$$eval('#gsub-revision tr[data-rev]', t => t.length);
-  ok(filasRev === 7, 'Revisión: 7 gastos desde abril (' + filasRev + ')');
+  ok(filasRev === 6, 'Revisión: 6 gastos desde abril (' + filasRev + ')');
   const idDodo = ID0 + 12 * 1000;
   await p.selectOption('#rev-c-' + idDodo, '5.04');
   await p.click(`tr[data-rev="${idDodo}"] button`); await p.waitForTimeout(400);
   ok(psql(`select cuenta_codigo || '|' || origen || '|' || estado from gasto_clasif where gasto_id = ${idDodo}`) === '5.04|manual|clasificado', 'aceptar un gasto en revisión lo deja clasificado a mano');
-  await p.selectOption('#rev-motivo', { label: 'Pago a socio: ¿gasto de la empresa, reembolso con respaldo o retiro? (2)' });
+  await p.selectOption('#rev-motivo', { label: 'Pago a socio: ¿remuneración, reembolso con respaldo, gasto personal o retiro? (1)' });
   await p.check('#rev-todos');
   await p.click('text=Aceptar la sugerencia de los seleccionados'); await p.waitForTimeout(500);
-  ok(psql(`select string_agg(cuenta_codigo, ',') from gasto_clasif where gasto_id in (${ID0 + 14000}, ${ID0 + 15000}) and estado = 'clasificado'`) === 'F.06,F.06', 'aceptar sugerencias en grupo: los anticipos de sueldo quedan en Pagos a socios');
+  ok(psql(`select string_agg(cuenta_codigo, ',') from gasto_clasif where gasto_id in (${ID0 + 14000}, ${ID0 + 15000}) and estado = 'clasificado'`) === '5.10,5.10', 'aceptar sugerencias en grupo: el anticipo queda en Remuneración de socios');
   ok(/Revisi.n\s*4/.test(await p.textContent('#gsub-bar')), 'el contador de revisión baja a 4');
+
+  // ── Pago a un socio: hay que decir qué es ──
+  await p.click('[data-gsub="lista"]');
+  await p.evaluate(() => abrirNuevoGasto());
+  await p.fill('#g-fecha', '2026-11-05'); await p.fill('#g-monto', '1000000');
+  await p.fill('#g-prov', 'SEAN DUARTE'); await p.fill('#g-desc', 'Abono noviembre');
+  ok(await p.isVisible('#g-socio') && await p.isHidden('#g-regla'), 'pago a Sean Duarte: pregunta qué es el pago y no ofrece regla por proveedor');
+  await p.click('#modal-gasto-body button.btn-primary'); await p.waitForTimeout(300);
+  ok(psql(`select count(*) from gastos where descripcion = 'Abono noviembre'`) === '0', 'sin responder la pregunta no se guarda');
+  await p.check('[name="g-socio"][value="remuneracion"]');
+  ok(await p.inputValue('#g-cta') === '5.10', '«Remuneración» carga la cuenta Remuneración de socios');
+  await p.click('#modal-gasto-body button.btn-primary'); await p.waitForTimeout(400);
+  ok(psql(`select c.cuenta_codigo || '|' || c.origen || '|' || c.motivo from gastos g join gasto_clasif c on c.gasto_id = g.id where g.descripcion = 'Abono noviembre'`) === '5.10|manual|Pago a socio: remuneración', 'pago a socio guardado como remuneración');
+  await p.evaluate(() => abrirNuevoGasto());
+  await p.fill('#g-fecha', '2026-11-06'); await p.fill('#g-monto', '45000');
+  await p.fill('#g-prov', 'SEAN DUARTE'); await p.fill('#g-desc', 'Bencina reunión cliente');
+  await p.check('[name="g-socio"][value="reembolso"]');
+  ok(await p.inputValue('#g-cta') !== '5.10', '«Reembolso» pide la cuenta del gasto');
+  await p.selectOption('#g-cta', '5.09');
+  ok(await p.isChecked('[name="g-socio"][value="reembolso"]'), 'al elegir la cuenta sigue marcado «reembolso»');
+  await p.click('#modal-gasto-body button.btn-primary'); await p.waitForTimeout(400);
+  ok(psql(`select c.cuenta_codigo from gastos g join gasto_clasif c on c.gasto_id = g.id where g.descripcion = 'Bencina reunión cliente'`) === '5.09', 'reembolso con respaldo: queda en la cuenta del gasto (Movilización)');
+
+  // ── Documento y neto ──
+  await p.evaluate(() => abrirNuevoGasto());
+  await p.fill('#g-fecha', '2026-11-07'); await p.fill('#g-monto', '119000');
+  await p.fill('#g-prov', 'TEXTILES DEL SUR'); await p.fill('#g-desc', 'Tela piqué');
+  ok(await p.inputValue('#g-cta') === '2.01' && /\$100\.000[\s\S]*IVA cr.dito \$19\.000[\s\S]*habitual de la cuenta, supuesto/.test(await p.textContent('#g-neto')), 'neto en el formulario: factura afecta habitual de Telas ($119.000 → $100.000)');
+  await p.selectOption('#g-doc', 'boleta');
+  ok(/\$119\.000[\s\S]*Sin IVA que recuperar/.test(await p.textContent('#g-neto')), 'con boleta el neto es el monto (el IVA no se recupera)');
+  await p.click('#modal-gasto-body button.btn-primary'); await p.waitForTimeout(400);
+  const nt = uno(`select row_to_json(v) from v_gastos_neto v join gastos g on g.id = v.gasto_id where g.descripcion = 'Tela piqué'`);
+  ok(nt && nt.documento === 'boleta' && nt.origen_iva === 'gasto' && +nt.monto_neto === 119000, 'el documento del gasto queda guardado y manda en el neto (' + JSON.stringify(nt) + ')');
 
   // ── Editar y eliminar: el dato original guarda cada versión ──
   await p.click('[data-gsub="lista"]');
@@ -221,6 +267,7 @@ function atender(req, u) {
   await p.selectOption('#gsub-proveedores tr:has-text("FERROSTAAL") select >> nth=0', 'afecta');
   await p.waitForTimeout(300);
   ok(psql(`select tipo_documento from proveedores where id = 13`) === 'afecta', 'proveedor: tipo de documento guardado');
+  ok(psql(`select string_agg(distinct origen_iva, ',') from v_gastos_neto v join gastos g on g.id = v.gasto_id where g.proveedor = 'FERROSTAAL'`) === 'proveedor', 'el neto de los gastos de Ferrostaal usa el documento del proveedor');
 
   // ── Conciliación ──
   await p.click('[data-gsub="conciliacion"]'); await p.waitForSelector('#conc-kpis .kpi:nth-child(4)');
@@ -231,6 +278,19 @@ function atender(req, u) {
   await p.setViewportSize({ width: 390, height: 844 }); await p.click('[data-gsub="revision"]'); await p.waitForTimeout(200);
   await p.screenshot({ path: path.join(__dirname, 'clasif_revision_movil.png') });
   ok(await p.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), 'celular: Revisión no se sale del ancho');
+
+  // ── Con el SQL 21A pero sin el 21B: sin documento ni pregunta del socio, y guarda igual ──
+  sin21B = true;
+  const r = await abrir();
+  await r.waitForFunction(() => clasifEstado === 'ok', null, { timeout: 8000 });
+  await r.evaluate(() => abrirNuevoGasto());
+  await r.fill('#g-fecha', '2026-11-08'); await r.fill('#g-monto', '20000');
+  await r.fill('#g-prov', 'SEAN DUARTE'); await r.fill('#g-desc', 'Estacionamiento');
+  ok(!(await r.$('#g-doc')) && await r.isHidden('#g-socio'), 'sin SQL 21B: el formulario no muestra documento ni la pregunta del socio');
+  await r.selectOption('#g-cta', '5.09'); await r.click('#modal-gasto-body button.btn-primary'); await r.waitForTimeout(400);
+  ok(psql(`select count(*) from gastos where descripcion = 'Estacionamiento'`) === '1' && !('documento' in cuerpos.gasto_clasif[0]), 'sin SQL 21B: el gasto se guarda (sin enviar «documento»)');
+  ok(r.errores.length === 0, 'sin SQL 21B: sin errores ' + JSON.stringify(r.errores));
+  sin21B = false;
 
   // ── Sin el SQL 21A: Gastos funciona como antes ──
   sinSQL21 = true;

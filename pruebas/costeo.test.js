@@ -1,6 +1,6 @@
 // Costeo de prendas en Planificación: registro del corte (kg por tela y merma) y del ploteo (metros) al terminar,
 // pestaña «Costeo» (tela, insumos por consumo, confección, ploteo y sublimación, gasto general de los 3 meses
-// anteriores según Ventas, margen y precio sugerido), consumo de insumos por molde y clasificación de gastos.
+// anteriores según la clasificación de Ventas, en neto), margen y precio sugerido, y consumo de insumos por molde.
 // Bases simuladas (Producción, Fichas y Ventas), con estado.
 const { chromium, contexto } = require('./comun_movil');
 let fallas = 0; const ok = (c, m) => { console.log((c ? 'OK   ' : 'FALLA') + ' ' + m); if (!c) fallas++; };
@@ -46,18 +46,29 @@ const dets = Array.from({ length: 8 }, (_, i) => ({ id: 'p' + i, ref: 'COT-4000'
 // COT-4001: sin corte registrado, la tela se estima con el consumo teórico de su ficha (8 m de Pro y 2,4 m de Nacional)
 const ficha2 = Object.assign({}, ficha, { id: 2, ref: 'COT-4001', items: [{ prenda: 'camiseta', cant: 8 }], specs: { camiseta: ficha.specs.camiseta } });
 const dets2 = Array.from({ length: 8 }, (_, i) => ({ id: 'q' + i, ref: 'COT-4001', calce: 'Masculino', manga: 'Corta', tallas: { camiseta: 'M' }, created_at: ahora }));
-// Ventas: ventas netas de agosto a octubre (3.000.000) y gastos; noviembre usa esos 3 meses
+// Ventas: ventas netas de agosto a octubre (3.000.000, sin la anulada) y gastos ya clasificados (v_gastos_neto, SQL 21B);
+// el pedido se cerró en noviembre: usa agosto, septiembre y octubre
 const ventasPed = [{ id: 1, cot: '4000', fecha: '2026-11-03', neto: 300000, total: 357000, cliente: 'Club Costeo', cantidad: 10 },
-  { id: 2, cot: '3900', fecha: '2026-08-10', neto: 1000000 }, { id: 3, cot: '3901', fecha: '2026-09-10', neto: 1000000 }, { id: 4, cot: '3902', fecha: '2026-10-10', neto: 1000000 }];
-const gastos = [{ id: 1, fecha: '2026-08-05', monto: 300000, categoria: 'REMUNERACIONES', proveedor: '' }, { id: 2, fecha: '2026-09-05', monto: 150000, categoria: 'ARRIENDO', proveedor: 'Inmobiliaria' },
-  { id: 3, fecha: '2026-10-05', monto: 500000, categoria: 'TELAS', proveedor: 'Textil' }, { id: 4, fecha: '2026-10-06', monto: 200000, categoria: 'HONORARIOS', proveedor: 'Taller Juan Pérez' },
-  { id: 5, fecha: '2026-10-07', monto: 100000, categoria: 'HONORARIOS', proveedor: 'Antonia Hermosilla' }, { id: 6, fecha: '2026-10-08', monto: 80000, categoria: 'IMPUESTO SII', proveedor: 'SII' }];
+  { id: 2, cot: '3900', fecha: '2026-08-10', neto: 1000000 }, { id: 3, cot: '3901', fecha: '2026-09-10', neto: 1000000 }, { id: 4, cot: '3902', fecha: '2026-10-10', neto: 1000000 },
+  { id: 5, cot: '3903', fecha: '2026-10-20', neto: 500000, estado: 'Anulada' }];
+const gn = (id, periodo, cuenta_codigo, nivel, estado, monto_bruto, monto_neto, iva_recuperable) => ({ gasto_id: id, periodo, cuenta_codigo, nivel, estado, monto_bruto, monto_neto, origen_iva: 'cuenta', iva_recuperable: !!iva_recuperable });
+const vGastosNeto = [gn(1, '2026-08-01', '3.01', '3', 'clasificado', 300000, 300000),          // sueldos de producción
+  gn(2, '2026-09-01', '3.07', '3', 'clasificado', 150000, 150000),                                // arriendo: 80/10/10
+  gn(3, '2026-10-01', '2.01', '2', 'clasificado', 595000, 500000, true),                          // tela: costo directo, no entra
+  gn(4, '2026-10-01', '2.09', '2', 'clasificado', 100000, 100000),                                // comisión: costo directo, no entra
+  gn(5, '2026-10-01', '5.02', '5', 'clasificado', 119000, 100000, true),                          // software con factura afecta: en neto
+  gn(6, '2026-10-01', 'F.01', 'F', 'clasificado', 80000, 80000),                                  // pago de IVA: fuera
+  gn(7, '2026-10-01', null, null, 'revision', 40000, 40000),                                       // en revisión: el % es provisorio
+  gn(8, '2026-03-01', '3.01', '3', 'clasificado', 999999, 999999)];                                // antes de abril: no se usa
+const planCuentas = [{ codigo: '3.01', nivel: '3', prorrateo: null }, { codigo: '3.07', nivel: '3', prorrateo: 'local' }, { codigo: '5.02', nivel: '5', prorrateo: null }];
+const gestionParametros = [{ clave: 'inicio_analisis', valor: '2026-04-01' }, { clave: 'prorrateo_local', valor: { produccion: 80, ventas: 10, administracion: 10 } }];
 
 const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? proys.map(p => ({ cot: p.cot })) : proys,
   plan_usuarios: [{ usuario: 'sean.duarte', nombre: 'Sean Duarte', rol: 'admin', roles: ['admin'], activo: true }],
   plan_ejecutantes: [{ id: 1, nombre: 'Pedro Corte', area: 'Corte', activo: true }, { id: 2, nombre: 'Taller Las Rosas', area: 'Confección', activo: true }],
   plan_tarifas: [{ tipo: '18 · FUTHOMU02', precio: 3000 }, { tipo: '46 · BK-SH', precio: 2000 }],
-  plan_insumos_stock: insumos, plan_insumos: insumos, moldes, fichas_tallas: [ficha, ficha2], fichas_detalle: dets.concat(dets2), catalogo_tecnico: [], pedidos: ventasPed, gastos } };
+  plan_insumos_stock: insumos, plan_insumos: insumos, moldes, fichas_tallas: [ficha, ficha2], fichas_detalle: dets.concat(dets2), catalogo_tecnico: [], pedidos: ventasPed,
+  v_gastos_neto: vGastosNeto, plan_cuentas: planCuentas, gestion_parametros: gestionParametros } };
 
 (async () => {
   const b = await chromium.launch();
@@ -132,7 +143,7 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   ok(/18 · FUTHOMU02 · Camiseta — 8 prendas \(8 cortadas\)/.test(det) && /46 · BK-SH · Short.* — 2 prendas \(2 cortadas\)/.test(det), 'detalle: una sección por molde con sus prendas cortadas');
   ok(/Pro\s+teórico 8 m\s+2,5 kg\s+0,4 kg\s+13,8%\s+\$9\.000\s+\$26\.100/.test(det), 'detalle camiseta: Pro 2,5 kg + 0,4 merma a $9.000/kg = $26.100');
   ok(/Costo total del molde\s+\$119\.410\s+Costo por prenda\s+\$14\.926\s+Precio sugerido por prenda\s+costo directo[^\n]*\s+\$17\.695/.test(det), 'detalle: costo total del molde, por prenda y precio sugerido (directo ÷ (1 − 18,3% − 30%))');
-  ok(/gastos ÷ ventas de agosto 2026, septiembre 2026, octubre 2026, sobre la venta neta/.test(det), 'detalle: el gasto general dice con qué meses se calculó');
+  ok(/gasto general ÷ ventas netas de agosto 2026, septiembre 2026, octubre 2026, sobre la venta neta · provisorio/.test(det), 'detalle: el gasto general dice con qué meses se calculó y que es provisorio');
   // otro costo de un molde
   await p.evaluate(() => abrirOtroCosto(1)); await p.waitForTimeout(400);
   await p.fill('#oc-con', 'Bordado escudo'); await p.fill('#oc-monto', '8000'); await p.selectOption('#oc-molde', '18 · FUTHOMU02'); await p.click('#modal .btn.pri'); await p.waitForTimeout(900);
@@ -143,15 +154,21 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   const pm = await p.$$eval('#cs-moldes tr', trs => trs.slice(1).map(t => t.innerText.replace(/\s+/g, ' ')));
   ok(pm.length === 2 && /^18 · FUTHOMU02 .* 2 16 /.test(pm[0]) && /^46 · BK-SH .* 1 2 /.test(pm[1]), 'por molde: la camiseta en 2 pedidos (16 prendas) y el short en 1: ' + pm.join(' / '));
 
-  // 4 · gasto general: % de cada mes y clasificación (honorarios de talleres fuera; Antonia Hermosilla dentro)
+  // 4 · gasto general desde la clasificación de Ventas, en neto: cada mes y el % de los 3 meses anteriores
   await p.evaluate(() => { COSTEO_MODO = 'gg'; renderCosteo(); }); await p.waitForTimeout(1200);
-  const gg = await p.innerText('#view-costeo');
-  ok(/noviembre 2026\s+agosto 2026, septiembre 2026, octubre 2026\s+\$3\.000\.000\s+\$550\.000\s+18,3%/.test(gg), 'noviembre: $550.000 de gastos generales ÷ $3.000.000 de ventas = 18,3%');
-  ok(/HONORARIOS/.test(gg) && /Antonia Hermosilla/.test(gg), 'honorarios como costo directo, con la excepción de Antonia Hermosilla');
-  await p.evaluate(() => { const c = CATS_GG.indexOf('IMPUESTO SII'); clasificarGasto(c, 'general'); }); await p.waitForTimeout(800);
-  const cfg = JSON.parse((config.find(c => c.clave === 'costeo_gastos') || {}).valor || '{}');
-  ok(cfg.cat && cfg.cat['IMPUESTO SII'] === 'general' && /21%/.test(await p.innerText('#view-costeo')), 'cambiar la clasificación se guarda y recalcula el % (630.000 ÷ 3.000.000 = 21%)');
-  await p.evaluate(() => { const c = CATS_GG.indexOf('IMPUESTO SII'); clasificarGasto(c, 'fuera'); }); await p.waitForTimeout(600);
+  const ggP = (await p.innerText('#gg-pedidos')).replace(/\s+/g, ' '), ggM = await p.$$eval('#gg-meses tr', trs => trs.slice(1).map(t => t.innerText.replace(/\s+/g, ' ')));
+  ok(/noviembre 2026 agosto 2026, septiembre 2026, octubre 2026 \$3\.000\.000 \$550\.000 18,3% provisorio/.test(ggP), 'pedidos de noviembre: $550.000 de gasto general ÷ $3.000.000 de ventas netas = 18,3%, provisorio: ' + ggP.slice(0, 200));
+  const fM = m => ggM.find(x => x.startsWith(m)) || '';
+  ok(/^octubre 2026 \$1\.000\.000 \$0 \$0 \$100\.000 \$100\.000 10% \$40\.000 1 gasto$/.test(fM('octubre')), 'octubre: sin la venta anulada; tela, comisión e IVA no entran; software en neto; $40.000 en revisión: ' + fM('octubre'));
+  ok(/^septiembre 2026 \$1\.000\.000 \$120\.000 \$15\.000 \$15\.000 \$150\.000 15% —$/.test(fM('septiembre')), 'septiembre: arriendo repartido 80/10/10: ' + fM('septiembre'));
+  ok(/^agosto 2026 \$1\.000\.000 \$300\.000 \$0 \$0 \$300\.000 30% —$/.test(fM('agosto')), 'agosto: sueldos de producción: ' + fM('agosto'));
+  ok(!ggM.some(x => /marzo/.test(x)) && /\$19\.000 de IVA se descontaron según el IVA habitual de la cuenta/.test(await p.innerText('#view-costeo')), 'marzo no aparece (el análisis parte en abril) y avisa el IVA descontado por supuesto');
+  // sin el SQL 21B en Ventas: avisa en vez de calcular con otra cosa
+  await ctx.route(/nnisdusdujcpkrbjqnhe\.supabase\.co\/rest\/v1\/v_gastos_neto/, r => r.fulfill({ status: 404, contentType: 'application/json', body: '{"code":"PGRST205"}' }));
+  await p.evaluate(() => { GG_DATOS = null; renderCosteo(); }); await p.waitForTimeout(900);
+  ok(/Falta correr el SQL 21B/.test(await p.innerText('#view-costeo')), 'sin SQL 21B: avisa que falta');
+  await ctx.unroute(/nnisdusdujcpkrbjqnhe\.supabase\.co\/rest\/v1\/v_gastos_neto/);
+  await p.evaluate(() => { GG_DATOS = null; COSTEO_DATOS = null; }); 
 
   // 5 · consumo de insumos por molde
   await p.evaluate(() => { COSTEO_MODO = 'consumo'; BOM_SEL = '18'; renderCosteo(); }); await p.waitForTimeout(900);

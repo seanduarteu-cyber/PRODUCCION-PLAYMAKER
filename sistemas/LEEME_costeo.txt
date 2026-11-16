@@ -33,16 +33,23 @@ Costo total del molde = tela + insumos por consumo + confección + ploteo y subl
    - En Costeo → Valores se eligen los insumos de papel, tinta y protección (crearlos en Insumos, categorías Papel y Tinta).
 5. Otros costos: en el detalle de un pedido, «+ Otro costo» (bordado, medias compradas, despacho…), de un molde o de
    todo el pedido (se reparte entre los moldes por prendas).
-6. Gasto general (Costeo → «Gasto general»)
-   - % del mes = gastos generales ÷ ventas netas de los 3 MESES ANTERIORES, según Ventas.
-     Ej: un pedido que entra en noviembre usa agosto, septiembre y octubre.
+6. Gasto general (Costeo → «Gasto general»; requiere los SQL 21A y 21B en Ventas)
+   - Gasto general = las cuentas de gasto general del plan de cuentas de Ventas (niveles 3, 4 y 5: producción, venta y
+     marketing, administración), según el mes al que corresponde cada gasto. La clasificación se hace en Ventas › Gastos.
+     No entra el costo directo (nivel 2: telas, talleres, papel y tinta, avíos, comisiones…) ni lo que está fuera del
+     resultado (IVA, inversiones, retiros de socios). La remuneración de socios sí es gasto general (administración).
+   - Todo en NETO: los gastos sin el IVA que se recupera con factura afecta; las ventas sin IVA, sin las anuladas y
+     menos las devoluciones. Si un gasto no dice su documento, se usa el del proveedor o, si no, el IVA habitual de la
+     cuenta (supuesto: la pantalla avisa cuánto IVA se descontó así).
+   - «Cada mes»: ventas netas, gasto general de producción, de venta y marketing y de administración (arriendo, luz,
+     agua, aseo y mantención del local repartidos 80/10/10; leyes sociales según los sueldos), total, % del mes y lo que
+     sigue en revisión en Ventas. Desde abril 2026 (los meses anteriores no se usan).
+   - % que se aplica a un pedido = gasto general ÷ ventas netas de los 3 MESES ANTERIORES al mes en que se cerró la venta
+     (si el pedido no está en Ventas, el mes en que entró a producción). Ej: una venta cerrada en noviembre usa agosto,
+     septiembre y octubre. Es «provisorio» si alguno de esos meses tiene gastos en revisión.
    - Se aplica a la venta neta del pedido (si el pedido no está en Ventas, sobre el costo) y se reparte entre sus
      moldes según el costo directo de cada uno.
-   - Las horas de las áreas (revisión, sublimación…) están dentro de este gasto (remuneraciones).
-   - Qué gastos cuentan: cada categoría de Ventas se clasifica como «Gasto general», «Ya es costo directo» (telas,
-     insumos, talleres: no se cuentan dos veces) o «No es gasto de operación» (impuestos, inversión, socios…).
-     Las boletas de HONORARIOS son de los talleres (costo directo), salvo las de Antonia Hermosilla (gasto general):
-     queda como excepción por proveedor y se pueden agregar otras.
+   - Las horas de las áreas (revisión, sublimación…) están dentro de este gasto (sueldos).
 7. Resultado: costo total de cada molde y por prenda; total del pedido, venta neta y margen; precio sugerido por prenda =
    costo directo por prenda ÷ (1 − % gasto general − margen). El margen se define en Costeo → Valores.
 
@@ -53,4 +60,4 @@ LO QUE NECESITAN CARGAR
   (precio por kg ÷ m por kg). «Solo sin precio» muestra lo que falta.
 - Papel de ploteo, tinta (y cuánta tinta por metro) y papel de protección como insumos; elegirlos en Costeo → Valores.
 - El consumo de insumos por molde (y el común).
-- Revisar la clasificación de las categorías de gastos en Costeo → Gasto general.
+- Terminar la Revisión de gastos en Ventas › Gastos: mientras haya gastos en revisión, el % es provisorio.

@@ -5627,51 +5627,66 @@ let COSTEO_VAL = { papel: '', tinta: '', tintaM: 0, prot: '', protF: 1, margen: 
 let COSTEO_GASTOS = null, COSTEO_MODO = 'pedidos', COSTEO_DATOS = null, COSTEO_FICHAS = {}, BOM = null, GG_DATOS = null, REG_COSTEO = null, BOM_SEL = '*';
 // clasificación de las categorías de gastos de Ventas: «general» entra al gasto general; «directo» ya está en el
 // costo de la prenda (telas, insumos, talleres); «fuera» no es gasto de operación (impuestos, inversión, socios)
-const GASTOS_CLASE_DEF = {
-  general: ['REMUNERACIONES', 'LEYES SOCIALES', 'ARRIENDO', 'CONSUMOS BASICOS', 'ASEO', 'ALMUERZO', 'ASIGNACION MOVILIZACION', 'COMBUSTIBLE', 'UBER',
-    'ENVIOS', 'AGENCIA ADS', 'PUBLICIDAD GOOGLE', 'PUBLICIDAD META', 'RRSS', 'SOFTWARE', 'HOSTING', 'IA', 'INSUMOS DE OFICINA', 'MANTENCION CUENTA CORRIENTE EMPRESA', 'OTROS'],
-  // las boletas de honorarios son en su mayoría de los talleres que confeccionan: ya están en Confección
-  directo: ['TELAS', 'INSUMOS PRODUCCION', 'TALLER EXTERNO', 'TALLER PMK', 'SERVICIO DE BORDADOS', 'PROVEEDOR DE PRENDAS', 'PROVEEDOR INDUMENTARIAS',
-    'PROVEEDOR DE ARTICULOS DEPORTIVOS', 'HONORARIOS'],
-  fuera: ['IMPUESTO SII', 'INVERSION', 'REEMBOLSO SOCIO', 'DEVOLUCIÓN A CLIENTE', 'MOBILIARIO', 'INFRAESTRUCTURA/MOBILIARIO']
-};
-// excepciones por proveedor: los honorarios de Antonia Hermosilla son de producción (gasto general)
-const GASTOS_EXC_DEF = [{ cat: 'HONORARIOS', prov: 'Antonia Hermosilla', clase: 'general' }];
-const CLASE_TXT = { general: 'Gasto general', directo: 'Ya es costo directo', fuera: 'No es gasto de operación' };
-const claseGastos = () => { const c = {}; Object.entries(GASTOS_CLASE_DEF).forEach(([k, l]) => l.forEach(x => { c[x] = k; }));
-  return Object.assign(c, (COSTEO_GASTOS && COSTEO_GASTOS.cat) || {}); };
-const excGastos = () => COSTEO_GASTOS && Array.isArray(COSTEO_GASTOS.exc) ? COSTEO_GASTOS.exc : GASTOS_EXC_DEF;
-const catGasto = g => String(g.categoria || '').trim().toUpperCase() || 'SIN CATEGORÍA';
-function claseDeGasto(g, cls, exc) {
-  const cat = catGasto(g), txt = normIns((g.proveedor || '') + ' ' + (g.descripcion || ''));
-  const e = exc.find(x => String(x.cat || '').toUpperCase() === cat && x.prov && txt.includes(normIns(x.prov)));
-  return e ? e.clase : (cls[cat] || 'general');
-}
 const mesDe = s => String(s || '').slice(0, 7);
 const mesesAntes = (mes, n) => { let [y, m] = mes.split('-').map(Number); const out = []; for (let i = 0; i < n; i++) { m--; if (!m) { m = 12; y--; } out.push(y + '-' + String(m).padStart(2, '0')); } return out; };
 const NOM_MES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 const mesTxt = m => m ? NOM_MES[+m.slice(5, 7) - 1] + ' ' + m.slice(0, 4) : '';
 const pct = x => x == null || !isFinite(x) ? '—' : (Math.round(x * 1000) / 10).toLocaleString('es-CL') + '%';
-// ventas netas y gastos de Ventas por mes, desde un mes
+// Gasto general desde Ventas › Gastos (SQL 21A y 21B): las cuentas de los niveles 3, 4 y 5 (gasto general de
+// producción, de venta y marketing y de administración), en NETO (sin el IVA que se recupera con factura afecta) y
+// según el mes al que corresponde cada gasto. No entra el costo directo (nivel 2: ya está en el costeo de cada
+// pedido) ni lo que está fuera del resultado. Ventas netas: pedidos cerrados en el mes, sin IVA y sin anuladas.
+const AREA_GG = { '3': 'prod', '4': 'venta', '5': 'admin' };
 async function cargarGG(desdeMes) {
-  if (GG_DATOS && GG_DATOS.desde <= desdeMes) return GG_DATOS;
+  if (GG_DATOS && GG_DATOS.ok && GG_DATOS.desde <= desdeMes) return GG_DATOS;
   const d = desdeMes + '-01';
   try {
-    const [ps, gs] = await Promise.all([todasLasFilas(apiV, `pedidos?select=cot,fecha,neto&fecha=gte.${d}&order=fecha.asc`),
-      todasLasFilas(apiV, `gastos?select=fecha,monto,categoria,proveedor,descripcion&fecha=gte.${d}&order=fecha.asc`)]);
-    GG_DATOS = { desde: desdeMes, ps: ps || [], gs: gs || [], ok: true };
-  } catch (e) { GG_DATOS = { desde: desdeMes, ps: [], gs: [], ok: false, error: e.message }; }
+    const [ps, gs, cs, par] = await Promise.all([
+      todasLasFilas(apiV, `pedidos?select=cot,fecha,neto,total,estado&fecha=gte.${d}&order=fecha.asc,id.asc`),
+      todasLasFilas(apiV, `v_gastos_neto?select=gasto_id,periodo,cuenta_codigo,nivel,estado,monto_bruto,monto_neto,origen_iva,iva_recuperable&periodo=gte.${d}&order=periodo.asc,gasto_id.asc`),
+      apiV('plan_cuentas?select=codigo,nombre,nivel,prorrateo&order=codigo.asc'),
+      apiV('gestion_parametros?select=clave,valor&order=clave.asc')]);
+    const P = {}; (par || []).forEach(x => { P[x.clave] = x.valor; });
+    GG_DATOS = { desde: desdeMes, ps: ps || [], gs: gs || [], cuentas: cs || [], par: P, ok: true };
+  } catch (e) { GG_DATOS = { desde: desdeMes, ps: [], gs: [], cuentas: [], par: {}, ok: false, error: e.message, falta: /^404/.test(e.message) }; }
   return GG_DATOS;
 }
-// % de gasto general de un mes: gastos generales ÷ ventas netas de los 3 meses anteriores
+// cada mes por separado y el % de los 3 meses anteriores a un mes
 function calcularGG() {
-  const cls = claseGastos(), exc = excGastos(), ventas = {}, gastos = {};
-  if (!GG_DATOS) return { pct: () => ({ meses: [], ventas: 0, gastos: 0, pct: null }), ventas, gastos };
-  GG_DATOS.ps.forEach(p => { const k = mesDe(p.fecha); if (k) ventas[k] = (ventas[k] || 0) + (+p.neto || 0); });
-  GG_DATOS.gs.forEach(g => { const k = mesDe(g.fecha); if (k && claseDeGasto(g, cls, exc) === 'general') gastos[k] = (gastos[k] || 0) + (+g.monto || 0); });
-  const pctMes = mes => { const ms = mesesAntes(mes, 3), v = ms.reduce((s, x) => s + (ventas[x] || 0), 0), g = ms.reduce((s, x) => s + (gastos[x] || 0), 0);
-    return { meses: ms, ventas: v, gastos: g, pct: v > 0 ? g / v : null }; };
-  return { pct: pctMes, ventas, gastos };
+  if (!GG_DATOS || !GG_DATOS.ok) return { pct: () => ({ meses: [], ventas: 0, gastos: 0, pct: null, provisorio: false }), mes: () => null, inicio: '2026-04' };
+  const P = GG_DATOS.par, ini = mesDe(typeof P.inicio_analisis === 'string' ? P.inicio_analisis : '2026-04-01');
+  const pl = P.prorrateo_local && typeof P.prorrateo_local === 'object' ? P.prorrateo_local : { produccion: 80, ventas: 10, administracion: 10 };
+  const tot = (+pl.produccion || 0) + (+pl.ventas || 0) + (+pl.administracion || 0) || 100;
+  const cta = {}; GG_DATOS.cuentas.forEach(c => { cta[c.codigo] = c; });
+  const M = {}, fila = m => M[m] = M[m] || { mes: m, ventas: 0, devol: 0, prod: 0, venta: 0, admin: 0, total: 0, leyes: 0, sProd: 0, sVenta: 0, revision: 0, nRev: 0, ivaSup: 0 };
+  GG_DATOS.ps.forEach(p => { const m = mesDe(p.fecha); if (!m || m < ini || /anul/i.test(p.estado || '')) return;
+    fila(m).ventas += p.neto != null && p.neto !== '' ? +p.neto || 0 : Math.round((+p.total || 0) / 1.19); });
+  GG_DATOS.gs.forEach(g => {
+    const m = mesDe(g.periodo); if (!m || m < ini) return;
+    const f = fila(m), n = +g.monto_neto || 0;
+    if (g.estado !== 'clasificado') { f.revision += +g.monto_bruto || 0; f.nRev++; return; }
+    if (g.nivel === '1') { f.devol += n; return; }
+    const area = AREA_GG[g.nivel]; if (!area) return;
+    if (g.origen_iva === 'cuenta' && g.iva_recuperable) f.ivaSup += (+g.monto_bruto || 0) - n;
+    if (g.cuenta_codigo === '3.01' || g.cuenta_codigo === '3.02') f.sProd += n;
+    if (g.cuenta_codigo === '4.01') f.sVenta += n;
+    const pr = (cta[g.cuenta_codigo] || {}).prorrateo;
+    if (pr === 'local') { f.prod += n * (+pl.produccion || 0) / tot; f.venta += n * (+pl.ventas || 0) / tot; f.admin += n * (+pl.administracion || 0) / tot; }
+    else if (pr === 'sueldos') f.leyes += n;
+    else f[area] += n;
+    f.total += n;
+  });
+  // leyes sociales: según los sueldos de producción (y diseño) y de venta del mes
+  Object.values(M).forEach(f => { const s = f.sProd + f.sVenta, k = s > 0 ? f.sProd / s : 1;
+    f.prod += f.leyes * k; f.venta += f.leyes * (1 - k);
+    f.ventasNetas = f.ventas - f.devol; f.pct = f.ventasNetas > 0 ? f.total / f.ventasNetas : null; });
+  const hoyM = mesDe(F.hoy());
+  const pctMes = mes => {
+    const ms = mesesAntes(mes, 3).filter(x => x >= ini);
+    const v = ms.reduce((s, x) => s + (M[x] ? M[x].ventasNetas : 0), 0), g = ms.reduce((s, x) => s + (M[x] ? M[x].total : 0), 0);
+    return { meses: ms, ventas: v, gastos: g, pct: v > 0 ? g / v : null, provisorio: ms.some(x => (M[x] && M[x].nRev > 0) || x >= hoyM) };
+  };
+  return { pct: pctMes, mes: m => M[m] || null, inicio: ini };
 }
 // precio de un insumo por kg o por metro (las telas se compran en una de las dos; el rendimiento es m por kg)
 const precioKg = i => !i || !(+i.precio > 0) ? null : i.unidad === 'kg' ? +i.precio : i.unidad === 'm' && +i.rendimiento > 0 ? +i.precio * +i.rendimiento : null;
@@ -5987,22 +6002,24 @@ async function cargarCosteo() {
   const proy = await todasLasFilas(api, `planificacion?select=id,cot,cliente,prendas,desglose,fecha_ingreso_ficha,fecha_entrega_cliente,estado_general,requiere_sublimacion&fecha_ingreso_ficha=gte.${d1}&fecha_ingreso_ficha=lte.${d2}&order=fecha_ingreso_ficha.desc,id.desc`) || [];
   const ids = proy.map(p => p.id), rows = [], asig = [], tandas = [];
   for (let i = 0; i < ids.length; i += 100) tandas.push(ids.slice(i, i + 100).join(','));
-  await Promise.all([cargarInsumos(), cargarBOM(), cargarEjecutantes(), cargarGG(mesesAntes(mesDe(d1), 3)[2]),
+  await Promise.all([cargarInsumos(), cargarBOM(), cargarEjecutantes(), cargarGG([mesesAntes(mesDe(d1), 3)[2], mesesAntes(mesDe(hoy), 15)[14]].sort()[0]),
     Promise.all(tandas.map(t => todasLasFilas(api, `plan_costeo?select=*&planificacion_id=in.(${t})&order=id.asc`))).then(ls => { COSTEO_OK = true; ls.forEach(l => rows.push(...(l || []))); }).catch(() => { COSTEO_OK = false; }),
     Promise.all(tandas.map(t => todasLasFilas(api, `plan_asignaciones?select=planificacion_id,tipo_prenda,cantidad,precio_unit,ejecutante&etapa=eq.CONFEC&planificacion_id=in.(${t})`))).then(ls => ls.forEach(l => asig.push(...(l || [])))).catch(() => {})]);
   // venta neta de cada pedido (Ventas)
-  const ventas = {}, cots = Array.from(new Set(proy.map(p => baseCot(p.cot))));
+  const ventas = {}, cierre = {}, cots = Array.from(new Set(proy.map(p => baseCot(p.cot))));
   for (let i = 0; i < cots.length; i += 60) {
     const lote = cots.slice(i, i + 60), refs = lote.concat(lote.map(c => c.replace(/^COT-/, '')));
-    try { (await apiV(`pedidos?select=cot,neto&cot=${inLista(refs)}`) || []).forEach(x => { const c = normCot(x.cot); ventas[c] = (ventas[c] || 0) + (+x.neto || 0); }); } catch (e) {}
+    try { (await apiV(`pedidos?select=cot,neto,fecha&cot=${inLista(refs)}`) || []).forEach(x => { const c = normCot(x.cot); ventas[c] = (ventas[c] || 0) + (+x.neto || 0);
+      if (x.fecha && (!cierre[c] || x.fecha < cierre[c])) cierre[c] = x.fecha; }); } catch (e) {}
   }
   // fichas de los moldes que aún no registran su corte: su tela se estima con el consumo teórico
   await cargarFichasCosteo(proy.filter(p => moldesDePedido(p).some(t => !rows.some(r => r.planificacion_id === p.id && r.etapa === 'CORTE' && (r.molde || '') === t.tipo))).map(p => p.cot));
-  return COSTEO_DATOS = { d1, d2, proy, rows, asig, ventas };
+  return COSTEO_DATOS = { d1, d2, proy, rows, asig, ventas, cierre };
 }
 const costeoDe = p => { const D = COSTEO_DATOS, G = calcularGG();
   return calcCosteo(p, { rows: D.rows.filter(r => r.planificacion_id === p.id), asig: D.asig.filter(a => a.planificacion_id === p.id), fc: COSTEO_FICHAS[p.cot] || null,
-    venta: p.cot === baseCot(p.cot) && D.ventas[normCot(p.cot)] != null ? D.ventas[normCot(p.cot)] : null, gg: G.pct(mesDe(p.fecha_ingreso_ficha) || mesDe(F.hoy())) }); };
+    venta: p.cot === baseCot(p.cot) && D.ventas[normCot(p.cot)] != null ? D.ventas[normCot(p.cot)] : null,
+    gg: G.pct(mesDe((D.cierre || {})[normCot(baseCot(p.cot))]) || mesDe(p.fecha_ingreso_ficha) || mesDe(F.hoy())) }); };
 const barraPeriodo = (D, q, conQ) => `<div class="toolbar"><label style="margin:0">Desde <input id="cs-desde" type="date" value="${D.d1}" onchange="renderCosteo()"></label>
       <label style="margin:0">Hasta <input id="cs-hasta" type="date" value="${D.d2}" onchange="renderCosteo()"></label>
       ${conQ ? `<input id="cs-q" placeholder="Buscar pedido, cliente o molde" value="${esc(q)}" oninput="renderCosteo()">` : ''}
@@ -6022,7 +6039,7 @@ async function pintarCosteoPedidos(v, chips) {
     <div class="panel" style="overflow-x:auto"><table class="mini" id="cs-tabla"><tr><th style="min-width:210px">Pedido y molde</th><th style="text-align:right">Prendas</th><th style="text-align:right">Tela</th><th style="text-align:right">Insumos</th>
       <th style="text-align:right">Confección</th><th style="text-align:right">Ploteo y subl.</th><th style="text-align:right">Gasto general</th><th style="text-align:right">Costo total</th>
       <th style="text-align:right">Costo por prenda</th><th style="text-align:right">Venta neta</th><th style="text-align:right">Margen</th><th></th></tr>
-      ${lista.map(({ p, r }) => `<tr class="cs-ped" style="background:var(--fondo,#F4F5F7)"><td><b>${esc(p.cot)}</b> · ${esc(p.cliente)}<div class="hint">${F.corta(p.fecha_ingreso_ficha)} · gasto general ${pct(r.gg && r.gg.pct)}</div></td>
+      ${lista.map(({ p, r }) => `<tr class="cs-ped" style="background:var(--fondo,#F4F5F7)"><td><b>${esc(p.cot)}</b> · ${esc(p.cliente)}<div class="hint">${F.corta(p.fecha_ingreso_ficha)} · gasto general ${pct(r.gg && r.gg.pct)}${r.gg && r.gg.provisorio ? ' (provisorio)' : ''}</div></td>
           ${num(r.unidades)}${num(pesos(r.tela))}${num(pesos(r.insumos))}${num(pesos(r.confeccion))}${num(pesos(r.indirecto))}${num(pesos(r.ggMonto))}${num('<b>' + pesos(r.total) + '</b>')}<td></td>
           ${num(r.venta != null ? pesos(r.venta) : '—')}<td style="text-align:right;color:${r.margen != null && r.margen < 0 ? '#A8121E' : 'inherit'}">${r.margenPct != null ? pct(r.margenPct) : '—'}</td>
           <td><button class="btn sm" onclick="verCosteo(${p.id})">Ver</button></td></tr>` +
@@ -6090,7 +6107,7 @@ async function verCosteo(pid) {
     <table class="mini">
       ${r.moldes.map(m => fila(esc(m.tipo || 'Todo el pedido') + ' · ' + m.cant + ' prendas', pesos(m.total), (m.porPrenda != null ? pesos(m.porPrenda) + ' por prenda' : ''))).join('')}
       ${otrosP.map((o, i) => fila(esc(o.tela), `${pesos(o.monto)} <button class="btn sm" title="Quitar" onclick="quitarOtroCosto(${pid},${i})">×</button>`, 'otro costo · ' + esc(o.molde || 'todo el pedido'))).join('')}
-      ${fila('Gasto general ' + pct(r.gg && r.gg.pct), pesos(r.ggMonto), r.gg && r.gg.meses.length ? `gastos ÷ ventas de ${r.gg.meses.slice().reverse().map(mesTxt).join(', ')}` + (r.venta != null ? ', sobre la venta neta' : ', sobre el costo (sin venta en Ventas)') : '')}
+      ${fila('Gasto general ' + pct(r.gg && r.gg.pct), pesos(r.ggMonto), r.gg && r.gg.meses.length ? `gasto general ÷ ventas netas de ${r.gg.meses.slice().reverse().map(mesTxt).join(', ')}` + (r.venta != null ? ', sobre la venta neta' : ', sobre el costo (sin venta en Ventas)') + (r.gg.provisorio ? ' · provisorio: hay gastos en revisión en Ventas' : '') : 'sin meses con datos desde el inicio del análisis')}
       ${fila('<b>Costo total del pedido</b>', '<b>' + pesos(r.total) + '</b>')}
       ${fila('Venta neta', r.venta != null ? pesos(r.venta) : '—', r.venta != null ? 'Ventas' : (p.cot !== baseCot(p.cot) ? 'parte de un pedido: la venta está en ' + esc(baseCot(p.cot)) : 'no se encontró en Ventas'))}
       ${fila('Margen', r.margen != null ? `${pesos(r.margen)} · ${pct(r.margenPct)}` : '—')}
@@ -6256,45 +6273,34 @@ async function copiarBOM(molde) {
   catch (e) { return toast('No se pudo copiar', 'err'); }
   BOM = null; COSTEO_DATOS = null; toast(`Copiado a ${dest.length} molde${dest.length !== 1 ? 's' : ''}`); renderCosteo();
 }
-// gasto general: % de cada mes y clasificación de las categorías de gastos de Ventas
+// gasto general: cada mes por separado y el % que se aplica a los pedidos (3 meses anteriores)
 async function pintarGG(v, chips) {
-  const hoy = F.hoy(), meses = [mesDe(hoy)].concat(mesesAntes(mesDe(hoy), 11));
-  await cargarGG(mesesAntes(meses[meses.length - 1], 3)[2]);
-  const G = calcularGG(), cls = claseGastos(), exc = excGastos();
-  const cats = {}; GG_DATOS.gs.forEach(g => { const c = catGasto(g); (cats[c] = cats[c] || { n: 0, monto: 0 }); cats[c].n++; cats[c].monto += +g.monto || 0; });
-  Object.keys(cls).forEach(c => { if (!cats[c]) cats[c] = { n: 0, monto: 0 }; });
-  const sinCls = Object.keys(cats).filter(c => !cls[c]); CATS_GG = Object.keys(cats).sort();
+  const mHoy = mesDe(F.hoy());
+  await cargarGG(mesesAntes(mHoy, 15)[14]);
+  if (!GG_DATOS.ok) {
+    v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + `<div class="aviso warn">${GG_DATOS.falta
+      ? 'Falta correr el <b>SQL 21B</b> en la base de Ventas: sin él no se puede calcular el gasto general en neto.'
+      : 'No se pudieron leer las ventas y gastos de Ventas: ' + esc(String(GG_DATOS.error || '').slice(0, 160))}</div>`;
+    return;
+  }
+  const G = calcularGG(), meses = [mHoy].concat(mesesAntes(mHoy, 11)).filter(m => m >= G.inicio);
+  const cero = { ventasNetas: 0, prod: 0, venta: 0, admin: 0, total: 0, pct: null, revision: 0, nRev: 0, ivaSup: 0 };
+  const ivaSup = meses.reduce((s, m) => s + (G.mes(m) || cero).ivaSup, 0);
+  const td = x => `<td style="text-align:right">${x}</td>`;
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips +
-    (GG_DATOS.ok ? '' : `<div class="aviso warn">No se pudieron leer las ventas y gastos de Ventas: ${esc(String(GG_DATOS.error || '').slice(0, 160))}</div>`) +
-    `<p class="hint">El % de gasto general de cada mes = gastos generales ÷ ventas netas de los <b>3 meses anteriores</b> (de Ventas). Se aplica a la venta neta de cada pedido según el mes en que entró a producción. Las horas de las áreas (revisión, sublimación…) están dentro de estos gastos (remuneraciones).</p>
-    <div class="panel"><table class="mini"><tr><th>Mes</th><th>Se calcula con</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">Gastos generales</th><th style="text-align:right">% gasto general</th></tr>
-      ${meses.map(m => { const x = G.pct(m); return `<tr><td><b>${mesTxt(m)}</b></td><td class="hint">${x.meses.slice().reverse().map(mesTxt).join(', ')}</td><td style="text-align:right">${pesos(x.ventas)}</td><td style="text-align:right">${pesos(x.gastos)}</td><td style="text-align:right"><b>${pct(x.pct)}</b></td></tr>`; }).join('')}
+    `<p class="hint"><b>Gasto general</b> = las cuentas de gasto general de Ventas › Gastos (producción, venta y marketing, administración), en <b>neto</b> (sin el IVA que se recupera con factura afecta), según el mes al que corresponde cada gasto. No entra el costo directo (telas, talleres, papel y tinta, avíos, comisiones…), que ya está en el costeo de cada pedido, ni lo que está fuera del resultado (IVA, inversiones, retiros). <b>Ventas netas</b>: pedidos cerrados en el mes, sin IVA y sin anuladas, menos devoluciones. El análisis parte en ${mesTxt(G.inicio)}. La clasificación de cada gasto se hace en Ventas › Gastos.</p>
+    <h2>Cada mes</h2>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-meses"><tr><th>Mes</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">G. general producción</th><th style="text-align:right">G. general venta y marketing</th><th style="text-align:right">G. general administración</th><th style="text-align:right">Total gasto general</th><th style="text-align:right">% del mes</th><th style="text-align:right">En revisión</th></tr>
+      ${meses.map(m => { const f = G.mes(m) || cero; return `<tr><td><b>${mesTxt(m)}</b>${m === mHoy ? '<div class="hint">en curso</div>' : ''}</td>${td(pesos(f.ventasNetas))}${td(pesos(f.prod))}${td(pesos(f.venta))}${td(pesos(f.admin))}${td('<b>' + pesos(f.total) + '</b>')}${td(pct(f.pct))}
+        ${td(f.nRev ? `<span style="color:#B45309">${pesos(f.revision)}</span><div class="hint">${f.nRev} gasto${f.nRev !== 1 ? 's' : ''}</div>` : '—')}</tr>`; }).join('')}
     </table></div>
-    <h2>Qué gastos son gasto general</h2>
-    <p class="hint">Lo que ya es costo directo de la prenda (telas, insumos, talleres) no entra, para no contarlo dos veces. Las boletas de honorarios son de los talleres, salvo las excepciones de abajo.</p>
-    ${sinCls.length ? `<div class="aviso warn">Categorías nuevas sin clasificar (cuentan como gasto general): ${esc(sinCls.join(', '))}</div>` : ''}
-    <div class="panel"><table class="mini"><tr><th>Categoría en Ventas</th><th style="text-align:right">Últimos 15 meses</th><th>Clasificación</th></tr>
-      ${Object.keys(cats).sort().map(c => `<tr><td>${esc(c)}</td><td style="text-align:right">${pesos(cats[c].monto)}<div class="hint">${cats[c].n} gasto${cats[c].n !== 1 ? 's' : ''}</div></td>
-        <td><select onchange="clasificarGasto(${Object.keys(cats).sort().indexOf(c)},this.value)">${Object.entries(CLASE_TXT).map(([k, t]) => `<option value="${k}" ${(cls[c] || 'general') === k ? 'selected' : ''}>${t}</option>`).join('')}</select></td></tr>`).join('')}
+    <h2>% que se aplica a los pedidos</h2>
+    <p class="hint">A cada pedido se le aplica el % de los <b>3 meses anteriores</b> al mes en que se cerró la venta: gasto general de esos 3 meses ÷ ventas netas de esos 3 meses. Es <b>provisorio</b> si alguno de esos meses todavía tiene gastos en revisión.</p>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-pedidos"><tr><th>Pedidos cerrados en</th><th>Se calcula con</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">Gasto general</th><th style="text-align:right">% gasto general</th></tr>
+      ${meses.map(m => { const x = G.pct(m); return `<tr><td><b>${mesTxt(m)}</b></td><td class="hint">${x.meses.length ? x.meses.slice().reverse().map(mesTxt).join(', ') : 'sin meses desde ' + mesTxt(G.inicio)}</td>${td(pesos(x.ventas))}${td(pesos(x.gastos))}${td('<b>' + pct(x.pct) + '</b>' + (x.provisorio && x.meses.length ? '<div class="hint" style="color:#B45309">provisorio</div>' : ''))}</tr>`; }).join('')}
     </table></div>
-    <h2>Excepciones por proveedor</h2>
-    <p class="hint">Gastos de una categoría que, para un proveedor, se clasifican distinto (se busca el nombre en el proveedor y en la descripción del gasto).</p>
-    <div class="panel"><table class="mini"><tr><th>Categoría</th><th>Proveedor</th><th>Clasificación</th><th></th></tr>
-      ${exc.map((x, i) => `<tr><td>${esc(x.cat)}</td><td>${esc(x.prov)}</td><td>${CLASE_TXT[x.clase] || x.clase}</td><td style="text-align:right"><button class="btn sm" onclick="quitarExcGasto(${i})">×</button></td></tr>`).join('') || '<tr><td colspan="4" class="hint">Sin excepciones.</td></tr>'}
-    </table>
-    <div class="toolbar" style="margin-top:8px"><select id="exc-cat">${Object.keys(cats).sort().map(c => `<option ${c === 'HONORARIOS' ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select>
-      <input id="exc-prov" placeholder="Proveedor (ej: Antonia Hermosilla)"><select id="exc-clase">${Object.entries(CLASE_TXT).map(([k, t]) => `<option value="${k}">${t}</option>`).join('')}</select>
-      <button class="btn pri" onclick="agregarExcGasto()">Agregar</button></div></div>`;
+    ${ivaSup > 0 ? `<p class="hint">De estos meses, ${pesos(ivaSup)} de IVA se descontaron según el IVA habitual de la cuenta (supuesto). Se confirma marcando el tipo de documento del proveedor o del gasto en Ventas, y en la Fase 3 con el libro de compras.</p>` : ''}`;
 }
-async function guardarClasifGastos(g) { COSTEO_GASTOS = g; COSTEO_DATOS = null; await guardarConfig('costeo_gastos', JSON.stringify(g)); renderCosteo(); }
-let CATS_GG = [];
-function clasificarGasto(k, clase) { const cat = CATS_GG[k]; if (!cat) return; const g = { cat: Object.assign({}, (COSTEO_GASTOS && COSTEO_GASTOS.cat) || {}), exc: excGastos().slice() }; g.cat[cat] = clase; guardarClasifGastos(g); }
-function agregarExcGasto() {
-  const cat = ($('exc-cat') || {}).value, prov = (($('exc-prov') || {}).value || '').trim(), clase = ($('exc-clase') || {}).value;
-  if (!prov) return toast('Escribe el proveedor', 'warn');
-  guardarClasifGastos({ cat: (COSTEO_GASTOS && COSTEO_GASTOS.cat) || {}, exc: excGastos().concat([{ cat, prov, clase }]) });
-}
-function quitarExcGasto(i) { const e = excGastos().slice(); e.splice(i, 1); guardarClasifGastos({ cat: (COSTEO_GASTOS && COSTEO_GASTOS.cat) || {}, exc: e }); }
 // valores: insumos de papel, tinta y protección y el margen para el precio sugerido
 async function pintarValoresCosteo(v, chips) {
   await cargarInsumos();
