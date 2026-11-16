@@ -2631,9 +2631,14 @@ const llevaEstampado = d => Object.entries(d || {}).some(([k, v]) => v === true 
 const jsonDe = v => (v && typeof v === 'object') ? v : (() => { try { return JSON.parse(v || 'null'); } catch (e) { return null; } })();
 function estadoFicha(cot) {
   const f = FICHAS_MAP[cot]; if (!f) return { tipo: 'sin' };
-  const its = jsonDe(f.items) || []; const dets = DETS_MAP[cot] || [];
+  const its = jsonDe(f.items) || []; const dets = DETS_MAP[cot] || [], specs = jsonDe(f.specs) || {};
   let vend = 0, asig = 0;
-  its.forEach(it => { const a = dets.filter(d => (jsonDe(d.tallas) || {})[it.prenda]).length; vend += it.cant || 0; asig += Math.min(a, it.cant || 0); });
+  // cargadas: personas que llevan la prenda; las medias con pares por talla, la suma de sus pares (como en Fichas)
+  its.forEach(it => {
+    const cm = esMediasFicha(it.prenda) ? cantMedias(specs, it.prenda) : null;
+    const a = cm ? Object.values(cm).reduce((s2, x) => s2 + (parseInt(x, 10) || 0), 0) : dets.filter(d => (jsonDe(d.tallas) || {})[it.prenda]).length;
+    vend += it.cant || 0; asig += Math.min(a, it.cant || 0);
+  });
   const completa = vend > 0 && asig >= vend, diseno = f.montaje_aprobado === true, conFecha = !!f.entrega_cliente, confirmada = f.estado === 'confirmado';
   return { tipo: (completa && diseno && conFecha && confirmada) ? 'confirmada' : 'abierta', vend, asig, completa, conFecha, diseno, confirmada };
 }

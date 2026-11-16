@@ -1,7 +1,7 @@
 -- SQL 22A · base de FICHAS (jvgifibnoigpicwklasw) · SOLO LEE: no cambia nada
 -- ¿Por qué un pedido no puede ingresar a producción? Repite, para las fichas que calzan con el texto buscado, los
 -- mismos controles que hace Planificación antes de ingresar un pedido:
---   tallas completas (personas con talla por cada prenda vendida) · diseño aprobado · fecha de entrega · ficha
+--   tallas completas (personas con talla por cada prenda vendida; las medias, sus pares por talla) · diseño aprobado · fecha de entrega · ficha
 --   confirmada · cada persona con molde para su calce.
 -- Para buscar otro pedido, cambiar 'torque' en la línea marcada (puede ser parte del nombre o el N° de pedido).
 -- SQL Editor → New query → pegar todo → Run → copiar el resultado completo.
@@ -18,10 +18,13 @@ d as (
 it as (
   select f.ref, i ->> 'prenda' as prenda, coalesce((i ->> 'cant')::numeric, 0) as cant
     from f, jsonb_array_elements(case when jsonb_typeof(f.items) = 'array' then f.items else '[]'::jsonb end) i),
-asig as (
+asig as (   -- personas con talla; las medias con pares por talla (specs → cantidades), la suma de sus pares
   select it.ref, it.prenda, it.cant,
-         (select count(*) from d where d.ref = it.ref and coalesce(d.tallas ->> it.prenda, '') not in ('', 'false', 'null')) as con_talla
-    from it),
+         case when regexp_replace(it.prenda, '_\d+$', '') = 'medias' and jsonb_typeof(f.specs -> it.prenda -> 'cantidades') = 'object'
+              then (select coalesce(sum(case when v.value #>> '{}' ~ '^\s*\d+\s*$' then (v.value #>> '{}')::numeric else 0 end), 0)
+                      from jsonb_each(f.specs -> it.prenda -> 'cantidades') v)
+              else (select count(*) from d where d.ref = it.ref and coalesce(d.tallas ->> it.prenda, '') not in ('', 'false', 'null')) end as con_talla
+    from it join f on f.ref = it.ref),
 sm as (   -- personas con talla en una prenda cuyo diseño no tiene molde para su calce (las medias no llevan molde)
   select d.ref, k.key as prenda, coalesce(nullif(d.calce, ''), 'sin calce') as calce, count(*) as personas,
          bool_or(it.prenda is null) as prenda_fuera

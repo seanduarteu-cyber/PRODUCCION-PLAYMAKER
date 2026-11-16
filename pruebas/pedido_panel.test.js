@@ -104,6 +104,15 @@ const datos = { tablas: { fichas_tallas: [ficha], fichas_detalle: personas, fich
       mo: armarMoldes('COT-3610').filter(g => /MEDIAS/.test(g.codigo)).map(g => g.prenda + '|' + g.codigo + '|' + g.cant + '|' + JSON.stringify(g.tallas)) }; }, ficha);
   ok(r.tr['MEDIAS-ADL'] === true && r.tr['MEDIAS-INF'] === true, 'al ingresar a producción: medias adulto e infantil en el desglose');
   ok(r.mo.join(' / ') === 'Medias · Medias azules|MEDIAS-ADL|10|{"S":4,"M":6} / Medias 2 · Medias blancas|MEDIAS-INF|1|{"Infantil":1}', 'plantilla de moldes con los pares por talla: ' + r.mo.join(' / '));
+  // tallas completas: las medias con pares por talla cuentan sus pares, no personas (caso Torque FC)
+  const ef = await q.evaluate(([f, ps]) => { FICHAS_MAP['COT-3610'] = { ...f, estado: 'confirmado', montaje_aprobado: true }; DETS_MAP['COT-3610'] = ps; const e = estadoFicha('COT-3610');
+    // ficha antigua: medias por persona (sin pares por talla)
+    const vieja = { ...f, estado: 'confirmado', montaje_aprobado: true, items: [{ prenda: 'camiseta', cant: 2 }, { prenda: 'medias', cant: 2 }], specs: { camiseta: f.specs.camiseta } };
+    FICHAS_MAP['COT-3611'] = vieja; DETS_MAP['COT-3611'] = [{ tallas: { camiseta: 'M', medias: 'M' } }, { tallas: { camiseta: 'L' } }];
+    const e2 = estadoFicha('COT-3611');
+    return { tipo: e.tipo, asig: e.asig, vend: e.vend, tipo2: e2.tipo, asig2: e2.asig, vend2: e2.vend }; }, [ficha, personas]);
+  ok(ef.tipo === 'confirmada' && ef.asig === 22 && ef.vend === 22, 'medias con pares por talla: la ficha queda completa (22 de 22) y se puede ingresar: ' + JSON.stringify(ef));
+  ok(ef.tipo2 === 'abierta' && ef.asig2 === 3 && ef.vend2 === 4, 'ficha antigua con medias por persona: se siguen contando personas (3 de 4)');
   await q.evaluate(() => { PROY = PROY || []; });
   ok(!errP.length, 'Planificación sin errores JS ' + errP.join(' | '));
   await b.close();
