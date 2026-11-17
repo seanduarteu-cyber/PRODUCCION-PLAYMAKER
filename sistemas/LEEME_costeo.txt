@@ -3,6 +3,13 @@ COSTEO DE PRENDAS (Planificación → pestaña «Costeo»)
 
 Antes de usarlo: correr el SQL 20A en la base de PRODUCCIÓN (si ya se corrió la primera versión, correrlo de nuevo:
 agrega el molde a cada registro) y subir el zip de Planificación. Lo ven solo administración y producción.
+Para los precios por proveedor: correr además el SQL 23A en la base de PRODUCCIÓN (ver «PRECIOS POR PROVEEDOR» abajo).
+
+PESTAÑAS: Pedidos · Por molde · Simular costo · Precios · Insumos por prenda · Ploteo y margen · Gasto general
+- Precios: cuánto cuesta cada cosa (por proveedor).
+- Insumos por prenda (antes «Consumo por molde»): cuánto lleva cada prenda de lo que no es tela.
+- Ploteo y margen (antes «Valores»): cuánto se gasta por metro ploteado (papel, las 4 tintas, protección) y el margen.
+- Simular costo: cuánto costaría una prenda según el molde y las telas que se elijan.
 
 EL RESULTADO ES POR MOLDE: cada pedido se costea molde por molde (camisetas, shorts… por separado). Cada molde tiene su
 costo total y su costo por prenda; el pedido es la suma de sus moldes. «Por molde» muestra el costo por prenda de cada
@@ -21,16 +28,20 @@ Costo total del molde = tela + insumos por consumo + confección + ploteo y subl
      catálogo de moldes del panel), y el pedido queda marcado «falta: registro del corte».
    - El stock de tela queda con lo que de verdad se usó: el consumo real reemplaza al teórico descontado al ingresar.
    - Se puede «Terminar sin registrar» (el costeo queda incompleto y se registra después desde Costeo).
-2. Insumos por consumo (Costeo → «Consumo por molde»)
+2. Insumos por consumo (Costeo → «Insumos por prenda»)
    - Lo que lleva UNA prenda de cada insumo (elástico, hilo, cierre, etiqueta, bolsa…), en la unidad del insumo.
+   - Los insumos que no son tela hay que crearlos primero («+ Nuevo insumo» en esa misma pestaña o en Precios): las
+     telas se crean solas desde Fichas, los demás no. Si no hay ninguno, la lista para agregar sale vacía.
    - «Común a todas las prendas»: se suma a todas las prendas con molde (ej: etiqueta y bolsa).
    - Cada molde: lo suyo (ej: elástico en los shorts). «Copiar estos insumos a otros moldes» para no repetirlo.
 3. Confección: lo asignado al taller (tarifa por molde, Talleres). Sin taller asignado se usa la tarifa del molde.
 4. Ploteo y sublimación
    - Al terminar Ploteo se anotan los metros ploteados de cada molde («Registrar metros»).
-   - Papel = metros × precio del papel; tinta = metros × tinta por metro × precio de la tinta;
-     papel de protección = metros × factor (1 por defecto) × su precio. Se descuentan del stock de Insumos.
-   - En Costeo → Valores se eligen los insumos de papel, tinta y protección (crearlos en Insumos, categorías Papel y Tinta).
+   - Papel = metros × precio por metro del papel (precio del rollo ÷ metros del rollo); tinta = metros × la suma de las 4
+     tintas (cian, magenta, amarillo y negro, cada una por separado: cc por metro × precio por cc); papel de protección =
+     metros × factor (1 por defecto) × su precio por metro. Se descuentan del stock de Insumos.
+   - En Costeo → «Ploteo y margen» se eligen el papel, las 4 tintas con su rendimiento según la experiencia («un envase
+     de 1.000 cc rinde 400 metros») y el papel de protección. Se usa un solo ancho de papel.
 5. Otros costos: en el detalle de un pedido, «+ Otro costo» (bordado, medias compradas, despacho…), de un molde o de
    todo el pedido (se reparte entre los moldes por prendas).
 6. Gasto general (Costeo → «Gasto general»; requiere los SQL 21A y 21B en Ventas)
@@ -51,13 +62,41 @@ Costo total del molde = tela + insumos por consumo + confección + ploteo y subl
      moldes según el costo directo de cada uno.
    - Las horas de las áreas (revisión, sublimación…) están dentro de este gasto (sueldos).
 7. Resultado: costo total de cada molde y por prenda; total del pedido, venta neta y margen; precio sugerido por prenda =
-   costo directo por prenda ÷ (1 − % gasto general − margen). El margen se define en Costeo → Valores.
+   costo directo por prenda ÷ (1 − % gasto general − margen). El margen se define en Costeo → Ploteo y margen.
+
+PRECIOS POR PROVEEDOR (SQL 23A)
+- Cada producto (tela, papel, tinta u otro insumo) puede tener varios proveedores, cada uno con su precio SIN IVA y cómo
+  viene. El costeo usa SIEMPRE EL MÁS CARO de los proveedores activos (★), aunque el proveedor lo llame distinto.
+  Ese precio queda como precio del insumo (en la unidad de su stock), con su historial.
+- Qué se anota según el tipo:
+    tela:   por kg o por metro; ancho del rollo y gramaje (g/m²) o rendimiento (m por kg): con el ancho, uno da el otro.
+            Ej: 1,60 m y 150 g/m² → 1 metro pesa 0,24 kg → rinde 4,17 m por kg; a $8.000/kg, el metro cuesta $1.920.
+    papel:  ancho, gramaje, metros del rollo y precio del rollo → precio por metro y por m².
+    tinta:  cc del envase y precio del envase → precio por cc (el color y el rendimiento van en Ploteo y margen).
+    otros:  por su unidad, o en paquete/rollo/envase con cuánto trae → precio por unidad.
+- Dos vistas: «Por producto» (cada producto con el precio que usa el costeo; «Proveedores y precios» muestra y edita cada
+  proveedor) y «Por proveedor» (sus productos, para actualizar rápido cuando manda precios nuevos).
+- Los proveedores son los de Ventas (Gastos › Proveedores): la misma lista de los gastos. Uno que no está se crea allá
+  desde aquí (pide su tipo de documento). Los precios que ya existían quedan con su proveedor (o «Sin proveedor») y se
+  cruzan solos con Ventas cuando el nombre coincide.
+- Desactivar: un proveedor (sus precios dejan de contar; avisa qué productos cambian de precio o quedan sin precio), un
+  precio (desmarcar «Precio vigente») o un producto (deja de aparecer en Precios, insumos por prenda y compras).
+- Una compra registrada en Inventario con su costo deja ese precio en la línea de su proveedor (la crea si no existe).
+- Sin el SQL 23A, Precios sigue como antes (un precio por producto) y lo avisa.
+
+SIMULAR COSTO
+- Se elige el molde, la tela principal (frente y espalda) y, si se quiere, otra tela para alguna pieza, y si es sublimada.
+- Tela: de los cortes ya registrados de ese molde salen los kg por prenda (con merma); con el gramaje de esas telas se
+  llevan a superficie (m² por prenda) y con el gramaje y el precio por kg de cada tela elegida, el costo. Así una tela
+  más pesada o más cara se nota. Las piezas se reparten según el consumo de su despiece (el despiece solo sirve para
+  repartir; si un molde no tiene el consumo de sus piezas, se usa la tela principal para toda la prenda). Si una tela no
+  tiene gramaje, se usan los kg pesados; si el molde no tiene cortes, el consumo teórico del despiece (sin merma).
+- Suma los insumos por prenda, la confección (promedio pagado al taller por ese molde, o su tarifa), el ploteo y la
+  protección (metros por prenda de los ploteos registrados) y el gasto general (% de los 3 meses anteriores), y da el
+  precio sugerido con el margen. Abajo compara la misma prenda con cada otra tela principal.
 
 LO QUE NECESITAN CARGAR
-- Precios en Costeo → «Precios»: una sola lista con todas las telas (precio POR KG, sin IVA) y todos los insumos (precio
-  por su unidad). Se guardan al salir de cada casilla y quedan en Inventario → Insumos (con su historial).
-  Las telas que se llevan en metros necesitan su rendimiento (m por kg): el precio por kg se guarda como precio por metro
-  (precio por kg ÷ m por kg). «Solo sin precio» muestra lo que falta.
-- Papel de ploteo, tinta (y cuánta tinta por metro) y papel de protección como insumos; elegirlos en Costeo → Valores.
+- Precios en Costeo → «Precios»: cada producto con su(s) proveedor(es); en telas, el ancho y el gramaje.
+- Papel de ploteo, las 4 tintas (con su rendimiento) y papel de protección; elegirlos en Costeo → Ploteo y margen.
 - El consumo de insumos por molde (y el común).
 - Terminar la Revisión de gastos en Ventas › Gastos: mientras haya gastos en revisión, el % es provisorio.

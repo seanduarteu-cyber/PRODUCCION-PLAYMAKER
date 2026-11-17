@@ -5314,13 +5314,14 @@ function abrirIngresoInsumo(id) {
       <div><label for="in-cant" id="in-cant-l">Cantidad (${esc(i.unidad)})</label><input id="in-cant" type="number" min="0" step="0.01" placeholder="Ej: 50" oninput="eqIngreso(${i.id})"></div></div>
     ${alt ? `<label for="in-en">Compra en</label><select id="in-en" onchange="eqIngreso(${i.id}, true)"><option value="${esc(i.unidad)}">${esc(i.unidad)}</option><option value="${alt}">${alt} (rendimiento ${numCL(i.rendimiento)} m por kg)</option></select>
       <p class="hint" id="in-eq" style="margin:4px 0 0"></p>` : ''}
-    <div class="grid2"><div><label for="in-prov">Proveedor</label><input id="in-prov" placeholder="Opcional" value="${esc(i.proveedor || '')}"></div>
+    <div class="grid2"><div><label for="in-prov">Proveedor</label><input id="in-prov" list="in-provs" placeholder="Opcional" value="${esc(i.proveedor || '')}"><datalist id="in-provs"></datalist></div>
       <div><label for="in-doc">Factura o guía</label><input id="in-doc" placeholder="Opcional"></div></div>
     <div class="grid2"><div><label for="in-costo" id="in-costo-l">Costo por ${esc(i.unidad)} (sin IVA)</label><input id="in-costo" type="number" min="0" step="any" placeholder="Opcional" value="${+i.precio > 0 ? Math.round(+i.precio * 100) / 100 : ''}" oninput="this.dataset.tocado=1"></div>
       <div><label for="in-nota">Nota</label><input id="in-nota" placeholder="Opcional (color, lote…)"></div></div>
-    ${+i.precio > 0 ? '<p class="hint" style="margin:4px 0 0">El costo viene con el precio actual del insumo; si la compra tuvo otro precio, cámbialo y el insumo queda con el nuevo.</p>' : ''}
+    ${+i.precio > 0 ? `<p class="hint" style="margin:4px 0 0">El costo viene con el precio actual del insumo; si la compra tuvo otro precio, cámbialo: ${PRECIOS_OK ? 'queda como el precio de ese proveedor (el costeo usa el más caro de los activos)' : 'el insumo queda con el nuevo'}.</p>` : ''}
     <div class="acciones"><button class="btn" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="guardarIngresoInsumo(${i.id})">Guardar ingreso</button></div>`);
   $('in-cant').focus();
+  cargarProvVentas().then(() => { const d = $('in-provs'); if (d) d.innerHTML = (PROV_V || []).map(p => `<option value="${esc(p.nombre)}">`).join(''); });
 }
 function eqIngreso(id, cambioUnidad) {
   const i = insumoDe(id); if (!i || !$('in-en')) return;
@@ -5341,9 +5342,14 @@ async function guardarIngresoInsumo(id) {
     await api('plan_insumos_mov', { method: 'POST', body: JSON.stringify({ insumo_id: i.id, fecha: $('in-fecha').value || F.hoy(), tipo: 'ingreso', cantidad: cant,
       proveedor: prov, documento: $('in-doc').value.trim() || null, costo_unit: costo, nota: nota || null, usuario: USER.nombre }) });
   } catch (e) { return alert('No se pudo guardar: ' + e.message); }
+  // con precios por proveedor (SQL 23A): el costo queda como precio de ese proveedor y el insumo toma el más caro de los activos
+  if (PRECIOS_OK === null) await cargarPrecios();
+  if (PRECIOS_OK && costo && prov && await precioDesdeCompra(i, prov, costo)) {
+    cerrarModal(); toast(`Ingreso de ${numCL(cant)} ${i.unidad} de ${i.nombre} registrado`); return renderInsumos();
+  }
   // el insumo queda con el precio de la última compra (y su proveedor si no tenía)
   const cambio = {};
-  if (costo && Math.abs(costo - (+i.precio || 0)) >= 0.01) cambio.precio = costo;
+  if (costo && Math.abs(costo - (+i.precio || 0)) >= 0.01 && !(PRECIOS_OK && lineasDe(i.id).length)) cambio.precio = costo;   // con precios por proveedor, el precio lo da el más caro
   if (prov && !i.proveedor) cambio.proveedor = prov;
   if (Object.keys(cambio).length) {
     try { await api(`plan_insumos?id=eq.${i.id}`, { method: 'PATCH', body: JSON.stringify(cambio) });
@@ -5476,14 +5482,16 @@ async function guardarEditarInsumo(id) {
   renderInsumos();
 }
 function abrirNuevoInsumo() {
-  abrirModal(`<h3>Nuevo insumo</h3>
+  const enCosteo = TAB === 'costeo' && PRECIOS_OK;   // en Costeo el precio va por proveedor (paso siguiente)
+  abrirModal(`<h3>${enCosteo ? 'Nuevo producto' : 'Nuevo insumo'}</h3>
     <p class="hint">Si es una tela, se agrega también al catálogo de telas de Fichas con el mismo nombre, para elegirla en el despiece de las fichas. Para una tela de una línea que ya existe, escribe «Línea · Tela».</p>
     <label for="ni-nom">Nombre</label><input id="ni-nom" maxlength="80" placeholder="Ej: Malla dry-fit · Negro">
     <div class="grid2"><div><label for="ni-cat">Categoría</label><select id="ni-cat">${CATEG_INS.map(c => `<option>${c}</option>`).join('')}</select></div>
       <div><label for="ni-uni">Unidad</label><select id="ni-uni">${UNID_INS.map(u => `<option>${u}</option>`).join('')}</select></div></div>
-    <div class="grid2"><div><label for="ni-precio">Precio por unidad (sin IVA)</label><input id="ni-precio" type="number" min="0" step="any" placeholder="Opcional"></div>
+    <div ${enCosteo ? 'style="display:none"' : ''}><div class="grid2"><div><label for="ni-precio">Precio por unidad (sin IVA)</label><input id="ni-precio" type="number" min="0" step="any" placeholder="Opcional"></div>
       <div><label for="ni-rend">Rendimiento (metros por kg)</label><input id="ni-rend" type="number" min="0" step="any" placeholder="Opcional"></div></div>
-    <label for="ni-prov">Proveedor habitual</label><input id="ni-prov" maxlength="80" placeholder="Opcional">
+    <label for="ni-prov">Proveedor habitual</label><input id="ni-prov" maxlength="80" placeholder="Opcional"></div>
+    ${enCosteo ? '<p class="hint">Unidad = cómo se lleva el stock (telas en kg o m; papel en m o rollo; tinta en litro o unid). El proveedor, el precio y cómo viene (ancho, gramaje, rollo, envase) se anotan en el paso siguiente.</p>' : ''}
     <div id="md-err"></div>
     <div class="acciones"><button class="btn" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="guardarNuevoInsumo()">Crear insumo</button></div>`);
   $('ni-nom').focus();
@@ -5507,6 +5515,11 @@ async function guardarNuevoInsumo() {
   } catch (e) { return errModal(/23505|duplicate/.test(e.message) ? 'Ya existe un insumo con ese nombre.' : 'No se pudo crear: ' + e.message); }
   cerrarModal(); toast(`${nombre} agregado a insumos`);
   if (!completo) alert('El insumo se creó, pero sin precio, rendimiento ni proveedor: para guardarlos corre otra vez el SQL 5A (versión actualizada) en Supabase de Producción.');
+  if (TAB === 'costeo') {   // desde Costeo: se sigue con su primer proveedor y precio
+    await cargarInsumos(); renderCosteo();
+    const ni = insumoPorNombre(nombre); if (ni && PRECIOS_OK && COSTEO_MODO === 'precios') abrirLineaPrecio(ni.id, null);
+    return;
+  }
   renderInsumos();
 }
 const descargar = (nombre, contenido, tipo) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([contenido], { type: tipo })); a.download = nombre; document.body.appendChild(a); a.click(); a.remove(); };
@@ -5954,7 +5967,7 @@ function calcCosteo(p, c) {
   const pesoTela = (tipo, tela) => (teo.porTipo[tipo] && teo.porTipo[tipo].telas[tela]) || 0;
   const metrosTeo = tipo => teo.porTipo[tipo] ? Object.values(teo.porTipo[tipo].telas).reduce((s, m) => s + m, 0) : 0;
   const reparto = (t, peso) => { const tot = tipos.reduce((s, y) => s + peso(y), 0); return tot > 0 ? peso(t) / tot : t.cant / totU; };
-  const iPap = insumoDe(COSTEO_VAL.papel), iTin = insumoDe(COSTEO_VAL.tinta), iPro = insumoDe(COSTEO_VAL.prot);
+  const pM = papelPorMetro(COSTEO_VAL.papel), tM = tintaPorMetro(), prM = papelPorMetro(COSTEO_VAL.prot);   // $ por metro ploteado
   const protF = COSTEO_VAL.protF === '' ? 1 : +COSTEO_VAL.protF, conSub = p.requiere_sublimacion !== false;
   const R = { faltan: [], moldes: [], venta: c.venta, gg: c.gg || null };
   tipos.forEach(t => {
@@ -5990,9 +6003,10 @@ function calcCosteo(p, c) {
     // ploteo: los metros de este molde (o su parte de lo registrado para el pedido completo) y el papel de protección
     const pl = deMolde('PLOTEO', t.tipo)[0], plS = sueltas('PLOTEO').reduce((s, r) => s + (+r.metros || 0), 0), sb = deMolde('SUBL', t.tipo)[0];
     M.metros = pl ? +pl.metros || 0 : plS * reparto(t, y => metrosTeo(y.tipo));
-    M.papel = M.metros * precioIns(iPap); M.tinta = M.metros * (+COSTEO_VAL.tintaM || 0) * precioIns(iTin);
-    M.mProt = sb && sb.metros != null ? +sb.metros : conSub ? M.metros * protF : 0; M.prot = M.mProt * precioIns(iPro);
+    M.papel = M.metros * (pM || 0); M.tinta = M.metros * tM.porMetro;
+    M.mProt = sb && sb.metros != null ? +sb.metros : conSub ? M.metros * protF : 0; M.prot = M.mProt * (prM || 0);
     if (conSub && !pl && !plS) M.faltan.push('metros de ploteo');
+    if (M.metros > 0) { if (pM == null) M.faltan.push('precio por metro del papel'); tM.falta.forEach(f => M.faltan.push(f)); if (M.mProt > 0 && prM == null) M.faltan.push('precio por metro de la protección'); }
     // otros costos: los de este molde y su parte de los del pedido completo
     M.otros = deMolde('OTRO', t.tipo).map(r => ({ concepto: r.tela, monto: +r.monto || 0 }))
       .concat(sueltas('OTRO').map(r => ({ concepto: r.tela + ' (parte del pedido)', monto: (+r.monto || 0) * t.cant / totU })));
@@ -6171,11 +6185,11 @@ async function stockPloteo(p, m) {
 /* pestaña Costeo */
 function renderCosteo() {
   const v = $('view-costeo'); if (!v) return;
-  const chips = `<div class="chips" style="margin-bottom:10px">${[['pedidos', 'Pedidos'], ['moldes', 'Por molde'], ['precios', 'Precios'], ['consumo', 'Consumo por molde'], ['gg', 'Gasto general'], ['valores', 'Valores']]
+  const chips = `<div class="chips" style="margin-bottom:10px">${[['pedidos', 'Pedidos'], ['moldes', 'Por molde'], ['simular', 'Simular costo'], ['precios', 'Precios'], ['consumo', 'Insumos por prenda'], ['valores', 'Ploteo y margen'], ['gg', 'Gasto general']]
     .map(([k, t]) => `<button class="chip ${COSTEO_MODO === k ? 'on' : ''}" onclick="COSTEO_MODO='${k}';renderCosteo()">${t}</button>`).join('')}</div>`;
   if (!puedeVerCosteo()) { v.innerHTML = '<h1>Costeo</h1><p class="hint">Solo administración y producción.</p>'; return; }
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + '<p class="hint">Cargando…</p>';
-  const pintar = { pedidos: pintarCosteoPedidos, moldes: pintarCosteoMoldes, precios: pintarPrecios, consumo: pintarConsumoMolde, gg: pintarGG, valores: pintarValoresCosteo }[COSTEO_MODO] || pintarCosteoPedidos;
+  const pintar = { pedidos: pintarCosteoPedidos, moldes: pintarCosteoMoldes, simular: pintarSimulador, precios: pintarPrecios, consumo: pintarConsumoMolde, gg: pintarGG, valores: pintarValoresCosteo }[COSTEO_MODO] || pintarCosteoPedidos;
   pintar(v, chips).catch(e => { v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + `<div class="aviso warn">No se pudo cargar: ${esc(String(e.message).slice(0, 200))}</div>`; });
 }
 const avisoSql20 = () => COSTEO_OK === false ? '<div class="aviso warn">Falta correr el <b>SQL 20A</b> (costeo) en Supabase de Producción: sin él no se guardan los kilos del corte, los metros de ploteo ni el consumo por molde.</div>' : '';
@@ -6187,7 +6201,7 @@ async function cargarCosteo() {
   const proy = await todasLasFilas(api, `planificacion?select=id,cot,cliente,prendas,desglose,fecha_ingreso_ficha,fecha_entrega_cliente,estado_general,requiere_sublimacion&fecha_ingreso_ficha=gte.${d1}&fecha_ingreso_ficha=lte.${d2}&order=fecha_ingreso_ficha.desc,id.desc`) || [];
   const ids = proy.map(p => p.id), rows = [], asig = [], tandas = [];
   for (let i = 0; i < ids.length; i += 100) tandas.push(ids.slice(i, i + 100).join(','));
-  await Promise.all([cargarInsumos(), cargarBOM(), cargarEjecutantes(), cargarGG([mesesAntes(mesDe(d1), 3)[2], mesesAntes(mesDe(hoy), 15)[14]].sort()[0]),
+  await Promise.all([cargarInsumos(), cargarPrecios(), cargarBOM(), cargarEjecutantes(), cargarGG([mesesAntes(mesDe(d1), 3)[2], mesesAntes(mesDe(hoy), 15)[14]].sort()[0]),
     Promise.all(tandas.map(t => todasLasFilas(api, `plan_costeo?select=*&planificacion_id=in.(${t})&order=id.asc`))).then(ls => { COSTEO_OK = true; ls.forEach(l => rows.push(...(l || []))); }).catch(() => { COSTEO_OK = false; }),
     Promise.all(tandas.map(t => todasLasFilas(api, `plan_asignaciones?select=planificacion_id,tipo_prenda,cantidad,precio_unit,ejecutante&etapa=eq.CONFEC&planificacion_id=in.(${t})`))).then(ls => ls.forEach(l => asig.push(...(l || [])))).catch(() => {})]);
   // venta neta de cada pedido (Ventas)
@@ -6340,16 +6354,400 @@ function exportarCosteo() {
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
   a.download = `Costeo_PMK_${D.d1}_${D.d2}.csv`; a.click(); URL.revokeObjectURL(a.href);
 }
-// precios de todas las telas (por kg) y de todos los insumos (por su unidad), en una sola lista
-let PRECIOS_Q = '', PRECIOS_SIN = false;
+/* ---------- Precios por proveedor (SQL 23A) ----------
+   Cada producto (tela, papel, tinta u otro insumo) puede tener varios proveedores, cada uno con su precio sin IVA y cómo
+   viene: telas por kg o por metro, con su ancho y gramaje (o rendimiento); papel en rollo, con su ancho, gramaje y
+   metros; tinta en envase, con sus cc; otros por unidad o en paquete. El costeo usa el precio MÁS CARO entre los
+   proveedores activos de cada producto: se lleva a la unidad del stock y queda como precio del insumo, así todo lo
+   demás (costeo, inventario) sigue igual. Los proveedores son los de Ventas (Gastos › Proveedores); uno nuevo se crea
+   allá desde aquí. */
+let PRECIOS = null, PRECIOS_OK = null, PROV_EST = {}, PROV_V = null, PRECIOS_VISTA = 'producto', PRECIOS_TIPO = '', PRECIOS_PROV = '', PRECIOS_INACT = false, LP = null;
+const TIPOS_PRECIO = { tela: 'Telas', papel: 'Papel', tinta: 'Tintas', otro: 'Otros insumos' };
+const DOC_PROV = { afecta: 'Factura afecta', exenta: 'Factura exenta', boleta: 'Boleta', honorarios: 'Boleta de honorarios', sin_documento: 'Sin documento' };
+const tipoIns = i => !i ? 'otro' : i.categoria === 'Tela' ? 'tela' : i.categoria === 'Papel' ? 'papel' : i.categoria === 'Tinta' ? 'tinta' : 'otro';
+const unidadBase = i => ({ tela: 'kg', papel: 'm', tinta: 'cc' })[tipoIns(i)] || i.unidad;
+const pesosD = n => n == null ? '—' : '$' + (Math.abs(n) < 100 ? (Math.round(n * 100) / 100).toLocaleString('es-CL') : Math.round(n).toLocaleString('es-CL'));
+const claveProv = n => normIns(n);
+const provActivo = n => !(PROV_EST[claveProv(n)] && PROV_EST[claveProv(n)].activo === false);
+const lineasDe = id => (PRECIOS || []).filter(l => String(l.insumo_id) === String(id));
+const lineaVigente = l => l.activo !== false && provActivo(l.proveedor);
+// telas: metros por kg (el anotado, o del ancho y el gramaje) y gramaje (el anotado, o del ancho y el rendimiento)
+const rendLinea = l => +l.rendimiento > 0 ? +l.rendimiento : +l.ancho_m > 0 && +l.gramaje > 0 ? 1000 / (+l.ancho_m * +l.gramaje) : null;
+const gramajeLinea = l => +l.gramaje > 0 ? +l.gramaje : +l.ancho_m > 0 && +l.rendimiento > 0 ? 1000 / (+l.ancho_m * +l.rendimiento) : null;
+// unidades base (kg de tela, metros de papel, cc de tinta o la unidad del stock) que trae una presentación
+function factorLinea(l, i) {
+  const t = tipoIns(i), c = +l.contenido > 0 ? +l.contenido : null;
+  if (t === 'tela') { if (l.presentacion === 'kg') return 1; const r = rendLinea(l); return l.presentacion === 'm' && r ? 1 / r : null; }
+  if (t === 'tinta') return l.presentacion === 'litro' ? 1000 : c;
+  return ['rollo', 'paquete', 'envase'].includes(l.presentacion) ? c : 1;
+}
+const precioBase = (l, i) => { const p = +l.precio, f = factorLinea(l, i); return p > 0 && f > 0 ? p / f : null; };
+// unidades base en una unidad del stock del insumo (con los datos de la línea)
+function factorStock(i, l) {
+  const t = tipoIns(i);
+  if (t === 'tela') { if (i.unidad === 'kg') return 1; const r = (l && rendLinea(l)) || +i.rendimiento; return i.unidad === 'm' && r > 0 ? 1 / r : null; }
+  if (t === 'papel') return i.unidad === 'rollo' ? (l && +l.contenido > 0 ? +l.contenido : null) : 1;
+  if (t === 'tinta') return i.unidad === 'litro' ? 1000 : ['unid', 'rollo'].includes(i.unidad) ? (l && +l.contenido > 0 ? +l.contenido : null) : 1;
+  return 1;
+}
+// la línea que usa el costeo: la más cara entre los proveedores activos (con sus datos completos)
+function referenciaDe(i) {
+  let ref = null, b0 = -1;
+  lineasDe(i.id).filter(lineaVigente).forEach(l => { const b = precioBase(l, i); if (b != null && b > b0) { ref = l; b0 = b; } });
+  return ref;
+}
+// precio en la unidad base (kg de tela, metro de papel, cc de tinta): el de referencia o, sin precios por proveedor, el del insumo
+function precioBaseIns(i) {
+  if (!i) return null;
+  const ref = PRECIOS_OK ? referenciaDe(i) : null; if (ref) return precioBase(ref, i);
+  const f = factorStock(i, null); return +i.precio > 0 && f > 0 ? +i.precio / f : null;
+}
+// faltan datos para calcular el precio de la línea
+function faltaLinea(l, i) {
+  const t = tipoIns(i);
+  if (!(+l.precio > 0)) return 'falta el precio';
+  if (t === 'tela' && l.presentacion === 'm' && !rendLinea(l)) return 'falta el gramaje o el rendimiento (con el ancho)';
+  if (t === 'papel' && l.presentacion === 'rollo' && !(+l.contenido > 0)) return 'faltan los metros del rollo';
+  if (t === 'tinta' && l.presentacion !== 'litro' && !(+l.contenido > 0)) return 'faltan los cc del envase';
+  if (t === 'otro' && ['rollo', 'paquete', 'envase'].includes(l.presentacion) && !(+l.contenido > 0)) return 'falta cuánto trae';
+  return '';
+}
+function textoLinea(l, i) {
+  const t = tipoIns(i), d = [];
+  if (t === 'tela') { d.push('por ' + (l.presentacion === 'kg' ? 'kg' : 'metro'));
+    if (+l.ancho_m > 0) d.push('ancho ' + numCL(l.ancho_m) + ' m'); const g = gramajeLinea(l), r = rendLinea(l);
+    if (g) d.push(numCL(Math.round(g)) + ' g/m²'); if (r) d.push(numCL(Math.round(r * 100) / 100) + ' m por kg'); }
+  else if (t === 'papel') { d.push(l.presentacion === 'rollo' ? 'rollo' + (+l.contenido > 0 ? ' de ' + numCL(l.contenido) + ' m' : '') : 'por metro');
+    if (+l.ancho_m > 0) d.push('ancho ' + numCL(l.ancho_m) + ' m'); if (+l.gramaje > 0) d.push(numCL(l.gramaje) + ' g/m²'); }
+  else if (t === 'tinta') d.push(l.presentacion === 'litro' ? 'por litro' : 'envase' + (+l.contenido > 0 ? ' de ' + numCL(l.contenido) + ' cc' : ''));
+  else d.push(['rollo', 'paquete', 'envase'].includes(l.presentacion) ? l.presentacion + (+l.contenido > 0 ? ' de ' + numCL(l.contenido) + ' ' + i.unidad : '') : 'por ' + i.unidad);
+  return d.join(' · ');
+}
+// lo que equivale el precio de la línea: telas $/kg y $/m; papel $/m y $/m²; tinta $/cc; otros por su unidad
+function equivaleLinea(l, i) {
+  const b = precioBase(l, i), t = tipoIns(i); if (b == null) return '';
+  if (t === 'tela') { const r = rendLinea(l); return pesosD(b) + '/kg' + (r ? ' · ' + pesosD(b / r) + '/m' : ''); }
+  if (t === 'papel') return pesosD(b) + '/m' + (+l.ancho_m > 0 ? ' · ' + pesosD(b / +l.ancho_m) + '/m²' : '');
+  if (t === 'tinta') return pesosD(b) + '/cc';
+  return pesosD(b) + '/' + i.unidad;
+}
+async function cargarPrecios(forzar) {
+  if (PRECIOS && !forzar) return PRECIOS;
+  try { PRECIOS = await todasLasFilas(api, 'plan_insumo_precios?select=*&order=insumo_id.asc,id.asc') || []; PRECIOS_OK = true; }
+  catch (e) { PRECIOS = []; PRECIOS_OK = false; return PRECIOS; }
+  try { const est = {}; (await api('plan_proveedores_estado?select=*') || []).forEach(r => { est[r.clave] = r; }); PROV_EST = est; } catch (e) {}
+  return PRECIOS;
+}
+// proveedores de Ventas (los mismos de los gastos)
+async function cargarProvVentas(forzar) {
+  if (PROV_V && !forzar) return PROV_V;
+  try { PROV_V = await todasLasFilas(apiV, 'proveedores?select=*&order=nombre.asc') || []; } catch (e) { PROV_V = PROV_V || []; }
+  return PROV_V;
+}
+const provVentas = n => (PROV_V || []).find(p => claveProv(p.nombre) === claveProv(n));
+async function crearProvVentas(nombre, rut, doc) {
+  const prov = { id: Date.now() * 1000 + Math.floor(Math.random() * 1000), nombre, rut: rut || '', centro_costo: '', tipo_documento: doc };
+  const enviar = async x => { const r = await fetch(`${VENTAS_URL}/rest/v1/proveedores`, { method: 'POST', body: JSON.stringify(x),
+    headers: { apikey: VENTAS_KEY, Authorization: 'Bearer ' + VENTAS_KEY, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates' } });
+    if (!r.ok) throw new Error(r.status + ' ' + await r.text()); };
+  try { await enviar(prov); }
+  catch (e) { if (!/tipo_documento/.test(e.message)) throw e; delete prov.tipo_documento; await enviar(prov); }   // Ventas sin el SQL 21A
+  (PROV_V = PROV_V || []).push(prov);
+  return prov;
+}
+// el precio que usa el costeo (el más caro de los proveedores activos) queda como precio del insumo, en la unidad del stock
+async function sincronizarPrecio(i, motivo) {
+  const ls = lineasDe(i.id); if (!ls.length) return;
+  const ref = referenciaDe(i), vigentes = ls.filter(lineaVigente);
+  let precio, rend = +i.rendimiento > 0 ? +i.rendimiento : null, prov = i.proveedor || '';
+  if (ref) {
+    const f = factorStock(i, ref); if (!(f > 0)) return;
+    precio = Math.round(precioBase(ref, i) * f * 10000) / 10000; prov = ref.proveedor;
+    if (tipoIns(i) === 'tela' && rendLinea(ref)) rend = Math.round(rendLinea(ref) * 10000) / 10000;
+  } else if (!vigentes.length) precio = null;   // ningún proveedor activo: queda sin precio
+  else return;                                 // hay proveedores activos, pero sin sus datos completos: el precio sigue igual
+  const p0 = +i.precio > 0 ? +i.precio : null, r0 = +i.rendimiento > 0 ? +i.rendimiento : null, cambios = [];
+  if ((p0 == null) !== (precio == null) || (p0 != null && Math.abs(p0 - precio) > 0.005))
+    cambios.push(`precio ${p0 != null ? pesosD(p0) : 'sin precio'} → ${precio != null ? pesosD(precio) : 'sin precio'} por ${i.unidad} (${ref ? ref.proveedor + ', el más caro de los proveedores activos' : 'sin proveedor activo'})`);
+  if (tipoIns(i) === 'tela' && rend != null && rend !== r0) cambios.push(`rendimiento ${r0 ? numCL(r0) : 'sin dato'} → ${numCL(rend)} m por kg`);
+  if (!cambios.length && (prov || '') === (i.proveedor || '')) return;
+  await patchInsumo(i.id, { precio, rendimiento: rend, proveedor: prov || null, updated_at: new Date().toISOString() });
+  if (cambios.length) await registrarEdicion(i, cambios.concat(motivo ? [motivo] : []));
+  Object.assign(i, { precio, rendimiento: rend, proveedor: prov || null }); COSTEO_DATOS = null;
+}
+// proveedores para elegir: los de Ventas y los escritos a mano en precios ya guardados
+function listaProveedores() {
+  const m = {};
+  (PROV_V || []).forEach(p => { m[claveProv(p.nombre)] = { nombre: p.nombre, id: p.id, ventas: true, rut: p.rut || '' }; });
+  (PRECIOS || []).forEach(l => { const k = claveProv(l.proveedor); if (l.proveedor && !m[k]) m[k] = { nombre: l.proveedor, id: l.proveedor_id || null, ventas: false }; });
+  return Object.values(m).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+}
+
 async function pintarPrecios(v, chips) {
+  await Promise.all([cargarInsumos(), cargarPrecios(true), cargarProvVentas()]);
+  if (INSUMOS_OK === false) { v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + '<div class="aviso warn">Falta correr el SQL 5A de insumos en Supabase de Producción.</div>'; return; }
+  if (PRECIOS_OK === false) return pintarPreciosSimple(v, chips);
+  // los proveedores escritos a mano que ya están en Ventas quedan cruzados
+  const cruzar = PRECIOS.filter(l => !l.proveedor_id && provVentas(l.proveedor));
+  for (const l of cruzar) { const p = provVentas(l.proveedor); try { await api(`plan_insumo_precios?id=eq.${l.id}`, { method: 'PATCH', body: JSON.stringify({ proveedor_id: p.id, proveedor: p.nombre }) }); Object.assign(l, { proveedor_id: p.id, proveedor: p.nombre }); } catch (e) {} }
+  const vista = `<div class="chips" style="margin:4px 0 10px">${[['producto', 'Por producto'], ['proveedor', 'Por proveedor']].map(([k, t]) =>
+    `<button class="chip ${PRECIOS_VISTA === k ? 'on' : ''}" onclick="PRECIOS_VISTA='${k}';renderCosteo()">${t}</button>`).join('')}</div>`;
+  const act = INS.filter(i => i.activo !== false), conRef = act.filter(i => referenciaDe(i) || (!lineasDe(i.id).length && +i.precio > 0));
+  const provs = listaProveedores().filter(p => (PRECIOS || []).some(l => claveProv(l.proveedor) === claveProv(p.nombre)));
+  const inact = provs.filter(p => !provActivo(p.nombre)).length;
+  v.innerHTML = '<h1>Costeo de prendas</h1>' + chips +
+    `<p class="hint">Cada producto puede tener <b>varios proveedores</b>, cada uno con su precio <b>sin IVA</b> y cómo viene (ancho y gramaje de telas y papel, metros del rollo, cc de la tinta). El costeo usa el precio <b>más caro de los proveedores activos</b> (★). Los proveedores son los de Ventas › Gastos › Proveedores. Una compra registrada en Inventario con su costo actualiza el precio de ese proveedor.</p>
+    <div class="resumen">${dato('Productos con precio', conRef.length + ' de ' + act.length, conRef.length < act.length, '')}${dato('Proveedores con precios', provs.length, false, inact ? inact + ' desactivado' + (inact !== 1 ? 's' : '') : '')}</div>
+    ${vista}<div id="pr-cuerpo"></div>`;
+  if (PRECIOS_VISTA === 'proveedor') pintarPreciosProveedor(); else pintarPreciosProducto();
+}
+function pintarPreciosProducto() {
+  const c = $('pr-cuerpo'); if (!c) return;
+  const q = normIns(PRECIOS_Q);
+  const ve = i => (PRECIOS_INACT || i.activo !== false) && (!PRECIOS_TIPO || tipoIns(i) === PRECIOS_TIPO) && (!q || normIns(i.nombre).includes(q) || lineasDe(i.id).some(l => normIns(l.proveedor + ' ' + (l.nombre_proveedor || '')).includes(q)))
+    && (!PRECIOS_SIN || !(referenciaDe(i) || (!lineasDe(i.id).length && +i.precio > 0)));
+  const fila = i => {
+    const ls = lineasDe(i.id), ref = referenciaDe(i), vig = ls.filter(lineaVigente), fal = ls.filter(l => lineaVigente(l) && faltaLinea(l, i));
+    const refTxt = ref ? `<b>${equivaleLinea(ref, i)}</b><div class="hint">★ ${esc(ref.proveedor)}</div>`
+      : !ls.length ? (+i.precio > 0 ? `${pesosD(+i.precio)}/${esc(i.unidad)}<div class="hint">sin proveedor registrado</div>` : '<span style="color:#A8121E">sin precio</span>')
+      : !vig.length ? '<span style="color:#A8121E">sin proveedor activo</span>' : `<span style="color:#A86B00">${esc(faltaLinea(fal[0] || vig[0], i) || 'sin precio')}</span>`;
+    return `<tr data-ins="${i.id}" style="${i.activo === false ? 'opacity:.5' : ''}"><td><b>${esc(i.nombre)}</b>${i.activo === false ? ' <span class="tag sin">desactivado</span>' : ''}<div class="hint">${esc(i.categoria)} · stock en ${esc(i.unidad)}</div></td>
+      <td style="text-align:right">${refTxt}</td><td style="text-align:center">${ls.length ? `${vig.length}${vig.length !== ls.length ? ' de ' + ls.length : ''}` : '—'}${fal.length ? `<div class="hint" style="color:#A86B00">${fal.length} con datos por completar</div>` : ''}</td>
+      <td style="text-align:right;white-space:nowrap"><button class="btn sm pri" onclick="verPreciosProducto(${i.id})">Proveedores y precios</button>
+        <button class="btn sm" onclick="activarProducto(${i.id},${i.activo === false})">${i.activo === false ? 'Activar' : 'Desactivar'}</button></td></tr>`;
+  };
+  const grupos = Object.keys(TIPOS_PRECIO).filter(t => !PRECIOS_TIPO || t === PRECIOS_TIPO);
+  c.innerHTML = `<div class="toolbar"><input id="pr-q" placeholder="Buscar producto o proveedor" value="${esc(PRECIOS_Q)}" oninput="PRECIOS_Q=this.value;pintarPreciosProducto();const q=$('pr-q');q.focus();q.setSelectionRange(q.value.length,q.value.length)">
+      <select onchange="PRECIOS_TIPO=this.value;pintarPreciosProducto()" style="width:auto"><option value="">Todos</option>${Object.entries(TIPOS_PRECIO).map(([k, t]) => `<option value="${k}" ${PRECIOS_TIPO === k ? 'selected' : ''}>${t}</option>`).join('')}</select>
+      <label class="btn" style="display:inline-flex;align-items:center;gap:6px;margin:0;color:var(--tinta)"><input type="checkbox" style="flex:0 0 auto;min-width:0;width:auto;margin:0" ${PRECIOS_SIN ? 'checked' : ''} onchange="PRECIOS_SIN=this.checked;pintarPreciosProducto()"> Solo sin precio</label>
+      <label class="btn" style="display:inline-flex;align-items:center;gap:6px;margin:0;color:var(--tinta)"><input type="checkbox" style="flex:0 0 auto;min-width:0;width:auto;margin:0" ${PRECIOS_INACT ? 'checked' : ''} onchange="PRECIOS_INACT=this.checked;pintarPreciosProducto()"> Ver desactivados</label>
+      <button class="btn pri" onclick="abrirNuevoInsumo()">+ Nuevo producto</button></div>
+    ${grupos.map(t => { const l = INS.filter(i => tipoIns(i) === t && ve(i)); return `<h2>${TIPOS_PRECIO[t]}</h2>
+      <div class="panel" style="overflow-x:auto"><table class="mini" data-tipo="${t}"><tr><th>Producto</th><th style="text-align:right">Precio que usa el costeo</th><th style="text-align:center">Proveedores activos</th><th></th></tr>
+        ${l.map(fila).join('') || '<tr><td colspan="4" class="hint">Sin productos.</td></tr>'}</table></div>`; }).join('')}`;
+}
+function pintarPreciosProveedor() {
+  const c = $('pr-cuerpo'); if (!c) return;
+  const provs = listaProveedores(), conLin = p => (PRECIOS || []).filter(l => claveProv(l.proveedor) === claveProv(p.nombre));
+  const sel = PRECIOS_PROV && provs.find(p => claveProv(p.nombre) === PRECIOS_PROV);
+  const opciones = provs.filter(p => conLin(p).length || p.ventas);
+  let h = `<div class="toolbar"><select onchange="PRECIOS_PROV=this.value;pintarPreciosProveedor()" style="min-width:260px"><option value="">— Elige un proveedor —</option>
+      <optgroup label="Con precios registrados">${opciones.filter(p => conLin(p).length).map(p => `<option value="${esc(claveProv(p.nombre))}" ${sel && sel === p ? 'selected' : ''}>${esc(p.nombre)}${provActivo(p.nombre) ? '' : ' (desactivado)'}</option>`).join('')}</optgroup>
+      <optgroup label="Otros proveedores de Ventas">${opciones.filter(p => !conLin(p).length).map(p => `<option value="${esc(claveProv(p.nombre))}" ${sel && sel === p ? 'selected' : ''}>${esc(p.nombre)}</option>`).join('')}</optgroup></select>
+    <button class="btn" onclick="abrirNuevoProveedor()">+ Proveedor nuevo</button></div>`;
+  if (!sel) {
+    h += `<div class="panel" style="overflow-x:auto"><table class="mini"><tr><th>Proveedor</th><th style="text-align:right">Productos</th><th style="text-align:right">Es el precio del costeo en</th><th>Estado</th><th></th></tr>
+      ${opciones.filter(p => conLin(p).length).map(p => { const ls = conLin(p), ref = ls.filter(l => { const i = insumoDe(l.insumo_id); return i && referenciaDe(i) === l; }).length;
+        return `<tr style="${provActivo(p.nombre) ? '' : 'opacity:.55'}"><td><b>${esc(p.nombre)}</b>${p.ventas ? '' : '<div class="hint" style="color:#A86B00">no está en Ventas</div>'}</td><td style="text-align:right">${ls.length}</td><td style="text-align:right">${ref}</td>
+          <td>${provActivo(p.nombre) ? 'Activo' : '<b style="color:#A8121E">Desactivado</b>'}</td><td style="text-align:right"><button class="btn sm" onclick="PRECIOS_PROV='${esc(claveProv(p.nombre))}';pintarPreciosProveedor()">Ver productos</button></td></tr>`; }).join('')
+        || '<tr><td colspan="5" class="hint">Todavía no hay precios por proveedor.</td></tr>'}</table></div>`;
+    c.innerHTML = h; return;
+  }
+  const ls = conLin(sel), act = provActivo(sel.nombre), pv = provVentas(sel.nombre);
+  h += `<div class="panel"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+      <div><h2 style="margin:0">${esc(sel.nombre)}</h2><div class="hint">${pv ? [pv.rut, DOC_PROV[pv.tipo_documento]].filter(Boolean).map(esc).join(' · ') || 'Proveedor de Ventas' : 'No está en la lista de Ventas'}</div></div>
+      <div><b style="color:${act ? '#1B6B3E' : '#A8121E'}">${act ? 'Activo' : 'Desactivado'}</b> <button class="btn sm" onclick="activarProveedor('${esc(claveProv(sel.nombre))}',${!act})">${act ? 'Desactivar proveedor' : 'Activar proveedor'}</button></div></div>
+    ${act ? '' : '<div class="aviso warn">Desactivado: sus precios no cuentan para el costeo.</div>'}
+    <div style="overflow-x:auto;margin-top:10px"><table class="mini"><tr><th>Producto</th><th>Cómo viene</th><th style="text-align:right">Precio sin IVA</th><th style="text-align:right">Equivale a</th><th></th></tr>
+      ${ls.map(l => { const i = insumoDe(l.insumo_id); if (!i) return ''; const ref = referenciaDe(i) === l, fal = faltaLinea(l, i);
+        return `<tr style="${l.activo === false ? 'opacity:.5' : ''}"><td><b>${esc(i.nombre)}</b>${ref ? ' <span title="Es el precio que usa el costeo">★</span>' : ''}${l.nombre_proveedor ? `<div class="hint">lo llama «${esc(l.nombre_proveedor)}»</div>` : ''}${l.activo === false ? '<div class="hint">precio desactivado</div>' : ''}</td>
+          <td class="hint">${esc(textoLinea(l, i))}</td><td style="text-align:right">${+l.precio > 0 ? pesosD(+l.precio) : '—'}</td>
+          <td style="text-align:right">${fal ? `<span style="color:#A86B00">${esc(fal)}</span>` : equivaleLinea(l, i)}</td>
+          <td style="text-align:right"><button class="btn sm" onclick="abrirLineaPrecio(${i.id},${l.id})">Editar</button></td></tr>`; }).join('') || '<tr><td colspan="5" class="hint">Sin productos de este proveedor.</td></tr>'}
+    </table></div>
+    <div class="toolbar" style="margin-top:10px"><select id="pp-ins" style="min-width:240px"><option value="">+ Agregar un producto de este proveedor…</option>
+      ${INS.filter(i => i.activo !== false).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es')).map(i => `<option value="${i.id}">${esc(i.nombre)} (${esc(i.categoria)})</option>`).join('')}</select>
+      <button class="btn pri" onclick="if($('pp-ins').value)abrirLineaPrecio(+$('pp-ins').value,null,PRECIOS_PROV_NOMBRE())">Agregar</button>
+      <button class="btn" onclick="PRECIOS_PROV='';pintarPreciosProveedor()">Ver todos los proveedores</button></div></div>`;
+  c.innerHTML = h;
+}
+const PRECIOS_PROV_NOMBRE = () => { const p = listaProveedores().find(x => claveProv(x.nombre) === PRECIOS_PROV); return p ? p.nombre : ''; };
+// detalle de un producto: sus proveedores y precios
+function verPreciosProducto(id) {
+  const i = insumoDe(id); if (!i) return;
+  const ls = lineasDe(id), ref = referenciaDe(i);
+  abrirModal(`<h3 style="padding-right:80px">${esc(i.nombre)}</h3>
+    <p class="hint">${esc(i.categoria)} · stock en ${esc(i.unidad)}. El costeo usa el precio más caro de los proveedores activos (★)${ref ? ': <b>' + equivaleLinea(ref, i) + '</b>' : ''}.</p>
+    <div style="overflow-x:auto"><table class="mini"><tr><th>Proveedor</th><th>Cómo viene</th><th style="text-align:right">Precio sin IVA</th><th style="text-align:right">Equivale a</th><th></th></tr>
+      ${ls.map(l => { const fal = faltaLinea(l, i), vig = lineaVigente(l);
+        return `<tr style="${vig ? '' : 'opacity:.5'}"><td><b>${esc(l.proveedor)}</b>${ref === l ? ' ★' : ''}${l.nombre_proveedor ? `<div class="hint">lo llama «${esc(l.nombre_proveedor)}»</div>` : ''}
+          ${!provActivo(l.proveedor) ? '<div class="hint" style="color:#A8121E">proveedor desactivado</div>' : l.activo === false ? '<div class="hint">precio desactivado</div>' : ''}${l.proveedor_id || provVentas(l.proveedor) ? '' : '<div class="hint" style="color:#A86B00">no está en Ventas</div>'}</td>
+          <td class="hint">${esc(textoLinea(l, i))}</td><td style="text-align:right">${+l.precio > 0 ? pesosD(+l.precio) : '—'}</td>
+          <td style="text-align:right">${fal ? `<span style="color:#A86B00">${esc(fal)}</span>` : equivaleLinea(l, i)}</td>
+          <td style="text-align:right;white-space:nowrap"><button class="btn sm" onclick="abrirLineaPrecio(${i.id},${l.id})">Editar</button></td></tr>`; }).join('') || '<tr><td colspan="5" class="hint">Sin proveedores todavía.</td></tr>'}
+    </table></div>
+    <div class="acciones"><button class="btn" onclick="cerrarModal()">Cerrar</button><button class="btn pri" onclick="abrirLineaPrecio(${i.id},null)">+ Agregar proveedor</button></div>`);
+}
+// formulario de un precio: proveedor, cómo viene y su precio (según el tipo de producto)
+function abrirLineaPrecio(insumoId, lineaId, provNombre) {
+  const i = insumoDe(insumoId); if (!i) return;
+  const l = lineaId ? (PRECIOS || []).find(x => x.id === lineaId) : null, t = tipoIns(i);
+  LP = { insumoId, lineaId: lineaId || null };
+  const v = (k, d) => l && l[k] != null ? l[k] : d;
+  const pres = v('presentacion', t === 'tela' ? 'kg' : t === 'papel' ? 'rollo' : t === 'tinta' ? 'envase' : i.unidad);
+  const num = (id, lab, val, ph, extra) => `<div><label for="${id}">${lab}</label><input id="${id}" type="number" min="0" step="any" value="${val != null && val !== '' ? val : ''}" placeholder="${ph || ''}" oninput="calcLineaPrecio()" ${extra || ''}></div>`;
+  let datos = '';
+  if (t === 'tela') datos = `<div class="grid2"><div><label for="lp-pres">Se compra por</label><select id="lp-pres" onchange="calcLineaPrecio()"><option value="kg" ${pres === 'kg' ? 'selected' : ''}>kg</option><option value="m" ${pres === 'm' ? 'selected' : ''}>metro</option></select></div>
+      ${num('lp-precio', 'Precio sin IVA (por kg o por metro)', v('precio'), 'Ej: 8000')}</div>
+    <div class="grid2">${num('lp-ancho', 'Ancho del rollo (m)', v('ancho_m'), 'Ej: 1,60')}${num('lp-gram', 'Gramaje (g/m²)', v('gramaje'), 'Ej: 150')}</div>
+    ${num('lp-rend', 'Rendimiento (metros por kg)', v('rendimiento'), 'Opcional si anotas el gramaje')}
+    <p class="hint" style="margin:2px 0 0">Con el ancho, anota el gramaje <b>o</b> el rendimiento: el otro se calcula. El mismo metro pesa más en un rollo más ancho.</p>`;
+  else if (t === 'papel') datos = `<input type="hidden" id="lp-pres" value="rollo">
+    <div class="grid2">${num('lp-ancho', 'Ancho del papel (m)', v('ancho_m'), 'Ej: 1,60')}${num('lp-gram', 'Gramaje (g/m²)', v('gramaje'), 'Ej: 100')}</div>
+    <div class="grid2">${num('lp-cont', 'Metros que trae el rollo', v('contenido'), 'Ej: 100')}${num('lp-precio', 'Precio del rollo sin IVA', v('precio'), 'Ej: 60000')}</div>`;
+  else if (t === 'tinta') datos = `<input type="hidden" id="lp-pres" value="envase">
+    <div class="grid2">${num('lp-cont', 'Contenido del envase (cc)', v('contenido'), 'Ej: 1000')}${num('lp-precio', 'Precio del envase sin IVA', v('precio'), 'Ej: 50000')}</div>
+    <p class="hint" style="margin:2px 0 0">El color y cuánto rinde cada tinta se anotan en Costeo › Ploteo y margen.</p>`;
+  else datos = `<div class="grid2"><div><label for="lp-pres">Se compra</label><select id="lp-pres" onchange="calcLineaPrecio()">
+      <option value="${esc(i.unidad)}" ${!['paquete', 'rollo', 'envase'].includes(pres) || pres === i.unidad ? 'selected' : ''}>por ${esc(i.unidad)}</option>
+      ${['paquete', 'rollo', 'envase'].filter(x => x !== i.unidad).map(x => `<option value="${x}" ${pres === x ? 'selected' : ''}>en ${x}</option>`).join('')}</select></div>
+      ${num('lp-precio', 'Precio sin IVA (de lo que se compra)', v('precio'), 'Ej: 15000')}</div>
+    <div id="lp-cont-w">${num('lp-cont', `Cuánto trae (en ${esc(i.unidad)})`, v('contenido') != null && v('contenido') !== 1 ? v('contenido') : '', 'Ej: 100')}</div>`;
+  abrirModal(`<h3>${l ? 'Precio de' : 'Nuevo proveedor para'} ${esc(i.nombre)}</h3>
+    <label for="lp-prov">Proveedor (de Ventas)</label><input id="lp-prov" list="lp-provs" value="${esc(l ? l.proveedor : provNombre || '')}" placeholder="Escribe para buscar" oninput="calcLineaPrecio()" ${l ? '' : 'autofocus'}>
+    <datalist id="lp-provs">${listaProveedores().filter(p => p.ventas).map(p => `<option value="${esc(p.nombre)}">`).join('')}</datalist>
+    <div id="lp-nuevo" style="display:none" class="panel"><b>No está en Ventas:</b> se crea allá (Gastos › Proveedores), con estos datos.
+      <div class="grid2"><div><label for="lp-doc">Tipo de documento</label><select id="lp-doc"><option value="">— Elegir —</option>${Object.entries(DOC_PROV).map(([k, t]) => `<option value="${k}">${t}</option>`).join('')}</select></div>
+        <div><label for="lp-rut">RUT</label><input id="lp-rut" placeholder="Opcional"></div></div></div>
+    <label for="lp-nomp">Cómo lo llama el proveedor</label><input id="lp-nomp" maxlength="120" value="${esc(v('nombre_proveedor', ''))}" placeholder="Opcional (si lo vende con otro nombre)">
+    ${datos}
+    <p class="hint" id="lp-calc" style="font-weight:600;color:var(--tinta)"></p>
+    <label style="display:flex;align-items:center;gap:6px;margin-top:8px;font-weight:400"><input type="checkbox" id="lp-act" style="width:auto" ${l && l.activo === false ? '' : 'checked'}> Precio vigente (si lo desmarcas, no cuenta para el costeo)</label>
+    <div id="md-err"></div>
+    <div class="acciones">${l ? `<button class="btn" style="color:#A8121E;border-color:#EFA6AF;margin-right:auto" onclick="quitarLineaPrecio(${l.id})">Quitar</button>` : ''}<button class="btn" onclick="verPreciosProducto(${i.id})">Volver</button><button class="btn pri" id="lp-ok" onclick="guardarLineaPrecio()">Guardar</button></div>`);
+  calcLineaPrecio();
+}
+// lo que se está escribiendo, como línea de precio
+function leerLineaPrecio() {
+  const i = insumoDe(LP.insumoId), t = tipoIns(i), n = id => { const x = numIn(id); return x != null && x > 0 ? x : null; };
+  const pres = ($('lp-pres') || {}).value || i.unidad;
+  const l = { presentacion: pres, precio: n('lp-precio'), ancho_m: n('lp-ancho'), gramaje: n('lp-gram'), rendimiento: n('lp-rend'), contenido: n('lp-cont') };
+  if (t === 'otro' && !['paquete', 'rollo', 'envase'].includes(pres) || pres === i.unidad && t === 'otro') l.contenido = 1;
+  if (t === 'tela') l.contenido = 1;
+  return l;
+}
+function calcLineaPrecio() {
+  if (!LP) return;
+  const i = insumoDe(LP.insumoId), t = tipoIns(i), l = leerLineaPrecio();
+  const w = $('lp-cont-w'); if (w) w.style.display = ['paquete', 'rollo', 'envase'].includes(l.presentacion) && l.presentacion !== i.unidad ? '' : 'none';
+  const nom = ($('lp-prov').value || '').trim(); $('lp-nuevo').style.display = nom && !provVentas(nom) && !(PRECIOS || []).some(x => claveProv(x.proveedor) === claveProv(nom)) ? '' : 'none';
+  const partes = [];
+  if (t === 'tela') { const g = gramajeLinea(l), r = rendLinea(l);
+    if (l.ancho_m && g) partes.push(`1 metro pesa ${numCL(Math.round(l.ancho_m * g) / 1000)} kg`); if (r) partes.push(`rinde ${numCL(Math.round(r * 100) / 100)} m por kg`);
+    if (l.ancho_m && l.gramaje && l.rendimiento && Math.abs(1000 / (l.ancho_m * l.gramaje) - l.rendimiento) / l.rendimiento > 0.05) partes.push('ojo: el gramaje y el rendimiento no calzan con el ancho (se usa el rendimiento)'); }
+  const eq = equivaleLinea(l, i); if (eq) partes.push('= ' + eq);
+  const fal = faltaLinea(l, i); if (fal && l.precio) partes.push(fal);
+  $('lp-calc').textContent = partes.join(' · ');
+}
+async function guardarLineaPrecio() {
+  const i = insumoDe(LP.insumoId), l = leerLineaPrecio(), t = tipoIns(i);
+  const nom = ($('lp-prov').value || '').trim().replace(/\s+/g, ' ');
+  if (!nom) return errModal('Elige el proveedor.');
+  if (!l.precio) return errModal('Anota el precio sin IVA.');
+  if (t === 'tela' && l.presentacion === 'm' && !rendLinea(l)) return errModal('Por metro: anota el ancho y el gramaje, o el rendimiento (metros por kg), para llevarlo a kg.');
+  if (t === 'papel' && !l.contenido) return errModal('Anota los metros que trae el rollo.');
+  if (t === 'tinta' && !l.contenido) return errModal('Anota los cc del envase.');
+  if (t === 'otro' && ['paquete', 'rollo', 'envase'].includes(l.presentacion) && l.presentacion !== i.unidad && !l.contenido) return errModal(`Anota cuántos ${i.unidad} trae.`);
+  let pv = provVentas(nom);
+  const yaEscrito = (PRECIOS || []).find(x => claveProv(x.proveedor) === claveProv(nom));
+  const btn = $('lp-ok'); btn.disabled = true;
+  if (!pv && !yaEscrito) {
+    const doc = $('lp-doc').value; if (!doc) { btn.disabled = false; return errModal('Es un proveedor nuevo: elige su tipo de documento (se crea en Ventas).'); }
+    try { pv = await crearProvVentas(nom, $('lp-rut').value.trim(), doc); } catch (e) { btn.disabled = false; return errModal('No se pudo crear el proveedor en Ventas: ' + e.message); }
+  }
+  const fila = { insumo_id: i.id, proveedor_id: pv ? pv.id : (yaEscrito && yaEscrito.proveedor_id) || null, proveedor: pv ? pv.nombre : yaEscrito.proveedor,
+    nombre_proveedor: $('lp-nomp').value.trim() || null, presentacion: l.presentacion, contenido: l.contenido || null, precio: l.precio,
+    ancho_m: l.ancho_m, gramaje: l.gramaje, rendimiento: l.rendimiento, activo: $('lp-act').checked, usuario: USER.nombre, updated_at: new Date().toISOString() };
+  try {
+    if (LP.lineaId) await api(`plan_insumo_precios?id=eq.${LP.lineaId}`, { method: 'PATCH', body: JSON.stringify(fila) });
+    else await api('plan_insumo_precios', { method: 'POST', body: JSON.stringify(fila) });
+    await cargarPrecios(true);
+    await sincronizarPrecio(i, 'precio de ' + fila.proveedor + (LP.lineaId ? ' editado' : ' agregado'));
+  } catch (e) { btn.disabled = false; return errModal('No se pudo guardar: ' + e.message); }
+  toast('Precio guardado'); verPreciosProducto(i.id); if (TAB === 'costeo' && COSTEO_MODO === 'precios') renderCosteo();
+}
+async function quitarLineaPrecio(id) {
+  const l = (PRECIOS || []).find(x => x.id === id), i = l && insumoDe(l.insumo_id); if (!l || !i) return;
+  if (!confirm(`¿Quitar el precio de ${l.proveedor} para ${i.nombre}?\n\nSi solo dejó de estar vigente, mejor desmarca «Precio vigente».`)) return;
+  try { await api(`plan_insumo_precios?id=eq.${id}`, { method: 'DELETE' }); await cargarPrecios(true); await sincronizarPrecio(i, 'precio de ' + l.proveedor + ' quitado'); }
+  catch (e) { return errModal('No se pudo quitar: ' + e.message); }
+  toast('Precio quitado'); verPreciosProducto(i.id); if (TAB === 'costeo' && COSTEO_MODO === 'precios') renderCosteo();
+}
+// activar o desactivar un proveedor para el costeo: sus productos vuelven a tomar el más caro de los activos
+async function activarProveedor(clave, activo) {
+  const p = listaProveedores().find(x => claveProv(x.nombre) === clave); if (!p) return;
+  const ins = Array.from(new Set((PRECIOS || []).filter(l => claveProv(l.proveedor) === clave).map(l => l.insumo_id))).map(insumoDe).filter(Boolean);
+  if (!activo) {
+    const antes = {}; ins.forEach(i => { antes[i.id] = referenciaDe(i); });
+    PROV_EST[clave] = { clave, nombre: p.nombre, activo: false };
+    const cambian = ins.filter(i => antes[i.id] !== referenciaDe(i)), quedan = ins.filter(i => !lineasDe(i.id).some(lineaVigente));
+    delete PROV_EST[clave];
+    if (!confirm(`¿Desactivar ${p.nombre}?\n\nSus precios dejan de contar para el costeo.` + (cambian.length ? `\n${cambian.length} producto(s) cambian al precio de otro proveedor.` : '') +
+      (quedan.length ? `\n${quedan.length} producto(s) quedan sin precio: ${quedan.map(i => i.nombre).slice(0, 6).join(', ')}${quedan.length > 6 ? '…' : ''}` : ''))) return;
+  }
+  try { await api('plan_proveedores_estado', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates' },
+    body: JSON.stringify({ clave, nombre: p.nombre, proveedor_id: p.id || null, activo, usuario: USER.nombre, updated_at: new Date().toISOString() }) }); }
+  catch (e) { return toast('No se pudo guardar: ' + String(e.message).slice(0, 120), 'err'); }
+  PROV_EST[clave] = { clave, nombre: p.nombre, activo };
+  for (const i of ins) { try { await sincronizarPrecio(i, `proveedor ${p.nombre} ${activo ? 'activado' : 'desactivado'}`); } catch (e) {} }
+  toast(`${p.nombre} ${activo ? 'activado' : 'desactivado'}`); renderCosteo();
+}
+async function activarProducto(id, activo) {
+  const i = insumoDe(id); if (!i) return;
+  if (!activo && !confirm(`¿Desactivar ${i.nombre}?\n\nDeja de aparecer en Precios, en los insumos por prenda y al registrar compras. Su historial se mantiene y se puede volver a activar.`)) return;
+  try { await patchInsumo(id, { activo, updated_at: new Date().toISOString() }); await registrarEdicion(i, [activo ? 'reactivado' : 'desactivado']); }
+  catch (e) { return toast('No se pudo guardar', 'err'); }
+  i.activo = activo; toast(`${i.nombre} ${activo ? 'activado' : 'desactivado'}`); renderCosteo();
+}
+function abrirNuevoProveedor() {
+  abrirModal(`<h3>Proveedor nuevo</h3>
+    <p class="hint">Se crea en Ventas (Gastos › Proveedores): es la misma lista de los gastos.</p>
+    <label for="np-nom">Nombre</label><input id="np-nom" maxlength="120">
+    <div class="grid2"><div><label for="np-doc">Tipo de documento</label><select id="np-doc"><option value="">— Elegir —</option>${Object.entries(DOC_PROV).map(([k, t]) => `<option value="${k}">${t}</option>`).join('')}</select></div>
+      <div><label for="np-rut">RUT</label><input id="np-rut" placeholder="Opcional"></div></div>
+    <div id="md-err"></div>
+    <div class="acciones"><button class="btn" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="guardarNuevoProveedor()">Crear proveedor</button></div>`);
+  $('np-nom').focus();
+}
+async function guardarNuevoProveedor() {
+  const nom = $('np-nom').value.trim().replace(/\s+/g, ' '), doc = $('np-doc').value;
+  if (!nom) return errModal('Escribe el nombre.'); if (!doc) return errModal('Elige el tipo de documento.');
+  if (provVentas(nom)) return errModal('Ya existe en Ventas: ' + provVentas(nom).nombre);
+  try { await crearProvVentas(nom, $('np-rut').value.trim(), doc); } catch (e) { return errModal('No se pudo crear: ' + e.message); }
+  cerrarModal(); toast(nom + ' creado en Ventas'); PRECIOS_VISTA = 'proveedor'; PRECIOS_PROV = claveProv(nom); renderCosteo();
+}
+// una compra con su costo (por unidad del stock) deja ese precio en la línea de su proveedor (la crea si no existe)
+async function precioDesdeCompra(i, provNombre, costoStock) {
+  if (!PRECIOS_OK || !(costoStock > 0) || !provNombre) return false;
+  await cargarProvVentas();
+  const pv = provVentas(provNombre), clave = claveProv(pv ? pv.nombre : provNombre);
+  const ls = lineasDe(i.id).filter(l => claveProv(l.proveedor) === clave), l = ls.find(x => x.activo !== false) || ls[0];
+  const base0 = (() => { const f = factorStock(i, l || null); return f > 0 ? costoStock / f : null; })();
+  if (base0 == null) return false;
+  try {
+    if (l) { const f = factorLinea(l, i); if (!(f > 0)) return false;
+      await api(`plan_insumo_precios?id=eq.${l.id}`, { method: 'PATCH', body: JSON.stringify({ precio: Math.round(base0 * f * 100) / 100, activo: true, usuario: USER.nombre, updated_at: new Date().toISOString() }) }); }
+    else {
+      const t = tipoIns(i), pres = t === 'tela' ? (i.unidad === 'kg' ? 'kg' : 'm') : t === 'papel' ? (i.unidad === 'rollo' ? 'rollo' : 'm') : t === 'tinta' ? (i.unidad === 'litro' ? 'litro' : 'envase') : i.unidad;
+      if ((t === 'papel' && pres === 'rollo') || (t === 'tinta' && pres === 'envase')) return false;   // sin los metros del rollo o los cc no se puede
+      await api('plan_insumo_precios', { method: 'POST', body: JSON.stringify({ insumo_id: i.id, proveedor_id: pv ? pv.id : null, proveedor: pv ? pv.nombre : provNombre, presentacion: pres,
+        contenido: t === 'tinta' ? null : 1, precio: costoStock, rendimiento: t === 'tela' && +i.rendimiento > 0 ? +i.rendimiento : null, usuario: USER.nombre }) });
+    }
+    await cargarPrecios(true); await sincronizarPrecio(i, 'compra a ' + (pv ? pv.nombre : provNombre));
+    return true;
+  } catch (e) { console.warn('precio compra', e); return false; }
+}
+
+// sin el SQL 23A: precios de todas las telas (por kg) y de todos los insumos (por su unidad), un precio por producto
+let PRECIOS_Q = '', PRECIOS_SIN = false;
+async function pintarPreciosSimple(v, chips) {
   await cargarInsumos();
   if (INSUMOS_OK === false) { v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + '<div class="aviso warn">Falta correr el SQL 5A de insumos en Supabase de Producción.</div>'; return; }
   const q = normIns(PRECIOS_Q), act = INS.filter(i => i.activo !== false), ve = i => (!q || normIns(i.nombre).includes(q)) && (!PRECIOS_SIN || !(+i.precio > 0));
   const telas = act.filter(i => i.categoria === 'Tela'), otros = act.filter(i => i.categoria !== 'Tela');
   const conP = l => l.filter(i => +i.precio > 0).length;
   const kgDe = i => { const k = precioKg(i); return k != null ? Math.round(k * 100) / 100 : ''; };
-  v.innerHTML = '<h1>Costeo de prendas</h1>' + chips +
+  v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + '<div class="aviso warn">Falta correr el <b>SQL 23A</b> en Supabase de Producción para tener varios proveedores por producto (con su ancho, gramaje, rollo o envase). Mientras, cada producto tiene un solo precio.</div>' +
     `<p class="hint">Precios <b>sin IVA</b> de todas las telas (por kilo) y de todos los insumos (por su unidad). Se guardan al salir de cada casilla y quedan en Inventario → Insumos. Cada compra registrada con costo también actualiza el precio.</p>
     <div class="resumen">${dato('Telas con precio', conP(telas) + ' de ' + telas.length, conP(telas) < telas.length, '')}${dato('Insumos con precio', conP(otros) + ' de ' + otros.length, conP(otros) < otros.length, '')}</div>
     <div class="toolbar"><input id="pr-q" placeholder="Buscar tela o insumo" value="${esc(PRECIOS_Q)}" oninput="PRECIOS_Q=this.value;renderCosteo()">
@@ -6415,7 +6813,7 @@ async function pintarConsumoMolde(v, chips) {
   const cuenta = n => bomDe(n).length;
   const unit = costoBOM(sel === '*' ? null : sel);
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + avisoSql20() +
-    `<p class="hint">Lo que lleva <b>una prenda</b> de cada insumo (elástico, hilo, cierre, etiqueta, bolsa…), en la unidad del insumo. Lo <b>común</b> se suma a todas las prendas con molde; lo de cada molde, solo a ese molde. La tela no va aquí: sale del corte. El precio de cada insumo es el de Inventario → Insumos.</p>
+    `<p class="hint">Lo que lleva <b>una prenda</b> de cada insumo que no es tela (elástico, hilo, cierre, etiqueta, bolsa…), en la unidad del insumo. Elige <b>«Común a todas las prendas»</b> para lo que llevan todas (por ejemplo, la etiqueta y la bolsa), o un molde para lo que lleva solo ese molde. La tela no va aquí: sale del corte. El precio de cada insumo es el de Precios.</p>
     <div class="toolbar"><select id="bom-molde" onchange="BOM_SEL=this.value;renderCosteo()" style="min-width:280px"><option value="*" ${sel === '*' ? 'selected' : ''}>Común a todas las prendas${cuenta('*') ? ' (' + cuenta('*') + ')' : ''}</option>
       ${moldes.map(m => `<option value="${m.numero}" ${String(sel) === String(m.numero) ? 'selected' : ''}>${esc(MOLDES_FICHAS[String(m.numero)] || etqMolde(m.numero))}${cuenta(m.numero) ? ' (' + cuenta(m.numero) + ')' : ''}</option>`).join('')}</select></div>
     <h2>${esc(nomM(sel))}</h2>
@@ -6426,9 +6824,10 @@ async function pintarConsumoMolde(v, chips) {
         <td style="text-align:right">${pesos((+r.cantidad || 0) * precioIns(i))}</td><td style="text-align:right"><button class="btn sm" onclick="guardarBOM('${esc(String(sel))}',${r.insumo_id},0)">×</button></td></tr>`; }).join('') || '<tr><td colspan="5" class="hint">Sin insumos.</td></tr>'}
       ${lista.length ? `<tr><td colspan="3"><b>${sel === '*' ? 'Común, por prenda' : 'De este molde, por prenda'}</b>${sel !== '*' ? '<div class="hint">más lo común a todas</div>' : ''}</td><td style="text-align:right"><b>${pesos(lista.reduce((s, r) => s + (+r.cantidad || 0) * precioIns(insumoDe(r.insumo_id)), 0))}</b></td><td></td></tr>` : ''}
     </table>
+    ${!insAct.length ? `<div class="aviso warn">Todavía no hay insumos (elástico, hilo, etiqueta, bolsa…): las telas se crean solas desde Fichas, pero los demás hay que crearlos primero. <button class="btn sm pri" onclick="abrirNuevoInsumo()">+ Nuevo insumo</button></div>` : ''}
     <div class="toolbar" style="margin-top:10px"><select id="bom-ins"><option value="">+ Agregar insumo…</option>${insAct.filter(i => !lista.some(r => String(r.insumo_id) === String(i.id))).map(i => `<option value="${i.id}">${esc(i.nombre)} (${esc(i.unidad)})</option>`).join('')}</select>
       <input id="bom-cant" type="number" min="0" step="0.001" placeholder="Cantidad por prenda" style="width:170px">
-      <button class="btn pri" onclick="agregarBOM()">Agregar</button></div>
+      <button class="btn pri" onclick="agregarBOM()">Agregar</button><button class="btn" onclick="abrirNuevoInsumo()" title="Si el insumo no está en la lista">+ Nuevo insumo</button></div>
     ${sel !== '*' ? `<p class="hint" style="margin-top:10px">Total por prenda de este molde (con lo común): <b>${pesos(unit.costo)}</b>.</p>` : ''}</div>
     ${lista.length && sel !== '*' ? `<details style="margin-top:12px" class="panel"><summary style="cursor:pointer;font-weight:600">Copiar estos insumos a otros moldes</summary>
       <p class="hint">Marca los moldes que llevan lo mismo. Reemplaza las cantidades de estos insumos en esos moldes (sus otros insumos no cambian).</p>
@@ -6486,28 +6885,197 @@ async function pintarGG(v, chips) {
     </table></div>
     ${ivaSup > 0 ? `<p class="hint">De estos meses, ${pesos(ivaSup)} de IVA se descontaron según el IVA habitual de la cuenta (supuesto). Se confirma marcando el tipo de documento del proveedor o del gasto en Ventas, y en la Fase 3 con el libro de compras.</p>` : ''}`;
 }
-// valores: insumos de papel, tinta y protección y el margen para el precio sugerido
+// ploteo: papel por metro (del rollo), las 4 tintas por separado (cc por metro según la experiencia × $ por cc) y protección
+const COLORES_TINTA = [['C', 'Cian'], ['M', 'Magenta'], ['Y', 'Amarillo'], ['K', 'Negro']];
+const papelPorMetro = id => precioBaseIns(insumoDe(id));
+function tintaPorMetro() {
+  const T = COSTEO_VAL.tintas || {}, falta = [], colores = [];
+  let total = 0;
+  COLORES_TINTA.forEach(([k, nom]) => {
+    const x = T[k]; if (!x || !x.id) return;
+    const i = insumoDe(x.id), pc = precioBaseIns(i), ccm = +x.cc > 0 && +x.m > 0 ? +x.cc / +x.m : null;
+    if (pc == null) falta.push('precio de la tinta ' + nom.toLowerCase()); else if (ccm == null) falta.push('rendimiento de la tinta ' + nom.toLowerCase());
+    else { total += ccm * pc; colores.push({ k, nom, ccm, pc, porMetro: ccm * pc }); }
+  });
+  if (!Object.values(T).some(x => x && x.id)) {   // como antes: una sola tinta con su consumo por metro
+    const i = insumoDe(COSTEO_VAL.tinta); return { porMetro: (+COSTEO_VAL.tintaM || 0) * precioIns(i), falta: [], colores: [], antiguo: !!i };
+  }
+  return { porMetro: total, falta, colores };
+}
+// Ploteo y margen: insumos que se gastan por metro ploteado y el margen para el precio sugerido
 async function pintarValoresCosteo(v, chips) {
-  await cargarInsumos();
-  const opc = (sel, cats) => `<option value="">— Elegir insumo —</option>` + INS.filter(i => i.activo !== false && (!cats || cats.includes(i.categoria) || String(i.id) === String(sel)))
-    .map(i => `<option value="${i.id}" ${String(i.id) === String(sel) ? 'selected' : ''}>${esc(i.nombre)} · ${+i.precio > 0 ? pesos(i.precio) + '/' + esc(i.unidad) : 'sin precio'}</option>`).join('');
-  const V = COSTEO_VAL;
+  await Promise.all([cargarInsumos(), cargarPrecios()]);
+  const opc = (sel, cats) => `<option value="">— Elegir —</option>` + INS.filter(i => (i.activo !== false || String(i.id) === String(sel)) && (!cats || cats.includes(i.categoria) || String(i.id) === String(sel)))
+    .map(i => `<option value="${i.id}" ${String(i.id) === String(sel) ? 'selected' : ''}>${esc(i.nombre)}</option>`).join('');
+  const V = COSTEO_VAL, T = V.tintas || {};
+  const papelTxt = id => { const i = insumoDe(id); if (!i) return ''; const b = papelPorMetro(id), ref = PRECIOS_OK ? referenciaDe(i) : null;
+    return b != null ? `${pesosD(b)} por metro${ref ? ' · ' + esc(textoLinea(ref, i)) + ' · ' + esc(ref.proveedor) : ''}` : '<span style="color:#A86B00">sin precio por metro: completa en Precios los metros del rollo y su precio</span>'; };
+  const filaTinta = ([k, nom]) => { const x = T[k] || {}, i = insumoDe(x.id), pc = precioBaseIns(i), ref = i && PRECIOS_OK ? referenciaDe(i) : null;
+    const ccDef = x.cc || (ref && +ref.contenido > 0 ? +ref.contenido : '');
+    return `<tr><td><b>${nom}</b></td><td><select id="cv-t-${k}" onchange="calcTintas()" style="min-width:180px">${opc(x.id, ['Tinta'])}</select><div class="hint">${pc != null ? pesosD(pc) + ' por cc' + (ref ? ' · ' + esc(ref.proveedor) : '') : i ? '<span style="color:#A86B00">sin precio por cc</span>' : ''}</div></td>
+      <td style="white-space:nowrap">un envase de <input id="cv-tc-${k}" type="number" min="0" step="any" value="${ccDef}" placeholder="cc" style="width:90px" oninput="calcTintas()"> cc
+        rinde <input id="cv-tm-${k}" type="number" min="0" step="any" value="${x.m || ''}" placeholder="metros" style="width:90px" oninput="calcTintas()"> m</td>
+      <td style="text-align:right" id="cv-tr-${k}"></td></tr>`; };
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips +
-    `<p class="hint">Insumos que se usan con los metros ploteados. Crea en Inventario → Insumos el papel, la tinta y el papel de protección con su precio (categorías Papel y Tinta).</p>
-    <div class="panel" style="max-width:640px">
-      <label for="cv-papel">Papel de ploteo (se usa 1 por metro ploteado)</label><select id="cv-papel">${opc(V.papel, ['Papel'])}</select>
-      <div class="grid2"><div><label for="cv-tinta">Tinta</label><select id="cv-tinta">${opc(V.tinta, ['Tinta'])}</select></div>
-        <div><label for="cv-tintam">Tinta por metro ploteado (en la unidad de la tinta)</label><input id="cv-tintam" type="number" min="0" step="0.0001" value="${V.tintaM || ''}" placeholder="Ej: 0,008"></div></div>
-      <div class="grid2"><div><label for="cv-prot">Papel de protección (sublimación)</label><select id="cv-prot">${opc(V.prot, ['Papel'])}</select></div>
+    `<p class="hint">Lo que se gasta por cada <b>metro ploteado</b> (largo impreso): papel, las 4 tintas y el papel de protección de la sublimación. Los precios salen de Precios (el más caro de los proveedores activos). Abajo, el margen del precio sugerido.</p>
+    <div class="panel" style="max-width:860px">
+      <h2 style="margin-top:0">Papel de ploteo</h2>
+      <label for="cv-papel">Papel (se usa 1 metro por metro ploteado)</label><select id="cv-papel" onchange="calcTintas()">${opc(V.papel, ['Papel'])}</select>
+      <p class="hint" id="cv-papel-txt">${papelTxt(V.papel)}</p>
+      <h2>Tintas</h2>
+      <p class="hint">Cada color se costea por separado, con lo que rinde según la experiencia: «un envase de 1.000 cc rinde 400 metros».</p>
+      <div style="overflow-x:auto"><table class="mini"><tr><th>Color</th><th>Tinta</th><th>Rendimiento</th><th style="text-align:right">Por metro</th></tr>
+        ${COLORES_TINTA.map(filaTinta).join('')}
+        <tr><td colspan="3"><b>Tinta por metro ploteado</b></td><td style="text-align:right"><b id="cv-ttot"></b></td></tr></table></div>
+      ${!Object.values(T).some(x => x && x.id) && insumoDe(V.tinta) ? `<p class="hint">Hasta ahora se usaba una sola tinta (${esc(insumoDe(V.tinta).nombre)}, ${numCL(V.tintaM || 0)} por metro). Al guardar los colores se usan ellos.</p>` : ''}
+      <h2>Papel de protección (sublimación)</h2>
+      <div class="grid2"><div><label for="cv-prot">Papel de protección</label><select id="cv-prot" onchange="calcTintas()">${opc(V.prot, ['Papel'])}</select><p class="hint" id="cv-prot-txt">${papelTxt(V.prot)}</p></div>
         <div><label for="cv-protf">Metros de protección por metro ploteado</label><input id="cv-protf" type="number" min="0" step="0.1" value="${V.protF === '' ? 1 : V.protF}"></div></div>
-      <label for="cv-margen">Margen para el precio sugerido (%)</label><input id="cv-margen" type="number" min="0" max="90" step="1" value="${V.margen}">
-      <div class="acciones"><button class="btn pri" onclick="guardarValoresCosteo()">Guardar valores</button></div></div>`;
+      <h2>Margen</h2>
+      <label for="cv-margen">Margen para el precio sugerido (%)</label><input id="cv-margen" type="number" min="0" max="90" step="1" value="${V.margen}" style="max-width:160px">
+      <div class="acciones"><button class="btn pri" onclick="guardarValoresCosteo()">Guardar</button></div></div>`;
+  calcTintas();
+}
+function leerTintas() {
+  const out = {};
+  COLORES_TINTA.forEach(([k]) => { const id = ($('cv-t-' + k) || {}).value; if (id) out[k] = { id, cc: numIn('cv-tc-' + k) || null, m: numIn('cv-tm-' + k) || null }; });
+  return out;
+}
+function calcTintas() {
+  const T = leerTintas(); let tot = 0, ok = 0;
+  COLORES_TINTA.forEach(([k]) => { const c = $('cv-tr-' + k); if (!c) return; const x = T[k]; if (!x) { c.textContent = ''; return; }
+    const pc = precioBaseIns(insumoDe(x.id)), ccm = x.cc > 0 && x.m > 0 ? x.cc / x.m : null;
+    c.innerHTML = ccm == null ? '<span class="hint">anota el rendimiento</span>' : pc == null ? `${numCL(Math.round(ccm * 1000) / 1000)} cc · <span style="color:#A86B00">sin precio</span>`
+      : `${numCL(Math.round(ccm * 1000) / 1000)} cc · <b>${pesosD(ccm * pc)}</b>`;
+    if (ccm != null && pc != null) { tot += ccm * pc; ok++; } });
+  const t = $('cv-ttot'); if (t) t.textContent = ok ? pesosD(tot) + (ok < Object.keys(T).length ? ' (faltan colores)' : '') : '—';
+  const pp = $('cv-papel-txt'), pr = $('cv-prot-txt');
+  const txt = id => { const b = papelPorMetro(id); return !id ? '' : b != null ? pesosD(b) + ' por metro' : 'sin precio por metro: completa en Precios los metros del rollo y su precio'; };
+  if (pp) pp.textContent = txt($('cv-papel').value); if (pr) pr.textContent = txt($('cv-prot').value);
 }
 async function guardarValoresCosteo() {
   const n = id => { const x = numIn(id); return x == null ? 0 : x; };
-  COSTEO_VAL = { papel: $('cv-papel').value, tinta: $('cv-tinta').value, tintaM: n('cv-tintam'), prot: $('cv-prot').value, protF: numIn('cv-protf') == null ? 1 : numIn('cv-protf'), margen: n('cv-margen') };
+  const T = leerTintas();
+  const sinRend = COLORES_TINTA.filter(([k]) => T[k] && !(T[k].cc > 0 && T[k].m > 0)).map(([, nom]) => nom);
+  if (sinRend.length && !confirm(`Falta el rendimiento de: ${sinRend.join(', ')}.\n\nSin él, esa tinta no se suma al costo. ¿Guardar igual?`)) return;
+  COSTEO_VAL = { ...COSTEO_VAL, papel: $('cv-papel').value, tintas: T, prot: $('cv-prot').value, protF: numIn('cv-protf') == null ? 1 : numIn('cv-protf'), margen: n('cv-margen') };
   COSTEO_DATOS = null; await guardarConfig('costeo_valores', JSON.stringify(COSTEO_VAL)); renderCosteo();
 }
+
+/* ---------- Simular el costo de una prenda ----------
+   Se elige el molde, la tela principal y, si se quiere, otra tela para alguna pieza. De los cortes ya registrados de ese
+   molde sale cuánta tela lleva una prenda: los kg pesados (con merma) ÷ el gramaje de esas telas = la superficie por
+   prenda; con el gramaje y el precio de cada tela elegida, lo que costaría (así una tela más pesada o más cara se nota).
+   Las piezas se reparten según el consumo de su despiece. Se suman los insumos por prenda, la confección (lo pagado al
+   taller por ese molde o su tarifa), el ploteo y la protección (metros por prenda de los ploteos registrados), el gasto
+   general (% de los 3 meses anteriores) y el precio sugerido con el margen. */
+let SIM = { molde: '', principal: '', piezas: {}, sub: true }, SIM_DATOS = {};
+const r2 = x => Math.round(x * 100) / 100;
+const lineaRefTela = nombre => { const i = insumoPorNombre(nombre); if (!i) return null; return (PRECIOS_OK && (referenciaDe(i) || lineasDe(i.id).find(l => gramajeLinea(l)))) || null; };
+const gramajeTela = nombre => { const l = lineaRefTela(nombre); return l ? gramajeLinea(l) : null; };
+const rendTela = nombre => { const l = lineaRefTela(nombre), i = insumoPorNombre(nombre); return (l && rendLinea(l)) || (i && +i.rendimiento > 0 ? +i.rendimiento : null); };
+async function datosSimMolde(n) {
+  if (SIM_DATOS[n]) return SIM_DATOS[n];
+  const pat = encodeURIComponent(etqMolde(n) + ' · ') + '*';
+  const [rows, asig] = await Promise.all([
+    todasLasFilas(api, `plan_costeo?select=planificacion_id,etapa,molde,tela,kg_cortado,kg_merma,prendas,metros&molde=like.${pat}`).catch(() => []),
+    todasLasFilas(api, `plan_asignaciones?select=planificacion_id,tipo_prenda,cantidad,precio_unit&etapa=eq.CONFEC&tipo_prenda=like.${pat}`).catch(() => [])]);
+  const pids = Array.from(new Set(rows.map(r => r.planificacion_id))), desg = {};
+  for (let k = 0; k < pids.length; k += 100)
+    ((await api(`planificacion?select=id,desglose&id=in.(${pids.slice(k, k + 100).join(',')})`).catch(() => [])) || []).forEach(p => { desg[p.id] = jsonDe(p.desglose) || {}; });
+  const G = {};
+  rows.forEach(r => { const g = G[r.planificacion_id + '|' + r.molde] = G[r.planificacion_id + '|' + r.molde] || { prendas: 0, telas: {}, metros: null, prot: null, desg: +(desg[r.planificacion_id] || {})[r.molde] || 0 };
+    if (r.etapa === 'CORTE') { g.prendas = Math.max(g.prendas, +r.prendas || 0); g.telas[r.tela] = (g.telas[r.tela] || 0) + (+r.kg_cortado || 0) + (+r.kg_merma || 0); }
+    else if (r.etapa === 'PLOTEO') g.metros = (g.metros || 0) + (+r.metros || 0);
+    else if (r.etapa === 'SUBL' && r.metros != null) g.prot = (g.prot || 0) + (+r.metros || 0); });
+  const gs = Object.values(G).map(g => ({ ...g, prendas: g.prendas || g.desg }));
+  const conf = asig.reduce((s, a) => { const p = a.precio_unit != null ? +a.precio_unit : tarifaDe(a.tipo_prenda); if (p > 0 && +a.cantidad > 0) { s.cant += +a.cantidad; s.monto += p * +a.cantidad; } return s; }, { cant: 0, monto: 0 });
+  return (SIM_DATOS[n] = { cortes: gs.filter(g => Object.keys(g.telas).length && g.prendas > 0), ploteos: gs.filter(g => g.metros != null && g.prendas > 0), conf });
+}
+function calcSimulacion(n, D, principal) {
+  const pz = (MOLDES_PIEZAS[String(n)] || []).filter(q => q && q.pieza), totC = pz.reduce((s, q) => s + (+q.consumo > 0 ? +q.consumo : 0), 0);
+  const porPieza = pz.length > 1 && pz.every(q => +q.consumo > 0);
+  const partes = porPieza ? pz.map(q => ({ pieza: q.pieza + (q.cant > 1 ? ' ×' + q.cant : ''), clave: q.pieza, share: +q.consumo / totC, metros: +q.consumo }))
+    : [{ pieza: 'Toda la prenda', clave: '', share: 1, metros: totC || null }];
+  // superficie por prenda (m², con merma) de los cortes con el gramaje de todas sus telas; y los kg por prenda
+  let area = 0, prA = 0, kg = 0, prK = 0; const sinGram = new Set();
+  D.cortes.forEach(c => { const ks = Object.entries(c.telas), tot = ks.reduce((s, [, k]) => s + k, 0); if (!(tot > 0)) return;
+    kg += tot; prK += c.prendas; let a = 0, ok = true;
+    ks.forEach(([t, k]) => { const g = gramajeTela(t); if (!g) { ok = false; sinGram.add(t); } else a += k / (g / 1000); });
+    if (ok) { area += a; prA += c.prendas; } });
+  const areaPP = prA ? area / prA : null, kgPP = prK ? kg / prK : null, faltan = [];
+  const telas = partes.map(pt => {
+    const nom = (pt.clave && SIM.piezas[pt.clave]) || principal, i = insumoPorNombre(nom), pk = precioKg(i), g = gramajeTela(nom), r = rendTela(nom);
+    let k = null, como = '';
+    if (areaPP != null && g) { k = areaPP * pt.share * g / 1000; como = `${numCL(r2(areaPP * pt.share))} m² × ${numCL(Math.round(g))} g/m²`; }
+    else if (kgPP != null) { k = kgPP * pt.share; como = 'kg pesados en los cortes' + (g ? '' : ' (sin gramaje de esta tela)'); }
+    else if (pt.metros && r) { k = pt.metros / r; como = `teórico: ${numCL(pt.metros)} m del despiece ÷ ${numCL(r2(r))} m por kg, sin merma`; }
+    if (!nom) faltan.push('tela'); else if (pk == null) faltan.push('precio por kg de ' + nom); if (k == null && nom) faltan.push('cortes registrados o consumo de ' + nom);
+    return { ...pt, tela: nom, kg: k, pk, costo: k != null && pk != null ? k * pk : 0, como };
+  });
+  const tela = telas.reduce((s, t) => s + t.costo, 0), b = costoBOM(n); b.falta.forEach(f => faltan.push('precio de ' + f));
+  const tar = Object.keys(TARIFAS).filter(k => { const x = infoClave(k); return x && String(x.numero) === String(n); }).map(k => +TARIFAS[k] || 0).filter(x => x > 0);
+  const conf = D.conf.cant ? D.conf.monto / D.conf.cant : tar.length ? Math.max(...tar) : 0;
+  const confComo = D.conf.cant ? `promedio pagado al taller (${D.conf.cant} prendas)` : tar.length ? 'tarifa del molde' : 'sin tarifa ni taller registrado';
+  if (!conf) faltan.push('tarifa de confección');
+  const pl = D.ploteos.reduce((s, g) => { s.m += g.metros; s.p += g.prendas; s.prot += g.prot != null ? g.prot : g.metros * (COSTEO_VAL.protF === '' ? 1 : +COSTEO_VAL.protF); return s; }, { m: 0, p: 0, prot: 0 });
+  const mPP = SIM.sub && pl.p ? pl.m / pl.p : 0, protPP = SIM.sub && pl.p ? pl.prot / pl.p : 0;
+  const pM = papelPorMetro(COSTEO_VAL.papel), tM = tintaPorMetro(), prM = papelPorMetro(COSTEO_VAL.prot);
+  if (SIM.sub && !pl.p) faltan.push('ploteos registrados de este molde');
+  if (SIM.sub && pl.p) { if (pM == null) faltan.push('precio por metro del papel'); tM.falta.forEach(f => faltan.push(f)); if (prM == null && protPP) faltan.push('precio por metro de la protección'); }
+  const papel = mPP * (pM || 0), tinta = mPP * tM.porMetro, prot = protPP * (prM || 0);
+  const directo = tela + b.costo + conf + papel + tinta + prot;
+  const G = GG_DATOS && GG_DATOS.ok ? calcularGG().pct(mesDe(F.hoy())) : null, gg = G && G.pct != null ? G.pct : null, mg = (+COSTEO_VAL.margen || 0) / 100;
+  if (gg == null) faltan.push('% de gasto general');
+  const den = 1 - (gg || 0) - mg, sugerido = den > 0.05 ? directo / den : null;
+  return { partes, porPieza, telas, tela, insumos: b.costo, conf, confComo, mPP, protPP, papel, tinta, prot, directo, gg, G, sugerido, ggMonto: sugerido != null && gg != null ? sugerido * gg : 0,
+    kgPP, areaPP, sinGram: Array.from(sinGram), cortes: D.cortes.length, prCortes: prK, ploteos: D.ploteos.length, faltan: Array.from(new Set(faltan)) };
+}
+async function pintarSimulador(v, chips) {
+  const hoyM = mesDe(F.hoy());
+  await Promise.all([cargarInsumos(), cargarPrecios(), cargarBOM(), cargarEjecutantes(), cargarGG(mesesAntes(hoyM, 4)[3]).catch(() => null)]);
+  const moldes = Object.values(MOLDES_INFO).sort((a, b) => ordenInfo(a) - ordenInfo(b) || a.numero - b.numero);
+  const telas = INS.filter(i => i.activo !== false && i.categoria === 'Tela').sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+  if (!SIM.principal && telas.length) SIM.principal = (telas.find(i => +i.precio > 0) || telas[0]).nombre;
+  const D = SIM.molde ? await datosSimMolde(SIM.molde) : null;
+  if (TAB !== 'costeo' || COSTEO_MODO !== 'simular') return;
+  const optTela = (sel, vacio) => (vacio ? `<option value="">${vacio}</option>` : '') + telas.map(i => `<option value="${esc(i.nombre)}" ${i.nombre === sel ? 'selected' : ''}>${esc(i.nombre)}${+i.precio > 0 ? '' : ' (sin precio)'}</option>`).join('');
+  let h = '<h1>Costeo de prendas</h1>' + chips +
+    `<p class="hint">Estima cuánto costaría una prenda según el molde y las telas que elijas, con lo que el sistema ha registrado de ese molde: los <b>kg pesados en los cortes</b> (con merma), los <b>metros ploteados</b> y lo pagado en confección. La tela se lleva a superficie con su gramaje, así una tela más pesada o más cara cambia el costo.</p>
+    <div class="panel"><div class="grid2"><div><label for="sim-molde">Molde</label><select id="sim-molde" onchange="simElegir('molde',this.value)"><option value="">— Elige el molde —</option>
+        ${moldes.map(m => `<option value="${m.numero}" ${String(SIM.molde) === String(m.numero) ? 'selected' : ''}>${esc(MOLDES_FICHAS[String(m.numero)] || etqMolde(m.numero))}</option>`).join('')}</select></div>
+      <div><label for="sim-tela">Tela principal (frente y espalda)</label><select id="sim-tela" onchange="simElegir('principal',this.value)">${optTela(SIM.principal)}</select></div></div>
+      <label style="display:flex;align-items:center;gap:6px;margin-top:8px;font-weight:400"><input type="checkbox" style="width:auto" ${SIM.sub ? 'checked' : ''} onchange="simElegir('sub',this.checked)"> Sublimada (lleva ploteo y papel de protección)</label>`;
+  if (!SIM.molde) { v.innerHTML = h + '</div>'; return; }
+  const R = calcSimulacion(SIM.molde, D, SIM.principal);
+  SIM.claves = R.partes.map(pt => pt.clave);
+  h += R.porPieza ? `<h3 style="margin:12px 0 4px">Tela de cada pieza</h3><table class="mini" id="sim-piezas">${R.partes.map((pt, j) => `<tr><td>${esc(pt.pieza)}<div class="hint">${numCL(Math.round(pt.share * 100))}% de la tela de la prenda</div></td>
+        <td><select data-pieza="${j}" onchange="simPieza(${j},this.value)">${optTela(SIM.piezas[pt.clave] || '', '= tela principal')}</select></td></tr>`).join('')}</table>`
+    : `<p class="hint" style="margin-top:10px">${(MOLDES_PIEZAS[String(SIM.molde)] || []).length ? 'Para elegir otra tela por pieza, el despiece del molde necesita el consumo (metros) de cada pieza' : 'Este molde aún no tiene despiece: se usa la tela principal para toda la prenda'} (Moldes › Editar despiece).</p>`;
+  h += '</div>';
+  const fila = (t, val, como, b) => `<tr><td>${b ? '<b>' + t + '</b>' : t}${como ? `<div class="hint">${como}</div>` : ''}</td><td style="text-align:right">${b ? '<b>' + val + '</b>' : val}</td></tr>`;
+  h += `<div class="panel"><p class="hint" style="margin-top:0">Con ${R.cortes} corte${R.cortes !== 1 ? 's' : ''} registrado${R.cortes !== 1 ? 's' : ''} de este molde (${R.prCortes} prendas)${R.kgPP != null ? ', ' + numCL(r2(R.kgPP)) + ' kg por prenda' : ''}${R.areaPP != null ? ' = ' + numCL(r2(R.areaPP)) + ' m² de tela' : ''} y ${R.ploteos} ploteo${R.ploteos !== 1 ? 's' : ''}.${R.sinGram.length ? ' Sin gramaje: ' + esc(R.sinGram.join(', ')) + ' (anótalo en Precios para comparar telas por peso).' : ''}</p>
+    ${R.faltan.length ? `<div class="aviso warn">Falta: ${esc(R.faltan.join(' · '))}</div>` : ''}
+    <table class="mini" id="sim-res"><tr><th>Concepto</th><th style="text-align:right">Por prenda</th></tr>
+      ${R.telas.map(t => fila('Tela · ' + esc(t.pieza) + ' · ' + esc(t.tela || '—'), t.kg != null ? pesos(t.costo) : '—', t.kg != null ? `${numCL(Math.round(t.kg * 1000) / 1000)} kg (${t.como})${t.pk != null ? ' × ' + pesosD(t.pk) + '/kg' : ''}` : '')).join('')}
+      ${fila('Insumos por prenda', pesos(R.insumos), 'lo común a todas y lo de este molde')}
+      ${fila('Confección', pesos(R.conf), R.confComo)}
+      ${SIM.sub ? fila('Papel y tinta de ploteo', pesos(R.papel + R.tinta), R.mPP ? numCL(r2(R.mPP)) + ' m ploteados por prenda' : 'sin ploteos registrados') + fila('Papel de protección', pesos(R.prot), R.protPP ? numCL(r2(R.protPP)) + ' m por prenda' : '') : ''}
+      ${fila('Costo directo', pesos(R.directo), '', true)}
+      ${fila('Gasto general', R.gg != null ? pesos(R.ggMonto) : '—', R.gg != null ? pct(R.gg) + ' del precio sugerido (gasto general ÷ ventas de ' + R.G.meses.slice().reverse().map(mesTxt).join(', ') + ')' : '')}
+      ${fila('Costo total por prenda', R.sugerido != null ? pesos(R.directo + R.ggMonto) : '—', '', true)}
+      ${fila('Precio sugerido sin IVA', R.sugerido != null ? pesos(R.sugerido) : '—', `costo directo ÷ (1 − ${pct(R.gg)} − ${numCL(COSTEO_VAL.margen)}% de margen)`, true)}
+    </table></div>`;
+  // la misma prenda con otras telas principales
+  const otras = telas.filter(i => +i.precio > 0).map(i => ({ i, R: calcSimulacion(SIM.molde, D, i.nombre) })).filter(x => x.R.telas.every(t => t.kg != null)).sort((a, b) => a.R.directo - b.R.directo);
+  if (otras.length > 1) h += `<h2>La misma prenda con otra tela principal</h2><div class="panel" style="overflow-x:auto"><table class="mini" id="sim-otras"><tr><th>Tela principal</th><th style="text-align:right">$ por kg</th><th style="text-align:right">Gramaje</th><th style="text-align:right">Kg por prenda</th><th style="text-align:right">Tela</th><th style="text-align:right">Costo directo</th><th style="text-align:right">Precio sugerido</th></tr>
+      ${otras.map(x => `<tr style="${x.i.nombre === SIM.principal ? 'background:#FFF7E8' : ''}"><td><b>${esc(x.i.nombre)}</b></td><td style="text-align:right">${pesosD(precioKg(x.i))}</td><td style="text-align:right">${gramajeTela(x.i.nombre) ? numCL(Math.round(gramajeTela(x.i.nombre))) + ' g/m²' : '—'}</td>
+        <td style="text-align:right">${numCL(Math.round(x.R.telas.reduce((s, t) => s + t.kg, 0) * 1000) / 1000)}</td><td style="text-align:right">${pesos(x.R.tela)}</td><td style="text-align:right">${pesos(x.R.directo)}</td><td style="text-align:right">${x.R.sugerido != null ? pesos(x.R.sugerido) : '—'}</td></tr>`).join('')}
+    </table><p class="hint">Mismo molde, mismas telas en las demás piezas.</p></div>`;
+  v.innerHTML = h;
+}
+function simElegir(k, val) { if (k === 'molde') { SIM.molde = val; SIM.piezas = {}; } else SIM[k] = val; renderCosteo(); }
+function simPieza(j, tela) { const clave = (SIM.claves || [])[j]; if (clave == null) return; if (tela) SIM.piezas[clave] = tela; else delete SIM.piezas[clave]; renderCosteo(); }
 
 function renderMoldes() {
   const qTxt = $('q-moldes') && $('q-moldes').value || '', q = qTxt.toLowerCase().trim();   // el campo conserva lo escrito (espacios incluidos)

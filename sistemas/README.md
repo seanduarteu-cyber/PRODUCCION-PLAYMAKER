@@ -32,6 +32,7 @@ Se corren una vez en el SQL Editor de la base indicada en cada archivo.
 | `SQL_21B_VENTAS_neto_y_socios.sql` | Ventas | Requiere el 21A. Neto de cada gasto (vista `v_gastos_neto`: sin el IVA de la factura afecta, según el documento del gasto, del proveedor o el habitual de la cuenta) y pagos a socios: cuenta 5.10 «Remuneración de socios» y F.06 «Retiros de socios». Lo usa el gasto general del Costeo. |
 | `SQL_21C_VENTAS_claude_sugiere_cuenta.sql` | Ventas | Requiere 21A y 21B. Claude sugiere la cuenta de un gasto: registro de consultas con su costo (`gasto_ia_consultas`), tope diario y el contexto que lee Claude; solo lo usa la función `sugerir-cuenta` de Supabase (`ventas/funciones/sugerir-cuenta/index.ts`, se crea en Edge Functions con el secreto `ANTHROPIC_API_KEY`). |
 | `SQL_22A_FICHAS_revisar_ingreso_SOLO_LECTURA.sql` | Fichas | Solo lee: por qué un pedido no puede ingresar a producción (tallas por prenda, diseño aprobado, fecha, ficha confirmada y personas sin molde para su calce). Se cambia el texto a buscar en la línea marcada. |
+| `SQL_23A_PRODUCCION_precios_por_proveedor.sql` | Producción | Precios por proveedor (Costeo › Precios): tablas `plan_insumo_precios` (cada producto con cada proveedor: precio sin IVA, presentación, ancho, gramaje, rendimiento, metros del rollo, cc del envase) y `plan_proveedores_estado` (proveedores desactivados para el costeo). Copia los precios actuales con su proveedor; no cambia ni borra datos. Se puede volver a correr. |
 | `SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql` | Fichas | Solo revisa: compara los 95 moldes del catálogo completo con la tabla moldes (falta, desactivado, código o sección distinta). |
 | `SQL_17D_FICHAS_orden_catalogo_completo.sql` | Fichas | Catálogo completo: orden y sección de los 95 moldes (los 01 al 10 al inicio de Fútbol). |
 
@@ -53,6 +54,7 @@ Las pruebas usan Playwright con las bases simuladas: no tocan Supabase ni Netlif
 | `acceso.test.js` | Ingreso único, permisos por perfil y cerrar sesión. |
 | `ventas_rapido.test.js` | Carga liviana de Ventas; que ningún guardado pierda un comprobante. |
 | `estado.test.js` | Pestaña «Estado» y pendientes que vuelven a Armado y Corte juntos. |
+| `precios_proveedor.test.js` | Costeo: precios por proveedor (el más caro de los activos, desactivar proveedor y producto, proveedor nuevo creado en Ventas, tela por ancho y gramaje, papel por rollo, compras), las 4 tintas en Ploteo y margen y Simular costo (tela por pieza, gramaje, confección, ploteo, gasto general y precio sugerido). |
 | `reingreso.test.js` | Planificación: devolver un pedido terminado o en curso a una etapa anterior (qué se rehace, validaciones, fecha también en la ficha, detalle ya borrado, marca de reingreso y cumplimiento en Gerencia), con una base simulada que guarda los cambios. |
 | `pedido_cliente.test.js` | Sitio del cliente: basta con la talla, lista pegada desde Excel (columnas), cada prenda con su lista, sin arquero, medias por pares. |
 | `pedido_panel.test.js` | Panel y Planificación: medias por diseño con pares por talla y hoja propia, sin arquero ni número obligatorio. |

@@ -93,6 +93,8 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
       else filas.push(Object.assign({ id: t === 'plan_costeo' ? cid++ : t === 'plan_insumos_molde' ? bid++ : mid++ }, x)); });
     return r.fulfill({ contentType: 'application/json', body: '[]' });
   });
+  // sin el SQL 23A (precios por proveedor): Precios sigue con un precio por producto
+  await ctx.route(/ygcsqrylpibhofvetdyh\.supabase\.co\/rest\/v1\/(plan_insumo_precios|plan_proveedores_estado)/, r => r.fulfill({ status: 404, contentType: 'application/json', body: '{"code":"PGRST205"}' }));
   const p = await ctx.newPage(); const errores = []; p.on('pageerror', e => errores.push(e.message)); p.on('dialog', x => x.accept());
   await p.goto('https://planificacion-playmaker.netlify.app/#pmk_acceso=tok1'); await p.waitForTimeout(3000);
   const tabs = await p.evaluate(() => tabsPara());
@@ -181,6 +183,7 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
 
   // 6 · precios: todas las telas por kg y todos los insumos en una sola lista
   await p.evaluate(() => { COSTEO_MODO = 'precios'; renderCosteo(); }); await p.waitForTimeout(900);
+  ok(/Falta correr el SQL 23A/.test(await p.innerText('#view-costeo')), 'sin el SQL 23A: avisa y sigue con un precio por producto');
   ok(await p.inputValue('#pr-kg-1') === '9000' && await p.inputValue('#pr-kg-2') === '10000' && /\$2\.500\/m/.test(await p.textContent('#pr-eq-2')),
     'telas por kg: Pro $9.000/kg; Nacional (se lleva en metros) $10.000/kg = $2.500/m con 4 m/kg');
   { const tx = (await p.innerText('#view-costeo')).replace(/\s+/g, ' '); ok(/2 de 3 Telas con precio/.test(tx) && /6 de 6 Insumos con precio/.test(tx), 'resumen: 2 de 3 telas y 6 de 6 insumos con precio'); }
@@ -198,7 +201,7 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
 
   // 7 · valores
   await p.evaluate(() => { COSTEO_MODO = 'valores'; renderCosteo(); }); await p.waitForTimeout(700);
-  await p.fill('#cv-margen', '40'); await p.click('text=Guardar valores'); await p.waitForTimeout(700);
+  await p.fill('#cv-margen', '40'); await p.click('#view-costeo .acciones .btn.pri'); await p.waitForTimeout(700);
   ok(JSON.parse(config.find(c => c.clave === 'costeo_valores').valor).margen === 40, 'el margen para el precio sugerido se guarda');
 
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
