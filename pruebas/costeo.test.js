@@ -117,6 +117,8 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   const cr = (m, t) => costeo.find(x => x.etapa === 'CORTE' && x.molde === m && x.tela === t);
   ok(cr('18 · FUTHOMU02', 'Pro') && +cr('18 · FUTHOMU02', 'Pro').kg_cortado === 2.5 && cr('18 · FUTHOMU02', 'Pro').prendas === 8 && +cr('18 · FUTHOMU02', 'Nacional').kg_merma === 0.2 &&
     +cr('46 · BK-SH', 'Nacional').kg_cortado === 0.5 && cr('46 · BK-SH', 'Nacional').prendas === 2 && costeo.filter(x => x.etapa === 'CORTE').length === 3, 'quedan los kilos de cada molde y tela, y las prendas cortadas de cada molde');
+  ok(String(cr('18 · FUTHOMU02', 'Pro').piezas) === 'Delantero,Espalda' && String(cr('18 · FUTHOMU02', 'Nacional').piezas) === 'Manga' && String(cr('46 · BK-SH', 'Nacional').piezas) === 'Delantero,Trasero',
+    'cada tela del corte queda con sus piezas, tomadas de la ficha (camiseta: Pro delantero y espalda, Nacional mangas)');
   const real = movs.filter(m => m.planificacion_id === 1 && m.tipo === 'consumo');
   ok(real.length === 2 && real.find(m => m.insumo_id === 1).cantidad === -2.9 && real.find(m => m.insumo_id === 2).cantidad === -6.4 && !real.some(m => /al ingresar/.test(m.nota)),
     'el stock de tela queda con el consumo real de todos los moldes (Pro −2,9 kg; Nacional −6,4 m = 1,6 kg × 4 m/kg)');

@@ -4,6 +4,7 @@ COSTEO DE PRENDAS (Planificación → pestaña «Costeo»)
 Antes de usarlo: correr el SQL 20A en la base de PRODUCCIÓN (si ya se corrió la primera versión, correrlo de nuevo:
 agrega el molde a cada registro) y subir el zip de Planificación. Lo ven solo administración y producción.
 Para los precios por proveedor: correr además el SQL 23A en la base de PRODUCCIÓN (ver «PRECIOS POR PROVEEDOR» abajo).
+Para que Simular costo aprenda qué parte de la prenda es cada pieza: el SQL 23B en la base de PRODUCCIÓN.
 
 PESTAÑAS: Pedidos · Por molde · Simular costo · Precios · Insumos por prenda · Ploteo y margen · Gasto general
 - Precios: cuánto cuesta cada cosa (por proveedor).
@@ -85,12 +86,21 @@ PRECIOS POR PROVEEDOR (SQL 23A)
 - Sin el SQL 23A, Precios sigue como antes (un precio por producto) y lo avisa.
 
 SIMULAR COSTO
-- Se elige el molde, la tela principal (frente y espalda) y, si se quiere, otra tela para alguna pieza, y si es sublimada.
+- Se elige el molde, la TELA PRINCIPAL (el frente y las mangas van siempre en ella) y, si alguna otra pieza va en otra
+  tela (espalda microperforada o meche, cuello en rib, entrepierna de lycra…), su tela. Y si es sublimada.
 - Tela: de los cortes ya registrados de ese molde salen los kg por prenda (con merma); con el gramaje de esas telas se
   llevan a superficie (m² por prenda) y con el gramaje y el precio por kg de cada tela elegida, el costo. Así una tela
-  más pesada o más cara se nota. Las piezas se reparten según el consumo de su despiece (el despiece solo sirve para
-  repartir; si un molde no tiene el consumo de sus piezas, se usa la tela principal para toda la prenda). Si una tela no
-  tiene gramaje, se usan los kg pesados; si el molde no tiene cortes, el consumo teórico del despiece (sin merma).
+  más pesada o más cara se nota. Si una tela no tiene gramaje, se usan los kg pesados; si el molde no tiene cortes, los
+  metros del despiece (sin merma).
+- Qué parte de la prenda es cada pieza se APRENDE DE LOS CORTES (SQL 23B): cada tela se pesa por separado y, al
+  registrar el corte, queda guardado qué piezas llevaba cada tela (lo dice la ficha del pedido; el cortador no hace nada
+  distinto). Ej: si en los cortes la espalda en meche fue el 24% de la superficie, la espalda es el 24% de la prenda.
+  Los cortes anteriores se completan solos desde su ficha, mientras exista (90 días desde el ingreso a producción).
+  Si un molde aún no tiene un corte con esa pieza en otra tela, se usa, en este orden: el promedio de los moldes del
+  mismo tipo de prenda, los metros del despiece o un % que se anota ahí mismo (queda guardado para ese molde hasta que
+  haya cortes). Junto a cada pieza dice de dónde salió su %.
+- Para elegir tela por pieza, el molde necesita su lista de piezas en el catálogo (Moldes › Definir despiece: basta con
+  los nombres). Las piezas que se llaman delantero, frente o manga van siempre en la tela principal.
 - Suma los insumos por prenda, la confección (promedio pagado al taller por ese molde, o su tarifa), el ploteo y la
   protección (metros por prenda de los ploteos registrados) y el gasto general (% de los 3 meses anteriores), y da el
   precio sugerido con el margen. Abajo compara la misma prenda con cada otra tela principal.

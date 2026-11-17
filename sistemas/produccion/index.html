@@ -5941,6 +5941,10 @@ function teoricoFicha(fc) {
       const n = numMolde(mv), piezas = ((n && MOLDES_PIEZAS[n]) || []).filter(q => +q.consumo > 0);
       const desp = sp.despiece && Array.isArray(sp.despiece.piezas) ? sp.despiece.piezas.filter(Boolean) : [];
       const principal = sp.tela ? sp.tela + (sp.telaDetalle ? SEP_TELA + sp.telaDetalle : '') : '';
+      // qué piezas lleva cada tela (se guarda con el corte: así se aprende qué parte de la prenda es cada pieza)
+      const todas = ((n && MOLDES_PIEZAS[n]) || []).filter(q => q && q.pieza), pt = x.piezasTela = x.piezasTela || {};
+      (todas.length ? todas.map(q => { const dq = desp.find(z => normIns(z.pieza) === normIns(q.pieza)); return [q.pieza, (dq && dq.tela) || principal || q.tela || '']; })
+        : desp.filter(z => z.pieza).map(z => [z.pieza, z.tela || principal])).forEach(([pz, tela]) => { if (!tela) return; const l = pt[tela] = pt[tela] || []; if (!l.includes(pz)) l.push(pz); });
       if (piezas.length) piezas.forEach(q => {
         const dq = desp.find(z => normIns(z.pieza) === normIns(q.pieza)), tela = (dq && dq.tela) || principal || q.tela || ''; if (!tela) return;
         x.telas[tela] = (x.telas[tela] || 0) + (+q.consumo); out.porTela[tela] = (out.porTela[tela] || 0) + (+q.consumo);
@@ -6056,7 +6060,7 @@ async function abrirRegistroCosteo(pid, k, alTerminar) {
     `<button class="btn pri" onclick="guardarRegistroCosteo()">${alTerminar ? 'Guardar y terminar' : 'Guardar'}</button></div>`;
   if (k === 'CORTE') {
     const fc = await fichaCosteo(p.cot), teo = teoricoFicha(fc), cr = previas.filter(r => r.etapa === 'CORTE');
-    REG_COSTEO = { pid, k, alTerminar, previas: cr.map(r => ({ molde: r.molde || '', tela: r.tela })),
+    REG_COSTEO = { pid, k, alTerminar, previas: cr.map(r => ({ molde: r.molde || '', tela: r.tela })), piezas: Object.fromEntries(tipos.map(t => [t.tipo, (teo.porTipo[t.tipo] || {}).piezasTela || {}])),
       moldes: tipos.map(t => { const mias = cr.filter(r => (r.molde || '') === t.tipo), telasT = Object.keys((teo.porTipo[t.tipo] || {}).telas || {});
         const valores = {}; mias.forEach(r => { valores[r.tela] = { c: r.kg_cortado != null ? String(r.kg_cortado) : '', m: r.kg_merma != null ? String(r.kg_merma) : '' }; });
         return { tipo: t.tipo, cant: t.cant, telas: Array.from(new Set(telasT.concat(mias.map(r => r.tela)))), teo: (teo.porTipo[t.tipo] || {}).telas || {}, valores,
@@ -6126,7 +6130,11 @@ async function guardarRegistroCosteo() {
           filas.push({ molde: m.tipo, tela: t, c, m: x, prendas: u }); }); });
       const con = filas.filter(x => x.c + x.m > 0);
       if (!con.length) return toast('Anota los kilos de al menos una tela', 'warn');
-      await up(con.map(x => ({ planificacion_id: p.id, cot: p.cot, etapa: 'CORTE', molde: x.molde, tela: x.tela, kg_cortado: x.c, kg_merma: x.m, prendas: x.prendas, usuario: USER.nombre, updated_at: ahora })));
+      const filasC = con.map(x => ({ planificacion_id: p.id, cot: p.cot, etapa: 'CORTE', molde: x.molde, tela: x.tela, kg_cortado: x.c, kg_merma: x.m, prendas: x.prendas,
+        piezas: ((R.piezas || {})[x.molde] || {})[x.tela] || null, usuario: USER.nombre, updated_at: ahora }));
+      try { await up(filasC); }
+      catch (e) { if (!/piezas/.test(String(e.message))) throw e; await up(filasC.map(({ piezas, ...r }) => r)); }   // sin el SQL 23B
+      CORTES_SIM = null; SIM_DATOS = {};
       // lo que antes estaba registrado y ahora quedó vacío, y lo registrado para el pedido completo (ya va por molde)
       for (const x of R.previas.filter(x => !con.some(y => y.molde === x.molde && y.tela === x.tela))) await borrar('CORTE', x.molde, x.tela);
       await stockCorte(p, con);
@@ -6170,10 +6178,19 @@ async function stockCorte(p, con) {
 // papel, tinta y papel de protección se descuentan del stock con los metros ploteados
 async function stockPloteo(p, m) {
   if (INSUMOS_OK === false) return;
-  const usos = [[COSTEO_VAL.papel, m, 'papel'], [COSTEO_VAL.tinta, m * (+COSTEO_VAL.tintaM || 0), 'tinta'],
-    [COSTEO_VAL.prot, p.requiere_sublimacion !== false ? m * (COSTEO_VAL.protF === '' ? 1 : +COSTEO_VAL.protF) : 0, 'papel de protección']];
-  for (const [id, cant, que] of usos) {
-    const i = insumoDe(id); if (!i) continue;
+  if (PRECIOS_OK === null) await cargarPrecios();
+  // metros de papel o cc de tinta → unidad del stock (metro, rollo, litro, envase…), con los datos de su proveedor
+  const enStock = (i, base) => { const f = factorStock(i, PRECIOS_OK ? referenciaDe(i) || lineasDe(i.id).find(l => +l.contenido > 0) || null : null); return f > 0 ? base / f : null; };
+  const T = COSTEO_VAL.tintas || {}, colores = COLORES_TINTA.filter(([k]) => T[k] && T[k].id && +T[k].cc > 0 && +T[k].m > 0);
+  const usos = [[COSTEO_VAL.papel, m, 'papel', false]]
+    .concat(colores.length ? colores.map(([k, nom]) => [T[k].id, m * +T[k].cc / +T[k].m, 'tinta ' + nom.toLowerCase(), false])
+      : [[COSTEO_VAL.tinta, m * (+COSTEO_VAL.tintaM || 0), 'tinta', true]])   // como antes: una tinta, ya en su unidad
+    .concat([[COSTEO_VAL.prot, p.requiere_sublimacion !== false ? m * (COSTEO_VAL.protF === '' ? 1 : +COSTEO_VAL.protF) : 0, 'papel de protección', false]]);
+  const porIns = {};
+  usos.forEach(([id, base, que, yaEnUnidad]) => { const i = insumoDe(id); if (!i) return; const c = yaEnUnidad ? base : enStock(i, base); if (c == null) return;
+    const x = porIns[i.id] = porIns[i.id] || { i, cant: 0, que: [] }; x.cant += c; x.que.push(que); });
+  for (const { i, cant, que: qs } of Object.values(porIns)) {
+    const que = qs.join(', ');
     try {
       await api(`plan_insumos_mov?planificacion_id=eq.${p.id}&tipo=eq.consumo&insumo_id=eq.${i.id}`, { method: 'DELETE' });
       if (cant > 0) await api('plan_insumos_mov', { method: 'POST', body: JSON.stringify({ insumo_id: i.id, fecha: F.hoy(), tipo: 'consumo', cantidad: -Math.round(cant * 1000) / 1000,
@@ -6963,62 +6980,142 @@ async function guardarValoresCosteo() {
 }
 
 /* ---------- Simular el costo de una prenda ----------
-   Se elige el molde, la tela principal y, si se quiere, otra tela para alguna pieza. De los cortes ya registrados de ese
-   molde sale cuánta tela lleva una prenda: los kg pesados (con merma) ÷ el gramaje de esas telas = la superficie por
-   prenda; con el gramaje y el precio de cada tela elegida, lo que costaría (así una tela más pesada o más cara se nota).
-   Las piezas se reparten según el consumo de su despiece. Se suman los insumos por prenda, la confección (lo pagado al
-   taller por ese molde o su tarifa), el ploteo y la protección (metros por prenda de los ploteos registrados), el gasto
-   general (% de los 3 meses anteriores) y el precio sugerido con el margen. */
-let SIM = { molde: '', principal: '', piezas: {}, sub: true }, SIM_DATOS = {};
+   Se elige el molde y la tela principal (el frente y las mangas van siempre en ella) y, si otra pieza va en otra tela
+   (espalda microperforada, cuello en rib, entrepierna de lycra…), su tela. Qué parte de la prenda es cada pieza se
+   APRENDE DE LOS CORTES: cada tela se pesa por separado y la ficha dice qué piezas llevaba (SQL 23B). Si un molde aún no
+   tiene un corte con esa pieza en otra tela, se usa el promedio de los moldes del mismo tipo de prenda, los metros del
+   despiece o un % que se anota aquí. La superficie de la prenda sale de los kg de sus cortes ÷ el gramaje de sus telas;
+   con el gramaje y el precio de cada tela elegida, su costo. Se suman insumos, confección, ploteo, protección y gasto
+   general, y da el precio sugerido. */
+let SIM = { molde: '', principal: '', piezas: {}, sub: true }, SIM_DATOS = {}, CORTES_SIM = null, PIEZAS_COL = null, PARTES_EST = null, SIM_COMPLETADO = false;
 const r2 = x => Math.round(x * 100) / 100;
 const lineaRefTela = nombre => { const i = insumoPorNombre(nombre); if (!i) return null; return (PRECIOS_OK && (referenciaDe(i) || lineasDe(i.id).find(l => gramajeLinea(l)))) || null; };
 const gramajeTela = nombre => { const l = lineaRefTela(nombre); return l ? gramajeLinea(l) : null; };
 const rendTela = nombre => { const l = lineaRefTela(nombre), i = insumoPorNombre(nombre); return (l && rendLinea(l)) || (i && +i.rendimiento > 0 ? +i.rendimiento : null); };
+const esPiezaPrincipal = n => /delanter|frente|manga/i.test(String(n || ''));   // van siempre en la tela principal
+const claveSet = ps => ps.map(normIns).sort().join(' + ');
+const numDeClave = k => { const i = infoClave(k); return i ? String(i.numero) : ''; };
+// todos los cortes registrados, con las piezas de cada tela (si está el SQL 23B)
+async function cargarCortesSim() {
+  if (CORTES_SIM) return CORTES_SIM;
+  const base = 'plan_costeo?select=id,planificacion_id,cot,molde,tela,kg_cortado,kg_merma,prendas';
+  try { CORTES_SIM = await todasLasFilas(api, base + ',piezas&etapa=eq.CORTE') || []; PIEZAS_COL = true; }
+  catch (e) { CORTES_SIM = await todasLasFilas(api, base + '&etapa=eq.CORTE').catch(() => []) || []; PIEZAS_COL = false; }
+  return CORTES_SIM;
+}
+// cortes anteriores sin las piezas de cada tela: se completan desde la ficha del pedido, mientras exista
+async function completarPiezasCortes() {
+  if (!PIEZAS_COL) return 0;
+  const falta = CORTES_SIM.filter(r => !Array.isArray(r.piezas) && r.cot && r.molde && !r._sinFicha);
+  let n = 0;
+  for (const cot of Array.from(new Set(falta.map(r => r.cot))).slice(0, 40)) {
+    const teo = teoricoFicha(await fichaCosteo(cot));
+    for (const r of falta.filter(x => x.cot === cot)) {
+      const pz = ((teo.porTipo[r.molde] || {}).piezasTela || {})[r.tela];
+      if (!pz || !pz.length) { r._sinFicha = true; continue; }
+      try { await api(`plan_costeo?id=eq.${r.id}`, { method: 'PATCH', body: JSON.stringify({ piezas: pz }) }); r.piezas = pz; n++; } catch (e) { r._sinFicha = true; }
+    }
+  }
+  return n;
+}
+// cortes agrupados por pedido y molde: cada tela con sus kg (con merma) y sus piezas
+function gruposCorte(cual) {
+  const G = {};
+  (CORTES_SIM || []).filter(r => cual(r.molde)).forEach(r => {
+    const g = G[r.planificacion_id + '|' + r.molde] = G[r.planificacion_id + '|' + r.molde] || { prendas: 0, telas: {} };
+    g.prendas = Math.max(g.prendas, +r.prendas || 0);
+    const t = g.telas[r.tela] = g.telas[r.tela] || { kg: 0, piezas: null };
+    t.kg += (+r.kg_cortado || 0) + (+r.kg_merma || 0); if (Array.isArray(r.piezas) && r.piezas.length) t.piezas = r.piezas;
+  });
+  return Object.values(G).filter(g => g.prendas > 0 && Object.keys(g.telas).length);
+}
+// qué parte de la prenda es cada grupo de piezas que se cortó en una tela aparte (por superficie: kg ÷ gramaje)
+function aprenderPartes(grupos) {
+  const obs = {};
+  grupos.forEach(g => {
+    const ts = Object.entries(g.telas); if (ts.length < 2 || ts.some(([, x]) => !x.piezas)) return;
+    const conG = ts.every(([t]) => gramajeTela(t)), val = ts.map(([t, x]) => ({ x, v: conG ? x.kg / (gramajeTela(t) / 1000) : x.kg }));
+    const tot = val.reduce((s, y) => s + y.v, 0); if (!(tot > 0)) return;
+    const pri = val.find(y => y.x.piezas.some(esPiezaPrincipal)) || val.reduce((a, b) => b.v > a.v ? b : a);   // frente y mangas: el resto
+    val.filter(y => y !== pri).forEach(({ x, v }) => {
+      const o = obs[claveSet(x.piezas)] = obs[claveSet(x.piezas)] || { s: 0, w: 0, n: 0, aprox: false };
+      o.s += v / tot * g.prendas; o.w += g.prendas; o.n++; if (!conG) o.aprox = true;
+    });
+  });
+  Object.values(obs).forEach(o => { o.share = o.s / o.w; });
+  return obs;
+}
+// parte de la prenda de un grupo de piezas: de sus cortes, de los moldes del mismo tipo, del despiece o el % anotado
+function parteDe(n, piezas, D) {
+  const k = claveSet(piezas), o = D.obs[k], ot = D.obsTipo[k];
+  if (o) return { share: o.share, fuente: `de ${o.n} corte${o.n !== 1 ? 's' : ''} de este molde${o.aprox ? ' (por peso: falta el gramaje)' : ''}` };
+  if (ot) return { share: ot.share, fuente: `promedio de ${ot.n} corte${ot.n !== 1 ? 's' : ''} de otros moldes de ${D.nomTipo}` };
+  if (piezas.length > 1) {   // por pieza, sumando
+    const ps = piezas.map(p => parteDe(n, [p], D));
+    return ps.every(Boolean) ? { share: ps.reduce((s, x) => s + x.share, 0), fuente: Array.from(new Set(ps.map(x => x.fuente))).join('; ') } : null;
+  }
+  const pz = (MOLDES_PIEZAS[String(n)] || []).filter(q => q && q.pieza), tot = pz.reduce((s, q) => s + (+q.consumo || 0), 0);
+  const q = pz.find(z => normIns(z.pieza) === normIns(piezas[0]));
+  if (q && pz.every(z => +z.consumo > 0)) return { share: +q.consumo / tot, fuente: 'metros del despiece (sin cortes con esta pieza en otra tela)' };
+  const est = ((PARTES_EST || {})[String(n)] || {})[normIns(piezas[0])];
+  if (est > 0) return { share: est / 100, fuente: 'estimado por ustedes', estimado: true };
+  return null;
+}
 async function datosSimMolde(n) {
   if (SIM_DATOS[n]) return SIM_DATOS[n];
-  const pat = encodeURIComponent(etqMolde(n) + ' · ') + '*';
+  await cargarCortesSim();
+  const pat = encodeURIComponent(etqMolde(n) + ' · ') + '*', tipo = (MOLDES_INFO[String(n)] || {}).prenda || '';
   const [rows, asig] = await Promise.all([
-    todasLasFilas(api, `plan_costeo?select=planificacion_id,etapa,molde,tela,kg_cortado,kg_merma,prendas,metros&molde=like.${pat}`).catch(() => []),
+    todasLasFilas(api, `plan_costeo?select=planificacion_id,etapa,molde,metros&etapa=in.(PLOTEO,SUBL)&molde=like.${pat}`).catch(() => []),
     todasLasFilas(api, `plan_asignaciones?select=planificacion_id,tipo_prenda,cantidad,precio_unit&etapa=eq.CONFEC&tipo_prenda=like.${pat}`).catch(() => [])]);
+  // prendas de cada molde en cada pedido para los ploteos: las del corte o, si no, las del desglose
+  const prC = {}; (CORTES_SIM || []).forEach(r => { const k = r.planificacion_id + '|' + r.molde; prC[k] = Math.max(prC[k] || 0, +r.prendas || 0); });
   const pids = Array.from(new Set(rows.map(r => r.planificacion_id))), desg = {};
   for (let k = 0; k < pids.length; k += 100)
     ((await api(`planificacion?select=id,desglose&id=in.(${pids.slice(k, k + 100).join(',')})`).catch(() => [])) || []).forEach(p => { desg[p.id] = jsonDe(p.desglose) || {}; });
-  const G = {};
-  rows.forEach(r => { const g = G[r.planificacion_id + '|' + r.molde] = G[r.planificacion_id + '|' + r.molde] || { prendas: 0, telas: {}, metros: null, prot: null, desg: +(desg[r.planificacion_id] || {})[r.molde] || 0 };
-    if (r.etapa === 'CORTE') { g.prendas = Math.max(g.prendas, +r.prendas || 0); g.telas[r.tela] = (g.telas[r.tela] || 0) + (+r.kg_cortado || 0) + (+r.kg_merma || 0); }
-    else if (r.etapa === 'PLOTEO') g.metros = (g.metros || 0) + (+r.metros || 0);
-    else if (r.etapa === 'SUBL' && r.metros != null) g.prot = (g.prot || 0) + (+r.metros || 0); });
-  const gs = Object.values(G).map(g => ({ ...g, prendas: g.prendas || g.desg }));
+  const P = {};
+  rows.forEach(r => { const k = r.planificacion_id + '|' + r.molde, g = P[k] = P[k] || { prendas: prC[k] || +(desg[r.planificacion_id] || {})[r.molde] || 0, metros: null, prot: null };
+    if (r.etapa === 'PLOTEO') g.metros = (g.metros || 0) + (+r.metros || 0); else if (r.metros != null) g.prot = (g.prot || 0) + (+r.metros || 0); });
   const conf = asig.reduce((s, a) => { const p = a.precio_unit != null ? +a.precio_unit : tarifaDe(a.tipo_prenda); if (p > 0 && +a.cantidad > 0) { s.cant += +a.cantidad; s.monto += p * +a.cantidad; } return s; }, { cant: 0, monto: 0 });
-  return (SIM_DATOS[n] = { cortes: gs.filter(g => Object.keys(g.telas).length && g.prendas > 0), ploteos: gs.filter(g => g.metros != null && g.prendas > 0), conf });
+  const cortes = gruposCorte(m => numDeClave(m) === String(n));
+  const otros = gruposCorte(m => { const x = numDeClave(m); return x && x !== String(n) && tipo && (MOLDES_INFO[x] || {}).prenda === tipo; });
+  return (SIM_DATOS[n] = { cortes, ploteos: Object.values(P).filter(g => g.metros != null && g.prendas > 0), conf, obs: aprenderPartes(cortes), obsTipo: aprenderPartes(otros),
+    nomTipo: tipo ? nomPrendaFicha(tipo).toLowerCase() : 'la misma prenda' });
 }
 function calcSimulacion(n, D, principal) {
-  const pz = (MOLDES_PIEZAS[String(n)] || []).filter(q => q && q.pieza), totC = pz.reduce((s, q) => s + (+q.consumo > 0 ? +q.consumo : 0), 0);
-  const porPieza = pz.length > 1 && pz.every(q => +q.consumo > 0);
-  const partes = porPieza ? pz.map(q => ({ pieza: q.pieza + (q.cant > 1 ? ' ×' + q.cant : ''), clave: q.pieza, share: +q.consumo / totC, metros: +q.consumo }))
-    : [{ pieza: 'Toda la prenda', clave: '', share: 1, metros: totC || null }];
-  // superficie por prenda (m², con merma) de los cortes con el gramaje de todas sus telas; y los kg por prenda
+  const pz = (MOLDES_PIEZAS[String(n)] || []).filter(q => q && q.pieza), sec = pz.filter(q => !esPiezaPrincipal(q.pieza)), faltan = [];
+  // las piezas que van en otra tela, agrupadas por tela; la tela principal lleva el resto
+  const grupos = {}; sec.forEach(q => { const t = SIM.piezas[q.pieza]; if (t && t !== principal) (grupos[t] = grupos[t] || []).push(q.pieza); });
+  const partes = Object.entries(grupos).map(([tela, ps]) => ({ tela, piezas: ps, ...(parteDe(n, ps, D) || { share: null, fuente: '' }) }));
+  const enOtra = new Set([].concat(...Object.values(grupos)));
+  partes.unshift({ tela: principal, piezas: pz.map(q => q.pieza).filter(p => !enOtra.has(p)), principal: true,
+    share: Math.max(0, 1 - partes.reduce((s, x) => s + (x.share || 0), 0)), fuente: partes.length ? 'el resto de la prenda' : '' });
+  // superficie por prenda (m², con merma): kg de los cortes ÷ gramaje de sus telas; y los kg por prenda
   let area = 0, prA = 0, kg = 0, prK = 0; const sinGram = new Set();
-  D.cortes.forEach(c => { const ks = Object.entries(c.telas), tot = ks.reduce((s, [, k]) => s + k, 0); if (!(tot > 0)) return;
-    kg += tot; prK += c.prendas; let a = 0, ok = true;
-    ks.forEach(([t, k]) => { const g = gramajeTela(t); if (!g) { ok = false; sinGram.add(t); } else a += k / (g / 1000); });
-    if (ok) { area += a; prA += c.prendas; } });
-  const areaPP = prA ? area / prA : null, kgPP = prK ? kg / prK : null, faltan = [];
-  const telas = partes.map(pt => {
-    const nom = (pt.clave && SIM.piezas[pt.clave]) || principal, i = insumoPorNombre(nom), pk = precioKg(i), g = gramajeTela(nom), r = rendTela(nom);
-    let k = null, como = '';
-    if (areaPP != null && g) { k = areaPP * pt.share * g / 1000; como = `${numCL(r2(areaPP * pt.share))} m² × ${numCL(Math.round(g))} g/m²`; }
-    else if (kgPP != null) { k = kgPP * pt.share; como = 'kg pesados en los cortes' + (g ? '' : ' (sin gramaje de esta tela)'); }
-    else if (pt.metros && r) { k = pt.metros / r; como = `teórico: ${numCL(pt.metros)} m del despiece ÷ ${numCL(r2(r))} m por kg, sin merma`; }
-    if (!nom) faltan.push('tela'); else if (pk == null) faltan.push('precio por kg de ' + nom); if (k == null && nom) faltan.push('cortes registrados o consumo de ' + nom);
-    return { ...pt, tela: nom, kg: k, pk, costo: k != null && pk != null ? k * pk : 0, como };
+  D.cortes.forEach(c => { const ks = Object.entries(c.telas), tot = ks.reduce((s, [, x]) => s + x.kg, 0); if (!(tot > 0)) return;
+    kg += tot; prK += c.prendas; let a = 0, okG = true;
+    ks.forEach(([t, x]) => { const g = gramajeTela(t); if (!g) { okG = false; sinGram.add(t); } else a += x.kg / (g / 1000); });
+    if (okG) { area += a; prA += c.prendas; } });
+  const areaPP = prA ? area / prA : null, kgPP = prK ? kg / prK : null;
+  const metrosDe = ps => { const qs = pz.filter(q => ps.includes(q.pieza)); return qs.length && qs.every(q => +q.consumo > 0) ? qs.reduce((s, q) => s + +q.consumo, 0) : null; };
+  partes.forEach(pt => {
+    const i = insumoPorNombre(pt.tela), g = gramajeTela(pt.tela), r = rendTela(pt.tela);
+    pt.pk = precioKg(i); pt.kg = null; pt.costo = 0;
+    if (!pt.tela) { faltan.push('tela principal'); return; }
+    if (pt.share == null) { faltan.push(`qué parte de la prenda es ${pt.piezas.join(', ').toLowerCase()} (anota un %)`); return; }
+    if (areaPP != null && g) { pt.kg = areaPP * pt.share * g / 1000; pt.como = `${numCL(r2(areaPP * pt.share))} m² × ${numCL(Math.round(g))} g/m²`; }
+    else if (kgPP != null) { pt.kg = kgPP * pt.share; pt.como = 'kg pesados en los cortes' + (g ? '' : ' (falta el gramaje de esta tela)'); }
+    else { const m = metrosDe(pt.piezas.length ? pt.piezas : pz.map(q => q.pieza)); if (m && r) { pt.kg = m / r; pt.como = `teórico: ${numCL(m)} m del despiece ÷ ${numCL(r2(r))} m por kg, sin merma`; } }
+    if (pt.pk == null) faltan.push('precio por kg de ' + pt.tela); if (pt.kg == null) faltan.push('cortes registrados de este molde');
+    pt.costo = pt.kg != null && pt.pk != null ? pt.kg * pt.pk : 0;
   });
-  const tela = telas.reduce((s, t) => s + t.costo, 0), b = costoBOM(n); b.falta.forEach(f => faltan.push('precio de ' + f));
-  const tar = Object.keys(TARIFAS).filter(k => { const x = infoClave(k); return x && String(x.numero) === String(n); }).map(k => +TARIFAS[k] || 0).filter(x => x > 0);
+  const tela = partes.reduce((s, t) => s + t.costo, 0), b = costoBOM(n); b.falta.forEach(f => faltan.push('precio de ' + f));
+  const tar = Object.keys(TARIFAS).filter(k => numDeClave(k) === String(n)).map(k => +TARIFAS[k] || 0).filter(x => x > 0);
   const conf = D.conf.cant ? D.conf.monto / D.conf.cant : tar.length ? Math.max(...tar) : 0;
   const confComo = D.conf.cant ? `promedio pagado al taller (${D.conf.cant} prendas)` : tar.length ? 'tarifa del molde' : 'sin tarifa ni taller registrado';
   if (!conf) faltan.push('tarifa de confección');
-  const pl = D.ploteos.reduce((s, g) => { s.m += g.metros; s.p += g.prendas; s.prot += g.prot != null ? g.prot : g.metros * (COSTEO_VAL.protF === '' ? 1 : +COSTEO_VAL.protF); return s; }, { m: 0, p: 0, prot: 0 });
+  const protF = COSTEO_VAL.protF === '' ? 1 : +COSTEO_VAL.protF;
+  const pl = D.ploteos.reduce((s, g) => { s.m += g.metros; s.p += g.prendas; s.prot += g.prot != null ? g.prot : g.metros * protF; return s; }, { m: 0, p: 0, prot: 0 });
   const mPP = SIM.sub && pl.p ? pl.m / pl.p : 0, protPP = SIM.sub && pl.p ? pl.prot / pl.p : 0;
   const pM = papelPorMetro(COSTEO_VAL.papel), tM = tintaPorMetro(), prM = papelPorMetro(COSTEO_VAL.prot);
   if (SIM.sub && !pl.p) faltan.push('ploteos registrados de este molde');
@@ -7028,12 +7125,16 @@ function calcSimulacion(n, D, principal) {
   const G = GG_DATOS && GG_DATOS.ok ? calcularGG().pct(mesDe(F.hoy())) : null, gg = G && G.pct != null ? G.pct : null, mg = (+COSTEO_VAL.margen || 0) / 100;
   if (gg == null) faltan.push('% de gasto general');
   const den = 1 - (gg || 0) - mg, sugerido = den > 0.05 ? directo / den : null;
-  return { partes, porPieza, telas, tela, insumos: b.costo, conf, confComo, mPP, protPP, papel, tinta, prot, directo, gg, G, sugerido, ggMonto: sugerido != null && gg != null ? sugerido * gg : 0,
+  return { pz, sec, partes, tela, insumos: b.costo, conf, confComo, mPP, protPP, papel, tinta, prot, directo, gg, G, sugerido, ggMonto: sugerido != null && gg != null ? sugerido * gg : 0,
     kgPP, areaPP, sinGram: Array.from(sinGram), cortes: D.cortes.length, prCortes: prK, ploteos: D.ploteos.length, faltan: Array.from(new Set(faltan)) };
 }
 async function pintarSimulador(v, chips) {
   const hoyM = mesDe(F.hoy());
-  await Promise.all([cargarInsumos(), cargarPrecios(), cargarBOM(), cargarEjecutantes(), cargarGG(mesesAntes(hoyM, 4)[3]).catch(() => null)]);
+  await Promise.all([cargarInsumos(), cargarPrecios(), cargarBOM(), cargarEjecutantes(), cargarCortesSim(), cargarGG(mesesAntes(hoyM, 4)[3]).catch(() => null),
+    PARTES_EST ? null : api('plan_config?select=valor&clave=eq.costeo_partes').then(r => { PARTES_EST = r && r[0] ? JSON.parse(r[0].valor) : {}; }).catch(() => { PARTES_EST = {}; })]);
+  // los cortes anteriores sin piezas se completan desde sus fichas (una vez, sin esperar)
+  if (!SIM_COMPLETADO && PIEZAS_COL) { SIM_COMPLETADO = true;
+    completarPiezasCortes().then(n => { if (n) { SIM_DATOS = {}; if (TAB === 'costeo' && COSTEO_MODO === 'simular') renderCosteo(); } }).catch(() => {}); }
   const moldes = Object.values(MOLDES_INFO).sort((a, b) => ordenInfo(a) - ordenInfo(b) || a.numero - b.numero);
   const telas = INS.filter(i => i.activo !== false && i.categoria === 'Tela').sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
   if (!SIM.principal && telas.length) SIM.principal = (telas.find(i => +i.precio > 0) || telas[0]).nombre;
@@ -7041,23 +7142,34 @@ async function pintarSimulador(v, chips) {
   if (TAB !== 'costeo' || COSTEO_MODO !== 'simular') return;
   const optTela = (sel, vacio) => (vacio ? `<option value="">${vacio}</option>` : '') + telas.map(i => `<option value="${esc(i.nombre)}" ${i.nombre === sel ? 'selected' : ''}>${esc(i.nombre)}${+i.precio > 0 ? '' : ' (sin precio)'}</option>`).join('');
   let h = '<h1>Costeo de prendas</h1>' + chips +
-    `<p class="hint">Estima cuánto costaría una prenda según el molde y las telas que elijas, con lo que el sistema ha registrado de ese molde: los <b>kg pesados en los cortes</b> (con merma), los <b>metros ploteados</b> y lo pagado en confección. La tela se lleva a superficie con su gramaje, así una tela más pesada o más cara cambia el costo.</p>
+    `<p class="hint">Estima cuánto costaría una prenda según el molde y las telas que elijas, con lo registrado de ese molde: los <b>kg pesados en los cortes</b> (con merma), los <b>metros ploteados</b> y lo pagado en confección. El frente y las mangas van en la tela principal; qué parte de la prenda es cada otra pieza (espalda, cuello, entrepierna…) se aprende de los cortes, donde cada tela se pesa por separado.</p>
+    ${PIEZAS_COL === false ? '<div class="aviso warn">Falta correr el <b>SQL 23B</b> en Supabase de Producción: sin él no se sabe qué piezas llevaba cada tela en los cortes; se usan los metros del despiece o el % que anotes.</div>' : ''}
     <div class="panel"><div class="grid2"><div><label for="sim-molde">Molde</label><select id="sim-molde" onchange="simElegir('molde',this.value)"><option value="">— Elige el molde —</option>
         ${moldes.map(m => `<option value="${m.numero}" ${String(SIM.molde) === String(m.numero) ? 'selected' : ''}>${esc(MOLDES_FICHAS[String(m.numero)] || etqMolde(m.numero))}</option>`).join('')}</select></div>
-      <div><label for="sim-tela">Tela principal (frente y espalda)</label><select id="sim-tela" onchange="simElegir('principal',this.value)">${optTela(SIM.principal)}</select></div></div>
+      <div><label for="sim-tela">Tela principal (frente y mangas)</label><select id="sim-tela" onchange="simElegir('principal',this.value)">${optTela(SIM.principal)}</select></div></div>
       <label style="display:flex;align-items:center;gap:6px;margin-top:8px;font-weight:400"><input type="checkbox" style="width:auto" ${SIM.sub ? 'checked' : ''} onchange="simElegir('sub',this.checked)"> Sublimada (lleva ploteo y papel de protección)</label>`;
   if (!SIM.molde) { v.innerHTML = h + '</div>'; return; }
-  const R = calcSimulacion(SIM.molde, D, SIM.principal);
-  SIM.claves = R.partes.map(pt => pt.clave);
-  h += R.porPieza ? `<h3 style="margin:12px 0 4px">Tela de cada pieza</h3><table class="mini" id="sim-piezas">${R.partes.map((pt, j) => `<tr><td>${esc(pt.pieza)}<div class="hint">${numCL(Math.round(pt.share * 100))}% de la tela de la prenda</div></td>
-        <td><select data-pieza="${j}" onchange="simPieza(${j},this.value)">${optTela(SIM.piezas[pt.clave] || '', '= tela principal')}</select></td></tr>`).join('')}</table>`
-    : `<p class="hint" style="margin-top:10px">${(MOLDES_PIEZAS[String(SIM.molde)] || []).length ? 'Para elegir otra tela por pieza, el despiece del molde necesita el consumo (metros) de cada pieza' : 'Este molde aún no tiene despiece: se usa la tela principal para toda la prenda'} (Moldes › Editar despiece).</p>`;
+  const R = calcSimulacion(SIM.molde, D, SIM.principal), priN = R.pz.filter(q => esPiezaPrincipal(q.pieza)).map(q => q.pieza);
+  SIM.claves = R.sec.map(q => q.pieza);
+  if (!R.pz.length) h += `<p class="hint" style="margin-top:10px">Este molde aún no tiene su lista de piezas en el catálogo: se usa la tela principal para toda la prenda. Para elegir otra tela por pieza, agrega sus piezas en Moldes › Definir despiece (basta con los nombres).</p>`;
+  else if (!R.sec.length) h += `<p class="hint" style="margin-top:10px">Todas las piezas de este molde (${esc(R.pz.map(q => q.pieza).join(', '))}) van en la tela principal.</p>`;
+  else h += `<h3 style="margin:12px 0 4px">Otras piezas</h3><p class="hint" style="margin:0 0 6px">${priN.length ? esc(priN.join(' y ')) + ': siempre en la tela principal. ' : ''}Elige otra tela solo para las piezas que la llevan.</p>
+    <table class="mini" id="sim-piezas">${R.sec.map((q, j) => {
+      const t = SIM.piezas[q.pieza], g = R.partes.find(x => !x.principal && x.piezas.includes(q.pieza)), sola = parteDe(SIM.molde, [q.pieza], D);
+      const info = g && g.share != null ? `${numCL(Math.round(g.share * 1000) / 10)}% de la prenda${g.piezas.length > 1 ? ' (con ' + esc(g.piezas.filter(x => x !== q.pieza).join(', ')) + ')' : ''} · ${esc(g.fuente)}`
+        : sola ? `${numCL(Math.round(sola.share * 1000) / 10)}% de la prenda · ${esc(sola.fuente)}` : 'sin datos de cuánto es de la prenda';
+      const pideEst = (!sola || sola.estimado) && t && t !== SIM.principal;
+      return `<tr><td>${esc(q.pieza)}${q.cant > 1 ? ' ×' + q.cant : ''}<div class="hint">${info}</div></td>
+        <td style="white-space:nowrap"><select data-pieza="${j}" onchange="simPieza(${j},this.value)">${optTela(t || '', '= tela principal')}</select>
+          ${pideEst ? `<div style="margin-top:4px"><input type="number" min="0.5" max="80" step="0.5" data-est="${j}" value="${sola ? r2(sola.share * 100) : ''}" placeholder="%" style="width:80px" onchange="simEstimado(${j},this.value)"> <span class="hint">% de la prenda (estimado)</span></div>` : ''}</td></tr>`; }).join('')}</table>`;
   h += '</div>';
   const fila = (t, val, como, b) => `<tr><td>${b ? '<b>' + t + '</b>' : t}${como ? `<div class="hint">${como}</div>` : ''}</td><td style="text-align:right">${b ? '<b>' + val + '</b>' : val}</td></tr>`;
+  const nomParte = pt => pt.principal ? (pt.piezas.length ? (R.partes.length > 1 ? pt.piezas.join(', ') : 'toda la prenda') : 'toda la prenda') : pt.piezas.join(', ');
   h += `<div class="panel"><p class="hint" style="margin-top:0">Con ${R.cortes} corte${R.cortes !== 1 ? 's' : ''} registrado${R.cortes !== 1 ? 's' : ''} de este molde (${R.prCortes} prendas)${R.kgPP != null ? ', ' + numCL(r2(R.kgPP)) + ' kg por prenda' : ''}${R.areaPP != null ? ' = ' + numCL(r2(R.areaPP)) + ' m² de tela' : ''} y ${R.ploteos} ploteo${R.ploteos !== 1 ? 's' : ''}.${R.sinGram.length ? ' Sin gramaje: ' + esc(R.sinGram.join(', ')) + ' (anótalo en Precios para comparar telas por peso).' : ''}</p>
     ${R.faltan.length ? `<div class="aviso warn">Falta: ${esc(R.faltan.join(' · '))}</div>` : ''}
     <table class="mini" id="sim-res"><tr><th>Concepto</th><th style="text-align:right">Por prenda</th></tr>
-      ${R.telas.map(t => fila('Tela · ' + esc(t.pieza) + ' · ' + esc(t.tela || '—'), t.kg != null ? pesos(t.costo) : '—', t.kg != null ? `${numCL(Math.round(t.kg * 1000) / 1000)} kg (${t.como})${t.pk != null ? ' × ' + pesosD(t.pk) + '/kg' : ''}` : '')).join('')}
+      ${R.partes.map(t => fila('Tela · ' + esc(nomParte(t)) + ' · ' + esc(t.tela || '—'), t.kg != null ? pesos(t.costo) : '—',
+        t.kg != null ? `${numCL(Math.round(t.kg * 1000) / 1000)} kg (${R.partes.length > 1 ? numCL(Math.round(t.share * 1000) / 10) + '% de la prenda, ' : ''}${t.como})${t.pk != null ? ' × ' + pesosD(t.pk) + '/kg' : ''}` : '')).join('')}
       ${fila('Insumos por prenda', pesos(R.insumos), 'lo común a todas y lo de este molde')}
       ${fila('Confección', pesos(R.conf), R.confComo)}
       ${SIM.sub ? fila('Papel y tinta de ploteo', pesos(R.papel + R.tinta), R.mPP ? numCL(r2(R.mPP)) + ' m ploteados por prenda' : 'sin ploteos registrados') + fila('Papel de protección', pesos(R.prot), R.protPP ? numCL(r2(R.protPP)) + ' m por prenda' : '') : ''}
@@ -7066,16 +7178,23 @@ async function pintarSimulador(v, chips) {
       ${fila('Costo total por prenda', R.sugerido != null ? pesos(R.directo + R.ggMonto) : '—', '', true)}
       ${fila('Precio sugerido sin IVA', R.sugerido != null ? pesos(R.sugerido) : '—', `costo directo ÷ (1 − ${pct(R.gg)} − ${numCL(COSTEO_VAL.margen)}% de margen)`, true)}
     </table></div>`;
-  // la misma prenda con otras telas principales
-  const otras = telas.filter(i => +i.precio > 0).map(i => ({ i, R: calcSimulacion(SIM.molde, D, i.nombre) })).filter(x => x.R.telas.every(t => t.kg != null)).sort((a, b) => a.R.directo - b.R.directo);
+  // la misma prenda con otras telas principales (las demás piezas quedan como se eligieron)
+  const otras = telas.filter(i => +i.precio > 0).map(i => ({ i, R: calcSimulacion(SIM.molde, D, i.nombre) })).filter(x => x.R.partes.every(t => t.kg != null)).sort((a, b) => a.R.directo - b.R.directo);
   if (otras.length > 1) h += `<h2>La misma prenda con otra tela principal</h2><div class="panel" style="overflow-x:auto"><table class="mini" id="sim-otras"><tr><th>Tela principal</th><th style="text-align:right">$ por kg</th><th style="text-align:right">Gramaje</th><th style="text-align:right">Kg por prenda</th><th style="text-align:right">Tela</th><th style="text-align:right">Costo directo</th><th style="text-align:right">Precio sugerido</th></tr>
       ${otras.map(x => `<tr style="${x.i.nombre === SIM.principal ? 'background:#FFF7E8' : ''}"><td><b>${esc(x.i.nombre)}</b></td><td style="text-align:right">${pesosD(precioKg(x.i))}</td><td style="text-align:right">${gramajeTela(x.i.nombre) ? numCL(Math.round(gramajeTela(x.i.nombre))) + ' g/m²' : '—'}</td>
-        <td style="text-align:right">${numCL(Math.round(x.R.telas.reduce((s, t) => s + t.kg, 0) * 1000) / 1000)}</td><td style="text-align:right">${pesos(x.R.tela)}</td><td style="text-align:right">${pesos(x.R.directo)}</td><td style="text-align:right">${x.R.sugerido != null ? pesos(x.R.sugerido) : '—'}</td></tr>`).join('')}
-    </table><p class="hint">Mismo molde, mismas telas en las demás piezas.</p></div>`;
+        <td style="text-align:right">${numCL(Math.round(x.R.partes.reduce((s, t) => s + t.kg, 0) * 1000) / 1000)}</td><td style="text-align:right">${pesos(x.R.tela)}</td><td style="text-align:right">${pesos(x.R.directo)}</td><td style="text-align:right">${x.R.sugerido != null ? pesos(x.R.sugerido) : '—'}</td></tr>`).join('')}
+    </table><p class="hint">Mismo molde; las demás piezas en las telas que elegiste arriba.</p></div>`;
   v.innerHTML = h;
 }
 function simElegir(k, val) { if (k === 'molde') { SIM.molde = val; SIM.piezas = {}; } else SIM[k] = val; renderCosteo(); }
 function simPieza(j, tela) { const clave = (SIM.claves || [])[j]; if (clave == null) return; if (tela) SIM.piezas[clave] = tela; else delete SIM.piezas[clave]; renderCosteo(); }
+// % estimado de una pieza (hasta que haya cortes con ella en otra tela): queda guardado para ese molde
+async function simEstimado(j, valor) {
+  const pieza = (SIM.claves || [])[j], x = parseFloat(String(valor).replace(',', '.')); if (pieza == null) return;
+  const m = (PARTES_EST = PARTES_EST || {})[String(SIM.molde)] = PARTES_EST[String(SIM.molde)] || {};
+  if (x > 0 && x < 100) m[normIns(pieza)] = x; else delete m[normIns(pieza)];
+  await guardarConfig('costeo_partes', JSON.stringify(PARTES_EST)); renderCosteo();
+}
 
 function renderMoldes() {
   const qTxt = $('q-moldes') && $('q-moldes').value || '', q = qTxt.toLowerCase().trim();   // el campo conserva lo escrito (espacios incluidos)

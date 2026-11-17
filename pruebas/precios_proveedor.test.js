@@ -5,23 +5,26 @@ let fallas = 0; const ok = (c, m) => { console.log((c ? 'OK   ' : 'FALLA') + ' '
 const cerca = (a, b, tol) => Math.abs(a - b) <= (tol || 0.5);
 const ahora = new Date().toISOString();
 const moldes = require('./datos_moldes_catalogo.json').map(m => Object.assign({}, m));
-moldes.find(m => m.numero === 18).piezas = [{ pieza: 'Delantero', cant: 1, consumo: 0.5 }, { pieza: 'Espalda', cant: 1, consumo: 0.5 }, { pieza: 'Manga', cant: 2, consumo: 0.3 }];
+moldes.find(m => m.numero === 18).piezas = [{ pieza: 'Delantero', cant: 1, consumo: 0.5 }, { pieza: 'Espalda', cant: 1, consumo: 0.5 }, { pieza: 'Manga', cant: 2, consumo: 0.3 }, { pieza: 'Cuello', cant: 1 }];
 const ins = (id, nombre, categoria, unidad, precio, extra) => ({ id, nombre, categoria, unidad, precio, rendimiento: null, proveedor: null, stock: 100, activo: true, ...extra });
 const insumos = [ins(1, 'Pro', 'Tela', 'kg', 9500, { proveedor: 'Telas Norte' }), ins(2, 'Nacional', 'Tela', 'm', 2500, { rendimiento: 4 }), ins(3, 'Elástico', 'Elástico', 'm', 300),
   ins(4, 'Etiqueta', 'Etiqueta', 'unid', 50), ins(5, 'Bolsa', 'Embalaje', 'unid', 80), ins(6, 'Papel sublimación', 'Papel', 'm', 400, { proveedor: 'PapelCo' }),
   ins(7, 'Papel protección', 'Papel', 'm', 150), ins(11, 'Tinta cian', 'Tinta', 'litro', 50000), ins(12, 'Tinta magenta', 'Tinta', 'litro', 50000),
-  ins(13, 'Tinta amarilla', 'Tinta', 'litro', 50000), ins(14, 'Tinta negra', 'Tinta', 'litro', 45000)];
+  ins(13, 'Tinta amarilla', 'Tinta', 'litro', 50000), ins(14, 'Tinta negra', 'Tinta', 'litro', 45000), ins(15, 'Rib', 'Tela', 'kg', 12000)];
 const L = (id, insumo_id, proveedor, proveedor_id, presentacion, precio, extra) => ({ id, insumo_id, proveedor, proveedor_id, presentacion, contenido: 1, precio, ancho_m: null, gramaje: null, rendimiento: null, activo: true, ...extra });
 const DB = {
   prod: {
     plan_insumos: insumos, plan_insumos_stock: insumos, plan_insumos_mov: [],
     plan_insumo_precios: [L(1, 1, 'Textil Sur', 101, 'kg', 9000, { ancho_m: 1.6, gramaje: 150 }), L(2, 1, 'Telas Norte', 102, 'kg', 9500, { ancho_m: 1.8, gramaje: 140 }),
       L(3, 2, 'Sin proveedor', null, 'm', 2500, { rendimiento: 4 }), L(4, 6, 'PapelCo', 103, 'm', 400),
-      ...[11, 12, 13, 14].map((k, j) => L(10 + j, k, 'Mimaki Chile', 104, 'envase', k === 14 ? 45000 : 50000, { contenido: 1000 }))],
+      ...[11, 12, 13, 14].map((k, j) => L(10 + j, k, 'Mimaki Chile', 104, 'envase', k === 14 ? 45000 : 50000, { contenido: 1000 })), L(20, 15, 'Textil Sur', 101, 'kg', 12000, { ancho_m: 1, gramaje: 220 })],
     plan_proveedores_estado: [],
     plan_config: [{ clave: 'costeo_valores', valor: JSON.stringify({ papel: '6', tinta: '', tintaM: 0, prot: '7', protF: 1, margen: 30 }) }],
-    plan_costeo: [{ id: 1, planificacion_id: 1, etapa: 'CORTE', molde: '18 · FUTHOMU02', tela: 'Pro', kg_cortado: 2.5, kg_merma: 0.4, prendas: 8 },
-      { id: 2, planificacion_id: 1, etapa: 'CORTE', molde: '18 · FUTHOMU02', tela: 'Nacional', kg_cortado: 0.8, kg_merma: 0.2, prendas: 8 },
+    // COT-4000: frente y mangas en Pro, espalda en Nacional (con sus piezas, SQL 23B); COT-4001: corte anterior sin piezas (se completan desde su ficha)
+    plan_costeo: [{ id: 1, planificacion_id: 1, cot: 'COT-4000', etapa: 'CORTE', molde: '18 · FUTHOMU02', tela: 'Pro', kg_cortado: 2.5, kg_merma: 0.4, prendas: 8, piezas: ['Delantero', 'Manga'] },
+      { id: 2, planificacion_id: 1, cot: 'COT-4000', etapa: 'CORTE', molde: '18 · FUTHOMU02', tela: 'Nacional', kg_cortado: 0.8, kg_merma: 0.2, prendas: 8, piezas: ['Espalda'] },
+      { id: 4, planificacion_id: 2, cot: 'COT-4001', etapa: 'CORTE', molde: '18 · FUTHOMU02', tela: 'Pro', kg_cortado: 2.2, kg_merma: 0.2, prendas: 6, piezas: null },
+      { id: 5, planificacion_id: 2, cot: 'COT-4001', etapa: 'CORTE', molde: '18 · FUTHOMU02', tela: 'Nacional', kg_cortado: 0.7, kg_merma: 0.1, prendas: 6, piezas: null },
       { id: 3, planificacion_id: 1, etapa: 'PLOTEO', molde: '18 · FUTHOMU02', tela: '', metros: 16 }],
     plan_asignaciones: [{ id: 1, planificacion_id: 1, etapa: 'CONFEC', ejecutante: 'Taller Las Rosas', tipo_prenda: '18 · FUTHOMU02', cantidad: 8, precio_unit: 3000 }],
     plan_insumos_molde: [{ id: 1, molde: '*', insumo_id: 4, cantidad: 1 }, { id: 2, molde: '*', insumo_id: 5, cantidad: 1 }],
@@ -30,7 +33,10 @@ const DB = {
       tipo: 'normal', requiere_sublimacion: true, estado_general: 'entregado', created_at: ahora }],
     plan_usuarios: [{ usuario: 'sean.duarte', nombre: 'Sean Duarte', rol: 'admin', roles: ['admin'], activo: true }]
   },
-  fichas: { moldes, catalogo_tecnico: [], fichas_tallas: [], fichas_detalle: [] },
+  fichas: { moldes, catalogo_tecnico: [],
+    fichas_tallas: [{ id: 2, ref: 'COT-4001', cliente: 'Club Dos', estado: 'confirmado', items: [{ prenda: 'camiseta', cant: 6 }], created_at: ahora,
+      specs: { camiseta: { tela: 'Pro', moldes: { Masculino: 'FUTHOMU02|18' }, despiece: { molde: '18 · FUTHOMU02', piezas: [{ pieza: 'Espalda', tela: 'Nacional' }] } } } }],
+    fichas_detalle: Array.from({ length: 6 }, (_, i) => ({ id: 'q' + i, ref: 'COT-4001', calce: 'Masculino', manga: 'Corta', tallas: { camiseta: 'M' }, created_at: ahora })) },
   ventas: {
     proveedores: [{ id: 101, nombre: 'Textil Sur', rut: '76.111.111-1', tipo_documento: 'afecta' }, { id: 102, nombre: 'Telas Norte', tipo_documento: 'afecta' },
       { id: 103, nombre: 'PapelCo', tipo_documento: 'afecta' }, { id: 104, nombre: 'Mimaki Chile', tipo_documento: 'afecta' }],
@@ -143,22 +149,42 @@ const config = () => JSON.parse(DB.prod.plan_config.find(c => c.clave === 'coste
   const T = config().tintas || {};
   ok(T.C && T.C.id === '11' && T.C.cc === 1000 && T.C.m === 400 && T.K && T.K.m === 800 && config().margen === 30, 'se guardan las 4 tintas con su rendimiento');
 
-  // 6 · simular el costo: molde 18, tela principal Pro y la manga en Nacional
+  // 6 · simular el costo: molde 18, tela principal Pro; la espalda (aprendida de los cortes) en Nacional y el cuello en Rib (% estimado)
   await p.evaluate(() => { SIM = { molde: '', principal: '', piezas: {}, sub: true }; }); await ir('simular');
   await p.selectOption('#sim-molde', '18'); await p.waitForTimeout(1500);
-  await p.selectOption('#sim-tela', 'Pro'); await p.waitForTimeout(900);
-  const area = (2.9 / 0.15 + 1.0 / 0.16) / 8, telaPro = area * 0.15 * 9000, ploteo = 2 * 600 + 2 * 381.25 + 2 * 150;
-  const directo = telaPro + 130 + 3000 + ploteo, gg = 550000 / 3000000, sug = directo / (1 - gg - 0.3);
-  const res = (await p.innerText('#sim-res')).replace(/\s+/g, ' ');
+  await p.selectOption('#sim-tela', 'Pro'); await p.waitForTimeout(1500);
+  const c4 = DB.prod.plan_costeo.filter(r => r.planificacion_id === 2);
+  ok((c4.find(r => r.tela === 'Pro').piezas || []).join() === 'Delantero,Manga,Cuello' && (c4.find(r => r.tela === 'Nacional').piezas || []).join() === 'Espalda',
+    'el corte anterior (COT-4001) se completa con las piezas de cada tela desde su ficha');
+  // gramajes: Pro 150 g/m² (Textil Sur), Nacional 160 g/m² (Tejidos Sur), Rib 220 g/m²
+  const cortes = [{ pr: 8, a: { Pro: 2.9 / 0.15, Nacional: 1.0 / 0.16 } }, { pr: 6, a: { Pro: 2.4 / 0.15, Nacional: 0.8 / 0.16 } }];
+  const tot = c => c.a.Pro + c.a.Nacional, area = cortes.reduce((s, c) => s + tot(c), 0) / 14;
+  const espalda = cortes.reduce((s, c) => s + c.a.Nacional / tot(c) * c.pr, 0) / 14;
+  const pNac = 2600 * 1000 / (1.5 * 160), ploteo = 2 * 600 + 2 * 381.25 + 2 * 150, resto = 130 + 3000 + ploteo;
+  const telaPro = area * 0.15 * 9000, directo = telaPro + resto, gg = 550000 / 3000000, sug = directo / (1 - gg - 0.3);
+  const limpio = t => t.replace(/\s+/g, ' ');
+  const res = limpio(await p.innerText('#sim-res'));
   const pesos = n => '$' + Math.round(n).toLocaleString('es-CL');
   ok(res.includes('Costo directo ' + pesos(directo)) && res.includes('Precio sugerido sin IVA') && res.includes(pesos(sug)), `todo en Pro: costo directo ${pesos(directo)} y precio sugerido ${pesos(sug)} · ` + res.slice(0, 160));
   ok(/Confección promedio pagado al taller \(8 prendas\) \$3\.000/.test(res) && /Insumos por prenda lo común a todas y lo de este molde \$130/.test(res) && /2 m ploteados por prenda/.test(res), 'confección pagada, insumos comunes y 2 m ploteados por prenda');
-  ok(/3 piezas|Delantero/.test(await p.innerText('#sim-piezas')) && (await p.$$('#sim-piezas select')).length === 3, 'se puede elegir la tela de cada pieza (3 piezas con consumo en el despiece)');
-  await p.selectOption('#sim-piezas select[data-pieza="2"]', 'Nacional'); await p.waitForTimeout(900);
-  const sh = 0.3 / 1.3, tela2 = area * (1 - sh) * 0.15 * 9000 + area * sh * 0.16 * (2600 * 1000 / (1.5 * 160));
-  const res2 = (await p.innerText('#sim-res')).replace(/\s+/g, ' ');
-  ok(res2.includes('Costo directo ' + pesos(tela2 + 130 + 3000 + ploteo)) && /Tela · Manga ×2 · Nacional/.test(res2), `con la manga en Nacional: costo directo ${pesos(tela2 + 130 + 3000 + ploteo)}`);
-  ok((await p.$$('#sim-otras tr')).length === 3, 'compara la misma prenda con otra tela principal (Pro y Nacional)');
+  const piezasTx = limpio(await p.innerText('#sim-piezas'));
+  ok((await p.$$('#sim-piezas select')).length === 2 && /Delantero y Manga: siempre en la tela principal/.test(await p.innerText('#view-costeo')), 'frente y mangas fijos en la tela principal; se elige la tela de la espalda y del cuello');
+  const pctEsp = (Math.round(espalda * 1000) / 10).toLocaleString('es-CL');
+  ok(piezasTx.includes(`${pctEsp}% de la prenda · de 2 cortes de este molde`), `la espalda es el ${pctEsp}% de la prenda, aprendido de 2 cortes · ` + piezasTx.slice(0, 140));
+  await p.selectOption('#sim-piezas select[data-pieza="0"]', 'Nacional'); await p.waitForTimeout(900);
+  const tela2 = area * (1 - espalda) * 0.15 * 9000 + area * espalda * 0.16 * pNac;
+  const res2 = limpio(await p.innerText('#sim-res'));
+  ok(res2.includes('Costo directo ' + pesos(tela2 + resto)) && /Tela · Espalda · Nacional/.test(res2) && /Tela · Delantero, Manga, Cuello · Pro/.test(res2), `espalda en Nacional: costo directo ${pesos(tela2 + resto)}`);
+  // cuello en Rib: sin cortes con el cuello aparte → pide un % estimado, que queda guardado para el molde
+  await p.selectOption('#sim-piezas select[data-pieza="1"]', 'Rib'); await p.waitForTimeout(900);
+  ok(/qué parte de la prenda es cuello/.test(await p.innerText('#view-costeo')) && await p.isVisible('#sim-piezas input[data-est="1"]'), 'cuello en Rib sin datos: avisa y pide un % estimado');
+  await p.fill('#sim-piezas input[data-est="1"]', '5'); await p.dispatchEvent('#sim-piezas input[data-est="1"]', 'change'); await p.waitForTimeout(1200);
+  const est = JSON.parse((DB.prod.plan_config.find(c => c.clave === 'costeo_partes') || {}).valor || '{}');
+  ok(est['18'] && est['18'].cuello === 5, 'el 5% del cuello queda guardado para el molde 18');
+  const tela3 = area * (1 - espalda - 0.05) * 0.15 * 9000 + area * espalda * 0.16 * pNac + area * 0.05 * 0.22 * 12000;
+  const res3 = limpio(await p.innerText('#sim-res'));
+  ok(res3.includes('Costo directo ' + pesos(tela3 + resto)) && /Tela · Cuello · Rib/.test(res3), `y con el cuello en Rib (5%): costo directo ${pesos(tela3 + resto)}`);
+  ok((await p.$$('#sim-otras tr')).length === 4, 'compara la misma prenda con otra tela principal (Nacional, Pro y Rib)');
   await p.screenshot({ path: 'movil/costeo_simular.png', fullPage: false });
 
   // 7 · una compra con su costo actualiza el precio de ese proveedor
