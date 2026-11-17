@@ -5135,7 +5135,7 @@ async function aplicarOT() {
    así, al ingresar un pedido a producción, la tela se descuenta sola según el consumo de cada pieza del molde. */
 let INS = [], INSUMOS_OK = null, INV_MODO = 'insumos', FILTRO_INS = '', CONSUMO_SEL = null;
 let MOLDES_PIEZAS = {};   // N° de molde → piezas del catálogo (con su consumo por prenda)
-const CATEG_INS = ['Tela', 'Elástico', 'Hilo', 'Cierre', 'Etiqueta', 'Embalaje', 'Papel', 'Tinta', 'Servicio', 'Otro'];
+const CATEG_INS = ['Tela', 'Elástico', 'Hilo', 'Cierre', 'Etiqueta', 'Embalaje', 'Aplicación', 'Papel', 'Tinta', 'Servicio', 'Otro'];
 const UNID_INS = ['m', 'kg', 'unid', 'rollo', 'litro'];
 const normIns = x => String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
 const numCL = n => (Math.round((+n || 0) * 100) / 100).toLocaleString('es-CL', { maximumFractionDigits: 2 });
@@ -5819,7 +5819,9 @@ const URL_GUIA = n => SECCION_CATALOGO[+n] ? `guias/molde-${etqMolde(n)}.jpg` : 
    Lo que registra cada área queda en plan_costeo, el consumo por molde en plan_insumos_molde (SQL 20A) y los
    valores en plan_config. Solo lo ven administración y producción. */
 const puedeVerCosteo = () => tienePerfil('admin') || tienePerfil('produccion');
-const COSTEO_REG = { CORTE: 'Registrar kilos', PLOTEO: 'Registrar metros' };   // áreas que registran al terminar
+const COSTEO_REG = { CORTE: 'Registrar kilos', PLOTEO: 'Registrar metros', ESTAMP: 'Registrar aplicaciones' };   // áreas que registran al terminar
+let ESTAMP_OK = null;   // false: falta el SQL 23C (registro de estampado)
+async function estampOk() { if (ESTAMP_OK !== null) return ESTAMP_OK; try { await api('plan_costeo?select=bajadas&limit=1'); ESTAMP_OK = true; } catch (e) { ESTAMP_OK = false; } return ESTAMP_OK; }
 let COSTEO_OK = null;   // false: falta el SQL 20A
 let COSTEO_VAL = { papel: '', tinta: '', tintaM: 0, prot: '', protF: 1, margen: 30 };
 let COSTEO_GASTOS = null, COSTEO_MODO = 'pedidos', COSTEO_DATOS = null, COSTEO_FICHAS = {}, BOM = null, GG_DATOS = null, REG_COSTEO = null, BOM_SEL = '*';
@@ -6015,7 +6017,16 @@ function calcCosteo(p, c) {
     M.otros = deMolde('OTRO', t.tipo).map(r => ({ concepto: r.tela, monto: +r.monto || 0 }))
       .concat(sueltas('OTRO').map(r => ({ concepto: r.tela + ' (parte del pedido)', monto: (+r.monto || 0) * t.cant / totU })));
     M.otrosT = M.otros.reduce((s, x) => s + x.monto, 0);
-    M.indirecto = M.papel + M.tinta + M.prot + M.otrosT;
+    // estampado: aplicaciones de este molde (cantidad por prenda × precio) y bajadas de plancha (× precio por bajada)
+    M.aplicaciones = deMolde('ESTAMP', t.tipo).filter(r => r.tela).map(r => { const i = insumoDe(r.insumo_id) || insumoPorNombre(r.tela);
+      return { nombre: r.tela, cant: +r.cantidad || 0, baj: r.bajadas != null ? +r.bajadas : +r.cantidad || 0, u: +r.prendas || t.cant, precio: precioIns(i), sinPrecio: !(i && +i.precio > 0) }; });
+    M.aplicT = M.aplicaciones.reduce((s, a) => s + a.cant * a.u * a.precio, 0);
+    M.bajadas = M.aplicaciones.reduce((s, a) => s + a.baj * a.u, 0); M.planchado = M.bajadas * (+COSTEO_VAL.bajada || 0);
+    M.estampado = M.aplicT + M.planchado;
+    M.aplicaciones.filter(a => a.sinPrecio).forEach(a => M.faltan.push('precio de ' + a.nombre));
+    if (M.bajadas && !(+COSTEO_VAL.bajada > 0)) M.faltan.push('precio por bajada de plancha');
+    if (p.requiere_estampado && ESTAMP_OK === true && !deMolde('ESTAMP', t.tipo).length) M.faltan.push('aplicaciones del estampado');
+    M.indirecto = M.papel + M.tinta + M.prot + M.otrosT + M.estampado;
     M.directo = M.tela + M.insumos + M.confeccion + M.indirecto;
     R.moldes.push(M);
   });
@@ -6042,12 +6053,13 @@ function calcCosteo(p, c) {
 /* registro de cada área al terminar: Corte (kilos de tela y merma de cada molde) y Ploteo (metros de cada molde) */
 async function faltaCosteo(p, k) {
   if (COSTEO_OK === false) return false;
+  if (k === 'ESTAMP' && !(await estampOk())) return false;   // sin el SQL 23C no se pregunta
   try { const r = await api(`plan_costeo?select=id&planificacion_id=eq.${p.id}&etapa=eq.${k}&limit=1`) || []; COSTEO_OK = true; return !r.length; }
   catch (e) { COSTEO_OK = false; return false; }
 }
 const proyCosteo = pid => PROY.find(x => x.id === pid) || (COSTEO_DATOS && COSTEO_DATOS.proy.find(x => x.id === pid));
 const ON_CONFLICT_COSTEO = 'plan_costeo?on_conflict=planificacion_id,etapa,molde,tela';
-const errorCosteo = e => /molde/.test(String(e.message)) ? 'Falta correr de nuevo el SQL 20A (costeo por molde) en Supabase de Producción' : 'No se pudo guardar el registro: ' + String(e.message).slice(0, 160);
+const errorCosteo = e => /ESTAMP|etapa_check|bajadas|insumo_id|cantidad/.test(String(e.message)) ? 'Falta correr el SQL 23C (estampado) en Supabase de Producción' : /molde/.test(String(e.message)) ? 'Falta correr de nuevo el SQL 20A (costeo por molde) en Supabase de Producción' : 'No se pudo guardar el registro: ' + String(e.message).slice(0, 160);
 async function abrirRegistroCosteo(pid, k, alTerminar) {
   const p = proyCosteo(pid); if (!p) return;
   let previas = [];
@@ -6069,6 +6081,20 @@ async function abrirRegistroCosteo(pid, k, alTerminar) {
       <p class="hint">Pesa <b>cada molde por separado</b>: por cada tela, la <b>tela cortada</b> (las piezas) y la <b>merma</b> (lo que sobra), y cuántas prendas de ese molde cortaste. Con eso se calcula el costo de tela de cada molde y el stock de tela queda con lo que de verdad se usó.</p>
       <div id="rc-moldes"></div>${acc}`, pid);
     pintarCorteMoldes();
+  } else if (k === 'ESTAMP') {
+    if (!(await estampOk())) return toast('Falta correr el SQL 23C (estampado) en Supabase de Producción', 'err');
+    const fc = await fichaCosteo(p.cot), es = previas.filter(r => r.etapa === 'ESTAMP');
+    REG_COSTEO = { pid, k, alTerminar, previas: es.map(r => ({ molde: r.molde || '', tela: r.tela || '' })), previasIns: es.map(r => +r.insumo_id).filter(Boolean),
+      moldes: tipos.map(t => { const mias = es.filter(r => (r.molde || '') === t.tipo && r.tela), sug = aplicacionesFicha(fc, t.tipo);
+        return { tipo: t.tipo, cant: t.cant, prendas: (es.find(r => (r.molde || '') === t.tipo && +r.prendas > 0) || {}).prendas || t.cant, ficha: sug.texto,
+          filas: mias.length ? mias.map(r => ({ id: r.insumo_id || (insumoPorNombre(r.tela) || {}).id || '', cant: r.cantidad != null ? r.cantidad : 1, baj: r.bajadas != null ? r.bajadas : '' }))
+            : sug.ids.map(id => ({ id, cant: 1, baj: '' })) }; }) };
+    abrirModal(`<h3>Estampado · ${esc(p.cot)} · ${esc(p.cliente)}</h3>
+      <p class="hint">Aplicaciones de <b>cada molde</b> (escudos en vinilo, texturizados, pro, números…): cuántas lleva <b>cada prenda</b> y cuántas <b>bajadas de plancha</b> (si se deja vacío, una por aplicación). Se costean con su precio de Precios y la bajada de plancha (Costeo › Ploteo, estampado y margen), y se descuentan del stock.</p>
+      <div id="re-moldes"></div>
+      <div class="acciones"><button class="btn" onclick="cerrarModal()">Cancelar</button><button class="btn" onclick="sinAplicacionesEstamp()">No lleva aplicaciones</button>
+        <button class="btn pri" onclick="guardarRegistroCosteo()">${alTerminar ? 'Guardar y terminar' : 'Guardar'}</button></div>`, pid);
+    pintarEstampMoldes();
   } else {
     const pl = previas.filter(r => r.etapa === 'PLOTEO');
     REG_COSTEO = { pid, k, alTerminar, moldes: tipos.map(t => ({ tipo: t.tipo, cant: t.cant, metros: ((pl.find(r => (r.molde || '') === t.tipo) || {}).metros) })) };
@@ -6110,6 +6136,72 @@ function agregarTelaCorte(j) {
   const R = REG_COSTEO, s = $('rc-nueva-' + j); if (!R || !s || !s.value) return;
   leerCorteMoldes(); R.moldes[j].telas.push(s.value); pintarCorteMoldes();
 }
+// aplicaciones que dice la ficha para un molde (Aplicación de escudos y logos): se sugieren las del listado que calzan
+function aplicacionesFicha(fc, tipo) {
+  const out = { texto: '', ids: [] }; if (!fc) return out;
+  const specs = jsonDe(fc.f.specs) || {}, n = numDeClave(tipo), nombres = new Set();
+  Object.values(specs).forEach(sp => { if (!sp || typeof sp !== 'object' || !sp.aplicacion) return;
+    if (Object.values(sp.moldes || {}).some(mv => numMolde(mv) === n)) nombres.add(sp.aplicacion); });
+  const lista = INS.filter(i => i.activo !== false && i.categoria !== 'Tela');
+  nombres.forEach(a => { const x = normIns(a), i = lista.find(i => normIns(i.nombre) === x) || lista.find(i => normIns(i.nombre).includes(x) || x.includes(normIns(i.nombre)));
+    if (i && !out.ids.includes(i.id)) out.ids.push(i.id); });
+  if (nombres.size) out.texto = 'La ficha dice: ' + Array.from(nombres).join(', ');
+  return out;
+}
+function opcionesAplic(sel) {
+  const l = INS.filter(i => (i.activo !== false || String(i.id) === String(sel)) && i.categoria !== 'Tela');
+  const cats = Array.from(new Set(l.map(i => i.categoria))).sort((a, b) => a === 'Aplicación' ? -1 : b === 'Aplicación' ? 1 : String(a).localeCompare(String(b), 'es'));
+  return '<option value="">— Elegir —</option>' + cats.map(c => `<optgroup label="${esc(c)}">${l.filter(i => i.categoria === c).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
+    .map(i => `<option value="${i.id}" ${String(i.id) === String(sel) ? 'selected' : ''}>${esc(i.nombre)}${+i.precio > 0 ? ' · ' + pesosD(+i.precio) + '/' + esc(i.unidad) : ' (sin precio)'}</option>`).join('')}</optgroup>`).join('');
+}
+function pintarEstampMoldes() {
+  const R = REG_COSTEO, c = $('re-moldes'); if (!R || !c) return;
+  c.innerHTML = (!INS.some(i => i.activo !== false && i.categoria !== 'Tela') ? '<div class="aviso warn">No hay aplicaciones en el listado: créalas en Costeo › Precios (categoría Aplicación) con su precio.</div>' : '') +
+    R.moldes.map((m, j) => `<div style="border:1px solid var(--linea);border-radius:8px;padding:10px 12px;margin:10px 0">
+      <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;justify-content:space-between"><div><b>${esc(m.tipo || 'Todo el pedido')}</b>${m.tipo ? `<div class="hint">${esc(prendaDeTipo(m.tipo))}</div>` : ''}${m.ficha ? `<div class="hint">${esc(m.ficha)}</div>` : ''}</div>
+        <div><label for="re-u-${j}" style="margin:0">Prendas estampadas</label><input id="re-u-${j}" type="number" min="0" step="1" value="${esc(m.prendas)}" style="width:110px"></div></div>
+      <div style="overflow-x:auto"><table class="mini" style="margin-top:6px"><tr><th>Aplicación</th><th style="text-align:right">Por prenda</th><th style="text-align:right">Bajadas por prenda</th><th></th></tr>
+        ${m.filas.map((f, i) => `<tr><td><select id="re-i-${j}-${i}" style="min-width:200px">${opcionesAplic(f.id)}</select></td>
+          <td style="text-align:right"><input id="re-c-${j}-${i}" type="number" min="0" step="any" value="${esc(f.cant)}" style="width:80px;text-align:right"></td>
+          <td style="text-align:right"><input id="re-b-${j}-${i}" type="number" min="0" step="any" value="${esc(f.baj)}" placeholder="1 por aplicación" style="width:150px;text-align:right"></td>
+          <td style="text-align:right"><button class="btn sm" title="Quitar" onclick="quitarAplicEstamp(${j},${i})">×</button></td></tr>`).join('') || '<tr><td colspan="4" class="hint">Sin aplicaciones.</td></tr>'}
+      </table></div><button class="btn sm" style="margin-top:6px" onclick="agregarAplicEstamp(${j})">+ Agregar aplicación</button></div>`).join('');
+}
+function leerEstampMoldes() {
+  const R = REG_COSTEO; if (!R) return;
+  R.moldes.forEach((m, j) => { const u = $('re-u-' + j); if (u) m.prendas = u.value;
+    m.filas.forEach((f, i) => { const s = $(`re-i-${j}-${i}`); if (s) { f.id = s.value; f.cant = $(`re-c-${j}-${i}`).value; f.baj = $(`re-b-${j}-${i}`).value; } }); });
+}
+function agregarAplicEstamp(j) { leerEstampMoldes(); REG_COSTEO.moldes[j].filas.push({ id: '', cant: 1, baj: '' }); pintarEstampMoldes(); }
+function quitarAplicEstamp(j, i) { leerEstampMoldes(); REG_COSTEO.moldes[j].filas.splice(i, 1); pintarEstampMoldes(); }
+// las aplicaciones usadas salen del stock (en la unidad del insumo); lo de un registro anterior se reemplaza
+async function stockEstampado(p, filas, antes) {
+  if (INSUMOS_OK === false) return;
+  const tot = {}; filas.forEach(x => { tot[x.i.id] = (tot[x.i.id] || 0) + x.cant * x.prendas; });
+  for (const id of Array.from(new Set((antes || []).concat(Object.keys(tot).map(Number))))) {
+    try {
+      await api(`plan_insumos_mov?planificacion_id=eq.${p.id}&tipo=eq.consumo&insumo_id=eq.${id}`, { method: 'DELETE' });
+      if (tot[id] > 0) await api('plan_insumos_mov', { method: 'POST', body: JSON.stringify({ insumo_id: id, fecha: F.hoy(), tipo: 'consumo', cantidad: -Math.round(tot[id] * 1000) / 1000,
+        cot: p.cot, planificacion_id: p.id, usuario: USER.nombre, nota: 'Estampado: aplicaciones del pedido' }) });
+    } catch (e) {}
+  }
+}
+// el pedido no lleva aplicaciones: queda registrado (para que el costeo no lo pida) y, si se estaba terminando, se termina
+async function sinAplicacionesEstamp() {
+  const R = REG_COSTEO, p = R && proyCosteo(R.pid); if (!p) return;
+  leerEstampMoldes();
+  const ahora = new Date().toISOString();
+  try {
+    await api(ON_CONFLICT_COSTEO, { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates' }, body: JSON.stringify(R.moldes.map(m => ({ planificacion_id: p.id, cot: p.cot,
+      etapa: 'ESTAMP', molde: m.tipo, tela: '', cantidad: 0, bajadas: 0, prendas: parseInt(m.prendas, 10) || m.cant, usuario: USER.nombre, updated_at: ahora }))) });
+    for (const x of R.previas.filter(x => x.tela)) await api(`plan_costeo?planificacion_id=eq.${p.id}&etapa=eq.ESTAMP&molde=eq.${encodeURIComponent(x.molde)}&tela=eq.${encodeURIComponent(x.tela)}`, { method: 'DELETE' });
+    await stockEstampado(p, [], R.previasIns);
+  } catch (e) { return toast(errorCosteo(e), 'err'); }
+  await log(p.id, p.cot, 'ESTAMP', 'costeo', null, 'sin aplicaciones');
+  cerrarModal(); toast(`${p.cot}: sin aplicaciones`);
+  if (R.alTerminar) return accionEtapa(p.id, 'ESTAMP', 'terminar', { sinCosteo: true, confirmado: true });
+  COSTEO_DATOS = null; if (TAB === 'costeo') renderCosteo();
+}
 async function terminarSinCosteo() {
   const R = REG_COSTEO; if (!R) return;
   if (!confirm('¿Terminar sin registrar? El costeo de este pedido quedará incompleto (se puede registrar después desde la pestaña Costeo).')) return;
@@ -6139,6 +6231,21 @@ async function guardarRegistroCosteo() {
       for (const x of R.previas.filter(x => !con.some(y => y.molde === x.molde && y.tela === x.tela))) await borrar('CORTE', x.molde, x.tela);
       await stockCorte(p, con);
       resumen = con.map(x => `${x.molde ? x.molde + ' · ' : ''}${x.tela}: ${numCL(x.c)} kg + ${numCL(x.m)} kg merma`).join(' · ');
+    } else if (R.k === 'ESTAMP') {
+      leerEstampMoldes();
+      const num = x => { const v = parseFloat(String(x == null ? '' : x).replace(',', '.')); return isFinite(v) ? v : null; }, unico = {};
+      R.moldes.forEach(m => { const u = parseInt(m.prendas, 10) || 0;
+        m.filas.forEach(f => { const i = insumoDe(f.id), c = num(f.cant); if (!i || !(c > 0)) return;
+          const b = num(f.baj), baj = b != null && b >= 0 ? b : c, k2 = m.tipo + '|' + i.id;   // la misma aplicación dos veces en un molde: se suma
+          if (unico[k2]) { unico[k2].cant += c; unico[k2].baj += baj; } else unico[k2] = { molde: m.tipo, i, cant: c, baj, prendas: u }; }); });
+      const con = Object.values(unico);
+      if (!con.length) return toast('Elige al menos una aplicación, o usa «No lleva aplicaciones»', 'warn');
+      if (con.some(x => !x.prendas)) return toast('Anota las prendas estampadas de cada molde', 'warn');
+      await up(con.map(x => ({ planificacion_id: p.id, cot: p.cot, etapa: 'ESTAMP', molde: x.molde, tela: x.i.nombre, insumo_id: x.i.id, cantidad: x.cant, bajadas: x.baj, prendas: x.prendas,
+        usuario: USER.nombre, updated_at: ahora })));
+      for (const x of R.previas.filter(x => !con.some(y => y.molde === x.molde && y.i.nombre === x.tela))) await borrar('ESTAMP', x.molde, x.tela);
+      await stockEstampado(p, con, R.previasIns);
+      resumen = con.map(x => `${x.molde ? x.molde + ' · ' : ''}${x.i.nombre}: ${numCL(x.cant)} por prenda y ${numCL(x.baj)} bajada(s), ${x.prendas} prendas`).join(' · ');
     } else {
       const ms = R.moldes.map((m, j) => ({ molde: m.tipo, metros: numIn('rc-pm-' + j) }));
       const con = ms.filter(x => x.metros != null && x.metros >= 0);
@@ -6202,7 +6309,7 @@ async function stockPloteo(p, m) {
 /* pestaña Costeo */
 function renderCosteo() {
   const v = $('view-costeo'); if (!v) return;
-  const chips = `<div class="chips" style="margin-bottom:10px">${[['pedidos', 'Pedidos'], ['moldes', 'Por molde'], ['simular', 'Simular costo'], ['precios', 'Precios'], ['consumo', 'Insumos por prenda'], ['valores', 'Ploteo y margen'], ['gg', 'Gasto general']]
+  const chips = `<div class="chips" style="margin-bottom:10px">${[['pedidos', 'Pedidos'], ['moldes', 'Por molde'], ['simular', 'Simular costo'], ['precios', 'Precios'], ['consumo', 'Insumos por prenda'], ['valores', 'Ploteo, estampado y margen'], ['gg', 'Gasto general']]
     .map(([k, t]) => `<button class="chip ${COSTEO_MODO === k ? 'on' : ''}" onclick="COSTEO_MODO='${k}';renderCosteo()">${t}</button>`).join('')}</div>`;
   if (!puedeVerCosteo()) { v.innerHTML = '<h1>Costeo</h1><p class="hint">Solo administración y producción.</p>'; return; }
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + '<p class="hint">Cargando…</p>';
@@ -6215,10 +6322,10 @@ async function cargarCosteo() {
   const hoy = F.hoy(), def1 = mesesAntes(mesDe(hoy), 1)[0] + '-01';
   const d1 = ($('cs-desde') && $('cs-desde').value) || (COSTEO_DATOS && COSTEO_DATOS.d1) || def1, d2 = ($('cs-hasta') && $('cs-hasta').value) || (COSTEO_DATOS && COSTEO_DATOS.d2) || hoy;
   if (COSTEO_DATOS && COSTEO_DATOS.d1 === d1 && COSTEO_DATOS.d2 === d2) return COSTEO_DATOS;
-  const proy = await todasLasFilas(api, `planificacion?select=id,cot,cliente,prendas,desglose,fecha_ingreso_ficha,fecha_entrega_cliente,estado_general,requiere_sublimacion&fecha_ingreso_ficha=gte.${d1}&fecha_ingreso_ficha=lte.${d2}&order=fecha_ingreso_ficha.desc,id.desc`) || [];
+  const proy = await todasLasFilas(api, `planificacion?select=id,cot,cliente,prendas,desglose,fecha_ingreso_ficha,fecha_entrega_cliente,estado_general,requiere_sublimacion,requiere_estampado&fecha_ingreso_ficha=gte.${d1}&fecha_ingreso_ficha=lte.${d2}&order=fecha_ingreso_ficha.desc,id.desc`) || [];
   const ids = proy.map(p => p.id), rows = [], asig = [], tandas = [];
   for (let i = 0; i < ids.length; i += 100) tandas.push(ids.slice(i, i + 100).join(','));
-  await Promise.all([cargarInsumos(), cargarPrecios(), cargarBOM(), cargarEjecutantes(), cargarGG([mesesAntes(mesDe(d1), 3)[2], mesesAntes(mesDe(hoy), 15)[14]].sort()[0]),
+  await Promise.all([cargarInsumos(), cargarPrecios(), cargarBOM(), cargarEjecutantes(), estampOk(), cargarGG([mesesAntes(mesDe(d1), 3)[2], mesesAntes(mesDe(hoy), 15)[14]].sort()[0]),
     Promise.all(tandas.map(t => todasLasFilas(api, `plan_costeo?select=*&planificacion_id=in.(${t})&order=id.asc`))).then(ls => { COSTEO_OK = true; ls.forEach(l => rows.push(...(l || []))); }).catch(() => { COSTEO_OK = false; }),
     Promise.all(tandas.map(t => todasLasFilas(api, `plan_asignaciones?select=planificacion_id,tipo_prenda,cantidad,precio_unit,ejecutante&etapa=eq.CONFEC&planificacion_id=in.(${t})`))).then(ls => ls.forEach(l => asig.push(...(l || [])))).catch(() => {})]);
   // venta neta de cada pedido (Ventas)
@@ -6253,7 +6360,7 @@ async function pintarCosteoPedidos(v, chips) {
       ${dato('Margen', vConV ? pct(margen / vConV) : '—', vConV && margen < 0, vConV ? pesosCorto(margen) + ' sobre ' + pesosCorto(vConV) : 'sin ventas')}
       ${dato('Merma de tela', kgT ? pct(kgM / kgT) : '—', false, kgT ? numCL(kgM) + ' de ' + numCL(kgT) + ' kg' : 'sin registros de corte')}</div>
     <div class="panel" style="overflow-x:auto"><table class="mini" id="cs-tabla"><tr><th style="min-width:210px">Pedido y molde</th><th style="text-align:right">Prendas</th><th style="text-align:right">Tela</th><th style="text-align:right">Insumos</th>
-      <th style="text-align:right">Confección</th><th style="text-align:right">Ploteo y subl.</th><th style="text-align:right">Gasto general</th><th style="text-align:right">Costo total</th>
+      <th style="text-align:right">Confección</th><th style="text-align:right" title="Papel y tinta de ploteo, protección de sublimación, aplicaciones y bajadas de plancha, otros costos">Ploteo, estampado y otros</th><th style="text-align:right">Gasto general</th><th style="text-align:right">Costo total</th>
       <th style="text-align:right">Costo por prenda</th><th style="text-align:right">Venta neta</th><th style="text-align:right">Margen</th><th></th></tr>
       ${lista.map(({ p, r }) => `<tr class="cs-ped" style="background:var(--fondo,#F4F5F7)"><td><b>${esc(p.cot)}</b> · ${esc(p.cliente)}<div class="hint">${F.corta(p.fecha_ingreso_ficha)} · gasto general ${pct(r.gg && r.gg.pct)}${r.gg && r.gg.provisorio ? ' (provisorio)' : ''}</div></td>
           ${num(r.unidades)}${num(pesos(r.tela))}${num(pesos(r.insumos))}${num(pesos(r.confeccion))}${num(pesos(r.indirecto))}${num(pesos(r.ggMonto))}${num('<b>' + pesos(r.total) + '</b>')}<td></td>
@@ -6306,6 +6413,7 @@ async function verCosteo(pid) {
         ${fila('Confección', pesos(m.confeccion), m.confecReal ? esc(m.talleres.join(' · ')) : 'tarifa del molde (sin taller asignado)')}
         ${fila('Papel y tinta de ploteo', pesos(m.papel + m.tinta), m.metros ? numCL(m.metros) + ' m ploteados' : 'sin metros registrados')}
         ${fila('Papel de protección (sublimación)', pesos(m.prot), m.mProt ? numCL(m.mProt) + ' m' : '')}
+        ${m.aplicaciones.length ? fila('Estampado y aplicaciones', pesos(m.estampado), esc(m.aplicaciones.map(a => `${a.nombre}: ${numCL(a.cant)} por prenda`).join(' · ')) + ` · ${numCL(m.bajadas)} bajadas de plancha (${pesos(m.planchado)})`) : ''}
         ${m.otros.map(o => fila(esc(o.concepto), pesos(o.monto), 'otro costo')).join('')}
         ${fila('<b>Costo directo</b>', '<b>' + pesos(m.directo) + '</b>')}
         ${fila('Gasto general', pesos(m.gg), 'su parte del gasto general del pedido, según su costo directo')}
@@ -6317,6 +6425,7 @@ async function verCosteo(pid) {
     <p class="hint">${r.unidades} prendas · ingreso ${F.corta(p.fecha_ingreso_ficha)} · cada molde se costea por separado</p>
     <div style="margin:6px 0"><button class="btn sm" onclick="abrirRegistroCosteo(${pid},'CORTE')">Registrar o editar kilos del corte</button>
       <button class="btn sm" onclick="abrirRegistroCosteo(${pid},'PLOTEO')">Registrar o editar metros de ploteo</button>
+      <button class="btn sm" onclick="abrirRegistroCosteo(${pid},'ESTAMP')">Registrar o editar aplicaciones</button>
       <button class="btn sm" onclick="abrirOtroCosto(${pid})">+ Otro costo</button></div>
     ${r.moldes.map(seccion).join('')}
     <h4 style="margin:14px 0 6px">Pedido completo</h4>
@@ -6363,10 +6472,10 @@ function exportarCosteo() {
   const esc2 = v => /[",;\n]/.test(String(v ?? '')) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v ?? ''), n = x => x == null ? '' : Math.round(x);
   const filas = [];
   D.proy.forEach(p => { const r = costeoDe(p); r.moldes.forEach(m => filas.push([p.cot, p.cliente, p.fecha_ingreso_ficha, m.tipo || 'Todo el pedido', m.tipo ? prendaDeTipo(m.tipo) : '', m.cant, m.cortadas || '',
-    n(m.tela), numCL(m.kgTotal), numCL(m.kgMerma), m.kgTotal ? pct(m.kgMerma / m.kgTotal) : '', n(m.insumos), n(m.confeccion), numCL(m.metros), n(m.papel + m.tinta), n(m.prot), n(m.otrosT),
+    n(m.tela), numCL(m.kgTotal), numCL(m.kgMerma), m.kgTotal ? pct(m.kgMerma / m.kgTotal) : '', n(m.insumos), n(m.confeccion), numCL(m.metros), n(m.papel + m.tinta), n(m.prot), n(m.estampado), n(m.otrosT),
     n(m.directo), r.gg && r.gg.pct != null ? pct(r.gg.pct) : '', n(m.gg), n(m.total), n(m.porPrenda), n(m.sugerido), n(r.venta), n(r.margen), m.faltan.join(' · ')])); });
   const csv = '﻿' + ['Pedido', 'Cliente', 'Ingreso', 'Molde', 'Prenda', 'Cantidad', 'Prendas cortadas', 'Tela', 'Kg tela', 'Kg merma', '% merma', 'Insumos', 'Confección', 'Metros ploteo',
-    'Papel y tinta', 'Papel protección', 'Otros', 'Costo directo', '% gasto general', 'Gasto general', 'Costo total del molde', 'Costo por prenda', 'Precio sugerido', 'Venta neta del pedido',
+    'Papel y tinta', 'Papel protección', 'Estampado y aplicaciones', 'Otros', 'Costo directo', '% gasto general', 'Gasto general', 'Costo total del molde', 'Costo por prenda', 'Precio sugerido', 'Venta neta del pedido',
     'Margen del pedido', 'Falta'].join(';') + '\n' + filas.map(f => f.map(esc2).join(';')).join('\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
   a.download = `Costeo_PMK_${D.d1}_${D.d2}.csv`; a.click(); URL.revokeObjectURL(a.href);
@@ -6934,7 +7043,7 @@ async function pintarValoresCosteo(v, chips) {
         rinde <input id="cv-tm-${k}" type="number" min="0" step="any" value="${x.m || ''}" placeholder="metros" style="width:90px" oninput="calcTintas()"> m</td>
       <td style="text-align:right" id="cv-tr-${k}"></td></tr>`; };
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips +
-    `<p class="hint">Lo que se gasta por cada <b>metro ploteado</b> (largo impreso): papel, las 4 tintas y el papel de protección de la sublimación. Los precios salen de Precios (el más caro de los proveedores activos). Abajo, el margen del precio sugerido.</p>
+    `<p class="hint">Lo que se gasta por cada <b>metro ploteado</b> (largo impreso): papel, las 4 tintas y el papel de protección de la sublimación. Los precios salen de Precios (el más caro de los proveedores activos). Abajo, el precio por bajada de plancha del estampado y el margen del precio sugerido.</p>
     <div class="panel" style="max-width:860px">
       <h2 style="margin-top:0">Papel de ploteo</h2>
       <label for="cv-papel">Papel (se usa 1 metro por metro ploteado)</label><select id="cv-papel" onchange="calcTintas()">${opc(V.papel, ['Papel'])}</select>
@@ -6948,6 +7057,9 @@ async function pintarValoresCosteo(v, chips) {
       <h2>Papel de protección (sublimación)</h2>
       <div class="grid2"><div><label for="cv-prot">Papel de protección</label><select id="cv-prot" onchange="calcTintas()">${opc(V.prot, ['Papel'])}</select><p class="hint" id="cv-prot-txt">${papelTxt(V.prot)}</p></div>
         <div><label for="cv-protf">Metros de protección por metro ploteado</label><input id="cv-protf" type="number" min="0" step="0.1" value="${V.protF === '' ? 1 : V.protF}"></div></div>
+      <h2>Estampado</h2>
+      <label for="cv-bajada">Precio por bajada de plancha (mano de obra, sin IVA)</label><input id="cv-bajada" type="number" min="0" step="any" value="${+V.bajada > 0 ? +V.bajada : ''}" placeholder="Ej: 150" style="max-width:160px">
+      <p class="hint">El mismo para cualquier aplicación (escudo, vinilo, texturizado…): lo que cambia es el precio de la aplicación, que sale de Precios.</p>
       <h2>Margen</h2>
       <label for="cv-margen">Margen para el precio sugerido (%)</label><input id="cv-margen" type="number" min="0" max="90" step="1" value="${V.margen}" style="max-width:160px">
       <div class="acciones"><button class="btn pri" onclick="guardarValoresCosteo()">Guardar</button></div></div>`;
@@ -6975,7 +7087,7 @@ async function guardarValoresCosteo() {
   const T = leerTintas();
   const sinRend = COLORES_TINTA.filter(([k]) => T[k] && !(T[k].cc > 0 && T[k].m > 0)).map(([, nom]) => nom);
   if (sinRend.length && !confirm(`Falta el rendimiento de: ${sinRend.join(', ')}.\n\nSin él, esa tinta no se suma al costo. ¿Guardar igual?`)) return;
-  COSTEO_VAL = { ...COSTEO_VAL, papel: $('cv-papel').value, tintas: T, prot: $('cv-prot').value, protF: numIn('cv-protf') == null ? 1 : numIn('cv-protf'), margen: n('cv-margen') };
+  COSTEO_VAL = { ...COSTEO_VAL, papel: $('cv-papel').value, tintas: T, prot: $('cv-prot').value, protF: numIn('cv-protf') == null ? 1 : numIn('cv-protf'), bajada: n('cv-bajada'), margen: n('cv-margen') };
   COSTEO_DATOS = null; await guardarConfig('costeo_valores', JSON.stringify(COSTEO_VAL)); renderCosteo();
 }
 
@@ -7121,11 +7233,17 @@ function calcSimulacion(n, D, principal) {
   if (SIM.sub && !pl.p) faltan.push('ploteos registrados de este molde');
   if (SIM.sub && pl.p) { if (pM == null) faltan.push('precio por metro del papel'); tM.falta.forEach(f => faltan.push(f)); if (prM == null && protPP) faltan.push('precio por metro de la protección'); }
   const papel = mPP * (pM || 0), tinta = mPP * tM.porMetro, prot = protPP * (prM || 0);
-  const directo = tela + b.costo + conf + papel + tinta + prot;
+  // estampado: aplicaciones elegidas (cantidad por prenda × precio) y bajadas de plancha (× precio por bajada)
+  const aplic = (SIM.aplic || []).map(a => ({ ...a, i: insumoDe(a.id) })).filter(a => a.i && +a.cant > 0)
+    .map(a => ({ ...a, baj: a.baj !== '' && a.baj != null && +a.baj >= 0 ? +a.baj : +a.cant, costo: +a.cant * precioIns(a.i) }));
+  const aplicT = aplic.reduce((s, a) => s + a.costo, 0), bajadas = aplic.reduce((s, a) => s + a.baj, 0), planchado = bajadas * (+COSTEO_VAL.bajada || 0);
+  aplic.filter(a => !(+a.i.precio > 0)).forEach(a => faltan.push('precio de ' + a.i.nombre));
+  if (bajadas && !(+COSTEO_VAL.bajada > 0)) faltan.push('precio por bajada de plancha (Ploteo, estampado y margen)');
+  const directo = tela + b.costo + conf + papel + tinta + prot + aplicT + planchado;
   const G = GG_DATOS && GG_DATOS.ok ? calcularGG().pct(mesDe(F.hoy())) : null, gg = G && G.pct != null ? G.pct : null, mg = (+COSTEO_VAL.margen || 0) / 100;
   if (gg == null) faltan.push('% de gasto general');
   const den = 1 - (gg || 0) - mg, sugerido = den > 0.05 ? directo / den : null;
-  return { pz, sec, partes, tela, insumos: b.costo, conf, confComo, mPP, protPP, papel, tinta, prot, directo, gg, G, sugerido, ggMonto: sugerido != null && gg != null ? sugerido * gg : 0,
+  return { pz, sec, partes, tela, insumos: b.costo, conf, confComo, mPP, protPP, papel, tinta, prot, aplic, aplicT, bajadas, planchado, directo, gg, G, sugerido, ggMonto: sugerido != null && gg != null ? sugerido * gg : 0,
     kgPP, areaPP, sinGram: Array.from(sinGram), cortes: D.cortes.length, prCortes: prK, ploteos: D.ploteos.length, faltan: Array.from(new Set(faltan)) };
 }
 async function pintarSimulador(v, chips) {
@@ -7162,6 +7280,15 @@ async function pintarSimulador(v, chips) {
       return `<tr><td>${esc(q.pieza)}${q.cant > 1 ? ' ×' + q.cant : ''}<div class="hint">${info}</div></td>
         <td style="white-space:nowrap"><select data-pieza="${j}" onchange="simPieza(${j},this.value)">${optTela(t || '', '= tela principal')}</select>
           ${pideEst ? `<div style="margin-top:4px"><input type="number" min="0.5" max="80" step="0.5" data-est="${j}" value="${sola ? r2(sola.share * 100) : ''}" placeholder="%" style="width:80px" onchange="simEstimado(${j},this.value)"> <span class="hint">% de la prenda (estimado)</span></div>` : ''}</td></tr>`; }).join('')}</table>`;
+  const ap = SIM.aplic || [];
+  h += `<h3 style="margin:14px 0 4px">Estampado y aplicaciones</h3>
+    <p class="hint" style="margin:0 0 6px">¿Lleva escudos, vinilos, texturizados u otras aplicaciones? Elígelas del listado de Precios, cuántas por prenda y cuántas bajadas de plancha (vacío: una por aplicación).</p>
+    <table class="mini" id="sim-aplic"><tr><th>Aplicación</th><th style="text-align:right">Por prenda</th><th style="text-align:right">Bajadas por prenda</th><th></th></tr>
+      ${ap.map((a, j) => `<tr><td><select data-aplic="${j}" onchange="simAplic(${j},'id',this.value)" style="min-width:200px">${opcionesAplic(a.id)}</select></td>
+        <td style="text-align:right"><input type="number" min="0" step="any" value="${esc(a.cant)}" style="width:80px;text-align:right" onchange="simAplic(${j},'cant',this.value)"></td>
+        <td style="text-align:right"><input type="number" min="0" step="any" value="${esc(a.baj == null ? '' : a.baj)}" placeholder="1 por aplicación" style="width:150px;text-align:right" onchange="simAplic(${j},'baj',this.value)"></td>
+        <td style="text-align:right"><button class="btn sm" title="Quitar" onclick="simAplic(${j},'quitar')">×</button></td></tr>`).join('') || '<tr><td colspan="4" class="hint">No lleva aplicaciones.</td></tr>'}
+    </table><button class="btn sm" style="margin-top:6px" onclick="simAplic(-1,'agregar')">+ Agregar aplicación</button>`;
   h += '</div>';
   const fila = (t, val, como, b) => `<tr><td>${b ? '<b>' + t + '</b>' : t}${como ? `<div class="hint">${como}</div>` : ''}</td><td style="text-align:right">${b ? '<b>' + val + '</b>' : val}</td></tr>`;
   const nomParte = pt => pt.principal ? (pt.piezas.length ? (R.partes.length > 1 ? pt.piezas.join(', ') : 'toda la prenda') : 'toda la prenda') : pt.piezas.join(', ');
@@ -7173,6 +7300,7 @@ async function pintarSimulador(v, chips) {
       ${fila('Insumos por prenda', pesos(R.insumos), 'lo común a todas y lo de este molde')}
       ${fila('Confección', pesos(R.conf), R.confComo)}
       ${SIM.sub ? fila('Papel y tinta de ploteo', pesos(R.papel + R.tinta), R.mPP ? numCL(r2(R.mPP)) + ' m ploteados por prenda' : 'sin ploteos registrados') + fila('Papel de protección', pesos(R.prot), R.protPP ? numCL(r2(R.protPP)) + ' m por prenda' : '') : ''}
+      ${R.aplic.length ? fila('Aplicaciones', pesos(R.aplicT), esc(R.aplic.map(a => `${a.i.nombre} × ${numCL(a.cant)}`).join(' · '))) + fila('Bajadas de plancha', pesos(R.planchado), `${numCL(R.bajadas)} × ${pesosD(+COSTEO_VAL.bajada || 0)}`) : ''}
       ${fila('Costo directo', pesos(R.directo), '', true)}
       ${fila('Gasto general', R.gg != null ? pesos(R.ggMonto) : '—', R.gg != null ? pct(R.gg) + ' del precio sugerido (gasto general ÷ ventas de ' + R.G.meses.slice().reverse().map(mesTxt).join(', ') + ')' : '')}
       ${fila('Costo total por prenda', R.sugerido != null ? pesos(R.directo + R.ggMonto) : '—', '', true)}
@@ -7185,6 +7313,11 @@ async function pintarSimulador(v, chips) {
         <td style="text-align:right">${numCL(Math.round(x.R.partes.reduce((s, t) => s + t.kg, 0) * 1000) / 1000)}</td><td style="text-align:right">${pesos(x.R.tela)}</td><td style="text-align:right">${pesos(x.R.directo)}</td><td style="text-align:right">${x.R.sugerido != null ? pesos(x.R.sugerido) : '—'}</td></tr>`).join('')}
     </table><p class="hint">Mismo molde; las demás piezas en las telas que elegiste arriba.</p></div>`;
   v.innerHTML = h;
+}
+function simAplic(j, campo, val) {
+  const ap = SIM.aplic = SIM.aplic || [];
+  if (campo === 'agregar') ap.push({ id: '', cant: 1, baj: '' }); else if (campo === 'quitar') ap.splice(j, 1); else if (ap[j]) ap[j][campo] = val;
+  renderCosteo();
 }
 function simElegir(k, val) { if (k === 'molde') { SIM.molde = val; SIM.piezas = {}; } else SIM[k] = val; renderCosteo(); }
 function simPieza(j, tela) { const clave = (SIM.claves || [])[j]; if (clave == null) return; if (tela) SIM.piezas[clave] = tela; else delete SIM.piezas[clave]; renderCosteo(); }

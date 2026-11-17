@@ -97,7 +97,7 @@ const config = () => JSON.parse(DB.prod.plan_config.find(c => c.clave === 'coste
   // 1 · por producto: el costeo usa el más caro de los proveedores activos
   await ir('precios');
   const chips = await p.$$eval('#view-costeo .chips:first-of-type .chip', c => c.map(x => x.textContent).join(' | '));
-  ok(chips === 'Pedidos | Por molde | Simular costo | Precios | Insumos por prenda | Ploteo y margen | Gasto general', 'pestañas: ' + chips);
+  ok(chips === 'Pedidos | Por molde | Simular costo | Precios | Insumos por prenda | Ploteo, estampado y margen | Gasto general', 'pestañas: ' + chips);
   ok(/\$9\.500\/kg/.test(await filaProd(1)) && /★ Telas Norte/.test(await filaProd(1)) && /\b2\b/.test(await filaProd(1)), 'Pro: dos proveedores; el costeo usa el más caro, Telas Norte $9.500/kg · ' + await filaProd(1));
   await p.evaluate(() => verPreciosProducto(1)); await p.waitForTimeout(400);
   const mod = (await p.innerText('#modal')).replace(/\s+/g, ' ');
