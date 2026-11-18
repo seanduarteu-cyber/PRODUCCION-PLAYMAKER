@@ -1,0 +1,39 @@
+PENDIENTE · RESPALDOS Y SEGURIDAD DE LOS SISTEMAS (análisis del 18-11-2026; no se ha hecho nada todavía)
+=========================================================================================================
+Quedó en pausa por decisión de Sean: «de momento no hagamos nada; lo abordamos cuando pida retomarlo».
+Para retomarlo: pedir «retomemos lo de respaldos y seguridad» y leer este archivo.
+
+DÓNDE VIVE CADA PARTE
+- Páginas (Planificación, panel de Fichas, sitio del cliente, Ventas): Netlify. Son archivos estáticos; están en este
+  repositorio y en los zips entregados. Si Netlify falla o se cierra la cuenta, se vuelven a subir en minutos (allí o en
+  otro proveedor de páginas). Sin dominio propio, mudarse cambia las direcciones.
+- Datos: Supabase, tres proyectos: Ventas (nnisdusdujcpkrbjqnhe), Producción (ygcsqrylpibhofvetdyh) y Fichas
+  (jvgifibnoigpicwklasw). Incluye las imágenes de montajes (Storage). Es la parte crítica.
+- Claude / entorno de desarrollo en la nube: el sistema NO corre ahí. Solo se usa para programar; todo queda en GitHub.
+  Única dependencia en uso: el botón «Preguntar a Claude» de Ventas › Gastos (función sugerir-cuenta → API de Anthropic);
+  si falla, solo ese botón deja de responder.
+
+RIESGOS, DEL MÁS AL MENOS PROBABLE
+1. Llave pública con acceso total: las páginas usan la llave anónima de Supabase (visible en el código de la página) y
+   casi todas las tablas tienen reglas «for all to anon using (true)». El usuario y la clave del sistema controlan la
+   pantalla, no la base: alguien con conocimientos técnicos podría leer, cambiar o borrar datos sin entrar al sistema.
+2. Sin respaldos propios: el plan gratuito de Supabase no da respaldos descargables; el Pro guarda 7 días. Las imágenes
+   (Storage) no entran en esos respaldos. Falta confirmar en qué plan está cada proyecto.
+3. Error humano: un SQL en la base equivocada o un borrado (los SQL entregados se detienen si detectan otra base).
+4. Cuentas: pago vencido, perder acceso al correo dueño, un solo dueño por servicio → proyecto pausado o sin acceso.
+5. El repositorio no basta para recrear las bases: faltan los SQL antiguos (antes del 15A; por ejemplo 5A de insumos y
+   9A de limpieza). Hace falta un respaldo de la estructura completa.
+6. Cierre definitivo de Supabase o Netlify: muy poco probable y con aviso; con respaldos propios sería solo una mudanza.
+
+PLAN PROPUESTO (en este orden)
+1. Respaldo propio semanal de las tres bases + imágenes: botón «Descargar respaldo completo» en Configuración (baja
+   todas las tablas de Ventas, Producción y Fichas a un archivo) o respaldo automático programado (GitHub Actions con
+   la conexión a la base guardada como secreto). Lo primero a hacer.
+2. Revisar el plan de Supabase de cada proyecto; si alguno es gratuito, pasarlo a Pro (respaldos diarios).
+3. Cerrar el acceso de la llave pública por etapas (reglas «solo con sesión válida» o funciones con token), empezando
+   por gastos, ventas y usuarios. Es el trabajo más grande.
+4. Cuentas: verificación en dos pasos en GitHub, Supabase, Netlify y Anthropic; un segundo dueño en cada una; tarjeta
+   de pago vigente.
+5. Código: pasar a la rama principal lo trabajado en claude/optimistic-bardeen-6sk2a9 y guardar zips y SQL en un solo
+   lugar.
+6. Dominio propio (ej. sistemas.playmaker.cl) para poder cambiar de proveedor sin cambiar las direcciones.

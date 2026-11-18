@@ -12,6 +12,10 @@ Código fuente de los sistemas web. Cada carpeta se publica en Netlify arrastran
 - **Página principal:** `https://planificacion-playmaker.netlify.app/sistemas.html`. Ahí se hace el ingreso único (usuario de Planificación). Fichas y Ventas reciben la sesión desde ahí.
 - **Detalle de cambios:** `HISTORIAL.txt` (lista de cambios), `LEEME_acceso_unico.txt`, `LEEME_velocidad.txt`, `LEEME_costeo.txt` y `LEEME_clasificacion_gastos.txt` (incluye cómo crear la función de Claude).
 
+## Pendiente: respaldos y seguridad
+
+`PENDIENTE_respaldos_y_seguridad.txt`: análisis de riesgos (llave pública con acceso total, respaldos, cuentas) y plan propuesto. En pausa hasta que se pida retomarlo.
+
 ## SQL (`../sql/`)
 
 Se corren una vez en el SQL Editor de la base indicada en cada archivo.
