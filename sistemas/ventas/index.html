@@ -71,6 +71,12 @@ label.lbl{font-size:11px;font-weight:700;color:#374151;display:block;margin-bott
 .total-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0}
 .total-row.big{font-size:14px;font-weight:700;color:var(--pmk-orange);border-top:1px solid #E5E7EB;margin-top:6px;padding-top:6px}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center}
+.prov-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.pp-caja{background:#fff;border-radius:12px;padding:22px;width:780px;max-width:95vw;max-height:90vh;overflow-y:auto;font-family:'Poppins',Arial,sans-serif}
+.pp-sec{border-top:1px solid #E5E7EB;padding-top:10px;margin-top:10px}
+.pp-tit{display:flex;gap:6px;align-items:center;font-size:13px;font-weight:700;margin-bottom:2px}
+.pp-fila{display:flex;gap:8px;align-items:flex-start;font-size:12px;padding:4px 0;cursor:pointer;line-height:1.4}
+.pp-fila input{margin-top:2px}
 .modal-overlay.open{display:flex}
 .modal{background:#fff;border-radius:12px;padding:24px;width:700px;max-width:95vw;max-height:90vh;overflow-y:auto}
 .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
@@ -2714,7 +2720,7 @@ const PAGO_SOCIO={remuneracion:{cta:"5.10",txt:"Remuneración: abono por su trab
   reembolso:{cta:null,txt:"Reembolso de un gasto de la empresa, con boleta o factura (elige abajo la cuenta del gasto)"},
   personal:{cta:"F.07",txt:"Gasto personal o de la casa"},retiro:{cta:"F.06",txt:"Retiro de utilidades"}};
 const CTAS_SOCIO=["5.10","F.06","F.07"];
-const ORIGEN_TXT={alias:"Traducción de su categoría",regla:"Regla",historial:"Historial del proveedor",manual:"Elegida por una persona",ia:"Sugerencia de Claude"};
+const ORIGEN_TXT={alias:"Traducción de su categoría",regla:"Regla",historial:"Historial del proveedor",manual:"Elegida por una persona",ia:"Sugerencia de Claude",proveedor:"Cuenta habitual del proveedor"};
 
 function clasifActiva(){return clasifEstado==="ok";}
 // SQL 21B: neto de cada gasto (sin el IVA recuperable) y pagos a socios
@@ -3280,14 +3286,20 @@ function renderProveedoresGastos(){
   const el=document.getElementById("gsub-proveedores");if(!el)return;
   const ini=inicioAnalisis(), n={};
   GASTOS.forEach(g=>{if((g.fecha||"")<ini)return;const k=normTxt(g.proveedor);n[k]=(n[k]||0)+1;});
+  const perf=perfilesProveedores();
   const lista=[...PROVEEDORES].sort((a,b)=>(n[normTxt(b.nombre)]||0)-(n[normTxt(a.nombre)]||0)||String(a.nombre).localeCompare(String(b.nombre)));
-  const sinDoc=lista.filter(p=>!p.tipo_documento).length;
-  el.innerHTML=`<p class="cta-sub" style="margin-bottom:10px">El tipo de documento define c&#243;mo se separa el IVA (Fase 3): con factura afecta el IVA es cr&#233;dito; con boleta o sin documento el IVA es costo. ${sinDoc?`<b>${sinDoc} proveedor${sinDoc===1?"":"es"} sin tipo de documento.</b>`:""} Los cambios se guardan al elegir.</p>
-    <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Proveedor</th><th>Gastos desde ${mesTxt(ini)}</th><th>Tipo de documento</th><th>Cuenta habitual</th><th>Socio o relacionado</th></tr></thead><tbody>
+  const sinDoc=lista.filter(p=>!p.tipo_documento).length, sinCta=lista.filter(p=>!p.cuenta_codigo&&!p.es_socio).length;
+  const solos=clasifPorProveedor();
+  el.innerHTML=`<div class="prov-tools"><button class="btn btn-primary btn-sm" onclick="abrirCompletarProveedores()">&#10024; Completar con lo que dicen los gastos</button>
+      <span class="cta-sub">${sinCta?`${sinCta} sin cuenta habitual · `:""}${sinDoc?`<b>${sinDoc} sin tipo de documento</b>`:"todos con tipo de documento"}</span></div>
+    <p class="cta-sub" style="margin-bottom:10px">«Seg&#250;n sus gastos» es la cuenta que tienen sus gastos ya clasificados. Con cuenta habitual, ${solos?"los gastos nuevos de ese proveedor quedan <b>clasificados solos</b> (si una regla o su categor&#237;a no dicen otra cosa) y el formulario la sugiere al escribir el proveedor":"el formulario la sugiere al escribir el proveedor (para que la base clasifique sola los gastos nuevos falta correr el <b>SQL 24C</b>)"}.
+      El tipo de documento define c&#243;mo se separa el IVA: con factura afecta el IVA es cr&#233;dito; con boleta o sin documento el IVA es costo. Los cambios se guardan al elegir.</p>
+    <div class="card"><div class="tbl-wrap"><table><thead><tr><th>Proveedor</th><th>Gastos desde ${mesTxt(ini)}</th><th>Tipo de documento</th><th>Seg&#250;n sus gastos</th><th>Cuenta habitual</th><th>Socio o relacionado</th></tr></thead><tbody>
     ${lista.map(p=>`<tr><td><b>${escH(p.nombre)}</b>${p.rut?`<div class="cta-sub">${escH(p.rut)}</div>`:""}</td><td>${n[normTxt(p.nombre)]||0}</td>
       <td style="min-width:190px"><select onchange="guardarCampoProveedor(${p.id},'tipo_documento',this.value||null)"><option value="">&#8212; por definir &#8212;</option>${Object.entries(TIPOS_DOC).map(([k,t])=>`<option value="${k}" ${p.tipo_documento===k?"selected":""}>${t}</option>`).join("")}</select></td>
+      <td style="min-width:180px" class="prov-segun">${celdaSegunGastos(p,perf[normTxt(p.nombre)])}</td>
       <td style="min-width:220px"><select onchange="guardarCampoProveedor(${p.id},'cuenta_codigo',this.value||null)"><option value="">&#8212; sin cuenta habitual &#8212;</option>${opcionesCuentas(p.cuenta_codigo||"")}</select></td>
-      <td><input type="checkbox" style="width:auto" ${p.es_socio?"checked":""} onchange="guardarCampoProveedor(${p.id},'es_socio',this.checked)"></td></tr>`).join("")||'<tr><td colspan="5" class="no-results">Sin proveedores registrados</td></tr>'}
+      <td><input type="checkbox" style="width:auto" ${p.es_socio?"checked":""} onchange="guardarCampoProveedor(${p.id},'es_socio',this.checked)"></td></tr>`).join("")||'<tr><td colspan="6" class="no-results">Sin proveedores registrados</td></tr>'}
     </tbody></table></div></div>`;
 }
 async function guardarCampoProveedor(id,campo,valor){
@@ -3296,6 +3308,154 @@ async function guardarCampoProveedor(id,campo,valor){
   if(campo==="cuenta_codigo")datos.centro_costo=valor?nombreCuenta(valor):null;
   try{await sbPatch("proveedores","id=eq."+id,datos);Object.assign(p,datos);showToast("Proveedor actualizado");}
   catch(e){alert("No se pudo guardar: "+e.message);renderProveedoresGastos();}
+}
+
+// ── Lo que dicen los gastos de cada proveedor: cuenta habitual, reglas por palabra y tipo de documento ──
+// Se aprende de los gastos ya clasificados. Nada se guarda sin que una persona lo confirme.
+const PALABRAS_VACIAS=new Set("PARA POR CON DEL LOS LAS UNA UNO UNAS UNOS SUS QUE MAS PAGO PAGOS COMPRA COMPRAS ABONO SALDO CUOTA TOTAL GASTO GASTOS VARIOS VARIAS DESDE HACIA ENTRE ESTE ESTA ESTOS ESTAS SEGUN SOBRE".split(" "));
+// Cuentas cuyo documento es obvio (sueldos, leyes sociales, banco, socios, IVA, préstamos; honorarios)
+const DOC_POR_CUENTA={"3.01":"sin_documento","3.02":"sin_documento","3.03":"sin_documento","4.01":"sin_documento","5.03":"sin_documento",
+  "5.10":"sin_documento","F.01":"sin_documento","F.05":"sin_documento","F.06":"sin_documento","F.07":"sin_documento","6.01":"sin_documento",
+  "6.02":"sin_documento","3.05":"honorarios","4.10":"honorarios"};
+const MIN_GASTOS_HAB=3, PCT_HAB=0.8, PRIORIDAD_APRENDIDA=60;
+let PROP_PROV=null;
+function clasifPorProveedor(){const v=PARAMS_G.clasif_por_proveedor;return v===true||v==="true";}
+function tokensDesc(desc,excluir){
+  const s=new Set();
+  normTxt(desc).split(/[^A-Z0-9]+/).forEach(t=>{if(t.length>=4&&!/^\d+$/.test(t)&&!PALABRAS_VACIAS.has(t)&&!excluir.has(t))s.add(t);});
+  return s;
+}
+// Por proveedor (nombre normalizado): sus gastos clasificados, cuántos por cuenta y por documento
+function perfilesProveedores(){
+  const P={};
+  GASTOS.forEach(g=>{
+    const k=normTxt(g.proveedor);if(!k)return;
+    const x=P[k]||(P[k]={key:k,nombre:String(g.proveedor).trim(),n:0,cl:[],cnt:{},docs:{},nDoc:0,top:null,topK:0});
+    x.n++;
+    const c=cuentaDeGasto(g);if(!c)return;
+    x.cnt[c]=(x.cnt[c]||0)+1;
+    const kc=clasifDe(g);if(kc&&kc.documento){x.docs[kc.documento]=(x.docs[kc.documento]||0)+1;x.nDoc++;}
+    x.cl.push({g,c});
+  });
+  Object.values(P).forEach(x=>{const t=Object.entries(x.cnt).sort((a,b)=>b[1]-a[1])[0];if(t){x.top=t[0];x.topK=t[1];}});
+  return P;
+}
+function celdaSegunGastos(p,x){
+  if(!x||!x.cl.length)return `<span class="cta-sub">${x&&x.n?"sin gastos clasificados":"sin gastos"}</span>`;
+  const otros=Object.entries(x.cnt).filter(([c])=>c!==x.top).sort((a,b)=>b[1]-a[1]);
+  const nReg=REGLAS_G.filter(r=>r.activa&&r.tipo!=="palabra"&&normTxt(r.proveedor)===x.key).length;
+  const distinta=p.cuenta_codigo&&p.cuenta_codigo!==x.top&&x.cl.length>=MIN_GASTOS_HAB&&x.topK>=PCT_HAB*x.cl.length;
+  return `<div style="font-size:12px"><b>${x.top}</b> ${escH(nombreCuenta(x.top))}</div>
+    <div class="cta-sub">${x.topK} de ${x.cl.length} clasificado${x.cl.length===1?"":"s"}${otros.length?" · tambi&#233;n "+otros.slice(0,3).map(([c,k])=>c+" ("+k+")").join(", ")+(otros.length>3?"…":""):""}</div>
+    ${nReg?`<div class="cta-sub">${nReg} regla${nReg===1?"":"s"} por palabra</div>`:""}
+    ${distinta?`<div class="cta-sub" style="color:#B45309">Su cuenta habitual es otra</div>`:""}`;
+}
+// Reglas «proveedor + palabra» para los proveedores con varias cuentas: palabras de la descripción que en sus
+// gastos siempre llevan a la misma cuenta (2 gastos o más). La cuenta más usada queda como cuenta habitual.
+function aprenderReglas(x){
+  const libres=x.cl.filter(o=>!reglaQueAplica(o.g));
+  const cnt={};libres.forEach(o=>{cnt[o.c]=(cnt[o.c]||0)+1;});
+  const ctas=Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
+  if(ctas.length<2)return {reglas:[],libres};
+  const excl=new Set(x.key.split(/[^A-Z0-9]+/));
+  libres.forEach(o=>{o.t=tokensDesc(o.g.descripcion,excl);});
+  const pal={};
+  libres.forEach(o=>o.t.forEach(w=>{(pal[w]=pal[w]||{})[o.c]=(pal[w][o.c]||0)+1;}));
+  const reglas=[];
+  ctas.slice(1).forEach(([c])=>{
+    let pend=libres.filter(o=>o.c===c);
+    const puras=Object.keys(pal).filter(w=>Object.keys(pal[w]).length===1&&pal[w][c]>=2).sort();
+    for(let i=0;i<3&&pend.length;i++){
+      let mejor=null,cub=0;
+      puras.forEach(w=>{const k=pend.filter(o=>o.t.has(w)).length;if(k>cub){mejor=w;cub=k;}});
+      if(!mejor)break;
+      reglas.push({key:x.key,palabra:mejor,cuenta:c,n:pal[mejor][c]});
+      pend=pend.filter(o=>!o.t.has(mejor));puras.splice(puras.indexOf(mejor),1);
+    }
+  });
+  return {reglas,libres};
+}
+function propuestasProveedores(){
+  const perf=perfilesProveedores(), hab=[], reglas=[], docs=[], porKey={};
+  PROVEEDORES.forEach(p=>{const k=normTxt(p.nombre);if(k&&!porKey[k])porKey[k]=p;});
+  Object.values(perf).forEach(x=>{
+    const p=porKey[x.key]||null;
+    const socio=esSocio(x.nombre)||!!(p&&p.es_socio);
+    if(!socio&&x.cl.length>=2){
+      const {reglas:rr,libres}=aprenderReglas(x);
+      rr.forEach(r=>{r.proveedor=p?p.nombre:x.nombre;reglas.push(r);});
+      if(p&&!p.cuenta_codigo){
+        const resto=libres.filter(o=>!rr.some(r=>r.cuenta===o.c&&o.t&&o.t.has(r.palabra)));
+        const cnt={};resto.forEach(o=>{cnt[o.c]=(cnt[o.c]||0)+1;});
+        const t=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0];
+        if(t&&resto.length>=MIN_GASTOS_HAB&&t[1]>=PCT_HAB*resto.length)hab.push({p,cuenta:t[0],k:t[1],n:resto.length,otras:Object.keys(cnt).length-1,reglas:rr.length});
+      }
+    }
+    if(p&&!p.tipo_documento){
+      const td=Object.entries(x.docs).sort((a,b)=>b[1]-a[1])[0];
+      if(td&&x.nDoc>=2&&td[1]>=PCT_HAB*x.nDoc)docs.push({p,doc:td[0],n:x.cl.length,txt:"marcado en "+td[1]+" de sus gastos"});
+      else if(x.top&&DOC_POR_CUENTA[x.top]&&x.topK>=PCT_HAB*x.cl.length)docs.push({p,doc:DOC_POR_CUENTA[x.top],n:x.cl.length,txt:"sus gastos son «"+nombreCuenta(x.top)+"»"});
+    }
+  });
+  hab.sort((a,b)=>b.n-a.n);reglas.sort((a,b)=>b.n-a.n||a.proveedor.localeCompare(b.proveedor));docs.sort((a,b)=>b.n-a.n);
+  return {hab,reglas,docs};
+}
+function abrirCompletarProveedores(){
+  PROP_PROV=propuestasProveedores();
+  const {hab,reglas,docs}=PROP_PROV;
+  const fila=(cls,i,cuerpo)=>`<label class="pp-fila"><input type="checkbox" class="${cls}" data-i="${i}" checked style="width:auto"><span>${cuerpo}</span></label>`;
+  const seccion=(titulo,expl,cls,items,html)=>`<div class="pp-sec"><div class="pp-tit">${titulo} <span class="cta-sub">(${items.length})</span>
+      ${items.length?`<button class="btn btn-ghost btn-sm" onclick="ppMarcar('${cls}',true)">Todos</button><button class="btn btn-ghost btn-sm" onclick="ppMarcar('${cls}',false)">Ninguno</button>`:""}</div>
+    <div class="cta-sub" style="margin-bottom:6px">${expl}</div>${items.length?items.map((x,i)=>fila(cls,i,html(x))).join(""):`<div class="cta-sub">Nada que proponer.</div>`}</div>`;
+  const overlay=document.createElement("div");
+  overlay.id="pp-overlay";
+  overlay.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center";
+  overlay.innerHTML=`<div class="pp-caja">
+    <h3 style="font-size:14px;font-weight:700;margin-bottom:6px">Completar con lo que dicen los gastos</h3>
+    <p class="cta-sub" style="margin-bottom:12px">Sale de los gastos ya clasificados de cada proveedor. Revisa y desmarca lo que no corresponda: solo se guarda lo marcado.
+      Despu&#233;s se aplica a los gastos que siguen en Revisi&#243;n; las cuentas elegidas por una persona no cambian.</p>
+    ${seccion("Cuenta habitual",`Proveedores sin cuenta habitual con ${MIN_GASTOS_HAB} gastos o m&#225;s y al menos ${Math.round(PCT_HAB*100)}% en una misma cuenta (sin socios). Sus gastos nuevos quedar&#225;n clasificados en esa cuenta.`,"pp-hab",hab,
+      h=>`<b>${escH(h.p.nombre)}</b> &#8594; ${h.cuenta} ${escH(nombreCuenta(h.cuenta))} <span class="cta-sub">· ${h.k} de ${h.n} gastos${h.reglas?" (sin contar los de sus reglas por palabra)":""}</span>`)}
+    ${seccion("Reglas por palabra",`Proveedores con varias cuentas: una palabra de la descripci&#243;n que en sus gastos siempre lleva a la misma cuenta. Mandan sobre la cuenta habitual; quedan en Reglas y se pueden desactivar.`,"pp-reg",reglas,
+      r=>`<b>${escH(r.proveedor)}</b> + «${escH(r.palabra)}» &#8594; ${r.cuenta} ${escH(nombreCuenta(r.cuenta))} <span class="cta-sub">· ${r.n} gastos</span>`)}
+    ${seccion("Tipo de documento",`Proveedores sin tipo de documento, seg&#250;n lo marcado en sus gastos o seg&#250;n su cuenta (sueldos, leyes sociales, banco: sin documento; honorarios: boleta de honorarios).`,"pp-doc",docs,
+      d=>`<b>${escH(d.p.nombre)}</b> &#8594; ${escH(TIPOS_DOC[d.doc]||d.doc)} <span class="cta-sub">· ${escH(d.txt)}</span>`)}
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+      <button class="btn btn-ghost" onclick="document.getElementById('pp-overlay').remove()">Cancelar</button>
+      <button class="btn btn-primary" id="pp-guardar" onclick="guardarPropuestasProv()" ${hab.length+reglas.length+docs.length?"":"disabled"}>Guardar lo marcado</button>
+    </div></div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener("click",e=>{if(e.target===overlay)overlay.remove();});
+}
+function ppMarcar(cls,v){document.querySelectorAll("."+cls).forEach(i=>{i.checked=v;});}
+async function guardarPropuestasProv(){
+  if(!PROP_PROV)return;
+  const marcados=(cls,arr)=>[...document.querySelectorAll("."+cls+":checked")].map(i=>arr[+i.dataset.i]).filter(Boolean);
+  const H=marcados("pp-hab",PROP_PROV.hab), R=marcados("pp-reg",PROP_PROV.reglas), D=marcados("pp-doc",PROP_PROV.docs);
+  if(!H.length&&!R.length&&!D.length){alert("No hay nada marcado.");return;}
+  const btn=document.getElementById("pp-guardar");if(btn){btn.disabled=true;btn.textContent="Guardando…";}
+  const ini=inicioAnalisis(), revAntes=GASTOS.filter(g=>(g.fecha||"")>=ini&&enRevision(g)).length;
+  const patch={}, errores=[];
+  H.forEach(h=>{patch[h.p.id]=Object.assign(patch[h.p.id]||{},{cuenta_codigo:h.cuenta,centro_costo:nombreCuenta(h.cuenta)});});
+  D.forEach(d=>{patch[d.p.id]=Object.assign(patch[d.p.id]||{},{tipo_documento:d.doc});});
+  let nProv=0;
+  for(const [id,datos] of Object.entries(patch)){
+    try{await sbPatch("proveedores","id=eq."+id,datos);const p=PROVEEDORES.find(x=>String(x.id)===id);if(p)Object.assign(p,datos);nProv++;}
+    catch(e){errores.push(e.message);}
+  }
+  let nReg=0;
+  if(R.length){
+    const filas=R.map(r=>({tipo:"proveedor_palabra",proveedor:r.proveedor,palabra:r.palabra,accion:"clasificar",cuenta_codigo:r.cuenta,
+      prioridad:PRIORIDAD_APRENDIDA,motivo:"Aprendida de los gastos del proveedor ("+r.n+" gastos)",creada_por:usuarioActual(),activa:true}));
+    try{await sbInsertar("gasto_reglas",filas);nReg=filas.length;}catch(e){errores.push("Reglas: "+e.message);}
+  }
+  try{await reclasificarGastos();}catch(e){errores.push("Reclasificar: "+e.message);}
+  const revDespues=GASTOS.filter(g=>(g.fecha||"")>=ini&&enRevision(g)).length;
+  const ov=document.getElementById("pp-overlay");if(ov)ov.remove();
+  renderGastos();
+  if(errores.length)alert("Algunas cosas no se pudieron guardar:\n"+errores.slice(0,5).join("\n"));
+  showToast("Guardado: "+nProv+" proveedor"+(nProv===1?"":"es")+(nReg?" y "+nReg+" regla"+(nReg===1?"":"s"):"")+
+    (revAntes>revDespues?" · "+(revAntes-revDespues)+" gasto"+(revAntes-revDespues===1?"":"s")+" salieron de Revisión":""));
 }
 
 // ── Conciliación: crudo = gastos = clasificado + en revisión, y avance por mes ──

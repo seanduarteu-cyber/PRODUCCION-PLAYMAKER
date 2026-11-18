@@ -28,8 +28,11 @@ CÓMO SE CLASIFICA (en este orden)
 2. Traducción de la categoría que tenía el gasto (Plan de cuentas › Traducción de las categorías antiguas).
    Ej.: TALLER EXTERNO y TALLER PMK → Talleres de confección; UBER, COMBUSTIBLE → Movilización.
    POR IDENTIFICAR, OTROS e INSUMOS PRODUCCION van a Revisión.
-3. Inversión bajo $300.000 (D8) → Revisión: ¿es gasto o parte de una obra mayor?
-4. Lo que elige una persona nunca lo cambia una regla.
+3. Cuenta habitual del proveedor (Gastos › Proveedores; SQL 24C) → queda CLASIFICADO, con origen «Cuenta
+   habitual del proveedor». No se usa con los socios. Sin el SQL 24C, la cuenta habitual solo se sugiere en el
+   formulario.
+4. Inversión bajo $300.000 (D8) → Revisión: ¿es gasto o parte de una obra mayor?
+5. Lo que elige una persona nunca lo cambia una regla ni la cuenta habitual.
 
 AL INGRESAR UN GASTO
 - La cuenta se precarga y se ve por qué: regla → cuenta habitual del proveedor → historial del proveedor
@@ -37,7 +40,8 @@ AL INGRESAR UN GASTO
   la próxima vez; al crearla, se vuelven a clasificar los gastos automáticos que calzan.
 - Proveedor nuevo: hay que elegir el tipo de documento (factura afecta, exenta, boleta de honorarios o sin
   documento). Los ya registrados se completan en Gastos › Proveedores. Se usa en la Fase 3 para el IVA.
-- Fase 1b (pendiente): sugerencia de Claude cuando no hay regla ni historial.
+- Al escribir el proveedor (y la descripción) la cuenta aparece sola; no hace falta preguntarle a Claude. Claude
+  queda para los gastos sin regla, sin cuenta habitual y sin historial: con el tiempo se le pregunta cada vez menos.
 
 PANTALLAS (Gastos, solo gerencia)
   Gastos · Revisión · Plan de cuentas · Reglas · Proveedores · Conciliación
@@ -86,10 +90,29 @@ CÓMO CREAR LA FUNCIÓN EN SUPABASE (una vez)
 4. SQL Editor: correr SQL_21C_VENTAS_claude_sugiere_cuenta.sql (debe decir «SQL 21C listo»).
 5. Subir el zip de Ventas y abrir Gastos › ✨ Claude.
 
+PROVEEDORES QUE APRENDEN DE SUS GASTOS (Gastos › Proveedores; SQL 24C)
+- Columna «Según sus gastos»: la cuenta que tienen sus gastos ya clasificados («2.11 Despachos a clientes · 75 de 88
+  clasificados · también 3.11 (7)…»), cuántas reglas por palabra tiene y un aviso si su cuenta habitual es otra.
+- Botón «✨ Completar con lo que dicen los gastos». Propone, y guarda solo lo que se deja marcado:
+  · Cuenta habitual: proveedores sin cuenta habitual con 3 gastos clasificados o más y al menos 80% en una cuenta
+    (sin socios).
+  · Reglas por palabra: en un proveedor con varias cuentas, una palabra de la descripción que en sus gastos siempre
+    lleva a la misma cuenta (2 gastos o más). Ej.: Uber + «taller» → Traslados a talleres. Quedan en Reglas con
+    prioridad 60 (después de las de revisión: «no sé», «reembolso», pagos a socios) y se pueden desactivar.
+  · Tipo de documento: el marcado en sus gastos, o el de su cuenta (sueldos, leyes sociales, banco, socios: sin
+    documento; honorarios: boleta de honorarios).
+  Al guardar se aplica a los gastos que siguen en Revisión; lo elegido por una persona no cambia.
+- SQL 24C: la base usa la cuenta habitual para clasificar sola los gastos nuevos (formulario y «Sincronizar Sheets»),
+  después de las reglas y de la traducción de la categoría. Al correrlo la aplica a lo que sigue en revisión.
+- Tipo de documento desde el SII: un SQL aparte (24D, armado con el registro de compras y las boletas de honorarios
+  de enero a octubre) completa por RUT, o por nombre si no tiene RUT, los proveedores sin tipo de documento: factura
+  afecta (33), exenta (34) u honorarios. No se guarda en el repositorio (tiene datos del SII).
+
 PARÁMETROS (gestion_parametros, de las respuestas)
   inicio_analisis 2026-04-01 (D9) · sueldo_gerencia_mensual 4.500.000 (D5, hoy no se usa) · prorrateo_local 80/10/10 (D7)
   umbral_inversion 300.000 (D8) · tasa_iva 0,19 · regimen_tributario Pro Pyme General (S5)
   ia_modelo claude-opus-5-5 · ia_tope_diario 100 (C4) · ia_tope_prueba 800 (SQL 21C)
+  clasif_por_proveedor true (SQL 24C: la cuenta habitual clasifica sola)
 - Las comisiones de Sean y Silvia son solo un costo de referencia (D6): no son gasto.
 
 QUÉ TOCA EL SQL 21A DE LO QUE YA EXISTE EN VENTAS (nada más)
@@ -111,6 +134,6 @@ PARA PUBLICAR
    gastos nuevos se clasifican solos.
 
 PRUEBA
-  pruebas/clasif_gastos.test.js (necesita Postgres local).
+  pruebas/clasif_gastos.test.js y pruebas/proveedores_aprenden.test.js (necesitan Postgres local).
   Con los 1.703 gastos reales (21-ene al 13-nov): $372.280.699 en el dato original = clasificado + en revisión,
   diferencia $0; quedan 135 gastos por revisar desde abril ($16,6 M), la mayoría pagos a Sean Duarte (58).
