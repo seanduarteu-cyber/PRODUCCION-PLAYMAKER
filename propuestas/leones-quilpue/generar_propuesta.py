@@ -7,9 +7,10 @@ Lee la solicitud del club (Solicitud_indumentaria_CDC_Los_Leones_2027.xlsx: hoja
 y genera:
   - Propuesta_Los_Leones_Quilpue_2027.pdf: primera propuesta, solo el canje de los primeros equipos y el cuerpo
     técnico (lo que pidió el club, sin prendas extra), con su detalle, el convenio y los próximos pasos.
-  - Canje_Leones_Quilpue_2027.xlsx (uso interno): simulador por prenda del canje versus el retorno. Para cada
-    prenda se define el % de canje (el resto lo compra el club) y las ventas proyectadas a formativas y en la tienda;
-    los precios y costos se editan en la hoja Precios y todo se recalcula.
+  - Canje_Leones_Quilpue_2027.xlsx (uso interno): simulador por prenda del convenio completo (2027 y 2028): un
+    solo canje y una sola compra de cada prenda. Para cada prenda se define el % de canje (el resto lo compra el
+    club) y las ventas proyectadas a formativas y en la tienda; precios y costos en la hoja Precios. Si la planilla
+    ya existe, se conservan los valores cargados en ella.
 Los precios de lista, el descuento para formativas y el costo de producción están en PRODUCTOS y PARAMETROS.
 Las prendas adicionales de PRODUCTOS (adicional=True) no entran al canje: quedan solo en la planilla de precios.
 """
@@ -319,8 +320,9 @@ def html(secciones):
 
 # ---------------------------------------------------------------- planilla interna
 
-# ventas proyectadas de ejemplo por temporada (unidades a formativas, unidades en la tienda), por prenda de jugadores;
-# 180 jugadores formativos: 6 categorías, damas y varones, unos 15 por categoría
+# Modelo: un solo canje (una entrega para las dos temporadas del convenio) y una sola venta de cada prenda
+# (formativas y tienda) en todo el convenio. Valores de ejemplo para la primera versión de la planilla; si la
+# planilla ya existe, se conservan los valores que el usuario cargó (leer_entradas).
 VENTAS_EJEMPLO = {
     "camiseta de juego rojo": (180, 80), "short de juego rojo": (180, 20), "camiseta de juego blanco": (0, 30),
     "camiseta de juego azul": (0, 15), "camiseta juego negro": (0, 15), "polera de calentamiento rojo": (0, 20),
@@ -331,13 +333,57 @@ VENTAS_EJEMPLO = {
 VENTAS_OTROS = {"calcetas": (180, 20), "hoodie": (0, 50), "poleron_basic": (0, 20), "cortaviento": (0, 10), "parka": (0, 5)}
 TRAMOS = [("Hasta 100", 0, 0.11), ("101 a 200", 101, 0.12), ("201 a 350", 201, 0.13), ("351 a 500", 351, 0.14),
           ("Más de 500", 501, 0.15)]
+OTROS = "OTROS PRODUCTOS (SOLO VENTA, SIN CANJE)"
+
+
+def _texto(v):
+    return " ".join(str(v or "").replace("\n", " ").split()).lower()
+
+
+def leer_entradas():
+    """Valores editables de la planilla existente (si la hay), para no perderlos al regenerarla."""
+    if not EXCEL.exists():
+        return None
+    wb = openpyxl.load_workbook(EXCEL)
+    e = {"filas": {}, "precios": {}, "param": {}, "tramos": []}
+    si = wb["Simulación"]
+    cab = next(r for r in range(1, 15) if _texto(si.cell(r, 1).value) == "prenda" and si.cell(r, 2).value)
+    cols = {_texto(si.cell(cab, c).value): c for c in range(1, si.max_column + 1)}
+    c_canje = cols["% canje"]
+    c_form = next(c for t, c in cols.items() if t.startswith("ventas a formativas"))
+    c_tienda = next(c for t, c in cols.items() if t.startswith("ventas en tienda"))
+    seccion = None
+    for r in range(cab + 1, si.max_row + 1):
+        a, b = si.cell(r, 1).value, si.cell(r, 2).value
+        if a and not b:
+            seccion = str(a).strip().upper()
+            continue
+        if a and b:
+            e["filas"][(seccion, str(a).strip())] = (si.cell(r, c_canje).value, si.cell(r, c_form).value,
+                                                     si.cell(r, c_tienda).value)
+    pr = wb["Precios"]
+    cab = next(r for r in range(1, 15) if _texto(pr.cell(r, 1).value) == "producto")
+    cols = {_texto(pr.cell(cab, c).value): c for c in range(1, pr.max_column + 1)}
+    c_lista = next(c for t, c in cols.items() if t.startswith("precio lista"))
+    c_form = next(c for t, c in cols.items() if t == "precio formativas")
+    c_club = next(c for t, c in cols.items() if t.startswith("precio para el club"))
+    c_costo = next(c for t, c in cols.items() if t.startswith("costo unitario"))
+    for r in range(cab + 1, pr.max_row + 1):
+        if pr.cell(r, 1).value:
+            nombre = str(pr.cell(r, 1).value).replace(" (nueva)", "").strip()
+            e["precios"][nombre] = tuple(pr.cell(r, c).value for c in (c_lista, c_form, c_club, c_costo))
+    pa = wb["Parámetros"]
+    e["param"] = {"iva": pa["B4"].value, "costo": pa["B5"].value, "temporadas": pa["B6"].value}
+    e["tramos"] = [(pa.cell(r, 2).value, pa.cell(r, 3).value) for r in range(10, 15)]
+    return e
 
 
 def excel(secciones):
-    """Simulador por prenda: % de canje, inversión, compra del club y ventas futuras (formativas y tienda)."""
+    """Simulador por prenda del convenio completo: % de canje, inversión, compras y ventas, resultado."""
     from openpyxl.formatting.rule import CellIsRule
     from openpyxl.worksheet.datavalidation import DataValidation
 
+    previo = leer_entradas()
     NAVY = "141E3C"
     f_tit = Font(name="Arial", size=14, bold=True, color=NAVY)
     f_nota = Font(name="Arial", size=9, italic=True, color="6E7280")
@@ -346,10 +392,15 @@ def excel(secciones):
     f_input = Font(name="Arial", size=10, color="0000FF")
     f_total = Font(name="Arial", size=10, bold=True, color=NAVY)
     f_sec = Font(name="Arial", size=10, bold=True, color="B1A542")
+    f_tile_lbl = Font(name="Arial", size=8, bold=True, color="B1A542")
+    f_tile_val = Font(name="Arial", size=16, bold=True, color=NAVY)
     r_cab = PatternFill("solid", fgColor=NAVY)
     r_grupo = PatternFill("solid", fgColor="3A4570")
     r_input = PatternFill("solid", fgColor="FFF2CC")
     r_total = PatternFill("solid", fgColor="EDEBE4")
+    r_tile = PatternFill("solid", fgColor="F7F3E7")
+    rojo = PatternFill("solid", fgColor="F6D5D0")
+    verde = PatternFill("solid", fgColor="D8EBD5")
     linea = Border(bottom=Side(style="thin", color="DCD8CB"))
     PESOS, PCT, NUM, VECES = '"$"#,##0;-"$"#,##0;"-"', "0%", "#,##0", '0.00" x"'
 
@@ -372,16 +423,22 @@ def excel(secciones):
             c.alignment = Alignment(horizontal="left" if i == 0 else "center", vertical="center", wrap_text=True)
         ws.row_dimensions[fila].height = 42
 
+    def semaforo(ws, rango):
+        ws.conditional_formatting.add(rango, CellIsRule(operator="lessThan", formula=["0"], fill=rojo))
+        ws.conditional_formatting.add(rango, CellIsRule(operator="greaterThan", formula=["0"], fill=verde))
+
     wb = openpyxl.Workbook()
 
-    # ---- Parámetros
+    # ---- Parámetros (mismas celdas que la versión anterior: B4 IVA, B5 costo, B6 temporadas, tramos B10:C14)
     pa = wb.active
     pa.title = "Parámetros"
+    p = previo["param"] if previo else {"iva": PARAMETROS["iva"], "costo": PARAMETROS["costo_produccion"], "temporadas": 2}
     celda(pa, "A1", "PARÁMETROS DEL SIMULADOR", f_tit)
     celda(pa, "A2", "Celdas amarillas editables.", f_nota)
-    for r, (txt, v, fmt) in enumerate([("IVA", PARAMETROS["iva"], PCT),
-                                       ("Costo de producción por defecto (% del precio neto)", PARAMETROS["costo_produccion"], PCT),
-                                       ("Temporadas del convenio", 2, NUM)], start=4):
+    for r, (txt, v, fmt) in enumerate([("IVA", p["iva"], PCT),
+                                       ("Costo de producción por defecto (% del precio neto)", p["costo"], PCT),
+                                       ("Temporadas del convenio (solo para el promedio por temporada)", p["temporadas"], NUM)],
+                                      start=4):
         celda(pa, f"A{r}", txt)
         entrada(pa, f"B{r}", v, fmt)
     celda(pa, "C5", "Se usa si no ingresas un costo propio por producto en la hoja Precios", f_nota)
@@ -389,31 +446,34 @@ def excel(secciones):
     cabecera(pa, 9, ["Unidades vendidas en la tienda", "Desde", "Royalty"])
     for i, (txt, desde, pct) in enumerate(TRAMOS):
         r = 10 + i
+        if previo:
+            desde, pct = previo["tramos"][i]
         celda(pa, f"A{r}", txt)
         entrada(pa, f"B{r}", desde, NUM)
         entrada(pa, f"C{r}", pct, PCT)
-    celda(pa, "A16", "Unidades vendidas en la tienda (de la hoja Simulación)")
+    celda(pa, "A16", "Unidades vendidas en la tienda en el convenio (hoja Simulación)")
     celda(pa, "A17", "Royalty del tramo alcanzado", f_total)
-    pa.column_dimensions["A"].width = 54
-    pa.column_dimensions["B"].width = 14
-    pa.column_dimensions["C"].width = 14
+    for col, ancho in zip("ABC", (58, 14, 14)):
+        pa.column_dimensions[col].width = ancho
 
-    # ---- Precios
+    # ---- Precios (mismas filas por producto que la versión anterior)
     pr = wb.create_sheet("Precios")
     celda(pr, "A1", "PRECIOS Y COSTOS POR PRODUCTO", f_tit)
-    celda(pr, "A2", "Precios por unidad con IVA incluido. El costo se calcula con el % por defecto; reemplázalo por tu costo real si lo conoces.", f_nota)
+    celda(pr, "A2", "Precios por unidad con IVA incluido. El costo se calcula con el % por defecto sobre el precio de lista; "
+                    "reemplázalo por tu costo real si lo conoces.", f_nota)
     cabecera(pr, 4, ["Producto", "Línea", "Precio lista\n(tienda)", "Precio\nformativas", "Precio para el club\n(lo no canjeado)",
                      "Costo unitario\nPlaymaker", "Referencia del precio"])
     fila_p = {}
     for i, (k, (nombre, l, precio, adicional, ref)) in enumerate(PRODUCTOS.items()):
         r = 5 + i
         fila_p[k] = r
+        valores = [precio, precio_formativas(precio), f"=D{r}", f"=ROUND(C{r}/(1+Parámetros!$B$4)*Parámetros!$B$5,0)"]
+        if previo and nombre in previo["precios"]:
+            valores = list(previo["precios"][nombre])
         celda(pr, f"A{r}", nombre + (" (nueva)" if adicional else ""))
         celda(pr, f"B{r}", l)
-        entrada(pr, f"C{r}", precio, PESOS)
-        entrada(pr, f"D{r}", precio_formativas(precio), PESOS)
-        entrada(pr, f"E{r}", f"=D{r}", PESOS)
-        entrada(pr, f"F{r}", f"=ROUND(C{r}/(1+Parámetros!$B$4)*Parámetros!$B$5,0)", PESOS)
+        for col, v in zip("CDEF", valores):
+            entrada(pr, f"{col}{r}", v, PESOS)
         celda(pr, f"G{r}", ref, f_nota)
         for col in "ABCDEFG":
             pr[f"{col}{r}"].border = linea
@@ -425,139 +485,176 @@ def excel(secciones):
 
     # ---- Simulación
     si = wb.create_sheet("Simulación", 0)
-    celda(si, "A1", "SIMULACIÓN DEL CANJE POR PRENDA: INVERSIÓN VERSUS RETORNO POR TEMPORADA", f_tit)
-    celda(si, "A2", "Amarillo = editable. % canje: parte de las unidades solicitadas que Playmaker entrega sin costo; el resto lo compra "
-                    "el club al precio para el club. Ventas: unidades que proyectas vender en la temporada. Las ventas de ejemplo son supuestos.", f_nota)
-    grupos = [(1, "PRENDA"), (4, "SOLICITUD Y CANJE"), (10, "COMPRA DEL CLUB"), (13, "VENTAS FUTURAS PROYECTADAS"),
-              (20, "RESULTADO")]
+    celda(si, "A1", "SIMULACIÓN DEL CANJE POR PRENDA: INVERSIÓN VERSUS RETORNO DEL CONVENIO COMPLETO (2027 Y 2028)", f_tit)
+    celda(si, "A2", "Amarillo = editable. El canje es una sola entrega que cubre las dos temporadas; las ventas son una sola compra de "
+                    "cada prenda durante el convenio. % canje: parte de las unidades solicitadas que Playmaker entrega sin costo; "
+                    "el resto lo compra el club al precio para el club.", f_nota)
+    PRIMERA = 9  # primera fila de la tabla (después de los totales destacados y las cabeceras)
+    grupos = [(1, "PRENDA"), (3, "SOLICITUD Y CANJE (UNA ENTREGA)"), (10, "COMPRA DEL CLUB"),
+              (14, "VENTAS PROYECTADAS (UNA COMPRA EN EL CONVENIO)"), (23, "RESULTADO")]
+    for col in range(1, 26):
+        si.cell(PRIMERA - 2, col).fill = r_grupo
     for col, txt in grupos:
-        c = si.cell(4, col, txt)
-        c.font, c.fill = Font(name="Arial", size=8, bold=True, color="FFFFFF"), r_grupo
-    for col in range(1, 23):
-        si.cell(4, col).fill = r_grupo
-    cabecera(si, 5, ["Prenda", "Producto Playmaker", "Unidades\nsolicitadas", "Precio lista\ncon IVA", "Costo\nunitario",
-                     "% canje", "Unidades\nen canje", "Inversión canje\n(costo)", "Valor comercial\ndel canje",
-                     "Unidades que\ncompra el club", "Precio club\ncon IVA", "Margen compra\ndel club",
-                     "Ventas a\nformativas (u.)", "Ventas en\ntienda (u.)", "Precio\nformativas", "Margen\nformativas",
-                     "Venta neta\ntienda", "Royalty\nal club", "Margen tienda\n(sin royalty)", "Retorno\ntotal",
-                     "Resultado\n(retorno - inversión)", "Retorno por\n$1 invertido"])
+        si.cell(PRIMERA - 2, col, txt).font = Font(name="Arial", size=8, bold=True, color="FFFFFF")
+    cabecera(si, PRIMERA - 1, [
+        "Prenda", "Producto Playmaker", "Unidades\nsolicitadas", "Precio lista\ncon IVA", "Costo\nunitario",
+        "% canje", "Unidades\nen canje", "Inversión canje\n(costo)", "Valor del canje\ncon IVA",
+        "Unidades que\ncompra el club", "Precio club\ncon IVA", "Compra del club\ncon IVA", "Margen compra\ndel club",
+        "Ventas a\nformativas (u.)", "Ventas en\ntienda (u.)", "Precio\nformativas", "Compra formativas\ncon IVA",
+        "Margen\nformativas", "Compra en tienda\ncon IVA", "Venta neta\ntienda", "Royalty\nal club",
+        "Margen tienda\n(después royalty)", "Retorno\ntotal", "Resultado\n(retorno - inversión)", "Retorno por\n$1 invertido"])
 
-    def fila_sim(r, nombre, productos, solicitadas, canje, ventas):
+    def fila_sim(r, nombre, productos, solicitadas, valores):
+        canje, form, tienda = valores
         celda(si, f"A{r}", nombre)
         celda(si, f"B{r}", " y ".join(PRODUCTOS[p][0] for p in productos))
         celda(si, f"C{r}", solicitadas, formato=NUM)
         celda(si, f"D{r}", "=" + ref_precio(productos, "C"), formato=PESOS)
         celda(si, f"E{r}", "=" + ref_precio(productos, "F"), formato=PESOS)
-        if canje is None:
-            celda(si, f"F{r}", None)
-            for col in "GHIJKL":
-                celda(si, f"{col}{r}", None)
-        else:
+        if solicitadas:
             entrada(si, f"F{r}", canje, PCT)
             celda(si, f"G{r}", f"=ROUND(C{r}*F{r},0)", formato=NUM)
             celda(si, f"H{r}", f"=G{r}*E{r}", formato=PESOS)
             celda(si, f"I{r}", f"=G{r}*D{r}", formato=PESOS)
             celda(si, f"J{r}", f"=C{r}-G{r}", formato=NUM)
             celda(si, f"K{r}", "=" + ref_precio(productos, "E"), formato=PESOS)
-            celda(si, f"L{r}", f"=ROUND(J{r}*(K{r}/(1+Parámetros!$B$4)-E{r}),0)", formato=PESOS)
-        entrada(si, f"M{r}", ventas[0], NUM)
-        entrada(si, f"N{r}", ventas[1], NUM)
-        celda(si, f"O{r}", "=" + ref_precio(productos, "D"), formato=PESOS)
-        celda(si, f"P{r}", f"=ROUND(M{r}*(O{r}/(1+Parámetros!$B$4)-E{r}),0)", formato=PESOS)
-        celda(si, f"Q{r}", f"=ROUND(N{r}*D{r}/(1+Parámetros!$B$4),0)", formato=PESOS)
-        celda(si, f"R{r}", f"=ROUND(Q{r}*Parámetros!$B$17,0)", formato=PESOS)
-        celda(si, f"S{r}", f"=Q{r}-R{r}-N{r}*E{r}", formato=PESOS)
-        celda(si, f"T{r}", f"=SUM(L{r},P{r},S{r})", f_total, PESOS)
-        celda(si, f"U{r}", f"=T{r}-N(H{r})", f_total, PESOS)
-        celda(si, f"V{r}", f'=IF(N(H{r})=0,"",T{r}/H{r})', formato=VECES)
-        for col in range(1, 23):
+            celda(si, f"L{r}", f"=J{r}*K{r}", formato=PESOS)
+            celda(si, f"M{r}", f"=ROUND(J{r}*(K{r}/(1+Parámetros!$B$4)-E{r}),0)", formato=PESOS)
+        entrada(si, f"N{r}", form, NUM)
+        entrada(si, f"O{r}", tienda, NUM)
+        celda(si, f"P{r}", "=" + ref_precio(productos, "D"), formato=PESOS)
+        celda(si, f"Q{r}", f"=N{r}*P{r}", formato=PESOS)
+        celda(si, f"R{r}", f"=ROUND(N{r}*(P{r}/(1+Parámetros!$B$4)-E{r}),0)", formato=PESOS)
+        celda(si, f"S{r}", f"=O{r}*D{r}", formato=PESOS)
+        celda(si, f"T{r}", f"=ROUND(S{r}/(1+Parámetros!$B$4),0)", formato=PESOS)
+        celda(si, f"U{r}", f"=ROUND(T{r}*Parámetros!$B$17,0)", formato=PESOS)
+        celda(si, f"V{r}", f"=T{r}-U{r}-O{r}*E{r}", formato=PESOS)
+        celda(si, f"W{r}", f"=SUM(M{r},R{r},V{r})", f_total, PESOS)
+        celda(si, f"X{r}", f"=W{r}-N(H{r})", f_total, PESOS)
+        celda(si, f"Y{r}", f'=IF(N(H{r})=0,"",W{r}/H{r})', formato=VECES)
+        for col in range(1, 26):
             si.cell(r, col).border = linea
 
-    r = 6
+    def valores_de(seccion, nombre, por_defecto):
+        if previo and (seccion, nombre) in previo["filas"]:
+            return previo["filas"][(seccion, nombre)]
+        return por_defecto
+
+    r = PRIMERA
     filas_datos = []
     for seccion, filas in secciones:
         celda(si, f"A{r}", seccion.upper(), f_sec)
         r += 1
         for k, nombre, productos, lnb, lnf in filas:
-            ventas = VENTAS_EJEMPLO.get(k, (0, 0)) if seccion.startswith("Jugadores") else (0, 0)
-            fila_sim(r, nombre, productos, lnb + lnf, 1.0, ventas)
+            ejemplo = VENTAS_EJEMPLO.get(k, (0, 0)) if seccion.startswith("Jugadores") else (0, 0)
+            fila_sim(r, nombre, productos, lnb + lnf, valores_de(seccion.upper(), nombre, (1.0,) + ejemplo))
             filas_datos.append(r)
             r += 1
-    celda(si, f"A{r}", "OTROS PRODUCTOS (SOLO VENTA, SIN CANJE)", f_sec)
+    celda(si, f"A{r}", OTROS, f_sec)
     r += 1
     for k, (nombre, l, precio, adicional, ref) in PRODUCTOS.items():
         if adicional:
-            fila_sim(r, nombre, [k], 0, None, VENTAS_OTROS.get(k, (0, 0)))
+            fila_sim(r, nombre, [k], 0, valores_de(OTROS, nombre, (None,) + VENTAS_OTROS.get(k, (0, 0))))
             filas_datos.append(r)
             r += 1
     primera, ultima = filas_datos[0], filas_datos[-1]
     tot = r + 1
-    celda(si, f"A{tot}", "TOTAL POR TEMPORADA", f_total, relleno=r_total)
-    for col in range(2, 23):
+    celda(si, f"A{tot}", "TOTAL DEL CONVENIO", f_total, relleno=r_total)
+    for col in range(2, 26):
         si.cell(tot, col).fill = r_total
-    for col in "CGHIJLMNPQRSTU":
-        celda(si, f"{col}{tot}", f"=SUM({col}{primera}:{col}{ultima})", f_total,
-              NUM if col in "CGJMN" else PESOS, r_total)
+    for col in "CGHIJLMNOQRSTUVWX":
+        celda(si, f"{col}{tot}", f"=SUM({col}{primera}:{col}{ultima})", f_total, NUM if col in "CGJNO" else PESOS, r_total)
     celda(si, f"F{tot}", f"=IF(C{tot}=0,0,G{tot}/C{tot})", f_total, PCT, r_total)
-    celda(si, f"V{tot}", f'=IF(H{tot}=0,"",T{tot}/H{tot})', f_total, VECES, r_total)
-    rojo = PatternFill("solid", fgColor="F6D5D0")
-    verde = PatternFill("solid", fgColor="D8EBD5")
-    rango = f"U{primera}:U{tot}"
-    si.conditional_formatting.add(rango, CellIsRule(operator="lessThan", formula=["0"], fill=rojo))
-    si.conditional_formatting.add(rango, CellIsRule(operator="greaterThan", formula=["0"], fill=verde))
+    celda(si, f"Y{tot}", f'=IF(H{tot}=0,"",W{tot}/H{tot})', f_total, VECES, r_total)
+    semaforo(si, f"X{primera}:X{tot}")
     dv = DataValidation(type="decimal", operator="between", formula1="0", formula2="1", allow_blank=True,
                         error="Ingresa un porcentaje entre 0% y 100%.", errorTitle="% de canje")
     si.add_data_validation(dv)
     dv.add(f"F{primera}:F{ultima}")
-    for col, ancho in zip("ABCDEFGHIJKLMNOPQRSTUV", (40, 34, 11, 12, 11, 9, 10, 15, 15, 12, 12, 14, 12, 11, 11, 14,
-                                                    14, 12, 15, 14, 17, 12)):
+
+    # totales destacados arriba de la tabla
+    tiles = [("A", "B", "VALOR TOTAL DEL CANJE (CON IVA)", f"=I{tot}"),
+             ("D", "I", "COMPRAS DE FORMATIVAS (CON IVA)", f"=Q{tot}"),
+             ("K", "P", "COMPRAS EN TIENDA (CON IVA)", f"=S{tot}"),
+             ("R", "X", "RESULTADO DEL CONVENIO", f"=X{tot}")]
+    for c0, c1, lbl, f in tiles:
+        si.merge_cells(f"{c0}3:{c1}3")
+        si.merge_cells(f"{c0}4:{c1}4")
+        celda(si, f"{c0}3", lbl, f_tile_lbl, relleno=r_tile)
+        celda(si, f"{c0}4", f, f_tile_val, PESOS, r_tile)
+        for fila in (3, 4):
+            si[f"{c0}{fila}"].alignment = Alignment(horizontal="left", vertical="center", indent=1)
+    si.row_dimensions[3].height = 18
+    si.row_dimensions[4].height = 30
+    semaforo(si, "R4")
+    for col, ancho in zip([chr(65 + i) for i in range(25)], (40, 34, 11, 12, 11, 9, 10, 15, 15, 12, 12, 15, 14, 12, 11,
+                                                            11, 16, 14, 16, 14, 12, 15, 14, 17, 12)):
         si.column_dimensions[col].width = ancho
-    si.freeze_panes = "C6"
-    pa["B16"], pa["B16"].number_format = f"=Simulación!N{tot}", NUM
+    si.freeze_panes = f"C{PRIMERA}"
+    pa["B16"], pa["B16"].number_format = f"=Simulación!O{tot}", NUM
     pa["B17"] = "=IF(B16=0,0,INDEX($C$10:$C$14,MATCH(B16,$B$10:$B$14,1)))"
     pa["B17"].number_format, pa["B17"].font = PCT, f_total
 
     # ---- Resumen
     rs = wb.create_sheet("Resumen", 0)
-    celda(rs, "A1", "LOS LEONES DE QUILPUÉ 2027: CANJE VERSUS RETORNO", f_tit)
-    celda(rs, "A2", "Uso interno. Se calcula con la hoja Simulación; ahí defines el % de canje y las ventas de cada prenda.", f_nota)
+    celda(rs, "A1", "LOS LEONES DE QUILPUÉ: CANJE VERSUS RETORNO DEL CONVENIO 2027 Y 2028", f_tit)
+    celda(rs, "A2", "Uso interno. Un solo canje para las dos temporadas y una sola compra de cada prenda en el convenio. "
+                    "Se calcula con la hoja Simulación.", f_nota)
     t = tot
     filas_res = [
-        ("EL CANJE", None, None),
-        ("Unidades solicitadas por el club", f"=Simulación!C{t}", NUM),
-        ("Unidades entregadas en canje", f"=Simulación!G{t}", NUM),
-        ("% de la solicitud entregado en canje", f"=Simulación!F{t}", PCT),
-        ("Valor comercial del canje (lo que recibe el club, con IVA)", f"=Simulación!I{t}", PESOS),
-        ("Inversión de Playmaker en el canje (costo)", f"=Simulación!H{t}", PESOS),
-        ("EL RETORNO", None, None),
-        ("Margen por las unidades que compra el club", f"=Simulación!L{t}", PESOS),
-        ("Margen por ventas a formativas", f"=Simulación!P{t}", PESOS),
-        ("Margen por ventas en la tienda (después del royalty)", f"=Simulación!S{t}", PESOS),
-        ("Royalty pagado al club por la tienda", f"=Simulación!R{t}", PESOS),
-        ("Retorno total", f"=Simulación!T{t}", PESOS),
-        ("RESULTADO", None, None),
-        ("Resultado por temporada (retorno menos inversión)", "=B15-B9", PESOS),
-        ("Retorno por cada $1 invertido en canje", '=IF(B9=0,"",B15/B9)', VECES),
-        ("Resultado del convenio completo", "=B17*Parámetros!B6", PESOS),
-        ("Margen promedio por unidad vendida (formativas y tienda)",
-         f"=IF(Simulación!M{t}+Simulación!N{t}=0,0,ROUND((B12+B13)/(Simulación!M{t}+Simulación!N{t}),0))", PESOS),
-        ("Unidades adicionales que habría que vender para cubrir el canje", '=IF(B17>=0,0,IF(B20=0,"",ROUNDUP(-B17/B20,0)))', NUM),
+        ("TOTALES DEL CONVENIO", None, None, None),
+        ("canje", "Valor total del canje (con IVA)", f"=Simulación!I{t}", PESOS),
+        ("tienda", "Valor total de compras en la tienda (con IVA)", f"=Simulación!S{t}", PESOS),
+        ("formativas", "Valor total de compras de las formativas (con IVA)", f"=Simulación!Q{t}", PESOS),
+        ("club", "Valor total de compras del club, lo no canjeado (con IVA)", f"=Simulación!L{t}", PESOS),
+        ("EL CANJE: UNA SOLA ENTREGA PARA LAS DOS TEMPORADAS", None, None, None),
+        ("u_sol", "Unidades solicitadas por el club", f"=Simulación!C{t}", NUM),
+        ("u_canje", "Unidades entregadas en canje", f"=Simulación!G{t}", NUM),
+        ("pct", "% de la solicitud entregado en canje", f"=Simulación!F{t}", PCT),
+        ("inversion", "Inversión de Playmaker en el canje (costo)", f"=Simulación!H{t}", PESOS),
+        ("EL RETORNO: UNA SOLA COMPRA DE CADA PRENDA EN EL CONVENIO", None, None, None),
+        ("m_club", "Margen por las unidades que compra el club", f"=Simulación!M{t}", PESOS),
+        ("m_form", "Margen por ventas a formativas", f"=Simulación!R{t}", PESOS),
+        ("m_tienda", "Margen por ventas en la tienda (después del royalty)", f"=Simulación!V{t}", PESOS),
+        ("royalty", "Royalty pagado al club por la tienda", f"=Simulación!U{t}", PESOS),
+        ("retorno", "Retorno total", f"=Simulación!W{t}", PESOS),
+        ("RESULTADO", None, None, None),
+        ("resultado", "Resultado del convenio completo (retorno menos inversión)", "={retorno}-{inversion}", PESOS),
+        ("roi", "Retorno por cada $1 invertido en canje", '=IF({inversion}=0,"",{retorno}/{inversion})', VECES),
+        ("promedio", "Resultado promedio por temporada", '=IF(Parámetros!B6=0,"",{resultado}/Parámetros!B6)', PESOS),
+        ("margen_u", "Margen promedio por unidad vendida (formativas y tienda)",
+         f"=IF(Simulación!N{t}+Simulación!O{t}=0,0,ROUND(({{m_form}}+{{m_tienda}})/(Simulación!N{t}+Simulación!O{t}),0))", PESOS),
+        ("faltan", "Unidades adicionales que habría que vender para cubrir el canje",
+         '=IF({resultado}>=0,0,IF({margen_u}=0,"",ROUNDUP(-{resultado}/{margen_u},0)))', NUM),
     ]
-    for i, (txt, f, fmt) in enumerate(filas_res):
-        rr = 4 + i
-        if f is None:
-            celda(rs, f"A{rr}", txt, f_sec)
+    filas_rs = {}
+    rr = 4
+    for clave_r, txt, f, fmt in filas_res:
+        if txt is not None:
+            filas_rs[clave_r] = rr
+        rr += 1
+    rr = 4
+    refs = {k: f"B{v}" for k, v in filas_rs.items()}
+    for clave_r, txt, f, fmt in filas_res:
+        if txt is None:
+            celda(rs, f"A{rr}", clave_r, f_sec)
+            rr += 1
             continue
-        destacado = txt.startswith(("Resultado", "Inversión", "Retorno total"))
-        celda(rs, f"A{rr}", txt, f_total if destacado else f_norm, relleno=r_total if destacado else None)
-        celda(rs, f"B{rr}", f, f_total if destacado else f_norm, fmt, r_total if destacado else None)
+        f = f.format(**refs)
+        grande = clave_r in ("canje", "tienda", "formativas", "club")
+        destacado = clave_r in ("inversion", "retorno", "resultado")
+        fuente = Font(name="Arial", size=12, bold=True, color=NAVY) if grande else (f_total if destacado else f_norm)
+        relleno = r_tile if grande else (r_total if destacado else None)
+        celda(rs, f"A{rr}", txt, fuente, relleno=relleno)
+        celda(rs, f"B{rr}", f, fuente, fmt, relleno)
         rs[f"A{rr}"].border = rs[f"B{rr}"].border = linea
-    rs.conditional_formatting.add("B17", CellIsRule(operator="lessThan", formula=["0"], fill=rojo))
-    rs.conditional_formatting.add("B17", CellIsRule(operator="greaterThan", formula=["0"], fill=verde))
-    rs.conditional_formatting.add("B19", CellIsRule(operator="lessThan", formula=["0"], fill=rojo))
-    rs.conditional_formatting.add("B19", CellIsRule(operator="greaterThan", formula=["0"], fill=verde))
+        if grande:
+            rs.row_dimensions[rr].height = 22
+        rr += 1
+    for k in ("resultado", "promedio"):
+        semaforo(rs, refs[k])
     rs.column_dimensions["A"].width = 64
-    rs.column_dimensions["B"].width = 18
+    rs.column_dimensions["B"].width = 20
 
     for ws in wb.worksheets:
         ws.sheet_view.showGridLines = False
