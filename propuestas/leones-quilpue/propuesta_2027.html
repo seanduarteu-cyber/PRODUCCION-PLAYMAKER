@@ -1,0 +1,288 @@
+<!doctype html>
+<!-- Generado por generar_propuesta.py: no editar a mano. -->
+<html lang="es"><head><meta charset="utf-8"><title>Propuesta 2027 para Los Leones de Quilpué</title>
+<style>
+/* Estilo de la propuesta 2027 para Los Leones de Quilpué (lo usa generar_propuesta.py). */
+@font-face { font-family: "Poppins"; font-weight: 400; src: url("../_recursos/fonts/Poppins-Regular.ttf"); }
+@font-face { font-family: "Poppins"; font-weight: 600; src: url("../_recursos/fonts/Poppins-SemiBold.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 700; src: url("../_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 400; src: url("../_recursos/fonts/PlayfairDisplay-Regular.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+@page { size: A4; margin: 0; }
+:root { --navy: #141E3C; --oro: #B1A542; --marfil: #F7F3E7; --texto: #1C2233; --suave: #3A3F52; --gris: #6E7280; --linea: #DCD8CB; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: #fff; }
+body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; padding: 21mm 20mm 0; background: #fff; }
+.page:last-child { page-break-after: auto; }
+.page::before { content: ""; position: absolute; inset: 7mm; border: 0.6pt solid var(--oro); pointer-events: none; }
+.page.marfil { background: var(--marfil); }
+
+.cab { display: flex; justify-content: space-between; font-size: 6.6pt; letter-spacing: 2.4px; padding-bottom: 7px; border-bottom: 0.6pt solid var(--linea); }
+.cab b { color: var(--oro); font-weight: 600; }
+.cab span { color: var(--gris); }
+.pie { position: absolute; left: 20mm; right: 20mm; bottom: 12mm; display: flex; align-items: center; justify-content: space-between;
+       border-top: 0.6pt solid var(--linea); padding-top: 6px; font-size: 5.6pt; letter-spacing: 1.6px; color: var(--gris); }
+.pie img { height: 9px; }
+.pie .num { font-family: "Playfair"; font-size: 8.5pt; letter-spacing: 0; color: var(--navy); }
+
+h1 { font-family: "Playfair"; font-weight: 700; font-size: 23pt; color: var(--navy); margin-top: 16px; line-height: 1.15; }
+h2 { font-size: 7.4pt; font-weight: 600; letter-spacing: 2.4px; color: var(--oro); margin-top: 16px; padding-bottom: 5px; border-bottom: 0.6pt solid var(--linea); }
+.intro { font-size: 9.2pt; line-height: 1.65; margin-top: 12px; }
+.nota { font-size: 7.4pt; color: var(--gris); margin-top: 6px; font-style: italic; }
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+ul.puntos { list-style: none; margin-top: 8px; }
+ul.puntos li { font-size: 8.4pt; line-height: 1.5; color: var(--suave); padding-left: 12px; position: relative; margin-bottom: 5px; }
+ul.puntos li::before { content: ""; position: absolute; left: 0; top: 6px; width: 4px; height: 4px; background: var(--oro); }
+ul.puntos.chica li { font-size: 7.6pt; }
+
+/* tablas */
+table.tabla { width: 100%; border-collapse: collapse; margin-top: 10px; }
+table.tabla th { background: var(--navy); color: var(--marfil); font-size: 6.4pt; letter-spacing: 1.4px; font-weight: 600; text-align: left; padding: 7px 10px; }
+table.tabla td { font-size: 8.5pt; padding: 7px 10px; border-bottom: 0.6pt solid var(--linea); vertical-align: top; line-height: 1.4; }
+table.tabla .n { text-align: right; white-space: nowrap; }
+table.tabla .b { font-weight: 600; color: var(--navy); }
+table.tabla tr.total td { background: var(--navy); color: var(--marfil); font-weight: 600; border-bottom: 0; }
+table.tabla tr.sec td { font-size: 6.6pt; letter-spacing: 2px; color: var(--oro); font-weight: 600; padding-top: 10px; padding-bottom: 4px; }
+table.detalle td { padding-top: 4px; padding-bottom: 4px; font-size: 8.2pt; }
+table.detalle tr.sec td { padding-top: 8px; }
+.suave { color: var(--gris); font-size: 7.6pt; }
+.tag { font-size: 5.8pt; letter-spacing: 1.2px; font-weight: 600; color: var(--navy); background: var(--marfil); border: 0.6pt solid var(--oro); padding: 1px 5px; margin-left: 6px; vertical-align: 1px; }
+
+/* portada y cierre */
+.portada { background: var(--navy); color: var(--marfil); text-align: center; padding-top: 30mm; }
+.portada::after { content: ""; position: absolute; inset: 9.5mm; border: 0.4pt solid rgba(177,165,66,.55); pointer-events: none; }
+.portada .logo { height: 30px; }
+.portada .kicker { margin-top: 30mm; font-size: 8.5pt; font-weight: 600; letter-spacing: 4px; color: var(--oro); }
+.portada h1 { color: var(--marfil); font-size: 31pt; margin-top: 12px; }
+.portada .sub { font-family: "Playfair"; font-style: italic; font-size: 12pt; color: #C9C4B4; margin: 14px auto 0; width: 140mm; line-height: 1.5; }
+.portada .regla { width: 40mm; height: 0.8pt; background: var(--oro); margin: 16mm auto 0; }
+.ligas { display: flex; justify-content: center; gap: 0; margin: 12mm auto 0; width: 150mm; }
+.ligas div { flex: 1; padding: 0 8px; border-right: 0.6pt solid rgba(177,165,66,.5); }
+.ligas div:last-child { border-right: 0; }
+.ligas b { display: block; font-family: "Playfair"; font-size: 22pt; color: var(--marfil); }
+.ligas span { font-size: 7.4pt; letter-spacing: 1px; color: #C9C4B4; }
+.portada .firma { margin-top: 26mm; }
+.firma small { display: block; font-size: 7pt; letter-spacing: 3px; color: var(--oro); font-weight: 600; margin-bottom: 6px; }
+.firma b { display: block; font-family: "Playfair"; font-size: 15pt; color: var(--marfil); }
+.firma span { display: block; font-size: 8.4pt; color: #A9A492; margin-top: 4px; }
+.portada .pie { border-top-color: rgba(247,243,231,.25); color: #C9C4B4; }
+.portada .pie img { filter: brightness(0) invert(1); }
+.portada .pie .num { color: var(--marfil); }
+.cierre { padding-top: 32mm; }
+.cierre .kicker { margin-top: 0; }
+.pasos-cierre { width: 140mm; margin: 16mm auto 0; text-align: left; }
+.pasos-cierre > div { display: flex; gap: 16px; padding: 13px 0; border-bottom: 0.6pt solid rgba(247,243,231,.2); }
+.pasos-cierre em { font-family: "Playfair"; font-style: normal; font-weight: 700; font-size: 19pt; color: var(--oro); width: 30px; }
+.pasos-cierre b { display: block; font-size: 10pt; color: var(--marfil); }
+.pasos-cierre p { font-size: 8.2pt; color: #C9C4B4; margin-top: 3px; line-height: 1.5; }
+.cierre .lema { font-family: "Playfair"; font-style: italic; font-size: 14pt; color: var(--marfil); margin-top: 18mm; }
+.cierre .firma { margin-top: 10mm; }
+
+/* página de la propuesta en tres partes */
+.pilares { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+.pilares > div { background: #fff; border: 0.6pt solid var(--linea); border-top: 3px solid var(--oro); padding: 14px 13px 13px; display: flex; flex-direction: column; }
+.pilares em { font-family: "Playfair"; font-style: normal; font-weight: 700; font-size: 20pt; color: var(--oro); }
+.pilares b { font-size: 10pt; color: var(--navy); margin-top: 4px; line-height: 1.3; }
+.pilares p { font-size: 8pt; line-height: 1.5; color: var(--suave); margin-top: 6px; flex: 1; }
+.pilares span { font-size: 7pt; letter-spacing: 1.2px; font-weight: 600; color: var(--navy); margin-top: 10px; padding-top: 7px; border-top: 0.6pt solid var(--linea); }
+.criterios { background: var(--navy); margin: 18px -6mm 0; padding: 16px 6mm 12px; position: relative; }
+.criterios::before { content: ""; position: absolute; inset: 6px; border: 0.6pt solid var(--oro); }
+.criterios h2 { color: var(--oro); border: 0; margin: 2px 0 8px 4mm; padding: 0; }
+.criterios .fila { display: grid; grid-template-columns: 30mm 1fr; padding: 0 4mm; margin-bottom: 8px; position: relative; }
+.criterios .fila b { font-size: 6.6pt; letter-spacing: 1.4px; color: var(--marfil); font-weight: 600; padding-top: 1px; }
+.criterios .fila p { font-size: 8pt; line-height: 1.5; color: #C9C4B4; }
+
+/* canje */
+.cifra { display: grid; grid-template-columns: 78mm 1fr; gap: 14px; align-items: center; margin-top: 14px; }
+.cifra > div { background: var(--marfil); border-left: 3px solid var(--oro); padding: 11px 14px; }
+.cifra small { display: block; font-size: 6.6pt; letter-spacing: 2px; color: var(--oro); font-weight: 600; }
+.cifra b { display: block; font-family: "Playfair"; font-size: 22pt; color: var(--navy); margin-top: 2px; }
+.cifra span { font-size: 7.4pt; color: var(--gris); }
+.cifra p { font-size: 8.2pt; line-height: 1.55; color: var(--suave); }
+.aportes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 6px; }
+.nota-caja { margin-top: 20px; background: var(--navy); color: var(--marfil); padding: 12px 14px; font-size: 8.6pt; line-height: 1.55; }
+.nota-caja b { display: block; color: var(--oro); font-size: 6.8pt; letter-spacing: 2px; margin-bottom: 3px; }
+
+/* formativas y tienda */
+.categorias { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-top: 10px; }
+.categorias div { background: var(--navy); color: var(--marfil); text-align: center; padding: 10px 0; font-family: "Playfair"; font-weight: 700; font-size: 12pt; }
+.pasos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 10px; }
+.pasos em { font-family: "Playfair"; font-style: normal; font-weight: 700; font-size: 18pt; color: var(--oro); }
+.pasos b { display: block; font-size: 8.6pt; color: var(--navy); margin-top: 2px; }
+.pasos p { font-size: 7.8pt; line-height: 1.5; color: var(--suave); margin-top: 4px; }
+.banda { background: var(--navy); margin-top: 16px; padding: 16px; text-align: center; position: relative; }
+.banda::before { content: ""; position: absolute; inset: 6px; border: 0.6pt solid var(--oro); }
+.banda small { display: block; font-size: 7pt; letter-spacing: 2.4px; color: var(--oro); font-weight: 600; }
+.banda b { display: block; font-family: "Playfair"; font-size: 17pt; color: var(--marfil); margin-top: 4px; }
+.detalle-canje { gap: 12px; align-items: start; }
+.detalle-canje table.detalle td { font-size: 7.6pt; padding: 4px 6px; }
+.detalle-canje table.tabla th { padding: 6px; }
+.total-canje { grid-template-columns: 1fr; }
+</style></head><body>
+<section class="page portada">
+  <img class="logo" src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker">
+  <div class="kicker">PROPUESTA COMERCIAL 2027</div>
+  <h1>Club Deportivo Colegio<br>Los Leones de Quilpué</h1>
+  <p class="sub">Proveedor técnico oficial de los primeros equipos, el cuerpo técnico y las series formativas, con tienda oficial para socios e hinchas</p>
+  <div class="regla"></div>
+  <div class="ligas"><div><b>LNB</b><span>Liga Nacional de Básquetbol</span></div><div><b>LNF</b><span>Liga Nacional Femenina</span></div><div><b>6</b><span>categorías formativas</span></div></div>
+  <div class="firma"><small>PRESENTADA POR</small><b>Sean Duarte</b><span>Playmaker SpA, sduarte@playmaker.cl, +56 9 3928 3323</span><span>Santiago, 18 de noviembre de 2026. Validez: 30 días</span></div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">01</span></div>
+</section>
+<section class="page marfil">
+  <div class="cab"><b>SECCIÓN 01</b><span>LA PROPUESTA</span></div>
+  <h1>Una propuesta en tres partes</h1>
+  <p class="intro">Playmaker propone ser el proveedor técnico oficial de Los Leones de Quilpué desde la temporada 2027: vestir a
+    los dos primeros equipos y a su cuerpo técnico, equipar a todas las series formativas y abrir una tienda oficial del club en
+    playmaker.cl, con un ingreso para el club por cada venta.</p>
+  <div class="pilares">
+    <div><em>01</em><b>Canje para los primeros equipos</b><p>Indumentaria de juego, entrenamiento, presentación y viaje para los planteles de la LNB y la LNF y su cuerpo técnico, sin costo para el club.</p><span>720 prendas por temporada</span></div>
+    <div><em>02</em><b>Series formativas</b><p>Kits de juego, entrenamiento y presentación para todas las categorías, con precio preferencial y pedidos por categoría.</p><span>De Sub-11 a Sub-20</span></div>
+    <div><em>03</em><b>Tienda oficial del club</b><p>Toda la indumentaria del club a la venta en playmaker.cl para socios, familias e hinchas, sin stock ni costo para el club.</p><span>Royalty de 11% a 15%</span></div>
+  </div>
+  <div class="criterios">
+    <h2>CRITERIOS COMUNES A TODA LA PROPUESTA</h2>
+    <div class="fila"><b>IDENTIDAD</b><p>Escudo, colores del club (rojo, blanco, negro y azul) y diseño exclusivo para cada prenda, aprobado por el club antes de producir.</p></div>
+    <div class="fila"><b>IMPRESIÓN</b><p>Sublimación total en las prendas de juego y entrenamiento: el diseño no se despega, no se agrieta ni pierde color con el uso o el lavado.</p></div>
+    <div class="fila"><b>TALLAJE</b><p>Curva completa para adultos, de XS a 4XL, con moldes de hombre y de mujer, y tallas infantiles para las formativas.</p></div>
+    <div class="fila"><b>PRODUCCIÓN</b><p>Fabricación a pedido en planta propia en Santiago, con entregas en 10 a 15 días hábiles desde la aprobación del diseño.</p></div>
+    <div class="fila"><b>ATENCIÓN</b><p>Un ejecutivo de Playmaker dedicado al club para pedidos, cambios de talla y seguimiento.</p></div>
+  </div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">02</span></div>
+</section>
+<section class="page">
+  <div class="cab"><b>SECCIÓN 02</b><span>CANJE PRIMEROS EQUIPOS</span></div>
+  <h1>Canje para los primeros equipos y el cuerpo técnico</h1>
+  <p class="intro">Playmaker entrega sin costo para el club toda la indumentaria de la temporada 2027 que el club solicitó para los
+    planteles de la Liga Nacional de Básquetbol y la Liga Nacional Femenina, y para su cuerpo técnico y delegación.</p>
+  <table class="tabla">
+    <tr><th>GRUPO</th><th class="n">PRENDAS</th><th class="n">LNB</th><th class="n">LNF</th><th class="n">TOTAL</th></tr>
+    <tr><td>Jugadores: indumentaria de juego</td><td class='n'>11</td><td class='n'>142</td><td class='n'>137</td><td class='n b'>279</td></tr><tr><td>Jugadores: presentación y viaje</td><td class='n'>6</td><td class='n'>102</td><td class='n'>99</td><td class='n b'>201</td></tr><tr><td>Jugadores: entrenamiento</td><td class='n'>1</td><td class='n'>19</td><td class='n'>17</td><td class='n b'>36</td></tr><tr><td>Cuerpo técnico: presentación en cancha</td><td class='n'>2</td><td class='n'>8</td><td class='n'>8</td><td class='n b'>16</td></tr><tr><td>Cuerpo técnico: entrenamiento</td><td class='n'>5</td><td class='n'>50</td><td class='n'>30</td><td class='n b'>80</td></tr><tr><td>Cuerpo técnico: viaje y delegación</td><td class='n'>6</td><td class='n'>72</td><td class='n'>36</td><td class='n b'>108</td></tr>
+    <tr class="total"><td>Total de unidades por temporada</td><td></td><td class="n">393</td><td class="n">327</td><td class="n">720</td></tr>
+  </table>
+  <div class="cifra"><div><small>VALOR COMERCIAL DEL CANJE</small><b>$17.873.400</b><span>por temporada, a precio de lista con IVA incluido</span></div>
+    <p>El detalle por prenda está en la página siguiente. Las cantidades corresponden a la solicitud entregada por el club.</p></div>
+  <div class="dos">
+    <div><h2>QUÉ INCLUYE</h2><ul class="puntos">
+      <li>Diseño exclusivo de cada uniforme y prenda, aprobado por el club.</li>
+      <li>Nombre y número en las prendas de juego.</li>
+      <li>Tallas según la curva entregada por el club, con moldes de hombre y de mujer.</li>
+      <li>Entrega consolidada en el club antes del inicio de la temporada.</li></ul></div>
+    <div><h2>CONDICIONES</h2><ul class="puntos">
+      <li>Cantidades según la solicitud del club para la temporada 2027.</li>
+      <li>Cambios de talla sin costo dentro de los 15 días siguientes a la entrega.</li>
+      <li>Incorporaciones y reposiciones durante la temporada, a precio de formativas.</li>
+      <li>Convenio por dos temporadas, 2027 y 2028, con revisión anual de cantidades.</li></ul></div>
+  </div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">03</span></div>
+</section>
+<section class="page">
+  <div class="cab"><b>SECCIÓN 02</b><span>DETALLE DEL CANJE</span></div>
+  <h1>Detalle del canje</h1>
+  <p class="intro">Unidades por prenda para cada plantel, según la solicitud del club. LNB: plantel masculino. LNF: plantel femenino.</p>
+  <div class="dos detalle-canje">
+    <div><table class='tabla detalle'><tr><th>JUGADORES</th><th class='n'>LNB</th><th class='n'>LNF</th><th class='n'>TOTAL</th></tr><tr class='sec'><td colspan='4'>INDUMENTARIA DE JUEGO</td></tr><tr><td>Camiseta de juego roja</td><td class='n'>18</td><td class='n'>17</td><td class='n b'>35</td></tr><tr><td>Short de juego rojo</td><td class='n'>18</td><td class='n'>18</td><td class='n b'>36</td></tr><tr><td>Camiseta de juego azul</td><td class='n'>18</td><td class='n'></td><td class='n b'>18</td></tr><tr><td>Short de juego azul</td><td class='n'>18</td><td class='n'></td><td class='n b'>18</td></tr><tr><td>Polera de calentamiento azul</td><td class='n'>17</td><td class='n'></td><td class='n b'>17</td></tr><tr><td>Camiseta de juego blanca</td><td class='n'>18</td><td class='n'>17</td><td class='n b'>35</td></tr><tr><td>Short de juego blanco</td><td class='n'>18</td><td class='n'>17</td><td class='n b'>35</td></tr><tr><td>Polera de calentamiento blanca</td><td class='n'>17</td><td class='n'>17</td><td class='n b'>34</td></tr><tr><td>Camiseta de juego negra</td><td class='n'></td><td class='n'>17</td><td class='n b'>17</td></tr><tr><td>Short de juego negro</td><td class='n'></td><td class='n'>17</td><td class='n b'>17</td></tr><tr><td>Polera de calentamiento roja</td><td class='n'></td><td class='n'>17</td><td class='n b'>17</td></tr><tr class='sec'><td colspan='4'>PRESENTACIÓN Y VIAJE</td></tr><tr><td>Polera de viaje 1 (polo piqué)</td><td class='n'>17</td><td class='n'>16</td><td class='n b'>33</td></tr><tr><td>Polera de viaje 2 (polera de algodón)</td><td class='n'>17</td><td class='n'>17</td><td class='n b'>34</td></tr><tr><td>Polerón de buzo</td><td class='n'>17</td><td class='n'>17</td><td class='n b'>34</td></tr><tr><td>Pantalón de buzo</td><td class='n'>17</td><td class='n'>17</td><td class='n b'>34</td></tr><tr><td>Chaqueta de viaje</td><td class='n'>17</td><td class='n'>16</td><td class='n b'>33</td></tr><tr><td>Short de viaje</td><td class='n'>17</td><td class='n'>16</td><td class='n b'>33</td></tr><tr class='sec'><td colspan='4'>ENTRENAMIENTO</td></tr><tr><td>Camiseta reversible (colores A y B) con short</td><td class='n'>19</td><td class='n'>17</td><td class='n b'>36</td></tr><tr class='total'><td>Subtotal</td><td class='n'>263</td><td class='n'>253</td><td class='n'>516</td></tr></table></div>
+    <div><table class='tabla detalle'><tr><th>CUERPO TÉCNICO</th><th class='n'>LNB</th><th class='n'>LNF</th><th class='n'>TOTAL</th></tr><tr class='sec'><td colspan='4'>PRESENTACIÓN EN CANCHA</td></tr><tr><td>Polera blanca para dirigir (polo piqué)</td><td class='n'>4</td><td class='n'>4</td><td class='n b'>8</td></tr><tr><td>Polera azul para dirigir (polo piqué)</td><td class='n'>4</td><td class='n'>4</td><td class='n b'>8</td></tr><tr class='sec'><td colspan='4'>ENTRENAMIENTO</td></tr><tr><td>Polera de entrenamiento 1</td><td class='n'>10</td><td class='n'>6</td><td class='n b'>16</td></tr><tr><td>Polera de entrenamiento 2</td><td class='n'>10</td><td class='n'>6</td><td class='n b'>16</td></tr><tr><td>Polerón de entrenamiento</td><td class='n'>10</td><td class='n'>6</td><td class='n b'>16</td></tr><tr><td>Short de entrenamiento</td><td class='n'>10</td><td class='n'>6</td><td class='n b'>16</td></tr><tr><td>Pantalón de buzo de entrenamiento</td><td class='n'>10</td><td class='n'>6</td><td class='n b'>16</td></tr><tr class='sec'><td colspan='4'>VIAJE Y DELEGACIÓN</td></tr><tr><td>Polera de viaje 1 (polo piqué)</td><td class='n'>12</td><td class='n'>6</td><td class='n b'>18</td></tr><tr><td>Polera de viaje 2 (polera de algodón)</td><td class='n'>12</td><td class='n'>6</td><td class='n b'>18</td></tr><tr><td>Polerón de viaje</td><td class='n'>12</td><td class='n'>6</td><td class='n b'>18</td></tr><tr><td>Pantalón de viaje</td><td class='n'>12</td><td class='n'>6</td><td class='n b'>18</td></tr><tr><td>Short de viaje</td><td class='n'>12</td><td class='n'>6</td><td class='n b'>18</td></tr><tr><td>Chaqueta de viaje</td><td class='n'>12</td><td class='n'>6</td><td class='n b'>18</td></tr><tr class='total'><td>Subtotal</td><td class='n'>130</td><td class='n'>74</td><td class='n'>204</td></tr></table></div>
+  </div>
+  <div class="cifra total-canje"><div><small>TOTAL DEL CANJE POR TEMPORADA</small><b>720 prendas</b><span>393 para la LNB y 327 para la LNF</span></div></div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">04</span></div>
+</section>
+<section class="page">
+  <div class="cab"><b>SECCIÓN 02</b><span>CONVENIO</span></div>
+  <h1>Lo que aporta cada parte</h1>
+  <p class="intro">El canje de los primeros equipos es parte de un convenio de proveedor técnico oficial por dos temporadas. Estas
+    son las bases que proponemos para conversar con el club.</p>
+  <div class="aportes">
+    <div><h2>PLAYMAKER APORTA</h2><ul class="puntos">
+      <li>El canje completo de los primeros equipos, el cuerpo técnico y la delegación.</li>
+      <li>Diseño exclusivo de toda la línea del club, con los colores y el escudo oficiales.</li>
+      <li>Precios preferenciales y atención directa para las series formativas.</li>
+      <li>La tienda oficial del club en playmaker.cl, sin stock ni costo para el club.</li>
+      <li>Royalty para el club por cada venta de la tienda, con liquidación transparente.</li>
+      <li>Producción en planta propia en Santiago y un ejecutivo dedicado al club.</li></ul></div>
+    <div><h2>EL CLUB APORTA</h2><ul class="puntos">
+      <li>Nombrar a Playmaker proveedor técnico oficial del club.</li>
+      <li>Logo Playmaker en los uniformes de juego, calentamiento y presentación de ambos primeros equipos.</li>
+      <li>Exclusividad de indumentaria para primeros equipos, formativas y tienda oficial durante el convenio.</li>
+      <li>Difusión en las redes del club del lanzamiento de los uniformes y de cada preventa.</li>
+      <li>Espacio de marca en el gimnasio del club.</li>
+      <li>Una sesión de fotos y video con jugadores de ambos planteles para campañas.</li></ul></div>
+  </div>
+  <div class="nota-caja"><b>VIGENCIA</b>Temporadas 2027 y 2028. Al cierre de cada temporada se revisan las cantidades del canje según los planteles y las necesidades del club.</div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">05</span></div>
+</section>
+<section class="page">
+  <div class="cab"><b>SECCIÓN 03</b><span>SERIES FORMATIVAS</span></div>
+  <h1>Series formativas</h1>
+  <p class="intro">Todas las categorías del club con la misma identidad de los primeros equipos. Las familias compran a precio
+    preferencial en la tienda oficial, con un código por categoría, y Playmaker entrega los pedidos consolidados en el club.</p>
+  <h2>CATEGORÍAS</h2>
+  <div class="categorias"><div>Sub-11</div><div>Sub-13</div><div>Sub-14</div><div>Sub-16</div><div>Sub-18</div><div>Sub-20</div></div>
+  <p class="nota">Damas y varones. Tallas infantiles y de adulto según la edad de cada categoría.</p>
+  <h2>KITS SUGERIDOS</h2>
+  <table class="tabla">
+    <tr><th>KIT</th><th class="n">PRECIO FORMATIVAS</th><th class="n">PRECIO TIENDA</th></tr>
+    <tr><td><b>Kit de juego</b><br><span class='suave'>Camiseta y short de juego</span></td><td class='n b'>$35.800</td><td class='n'>$39.800</td></tr><tr><td><b>Kit de entrenamiento</b><br><span class='suave'>Camiseta reversible y short</span></td><td class='n b'>$41.800</td><td class='n'>$46.800</td></tr><tr><td><b>Buzo del club</b><br><span class='suave'>Polerón y pantalón de buzo</span></td><td class='n b'>$53.800</td><td class='n'>$59.800</td></tr><tr><td><b>Polerón del club</b><br><span class='suave'>Polerón hoodie</span></td><td class='n b'>$26.900</td><td class='n'>$29.900</td></tr>
+  </table>
+  <p class="nota">Precios por kit en pesos chilenos con IVA incluido. Cada prenda también se puede comprar por separado (ver catálogo).</p>
+  <h2>CÓMO FUNCIONA</h2>
+  <div class="pasos">
+    <div><em>01</em><b>Código por categoría</b><p>Cada categoría recibe un código para comprar a precio preferencial.</p></div>
+    <div><em>02</em><b>Compra en línea</b><p>Las familias eligen prendas y tallas en playmaker.cl y pagan en línea.</p></div>
+    <div><em>03</em><b>Producción por lote</b><p>Al cierre de cada período de compra se fabrica todo lo vendido.</p></div>
+    <div><em>04</em><b>Entrega en el club</b><p>Los pedidos llegan al club separados por categoría y jugador.</p></div>
+  </div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">06</span></div>
+</section>
+<section class="page marfil">
+  <div class="cab"><b>SECCIÓN 04</b><span>TIENDA OFICIAL</span></div>
+  <h1>Tienda oficial Los Leones en playmaker.cl</h1>
+  <p class="intro">Una vitrina propia del club en playmaker.cl, dentro de la sección de clubes e instituciones, donde socios,
+    familias e hinchas compran la indumentaria oficial. Playmaker se encarga del cobro, la producción y la entrega; el club
+    recibe un royalty por cada venta, sin invertir en stock.</p>
+  <div class="banda"><small>PARA SOCIOS E HINCHAS</small><b>El 11% de cada compra va directo a Los Leones</b></div>
+  <div class="dos">
+    <div><h2>ROYALTY PARA EL CLUB</h2>
+      <table class="tabla"><tr><th>UNIDADES VENDIDAS EN LA TEMPORADA</th><th class="n">ROYALTY</th></tr><tr><td>Hasta 100 unidades</td><td class='n b'>11%</td></tr><tr><td>De 101 a 200 unidades</td><td class='n b'>12%</td></tr><tr><td>De 201 a 350 unidades</td><td class='n b'>13%</td></tr><tr><td>De 351 a 500 unidades</td><td class='n b'>14%</td></tr><tr><td>Más de 500 unidades</td><td class='n b'>15%</td></tr></table>
+      <ul class="puntos chica">
+        <li>El porcentaje del tramo alcanzado se aplica a todas las unidades de la temporada.</li>
+        <li>Se calcula sobre la venta neta: sin IVA y descontadas las devoluciones.</li>
+        <li>Si el club lo recibe en productos, se suma un 30% en crédito para indumentaria.</li></ul></div>
+    <div><h2>TRANSPARENCIA Y PAGOS</h2><ul class="puntos">
+      <li>Liquidación al cierre de cada preventa con el detalle de cada venta: producto, talla, monto neto y royalty.</li>
+      <li>Respaldo con la exportación directa de la plataforma de pago.</li>
+      <li>Pago en 15 días desde el cierre, por transferencia o en crédito con el bono.</li>
+      <li>El club puede pedir el respaldo de cualquier venta en cualquier momento.</li>
+      <li>Las compras de las formativas a precio preferencial no generan royalty: ese beneficio va directo a las familias.</li></ul></div>
+  </div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">07</span></div>
+</section>
+<section class="page">
+  <div class="cab"><b>SECCIÓN 05</b><span>CATÁLOGO Y PRECIOS</span></div>
+  <h1>Catálogo y precios 2027</h1>
+  <p class="intro">Toda la línea del club, con las prendas de la solicitud y otras que proponemos sumar (marcadas como nuevas).
+    Precios por unidad en pesos chilenos con IVA incluido.</p>
+  <table class="tabla detalle">
+    <tr><th>PRENDA</th><th class="n">PRECIO FORMATIVAS</th><th class="n">PRECIO TIENDA OFICIAL</th></tr>
+    <tr class='sec'><td colspan='3'>JUEGO</td></tr><tr><td>Camiseta de juego</td><td class='n b'>$18.900</td><td class='n'>$20.900</td></tr><tr><td>Short de juego</td><td class='n b'>$16.900</td><td class='n'>$18.900</td></tr><tr><td>Polera de calentamiento</td><td class='n b'>$17.900</td><td class='n'>$19.900</td></tr><tr><td>Calcetas de juego <span class='tag'>NUEVA</span></td><td class='n b'>$9.900</td><td class='n'>$10.900</td></tr><tr class='sec'><td colspan='3'>ENTRENAMIENTO</td></tr><tr><td>Camiseta reversible</td><td class='n b'>$24.900</td><td class='n'>$27.900</td></tr><tr><td>Short de entrenamiento</td><td class='n b'>$16.900</td><td class='n'>$18.900</td></tr><tr><td>Polera de entrenamiento</td><td class='n b'>$17.900</td><td class='n'>$19.900</td></tr><tr><td>Polerón de entrenamiento medio cierre</td><td class='n b'>$30.900</td><td class='n'>$33.900</td></tr><tr class='sec'><td colspan='3'>PRESENTACIÓN Y VIAJE</td></tr><tr><td>Pantalón de buzo</td><td class='n b'>$22.900</td><td class='n'>$25.900</td></tr><tr><td>Polerón de buzo con cierre</td><td class='n b'>$30.900</td><td class='n'>$33.900</td></tr><tr><td>Chaqueta de viaje</td><td class='n b'>$35.900</td><td class='n'>$39.900</td></tr><tr><td>Polo piqué</td><td class='n b'>$21.900</td><td class='n'>$23.900</td></tr><tr><td>Polera de algodón</td><td class='n b'>$14.900</td><td class='n'>$16.900</td></tr><tr><td>Short de viaje</td><td class='n b'>$19.900</td><td class='n'>$21.900</td></tr><tr class='sec'><td colspan='3'>SOCIOS E HINCHAS</td></tr><tr><td>Polerón hoodie <span class='tag'>NUEVA</span></td><td class='n b'>$26.900</td><td class='n'>$29.900</td></tr><tr><td>Polerón algodón basic <span class='tag'>NUEVA</span></td><td class='n b'>$20.900</td><td class='n'>$22.900</td></tr><tr><td>Cortaviento <span class='tag'>NUEVA</span></td><td class='n b'>$32.900</td><td class='n'>$36.900</td></tr><tr><td>Parka larga impermeable <span class='tag'>NUEVA</span></td><td class='n b'>$71.900</td><td class='n'>$79.900</td></tr>
+  </table>
+  <p class="nota">El precio formativas aplica a jugadores de las series del club con el código de su categoría. El precio de la tienda oficial aplica a socios, familias e hinchas.</p>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">08</span></div>
+</section>
+<section class="page portada cierre">
+  <div class="kicker">PRÓXIMOS PASOS</div>
+  <h1>De la propuesta a la cancha</h1>
+  <div class="pasos-cierre">
+    <div><em>01</em><div><b>Revisión de la propuesta</b><p>El club revisa el canje, las condiciones y los precios, y define sus comentarios.</p></div></div>
+    <div><em>02</em><div><b>Diseño de la línea 2027</b><p>Playmaker presenta los diseños de cada uniforme y prenda para su aprobación.</p></div></div>
+    <div><em>03</em><div><b>Firma del convenio</b><p>Se acuerdan las bases del convenio por las temporadas 2027 y 2028.</p></div></div>
+    <div><em>04</em><div><b>Producción y lanzamiento</b><p>Entrega del canje antes del inicio de la temporada y apertura de la tienda oficial.</p></div></div>
+  </div>
+  <p class="lema">"Un club, una familia."</p>
+  <div class="firma"><b>Sean Duarte</b><span>Playmaker SpA</span><span>sduarte@playmaker.cl, +56 9 3928 3323, www.playmaker.cl</span></div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">09</span></div>
+</section>
+</body></html>
