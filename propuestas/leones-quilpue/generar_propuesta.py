@@ -5,11 +5,12 @@ Uso:
 
 Lee la solicitud del club (Solicitud_indumentaria_CDC_Los_Leones_2027.xlsx: hojas LNB y LNF, prendas por talla)
 y genera:
-  - Propuesta_Los_Leones_Quilpue_2027.pdf: canje de primeros equipos y cuerpo técnico, series formativas,
-    tienda oficial online con royalty, catálogo con precios y próximos pasos.
+  - Propuesta_Los_Leones_Quilpue_2027.pdf: primera propuesta, solo el canje de los primeros equipos y el cuerpo
+    técnico (lo que pidió el club, sin prendas extra), con su detalle, el convenio y los próximos pasos.
   - Canje_Leones_Quilpue_2027.xlsx (uso interno): valorización del canje con fórmulas; los precios se editan
     en la hoja Precios y todo se recalcula.
 Los precios de lista, el descuento para formativas y el costo de producción están en PRODUCTOS y PARAMETROS.
+Las prendas adicionales de PRODUCTOS (adicional=True) no entran al canje: quedan solo en la planilla de precios.
 """
 
 import subprocess
@@ -94,18 +95,6 @@ SECCIONES = {  # sección de la solicitud -> nombre en la propuesta
     "ropa de entrenamiento ct": "Cuerpo técnico: entrenamiento",
     "ropa de presentación delegación": "Cuerpo técnico: viaje y delegación",
 }
-CATEGORIAS = ["Sub-11", "Sub-13", "Sub-14", "Sub-16", "Sub-18", "Sub-20"]
-KITS = [  # kits sugeridos para formativas
-    ("Kit de juego", "Camiseta y short de juego", ["camiseta_juego", "short_juego"]),
-    ("Kit de entrenamiento", "Camiseta reversible y short", ["camiseta_reversible", "short_entrenamiento"]),
-    ("Buzo del club", "Polerón y pantalón de buzo", ["poleron_buzo", "pantalon_buzo"]),
-    ("Polerón del club", "Polerón hoodie", ["hoodie"]),
-]
-TRAMOS = [("Hasta 100 unidades", 11), ("De 101 a 200 unidades", 12), ("De 201 a 350 unidades", 13),
-          ("De 351 a 500 unidades", 14), ("Más de 500 unidades", 15)]
-BONO_CREDITO = 30
-
-
 def clave(texto):
     return " ".join(str(texto).lower().split())
 
@@ -181,34 +170,36 @@ def html(secciones):
     # 1. portada
     paginas.append(f"""<section class="page portada">
   <img class="logo" src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker">
-  <div class="kicker">PROPUESTA COMERCIAL 2027</div>
+  <div class="kicker">PROPUESTA DE CANJE 2027</div>
   <h1>Club Deportivo Colegio<br>Los Leones de Quilpué</h1>
-  <p class="sub">Proveedor técnico oficial de los primeros equipos, el cuerpo técnico y las series formativas, con tienda oficial para socios e hinchas</p>
+  <p class="sub">Indumentaria de juego, entrenamiento, presentación y viaje para los primeros equipos de la LNB y la LNF y su cuerpo técnico</p>
   <div class="regla"></div>
-  <div class="ligas"><div><b>LNB</b><span>Liga Nacional de Básquetbol</span></div><div><b>LNF</b><span>Liga Nacional Femenina</span></div><div><b>6</b><span>categorías formativas</span></div></div>
+  <div class="ligas"><div><b>LNB</b><span>Liga Nacional de Básquetbol</span></div><div><b>LNF</b><span>Liga Nacional Femenina</span></div><div><b>{unidades}</b><span>prendas por temporada</span></div></div>
   <div class="firma"><small>PRESENTADA POR</small><b>Sean Duarte</b><span>Playmaker SpA, sduarte@playmaker.cl, +56 9 3928 3323</span><span>{FECHA}. Validez: 30 días</span></div>
   {pie(1)}
 </section>""")
 
-    # 2. la propuesta en tres partes
+    # 2. la propuesta
+    jug = [f for sec, filas in secciones if sec.startswith("Jugadores") for f in filas]
+    ct = [f for sec, filas in secciones if sec.startswith("Cuerpo técnico") for f in filas]
     paginas.append(f"""<section class="page marfil">
   {cab("SECCIÓN 01", "LA PROPUESTA")}
-  <h1>Una propuesta en tres partes</h1>
-  <p class="intro">Playmaker propone ser el proveedor técnico oficial de Los Leones de Quilpué desde la temporada 2027: vestir a
-    los dos primeros equipos y a su cuerpo técnico, equipar a todas las series formativas y abrir una tienda oficial del club en
-    playmaker.cl, con un ingreso para el club por cada venta.</p>
+  <h1>Canje de indumentaria para la temporada 2027</h1>
+  <p class="intro">Playmaker propone vestir sin costo para el club a los dos primeros equipos de Los Leones de Quilpué y a su
+    cuerpo técnico durante la temporada 2027: indumentaria de juego, entrenamiento, presentación y viaje, según la solicitud
+    entregada por el club.</p>
   <div class="pilares">
-    <div><em>01</em><b>Canje para los primeros equipos</b><p>Indumentaria de juego, entrenamiento, presentación y viaje para los planteles de la LNB y la LNF y su cuerpo técnico, sin costo para el club.</p><span>{unidades} prendas por temporada</span></div>
-    <div><em>02</em><b>Series formativas</b><p>Kits de juego, entrenamiento y presentación para todas las categorías, con precio preferencial y pedidos por categoría.</p><span>De Sub-11 a Sub-20</span></div>
-    <div><em>03</em><b>Tienda oficial del club</b><p>Toda la indumentaria del club a la venta en playmaker.cl para socios, familias e hinchas, sin stock ni costo para el club.</p><span>Royalty de 11% a 15%</span></div>
+    <div><em>01</em><b>Plantel LNB</b><p>Indumentaria de juego, calentamiento, entrenamiento, presentación y viaje para el plantel masculino.</p><span>{sum(f[3] for f in jug)} prendas</span></div>
+    <div><em>02</em><b>Plantel LNF</b><p>Indumentaria de juego, calentamiento, entrenamiento, presentación y viaje para el plantel femenino.</p><span>{sum(f[4] for f in jug)} prendas</span></div>
+    <div><em>03</em><b>Cuerpo técnico y delegación</b><p>Ropa para dirigir, de entrenamiento y de viaje para el cuerpo técnico y la delegación de ambos planteles.</p><span>{sum(f[3] + f[4] for f in ct)} prendas</span></div>
   </div>
   <div class="criterios">
     <h2>CRITERIOS COMUNES A TODA LA PROPUESTA</h2>
     <div class="fila"><b>IDENTIDAD</b><p>Escudo, colores del club (rojo, blanco, negro y azul) y diseño exclusivo para cada prenda, aprobado por el club antes de producir.</p></div>
     <div class="fila"><b>IMPRESIÓN</b><p>Sublimación total en las prendas de juego y entrenamiento: el diseño no se despega, no se agrieta ni pierde color con el uso o el lavado.</p></div>
-    <div class="fila"><b>TALLAJE</b><p>Curva completa para adultos, de XS a 4XL, con moldes de hombre y de mujer, y tallas infantiles para las formativas.</p></div>
-    <div class="fila"><b>PRODUCCIÓN</b><p>Fabricación a pedido en planta propia en Santiago, con entregas en 10 a 15 días hábiles desde la aprobación del diseño.</p></div>
-    <div class="fila"><b>ATENCIÓN</b><p>Un ejecutivo de Playmaker dedicado al club para pedidos, cambios de talla y seguimiento.</p></div>
+    <div class="fila"><b>TALLAJE</b><p>Curva completa para adultos, de XS a 4XL, con moldes de hombre y de mujer.</p></div>
+    <div class="fila"><b>PRODUCCIÓN</b><p>Fabricación en planta propia en Santiago, con control directo de diseño, sublimación, corte y confección.</p></div>
+    <div class="fila"><b>ATENCIÓN</b><p>Un ejecutivo de Playmaker dedicado al club para cambios de talla, reposiciones y seguimiento.</p></div>
   </div>
   {pie(2)}
 </section>""")
@@ -239,7 +230,7 @@ def html(secciones):
     <div><h2>CONDICIONES</h2><ul class="puntos">
       <li>Cantidades según la solicitud del club para la temporada 2027.</li>
       <li>Cambios de talla sin costo dentro de los 15 días siguientes a la entrega.</li>
-      <li>Incorporaciones y reposiciones durante la temporada, a precio de formativas.</li>
+      <li>Incorporaciones y reposiciones durante la temporada, a precio preferencial para el club.</li>
       <li>Convenio por dos temporadas, 2027 y 2028, con revisión anual de cantidades.</li></ul></div>
   </div>
   {pie(3)}
@@ -277,21 +268,19 @@ def html(secciones):
     paginas.append(f"""<section class="page">
   {cab("SECCIÓN 02", "CONVENIO")}
   <h1>Lo que aporta cada parte</h1>
-  <p class="intro">El canje de los primeros equipos es parte de un convenio de proveedor técnico oficial por dos temporadas. Estas
-    son las bases que proponemos para conversar con el club.</p>
+  <p class="intro">El canje se enmarca en un convenio de proveedor técnico oficial por dos temporadas. Estas son las bases
+    que proponemos para conversar con el club.</p>
   <div class="aportes">
     <div><h2>PLAYMAKER APORTA</h2><ul class="puntos">
-      <li>El canje completo de los primeros equipos, el cuerpo técnico y la delegación.</li>
-      <li>Diseño exclusivo de toda la línea del club, con los colores y el escudo oficiales.</li>
-      <li>Precios preferenciales y atención directa para las series formativas.</li>
-      <li>La tienda oficial del club en playmaker.cl, sin stock ni costo para el club.</li>
-      <li>Royalty para el club por cada venta de la tienda, con liquidación transparente.</li>
-      <li>Producción en planta propia en Santiago y un ejecutivo dedicado al club.</li></ul></div>
+      <li>El canje completo de los primeros equipos, el cuerpo técnico y la delegación: {unidades} prendas por temporada.</li>
+      <li>Diseño exclusivo de toda la línea, con los colores y el escudo oficiales del club.</li>
+      <li>Producción en planta propia en Santiago y entrega antes del inicio de la temporada.</li>
+      <li>Un ejecutivo dedicado al club para cambios de talla, reposiciones e incorporaciones.</li></ul></div>
     <div><h2>EL CLUB APORTA</h2><ul class="puntos">
-      <li>Nombrar a Playmaker proveedor técnico oficial del club.</li>
+      <li>Nombrar a Playmaker proveedor técnico oficial de los primeros equipos.</li>
       <li>Logo Playmaker en los uniformes de juego, calentamiento y presentación de ambos primeros equipos.</li>
-      <li>Exclusividad de indumentaria para primeros equipos, formativas y tienda oficial durante el convenio.</li>
-      <li>Difusión en las redes del club del lanzamiento de los uniformes y de cada preventa.</li>
+      <li>Exclusividad de indumentaria para los primeros equipos y el cuerpo técnico durante el convenio.</li>
+      <li>Difusión en las redes del club del lanzamiento de los uniformes.</li>
       <li>Espacio de marca en el gimnasio del club.</li>
       <li>Una sesión de fotos y video con jugadores de ambos planteles para campañas.</li></ul></div>
   </div>
@@ -299,99 +288,19 @@ def html(secciones):
   {pie(5)}
 </section>""")
 
-    # 6. formativas
-    kits = []
-    for nombre, detalle_kit, productos in KITS:
-        lista = valor_lista(productos)
-        form = sum(precio_formativas(PRODUCTOS[p][2]) for p in productos)
-        kits.append(f"<tr><td><b>{nombre}</b><br><span class='suave'>{detalle_kit}</span></td><td class='n b'>{pesos(form)}</td><td class='n'>{pesos(lista)}</td></tr>")
-    cats = "".join(f"<div>{c}</div>" for c in CATEGORIAS)
-    paginas.append(f"""<section class="page">
-  {cab("SECCIÓN 03", "SERIES FORMATIVAS")}
-  <h1>Series formativas</h1>
-  <p class="intro">Todas las categorías del club con la misma identidad de los primeros equipos. Las familias compran a precio
-    preferencial en la tienda oficial, con un código por categoría, y Playmaker entrega los pedidos consolidados en el club.</p>
-  <h2>CATEGORÍAS</h2>
-  <div class="categorias">{cats}</div>
-  <p class="nota">Damas y varones. Tallas infantiles y de adulto según la edad de cada categoría.</p>
-  <h2>KITS SUGERIDOS</h2>
-  <table class="tabla">
-    <tr><th>KIT</th><th class="n">PRECIO FORMATIVAS</th><th class="n">PRECIO TIENDA</th></tr>
-    {''.join(kits)}
-  </table>
-  <p class="nota">Precios por kit en pesos chilenos con IVA incluido. Cada prenda también se puede comprar por separado (ver catálogo).</p>
-  <h2>CÓMO FUNCIONA</h2>
-  <div class="pasos">
-    <div><em>01</em><b>Código por categoría</b><p>Cada categoría recibe un código para comprar a precio preferencial.</p></div>
-    <div><em>02</em><b>Compra en línea</b><p>Las familias eligen prendas y tallas en playmaker.cl y pagan en línea.</p></div>
-    <div><em>03</em><b>Producción por lote</b><p>Al cierre de cada período de compra se fabrica todo lo vendido.</p></div>
-    <div><em>04</em><b>Entrega en el club</b><p>Los pedidos llegan al club separados por categoría y jugador.</p></div>
-  </div>
-  {pie(6)}
-</section>""")
-
-    # 7. tienda oficial
-    tramos = "".join(f"<tr><td>{t}</td><td class='n b'>{p}%</td></tr>" for t, p in TRAMOS)
-    paginas.append(f"""<section class="page marfil">
-  {cab("SECCIÓN 04", "TIENDA OFICIAL")}
-  <h1>Tienda oficial Los Leones en playmaker.cl</h1>
-  <p class="intro">Una vitrina propia del club en playmaker.cl, dentro de la sección de clubes e instituciones, donde socios,
-    familias e hinchas compran la indumentaria oficial. Playmaker se encarga del cobro, la producción y la entrega; el club
-    recibe un royalty por cada venta, sin invertir en stock.</p>
-  <div class="banda"><small>PARA SOCIOS E HINCHAS</small><b>El {TRAMOS[0][1]}% de cada compra va directo a Los Leones</b></div>
-  <div class="dos">
-    <div><h2>ROYALTY PARA EL CLUB</h2>
-      <table class="tabla"><tr><th>UNIDADES VENDIDAS EN LA TEMPORADA</th><th class="n">ROYALTY</th></tr>{tramos}</table>
-      <ul class="puntos chica">
-        <li>El porcentaje del tramo alcanzado se aplica a todas las unidades de la temporada.</li>
-        <li>Se calcula sobre la venta neta: sin IVA y descontadas las devoluciones.</li>
-        <li>Si el club lo recibe en productos, se suma un {BONO_CREDITO}% en crédito para indumentaria.</li></ul></div>
-    <div><h2>TRANSPARENCIA Y PAGOS</h2><ul class="puntos">
-      <li>Liquidación al cierre de cada preventa con el detalle de cada venta: producto, talla, monto neto y royalty.</li>
-      <li>Respaldo con la exportación directa de la plataforma de pago.</li>
-      <li>Pago en 15 días desde el cierre, por transferencia o en crédito con el bono.</li>
-      <li>El club puede pedir el respaldo de cualquier venta en cualquier momento.</li>
-      <li>Las compras de las formativas a precio preferencial no generan royalty: ese beneficio va directo a las familias.</li></ul></div>
-  </div>
-  {pie(7)}
-</section>""")
-
-    # 8. catálogo
-    lineas = ["Juego", "Entrenamiento", "Presentación y viaje", "Socios e hinchas"]
-    cat = []
-    for linea in lineas:
-        cat.append(f"<tr class='sec'><td colspan='3'>{linea.upper()}</td></tr>")
-        for nombre, l, precio, adicional, _ in PRODUCTOS.values():
-            if l != linea:
-                continue
-            marca = " <span class='tag'>NUEVA</span>" if adicional else ""
-            cat.append(f"<tr><td>{nombre}{marca}</td><td class='n b'>{pesos(precio_formativas(precio))}</td><td class='n'>{pesos(precio)}</td></tr>")
-    paginas.append(f"""<section class="page">
-  {cab("SECCIÓN 05", "CATÁLOGO Y PRECIOS")}
-  <h1>Catálogo y precios 2027</h1>
-  <p class="intro">Toda la línea del club, con las prendas de la solicitud y otras que proponemos sumar (marcadas como nuevas).
-    Precios por unidad en pesos chilenos con IVA incluido.</p>
-  <table class="tabla detalle">
-    <tr><th>PRENDA</th><th class="n">PRECIO FORMATIVAS</th><th class="n">PRECIO TIENDA OFICIAL</th></tr>
-    {''.join(cat)}
-  </table>
-  <p class="nota">El precio formativas aplica a jugadores de las series del club con el código de su categoría. El precio de la tienda oficial aplica a socios, familias e hinchas.</p>
-  {pie(8)}
-</section>""")
-
-    # 9. próximos pasos
+    # 6. próximos pasos
     paginas.append(f"""<section class="page portada cierre">
   <div class="kicker">PRÓXIMOS PASOS</div>
   <h1>De la propuesta a la cancha</h1>
   <div class="pasos-cierre">
-    <div><em>01</em><div><b>Revisión de la propuesta</b><p>El club revisa el canje, las condiciones y los precios, y define sus comentarios.</p></div></div>
+    <div><em>01</em><div><b>Revisión de la propuesta</b><p>El club revisa el canje y las condiciones, y define sus comentarios.</p></div></div>
     <div><em>02</em><div><b>Diseño de la línea 2027</b><p>Playmaker presenta los diseños de cada uniforme y prenda para su aprobación.</p></div></div>
     <div><em>03</em><div><b>Firma del convenio</b><p>Se acuerdan las bases del convenio por las temporadas 2027 y 2028.</p></div></div>
-    <div><em>04</em><div><b>Producción y lanzamiento</b><p>Entrega del canje antes del inicio de la temporada y apertura de la tienda oficial.</p></div></div>
+    <div><em>04</em><div><b>Producción y entrega</b><p>Entrega del canje en el club antes del inicio de la temporada 2027.</p></div></div>
   </div>
   <p class="lema">"Un club, una familia."</p>
   <div class="firma"><b>Sean Duarte</b><span>Playmaker SpA</span><span>sduarte@playmaker.cl, +56 9 3928 3323, www.playmaker.cl</span></div>
-  {pie(9)}
+  {pie(6)}
 </section>""")
 
     css = (DIR / "estilo_propuesta.css").read_text(encoding="utf-8")
