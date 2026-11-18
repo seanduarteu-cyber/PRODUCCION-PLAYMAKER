@@ -24,7 +24,7 @@ const PLAN = 'https://planificacion-playmaker.netlify.app/', PANEL = 'https://pa
   await p.goto(PANEL + '#pmk_acceso=tok1'); await p.waitForTimeout(2500);
   ok(await p.isVisible('#pmk [data-ir="moldes"]'), 'panel: el inicio tiene «Catálogo de moldes y despiece»');
   await p.click('#pmk [data-ir="moldes"]'); await p.waitForTimeout(1200);
-  ok(/Catálogo de\s*moldes/i.test(await p.innerText('#pmk')) && (await p.$$('.molde-card')).length === 95, 'abre el catálogo con los 95 moldes');
+  ok(/Catálogo de\s*moldes/i.test(await p.innerText('#pmk')) && (await p.$$('.molde-card')).length === 104, 'abre el catálogo con los 104 moldes');
   ok(await p.isVisible('#pmk button.btn.plano[data-ir="lista"]') && /Volver a las fichas/i.test(await p.innerText('#pmk')), 'desde el inicio, el botón de abajo vuelve a las fichas');
   await p.click('#pmk button.btn.plano[data-ir="lista"]'); await p.waitForTimeout(900);
   ok(/Fichas de talla/i.test(await p.innerText('#pmk')), 'y vuelve al inicio del panel');
@@ -37,7 +37,7 @@ const PLAN = 'https://planificacion-playmaker.netlify.app/', PANEL = 'https://pa
   ok(/3 piezas: Delantero, Espalda, Manga ×2 · 1,2 m por prenda/.test(f02) && /Editar despiece/.test(f02), 'molde 02: «3 piezas: Delantero, Espalda, Manga ×2 · 1,2 m por prenda» y «Editar despiece» · ' + f02);
   ok(/2 piezas: Delantero, Espalda · sin consumo de tela/.test(f21), 'molde 21: avisa que no tiene consumo de tela · ' + f21);
   ok(/Sin despiece/.test(f03) && /Definir despiece/.test(f03) && /Ver guía/.test(f03), 'molde sin piezas: «Sin despiece» y «Definir despiece», junto a «Ver guía» · ' + f03);
-  ok(/93 moldes aún sin despiece/.test(await p.innerText('#view-moldes')), 'dice cuántos moldes faltan (93)');
+  ok(/102 moldes aún sin despiece/.test(await p.innerText('#view-moldes')), 'dice cuántos moldes faltan (102 de 104)');
   const href = await p.$$eval('#view-moldes tr', t => { const r = t.find(x => (x.querySelector('td b') || {}).textContent === '02'); return r.querySelector('a.btn').href; });
   const u = new URL(href);
   ok(u.origin + u.pathname === PANEL && u.searchParams.get('molde') === '2' && /#tab=moldes$/.test(u.searchParams.get('volver')), 'el botón abre el panel en el molde 2 y vuelve a Moldes · ' + href.slice(0, 90));

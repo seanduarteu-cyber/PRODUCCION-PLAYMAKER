@@ -40,16 +40,17 @@ Se corren una vez en el SQL Editor de la base indicada en cada archivo.
 | `SQL_23A_PRODUCCION_precios_por_proveedor.sql` | Producción | Precios por proveedor (Costeo › Precios): tablas `plan_insumo_precios` (cada producto con cada proveedor: precio sin IVA, presentación, ancho, gramaje, rendimiento, metros del rollo, cc del envase) y `plan_proveedores_estado` (proveedores desactivados para el costeo). Copia los precios actuales con su proveedor; no cambia ni borra datos. Se puede volver a correr. |
 | `SQL_23C_PRODUCCION_estampado_aplicaciones.sql` | Producción | Costeo › Estampado y aplicaciones: el registro de costeo acepta ESTAMPADO y agrega `insumo_id`, `cantidad` (por prenda) y `bajadas` (de plancha por prenda) a `plan_costeo`. Si la base limita las categorías de insumos, agrega «Aplicación» (con todas las que ya están en uso). No cambia ni borra datos. Se puede volver a correr. |
 | `SQL_23B_PRODUCCION_piezas_de_cada_tela.sql` | Producción | Simular costo: agrega la columna `piezas` al registro del corte (`plan_costeo`): qué piezas llevaba cada tela, para aprender qué parte de la prenda es cada pieza. No cambia ni borra datos. Se puede volver a correr. |
-| `SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql` | Fichas | Solo revisa: compara los 95 moldes del catálogo completo con la tabla moldes (falta, desactivado, código o sección distinta). |
-| `SQL_17D_FICHAS_orden_catalogo_completo.sql` | Fichas | Catálogo completo: orden y sección de los 95 moldes (los 01 al 10 al inicio de Fútbol). |
+| `SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql` | Fichas | Solo revisa: compara los 104 moldes del catálogo del 18-11-2026 con la tabla moldes (falta, desactivado, código o sección distinta). |
+| `SQL_17D_FICHAS_orden_catalogo_completo.sql` | Fichas | (Reemplazado por el 25A.) Catálogo completo de noviembre: orden y sección de los 95 moldes. |
+| `SQL_25A_FICHAS_catalogo_18_11_moldes_nuevos.sql` | Fichas | Catálogo del 18-11-2026 (104 moldes): agrega 85 a 93 (FUT-SH femenino e infantil, vóley 87 y 88, calza larga 89, buzo 90 y Running y atletismo 91 a 93) y pone el orden y la sección de los 104. No cambia los moldes que ya existen ni las fichas. Se puede volver a correr. |
 
 Los SQL 1A a 14A se corrieron antes y no están en este repositorio.
 
 ## Catálogo de moldes (`../catalogo/`)
 
-- `Catalogo_ordenado_COMPLETO_INDEXADO.pdf`: el catálogo completo (95 moldes, 105 páginas) con su índice en la página 1 (un enlace por página) y marcadores.
-- `Indice_catalogo_ordenado_COMPLETO.xlsx`: el mismo índice en planilla (orden, sección, N°, código, calce, tallas, página, guía).
-- Guías de tallas: `produccion/guias/molde-NN.jpg`, una por molde, sacadas del catálogo completo. Se publican con el sitio de Planificación y las usan los tres sistemas; un molde nuevo, fuera del catálogo, usa la que se sube en el panel (Storage).
+- `Catalogo_ordenado_INDEXADO_18_11.pdf`: el catálogo del 18-11-2026 (104 moldes, 113 páginas) con su índice en la página 1 (un enlace por molde y el tipo de manga).
+- `Indice_catalogo_ordenado_18_11.xlsx`: el mismo índice en planilla (orden, sección, N°, código, calce, manga, tallas, página, guía; los nuevos en verde).
+- Guías de tallas: `produccion/guias/molde-NN.jpg`, una por molde (104), sacadas del catálogo del 18-11. Se publican con el sitio de Planificación y las usan los tres sistemas; un molde nuevo, fuera del catálogo, usa la que se sube en el panel (Storage).
 - En los sistemas, el orden y la sección de cada molde vienen de la tabla `moldes` de Fichas (columnas `orden` y `deporte`, SQL 17A). Los especiales (E01…) van en la sección de su deporte, pero se siguen ofreciendo con cualquier deporte; Multideporte y Salida y entrenamiento también. Detalle: `LEEME_catalogo.txt`.
 
 ## Pruebas (`../pruebas/`)

@@ -397,7 +397,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   // Guías de tallas: las de los moldes del catálogo ordenado completo vienen con el sistema (sitio de Planificación);
   // un molde nuevo, fuera del catálogo, usa la que se subió en el panel de fichas (Storage)
   const GUIAS_CATALOGO = 'https://planificacion-playmaker.netlify.app/guias/';
-  const MOLDES_CATALOGO = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,104,72,73,74,75,69,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,105,64,65,106,107,108,109,84,58,59,60,61,62,63,101,102,103,110,111,83,76,78,79,80,81,82,66,67,77,70,71,68];
+  const MOLDES_CATALOGO = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,104,72,73,74,75,69,85,86,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,105,87,88,64,65,106,107,108,109,84,58,59,60,61,62,63,101,102,103,110,111,83,76,78,79,80,81,82,89,66,67,77,70,71,68,90,91,92,93];
   const URL_MOLDE = n => MOLDES_CATALOGO.indexOf(+n) >= 0 ? GUIAS_CATALOGO + 'molde-' + etqMolde(n) + '.jpg' : CFG.url + '/storage/v1/object/public/montajes/moldes/molde-' + etqMolde(n) + '.jpg';
 
   /* Guías de talla del molde que corresponde al calce elegido.
@@ -488,8 +488,8 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   }
   // XXS y XXXXL no están en todos los moldes (según las guías del catálogo): se ofrecen si el pedido lleva
   // alguno de los moldes que la tienen (o si esa talla ya estaba elegida)
-  const MOLDES_CON = { XXS: ['55', '56', '57', '69'],
-    XXXXL: ['1', '2', '5', '6', '9', '10', '17', '18', '21', '22', '29', '30', '33', '34', '37', '38', '41', '42', '43', '44', '45', '46', '49', '50', '53', '54', '104', '66', '68', '70', '72', '73', '80', '81', '82'] };
+  const MOLDES_CON = { XXS: ['69', '85', '55', '56', '57', '87'],
+    XXXXL: ['1', '2', '5', '6', '9', '10', '17', '18', '21', '22', '104', '72', '73', '29', '30', '33', '34', '37', '38', '41', '42', '43', '44', '45', '46', '49', '50', '53', '54', '88', '80', '81', '82', '66', '70', '68', '91'] };
   const pedidoCon = (f, talla) => !!f && Object.keys(specsDe(f)).some(k => Object.values(moldesDe(specsDe(f)[k]))
     .some(v => MOLDES_CON[talla].indexOf(String(v || '').split('|')[1]) >= 0));
   const tallasAd = v => TALLAS_AD.filter(t => !MOLDES_CON[t] || t === v || pedidoCon(st.ficha, t));
@@ -707,7 +707,7 @@ table.rev td { border-bottom: 1px solid var(--humo); padding: 7px 4px; }
   const numMolde = v => String(v || '').split('|')[1] || '';
   const esUnisex = v => !!(st.unisex && st.unisex.indexOf(numMolde(v)) >= 0);
   // Moldes sin mangas (vóley, hockey, E02…): esa camiseta es sin mangas por el molde y no se pregunta el largo de manga
-  const SIN_MANGAS_BASE = ['55', '56', '57', '64', '65', '81', '82', '102'];
+  const SIN_MANGAS_BASE = ['55', '56', '57', '64', '65', '81', '82', '102', '87', '88', '91', '92', '93'];
   // Manga según el código del molde: …01 manga clásica y …02 manga raglán (corta o larga) · …03 sin mangas
   const serieManga = cod => { const m = String(cod || '').trim().toUpperCase().match(/(\d{2})(?:PRO|RE)?$/); return m ? m[1] : ''; };
   const moldeSinMangas = v => !!v && !/\|manual$/.test(v) && (serieManga(String(v).split('|')[0]) === '03' || (st.sinMangas || SIN_MANGAS_BASE).indexOf(numMolde(v)) >= 0);

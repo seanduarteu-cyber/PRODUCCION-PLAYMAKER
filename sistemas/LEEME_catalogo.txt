@@ -1,19 +1,34 @@
-CATÁLOGO ORDENADO COMPLETO (noviembre 2026) · qué cambia en los sistemas
-=======================================================================
+CATÁLOGO ORDENADO DEL 18-11-2026 · qué cambia en los sistemas
+=============================================================
 
-El catálogo completo tiene 95 moldes con número (105 páginas). Es el mismo orden de antes, pero ahora
-los moldes 01 al 10 están en el catálogo, al inicio de Fútbol. Los 95 están en la base de Fichas (SQL 17C: 85 de 85
-del catálogo anterior + 01 al 10) con su código y su sección.
+El catálogo del 18-11-2026 tiene 104 moldes (113 páginas). Los 95 del catálogo anterior siguen igual (mismo número,
+código y orden relativo) y se agregan 9 moldes y una sección:
+  Fútbol                 85 FUT-SH femenino y 86 FUT-SH infantil (antes eran las páginas sin número), tras el 69
+  Vóleibol               87 VOMUJMAV03 femenino (el 56 es la versión PRO, mismo código) y 88 VOHOMMAV03 masculino
+  Multideporte           89 CA-L-MUJ calza larga femenina
+  Salida y entrenamiento 90 BU-MUJ pantalón de buzo femenino
+  Running y atletismo    sección nueva: 91, 92 y 93 RN-CSUB (femenino, masculino e infantil; sin mangas, espalda olímpica)
+Secciones: Fútbol 36 · Básquetbol 26 · Vóleibol 6 · Hockey 7 · Rugby 15 · Multideporte 4 · Salida y entrenamiento 7 ·
+Running y atletismo 3.
 
 QUÉ HAY QUE HACER (en este orden)
-1. Base de FICHAS › SQL Editor: pegar SQL_17D_FICHAS_orden_catalogo_completo.sql › Run.
-   Al final debe decir: moldes_del_catalogo 95 · sin_orden 0 · fuera_del_catalogo 0.
-   (Opcional) SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql: debe decir «95 de 95 OK».
+1. Base de FICHAS › SQL Editor: pegar SQL_25A_FICHAS_catalogo_18_11_moldes_nuevos.sql › Run.
+   Al final debe decir: moldes_del_catalogo 104 · sin_orden 0 · fuera_del_catalogo 0 · nuevos_del_18_11 9 de 9.
+   (Opcional) SQL_17C_FICHAS_revisar_moldes_SOLO_LECTURA.sql: debe decir «104 de 104 OK».
+   Si la base no aceptara «calza larga» o «buzo» como tipo de prenda, el 89 queda como short y el 90 como pantalón.
 2. Netlify: subir los 3 zip (Planificación, panel de fichas y sitio del cliente).
-   El zip de Planificación trae la carpeta «guias» con las 95 guías de tallas: se sube el zip tal cual.
+   El zip de Planificación trae la carpeta «guias» con las 104 guías de tallas, sacadas del catálogo nuevo: se sube tal cual.
+
+TIPO DE MANGA (columna nueva del índice: C clásica, R raglán, S sin manga)
+- Coincide con lo que ya hacen los sistemas por el código del molde (…01 C, …02 R, …03 S), salvo:
+  · E02: el índice la marca R y su código en el PDF sigue siendo RB-HOMUCC02, pero su guía es sin mangas. Los sistemas la
+    siguen tratando sin mangas (RB-HOMUCC03). Conviene corregir el índice del catálogo original.
+  · 91, 92 y 93 (RN-CSUB): el índice no las marca; son sin mangas (espalda olímpica) y así quedan en los sistemas.
+- Tallas XXS y XXXXL: el cliente las ve solo si el pedido lleva un molde que las tiene. Se suman XXS en 85 y 87, y
+  XXXXL en 88 y 91.
 
 GUÍAS DE TALLAS
-- Las 95 guías (una por molde, sacadas de la página de cada molde en el catálogo completo) vienen con el sistema,
+- Las 104 guías (una por molde, sacadas de la página de cada molde en el catálogo del 18-11) vienen con el sistema,
   en el sitio de Planificación (carpeta guias). Las usan los tres: el cliente al cargar tallas, el panel de fichas
   (ficha técnica y catálogo de moldes) y Planificación («Moldes vigentes» › Ver guía). Ya no hay que subirlas a mano.
 - Si el catálogo cambia, se vuelven a generar desde el PDF nuevo.
@@ -43,10 +58,11 @@ MANGAS (según el código del molde)
   El cliente elige manga corta o larga solo en camisetas …01 y …02; en las …03 no se pregunta.
 
 QUÉ SE VE
-- Panel de fichas y Planificación: los moldes en el orden del catálogo completo, por sección (Fútbol parte en el 01).
-  Cada molde se ofrece solo con su deporte; con cualquier deporte, solo Multideporte y Salida y entrenamiento.
+- Panel de fichas y Planificación: los moldes en el orden del catálogo, por sección (Fútbol parte en el 01; Running y
+  atletismo al final). Cada molde se ofrece solo con su deporte; con cualquier deporte, solo Multideporte y Salida y
+  entrenamiento. Los moldes de Running se ofrecen cuando la prenda es de Running y atletismo.
 - Ningún molde queda «fuera del catálogo».
 
 PENDIENTE DE DEFINIR
-- Páginas 37 y 38: FUT-SH femenino (XXS a XXXL) y FUT-SH infantil (4 a 16) no tienen N° de molde en el catálogo.
-  El único FUT-SH del sistema es el 69 (masculino). Con su número se agregan a la base y a las guías.
+- Nada del catálogo: los FUT-SH femenino e infantil ya tienen número (85 y 86).
+- Revisar en el catálogo original el índice de la E02 (dice R; su guía es sin mangas).

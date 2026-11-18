@@ -316,7 +316,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 350
+"orden": 370
 },
 {
 "numero": 30,
@@ -327,7 +327,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 360
+"orden": 380
 },
 {
 "numero": 31,
@@ -338,7 +338,7 @@
 "infantil": true,
 "prenda": "camiseta",
 "activo": true,
-"orden": 370
+"orden": 390
 },
 {
 "numero": 32,
@@ -349,7 +349,7 @@
 "infantil": true,
 "prenda": "camiseta",
 "activo": true,
-"orden": 380
+"orden": 400
 },
 {
 "numero": 33,
@@ -360,7 +360,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 390
+"orden": 410
 },
 {
 "numero": 34,
@@ -371,7 +371,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 400
+"orden": 420
 },
 {
 "numero": 35,
@@ -382,7 +382,7 @@
 "infantil": true,
 "prenda": "camiseta",
 "activo": true,
-"orden": 410
+"orden": 430
 },
 {
 "numero": 36,
@@ -393,7 +393,7 @@
 "infantil": true,
 "prenda": "camiseta",
 "activo": true,
-"orden": 420
+"orden": 440
 },
 {
 "numero": 37,
@@ -404,7 +404,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 430
+"orden": 450
 },
 {
 "numero": 38,
@@ -415,7 +415,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 440
+"orden": 460
 },
 {
 "numero": 39,
@@ -426,7 +426,7 @@
 "infantil": true,
 "prenda": "camiseta",
 "activo": true,
-"orden": 450
+"orden": 470
 },
 {
 "numero": 40,
@@ -437,7 +437,7 @@
 "infantil": true,
 "prenda": "camiseta",
 "activo": true,
-"orden": 460
+"orden": 480
 },
 {
 "numero": 41,
@@ -448,7 +448,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 470
+"orden": 490
 },
 {
 "numero": 42,
@@ -459,7 +459,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 480
+"orden": 500
 },
 {
 "numero": 43,
@@ -470,7 +470,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 490
+"orden": 510
 },
 {
 "numero": 44,
@@ -481,7 +481,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 500
+"orden": 520
 },
 {
 "numero": 45,
@@ -492,7 +492,7 @@
 "infantil": false,
 "prenda": "short",
 "activo": true,
-"orden": 510
+"orden": 530
 },
 {
 "numero": 46,
@@ -503,7 +503,7 @@
 "infantil": false,
 "prenda": "short",
 "activo": true,
-"orden": 520
+"orden": 540
 },
 {
 "numero": 47,
@@ -514,7 +514,7 @@
 "infantil": true,
 "prenda": "short",
 "activo": true,
-"orden": 530
+"orden": 550
 },
 {
 "numero": 48,
@@ -525,7 +525,7 @@
 "infantil": true,
 "prenda": "short",
 "activo": true,
-"orden": 540
+"orden": 560
 },
 {
 "numero": 49,
@@ -536,7 +536,7 @@
 "infantil": false,
 "prenda": "short",
 "activo": true,
-"orden": 550
+"orden": 570
 },
 {
 "numero": 50,
@@ -547,7 +547,7 @@
 "infantil": false,
 "prenda": "short",
 "activo": true,
-"orden": 560
+"orden": 580
 },
 {
 "numero": 51,
@@ -558,7 +558,7 @@
 "infantil": true,
 "prenda": "short",
 "activo": true,
-"orden": 570
+"orden": 590
 },
 {
 "numero": 52,
@@ -569,7 +569,7 @@
 "infantil": true,
 "prenda": "short",
 "activo": true,
-"orden": 580
+"orden": 600
 },
 {
 "numero": 53,
@@ -580,7 +580,7 @@
 "infantil": false,
 "prenda": "short",
 "activo": true,
-"orden": 590
+"orden": 610
 },
 {
 "numero": 54,
@@ -591,7 +591,7 @@
 "infantil": false,
 "prenda": "short",
 "activo": true,
-"orden": 600
+"orden": 620
 },
 {
 "numero": 55,
@@ -602,7 +602,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 610
+"orden": 630
 },
 {
 "numero": 56,
@@ -613,7 +613,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 620
+"orden": 640
 },
 {
 "numero": 57,
@@ -624,7 +624,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 630
+"orden": 650
 },
 {
 "numero": 58,
@@ -635,7 +635,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 720
+"orden": 760
 },
 {
 "numero": 59,
@@ -646,7 +646,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 730
+"orden": 770
 },
 {
 "numero": 60,
@@ -657,7 +657,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 740
+"orden": 780
 },
 {
 "numero": 61,
@@ -668,7 +668,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 750
+"orden": 790
 },
 {
 "numero": 62,
@@ -679,7 +679,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 760
+"orden": 800
 },
 {
 "numero": 63,
@@ -690,7 +690,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 770
+"orden": 810
 },
 {
 "numero": 64,
@@ -701,7 +701,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 650
+"orden": 690
 },
 {
 "numero": 65,
@@ -712,7 +712,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 660
+"orden": 700
 },
 {
 "numero": 66,
@@ -723,7 +723,7 @@
 "infantil": false,
 "prenda": "poleron_ent",
 "activo": true,
-"orden": 900
+"orden": 950
 },
 {
 "numero": 67,
@@ -734,7 +734,7 @@
 "infantil": true,
 "prenda": "poleron_ent",
 "activo": true,
-"orden": 910
+"orden": 960
 },
 {
 "numero": 68,
@@ -745,7 +745,7 @@
 "infantil": false,
 "prenda": "poleron_ent",
 "activo": true,
-"orden": 950
+"orden": 1000
 },
 {
 "numero": 69,
@@ -767,7 +767,7 @@
 "infantil": false,
 "prenda": "cortaviento",
 "activo": true,
-"orden": 930
+"orden": 980
 },
 {
 "numero": 71,
@@ -778,7 +778,7 @@
 "infantil": true,
 "prenda": "cortaviento",
 "activo": true,
-"orden": 940
+"orden": 990
 },
 {
 "numero": 72,
@@ -833,7 +833,7 @@
 "infantil": false,
 "prenda": "short",
 "activo": true,
-"orden": 840
+"orden": 880
 },
 {
 "numero": 77,
@@ -844,7 +844,7 @@
 "infantil": false,
 "prenda": "parka",
 "activo": true,
-"orden": 920
+"orden": 970
 },
 {
 "numero": 78,
@@ -855,7 +855,7 @@
 "infantil": false,
 "prenda": "short",
 "activo": true,
-"orden": 850
+"orden": 890
 },
 {
 "numero": 79,
@@ -866,7 +866,7 @@
 "infantil": true,
 "prenda": "short",
 "activo": true,
-"orden": 860
+"orden": 900
 },
 {
 "numero": 80,
@@ -877,7 +877,7 @@
 "infantil": false,
 "prenda": "top",
 "activo": true,
-"orden": 870
+"orden": 910
 },
 {
 "numero": 81,
@@ -888,7 +888,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 880
+"orden": 920
 },
 {
 "numero": 82,
@@ -899,7 +899,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 890
+"orden": 930
 },
 {
 "numero": 83,
@@ -910,7 +910,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 830
+"orden": 870
 },
 {
 "numero": 84,
@@ -921,7 +921,106 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 710
+"orden": 750
+},
+{
+"numero": 85,
+"codigo": "FUT-SH",
+"descripcion": "Fútbol",
+"deporte": "Fútbol",
+"calce": "Femenino",
+"infantil": false,
+"prenda": "short",
+"activo": true,
+"orden": 350
+},
+{
+"numero": 86,
+"codigo": "FUT-SH",
+"descripcion": "Fútbol infantil",
+"deporte": "Fútbol",
+"calce": "Unisex",
+"infantil": true,
+"prenda": "short",
+"activo": true,
+"orden": 360
+},
+{
+"numero": 87,
+"codigo": "VOMUJMAV03",
+"descripcion": "Vóleibol, sin mangas, cuello mao en v",
+"deporte": "Vóleibol",
+"calce": "Femenino",
+"infantil": false,
+"prenda": "camiseta",
+"activo": true,
+"orden": 670
+},
+{
+"numero": 88,
+"codigo": "VOHOMMAV03",
+"descripcion": "Vóleibol, sin mangas, cuello mao en v",
+"deporte": "Vóleibol",
+"calce": "Masculino",
+"infantil": false,
+"prenda": "camiseta",
+"activo": true,
+"orden": 680
+},
+{
+"numero": 89,
+"codigo": "CA-L-MUJ",
+"descripcion": "Calza larga",
+"deporte": "Multideporte",
+"calce": "Femenino",
+"infantil": false,
+"prenda": "calza_larga",
+"activo": true,
+"orden": 940
+},
+{
+"numero": 90,
+"codigo": "BU-MUJ",
+"descripcion": "Pantalón de buzo",
+"deporte": "Salida y entrenamiento",
+"calce": "Femenino",
+"infantil": false,
+"prenda": "buzo",
+"activo": true,
+"orden": 1010
+},
+{
+"numero": 91,
+"codigo": "RN-CSUB",
+"descripcion": "Running, sin mangas, espalda olímpica",
+"deporte": "Running y atletismo",
+"calce": "Femenino",
+"infantil": false,
+"prenda": "camiseta",
+"activo": true,
+"orden": 1020
+},
+{
+"numero": 92,
+"codigo": "RN-CSUB",
+"descripcion": "Running, sin mangas, espalda olímpica",
+"deporte": "Running y atletismo",
+"calce": "Masculino",
+"infantil": false,
+"prenda": "camiseta",
+"activo": true,
+"orden": 1030
+},
+{
+"numero": 93,
+"codigo": "RN-CSUB",
+"descripcion": "Running infantil, sin mangas, espalda olímpica",
+"deporte": "Running y atletismo",
+"calce": "Unisex",
+"infantil": true,
+"prenda": "camiseta",
+"activo": true,
+"orden": 1040
 },
 {
 "numero": 101,
@@ -932,7 +1031,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 780
+"orden": 820
 },
 {
 "numero": 102,
@@ -943,7 +1042,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 790
+"orden": 830
 },
 {
 "numero": 103,
@@ -954,7 +1053,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 800
+"orden": 840
 },
 {
 "numero": 104,
@@ -976,7 +1075,7 @@
 "infantil": false,
 "prenda": "short",
 "activo": true,
-"orden": 640
+"orden": 660
 },
 {
 "numero": 106,
@@ -987,7 +1086,7 @@
 "infantil": false,
 "prenda": "falda",
 "activo": true,
-"orden": 670
+"orden": 710
 },
 {
 "numero": 107,
@@ -998,7 +1097,7 @@
 "infantil": false,
 "prenda": "falda",
 "activo": true,
-"orden": 680
+"orden": 720
 },
 {
 "numero": 108,
@@ -1009,7 +1108,7 @@
 "infantil": false,
 "prenda": "falda",
 "activo": true,
-"orden": 690
+"orden": 730
 },
 {
 "numero": 109,
@@ -1020,7 +1119,7 @@
 "infantil": false,
 "prenda": "falda",
 "activo": true,
-"orden": 700
+"orden": 740
 },
 {
 "numero": 110,
@@ -1031,7 +1130,7 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 810
+"orden": 850
 },
 {
 "numero": 111,
@@ -1042,6 +1141,6 @@
 "infantil": false,
 "prenda": "camiseta",
 "activo": true,
-"orden": 820
+"orden": 860
 }
 ]

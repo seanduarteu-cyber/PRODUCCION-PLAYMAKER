@@ -3,7 +3,8 @@
 const { chromium, contexto } = require('./comun_movil');
 const CON_17A = require('./datos_moldes_catalogo.json');      // la tabla moldes después del SQL 17A
 const ANTES_17A = require('./datos_moldes_antes_17a.json');   // la tabla como estaba (sin orden, deportes antiguos, sin 83 ni 84)
-const SECCIONES = ['Fútbol', 'Básquetbol', 'Vóleibol', 'Hockey', 'Rugby', 'Multideporte', 'Salida y entrenamiento'];
+const SECCIONES = ['Fútbol', 'Básquetbol', 'Vóleibol', 'Hockey', 'Rugby', 'Multideporte', 'Salida y entrenamiento', 'Running y atletismo'];
+const SEC_ANTES = SECCIONES.slice(0, 7);   // una base sin los moldes del 18-11 (sin Running y atletismo)
 let fallas = 0; const ok = (c, m) => { console.log((c ? 'OK   ' : 'FALLA') + ' ' + m); if (!c) fallas++; };
 const hoy = new Date().toISOString().slice(0, 10), ahora = new Date().toISOString();
 // ficha de rugby con una calza (E05, que en el catálogo quedó en Vóleibol): el molde elegido no se puede perder
@@ -41,6 +42,10 @@ async function panel(b, modo) {
   r.catRugby = await p.$$eval('[data-add-molde]', bs => bs.map(x => +x.dataset.addMolde));
   await p.selectOption('[data-cf="deporte"]', 'Fútbol'); await p.waitForTimeout(300);
   r.catFutbol = await p.$$eval('[data-add-molde]', bs => bs.map(x => +x.dataset.addMolde));
+  if (r.secciones.includes('Running y atletismo')) {
+    await p.selectOption('[data-cf="deporte"]', 'Running y atletismo'); await p.waitForTimeout(300);
+    r.catRunning = await p.$$eval('[data-add-molde]', bs => bs.map(x => +x.dataset.addMolde));
+  }
   // ficha técnica: los moldes ya elegidos siguen elegidos; la lista de cada calce según el deporte
   await p.goto('https://panel-fichas-playmaker.netlify.app/?ref=COT-3610'); await p.waitForTimeout(1500);
   await p.click('[data-ir="tecnica"]'); await p.waitForTimeout(800);
@@ -114,14 +119,16 @@ function sinMezcla(r, cuando) {
   let r = await panel(b, 'con17a');
   ok(r.orden.slice(0, 3).join() === '1,2,3' && r.orden.indexOf(104) === 28 && r.orden.indexOf(69) === 33, 'moldes en el orden del catálogo completo: parte en 01, E04 después del 28, 69 cierra Fútbol');
   ok(es(r.secciones, SECCIONES), 'secciones del catálogo en orden: ' + r.secciones.join(', '));
-  ok(r.orden.length === 95 && r.orden[94] === 68, 'los 95 moldes del catálogo, el último es el 68 (Salida y entrenamiento)');
+  ok(r.orden.length === 104 && r.orden[103] === 93 && r.orden.indexOf(85) === 34 && r.orden.indexOf(90) === 100, 'los 104 moldes del catálogo del 18-11: 85 y 86 cierran Fútbol, el 90 Salida y el último es el 93 (Running y atletismo)');
   ok(r.rugbyFem.slice(0, 5).join() === '59,61,63,111,83', 'ficha técnica, camiseta femenina de rugby: primero las de Rugby, con E11 y el 83 nuevo (' + r.rugbyFem.slice(0, 6).join(',') + '…)');
   ok(r.hockeyFem.slice(0, 4).join() === '111,64,65,84', 'con Hockey: el ya elegido (E11) arriba, luego 64, 65 y el 84 nuevo (' + r.hockeyFem.slice(0, 5).join(',') + '…)');
   ok(r.femTrasCambio === 'RB-MUJU02|111' && r.masTrasCambio === 'RB-HOMU02|58', 'cambiar el deporte no borra los moldes ya elegidos (ni el 58, que es de Rugby)');
   ok(es(r.titulos, SECCIONES), 'pantalla «Catálogo de moldes» con el título de cada sección (ninguno fuera del catálogo)');
   ok(/planificacion-playmaker\.netlify\.app\/guias\/molde-01\.jpg/.test(r.guia01) && /guias\/molde-83\.jpg/.test(r.guia83) && r.guiaServida === 200, 'guías del catálogo: el panel las toma del sistema (' + r.guia83 + ' → ' + r.guiaServida + ')');
-  ok(r.tarjetas[0] === '01' && r.tarjetas.length === 95 && r.tarjetas.indexOf('83') > r.tarjetas.indexOf('E11') && r.tarjetas.indexOf('84') === r.tarjetas.indexOf('E09') + 1, 'tarjetas en el orden del catálogo (83 tras E11, 84 tras E09)');
+  ok(r.tarjetas[0] === '01' && r.tarjetas.length === 104 && r.tarjetas.indexOf('83') > r.tarjetas.indexOf('E11') && r.tarjetas.indexOf('84') === r.tarjetas.indexOf('E09') + 1, 'tarjetas en el orden del catálogo (83 tras E11, 84 tras E09)');
   sinMezcla(r, '');
+  ok(r.catRunning.slice(0, 3).join() === '91,92,93' && !de(r.catRunning, 'FUT').length && r.catRunning.includes(80), 'catálogo con Running y atletismo: 91, 92 y 93, y después multideporte y salida (' + r.catRunning.slice(0, 6).join(',') + '…)');
+  ok(r.catFutbol.includes(85) && r.catFutbol.includes(86) && !r.catFutbol.includes(91), 'catálogo con Fútbol: trae los shorts 85 y 86, no los de Running');
   ok(r.catHockey.slice(0, 7).join() === '64,65,106,107,108,109,84' && !r.catHockey.includes(104) && r.catHockey.includes(80), 'catálogo con Hockey: los de Hockey y después multideporte y salida, sin especiales de otro deporte (' + r.catHockey.slice(0, 9).join(',') + '…)');
   ok(r.elegidos.includes('camiseta/Masculino=RB-HOMU02|58') && r.elegidos.includes('short/Masculino=CA-MUJ|105'), 'ficha técnica: los moldes ya elegidos siguen elegidos (incluida la calza E05 en una ficha de rugby)');
   ok(!r.errores.length, 'sin errores JS ' + r.errores.join(' | '));
@@ -130,19 +137,20 @@ function sinMezcla(r, cuando) {
   r = await panel(b, 'sin17a');
   ok(r.orden.slice(0, 3).join() === '1,2,3' && !r.orden.includes(83) && r.orden[r.orden.length - 1] === 68, 'sin la columna orden: toma el orden y las secciones del catálogo completo');
   sinMezcla(r, 'sin SQL 17A · ');
-  ok(es(r.titulos, SECCIONES), 'pantalla «Catálogo de moldes» con las secciones del catálogo, cada una una vez (' + r.titulos.join(', ') + ')');
+  ok(es(r.titulos, SEC_ANTES), 'pantalla «Catálogo de moldes» con las secciones del catálogo, cada una una vez (' + r.titulos.join(', ') + ')');
   ok(r.elegidos.includes('short/Masculino=CA-MUJ|105') && !r.errores.length, 'ficha técnica y moldes sin errores ' + r.errores.join(' | '));
 
   console.log('— Panel de fichas, sin conexión a la tabla moldes (respaldo del código)');
   r = await panel(b, 'sinbase');
-  ok(r.orden.slice(0, 3).join() === '1,2,3' && r.orden.length === 95, 'el respaldo ya trae el catálogo completo (95 moldes)');
+  ok(r.orden.slice(0, 3).join() === '1,2,3' && r.orden.length === 104 && r.orden[103] === 93, 'el respaldo ya trae el catálogo del 18-11 (104 moldes)');
   ok(!r.errores.length, 'sin errores JS ' + r.errores.join(' | '));
 
   console.log('— Planificación, base con el SQL 17A');
   r = await plan(b, 'con17a');
   ok(es(r.grupos.map(g => g[0]), SECCIONES), 'lista de moldes al ingresar un pedido, por sección del catálogo: ' + r.grupos.map(g => g[0]).join(', '));
   const g = Object.fromEntries(r.grupos);
-  ok(g['Fútbol'][0] === '01' && g['Fútbol'].indexOf('E04') === 28 && g['Fútbol'][g['Fútbol'].length - 1] === '69' && g['Fútbol'].length === 34, 'Fútbol en el orden del catálogo completo (01 al 28, E04, 72 al 75 y 69)');
+  ok(g['Fútbol'][0] === '01' && g['Fútbol'].indexOf('E04') === 28 && g['Fútbol'].slice(-3).join() === '69,85,86' && g['Fútbol'].length === 36, 'Fútbol en el orden del catálogo (01 al 28, E04, 72 al 75, 69, 85 y 86)');
+  ok(g['Vóleibol'].join() === '55,56,57,E05,87,88' && g['Running y atletismo'].join() === '91,92,93' && g['Multideporte'].includes('89') && g['Salida y entrenamiento'].slice(-1)[0] === '90', 'moldes nuevos del 18-11: 87 y 88 en Vóleibol, 89 en Multideporte, 90 en Salida y 91 a 93 en Running y atletismo');
   ok(g['Rugby'].includes('83') && g['Hockey'].includes('84') && g['Rugby'].includes('E01'), 'Rugby trae el 83 y los E01…; Hockey el 84');
   ok(es(r.titulos, SECCIONES), '«Moldes vigentes» con el título de cada sección');
   const mg = r.mangas;
@@ -153,24 +161,24 @@ function sinMezcla(r, cuando) {
   ok(mg.clave34 === '34 · BKHOMV03' && mg.clave18 === '18 · FUTHOMU02 · ML', 'ficha con manga larga: el 18 pasa a «· ML»; el 34 (sin mangas) no');
   ok(mg.e02 === 'E02 · RB-HOMUCC03' && mg.e02vieja === 'E02 · RB-HOMUCC03' && mg.e02sel && mg.e02tarifa === 4321,
     'E02 es RB-HOMUCC03 (sin mangas); un pedido o una tarifa guardados con RB-HOMUCC02 siguen valiendo');
-  ok(r.guia83 === 'guias/molde-83.jpg' && r.guiaServida === 200 && r.guiasArchivo === 95, '«Ver guía» abre la guía del catálogo que viene con el sitio (' + r.guiasArchivo + ' de 95 en la carpeta guias)');
-  ok(r.filas[0] === '01' && r.filas.includes('83') && r.filas.includes('84') && r.filas.length === 95, '«Moldes vigentes»: los 95, desde el 01');
+  ok(r.guia83 === 'guias/molde-83.jpg' && r.guiaServida === 200 && r.guiasArchivo === 104, '«Ver guía» abre la guía del catálogo que viene con el sitio (' + r.guiasArchivo + ' de 104 en la carpeta guias)');
+  ok(r.filas[0] === '01' && r.filas.includes('83') && r.filas.includes('84') && r.filas.length === 104, '«Moldes vigentes»: los 104, desde el 01');
   ok(r.buscaHockey.join() === '64,65,E06,E07,E08,E09,84', 'buscar «hockey» encuentra la sección completa (' + r.buscaHockey.join(',') + ')');
-  ok(es(r.config, SECCIONES.concat([])) || es(r.config.slice(0, 7), SECCIONES), 'Configuración › catálogo de moldes agrupado por sección, en orden: ' + r.config.join(', '));
+  ok(es(r.config, SECCIONES.concat([])) || es(r.config.slice(0, 8), SECCIONES), 'Configuración › catálogo de moldes agrupado por sección, en orden: ' + r.config.join(', '));
   ok(!r.errores.length, 'sin errores JS ' + r.errores.join(' | '));
 
   console.log('— Planificación, base sin el SQL 17A');
   r = await plan(b, 'sin17a');
   ok(!r.mangas.ml.some(k => /^(34|55|64|81) · /.test(k)) && r.mangas.clave34 === '34 · BKHOMV03', 'sin el SQL 19A (descripciones antiguas): las …03 igual son sin mangas por su código');
-  ok(es(r.grupos.map(g => g[0]), SECCIONES) && r.grupos[0][1][0] === '01', 'sin la columna orden: las mismas secciones del catálogo (sin grupo «Especiales»): ' + r.grupos.map(g => g[0]).join(', '));
+  ok(es(r.grupos.map(g => g[0]), SEC_ANTES) && r.grupos[0][1][0] === '01', 'sin la columna orden: las mismas secciones del catálogo (sin grupo «Especiales»): ' + r.grupos.map(g => g[0]).join(', '));
   const gs = Object.fromEntries(r.grupos);
   ok(gs['Fútbol'].includes('E04') && !gs['Fútbol'].some(k => /^E(01|02|03|10|11)$/.test(k)) && gs['Rugby'].includes('E01') && !gs['Rugby'].includes('E04'), 'sin la columna orden: E04 en Fútbol y E01, E02, E03, E10, E11 en Rugby');
-  ok(es(r.titulos, SECCIONES), '«Moldes vigentes» con las secciones del catálogo (' + r.titulos.join(', ') + ')');
+  ok(es(r.titulos, SEC_ANTES), '«Moldes vigentes» con las secciones del catálogo (' + r.titulos.join(', ') + ')');
   ok(r.config.length >= 5 && !r.errores.length, 'Configuración sin errores ' + r.errores.join(' | '));
 
   console.log('— Planificación, sin conexión a la tabla moldes (respaldo del código)');
   r = await plan(b, 'sinbase');
-  ok(es(r.grupos.map(g => g[0]).slice(0, 7), SECCIONES) && Object.fromEntries(r.grupos)['Rugby'].includes('83'), 'el respaldo arma las mismas secciones, con 83 y 84');
+  ok(es(r.grupos.map(g => g[0]).slice(0, 8), SECCIONES) && Object.fromEntries(r.grupos)['Rugby'].includes('83') && Object.fromEntries(r.grupos)['Running y atletismo'].join() === '91,92,93', 'el respaldo arma las mismas secciones, con 83, 84 y Running y atletismo');
   ok(!r.errores.length, 'sin errores JS ' + r.errores.join(' | '));
   await b.close();
   console.log(fallas ? fallas + ' FALLAS' : 'TODO OK'); process.exit(fallas ? 1 : 0);
