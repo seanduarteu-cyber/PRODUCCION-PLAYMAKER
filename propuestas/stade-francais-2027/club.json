@@ -42,7 +42,7 @@
   ],
   [
    "Veintidós líneas",
-   "Quince líneas"
+   "Diecisiete líneas"
   ],
   [
    "El club revisa las fichas y define qué productos entran en la temporada 2027.",
@@ -97,8 +97,6 @@
   "04",
   "08",
   "10",
-  "12",
-  "20",
   "21",
   "22"
  ],
@@ -315,6 +313,28 @@
     ]
    ]
   },
+  "12": {
+   "titulo": "Peto de entrenamiento",
+   "bajada": "Azul rey en la imagen, disponible en variedad de colores",
+   "bloques": [
+    [
+     "CUERPO",
+     "Corte holgado sin mangas, para usar sobre la camiseta; cuello y sisas con ribete azul marino."
+    ],
+    [
+     "COLORES",
+     "Se fabrica en variedad de colores, para diferenciar equipos en el entrenamiento."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo, isotipo Playmaker al pecho derecho y en la espalda, y PLAYMAKER al centro."
+    ],
+    [
+     "TELA",
+     "Malla de poliéster liviana y respirable, de secado rápido."
+    ]
+   ]
+  },
   "13": {
    "titulo": "Buzo de presentación",
    "bajada": "Polerón medio cierre azul rey y pantalón azul marino, en conjunto",
@@ -420,6 +440,32 @@
    ]
   },
   "17": {
+   "titulo": "Polera retro y polerón hoodie",
+   "bajada": "Azul marino con franja crema y roja al pecho y en las mangas",
+   "bloques": [
+    [
+     "POLERA",
+     "Manga larga con cuello de tejido plano crema y tapeta de botones."
+    ],
+    [
+     "HOODIE",
+     "Capucha forrada en rojo, cordón crema y bolsillo canguro."
+    ],
+    [
+     "FRANJA",
+     "Franja crema y roja que cruza el pecho y sigue por las mangas."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français bordado al pecho izquierdo e isotipo Playmaker al pecho derecho."
+    ],
+    [
+     "TELA",
+     "Algodón de punto pesado en la polera y algodón perchado en el hoodie."
+    ]
+   ]
+  },
+  "18": {
    "titulo": "Polerón algodón basic",
    "bajada": "Azul rey, cuello redondo, con escudo e isotipo al pecho",
    "bloques": [
@@ -441,7 +487,7 @@
     ]
    ]
   },
-  "18": {
+  "19": {
    "titulo": "Casaca con capucha",
    "bajada": "Azul marino o azul rey, con vivo blanco y cierre completo",
    "bloques": [
@@ -467,7 +513,7 @@
     ]
    ]
   },
-  "19": {
+  "20": {
    "titulo": "Parka larga",
    "bajada": "Azul marino o azul rey, impermeable, con capucha y largo a medio muslo",
    "bloques": [

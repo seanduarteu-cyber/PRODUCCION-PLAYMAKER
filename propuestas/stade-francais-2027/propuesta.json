@@ -32,24 +32,30 @@
    "imagen": "img/ficha/08_sudadera.jpg"
   },
   "SFR-09": {
-   "imagen": "img/montaje_final/09_buzo_completo.jpg"
+   "imagen": "img/montaje_final/16_peto.jpg"
   },
   "SFR-10": {
-   "imagen": "img/montaje_final/10_pantalon_buzo.jpg"
+   "imagen": "img/montaje_final/09_buzo_completo.jpg"
   },
   "SFR-11": {
-   "imagen": "img/ficha/11_polo.jpg"
+   "imagen": "img/montaje_final/10_pantalon_buzo.jpg"
   },
   "SFR-12": {
-   "imagen": "img/ficha/12_polera_clasica.jpg"
+   "imagen": "img/ficha/11_polo.jpg"
   },
   "SFR-13": {
-   "imagen": "img/montaje_final/13_poleron_basic.jpg"
+   "imagen": "img/ficha/12_polera_clasica.jpg"
   },
   "SFR-14": {
-   "imagen": "img/ficha/14_casaca.jpg"
+   "imagen": "img/montaje_final/17_retro.jpg"
   },
   "SFR-15": {
+   "imagen": "img/montaje_final/13_poleron_basic.jpg"
+  },
+  "SFR-16": {
+   "imagen": "img/ficha/14_casaca.jpg"
+  },
+  "SFR-17": {
    "imagen": "img/ficha/15_parka.jpg"
   }
  }

@@ -31,11 +31,15 @@ logos.json:
   Con "bordes", busca los bordes entre colores de tela en los dos costados y los une en línea recta
   (para franjas que no son paralelas o que se curvan con la caída de la tela).
   También sirve con "borrar": la zona se rellena así en vez de reconstruirse por inpainting.
+- "completa" (con "caja"): se reconstruye toda la caja y no solo lo que difiere de la tela (parches
+  bordados con fondo de otro tono); conviene sumarle "textura".
 - "escala" (con "caja"): factor sobre el alto del logo nuevo (p. ej. 0.85 cuando el anterior era un
   escudo relleno, más grande a la vista que uno de solo trazos).
 - "contorno": [ancho, [r, g, b]]: el logo nuevo lleva un borde de ese color (como un parche bordado),
   para que se lea sobre telas claras.
 - "rgb": [r, g, b]: color fijo del logo nuevo (en vez del color del anterior).
+- "textura": [x0, y0, x1, y1]: zona de tela limpia de la que se copia el relieve (malla, felpa) sobre lo
+  reconstruido, repetida en mosaico, para que no quede una mancha lisa donde estaba el logo anterior.
 - "excluir" (con "blanco"): caja dentro de la zona que no se toca (p. ej. la talla bajo la marca).
 - "borrar": borra la gráfica que hay dentro de la zona (sin los trazos chicos, p. ej. letras
   vecinas) y no pone nada.
@@ -198,6 +202,20 @@ def extruir_bordes(destino, img, caja, margen=4, alcance=70):
             destino[y, x] = ((1 - t) * muestra(img, yl, xl) + t * muestra(img, yr, xr)).astype(np.uint8)
 
 
+def texturizar(destino, img, mascara, fuente, sigma=2.5):
+    """Suma a lo reconstruido (bajo la máscara) el relieve fino de una zona de tela limpia, en mosaico."""
+    x0, y0, x1, y1 = fuente
+    f = img[y0:y1, x0:x1].astype(np.float32)
+    detalle = f - cv2.GaussianBlur(f, (0, 0), sigma)
+    ys, xs = np.where(mascara > 0)
+    if not len(ys):
+        return
+    base = cv2.GaussianBlur(destino.astype(np.float32), (0, 0), sigma)
+    hs, ws = detalle.shape[:2]
+    rel = detalle[(ys - ys.min()) % hs, (xs - xs.min()) % ws]
+    destino[ys, xs] = np.clip(base[ys, xs] + rel, 0, 255).astype(np.uint8)
+
+
 def extruir(destino, img, caja, pendiente, margen=4):
     """Rellena la caja continuando franjas diagonales rectas desde sus dos costados (mezcla lineal)."""
     if pendiente == "bordes":
@@ -255,7 +273,11 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
                     total = cv2.bitwise_or(total, cv2.dilate(m, np.ones((5, 5), np.uint8)))
             elif "caja" in op:
                 caja = op["caja"]
-                m = mascara_franjas(img, caja) if op.get("franjas") else mascara_caja(img, caja, pad=4)
+                if op.get("completa"):  # parche bordado de otro tono que la tela: se reconstruye toda la caja
+                    m = np.zeros(img.shape[:2], np.uint8)
+                    m[caja[1]:caja[3], caja[0]:caja[2]] = 255
+                else:
+                    m = mascara_franjas(img, caja) if op.get("franjas") else mascara_caja(img, caja, pad=4)
             elif op.get("blanco"):
                 caja, m = ubicar_blanco(img, op["zona"], op.get("minimo", 140), op.get("excluir"))
             else:
@@ -290,6 +312,9 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
     for op, caja, _m, _t in pegar:
         if "extruir" in op:
             extruir(limpio, img, op.get("caja") or op["borrar"], op["extruir"])
+    for op, _c, m, _t in pegar:
+        if "textura" in op:
+            texturizar(limpio, img, cv2.dilate(m, np.ones((9, 9), np.uint8)) & total, op["textura"])
 
     lienzo = Image.fromarray(cv2.cvtColor(limpio, cv2.COLOR_BGR2RGB)).convert("RGBA")
     for op, caja, m, tela in pegar:

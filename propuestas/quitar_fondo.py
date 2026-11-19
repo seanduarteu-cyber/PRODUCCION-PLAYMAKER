@@ -7,6 +7,9 @@ fondo.json:
     {"color": [250, 249, 245], "entrada": "img/con_logos", "salida": "img/montaje_final",
      "cache_mascaras": "/tmp/mascaras"}
 
+Con "conservar": {"montaje.jpg": [[x0, y0, x1, y1], ...]} esas zonas quedan tal como vienen (p. ej.
+recuadros de detalle que son solo tela y que el modelo confunde con fondo).
+
 Se mantiene todo lo que no es fondo: prendas (recortadas con el modelo BiRefNet), textos y
 etiquetas del montaje, recuadros de detalle y la franja negra del encabezado. El borde de cada
 prenda se descontamina del gris antes de mezclarlo con el marfil, para que no quede halo.
@@ -123,8 +126,10 @@ def main(cfg_path, solo=None):
             ses = ses or sesion()
             prendas = mascara_prendas(ses, pil)
             Image.fromarray((prendas * 255).astype(np.uint8)).save(ruta_m)
-        Image.fromarray(procesar(np.asarray(pil), prendas, cfg.get("color", [250, 249, 245]))).save(
-            salida / ruta.name, quality=93, subsampling=0)
+        resultado = procesar(np.asarray(pil), prendas, cfg.get("color", [250, 249, 245]))
+        for x0, y0, x1, y1 in cfg.get("conservar", {}).get(ruta.name, []):
+            resultado[y0:y1, x0:x1] = np.asarray(pil)[y0:y1, x0:x1]
+        Image.fromarray(resultado).save(salida / ruta.name, quality=93, subsampling=0)
         print(f"OK  {(salida / ruta.name).relative_to(d)}", flush=True)
 
 

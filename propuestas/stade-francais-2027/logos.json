@@ -17,6 +17,11 @@
    "archivo": "../_recursos/playmaker_isotipo_blanco.png",
    "color": "tinta",
    "ajuste": "contener"
+  },
+  "palabra": {
+   "archivo": "logos/playmaker_palabra_blanco.png",
+   "color": "tinta",
+   "ajuste": "contener"
   }
  },
  "salida": "img/con_logos",
@@ -942,6 +947,204 @@
      222,
      1242,
      328
+    ]
+   }
+  ],
+  "img/16_peto.jpg": [
+   {
+    "logo": "isotipo",
+    "zona": [
+     205,
+     260,
+     315,
+     325
+    ],
+    "blanco": true,
+    "textura": [
+     250,
+     600,
+     450,
+     700
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     500,
+     240,
+     606,
+     377
+    ],
+    "escala": 0.85,
+    "textura": [
+     600,
+     420,
+     690,
+     620
+    ]
+   },
+   {
+    "logo": "palabra",
+    "zona": [
+     215,
+     398,
+     595,
+     548
+    ],
+    "blanco": true,
+    "pegar_en": [
+     228,
+     445,
+     582,
+     515
+    ],
+    "textura": [
+     250,
+     600,
+     560,
+     720
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "zona": [
+     1075,
+     90,
+     1220,
+     165
+    ],
+    "blanco": true,
+    "textura": [
+     1080,
+     300,
+     1260,
+     420
+    ]
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     380,
+     84,
+     437,
+     115
+    ],
+    "blanco": true,
+    "minimo": 120,
+    "pegar_en": [
+     392,
+     89,
+     424,
+     113
+    ]
+   }
+  ],
+  "img/17_retro.jpg": [
+   {
+    "logo": "isotipo",
+    "zona": [
+     268,
+     112,
+     335,
+     150
+    ],
+    "blanco": true
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     419,
+     103,
+     472,
+     170
+    ],
+    "escala": 0.85
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     348,
+     40,
+     398,
+     63
+    ],
+    "blanco": true,
+    "minimo": 110,
+    "pegar_en": [
+     364,
+     44,
+     384,
+     60
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "zona": [
+     266,
+     610,
+     330,
+     650
+    ],
+    "blanco": true
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     428,
+     597,
+     485,
+     673
+    ],
+    "escala": 0.85
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     362,
+     538,
+     395,
+     562
+    ],
+    "blanco": true,
+    "minimo": 90
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     1292,
+     115,
+     1418,
+     194
+    ],
+    "blanco": true,
+    "minimo": 110
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1244,
+     405,
+     1434,
+     646
+    ],
+    "escala": 0.78,
+    "textura": [
+     1145,
+     395,
+     1240,
+     655
+    ],
+    "pegar_en": [
+     1248,
+     428,
+     1430,
+     660
+    ],
+    "completa": true,
+    "rgb": [
+     240,
+     238,
+     234
     ]
    }
   ]
