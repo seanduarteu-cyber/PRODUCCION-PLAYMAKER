@@ -2,6 +2,9 @@
 // Uso: node propuestas/implementos/generar_html.js   (exportar.sh lo corre antes de imprimir el PDF)
 //      node propuestas/implementos/generar_html.js --anexo 24   -> catalogo_implementos_anexo.html: portada de
 //      anexo de una propuesta, con las páginas numeradas desde la 24
+//      ... --fotos ../stade-francais-2027/img/implementos --salida catalogo_implementos_stade.html
+//      -> las fotos que estén en esa carpeta (mismo nombre) reemplazan a las de fotos/ (p. ej. con el escudo
+//      nuevo de un club), y el HTML se escribe con ese nombre
 
 const fs = require("fs");
 const path = require("path");
@@ -15,6 +18,10 @@ const k = process.argv.indexOf("--anexo");
 const ANEXO = k > 0;
 const INICIO = ANEXO ? Number(process.argv[k + 1]) : 1;  // número de la primera página
 const mayus = s => esc(s.toUpperCase());
+const opcion = nombre => { const i = process.argv.indexOf(nombre); return i > 0 ? process.argv[i + 1] : null; };
+const FOTOS_CLUB = opcion("--fotos");  // carpeta relativa a este directorio
+const rutaFoto = archivo => FOTOS_CLUB && fs.existsSync(path.join(DIR, FOTOS_CLUB, archivo))
+  ? `${FOTOS_CLUB}/${archivo}` : `fotos/${archivo}`;
 
 function pie(num) {
   return `<div class="pie"><span>UN CLUB, UNA FAMILIA.</span><span class="marcas">` +
@@ -29,7 +36,7 @@ function confirmar(pendiente) {
   return ` <span class="conf">A CONFIRMAR${pendiente ? ": " + mayus(pendiente) : ""}</span>`;
 }
 
-const foto = f => `<img src="fotos/${esc(f.archivo)}" style="object-position: ${esc(f.pos)}" alt="">`;
+const foto = f => `<img src="${esc(rutaFoto(f.archivo))}" style="object-position: ${esc(f.pos)}" alt="">`;
 
 function portada() {
   const p = C.portada;
@@ -138,6 +145,6 @@ ${C.revision.incluir === false || ANEXO ? "" : revision(C.fichas.length + 3)}
 </body>
 </html>
 `;
-const salida = path.join(DIR, ANEXO ? "catalogo_implementos_anexo.html" : "catalogo_implementos.html");
+const salida = path.join(DIR, opcion("--salida") || (ANEXO ? "catalogo_implementos_anexo.html" : "catalogo_implementos.html"));
 fs.writeFileSync(salida, html);
 console.log(`OK  ${salida}`);

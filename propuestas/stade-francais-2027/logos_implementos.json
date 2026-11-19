@@ -1,0 +1,67 @@
+{
+ "logos": {
+  "escudo": {
+   "archivo": "logos/stade_francais_escudo_blanco.png",
+   "color": "tinta"
+  }
+ },
+ "salida": "img/implementos",
+ "renders": {
+  "../implementos/fotos/escudo_tackle_frances_espalda.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     714,
+     936,
+     778,
+     1088
+    ],
+    "tela": [
+     54,
+     54,
+     57
+    ],
+    "aislar": true,
+    "poligono": [
+     [
+      731,
+      937
+     ],
+     [
+      778,
+      946
+     ],
+     [
+      755,
+      1081
+     ],
+     [
+      735,
+      1088
+     ],
+     [
+      714,
+      1071
+     ],
+     [
+      713,
+      983
+     ]
+    ],
+    "pegar_en": [
+     708,
+     948,
+     766,
+     1072
+    ],
+    "escala": 0.8,
+    "angosto": 0.5,
+    "rgb": [
+     232,
+     232,
+     232
+    ]
+   }
+  ]
+ }
+}

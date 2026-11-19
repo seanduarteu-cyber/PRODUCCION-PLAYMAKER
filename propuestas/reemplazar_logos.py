@@ -31,12 +31,15 @@ logos.json:
   Con "bordes", busca los bordes entre colores de tela en los dos costados y los une en línea recta
   (para franjas que no son paralelas o que se curvan con la caída de la tela).
   También sirve con "borrar": la zona se rellena así en vez de reconstruirse por inpainting.
+- "poligono" (con "caja"): [[x, y], ...] contorno del logo anterior; se reconstruye solo su interior.
 - "completa" (con "caja"): se reconstruye toda la caja y no solo lo que difiere de la tela (parches
   bordados con fondo de otro tono); conviene sumarle "textura".
 - "escala" (con "caja"): factor sobre el alto del logo nuevo (p. ej. 0.85 cuando el anterior era un
   escudo relleno, más grande a la vista que uno de solo trazos).
 - "contorno": [ancho, [r, g, b]]: el logo nuevo lleva un borde de ese color (como un parche bordado),
   para que se lea sobre telas claras.
+- "aislar" (con "tela"): el logo está al borde de la prenda; para reconstruir la tela no se usa lo que
+  hay al otro lado del borde (fondo de la foto).
 - "rgb": [r, g, b]: color fijo del logo nuevo (en vez del color del anterior).
 - "textura": [x0, y0, x1, y1]: zona de tela limpia de la que se copia el relieve (malla, felpa) sobre lo
   reconstruido, repetida en mosaico, para que no quede una mancha lisa donde estaba el logo anterior.
@@ -273,7 +276,10 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
                     total = cv2.bitwise_or(total, cv2.dilate(m, np.ones((5, 5), np.uint8)))
             elif "caja" in op:
                 caja = op["caja"]
-                if op.get("completa"):  # parche bordado de otro tono que la tela: se reconstruye toda la caja
+                if "poligono" in op:  # contorno del logo anterior marcado a mano
+                    m = np.zeros(img.shape[:2], np.uint8)
+                    cv2.fillPoly(m, [np.array(op["poligono"], np.int32)], 255)
+                elif op.get("completa"):  # parche bordado de otro tono que la tela: se reconstruye toda la caja
                     m = np.zeros(img.shape[:2], np.uint8)
                     m[caja[1]:caja[3], caja[0]:caja[2]] = 255
                 else:
@@ -308,7 +314,16 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
         ruta_revision.parent.mkdir(parents=True, exist_ok=True)
         cv2.imwrite(str(ruta_revision), revision)
     total = cv2.dilate(total, np.ones((5, 5), np.uint8), iterations=1)
-    limpio = cv2.inpaint(img, total, 5, cv2.INPAINT_TELEA)
+    fuente = img.copy()  # lo que ve el inpainting: sin el fondo vecino en las zonas "aislar"
+    for op, caja, _m, tela in pegar:
+        if op.get("aislar") and tela is not None:
+            h, w = img.shape[:2]
+            x0, y0, x1, y1 = op.get("caja") or caja
+            X0, Y0, X1, Y1 = max(x0 - 14, 0), max(y0 - 14, 0), min(x1 + 14, w), min(y1 + 14, h)
+            z = fuente[Y0:Y1, X0:X1]
+            z[np.abs(z.astype(int) - tela).sum(axis=2) > UMBRAL] = tela
+    limpio = cv2.inpaint(fuente, total, 5, cv2.INPAINT_TELEA)
+    limpio[total == 0] = img[total == 0]
     for op, caja, _m, _t in pegar:
         if "extruir" in op:
             extruir(limpio, img, op.get("caja") or op["borrar"], op["extruir"])
