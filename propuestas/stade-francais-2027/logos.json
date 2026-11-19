@@ -9,12 +9,12 @@
    "color": "tinta"
   },
   "playmaker": {
-   "archivo": "../_recursos/playmaker_logo_blanco.png",
+   "archivo": "../_recursos/playmaker_isotipo_blanco.png",
    "color": "tinta",
    "ajuste": "contener"
   },
   "playmaker_h": {
-   "archivo": "../_recursos/playmaker_logo_horizontal_blanco.png",
+   "archivo": "../_recursos/playmaker_isotipo_blanco.png",
    "color": "tinta",
    "ajuste": "contener"
   }
@@ -285,7 +285,13 @@
      213
     ],
     "blanco": true,
-    "minimo": 110
+    "minimo": 110,
+    "pegar_en": [
+     244,
+     191,
+     276,
+     213
+    ]
    },
    {
     "logo": "playmaker_h",
@@ -296,7 +302,13 @@
      213
     ],
     "blanco": true,
-    "minimo": 110
+    "minimo": 110,
+    "pegar_en": [
+     1029,
+     191,
+     1061,
+     213
+    ]
    }
   ],
   "img/06_entrenamiento_trama.jpg": [
@@ -345,7 +357,13 @@
      204
     ],
     "blanco": true,
-    "minimo": 110
+    "minimo": 110,
+    "pegar_en": [
+     242,
+     182,
+     274,
+     204
+    ]
    },
    {
     "logo": "playmaker_h",
@@ -356,7 +374,13 @@
      205
     ],
     "blanco": true,
-    "minimo": 110
+    "minimo": 110,
+    "pegar_en": [
+     1032,
+     183,
+     1064,
+     205
+    ]
    }
   ],
   "img/11_polo_azul_rey.jpg": [
@@ -387,7 +411,13 @@
      168
     ],
     "blanco": true,
-    "minimo": 110
+    "minimo": 110,
+    "pegar_en": [
+     306,
+     146,
+     338,
+     168
+    ]
    },
    {
     "logo": "playmaker_h",
@@ -453,7 +483,13 @@
      172
     ],
     "blanco": true,
-    "minimo": 110
+    "minimo": 110,
+    "pegar_en": [
+     306,
+     150,
+     338,
+     172
+    ]
    },
    {
     "logo": "playmaker_h",
