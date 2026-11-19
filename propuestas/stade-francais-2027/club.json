@@ -42,7 +42,7 @@
   ],
   [
    "Veintidós líneas",
-   "Diecisiete líneas"
+   "Dieciocho líneas"
   ],
   [
    "El club revisa las fichas y define qué productos entran en la temporada 2027.",
@@ -94,7 +94,6 @@
   ]
  ],
  "quitar": [
-  "04",
   "08",
   "10",
   "21",
@@ -184,6 +183,36 @@
     [
      "CUERPO",
      "Franjas sublimadas con degradé de líneas finas: el diseño no se despega ni pierde color."
+    ],
+    [
+     "TELA",
+     "Línea PRO: 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
+    ]
+   ]
+  },
+  "04": {
+   "titulo": "Camiseta de seven",
+   "bajada": "Sin mangas, azul rey con rayos amarillos sublimados",
+   "bloques": [
+    [
+     "CUELLO",
+     "Cuello redondo acanalado azul rey y sisas con ribete al tono."
+    ],
+    [
+     "CUERPO",
+     "Sin mangas y de corte ajustado, para la velocidad del seven."
+    ],
+    [
+     "DISEÑO",
+     "Rayos amarillos sublimados sobre azul rey, al frente y en la espalda."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho derecho e isotipo Playmaker al centro, con espacio para auspiciadores."
+    ],
+    [
+     "ESPALDA",
+     "Leyenda STADE 7s y la temporada 2026-27 en amarillo bajo el cuello."
     ],
     [
      "TELA",

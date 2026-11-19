@@ -7,6 +7,7 @@ fondo.json:
     {"color": [250, 249, 245], "entrada": "img/con_logos", "salida": "img/montaje_final",
      "cache_mascaras": "/tmp/mascaras"}
 
+Con "fondo_oscuro": ["montaje.jpg"] el montaje trae fondo de estudio oscuro (no gris claro).
 Con "conservar": {"montaje.jpg": [[x0, y0, x1, y1], ...]} esas zonas quedan tal como vienen (p. ej.
 recuadros de detalle que son solo tela y que el modelo confunde con fondo).
 
@@ -50,9 +51,9 @@ def mascara_prendas(ses, pil):
 
 # ---------------------------------------------------------------- resto del montaje
 
-def fondo_estimado(img, lum, prendas):
+def fondo_estimado(img, lum, prendas, oscuro=False):
     """Gris de estudio (degradado suave) estimado a partir de lo que no es prenda."""
-    fuera = ((prendas < 0.1) & (lum > 140)).astype(np.uint8)
+    fuera = ((prendas < 0.1) & (oscuro | (lum > 140))).astype(np.uint8)
     fuera = cv2.erode(fuera, np.ones((9, 9), np.uint8)).astype(float)
     fondo = None
     for k in (61, 151, 401):  # de más local a más global, para rellenar huecos
@@ -89,15 +90,15 @@ def recuadros(img_u8):
                                         for o in rects)]
 
 
-def procesar(img_u8, prendas, color):
+def procesar(img_u8, prendas, color, oscuro=False):
     img = img_u8.astype(float)
     lum = cv2.cvtColor(img_u8, cv2.COLOR_RGB2GRAY).astype(float)
-    fondo = fondo_estimado(img, lum, prendas)
+    fondo = fondo_estimado(img, lum, prendas, oscuro)
     alfa = np.maximum(prendas, textos(img, lum, fondo))
     for x0, y0, x1, y1 in recuadros(img_u8):
         alfa[y0:y1, x0:x1] = 1
-    fin = 0  # franja negra del encabezado
-    while fin < img.shape[0] and np.median(lum[fin]) < 70:
+    fin = 0  # franja negra del encabezado (no aplica a un montaje con fondo de estudio oscuro)
+    while not oscuro and fin < img.shape[0] and np.median(lum[fin]) < 70:
         fin += 1
     alfa[:fin] = 1
     # descontaminar el borde: quitar la parte de gris que trae cada píxel semitransparente
@@ -126,7 +127,8 @@ def main(cfg_path, solo=None):
             ses = ses or sesion()
             prendas = mascara_prendas(ses, pil)
             Image.fromarray((prendas * 255).astype(np.uint8)).save(ruta_m)
-        resultado = procesar(np.asarray(pil), prendas, cfg.get("color", [250, 249, 245]))
+        resultado = procesar(np.asarray(pil), prendas, cfg.get("color", [250, 249, 245]),
+                             ruta.name in cfg.get("fondo_oscuro", []))
         for x0, y0, x1, y1 in cfg.get("conservar", {}).get(ruta.name, []):
             resultado[y0:y1, x0:x1] = np.asarray(pil)[y0:y1, x0:x1]
         Image.fromarray(resultado).save(salida / ruta.name, quality=93, subsampling=0)
