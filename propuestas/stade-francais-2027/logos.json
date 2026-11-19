@@ -1,0 +1,913 @@
+{
+ "logos": {
+  "escudo": {
+   "archivo": "logos/stade_francais_escudo_blanco.png",
+   "color": "tinta"
+  },
+  "isotipo": {
+   "archivo": "../_recursos/playmaker_isotipo_blanco.png",
+   "color": "tinta"
+  },
+  "playmaker": {
+   "archivo": "../_recursos/playmaker_logo_blanco.png",
+   "color": "tinta",
+   "ajuste": "contener"
+  },
+  "playmaker_h": {
+   "archivo": "../_recursos/playmaker_logo_horizontal_blanco.png",
+   "color": "tinta",
+   "ajuste": "contener"
+  }
+ },
+ "salida": "img/con_logos",
+ "renders": {
+  "img/01_camiseta_trazos_blanca.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     486,
+     214,
+     590,
+     337
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     273,
+     250,
+     359,
+     314
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     1086,
+     506,
+     1138,
+     550
+    ]
+   }
+  ],
+  "img/02_camiseta_trazos_azul.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     498,
+     210,
+     597,
+     327
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     266,
+     248,
+     347,
+     314
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     1097,
+     518,
+     1143,
+     555
+    ]
+   }
+  ],
+  "img/03_camiseta_franjas_tricolor.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     700,
+     260,
+     826,
+     415
+    ],
+    "extruir": 0,
+    "escala": 0.85,
+    "pegar_en": [
+     700,
+     205,
+     826,
+     360
+    ]
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     318,
+     272,
+     498,
+     360
+    ]
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     552,
+     101,
+     610,
+     134
+    ],
+    "blanco": true,
+    "minimo": 120
+   }
+  ],
+  "img/03_camiseta_franjas_rosada.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     695,
+     267,
+     823,
+     418
+    ],
+    "extruir": 0,
+    "escala": 0.85,
+    "pegar_en": [
+     695,
+     250,
+     823,
+     405
+    ]
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     325,
+     282,
+     512,
+     372
+    ]
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     545,
+     86,
+     622,
+     118
+    ],
+    "blanco": true,
+    "minimo": 120
+   }
+  ],
+  "img/03_camiseta_franjas_marino.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     817,
+     297,
+     949,
+     458
+    ],
+    "extruir": 0,
+    "escala": 0.85
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     368,
+     340,
+     552,
+     440
+    ]
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     630,
+     85,
+     702,
+     110
+    ],
+    "blanco": true,
+    "minimo": 120
+   },
+   {
+    "borrar": [
+     955,
+     1312,
+     1020,
+     1372
+    ],
+    "extruir": 0
+   }
+  ],
+  "img/04_short_azul_rey.jpg": [
+   {
+    "logo": "escudo",
+    "zona": [
+     665,
+     528,
+     828,
+     730
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "zona": [
+     80,
+     635,
+     205,
+     728
+    ]
+   }
+  ],
+  "img/04_short_marino.jpg": [
+   {
+    "logo": "escudo",
+    "zona": [
+     580,
+     598,
+     706,
+     758
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "zona": [
+     95,
+     668,
+     200,
+     752
+    ]
+   }
+  ],
+  "img/06_entrenamiento_trazos.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     300,
+     278,
+     377,
+     363
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     151,
+     306,
+     202,
+     347
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1084,
+     276,
+     1161,
+     362
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     944,
+     306,
+     998,
+     347
+    ]
+   },
+   {
+    "logo": "playmaker_h",
+    "zona": [
+     233,
+     200,
+     286,
+     213
+    ],
+    "blanco": true,
+    "minimo": 110
+   },
+   {
+    "logo": "playmaker_h",
+    "zona": [
+     1018,
+     200,
+     1072,
+     213
+    ],
+    "blanco": true,
+    "minimo": 110
+   }
+  ],
+  "img/06_entrenamiento_trama.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     298,
+     263,
+     374,
+     352
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     151,
+     294,
+     202,
+     335
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1085,
+     263,
+     1162,
+     352
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     946,
+     294,
+     998,
+     335
+    ]
+   },
+   {
+    "logo": "playmaker_h",
+    "zona": [
+     234,
+     193,
+     282,
+     204
+    ],
+    "blanco": true,
+    "minimo": 110
+   },
+   {
+    "logo": "playmaker_h",
+    "zona": [
+     1023,
+     193,
+     1072,
+     205
+    ],
+    "blanco": true,
+    "minimo": 110
+   }
+  ],
+  "img/11_polo_azul_rey.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     392,
+     268,
+     478,
+     373
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     180,
+     300,
+     242,
+     350
+    ]
+   },
+   {
+    "logo": "playmaker_h",
+    "zona": [
+     291,
+     152,
+     354,
+     168
+    ],
+    "blanco": true,
+    "minimo": 110
+   },
+   {
+    "logo": "playmaker_h",
+    "zona": [
+     1338,
+     159,
+     1422,
+     196
+    ],
+    "blanco": true,
+    "minimo": 110,
+    "excluir": [
+     1376,
+     183,
+     1390,
+     197
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     1234,
+     498,
+     1300,
+     550
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1424,
+     464,
+     1518,
+     577
+    ]
+   }
+  ],
+  "img/11_polo_marino.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     389,
+     266,
+     476,
+     372
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     183,
+     300,
+     242,
+     350
+    ]
+   },
+   {
+    "logo": "playmaker_h",
+    "zona": [
+     291,
+     156,
+     354,
+     172
+    ],
+    "blanco": true,
+    "minimo": 110
+   },
+   {
+    "logo": "playmaker_h",
+    "zona": [
+     1330,
+     158,
+     1420,
+     197
+    ],
+    "blanco": true,
+    "minimo": 110,
+    "excluir": [
+     1371,
+     183,
+     1385,
+     198
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     1232,
+     498,
+     1295,
+     550
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1418,
+     465,
+     1512,
+     577
+    ]
+   }
+  ],
+  "img/12_polera_clasica_galon.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     383,
+     248,
+     473,
+     352
+    ],
+    "extruir": "bordes",
+    "contorno": [
+     3,
+     [
+      22,
+      28,
+      50
+     ]
+    ],
+    "rgb": [
+     244,
+     242,
+     236
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     166,
+     266,
+     238,
+     322
+    ],
+    "extruir": "bordes",
+    "contorno": [
+     4,
+     [
+      22,
+      28,
+      50
+     ]
+    ],
+    "rgb": [
+     244,
+     242,
+     236
+    ]
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     296,
+     137,
+     344,
+     169
+    ],
+    "blanco": true,
+    "minimo": 120
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     1318,
+     125,
+     1398,
+     188
+    ],
+    "blanco": true,
+    "minimo": 120
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     1196,
+     463,
+     1270,
+     520
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1410,
+     450,
+     1519,
+     574
+    ],
+    "contorno": [
+     3,
+     [
+      22,
+      28,
+      50
+     ]
+    ]
+   }
+  ],
+  "img/12_polera_clasica_franja.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     383,
+     238,
+     473,
+     344
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     176,
+     266,
+     242,
+     315
+    ]
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     296,
+     137,
+     344,
+     172
+    ],
+    "blanco": true,
+    "minimo": 120
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     1318,
+     127,
+     1400,
+     188
+    ],
+    "blanco": true,
+    "minimo": 120
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     1201,
+     460,
+     1280,
+     514
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1411,
+     450,
+     1519,
+     568
+    ]
+   }
+  ],
+  "img/08_poleron_medio_cierre.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     493,
+     231,
+     599,
+     358
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     262,
+     270,
+     332,
+     324
+    ]
+   }
+  ],
+  "img/10_pantalon_buzo.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     430,
+     246,
+     507,
+     337
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     178,
+     270,
+     232,
+     317
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     781,
+     246,
+     854,
+     332
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     626,
+     270,
+     670,
+     307
+    ]
+   }
+  ],
+  "img/09_buzo_completo.jpg": [
+   {
+    "logo": "escudo",
+    "caja": [
+     270,
+     128,
+     327,
+     197
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     148,
+     148,
+     189,
+     182
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     312,
+     670,
+     365,
+     742
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     101,
+     683,
+     139,
+     714
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     961,
+     338,
+     1020,
+     389
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1148,
+     316,
+     1245,
+     430
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     1158,
+     722,
+     1195,
+     754
+    ]
+   },
+   {
+    "logo": "isotipo",
+    "caja": [
+     980,
+     906,
+     1055,
+     964
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1160,
+     891,
+     1252,
+     997
+    ]
+   }
+  ],
+  "img/13_poleron_basic.jpg": [
+   {
+    "logo": "playmaker",
+    "zona": [
+     550,
+     224,
+     702,
+     302
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     860,
+     203,
+     970,
+     329
+    ],
+    "escala": 0.85
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     736,
+     63,
+     802,
+     96
+    ],
+    "blanco": true,
+    "minimo": 120
+   }
+  ],
+  "img/14_abrigo_marino.jpg": [
+   {
+    "logo": "playmaker",
+    "zona": [
+     256,
+     338,
+     372,
+     395
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     481,
+     318,
+     563,
+     418
+    ],
+    "escala": 0.85
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     384,
+     186,
+     446,
+     216
+    ],
+    "blanco": true,
+    "minimo": 120
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     946,
+     276,
+     1060,
+     332
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1180,
+     260,
+     1260,
+     354
+    ],
+    "escala": 0.85
+   }
+  ],
+  "img/14_abrigo_azul_rey.jpg": [
+   {
+    "logo": "playmaker",
+    "zona": [
+     288,
+     350,
+     390,
+     420
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     501,
+     331,
+     622,
+     446
+    ]
+   },
+   {
+    "logo": "playmaker",
+    "zona": [
+     960,
+     245,
+     1060,
+     310
+    ]
+   },
+   {
+    "logo": "escudo",
+    "caja": [
+     1158,
+     222,
+     1242,
+     328
+    ]
+   }
+  ]
+ }
+}

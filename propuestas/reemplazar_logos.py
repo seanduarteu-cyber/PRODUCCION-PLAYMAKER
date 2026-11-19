@@ -24,6 +24,19 @@ logos.json:
   que no se parece a ninguno de los colores de tela que hay alrededor de la caja.
 - "por_ancho": el logo nuevo toma el ancho del anterior en vez del alto (para que su cinta cubra la
   del escudo anterior); con "caja" o con "zona" sobre tela de un solo color.
+- "extruir" (con "caja"): el logo está sobre franjas diagonales rectas (p. ej. un galón en V); la caja
+  se rellena continuando las franjas desde sus dos costados, con la pendiente dada (dy/dx de las
+  franjas en la imagen: negativa si suben hacia la derecha), en vez de reconstruirla por inpainting.
+  Con [pendiente, "izq"] o [pendiente, "der"] toma solo ese costado (cuando el otro no es tela limpia).
+  Con "bordes", busca los bordes entre colores de tela en los dos costados y los une en línea recta
+  (para franjas que no son paralelas o que se curvan con la caída de la tela).
+  También sirve con "borrar": la zona se rellena así en vez de reconstruirse por inpainting.
+- "escala" (con "caja"): factor sobre el alto del logo nuevo (p. ej. 0.85 cuando el anterior era un
+  escudo relleno, más grande a la vista que uno de solo trazos).
+- "contorno": [ancho, [r, g, b]]: el logo nuevo lleva un borde de ese color (como un parche bordado),
+  para que se lea sobre telas claras.
+- "rgb": [r, g, b]: color fijo del logo nuevo (en vez del color del anterior).
+- "excluir" (con "blanco"): caja dentro de la zona que no se toca (p. ej. la talla bajo la marca).
 - "borrar": borra la gráfica que hay dentro de la zona (sin los trazos chicos, p. ej. letras
   vecinas) y no pone nada.
 - color "original": se pega con sus colores (blanco ajustado al brillo del render);
@@ -83,11 +96,14 @@ def ubicar(img, zona, rel_min=0.04, incluir_borde=False, tela=None, borde_ok=Fal
     return caja, mascara
 
 
-def ubicar_blanco(img, zona, minimo=140):
+def ubicar_blanco(img, zona, minimo=140, excluir=None):
     """Logo blanco dentro de una zona, aunque la tela de alrededor tenga franjas de varios colores."""
     x0, y0, x1, y1 = zona
     z = img[y0:y1, x0:x1].astype(int)
     m = (z.min(axis=2) > minimo) & (z.max(axis=2) - z.min(axis=2) < 70)
+    if excluir:
+        ex0, ey0, ex1, ey1 = excluir
+        m[max(ey0 - y0, 0):max(ey1 - y0, 0), max(ex0 - x0, 0):max(ex1 - x0, 0)] = False
     n, etiquetas, stats, _ = cv2.connectedComponentsWithStats(m.astype(np.uint8), connectivity=8)
     validos = [i for i in range(1, n) if stats[i, 4] >= 4]
     if not validos:
@@ -130,6 +146,76 @@ def mascara_franjas(img, caja, anillo=12):
     return cv2.dilate(mascara, np.ones((3, 3), np.uint8), iterations=1)
 
 
+def bordes_columna(img, x, ya, yb, centros):
+    """Bordes entre colores de tela en una columna: [(y, color_arriba, color_abajo)]."""
+    col = img[ya:yb, x].astype(np.float32)
+    clase = np.argmin([np.abs(col - c).sum(axis=1) for c in centros], axis=0)
+    clase = cv2.medianBlur(clase.astype(np.uint8).reshape(-1, 1), 5).ravel()
+    return [(ya + i, int(clase[i - 1]), int(clase[i])) for i in range(1, len(clase)) if clase[i] != clase[i - 1]]
+
+
+def muestra(img, y, x):
+    """Color en una fila no entera (interpolación lineal entre las dos filas vecinas)."""
+    y = min(max(y, 0), img.shape[0] - 1.001)
+    f = int(y)
+    k = y - f
+    return (1 - k) * img[f, x].astype(float) + k * img[f + 1, x].astype(float)
+
+
+def extruir_bordes(destino, img, caja, margen=4, alcance=70):
+    """Rellena la caja uniendo los bordes de franjas que se ven en sus dos costados."""
+    h, w = img.shape[:2]
+    x0, y0, x1, y1 = caja
+    xl, xr = max(x0 - margen, 0), min(x1 - 1 + margen, w - 1)
+    ya, yb = max(y0 - alcance, 0), min(y1 + alcance, h)
+    px = np.concatenate([img[ya:yb, max(xl - 6, 0):xl + 1].reshape(-1, 3), img[ya:yb, xr:xr + 7].reshape(-1, 3)])
+    criterio = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 1.0)
+    _, etq, centros = cv2.kmeans(px.astype(np.float32), 3, None, criterio, 3, cv2.KMEANS_PP_CENTERS)
+    bl, br = bordes_columna(img, xl, ya, yb, centros), bordes_columna(img, xr, ya, yb, centros)
+    pares, usados = [], set()
+    for y, a, b in bl:  # cada borde de la izquierda con el mismo tipo de borde a la derecha
+        cand = [(abs(yr - y), i) for i, (yr, ar, br_) in enumerate(br) if (ar, br_) == (a, b) and i not in usados]
+        if cand:
+            i = min(cand)[1]
+            usados.add(i)
+            pares.append((y, br[i][0]))
+    pares.sort()
+    for x in range(x0, x1):
+        t = (x - xl) / max(xr - xl, 1)
+        bx = [(1 - t) * l + t * r for l, r in pares]
+        for y in range(y0, y1):
+            k = sum(1 for b in bx if b <= y)  # franja en la que cae y
+            if 0 < k < len(pares):
+                s_ = (y - bx[k - 1]) / max(bx[k] - bx[k - 1], 1e-6)
+                yl = pares[k - 1][0] + s_ * (pares[k][0] - pares[k - 1][0])
+                yr = pares[k - 1][1] + s_ * (pares[k][1] - pares[k - 1][1])
+            elif k == 0 and pares:
+                yl, yr = pares[0][0] + (y - bx[0]), pares[0][1] + (y - bx[0])
+            elif pares:
+                yl, yr = pares[-1][0] + (y - bx[-1]), pares[-1][1] + (y - bx[-1])
+            else:
+                yl = yr = y
+            destino[y, x] = ((1 - t) * muestra(img, yl, xl) + t * muestra(img, yr, xr)).astype(np.uint8)
+
+
+def extruir(destino, img, caja, pendiente, margen=4):
+    """Rellena la caja continuando franjas diagonales rectas desde sus dos costados (mezcla lineal)."""
+    if pendiente == "bordes":
+        return extruir_bordes(destino, img, caja, margen)
+    lado = None
+    if isinstance(pendiente, (list, tuple)):
+        pendiente, lado = pendiente
+    h, w = img.shape[:2]
+    x0, y0, x1, y1 = caja
+    xl, xr = max(x0 - margen, 0), min(x1 - 1 + margen, w - 1)
+    for x in range(x0, x1):
+        t = {"izq": 0.0, "der": 1.0}.get(lado, (x - xl) / max(xr - xl, 1))
+        ys = np.arange(y0, y1)
+        yl = np.clip(np.round(ys + pendiente * (xl - x)).astype(int), 0, h - 1)
+        yr = np.clip(np.round(ys + pendiente * (xr - x)).astype(int), 0, h - 1)
+        destino[y0:y1, x] = ((1 - t) * img[yl, xl].astype(float) + t * img[yr, xr].astype(float)).astype(np.uint8)
+
+
 def color_tinta(img, mascara, tela=None):
     """Color del logo anterior: mediana de sus píxeles más contrastados."""
     ys, xs = np.where(mascara > 0)
@@ -165,12 +251,13 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
         try:
             if "borrar" in op:
                 caja, m = ubicar(img, op["borrar"], rel_min=op.get("rel_min", 0.1), incluir_borde=True)
-                total = cv2.bitwise_or(total, cv2.dilate(m, np.ones((5, 5), np.uint8)))
+                if "extruir" not in op:
+                    total = cv2.bitwise_or(total, cv2.dilate(m, np.ones((5, 5), np.uint8)))
             elif "caja" in op:
                 caja = op["caja"]
                 m = mascara_franjas(img, caja) if op.get("franjas") else mascara_caja(img, caja, pad=4)
             elif op.get("blanco"):
-                caja, m = ubicar_blanco(img, op["zona"], op.get("minimo", 140))
+                caja, m = ubicar_blanco(img, op["zona"], op.get("minimo", 140), op.get("excluir"))
             else:
                 caja, comp = ubicar(img, op["zona"], rel_min=op.get("rel_min", 0.04), tela=tela,
                                     borde_ok="tela" in op)
@@ -189,17 +276,25 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
         cv2.rectangle(revision, tuple(zona[:2]), tuple(zona[2:4]), (255, 160, 0), 1)
         cv2.rectangle(revision, (int(caja[0]), int(caja[1])), (int(caja[2]), int(caja[3])), (0, 255, 0), 1)
         if "borrar" in op:
+            if "extruir" in op:
+                pegar.append((op, op["borrar"], m, tela))
             continue
-        total = cv2.bitwise_or(total, m)
+        if "extruir" not in op:
+            total = cv2.bitwise_or(total, m)
         pegar.append((op, caja, m, tela))
     if ruta_revision:
         ruta_revision.parent.mkdir(parents=True, exist_ok=True)
         cv2.imwrite(str(ruta_revision), revision)
     total = cv2.dilate(total, np.ones((5, 5), np.uint8), iterations=1)
     limpio = cv2.inpaint(img, total, 5, cv2.INPAINT_TELEA)
+    for op, caja, _m, _t in pegar:
+        if "extruir" in op:
+            extruir(limpio, img, op.get("caja") or op["borrar"], op["extruir"])
 
     lienzo = Image.fromarray(cv2.cvtColor(limpio, cv2.COLOR_BGR2RGB)).convert("RGBA")
     for op, caja, m, tela in pegar:
+        if "borrar" in op:
+            continue
         nombre = op["logo"]
         logo, cfg_logo = logos[nombre]
         x0, y0, x1, y1 = op.get("pegar_en", caja)[:4]
@@ -208,7 +303,7 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
             ancho = bw * 1.03
             alto = ancho * logo.height / logo.width
         elif "caja" in op:  # escudos marcados a mano: misma altura que el anterior
-            alto = bh * 1.04
+            alto = bh * 1.04 * op.get("escala", 1.0)
             ancho = alto * logo.width / logo.height * op.get("angosto", 1.0)
         elif cfg_logo.get("ajuste") == "contener":  # logos con texto: que quepan en la caja
             s = min(bw / logo.width, bh * cfg_logo.get("alto_max", 1.0) / logo.height)
@@ -221,6 +316,24 @@ def procesar(ruta_img, ops, logos, ruta_salida, ruta_revision=None):
             ancho = (bw * bh * proporcion) ** 0.5
             alto = ancho / proporcion
         e = preparar(logo, cfg_logo, ancho, alto, img, m, tela)
+        if "rgb" in op:  # color fijo para el logo nuevo
+            arr = np.asarray(e).copy()
+            arr[..., :3] = op["rgb"]
+            e = Image.fromarray(arr, "RGBA")
+        if "contorno" in op:  # borde de color alrededor del logo (parche bordado)
+            grosor, rgb = op["contorno"]
+            a = ((np.asarray(e)[..., 3] > 40) * 255).astype(np.uint8)  # puntas finas: borde cerrado
+            pad = grosor + 1
+            base = Image.new("RGBA", (e.width + 2 * pad, e.height + 2 * pad), (0, 0, 0, 0))
+            capa = np.zeros((base.height, base.width, 4), np.uint8)
+            capa[..., :3] = rgb
+            b = np.zeros((base.height, base.width), np.uint8)
+            b[pad:pad + e.height, pad:pad + e.width] = a
+            capa[..., 3] = cv2.GaussianBlur(cv2.dilate(b, cv2.getStructuringElement(
+                cv2.MORPH_ELLIPSE, (2 * grosor + 1, 2 * grosor + 1))), (3, 3), 0)
+            base = Image.fromarray(capa, "RGBA")
+            base.alpha_composite(e, (pad, pad))
+            e = base
         cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
         lienzo.alpha_composite(e, (int(round(cx - e.width / 2)), int(round(cy - e.height / 2))))
     ruta_salida.parent.mkdir(parents=True, exist_ok=True)
