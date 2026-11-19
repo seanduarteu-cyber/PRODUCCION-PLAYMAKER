@@ -42,7 +42,7 @@
   ],
   [
    "Veintidós líneas",
-   "Catorce líneas"
+   "Quince líneas"
   ],
   [
    "El club revisa las fichas y define qué productos entran en la temporada 2027.",
@@ -95,7 +95,6 @@
  ],
  "quitar": [
   "04",
-  "06",
   "08",
   "10",
   "12",
@@ -213,6 +212,28 @@
     [
      "TELA",
      "Tela de alta resistencia al roce y al tirón, con costuras reforzadas para el contacto."
+    ]
+   ]
+  },
+  "06": {
+   "titulo": "Medias de juego",
+   "bajada": "Rojas con franja azul y blanca bajo el puño",
+   "bloques": [
+    [
+     "CAÑA",
+     "Caña alta con puño doble acanalado y franja azul y blanca tejida bajo el puño."
+    ],
+    [
+     "PIE",
+     "Planta y talón acolchados, con zonas de ventilación en el empeine."
+    ],
+    [
+     "AJUSTE",
+     "Compresión suave en el tobillo y el arco, para que no se deslicen durante el partido."
+    ],
+    [
+     "TELA",
+     "Poliamida y elastano de alta resistencia, de secado rápido."
     ]
    ]
   },

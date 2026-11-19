@@ -20,33 +20,36 @@
    "imagen": "img/ficha/04_short.jpg"
   },
   "SFR-05": {
-   "imagen": "img/ficha/06_polera_entrenamiento.jpg"
+   "imagen": "img/montaje_final/05_medias.jpg"
   },
   "SFR-06": {
-   "imagen": "img/montaje_final/08_poleron_medio_cierre.jpg"
+   "imagen": "img/ficha/06_polera_entrenamiento.jpg"
   },
   "SFR-07": {
-   "imagen": "img/ficha/08_sudadera.jpg"
+   "imagen": "img/montaje_final/08_poleron_medio_cierre.jpg"
   },
   "SFR-08": {
-   "imagen": "img/montaje_final/09_buzo_completo.jpg"
+   "imagen": "img/ficha/08_sudadera.jpg"
   },
   "SFR-09": {
-   "imagen": "img/montaje_final/10_pantalon_buzo.jpg"
+   "imagen": "img/montaje_final/09_buzo_completo.jpg"
   },
   "SFR-10": {
-   "imagen": "img/ficha/11_polo.jpg"
+   "imagen": "img/montaje_final/10_pantalon_buzo.jpg"
   },
   "SFR-11": {
-   "imagen": "img/ficha/12_polera_clasica.jpg"
+   "imagen": "img/ficha/11_polo.jpg"
   },
   "SFR-12": {
-   "imagen": "img/montaje_final/13_poleron_basic.jpg"
+   "imagen": "img/ficha/12_polera_clasica.jpg"
   },
   "SFR-13": {
-   "imagen": "img/ficha/14_casaca.jpg"
+   "imagen": "img/montaje_final/13_poleron_basic.jpg"
   },
   "SFR-14": {
+   "imagen": "img/ficha/14_casaca.jpg"
+  },
+  "SFR-15": {
    "imagen": "img/ficha/15_parka.jpg"
   }
  }
