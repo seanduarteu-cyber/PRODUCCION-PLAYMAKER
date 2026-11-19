@@ -20,6 +20,9 @@ club.json (rutas relativas al JSON):
                   otro modo), después de los reemplazos
     "quitar":     ["04", "08"]  fichas que no van: salen sus páginas y sus filas del catálogo y del
                   cuadro de valores, y las demás se renumeran (ficha, código y página)
+    "sin_precios": true  propuesta sin valores: sale el rótulo del precio y su marcador de cada ficha
+    "quitar_paginas": ["CUADRO DE VALORES", ...]  salen las páginas que contienen alguno de esos textos
+                  (texto de la base, antes de los reemplazos)
 Las fichas se nombran siempre con el número de la base de origen; el resultado lleva la numeración
 nueva (la que usa propuesta.json).
 
@@ -188,6 +191,11 @@ def main(cfg_path):
             for k, linea in enumerate(lineas):
                 capa.texto(pag, cuerpo, linea, celda.x0, celda.base - salto - k * interlinea)
 
+    if cfg.get("sin_precios"):  # sin valores: fuera el rótulo del precio y su marcador en cada ficha
+        for num, pag in fichas.items():
+            for r in R[pag]:
+                if getattr(r, "fin_derecha", False) or r.texto.startswith("$["):
+                    borrar(pag, r)
     variantes = cfg.get("variantes", {})
     for num, lista in variantes.items():  # un rótulo y un marcador de precio por variante
         pag = fichas[num]
@@ -209,6 +217,11 @@ def main(cfg_path):
         sys.exit(f"La base no tiene alguna de las fichas a quitar: {quitar}")
     nuevo_num = {n: f"{k + 1:02d}" for k, n in enumerate(n for n in sorted(fichas) if n not in quitar)}
     paginas_fuera = [fichas[n] for n in quitar]
+    for texto in cfg.get("quitar_paginas", []):
+        encontradas = [i for i, runs in enumerate(R) if any(texto in r.texto for r in runs)]
+        if not encontradas:
+            sys.exit(f"Ninguna página tiene el texto «{texto}» (quitar_paginas)")
+        paginas_fuera += [i for i in encontradas if i not in paginas_fuera]
     paginas = [i for i in range(len(R)) if i not in paginas_fuera]
     patron = re.compile(rf"\b{viejo_cod}-(\d+)")
 

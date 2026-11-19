@@ -80,7 +80,7 @@ def analizar_base(ruta):
                            and tuple(round(c, 3) for c in r["non_stroking_color"]) == tuple(round(c, 3) for c in FONDO_RENDER))
                 valores = sorted((w for w in words if w["text"] == "$[00.000]"), key=lambda w: w["x0"])
                 fichas[code] = {"page": i, "box": (box["x0"], box["top"], box["x1"], box["bottom"]),
-                                "valores": [_bbox(v) for v in valores], "size": valores[0]["size"]}
+                                "valores": [_bbox(v) for v in valores], "size": valores[0]["size"] if valores else None}
             elif "CANTIDAD" in texts and texts.count("[00]") > 1:
                 filas = {}
                 for w in words:
@@ -458,6 +458,36 @@ def main(cfg_path):
         writer.pages[0].merge_transformed_page(
             pagina_escudo, Transformation().scale(s).translate(cx - ew * s / 2, cy - eh * s / 2))
 
+    sin_precios = cfg.get("sin_precios", False)  # propuesta solo gráfica: sin campos de valor
+    if sin_precios and (cuadro or any(f["valores"] for f in fichas.values())):
+        sys.exit("La base todavía tiene marcadores de precio: armarla con \"sin_precios\" en club.json")
+    if sin_precios:
+        campos = []
+    else:
+        agregar_campos(writer, cfg, fichas, cuadro, h)
+        campos = writer._root_object["/AcroForm"]["/Fields"]
+
+    salida = cfg_dir / cfg["salida"]
+    writer.compress_identical_objects()
+    with open(salida, "wb") as fh:
+        writer.write(fh)
+    con_render = ", ".join(sorted(cfg["renders"]))
+    sin_render = ", ".join(c for c in sorted(fichas) if c not in cfg["renders"])
+    print(f"OK  {salida}  ({salida.stat().st_size / 1024:.0f} KB)")
+    print(f"    Con render: {con_render}")
+    print(f"    Sin render: {sin_render or '-'}")
+    if sin_precios:
+        print("    Sin precios: propuesta solo gráfica")
+        return
+    precios = cfg.get("precios", {})
+    n_valores = len(set(precios_en_fichas(fichas, cfg.get("variantes", {}))) | set(cuadro["filas"] if cuadro else []))
+    print(f"    Campos: {len(campos)} (valor unitario x{n_valores}, cantidades, subtotal, IVA, total)")
+    if precios:
+        print(f"    Precios cargados: {len(precios)} ({'con IVA' if cfg.get('precios_con_iva') else 'netos'})")
+
+
+def agregar_campos(writer, cfg, fichas, cuadro, h):
+    """Campos de formulario: valor unitario por producto, cantidades y totales calculados."""
     fuentes = DictionaryObject({NameObject("/" + k): fuente_truetype(writer, v, k) for k, v in FUENTES.items()})
     precios = cfg.get("precios", {})
     campos, orden = agregar_formulario(writer, precios_en_fichas(fichas, cfg.get("variantes", {})), cuadro,
@@ -471,20 +501,6 @@ def main(cfg_path):
         NameObject("/DR"): DictionaryObject({NameObject("/Font"): fuentes}),
         NameObject("/DA"): TextStringObject(f"/PopR 9 Tf {NAVY}"),
     }))
-
-    salida = cfg_dir / cfg["salida"]
-    writer.compress_identical_objects()
-    with open(salida, "wb") as fh:
-        writer.write(fh)
-    con_render = ", ".join(sorted(cfg["renders"]))
-    sin_render = ", ".join(c for c in sorted(fichas) if c not in cfg["renders"])
-    print(f"OK  {salida}  ({salida.stat().st_size / 1024:.0f} KB)")
-    print(f"    Con render: {con_render}")
-    print(f"    Sin render: {sin_render or '—'}")
-    n_valores = len(set(precios_en_fichas(fichas, cfg.get("variantes", {}))) | set(cuadro["filas"] if cuadro else []))
-    print(f"    Campos: {len(campos)} (valor unitario x{n_valores}, cantidades, subtotal, IVA, total)")
-    if precios:
-        print(f"    Precios cargados: {len(precios)} ({'con IVA' if cfg.get('precios_con_iva') else 'netos'})")
 
 
 if __name__ == "__main__":

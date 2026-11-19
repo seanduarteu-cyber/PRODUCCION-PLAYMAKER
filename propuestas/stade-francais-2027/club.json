@@ -1,0 +1,476 @@
+{
+ "base": "../gauchos-rc-2027/base/Propuesta_Gauchos_Rugby_Club_2027_base_v2.pdf",
+ "salida": "base/Propuesta_Stade_Francais_2027_base.pdf",
+ "codigo": [
+  "GAU",
+  "SFR"
+ ],
+ "sin_precios": true,
+ "quitar_paginas": [
+  "CUADRO DE VALORES",
+  "PROGRAMA PARA SOCIOS",
+  "Transparencia y pagos"
+ ],
+ "reemplazos": [
+  [
+   "Playmaker presenta la propuesta de indumentaria para",
+   "Playmaker presenta la propuesta gráfica de indumentaria para"
+  ],
+  [
+   "El documento cubre la línea completa del club —juego, entrenamiento, presentación y abrigo— manteniendo cada producto y su línea tal como el club los tiene definidos, y desarrollándolos sobre la identidad visual y la paleta de Gauchos.",
+   "El documento muestra la línea completa (juego, entrenamiento, presentación y abrigo), desarrollada sobre la identidad visual y los colores del club, para acordar en conjunto los productos que se ofrecerán."
+  ],
+  [
+   "Cada prenda se presenta en formato de ficha, con su especificación técnica, tallaje y valor. La ficha reserva el espacio del render para que el club revise el diseño antes de cerrar la línea definitiva de la temporada.",
+   "Cada prenda se presenta en formato de ficha, con su diseño, especificación técnica y tallaje. Esta propuesta no incluye valores: primero acordamos los productos y luego presentamos la propuesta económica."
+  ],
+  [
+   "Gauchos Rugby Club",
+   "Stade Français"
+  ],
+  [
+   "Gauchos",
+   "Stade Français"
+  ],
+  [
+   "GAUCHOS",
+   "STADE FRANÇAIS"
+  ],
+  [
+   "Santiago, 9 de octubre de 2026 · Validez 30 días",
+   "Santiago, 19 de noviembre de 2026"
+  ],
+  [
+   "Veintidós líneas",
+   "Catorce líneas"
+  ],
+  [
+   "El club revisa las fichas y define qué productos entran en la temporada 2027.",
+   "El club revisa las fichas y define qué productos se ofrecerán en la temporada 2027."
+  ],
+  [
+   "Cantidades y tallas",
+   "Propuesta económica"
+  ],
+  [
+   "El club entrega la cantidad por producto y la curva de tallas; se cierran los valores.",
+   "Con los productos acordados, Playmaker presenta los valores y el modelo de venta."
+  ],
+  [
+   "Playmaker SpA · sduarte@playmaker.cl · +56 9 3928 3323",
+   "Playmaker SpA, sduarte@playmaker.cl, +56 9 3928 3323"
+  ],
+  [
+   "sduarte@playmaker.cl · +56 9 3928 3323 · www.playmaker.cl",
+   "sduarte@playmaker.cl, +56 9 3928 3323, www.playmaker.cl"
+  ]
+ ],
+ "simbolos": [
+  [
+   " · ",
+   "   "
+  ]
+ ],
+ "paleta": [
+  [
+   "Azul rey",
+   "#1B33A6"
+  ],
+  [
+   "Azul marino",
+   "#141C3A"
+  ],
+  [
+   "Blanco",
+   "#FFFFFF"
+  ],
+  [
+   "Rojo",
+   "#D0101F"
+  ],
+  [
+   "Rosado",
+   "#F02478"
+  ]
+ ],
+ "quitar": [
+  "04",
+  "06",
+  "08",
+  "10",
+  "12",
+  "20",
+  "21",
+  "22"
+ ],
+ "fichas": {
+  "01": {
+   "titulo": "Camiseta de juego Local",
+   "bajada": "Azul rey con trazos rojos y blancos, cuello polo blanco y puños tricolor",
+   "bloques": [
+    [
+     "CUELLO",
+     "Cuello polo blanco con interior azul y tapeta de dos botones con vivo rojo."
+    ],
+    [
+     "MANGA",
+     "Manga corta con puño blanco y franjas rojas."
+    ],
+    [
+     "CUERPO",
+     "Trazos geométricos rojos y blancos que bajan por los costados, sobre trama tonal."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo e isotipo Playmaker al pecho derecho. Espacio para auspiciadores en pecho, mangas y espalda."
+    ],
+    [
+     "ESPALDA",
+     "Número blanco en tipografía de bloque y bandera tricolor bajo el cuello."
+    ],
+    [
+     "TELA",
+     "Línea PRO: 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
+    ]
+   ]
+  },
+  "02": {
+   "titulo": "Camiseta de juego Visita",
+   "bajada": "Blanca con trazos azul marino y rojos, a juego con la camiseta local",
+   "bloques": [
+    [
+     "CUELLO",
+     "Cuello polo blanco con interior azul marino y tapeta de dos botones con vivo rojo."
+    ],
+    [
+     "MANGA",
+     "Manga corta con puño de franjas azul marino, blanca y roja."
+    ],
+    [
+     "CUERPO",
+     "Trazos geométricos azul marino y rojos en los costados, sobre trama tonal."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo e isotipo Playmaker al pecho derecho. Espacio para auspiciadores en pecho, mangas y espalda."
+    ],
+    [
+     "ESPALDA",
+     "Número azul marino en tipografía de bloque y bandera tricolor bajo el cuello."
+    ],
+    [
+     "TELA",
+     "Línea PRO: 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
+    ]
+   ]
+  },
+  "03": {
+   "titulo": "Camiseta de juego Alternativa",
+   "bajada": "Franjas horizontales, en tres versiones para elegir",
+   "bloques": [
+    [
+     "CUELLO",
+     "Cuello polo blanco de tejido plano con tapeta de dos botones."
+    ],
+    [
+     "MANGA",
+     "Manga raglán con puño blanco y franjas en los colores de cada versión."
+    ],
+    [
+     "VERSIONES",
+     "Azul rey con franjas blancas y rojas, rosada con franjas blancas y azules, y azul marino con franjas azul rey."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo y logo Playmaker al pecho derecho."
+    ],
+    [
+     "CUERPO",
+     "Franjas sublimadas con degradé de líneas finas: el diseño no se despega ni pierde color."
+    ],
+    [
+     "TELA",
+     "Línea PRO: 100% poliéster sublimado, protección solar UV, tratamiento antibacteriano, antimanchas de sudor y espalda microperforada."
+    ]
+   ]
+  },
+  "05": {
+   "titulo": "Short de juego",
+   "bajada": "Azul rey con vivo blanco, o azul marino con trazos rojos y blancos",
+   "bloques": [
+    [
+     "CALCE",
+     "Calce de rugby con pretina elasticada ancha y aberturas laterales en el ruedo."
+    ],
+    [
+     "COLORES",
+     "Azul rey con vivo lateral blanco, o azul marino con trazos rojos y blancos a juego con las camisetas."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français en la pierna izquierda e isotipo Playmaker en la derecha."
+    ],
+    [
+     "TELA",
+     "Tela de alta resistencia al roce y al tirón, con costuras reforzadas para el contacto."
+    ]
+   ]
+  },
+  "07": {
+   "titulo": "Polera de entrenamiento",
+   "bajada": "Manga corta, en dos diseños: trazos rojos o mangas con trama azul",
+   "bloques": [
+    [
+     "CUELLO",
+     "Cuello redondo acanalado al tono."
+    ],
+    [
+     "MANGA",
+     "Manga raglán con vivo blanco en la costura."
+    ],
+    [
+     "DISEÑOS",
+     "Azul con trazos rojos sublimados en hombros y ruedo, o azul rey con mangas de trama azul."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo e isotipo Playmaker al pecho derecho."
+    ],
+    [
+     "TELA",
+     "Poliéster deportivo liviano y respirable, de secado rápido."
+    ]
+   ]
+  },
+  "09": {
+   "titulo": "Polerón medio cierre",
+   "bajada": "Azul rey con mangas de trama tonal y vivo blanco",
+   "bloques": [
+    [
+     "CUELLO",
+     "Cuello alto con medio cierre y protector de mentón."
+    ],
+    [
+     "MANGAS",
+     "Manga raglán larga con trama diagonal tono sobre tono y puño acanalado."
+    ],
+    [
+     "CUERPO",
+     "Azul rey liso con vivo blanco en las costuras raglán y pretina acanalada."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo e isotipo Playmaker al pecho derecho."
+    ],
+    [
+     "TELA",
+     "Poliéster técnico con interior perchado suave, para entrenamiento y viaje."
+    ]
+   ]
+  },
+  "11": {
+   "titulo": "Sudadera sin mangas",
+   "bajada": "En los mismos dos diseños de la polera de entrenamiento",
+   "bloques": [
+    [
+     "CUELLO",
+     "Cuello redondo acanalado y sisas con ribete al tono."
+    ],
+    [
+     "CUERPO",
+     "Vivo blanco desde el hombro y paneles sublimados en los hombros."
+    ],
+    [
+     "DISEÑOS",
+     "Azul con trazos rojos, o azul rey con hombros de trama azul."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo e isotipo Playmaker al pecho derecho."
+    ],
+    [
+     "TELA",
+     "Poliéster deportivo liviano y respirable, de secado rápido."
+    ]
+   ]
+  },
+  "13": {
+   "titulo": "Buzo de presentación",
+   "bajada": "Polerón medio cierre azul rey y pantalón azul marino, en conjunto",
+   "bloques": [
+    [
+     "POLERÓN",
+     "Medio cierre, mangas raglán con trama azul y vivo blanco."
+    ],
+    [
+     "PANTALÓN",
+     "Azul marino con cordón de ajuste, bolsillos con cierre y vivo blanco."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français e isotipo Playmaker al pecho y en la pierna del pantalón."
+    ],
+    [
+     "USO",
+     "Conjunto para viajes, presentaciones y llegada a los partidos."
+    ],
+    [
+     "TELA",
+     "Poliéster técnico con interior perchado suave en el polerón y punto liso en el pantalón."
+    ]
+   ]
+  },
+  "14": {
+   "titulo": "Pantalón de buzo",
+   "bajada": "Azul marino, con bolsillos con cierre y vivo blanco",
+   "bloques": [
+    [
+     "CALCE",
+     "Calce recto con pretina elasticada y cordón interior."
+    ],
+    [
+     "BOLSILLOS",
+     "Dos bolsillos laterales con cierre y vivo blanco."
+    ],
+    [
+     "CORTES",
+     "Cortes ergonómicos en la rodilla para mayor movilidad."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français en la pierna izquierda e isotipo Playmaker en la derecha."
+    ],
+    [
+     "TELA",
+     "Punto técnico liso, resistente y de fácil lavado."
+    ]
+   ]
+  },
+  "15": {
+   "titulo": "Polo piqué",
+   "bajada": "Azul rey con mangas azul marino, o completo en azul marino",
+   "bloques": [
+    [
+     "CUELLO",
+     "Cuello polo tejido al tono con tapeta de dos botones."
+    ],
+    [
+     "CUERPO",
+     "Mangas raglán con vivo blanco en la costura."
+    ],
+    [
+     "COLORES",
+     "Azul rey con mangas y cuello azul marino, o todo azul marino con vivos blancos en los puños."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo e isotipo Playmaker al pecho derecho."
+    ],
+    [
+     "TELA",
+     "Piqué polycotton: 65% poliéster y 35% algodón."
+    ]
+   ]
+  },
+  "16": {
+   "titulo": "Polera rugby clásica",
+   "bajada": "Manga larga azul marino con cuello crema, con galón en V o franja al pecho",
+   "bloques": [
+    [
+     "CUELLO",
+     "Cuello de tejido plano crema con tapeta de botones y refuerzo bordado."
+    ],
+    [
+     "DISEÑOS",
+     "Galón en V crema y rojo al pecho, o franja horizontal crema y roja que rodea el cuerpo."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français e isotipo Playmaker bordados al pecho."
+    ],
+    [
+     "PUÑOS",
+     "Manga larga con puño y pretina acanalados."
+    ],
+    [
+     "TELA",
+     "Algodón de punto pesado, de tacto suave y gran duración."
+    ]
+   ]
+  },
+  "17": {
+   "titulo": "Polerón algodón basic",
+   "bajada": "Azul rey, cuello redondo, con escudo y logo al pecho",
+   "bloques": [
+    [
+     "CUELLO",
+     "Cuello redondo acanalado."
+    ],
+    [
+     "CUERPO",
+     "Puños y pretina acanalados, de corte holgado."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo y logo Playmaker al pecho derecho."
+    ],
+    [
+     "TELA",
+     "Algodón perchado de interior suave."
+    ]
+   ]
+  },
+  "18": {
+   "titulo": "Casaca con capucha",
+   "bajada": "Azul marino o azul rey, con vivo blanco y cierre completo",
+   "bloques": [
+    [
+     "CAPUCHA",
+     "Capucha fija con cordón de ajuste."
+    ],
+    [
+     "CIERRE",
+     "Cierre completo y bolsillos laterales con cierre."
+    ],
+    [
+     "CUERPO",
+     "Vivo blanco desde el hombro hasta el puño; puños y pretina elasticados."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo y logo Playmaker al pecho derecho."
+    ],
+    [
+     "TELA",
+     "Exterior repelente al agua y cortaviento, con forro interior."
+    ]
+   ]
+  },
+  "19": {
+   "titulo": "Parka larga",
+   "bajada": "Azul marino o azul rey, impermeable, con capucha y largo a medio muslo",
+   "bloques": [
+    [
+     "CAPUCHA",
+     "Capucha con cordón de ajuste y cuello alto protector."
+    ],
+    [
+     "CIERRE",
+     "Cierre completo y bolsillos laterales con cierre."
+    ],
+    [
+     "LARGO",
+     "Largo a medio muslo, para la banca, los viajes y el invierno."
+    ],
+    [
+     "APLICACIONES",
+     "Escudo Stade Français al pecho izquierdo y logo Playmaker al pecho derecho."
+    ],
+    [
+     "TELA",
+     "Exterior impermeable con relleno térmico y forro interior."
+    ]
+   ]
+  }
+ }
+}

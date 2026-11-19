@@ -1,0 +1,94 @@
+{
+ "aspecto": 1.93,
+ "color": [
+  250,
+  249,
+  245
+ ],
+ "combinados": {
+  "img/ficha/03_camiseta_alternativa.jpg": [
+   [
+    "img/montaje_final/03_camiseta_franjas_tricolor.jpg",
+    "AZUL TRICOLOR"
+   ],
+   [
+    "img/montaje_final/03_camiseta_franjas_rosada.jpg",
+    "ROSADA"
+   ],
+   [
+    "img/montaje_final/03_camiseta_franjas_marino.jpg",
+    "AZUL MARINO"
+   ]
+  ],
+  "img/ficha/04_short.jpg": [
+   [
+    "img/montaje_final/04_short_azul_rey.jpg",
+    "AZUL REY"
+   ],
+   [
+    "img/montaje_final/04_short_marino.jpg",
+    "AZUL MARINO"
+   ]
+  ],
+  "img/ficha/06_polera_entrenamiento.jpg": [
+   [
+    "img/piezas/polera_trazos.jpg",
+    "TRAZOS ROJOS"
+   ],
+   [
+    "img/piezas/polera_trama.jpg",
+    "TRAMA AZUL"
+   ]
+  ],
+  "img/ficha/08_sudadera.jpg": [
+   [
+    "img/piezas/sudadera_trazos.jpg",
+    "TRAZOS ROJOS"
+   ],
+   [
+    "img/piezas/sudadera_trama.jpg",
+    "TRAMA AZUL"
+   ]
+  ],
+  "img/ficha/11_polo.jpg": [
+   [
+    "img/piezas/polo_azul_rey.jpg",
+    "AZUL REY"
+   ],
+   [
+    "img/piezas/polo_marino.jpg",
+    "AZUL MARINO"
+   ]
+  ],
+  "img/ficha/12_polera_clasica.jpg": [
+   [
+    "img/piezas/clasica_galon.jpg",
+    "GALÓN EN V"
+   ],
+   [
+    "img/piezas/clasica_franja.jpg",
+    "FRANJA AL PECHO"
+   ]
+  ],
+  "img/ficha/14_casaca.jpg": [
+   [
+    "img/piezas/casaca_marino.jpg",
+    "AZUL MARINO"
+   ],
+   [
+    "img/piezas/casaca_azul_rey.jpg",
+    "AZUL REY"
+   ]
+  ],
+  "img/ficha/15_parka.jpg": [
+   [
+    "img/piezas/parka_marino.jpg",
+    "AZUL MARINO"
+   ],
+   [
+    "img/piezas/parka_azul_rey.jpg",
+    "AZUL REY"
+   ]
+  ]
+ }
+}

@@ -1,0 +1,18 @@
+{
+  "entrada": "img/montaje_final",
+  "salida": "img/piezas",
+  "recortes": {
+    "polera_trazos.jpg": ["06_entrenamiento_trazos.jpg", [0, 150, 890, 800]],
+    "sudadera_trazos.jpg": ["06_entrenamiento_trazos.jpg", [880, 150, 1536, 800]],
+    "polera_trama.jpg": ["06_entrenamiento_trama.jpg", [0, 150, 890, 790]],
+    "sudadera_trama.jpg": ["06_entrenamiento_trama.jpg", [880, 150, 1536, 790]],
+    "polo_azul_rey.jpg": ["11_polo_azul_rey.jpg", [0, 90, 1195, 930]],
+    "polo_marino.jpg": ["11_polo_marino.jpg", [0, 90, 1190, 930]],
+    "clasica_galon.jpg": ["12_polera_clasica_galon.jpg", [0, 70, 1155, 890]],
+    "clasica_franja.jpg": ["12_polera_clasica_franja.jpg", [0, 70, 1155, 890]],
+    "casaca_marino.jpg": ["14_abrigo_marino.jpg", [60, 80, 765, 912]],
+    "parka_marino.jpg": ["14_abrigo_marino.jpg", [780, 0, 1475, 1010]],
+    "casaca_azul_rey.jpg": ["14_abrigo_azul_rey.jpg", [100, 110, 775, 940]],
+    "parka_azul_rey.jpg": ["14_abrigo_azul_rey.jpg", [790, 0, 1425, 1010]]
+  }
+}

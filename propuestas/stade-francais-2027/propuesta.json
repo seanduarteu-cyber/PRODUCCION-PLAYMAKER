@@ -1,0 +1,53 @@
+{
+ "base": "base/Propuesta_Stade_Francais_2027_base.pdf",
+ "salida": "Propuesta_Stade_Francais_2027.pdf",
+ "sin_precios": true,
+ "escudo_portada": {
+  "pdf": "logos/stade_francais_escudo_blanco.pdf",
+  "alto": 150
+ },
+ "renders": {
+  "SFR-01": {
+   "imagen": "img/montaje_final/02_camiseta_trazos_azul.jpg"
+  },
+  "SFR-02": {
+   "imagen": "img/montaje_final/01_camiseta_trazos_blanca.jpg"
+  },
+  "SFR-03": {
+   "imagen": "img/ficha/03_camiseta_alternativa.jpg"
+  },
+  "SFR-04": {
+   "imagen": "img/ficha/04_short.jpg"
+  },
+  "SFR-05": {
+   "imagen": "img/ficha/06_polera_entrenamiento.jpg"
+  },
+  "SFR-06": {
+   "imagen": "img/montaje_final/08_poleron_medio_cierre.jpg"
+  },
+  "SFR-07": {
+   "imagen": "img/ficha/08_sudadera.jpg"
+  },
+  "SFR-08": {
+   "imagen": "img/montaje_final/09_buzo_completo.jpg"
+  },
+  "SFR-09": {
+   "imagen": "img/montaje_final/10_pantalon_buzo.jpg"
+  },
+  "SFR-10": {
+   "imagen": "img/ficha/11_polo.jpg"
+  },
+  "SFR-11": {
+   "imagen": "img/ficha/12_polera_clasica.jpg"
+  },
+  "SFR-12": {
+   "imagen": "img/montaje_final/13_poleron_basic.jpg"
+  },
+  "SFR-13": {
+   "imagen": "img/ficha/14_casaca.jpg"
+  },
+  "SFR-14": {
+   "imagen": "img/ficha/15_parka.jpg"
+  }
+ }
+}
