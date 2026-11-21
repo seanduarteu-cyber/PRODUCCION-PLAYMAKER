@@ -3,7 +3,8 @@
 // no deja ingresar) y copiar la configuración de telas a otros diseños. Bases simuladas, con estado.
 const { chromium, contexto } = require('./comun_movil');
 let fallas = 0; const ok = (c, m) => { console.log((c ? 'OK   ' : 'FALLA') + ' ' + m); if (!c) fallas++; };
-const hoy = new Date().toISOString().slice(0, 10), ahora = new Date().toISOString();
+// fecha de entrega: hoy si es día hábil; si es sábado o domingo, el lunes (el panel no guarda entregas en fin de semana)
+const hoy = (() => { const x = new Date(); while ([0, 6].includes(x.getUTCDay())) x.setUTCDate(x.getUTCDate() + 1); return x.toISOString().slice(0, 10); })(), ahora = new Date().toISOString();
 const moldes = require('./datos_moldes_catalogo.json').map(m => Object.assign({}, m));
 const pz = ['Delantero', 'Espalda', 'Manga'];
 moldes.forEach(m => { if ([17, 18, 20].indexOf(m.numero) >= 0) m.piezas = pz.map(p => ({ pieza: p, cant: 1, tela: '' })); });
