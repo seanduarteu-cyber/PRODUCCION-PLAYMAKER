@@ -1380,8 +1380,20 @@ async function recargar(silencioso) {
   TERM = null;
   try { await cargarTodo(); if (await autoIngresarDesdeFichas()) await cargarTodo(); await sincronizarFechasFichas(); }
   catch (e) { if (!silencioso) toast('Sin conexión con la base de datos: ' + e.message, 'err'); }
+  // El refresco automático no repinta Costeo (sus datos no vienen de esta lectura y se perdería lo que se está
+  // haciendo) ni una pantalla con algo escrito que aún no se guarda. «↻ Actualizar» sí, y vuelve a leer el costeo.
+  if (silencioso && (TAB === 'costeo' || vistaConCambios())) return;
+  if (!silencioso && TAB === 'costeo') { COSTEO_DATOS = null; GG_DATOS = null; BOM = null; PRECIOS = null; SIM_DATOS = {}; CORTES_SIM = null; }
   renderVista();
   setTimeout(() => limpiezaTerminados().catch(e => console.warn('limpieza', e)), 4000);
+}
+// ¿Se está escribiendo en la pestaña abierta algo que todavía no se guarda? (un buscador no cuenta: se aplica al escribir)
+function vistaConCambios() {
+  const v = TAB && $('view-' + TAB), el = document.activeElement;
+  if (!v || !el || !v.contains(el) || !/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) return false;
+  if (el.tagName === 'SELECT') { const d = [...el.options].findIndex(o => o.defaultSelected); return el.selectedIndex !== (d < 0 ? 0 : d); }
+  if (el.type === 'checkbox' || el.type === 'radio') return el.checked !== el.defaultChecked;
+  return el.value !== el.defaultValue;
 }
 function renderVista() {
   if (TAB === 'proyectos') renderProyectos();
@@ -5826,6 +5838,7 @@ let ESTAMP_OK = null;   // false: falta el SQL 23C (registro de estampado)
 async function estampOk() { if (ESTAMP_OK !== null) return ESTAMP_OK; try { await api('plan_costeo?select=bajadas&limit=1'); ESTAMP_OK = true; } catch (e) { ESTAMP_OK = false; } return ESTAMP_OK; }
 let COSTEO_OK = null;   // false: falta el SQL 20A
 let COSTEO_VAL = { papel: '', tinta: '', tintaM: 0, prot: '', protF: 1, margen: 30 };
+let COSTEO_Q = '', COSTEO_PER = null;   // búsqueda y período de Costeo › Pedidos (sobreviven a cada repintado)
 let COSTEO_GASTOS = null, COSTEO_MODO = 'pedidos', COSTEO_DATOS = null, COSTEO_FICHAS = {}, BOM = null, GG_DATOS = null, REG_COSTEO = null, BOM_SEL = '*';
 // clasificación de las categorías de gastos de Ventas: «general» entra al gasto general; «directo» ya está en el
 // costo de la prenda (telas, insumos, talleres); «fuera» no es gasto de operación (impuestos, inversión, socios)
@@ -6314,15 +6327,29 @@ function renderCosteo() {
   const chips = `<div class="chips" style="margin-bottom:10px">${[['pedidos', 'Pedidos'], ['moldes', 'Por molde'], ['simular', 'Simular costo'], ['precios', 'Precios'], ['consumo', 'Insumos por prenda'], ['valores', 'Ploteo, estampado y margen'], ['gg', 'Gasto general']]
     .map(([k, t]) => `<button class="chip ${COSTEO_MODO === k ? 'on' : ''}" onclick="COSTEO_MODO='${k}';renderCosteo()">${t}</button>`).join('')}</div>`;
   if (!puedeVerCosteo()) { v.innerHTML = '<h1>Costeo</h1><p class="hint">Solo administración y producción.</p>'; return; }
-  v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + '<p class="hint">Cargando…</p>';
+  // lo que había en pantalla se toma antes de repintar: la búsqueda y el período (antes se perdían y el cambio no se
+  // aplicaba), y, si es la misma sección, la posición en la página, lo desplegado y dónde estaba el cursor
+  if ($('cs-q')) COSTEO_Q = $('cs-q').value;
+  if ($('cs-desde') && $('cs-hasta') && $('cs-desde').value && $('cs-hasta').value) COSTEO_PER = { d1: $('cs-desde').value, d2: $('cs-hasta').value };
+  const misma = v.dataset.modo === COSTEO_MODO && !!v.innerHTML;
+  const foco = misma && document.activeElement && v.contains(document.activeElement) ? document.activeElement.id : '';
+  const abiertos = misma ? [...v.querySelectorAll('details')].map(d => d.open) : [], y = window.scrollY;
+  v.dataset.modo = COSTEO_MODO;
+  if (!misma) v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + '<p class="hint">Cargando…</p>';   // en la misma sección queda lo anterior mientras carga
   const pintar = { pedidos: pintarCosteoPedidos, moldes: pintarCosteoMoldes, simular: pintarSimulador, precios: pintarPrecios, consumo: pintarConsumoMolde, gg: pintarGG, valores: pintarValoresCosteo }[COSTEO_MODO] || pintarCosteoPedidos;
-  pintar(v, chips).catch(e => { v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + `<div class="aviso warn">No se pudo cargar: ${esc(String(e.message).slice(0, 200))}</div>`; });
+  pintar(v, chips).then(() => {
+    if (!misma) return;
+    v.querySelectorAll('details').forEach((d, i) => { if (abiertos[i]) d.open = true; });
+    if (Math.abs(window.scrollY - y) > 2) window.scrollTo(0, y);
+    const el = foco && $(foco);
+    if (el && document.activeElement !== el) { el.focus({ preventScroll: true }); try { el.setSelectionRange(el.value.length, el.value.length); } catch (e) {} }
+  }).catch(e => { v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + `<div class="aviso warn">No se pudo cargar: ${esc(String(e.message).slice(0, 200))}</div>`; });
 }
 const avisoSql20 = () => COSTEO_OK === false ? '<div class="aviso warn">Falta correr el <b>SQL 20A</b> (costeo) en Supabase de Producción: sin él no se guardan los kilos del corte, los metros de ploteo ni el consumo por molde.</div>' : '';
 // pedidos del período con todo lo necesario para costearlos (se piden a la vez)
 async function cargarCosteo() {
   const hoy = F.hoy(), def1 = mesesAntes(mesDe(hoy), 1)[0] + '-01';
-  const d1 = ($('cs-desde') && $('cs-desde').value) || (COSTEO_DATOS && COSTEO_DATOS.d1) || def1, d2 = ($('cs-hasta') && $('cs-hasta').value) || (COSTEO_DATOS && COSTEO_DATOS.d2) || hoy;
+  const d1 = (COSTEO_PER && COSTEO_PER.d1) || (COSTEO_DATOS && COSTEO_DATOS.d1) || def1, d2 = (COSTEO_PER && COSTEO_PER.d2) || (COSTEO_DATOS && COSTEO_DATOS.d2) || hoy;
   if (COSTEO_DATOS && COSTEO_DATOS.d1 === d1 && COSTEO_DATOS.d2 === d2) return COSTEO_DATOS;
   const proy = await todasLasFilas(api, `planificacion?select=id,cot,cliente,prendas,desglose,fecha_ingreso_ficha,fecha_entrega_cliente,estado_general,requiere_sublimacion,requiere_estampado&fecha_ingreso_ficha=gte.${d1}&fecha_ingreso_ficha=lte.${d2}&order=fecha_ingreso_ficha.desc,id.desc`) || [];
   const ids = proy.map(p => p.id), rows = [], asig = [], tandas = [];
@@ -6350,7 +6377,7 @@ const barraPeriodo = (D, q, conQ) => `<div class="toolbar"><label style="margin:
       ${conQ ? `<input id="cs-q" placeholder="Buscar pedido, cliente o molde" value="${esc(q)}" oninput="renderCosteo()">` : ''}
       <button class="btn" onclick="exportarCosteo()" style="color:#1B6B3E;border-color:#A9D8BC">⬇ Excel</button></div>`;
 async function pintarCosteoPedidos(v, chips) {
-  const q = ($('cs-q') && $('cs-q').value) || '', D = await cargarCosteo();
+  const q = COSTEO_Q || '', D = await cargarCosteo();
   const lista = D.proy.map(p => ({ p, r: costeoDe(p) })).filter(({ p, r }) => !q || coincideQ(q, p.cot, p.cliente, ...r.moldes.map(m => m.nombre)));
   const tot = k => lista.reduce((s, x) => s + (x.r[k] || 0), 0), U = tot('unidades'), T = tot('total');
   const conV = lista.filter(x => x.r.venta != null), margen = conV.reduce((s, x) => s + x.r.margen, 0), vConV = conV.reduce((s, x) => s + x.r.venta, 0);

@@ -63,7 +63,10 @@ const vGastosNeto = [gn(1, '2026-08-01', '3.01', '3', 'clasificado', 300000, 300
 const planCuentas = [{ codigo: '3.01', nivel: '3', prorrateo: null }, { codigo: '3.07', nivel: '3', prorrateo: 'local' }, { codigo: '5.02', nivel: '5', prorrateo: null }];
 const gestionParametros = [{ clave: 'inicio_analisis', valor: '2026-04-01' }, { clave: 'prorrateo_local', valor: { produccion: 80, ventas: 10, administracion: 10 } }];
 
-const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? proys.map(p => ({ cot: p.cot })) : proys,
+// planificacion filtra por fecha de ingreso como la base (gte / lte), para probar el período de Costeo
+const porFecha = u => { const f = u.searchParams.getAll('fecha_ingreso_ficha'), g = (f.find(x => /^gte\./.test(x)) || '').slice(4), l = (f.find(x => /^lte\./.test(x)) || '').slice(4);
+  return proys.filter(p => (!g || p.fecha_ingreso_ficha >= g) && (!l || p.fecha_ingreso_ficha <= l)); };
+const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? proys.map(p => ({ cot: p.cot })) : porFecha(u),
   plan_usuarios: [{ usuario: 'sean.duarte', nombre: 'Sean Duarte', rol: 'admin', roles: ['admin'], activo: true }],
   plan_ejecutantes: [{ id: 1, nombre: 'Pedro Corte', area: 'Corte', activo: true }, { id: 2, nombre: 'Taller Las Rosas', area: 'Confección', activo: true }],
   plan_tarifas: [{ tipo: '18 · FUTHOMU02', precio: 3000 }, { tipo: '46 · BK-SH', precio: 2000 }],
@@ -205,6 +208,26 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   await p.evaluate(() => { COSTEO_MODO = 'valores'; renderCosteo(); }); await p.waitForTimeout(700);
   await p.fill('#cv-margen', '40'); await p.click('#view-costeo .acciones .btn.pri'); await p.waitForTimeout(700);
   ok(JSON.parse(config.find(c => c.clave === 'costeo_valores').valor).margen === 40, 'el margen para el precio sugerido se guarda');
+
+  // 8 · estabilidad: el refresco automático (cada minuto y al volver a la ventana) no borra lo que se está haciendo,
+  //     y la búsqueda y el período de Pedidos se aplican
+  await p.fill('#cv-margen', '55');
+  await p.evaluate(() => recargar(true)); await p.waitForTimeout(900);
+  await p.evaluate(() => document.dispatchEvent(new Event('visibilitychange'))); await p.waitForTimeout(900);
+  ok(await p.inputValue('#cv-margen') === '55', 'Ploteo, estampado y margen: lo escrito sin guardar sigue ahí tras el refresco automático y al volver a la ventana');
+  await p.evaluate(() => { COSTEO_MODO = 'pedidos'; renderCosteo(); }); await p.waitForTimeout(900);
+  await p.fill('#cs-q', 'COT-4001'); await p.waitForTimeout(900);
+  let peds = await p.$$eval('#cs-tabla tr.cs-ped', t => t.map(x => x.innerText.split(' · ')[0].trim()));
+  ok(peds.join() === 'COT-4001' && await p.inputValue('#cs-q') === 'COT-4001', 'buscar un pedido filtra la lista y el buscador conserva lo escrito (' + peds.join() + ')');
+  await p.evaluate(() => recargar(true)); await p.waitForTimeout(900);
+  peds = await p.$$eval('#cs-tabla tr.cs-ped', t => t.map(x => x.innerText.split(' · ')[0].trim()));
+  ok(peds.join() === 'COT-4001' && await p.inputValue('#cs-q') === 'COT-4001', 'tras el refresco automático sigue la misma búsqueda');
+  await p.fill('#cs-q', ''); await p.waitForTimeout(900);
+  await p.fill('#cs-desde', '2026-11-06'); await p.dispatchEvent('#cs-desde', 'change'); await p.waitForTimeout(1200);
+  peds = await p.$$eval('#cs-tabla tr.cs-ped', t => t.map(x => x.innerText.split(' · ')[0].trim()));
+  ok(peds.join() === 'COT-4001' && await p.inputValue('#cs-desde') === '2026-11-06', 'cambiar «Desde» se aplica: queda solo el pedido del 6-11 (' + peds.join() + ')');
+  await p.evaluate(() => { window.__antes = COSTEO_DATOS; }); await p.evaluate(() => actualizarAhora()); await p.waitForTimeout(1500);
+  ok(await p.evaluate(() => COSTEO_DATOS && COSTEO_DATOS !== window.__antes && COSTEO_DATOS.d1 === '2026-11-06'), '«↻ Actualizar» vuelve a leer los datos del costeo, con el mismo período');
 
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
   await b.close();
