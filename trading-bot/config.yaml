@@ -1,0 +1,88 @@
+# Configuración del bot de scalping (Binance Futures USDⓈ-M)
+# Las claves API NO van aquí: van en el archivo .env (ver .env.example).
+
+modo: paper            # paper = simulado con precios reales, sin claves
+                       # demo  = cuenta Demo Trading de Binance (dinero ficticio)
+                       # real  = dinero real (bloqueado hasta aprobar la compuerta)
+
+pares:
+  - BTC/USDT:USDT
+  - ETH/USDT:USDT
+  - SOL/USDT:USDT
+  - BNB/USDT:USDT
+  - XRP/USDT:USDT
+
+temporalidad: 5m
+
+# Estrategias que opera el bot en vivo (en orden de prioridad).
+# El backtest prueba todas las de la sección "parametros".
+estrategias_activas:
+  - ema_pullback
+
+costos:                     # Binance Futures, nivel VIP 0 (verificar en la web de Binance)
+  comision_maker: 0.0002    # 0,02% órdenes límite que esperan en el libro
+  comision_taker: 0.0005    # 0,05% órdenes a mercado y stops
+  deslizamiento: 0.0002     # 0,02% extra en órdenes a mercado / stops
+
+riesgo:
+  capital_inicial: 1000         # USDT (backtest y modo paper)
+  riesgo_por_operacion: 0.005   # 0,5% del capital si salta el stop
+  apalancamiento_max: 3         # tope de tamaño: nocional <= 3x el capital
+  perdida_diaria_max: 0.03      # si pierde 3% en el día, deja de operar hasta mañana (UTC)
+  caida_max: 0.15               # kill switch: si cae 15% desde el máximo, se apaga
+  max_posiciones: 3             # posiciones abiertas a la vez (en vivo)
+  margen: isolated
+
+ejecucion:
+  tipo_entrada: limit           # limit = paga comisión maker (más barata) | market = taker
+  velas_validez_entrada: 2      # si la orden límite no se llena en 2 velas, se cancela
+  velas_max_en_operacion: 36    # cierre por tiempo: 36 velas de 5m = 3 horas
+  segundos_entre_chequeos: 10
+  velas_historial: 1500         # velas que pide en vivo (máximo de Binance); las EMA necesitan historial
+
+compuerta:                      # requisitos para permitir el modo real
+  min_operaciones: 100
+  factor_beneficio_min: 1.2
+  esperanza_min_r: 0.05         # ganancia media por operación, en múltiplos del riesgo
+  caida_max: 0.15
+  min_operaciones_demo: 50
+
+backtest:
+  desde: 2026-05
+  hasta: 2026-10
+  fuera_de_muestra_desde: "2026-09-01"   # desde aquí: datos que no se usan para ajustar
+
+parametros:
+  ema_pullback:                 # tendencia: entra en retrocesos a la EMA 21
+    ema_rapida: 9
+    ema_lenta: 21
+    ema_tendencia: 200
+    atr: 14
+    stop_atr: 1.5
+    objetivo_r: 1.5
+  bollinger_rsi:                # reversión a la media en rangos
+    periodo: 20
+    desv: 2.0
+    rsi: 14
+    rsi_bajo: 25
+    rsi_alto: 75
+    adx_max: 25
+    atr: 14
+    stop_atr: 1.5
+    rr_min: 0.7
+  ruptura_volumen:              # ruptura de rango tras compresión de volatilidad
+    canal: 20
+    vol_mult: 1.5
+    compresion_ventana: 288
+    compresion_percentil: 0.2
+    atr: 14
+    stop_atr: 1.5
+    objetivo_r: 2.0
+  wyckoff:                      # spring (largo) / upthrust (corto)
+    rango_velas: 48
+    ancho_max_atr: 8.0
+    ancho_min_atr: 2.0
+    vol_mult: 1.5
+    atr: 14
+    stop_margen_atr: 0.25
+    rr_min: 1.0
