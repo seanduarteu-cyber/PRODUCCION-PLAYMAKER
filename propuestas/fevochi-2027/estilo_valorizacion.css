@@ -1,0 +1,152 @@
+/* Estilo de la propuesta 2027 para Los Leones de Quilpué (lo usa generar_propuesta.py). */
+@font-face { font-family: "Poppins"; font-weight: 400; src: url("../_recursos/fonts/Poppins-Regular.ttf"); }
+@font-face { font-family: "Poppins"; font-weight: 600; src: url("../_recursos/fonts/Poppins-SemiBold.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 700; src: url("../_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 400; src: url("../_recursos/fonts/PlayfairDisplay-Regular.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+@page { size: A4; margin: 0; }
+:root { --navy: #141E3C; --oro: #B1A542; --marfil: #F7F3E7; --texto: #1C2233; --suave: #3A3F52; --gris: #6E7280; --linea: #DCD8CB; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: #fff; }
+body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; padding: 21mm 20mm 0; background: #fff; }
+.page:last-child { page-break-after: auto; }
+.page::before { content: ""; position: absolute; inset: 7mm; border: 0.6pt solid var(--oro); pointer-events: none; }
+.page.marfil { background: var(--marfil); }
+
+.cab { display: flex; justify-content: space-between; font-size: 6.6pt; letter-spacing: 2.4px; padding-bottom: 7px; border-bottom: 0.6pt solid var(--linea); }
+.cab b { color: var(--oro); font-weight: 600; }
+.cab span { color: var(--gris); }
+.pie { position: absolute; left: 20mm; right: 20mm; bottom: 12mm; display: flex; align-items: center; justify-content: space-between;
+       border-top: 0.6pt solid var(--linea); padding-top: 6px; font-size: 5.6pt; letter-spacing: 1.6px; color: var(--gris); }
+.pie img { height: 9px; }
+.pie .num { font-family: "Playfair"; font-size: 8.5pt; letter-spacing: 0; color: var(--navy); }
+
+h1 { font-family: "Playfair"; font-weight: 700; font-size: 23pt; color: var(--navy); margin-top: 16px; line-height: 1.15; }
+h2 { font-size: 7.4pt; font-weight: 600; letter-spacing: 2.4px; color: var(--oro); margin-top: 16px; padding-bottom: 5px; border-bottom: 0.6pt solid var(--linea); }
+.intro { font-size: 9.2pt; line-height: 1.65; margin-top: 12px; }
+.nota { font-size: 7.4pt; color: var(--gris); margin-top: 6px; font-style: italic; }
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+ul.puntos { list-style: none; margin-top: 8px; }
+ul.puntos li { font-size: 8.4pt; line-height: 1.5; color: var(--suave); padding-left: 12px; position: relative; margin-bottom: 5px; }
+ul.puntos li::before { content: ""; position: absolute; left: 0; top: 6px; width: 4px; height: 4px; background: var(--oro); }
+ul.puntos.chica li { font-size: 7.6pt; }
+
+/* tablas */
+table.tabla { width: 100%; border-collapse: collapse; margin-top: 10px; }
+table.tabla th { background: var(--navy); color: var(--marfil); font-size: 6.4pt; letter-spacing: 1.4px; font-weight: 600; text-align: left; padding: 7px 10px; }
+table.tabla td { font-size: 8.5pt; padding: 7px 10px; border-bottom: 0.6pt solid var(--linea); vertical-align: top; line-height: 1.4; }
+table.tabla .n { text-align: right; white-space: nowrap; }
+table.tabla .b { font-weight: 600; color: var(--navy); }
+table.tabla tr.total td { background: var(--navy); color: var(--marfil); font-weight: 600; border-bottom: 0; }
+table.tabla tr.sec td { font-size: 6.6pt; letter-spacing: 2px; color: var(--oro); font-weight: 600; padding-top: 10px; padding-bottom: 4px; }
+table.detalle td { padding-top: 4px; padding-bottom: 4px; font-size: 8.2pt; }
+table.detalle tr.sec td { padding-top: 8px; }
+.suave { color: var(--gris); font-size: 7.6pt; }
+.tag { font-size: 5.8pt; letter-spacing: 1.2px; font-weight: 600; color: var(--navy); background: var(--marfil); border: 0.6pt solid var(--oro); padding: 1px 5px; margin-left: 6px; vertical-align: 1px; }
+
+/* portada y cierre */
+.portada { background: var(--navy); color: var(--marfil); text-align: center; padding-top: 30mm; }
+.portada::after { content: ""; position: absolute; inset: 9.5mm; border: 0.4pt solid rgba(177,165,66,.55); pointer-events: none; }
+.portada .logo { height: 30px; }
+.portada .kicker { margin-top: 30mm; font-size: 8.5pt; font-weight: 600; letter-spacing: 4px; color: var(--oro); }
+.portada h1 { color: var(--marfil); font-size: 31pt; margin-top: 12px; }
+.portada .sub { font-family: "Playfair"; font-style: italic; font-size: 12pt; color: #C9C4B4; margin: 14px auto 0; width: 140mm; line-height: 1.5; }
+.portada .regla { width: 40mm; height: 0.8pt; background: var(--oro); margin: 16mm auto 0; }
+.ligas { display: flex; justify-content: center; gap: 0; margin: 12mm auto 0; width: 150mm; }
+.ligas div { flex: 1; padding: 0 8px; border-right: 0.6pt solid rgba(177,165,66,.5); }
+.ligas div:last-child { border-right: 0; }
+.ligas b { display: block; font-family: "Playfair"; font-size: 22pt; color: var(--marfil); }
+.ligas span { font-size: 7.4pt; letter-spacing: 1px; color: #C9C4B4; }
+.portada .firma { margin-top: 26mm; }
+.firma small { display: block; font-size: 7pt; letter-spacing: 3px; color: var(--oro); font-weight: 600; margin-bottom: 6px; }
+.firma b { display: block; font-family: "Playfair"; font-size: 15pt; color: var(--marfil); }
+.firma span { display: block; font-size: 8.4pt; color: #A9A492; margin-top: 4px; }
+.portada .pie { border-top-color: rgba(247,243,231,.25); color: #C9C4B4; }
+.portada .pie img { filter: brightness(0) invert(1); }
+.portada .pie .num { color: var(--marfil); }
+.cierre { padding-top: 32mm; }
+.cierre .kicker { margin-top: 0; }
+.pasos-cierre { width: 140mm; margin: 16mm auto 0; text-align: left; }
+.pasos-cierre > div { display: flex; gap: 16px; padding: 13px 0; border-bottom: 0.6pt solid rgba(247,243,231,.2); }
+.pasos-cierre em { font-family: "Playfair"; font-style: normal; font-weight: 700; font-size: 19pt; color: var(--oro); width: 30px; }
+.pasos-cierre b { display: block; font-size: 10pt; color: var(--marfil); }
+.pasos-cierre p { font-size: 8.2pt; color: #C9C4B4; margin-top: 3px; line-height: 1.5; }
+.cierre .lema { font-family: "Playfair"; font-style: italic; font-size: 14pt; color: var(--marfil); margin-top: 18mm; }
+.cierre .firma { margin-top: 10mm; }
+
+/* página de la propuesta en tres partes */
+.pilares { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+.pilares > div { background: #fff; border: 0.6pt solid var(--linea); border-top: 3px solid var(--oro); padding: 14px 13px 13px; display: flex; flex-direction: column; }
+.pilares em { font-family: "Playfair"; font-style: normal; font-weight: 700; font-size: 20pt; color: var(--oro); }
+.pilares b { font-size: 10pt; color: var(--navy); margin-top: 4px; line-height: 1.3; }
+.pilares p { font-size: 8pt; line-height: 1.5; color: var(--suave); margin-top: 6px; flex: 1; }
+.pilares span { font-size: 7pt; letter-spacing: 1.2px; font-weight: 600; color: var(--navy); margin-top: 10px; padding-top: 7px; border-top: 0.6pt solid var(--linea); }
+.criterios { background: var(--navy); margin: 18px -6mm 0; padding: 16px 6mm 12px; position: relative; }
+.criterios::before { content: ""; position: absolute; inset: 6px; border: 0.6pt solid var(--oro); }
+.criterios h2 { color: var(--oro); border: 0; margin: 2px 0 8px 4mm; padding: 0; }
+.criterios .fila { display: grid; grid-template-columns: 30mm 1fr; padding: 0 4mm; margin-bottom: 8px; position: relative; }
+.criterios .fila b { font-size: 6.6pt; letter-spacing: 1.4px; color: var(--marfil); font-weight: 600; padding-top: 1px; }
+.criterios .fila p { font-size: 8pt; line-height: 1.5; color: #C9C4B4; }
+
+/* canje */
+.cifra { display: grid; grid-template-columns: 78mm 1fr; gap: 14px; align-items: center; margin-top: 14px; }
+.cifra > div { background: var(--marfil); border-left: 3px solid var(--oro); padding: 11px 14px; }
+.cifra small { display: block; font-size: 6.6pt; letter-spacing: 2px; color: var(--oro); font-weight: 600; }
+.cifra b { display: block; font-family: "Playfair"; font-size: 22pt; color: var(--navy); margin-top: 2px; }
+.cifra span { font-size: 7.4pt; color: var(--gris); }
+.cifra p { font-size: 8.2pt; line-height: 1.55; color: var(--suave); }
+.aportes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 6px; }
+.nota-caja { margin-top: 20px; background: var(--navy); color: var(--marfil); padding: 12px 14px; font-size: 8.6pt; line-height: 1.55; }
+.nota-caja b { display: block; color: var(--oro); font-size: 6.8pt; letter-spacing: 2px; margin-bottom: 3px; }
+
+/* formativas y tienda */
+.categorias { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-top: 10px; }
+.categorias div { background: var(--navy); color: var(--marfil); text-align: center; padding: 10px 0; font-family: "Playfair"; font-weight: 700; font-size: 12pt; }
+.pasos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 10px; }
+.pasos em { font-family: "Playfair"; font-style: normal; font-weight: 700; font-size: 18pt; color: var(--oro); }
+.pasos b { display: block; font-size: 8.6pt; color: var(--navy); margin-top: 2px; }
+.pasos p { font-size: 7.8pt; line-height: 1.5; color: var(--suave); margin-top: 4px; }
+.banda { background: var(--navy); margin-top: 16px; padding: 16px; text-align: center; position: relative; }
+.banda::before { content: ""; position: absolute; inset: 6px; border: 0.6pt solid var(--oro); }
+.banda small { display: block; font-size: 7pt; letter-spacing: 2.4px; color: var(--oro); font-weight: 600; }
+.banda b { display: block; font-family: "Playfair"; font-size: 17pt; color: var(--marfil); margin-top: 4px; }
+.detalle-canje { gap: 12px; align-items: start; }
+.detalle-canje table.detalle td { font-size: 7.6pt; padding: 4px 6px; }
+.detalle-canje table.tabla th { padding: 6px; }
+.total-canje { grid-template-columns: 1fr; }
+
+/* valorización FEVOCHI */
+.portada .logos { display: flex; justify-content: center; align-items: center; gap: 22px; }
+.portada .logos img.pm { height: 30px; }
+.portada .logos img.fev { height: 58px; background: #fff; border-radius: 6px; padding: 4px; }
+.portada .logos i { width: 0.6pt; height: 46px; background: rgba(177,165,66,.7); }
+.cifras { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
+.cifras > div { background: var(--marfil); border-left: 3px solid var(--oro); padding: 10px 11px; }
+.cifras small { display: block; font-size: 6pt; letter-spacing: 1.6px; color: var(--oro); font-weight: 600; }
+.cifras b { display: block; font-family: "Playfair"; font-size: 15pt; color: var(--navy); margin-top: 3px; }
+.cifras span { display: block; font-size: 6.8pt; color: var(--gris); margin-top: 2px; line-height: 1.35; }
+table.val td, table.val th { padding: 5px 7px; }
+table.val td { font-size: 7.8pt; }
+table.val th { font-size: 6pt; letter-spacing: 1.1px; }
+table.val th.n { text-align: right; }
+table.val tr.sub td { background: #EEF0F5; font-weight: 600; color: var(--navy); }
+table.val tr.cat td.c { font-weight: 600; color: var(--navy); }
+table.val td.canje { color: var(--oro); font-weight: 600; text-align: right; white-space: nowrap; }
+table.det td { padding-top: 3px; padding-bottom: 3px; font-size: 7.3pt; }
+.leyenda { font-size: 7pt; color: var(--gris); margin-top: 6px; line-height: 1.5; }
+.dos-tablas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+table.val td { padding-top: 4px; padding-bottom: 4px; }
+table.det { table-layout: fixed; }
+table.det td, table.det th { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+table.det td { padding-top: 2.5px; padding-bottom: 2.5px; font-size: 7.1pt; line-height: 1.3; }
+table.det tr.sec td { padding-top: 6px; padding-bottom: 2px; }
+table.det col.p { width: 33%; } table.det col.c { width: 17%; } table.det col.x { width: 8%; } table.det col.u { width: 8%; }
+table.det col.m { width: 11.3%; }
+.page.detalle h1 { font-size: 19pt; margin-top: 10px; }
+.page.detalle h2 { margin-top: 10px; }
+table.res td { padding-top: 3px; padding-bottom: 3px; }
+table.det th { white-space: normal; overflow: visible; vertical-align: bottom; line-height: 1.3; }
+table.det th.n { white-space: normal; }
