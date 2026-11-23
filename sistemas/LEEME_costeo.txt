@@ -118,6 +118,20 @@ SIMULAR COSTO
   protección (metros por prenda de los ploteos registrados) y el gasto general (% de los 3 meses anteriores), y da el
   precio sugerido con el margen. Abajo compara la misma prenda con cada otra tela principal.
 
+MOLDES SIN REGISTROS: PESO PROMEDIO (estimación)
+- Mientras un molde no tenga cortes registrados (kg de tela) ni despiece con metros, su tela se estima con el PROMEDIO
+  de los cortes de los moldes del mismo tipo de prenda (camiseta, short…), por separado adulto e infantil: kg por prenda
+  con merma (y m² si las telas tienen gramaje, así una tela más pesada se nota). Lo mismo con el ploteo: metros por
+  prenda de los ploteos registrados de ese tipo.
+- Si un tipo de prenda aún no tiene registros, se usa la referencia de «Ploteo, estampado y margen» › «Moldes sin
+  registros»: kg de tela y metros de ploteo por prenda (adulto). La camiseta parte en 0,18 kg y 0,8 m (medido en mesas
+  reales S, L y XL). Infantil: un % del adulto (70% si no se anota otro); si solo hay registros de adultos, el infantil es
+  ese promedio × ese %.
+- Vale en Simular costo (cualquier molde y cualquier tela dan un valor, marcado «estimado», con de dónde sale) y en el
+  costeo de los pedidos sin corte ni consumo teórico (por ejemplo, sin ficha en Fichas): la tela va con el peso promedio
+  × las prendas y, si no se sabe qué tela es, con el $ por kg promedio de las telas cortadas.
+- Lo registrado manda: en cuanto el molde tenga sus cortes y ploteos, se usan los suyos.
+
 LO QUE NECESITAN CARGAR
 - Precios en Costeo → «Precios»: cada producto con su(s) proveedor(es); en telas, el ancho y el gramaje.
 - Papel de ploteo, las 4 tintas (con su rendimiento) y papel de protección; elegirlos en Costeo → Ploteo, estampado y

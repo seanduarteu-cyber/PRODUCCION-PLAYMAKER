@@ -79,6 +79,8 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   const envios = [];
   const filtro = (u, filas) => { let r = filas; for (const [k, v] of u.searchParams) {
     if (['select', 'order', 'limit', 'offset', 'on_conflict'].includes(k)) continue;
+    const lk = v.match(/^like\.(.*)$/);   // like: el * es cualquier cosa (ej.: molde=like.17 · *)
+    if (lk) { const re = new RegExp('^' + lk[1].split('*').map(x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('.*') + '$'); r = r.filter(x => re.test(String(x[k] ?? ''))); continue; }
     const m = v.match(/^(eq|in)\.(.*)$/); if (!m) continue;
     const vals = m[1] === 'eq' ? [m[2]] : m[2].replace(/^\(|\)$/g, '').split(',').map(x => x.replace(/^"|"$/g, ''));
     r = r.filter(x => vals.includes(String(x[k]))); } return r; };
@@ -228,6 +230,37 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   ok(peds.join() === 'COT-4001' && await p.inputValue('#cs-desde') === '2026-11-06', 'cambiar «Desde» se aplica: queda solo el pedido del 6-11 (' + peds.join() + ')');
   await p.evaluate(() => { window.__antes = COSTEO_DATOS; }); await p.evaluate(() => actualizarAhora()); await p.waitForTimeout(1500);
   ok(await p.evaluate(() => COSTEO_DATOS && COSTEO_DATOS !== window.__antes && COSTEO_DATOS.d1 === '2026-11-06'), '«↻ Actualizar» vuelve a leer los datos del costeo, con el mismo período');
+
+  // 9 · moldes sin registros: la tela y el ploteo se estiman con el promedio del mismo tipo de prenda (o la referencia)
+  const est = await p.evaluate(async () => {
+    PROM_TIPO = null; await cargarPromediosTipo();
+    const sim = async (n, tela) => { const D = await datosSimMolde(n), R = calcSimulacion(n, D, tela);
+      return { kg: R.partes[0].kg, est: !!R.partes[0].est, como: R.partes[0].como, mPP: R.mPP, plEst: R.plEst, faltan: R.faltan, tela: R.tela }; };
+    const s17 = await sim(17, 'Pro'), s20 = await sim(20, 'Pro'), s106 = await sim(106, 'Pro');
+    const guardado = PROM_TIPO; PROM_TIPO = {}; SIM_DATOS = {}; const ref = await sim(17, 'Pro'); PROM_TIPO = guardado; SIM_DATOS = {};
+    const E = estimacionTipo(17);
+    const P = calcCosteo({ id: 99, cot: 'COT-9999', cliente: 'Sin ficha', prendas: 5, desglose: { '17 · FUTMUJU02': 5 }, requiere_sublimacion: true },
+      { rows: [], asig: [], fc: null, venta: null, gg: null }).moldes[0];
+    return { s17, s20, s106, ref, pk: E.pkProm, ped: { tela: P.tela, t0: P.telas[0], metros: P.metros, metrosEst: P.metrosEst, faltan: P.faltan } };
+  });
+  ok(est.s17.est && Math.abs(est.s17.kg - 0.4875) < 1e-6 && /promedio de 1 corte de camiseta adulto \(1 molde\)/.test(est.s17.como) && Math.abs(est.s17.tela - 0.4875 * 9000) < 0.01,
+    'molde 17 sin cortes: tela con el promedio de las camisetas adulto (3,9 kg ÷ 8 = 0,4875 kg por prenda) × $9.000/kg de Pro: ' + est.s17.como);
+  ok(est.s17.plEst && est.s17.mPP === 2 && !est.s17.faltan.some(x => /cortes registrados|ploteos registrados/.test(x)), 'y el ploteo con el promedio de las camisetas (16 m ÷ 8 = 2 m por prenda); ya no falta nada de eso');
+  ok(est.s20.est && Math.abs(est.s20.kg - 0.4875 * 0.7) < 1e-6 && Math.abs(est.s20.mPP - 1.4) < 1e-9 && /× 70% del adulto/.test(est.s20.como), 'molde 20 (infantil, sin cortes de infantiles): el promedio adulto × 70%');
+  ok(!est.s106.est && est.s106.kg == null && est.s106.faltan.some(x => /cortes registrados de falda o su peso de referencia/.test(x)), 'falda sin registros ni referencia: pide el peso de referencia');
+  ok(est.ref.est && est.ref.kg === 0.18 && est.ref.mPP === 0.8 && /referencia anotada para camiseta/.test(est.ref.como), 'sin ningún corte de camisetas: la referencia de partida (0,18 kg y 0,8 m por camiseta)');
+  ok(est.ped.t0 && est.ped.t0.est && Math.abs(est.ped.t0.kgEst - 0.4875 * 5) < 1e-6 && Math.abs(est.ped.tela - 0.4875 * 5 * est.pk) < 0.01 && est.ped.metros === 10 && est.ped.metrosEst &&
+    est.ped.faltan[0] === 'registro del corte (tela estimada con el peso promedio)', 'pedido sin ficha ni corte: tela con el peso promedio × 5 prendas y el $/kg promedio de las telas cortadas; ploteo 2 m × 5');
+  await p.evaluate(() => { COSTEO_MODO = 'simular'; SIM.molde = '17'; SIM.principal = 'Pro'; SIM.piezas = {}; SIM_DATOS = {}; renderCosteo(); }); await p.waitForTimeout(1500);
+  ok(/aún no tiene cortes ni ploteos registrados/.test(await p.textContent('#sim-estimado')) && /estimado/.test(await p.textContent('#sim-res')), 'Simular costo con el molde 17 avisa que es un valor estimado y de dónde sale');
+  await p.evaluate(() => { COSTEO_MODO = 'valores'; renderCosteo(); }); await p.waitForTimeout(900);
+  ok(/0,49 kg \(1 corte\) · 2 m \(1 ploteo\)/.test(await p.textContent('#cv-ref')) && await p.inputValue('[data-ref-kg="camiseta"]') === '0.18' && await p.inputValue('#cv-inf') === '70',
+    'Ploteo, estampado y margen: promedio de lo registrado por prenda, referencia de la camiseta y % infantil');
+  await p.fill('[data-ref-kg="falda"]', '0.12'); await p.fill('#cv-inf', '65'); await p.click('#view-costeo .acciones .btn.pri'); await p.waitForTimeout(800);
+  const cv = JSON.parse(config.find(c => c.clave === 'costeo_valores').valor);
+  ok(cv.ref && cv.ref.falda && cv.ref.falda.kg === 0.12 && cv.ref.camiseta.kg === 0.18 && cv.infPct === 65, 'se guardan la referencia de la falda y el % infantil');
+  const f106 = await p.evaluate(async () => { const D = await datosSimMolde(106), R = calcSimulacion(106, D, 'Pro'); return R.partes[0].kg; });
+  ok(Math.abs(f106 - 0.12) < 1e-9, 'la falda ya tiene valor: 0,12 kg de referencia');
 
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
   await b.close();
