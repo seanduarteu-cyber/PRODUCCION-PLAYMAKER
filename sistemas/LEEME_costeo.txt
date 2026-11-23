@@ -7,11 +7,11 @@ Para los precios por proveedor: correr además el SQL 23A en la base de PRODUCCI
 Para que Simular costo aprenda qué parte de la prenda es cada pieza: el SQL 23B en la base de PRODUCCIÓN.
 Para el estampado y las aplicaciones (escudos, vinilos…): el SQL 23C en la base de PRODUCCIÓN.
 
-PESTAÑAS: Pedidos · Por molde · Simular costo · Precios · Insumos por prenda · Ploteo, estampado y margen · Gasto general
+PESTAÑAS: Pedidos · Por molde · Simular costo · Precios · Insumos por prenda · Ploteo y estampado · Gasto general
 - Precios: cuánto cuesta cada cosa (por proveedor).
 - Insumos por prenda (antes «Consumo por molde»): cuánto lleva cada prenda de lo que no es tela.
-- Ploteo, estampado y margen (antes «Valores»): cuánto se gasta por metro ploteado (papel, las 4 tintas, protección), el
-  precio por bajada de plancha y el margen.
+- Ploteo y estampado (antes «Valores»): cuánto se gasta por metro ploteado (papel, las 4 tintas, protección), el
+  precio por bajada de plancha y las referencias para estimar los moldes sin registros.
 - Simular costo: cuánto costaría una prenda según el molde y las telas que se elijan.
 
 EL RESULTADO ES POR MOLDE: cada pedido se costea molde por molde (camisetas, shorts… por separado). Cada molde tiene su
@@ -43,7 +43,7 @@ Costo total del molde = tela + insumos por consumo + confección + ploteo y subl
    - Papel = metros × precio por metro del papel (precio del rollo ÷ metros del rollo); tinta = metros × la suma de las 4
      tintas (cian, magenta, amarillo y negro, cada una por separado: cc por metro × precio por cc); papel de protección =
      metros × factor (1 por defecto) × su precio por metro. Se descuentan del stock de Insumos.
-   - En Costeo → «Ploteo y margen» se eligen el papel, las 4 tintas con su rendimiento según la experiencia («un envase
+   - En Costeo → «Ploteo y estampado» se eligen el papel, las 4 tintas con su rendimiento según la experiencia («un envase
      de 1.000 cc rinde 400 metros») y el papel de protección. Se usa un solo ancho de papel.
 5. Estampado y aplicaciones (SQL 23C)
    - Al terminar Estampado se abre «Estampado · COT-…»: por cada molde, qué aplicaciones lleva (escudo vinilo,
@@ -52,7 +52,7 @@ Costo total del molde = tela + insumos por consumo + confección + ploteo y subl
      «Aplicación de escudos y logos» de la ficha. «No lleva aplicaciones» lo deja registrado y termina.
    - También desde Costeo › detalle del pedido › «Registrar o editar aplicaciones» (y la tarjeta de Estampado).
    - Costo = prendas × (cantidad × precio de la aplicación) + prendas × bajadas × precio por bajada de plancha.
-     El precio por bajada es uno solo (Ploteo, estampado y margen): lo que cambia es la aplicación.
+     El precio por bajada es uno solo (Ploteo y estampado): lo que cambia es la aplicación.
    - Las aplicaciones usadas se descuentan del stock. Un pedido con estampado sin registro avisa «falta: aplicaciones
      del estampado». En las tablas va en la columna «Ploteo, estampado y otros».
    - En Simular costo: «Estampado y aplicaciones», con las mismas aplicaciones, cantidades y bajadas.
@@ -75,8 +75,8 @@ Costo total del molde = tela + insumos por consumo + confección + ploteo y subl
    - Se aplica a la venta neta del pedido (si el pedido no está en Ventas, sobre el costo) y se reparte entre sus
      moldes según el costo directo de cada uno.
    - Las horas de las áreas (revisión, sublimación…) están dentro de este gasto (sueldos).
-8. Resultado: costo total de cada molde y por prenda; total del pedido, venta neta y margen; precio sugerido por prenda =
-   costo directo por prenda ÷ (1 − % gasto general − margen). El margen se define en Costeo → Ploteo, estampado y margen.
+8. Resultado: costo total de cada molde y por prenda; total del pedido, venta neta y margen (venta neta − costo total).
+   No hay precio sugerido.
 
 PRECIOS POR PROVEEDOR (SQL 23A)
 - Cada producto (tela, papel, tinta u otro insumo) puede tener varios proveedores, cada uno con su precio SIN IVA y cómo
@@ -86,7 +86,7 @@ PRECIOS POR PROVEEDOR (SQL 23A)
     tela:   por kg o por metro; ancho del rollo y gramaje (g/m²) o rendimiento (m por kg): con el ancho, uno da el otro.
             Ej: 1,60 m y 150 g/m² → 1 metro pesa 0,24 kg → rinde 4,17 m por kg; a $8.000/kg, el metro cuesta $1.920.
     papel:  ancho, gramaje, metros del rollo y precio del rollo → precio por metro y por m².
-    tinta:  cc del envase y precio del envase → precio por cc (el color y el rendimiento van en Ploteo y margen).
+    tinta:  cc del envase y precio del envase → precio por cc (el color y el rendimiento van en Ploteo y estampado).
     otros:  por su unidad, o en paquete/rollo/envase con cuánto trae → precio por unidad.
 - Dos vistas: «Por producto» (cada producto con el precio que usa el costeo; «Proveedores y precios» muestra y edita cada
   proveedor) y «Por proveedor» (sus productos, para actualizar rápido cuando manda precios nuevos).
@@ -115,15 +115,19 @@ SIMULAR COSTO
 - Para elegir tela por pieza, el molde necesita su lista de piezas en el catálogo (Moldes › Definir despiece: basta con
   los nombres). Las piezas que se llaman delantero, frente o manga van siempre en la tela principal.
 - Suma los insumos por prenda, la confección (promedio pagado al taller por ese molde, o su tarifa), el ploteo y la
-  protección (metros por prenda de los ploteos registrados) y el gasto general (% de los 3 meses anteriores), y da el
-  precio sugerido con el margen. Abajo compara la misma prenda con cada otra tela principal.
+  protección (metros por prenda de los ploteos registrados): el costo directo por prenda.
+- Gasto general: su % es gasto general ÷ ventas netas (3 meses anteriores), así que se aplica sobre un PRECIO DE VENTA,
+  no sobre el costo. Se anota el «Precio de venta simulado por prenda» (neto, sin IVA) y da: gasto general = precio × %,
+  costo total = costo directo + gasto general, y margen = precio − costo total (en $ y %). Sin precio, muestra solo el
+  costo directo. No hay precio sugerido.
+- Abajo compara la misma prenda con cada otra tela principal (costo directo y, con precio simulado, su margen).
 
 MOLDES SIN REGISTROS: PESO PROMEDIO (estimación)
 - Mientras un molde no tenga cortes registrados (kg de tela) ni despiece con metros, su tela se estima con el PROMEDIO
   de los cortes de los moldes del mismo tipo de prenda (camiseta, short…), por separado adulto e infantil: kg por prenda
   con merma (y m² si las telas tienen gramaje, así una tela más pesada se nota). Lo mismo con el ploteo: metros por
   prenda de los ploteos registrados de ese tipo.
-- Si un tipo de prenda aún no tiene registros, se usa la referencia de «Ploteo, estampado y margen» › «Moldes sin
+- Si un tipo de prenda aún no tiene registros, se usa la referencia de «Ploteo y estampado» › «Moldes sin
   registros»: kg de tela y metros de ploteo por prenda (adulto). La camiseta parte en 0,18 kg y 0,8 m (medido en mesas
   reales S, L y XL). Infantil: un % del adulto (70% si no se anota otro); si solo hay registros de adultos, el infantil es
   ese promedio × ese %.
@@ -137,8 +141,7 @@ MOLDES SIN REGISTROS: PESO PROMEDIO (estimación)
 
 LO QUE NECESITAN CARGAR
 - Precios en Costeo → «Precios»: cada producto con su(s) proveedor(es); en telas, el ancho y el gramaje.
-- Papel de ploteo, las 4 tintas (con su rendimiento) y papel de protección; elegirlos en Costeo → Ploteo, estampado y
-  margen, junto con el precio por bajada de plancha.
+- Papel de ploteo, las 4 tintas (con su rendimiento) y papel de protección; elegirlos en Costeo → Ploteo y estampado, junto con el precio por bajada de plancha.
 - Las aplicaciones (escudos vinilo, texturizados, pro…) en Precios, categoría «Aplicación», con su precio por unidad.
 - El consumo de insumos por molde (y el común).
 - Terminar la Revisión de gastos en Ventas › Gastos: mientras haya gastos en revisión, el % es provisorio.

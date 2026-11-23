@@ -1,6 +1,6 @@
 // Costeo de prendas en Planificación: registro del corte (kg por tela y merma) y del ploteo (metros) al terminar,
 // pestaña «Costeo» (tela, insumos por consumo, confección, ploteo y sublimación, gasto general de los 3 meses
-// anteriores según la clasificación de Ventas, en neto), margen y precio sugerido, y consumo de insumos por molde.
+// anteriores según la clasificación de Ventas, en neto), margen contra la venta (sin precio sugerido), y consumo de insumos por molde.
 // Bases simuladas (Producción, Fichas y Ventas), con estado.
 const { chromium, contexto } = require('./comun_movil');
 let fallas = 0; const ok = (c, m) => { console.log((c ? 'OK   ' : 'FALLA') + ' ' + m); if (!c) fallas++; };
@@ -151,7 +151,7 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   const det = await p.innerText('#modal');
   ok(/18 · FUTHOMU02 · Camiseta — 8 prendas \(8 cortadas\)/.test(det) && /46 · BK-SH · Short.* — 2 prendas \(2 cortadas\)/.test(det), 'detalle: una sección por molde con sus prendas cortadas');
   ok(/Pro\s+teórico 8 m\s+2,5 kg\s+0,4 kg\s+13,8%\s+\$9\.000\s+\$26\.100/.test(det), 'detalle camiseta: Pro 2,5 kg + 0,4 merma a $9.000/kg = $26.100');
-  ok(/Costo total del molde\s+\$119\.410\s+Costo por prenda\s+\$14\.926\s+Precio sugerido por prenda\s+costo directo[^\n]*\s+\$17\.695/.test(det), 'detalle: costo total del molde, por prenda y precio sugerido (directo ÷ (1 − 18,3% − 30%))');
+  ok(/Costo total del molde\s+\$119\.410\s+Costo por prenda\s+\$14\.926/.test(det) && !/Precio sugerido/.test(det), 'detalle: costo total del molde, por prenda y precio sugerido (directo ÷ (1 − 18,3% − 30%))');
   ok(/gasto general ÷ ventas netas de agosto 2026, septiembre 2026, octubre 2026, sobre la venta neta · provisorio/.test(det), 'detalle: el gasto general dice con qué meses se calculó y que es provisorio');
   // otro costo de un molde
   await p.evaluate(() => abrirOtroCosto(1)); await p.waitForTimeout(400);
@@ -208,15 +208,16 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
 
   // 7 · valores
   await p.evaluate(() => { COSTEO_MODO = 'valores'; renderCosteo(); }); await p.waitForTimeout(700);
-  await p.fill('#cv-margen', '40'); await p.click('#view-costeo .acciones .btn.pri'); await p.waitForTimeout(700);
-  ok(JSON.parse(config.find(c => c.clave === 'costeo_valores').valor).margen === 40, 'el margen para el precio sugerido se guarda');
+  ok(!(await p.$('#cv-margen')) && !/precio sugerido/i.test(await p.innerText('#view-costeo')), 'ya no se pide margen: no hay precio sugerido');
+  await p.fill('#cv-bajada', '150'); await p.click('#view-costeo .acciones .btn.pri'); await p.waitForTimeout(700);
+  ok(JSON.parse(config.find(c => c.clave === 'costeo_valores').valor).bajada === 150, 'el precio por bajada de plancha se guarda');
 
   // 8 · estabilidad: el refresco automático (cada minuto y al volver a la ventana) no borra lo que se está haciendo,
   //     y la búsqueda y el período de Pedidos se aplican
-  await p.fill('#cv-margen', '55');
+  await p.fill('#cv-bajada', '175');
   await p.evaluate(() => recargar(true)); await p.waitForTimeout(900);
   await p.evaluate(() => document.dispatchEvent(new Event('visibilitychange'))); await p.waitForTimeout(900);
-  ok(await p.inputValue('#cv-margen') === '55', 'Ploteo, estampado y margen: lo escrito sin guardar sigue ahí tras el refresco automático y al volver a la ventana');
+  ok(await p.inputValue('#cv-bajada') === '175', 'Ploteo y estampado: lo escrito sin guardar sigue ahí tras el refresco automático y al volver a la ventana');
   await p.evaluate(() => { COSTEO_MODO = 'pedidos'; renderCosteo(); }); await p.waitForTimeout(900);
   await p.fill('#cs-q', 'COT-4001'); await p.waitForTimeout(900);
   let peds = await p.$$eval('#cs-tabla tr.cs-ped', t => t.map(x => x.innerText.split(' · ')[0].trim()));
@@ -253,9 +254,17 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
     est.ped.faltan[0] === 'registro del corte (tela estimada con el peso promedio)', 'pedido sin ficha ni corte: tela con el peso promedio × 5 prendas y el $/kg promedio de las telas cortadas; ploteo 2 m × 5');
   await p.evaluate(() => { COSTEO_MODO = 'simular'; SIM.molde = '17'; SIM.principal = 'Pro'; SIM.piezas = {}; SIM_DATOS = {}; renderCosteo(); }); await p.waitForTimeout(1500);
   ok(/aún no tiene cortes ni ploteos registrados/.test(await p.textContent('#sim-estimado')) && /estimado/.test(await p.textContent('#sim-res')), 'Simular costo con el molde 17 avisa que es un valor estimado y de dónde sale');
+  ok(!/sugerido/i.test(await p.innerText('#view-costeo')) && /anota el precio para calcular el gasto general/.test(await p.textContent('#sim-venta-res')), 'sin precio sugerido; sin precio de venta, el gasto general espera el precio simulado');
+  await p.fill('#sim-venta', '20000'); await p.dispatchEvent('#sim-venta', 'change'); await p.waitForTimeout(1200);
+  const sv = await p.evaluate(async () => { const D = await datosSimMolde(17), R = calcSimulacion(17, D, 'Pro'); return { gg: R.gg, ggM: R.ggMonto, total: R.total, res: R.resultado, directo: R.directo }; });
+  const pz = n => '$' + Math.round(n).toLocaleString('es-CL'), vt = (await p.innerText('#sim-venta-res')).replace(/\s+/g, ' ');
+  ok(sv.gg > 0 && Math.abs(sv.ggM - 20000 * sv.gg) < 1e-6 && Math.abs(sv.total - (sv.directo + sv.ggM)) < 1e-6 && Math.abs(sv.res - (20000 - sv.total)) < 1e-6 &&
+    vt.includes('Gasto general ' + (Math.round(sv.gg * 1000) / 10).toLocaleString('es-CL') + '% del precio de venta ' + pz(sv.ggM)) && vt.includes('Margen precio de venta − costo total ' + pz(sv.res)),
+    'con un precio de venta simulado de $20.000: gasto general = $20.000 × % de gasto general; costo total = directo + gasto general; margen = precio − costo total');
+  await p.evaluate(() => { SIM.venta = ''; });
   await p.evaluate(() => { COSTEO_MODO = 'valores'; renderCosteo(); }); await p.waitForTimeout(900);
   ok(/0,49 kg \(1 corte\) · 2 m \(1 ploteo\)/.test(await p.textContent('#cv-ref')) && await p.inputValue('[data-ref-kg="camiseta"]') === '0.18' && await p.inputValue('#cv-inf') === '70',
-    'Ploteo, estampado y margen: promedio de lo registrado por prenda, referencia de la camiseta y % infantil');
+    'Ploteo y estampado: promedio de lo registrado por prenda, referencia de la camiseta y % infantil');
   await p.fill('[data-ref-kg="falda"]', '0.12'); await p.fill('#cv-inf', '65'); await p.click('#view-costeo .acciones .btn.pri'); await p.waitForTimeout(800);
   const cv = JSON.parse(config.find(c => c.clave === 'costeo_valores').valor);
   ok(cv.ref && cv.ref.falda && cv.ref.falda.kg === 0.12 && cv.ref.camiseta.kg === 0.18 && cv.infPct === 65, 'se guardan la referencia de la falda y el % infantil');

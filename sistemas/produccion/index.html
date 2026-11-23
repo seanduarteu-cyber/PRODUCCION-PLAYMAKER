@@ -6066,11 +6066,9 @@ function calcCosteo(p, c) {
   R.ggMonto = k == null ? 0 : c.venta != null ? c.venta * k : R.directo * k / Math.max(0.05, 1 - k);
   if (k == null) R.faltan.push('% de gasto general (sin ventas en Ventas para esos meses)');
   if (c.venta == null) R.faltan.push('venta en Ventas (gasto general sobre el costo)');
-  const den = 1 - (k || 0) - (+COSTEO_VAL.margen || 0) / 100;
   R.moldes.forEach(M => {
     M.gg = R.directo > 0 ? R.ggMonto * M.directo / R.directo : R.ggMonto * M.cant / (R.unidades || 1);
     M.total = M.directo + M.gg; M.porPrenda = M.cant ? M.total / M.cant : null;
-    M.sugerido = M.cant && den > 0.05 ? M.directo / M.cant / den : null;
     M.faltan.forEach(f => { if (R.faltan.indexOf(f) < 0) R.faltan.push(f); });
   });
   R.total = R.directo + R.ggMonto; R.porPrenda = R.unidades ? R.total / R.unidades : null;
@@ -6118,7 +6116,7 @@ async function abrirRegistroCosteo(pid, k, alTerminar) {
           filas: mias.length ? mias.map(r => ({ id: r.insumo_id || (insumoPorNombre(r.tela) || {}).id || '', cant: r.cantidad != null ? r.cantidad : 1, baj: r.bajadas != null ? r.bajadas : '' }))
             : sug.ids.map(id => ({ id, cant: 1, baj: '' })) }; }) };
     abrirModal(`<h3>Estampado · ${esc(p.cot)} · ${esc(p.cliente)}</h3>
-      <p class="hint">Aplicaciones de <b>cada molde</b> (escudos en vinilo, texturizados, pro, números…): cuántas lleva <b>cada prenda</b> y cuántas <b>bajadas de plancha</b> (si se deja vacío, una por aplicación). Se costean con su precio de Precios y la bajada de plancha (Costeo › Ploteo, estampado y margen), y se descuentan del stock.</p>
+      <p class="hint">Aplicaciones de <b>cada molde</b> (escudos en vinilo, texturizados, pro, números…): cuántas lleva <b>cada prenda</b> y cuántas <b>bajadas de plancha</b> (si se deja vacío, una por aplicación). Se costean con su precio de Precios y la bajada de plancha (Costeo › Ploteo y estampado), y se descuentan del stock.</p>
       <div id="re-moldes"></div>
       <div class="acciones"><button class="btn" onclick="cerrarModal()">Cancelar</button><button class="btn" onclick="sinAplicacionesEstamp()">No lleva aplicaciones</button>
         <button class="btn pri" onclick="guardarRegistroCosteo()">${alTerminar ? 'Guardar y terminar' : 'Guardar'}</button></div>`, pid);
@@ -6337,7 +6335,7 @@ async function stockPloteo(p, m) {
 /* pestaña Costeo */
 function renderCosteo() {
   const v = $('view-costeo'); if (!v) return;
-  const chips = `<div class="chips" style="margin-bottom:10px">${[['pedidos', 'Pedidos'], ['moldes', 'Por molde'], ['simular', 'Simular costo'], ['precios', 'Precios'], ['consumo', 'Insumos por prenda'], ['valores', 'Ploteo, estampado y margen'], ['gg', 'Gasto general']]
+  const chips = `<div class="chips" style="margin-bottom:10px">${[['pedidos', 'Pedidos'], ['moldes', 'Por molde'], ['simular', 'Simular costo'], ['precios', 'Precios'], ['consumo', 'Insumos por prenda'], ['valores', 'Ploteo y estampado'], ['gg', 'Gasto general']]
     .map(([k, t]) => `<button class="chip ${COSTEO_MODO === k ? 'on' : ''}" onclick="COSTEO_MODO='${k}';renderCosteo()">${t}</button>`).join('')}</div>`;
   if (!puedeVerCosteo()) { v.innerHTML = '<h1>Costeo</h1><p class="hint">Solo administración y producción.</p>'; return; }
   // lo que había en pantalla se toma antes de repintar: la búsqueda y el período (antes se perdían y el cambio no se
@@ -6463,7 +6461,6 @@ async function verCosteo(pid) {
         ${fila('Gasto general', pesos(m.gg), 'su parte del gasto general del pedido, según su costo directo')}
         ${fila('<b>Costo total del molde</b>', '<b>' + pesos(m.total) + '</b>')}
         ${fila('<b>Costo por prenda</b>', '<b>' + (m.porPrenda != null ? pesos(m.porPrenda) : '—') + '</b>')}
-        ${fila('Precio sugerido por prenda', m.sugerido != null ? pesos(m.sugerido) : '—', `costo directo por prenda ÷ (1 − ${pct(r.gg && r.gg.pct)} − ${numCL(COSTEO_VAL.margen)}% de margen)`)}
       </table></div>`;
   abrirModal(`<h3>Costeo · ${esc(p.cot)} · ${esc(p.cliente)}</h3>
     <p class="hint">${r.unidades} prendas · ingreso ${F.corta(p.fecha_ingreso_ficha)} · cada molde se costea por separado</p>
@@ -6517,9 +6514,9 @@ function exportarCosteo() {
   const filas = [];
   D.proy.forEach(p => { const r = costeoDe(p); r.moldes.forEach(m => filas.push([p.cot, p.cliente, p.fecha_ingreso_ficha, m.tipo || 'Todo el pedido', m.tipo ? prendaDeTipo(m.tipo) : '', m.cant, m.cortadas || '',
     n(m.tela), numCL(m.kgTotal), numCL(m.kgMerma), m.kgTotal ? pct(m.kgMerma / m.kgTotal) : '', n(m.insumos), n(m.confeccion), numCL(m.metros), n(m.papel + m.tinta), n(m.prot), n(m.estampado), n(m.otrosT),
-    n(m.directo), r.gg && r.gg.pct != null ? pct(r.gg.pct) : '', n(m.gg), n(m.total), n(m.porPrenda), n(m.sugerido), n(r.venta), n(r.margen), m.faltan.join(' · ')])); });
+    n(m.directo), r.gg && r.gg.pct != null ? pct(r.gg.pct) : '', n(m.gg), n(m.total), n(m.porPrenda), n(r.venta), n(r.margen), m.faltan.join(' · ')])); });
   const csv = '﻿' + ['Pedido', 'Cliente', 'Ingreso', 'Molde', 'Prenda', 'Cantidad', 'Prendas cortadas', 'Tela', 'Kg tela', 'Kg merma', '% merma', 'Insumos', 'Confección', 'Metros ploteo',
-    'Papel y tinta', 'Papel protección', 'Estampado y aplicaciones', 'Otros', 'Costo directo', '% gasto general', 'Gasto general', 'Costo total del molde', 'Costo por prenda', 'Precio sugerido', 'Venta neta del pedido',
+    'Papel y tinta', 'Papel protección', 'Estampado y aplicaciones', 'Otros', 'Costo directo', '% gasto general', 'Gasto general', 'Costo total del molde', 'Costo por prenda', 'Venta neta del pedido',
     'Margen del pedido', 'Falta'].join(';') + '\n' + filas.map(f => f.map(esc2).join(';')).join('\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
   a.download = `Costeo_PMK_${D.d1}_${D.d2}.csv`; a.click(); URL.revokeObjectURL(a.href);
@@ -6767,7 +6764,7 @@ function abrirLineaPrecio(insumoId, lineaId, provNombre) {
     <div class="grid2">${num('lp-cont', 'Metros que trae el rollo', v('contenido'), 'Ej: 100')}${num('lp-precio', 'Precio del rollo sin IVA', v('precio'), 'Ej: 60000')}</div>`;
   else if (t === 'tinta') datos = `<input type="hidden" id="lp-pres" value="envase">
     <div class="grid2">${num('lp-cont', 'Contenido del envase (cc)', v('contenido'), 'Ej: 1000')}${num('lp-precio', 'Precio del envase sin IVA', v('precio'), 'Ej: 50000')}</div>
-    <p class="hint" style="margin:2px 0 0">El color y cuánto rinde cada tinta se anotan en Costeo › Ploteo y margen.</p>`;
+    <p class="hint" style="margin:2px 0 0">El color y cuánto rinde cada tinta se anotan en Costeo › Ploteo y estampado.</p>`;
   else datos = `<div class="grid2"><div><label for="lp-pres">Se compra</label><select id="lp-pres" onchange="calcLineaPrecio()">
       <option value="${esc(i.unidad)}" ${!['paquete', 'rollo', 'envase'].includes(pres) || pres === i.unidad ? 'selected' : ''}>por ${esc(i.unidad)}</option>
       ${['paquete', 'rollo', 'envase'].filter(x => x !== i.unidad).map(x => `<option value="${x}" ${pres === x ? 'selected' : ''}>en ${x}</option>`).join('')}</select></div>
@@ -7072,7 +7069,7 @@ function tintaPorMetro() {
   }
   return { porMetro: total, falta, colores };
 }
-// Ploteo y margen: insumos que se gastan por metro ploteado y el margen para el precio sugerido
+// Ploteo y estampado: insumos que se gastan por metro ploteado, precio por bajada de plancha y referencias de estimación
 async function pintarValoresCosteo(v, chips) {
   await Promise.all([cargarInsumos(), cargarPrecios()]);
   await cargarPromediosTipo().catch(() => { PROM_TIPO = {}; });
@@ -7088,7 +7085,7 @@ async function pintarValoresCosteo(v, chips) {
         rinde <input id="cv-tm-${k}" type="number" min="0" step="any" value="${x.m || ''}" placeholder="metros" style="width:90px" oninput="calcTintas()"> m</td>
       <td style="text-align:right" id="cv-tr-${k}"></td></tr>`; };
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips +
-    `<p class="hint">Lo que se gasta por cada <b>metro ploteado</b> (largo impreso): papel, las 4 tintas y el papel de protección de la sublimación. Los precios salen de Precios (el más caro de los proveedores activos). Abajo, el precio por bajada de plancha del estampado y el margen del precio sugerido.</p>
+    `<p class="hint">Lo que se gasta por cada <b>metro ploteado</b> (largo impreso): papel, las 4 tintas y el papel de protección de la sublimación. Los precios salen de Precios (el más caro de los proveedores activos). Abajo, el precio por bajada de plancha del estampado y la estimación de los moldes sin registros.</p>
     <div class="panel" style="max-width:860px">
       <h2 style="margin-top:0">Papel de ploteo</h2>
       <label for="cv-papel">Papel (se usa 1 metro por metro ploteado)</label><select id="cv-papel" onchange="calcTintas()">${opc(V.papel, ['Papel'])}</select>
@@ -7105,8 +7102,6 @@ async function pintarValoresCosteo(v, chips) {
       <h2>Estampado</h2>
       <label for="cv-bajada">Precio por bajada de plancha (mano de obra, sin IVA)</label><input id="cv-bajada" type="number" min="0" step="any" value="${+V.bajada > 0 ? +V.bajada : ''}" placeholder="Ej: 150" style="max-width:160px">
       <p class="hint">El mismo para cualquier aplicación (escudo, vinilo, texturizado…): lo que cambia es el precio de la aplicación, que sale de Precios.</p>
-      <h2>Margen</h2>
-      <label for="cv-margen">Margen para el precio sugerido (%)</label><input id="cv-margen" type="number" min="0" max="90" step="1" value="${V.margen}" style="max-width:160px">
       <h2>Moldes sin registros (estimación)</h2>
       <p class="hint">Mientras un molde no tenga cortes ni ploteos registrados, su tela y su ploteo se estiman con el <b>promedio de los moldes del mismo tipo de prenda</b> (adulto e infantil por separado). Si un tipo aún no tiene registros, se usa la referencia que anotes aquí (adulto, por prenda; la tela en kg, con merma).</p>
       <div style="overflow-x:auto"><table class="mini" id="cv-ref"><tr><th>Prenda</th><th>Promedio de lo registrado (adulto)</th><th style="text-align:right">Referencia: kg de tela</th><th style="text-align:right">Referencia: m de ploteo</th></tr>
@@ -7145,7 +7140,7 @@ async function guardarValoresCosteo() {
   const ref = {}, num = el => { const x = parseFloat(String(el.value).replace(',', '.')); return x > 0 ? x : null; };
   document.querySelectorAll('[data-ref-kg]').forEach(el => { const k = el.dataset.refKg, kg = num(el), m = num(document.querySelector(`[data-ref-m="${k}"]`) || {});
     if (kg || m) ref[k] = Object.assign({}, kg ? { kg } : {}, m ? { m } : {}); });
-  COSTEO_VAL = { ...COSTEO_VAL, papel: $('cv-papel').value, tintas: T, prot: $('cv-prot').value, protF: numIn('cv-protf') == null ? 1 : numIn('cv-protf'), bajada: n('cv-bajada'), margen: n('cv-margen'),
+  COSTEO_VAL = { ...COSTEO_VAL, papel: $('cv-papel').value, tintas: T, prot: $('cv-prot').value, protF: numIn('cv-protf') == null ? 1 : numIn('cv-protf'), bajada: n('cv-bajada'),
     ref, infPct: numIn('cv-inf') || 70 };
   COSTEO_DATOS = null; SIM_DATOS = {}; await guardarConfig('costeo_valores', JSON.stringify(COSTEO_VAL)); renderCosteo();
 }
@@ -7156,8 +7151,8 @@ async function guardarValoresCosteo() {
    APRENDE DE LOS CORTES: cada tela se pesa por separado y la ficha dice qué piezas llevaba (SQL 23B). Si un molde aún no
    tiene un corte con esa pieza en otra tela, se usa el promedio de los moldes del mismo tipo de prenda, los metros del
    despiece o un % que se anota aquí. La superficie de la prenda sale de los kg de sus cortes ÷ el gramaje de sus telas;
-   con el gramaje y el precio de cada tela elegida, su costo. Se suman insumos, confección, ploteo, protección y gasto
-   general, y da el precio sugerido. */
+   con el gramaje y el precio de cada tela elegida, su costo. Se suman insumos, confección, ploteo y protección (costo
+   directo). El gasto general se aplica sobre un precio de venta simulado que se anota (su % sale de ventas). */
 let SIM = { molde: '', principal: '', piezas: {}, sub: true }, SIM_DATOS = {}, CORTES_SIM = null, PIEZAS_COL = null, PARTES_EST = null, SIM_COMPLETADO = false;
 /* ---------- Estimación para moldes sin registros ----------
    Mientras un molde no tenga cortes (kg de tela) ni ploteos (metros) registrados, se estima con el PROMEDIO de los
@@ -7355,7 +7350,7 @@ function calcSimulacion(n, D, principal) {
     if (pt.kg == null && E.areaPP != null && g) { pt.kg = E.areaPP * pt.share * g / 1000; pt.est = true; pt.como = `estimado: ${numCL(r2(E.areaPP * pt.share))} m² × ${numCL(Math.round(g))} g/m², ${E.fuente}`; }
     else if (pt.kg == null && E.kgPP != null) { pt.kg = E.kgPP * pt.share; pt.est = true; pt.como = `estimado: ${E.fuente}`; }
     if (pt.pk == null) faltan.push('precio por kg de ' + pt.tela);
-    if (pt.kg == null) faltan.push(E.tipo ? `cortes registrados de ${E.nom} o su peso de referencia (Ploteo, estampado y margen)` : 'cortes registrados de este molde');
+    if (pt.kg == null) faltan.push(E.tipo ? `cortes registrados de ${E.nom} o su peso de referencia (Ploteo y estampado)` : 'cortes registrados de este molde');
     pt.costo = pt.kg != null && pt.pk != null ? pt.kg * pt.pk : 0;
   });
   const tela = partes.reduce((s, t) => s + t.costo, 0), b = costoBOM(n); b.falta.forEach(f => faltan.push('precio de ' + f));
@@ -7377,12 +7372,15 @@ function calcSimulacion(n, D, principal) {
     .map(a => ({ ...a, baj: a.baj !== '' && a.baj != null && +a.baj >= 0 ? +a.baj : +a.cant, costo: +a.cant * precioIns(a.i) }));
   const aplicT = aplic.reduce((s, a) => s + a.costo, 0), bajadas = aplic.reduce((s, a) => s + a.baj, 0), planchado = bajadas * (+COSTEO_VAL.bajada || 0);
   aplic.filter(a => !(+a.i.precio > 0)).forEach(a => faltan.push('precio de ' + a.i.nombre));
-  if (bajadas && !(+COSTEO_VAL.bajada > 0)) faltan.push('precio por bajada de plancha (Ploteo, estampado y margen)');
+  if (bajadas && !(+COSTEO_VAL.bajada > 0)) faltan.push('precio por bajada de plancha (Ploteo y estampado)');
   const directo = tela + b.costo + conf + papel + tinta + prot + aplicT + planchado;
-  const G = GG_DATOS && GG_DATOS.ok ? calcularGG().pct(mesDe(F.hoy())) : null, gg = G && G.pct != null ? G.pct : null, mg = (+COSTEO_VAL.margen || 0) / 100;
+  // gasto general: su % sale de gasto general ÷ ventas netas, así que se aplica sobre el PRECIO DE VENTA (simulado aquí)
+  const G = GG_DATOS && GG_DATOS.ok ? calcularGG().pct(mesDe(F.hoy())) : null, gg = G && G.pct != null ? G.pct : null;
   if (gg == null) faltan.push('% de gasto general');
-  const den = 1 - (gg || 0) - mg, sugerido = den > 0.05 ? directo / den : null;
-  return { pz, sec, partes, tela, insumos: b.costo, conf, confComo, mPP, protPP, papel, tinta, prot, aplic, aplicT, bajadas, planchado, directo, gg, G, sugerido, ggMonto: sugerido != null && gg != null ? sugerido * gg : 0,
+  const venta = +SIM.venta > 0 ? +SIM.venta : null, ggMonto = venta != null && gg != null ? venta * gg : null;
+  const total = ggMonto != null ? directo + ggMonto : null, resultado = total != null ? venta - total : null;
+  return { pz, sec, partes, tela, insumos: b.costo, conf, confComo, mPP, protPP, papel, tinta, prot, aplic, aplicT, bajadas, planchado, directo, gg, G, venta, ggMonto, total, resultado,
+    margenPct: resultado != null ? resultado / venta : null,
     kgPP, areaPP, sinGram: Array.from(sinGram), cortes: D.cortes.length, prCortes: prK, ploteos: D.ploteos.length, faltan: Array.from(new Set(faltan)),
     E, telaEst: partes.some(t => t.est), plEst };
 }
@@ -7444,15 +7442,21 @@ async function pintarSimulador(v, chips) {
       ${SIM.sub ? fila('Papel y tinta de ploteo', pesos(R.papel + R.tinta), R.mPP ? numCL(r2(R.mPP)) + ' m ploteados por prenda' + (R.plEst ? ' (estimado: ' + esc(R.E.fuenteM) + ')' : '') : 'sin ploteos registrados') + fila('Papel de protección', pesos(R.prot), R.protPP ? numCL(r2(R.protPP)) + ' m por prenda' : '') : ''}
       ${R.aplic.length ? fila('Aplicaciones', pesos(R.aplicT), esc(R.aplic.map(a => `${a.i.nombre} × ${numCL(a.cant)}`).join(' · '))) + fila('Bajadas de plancha', pesos(R.planchado), `${numCL(R.bajadas)} × ${pesosD(+COSTEO_VAL.bajada || 0)}`) : ''}
       ${fila('Costo directo', pesos(R.directo), '', true)}
-      ${fila('Gasto general', R.gg != null ? pesos(R.ggMonto) : '—', R.gg != null ? pct(R.gg) + ' del precio sugerido (gasto general ÷ ventas de ' + R.G.meses.slice().reverse().map(mesTxt).join(', ') + ')' : '')}
-      ${fila('Costo total por prenda', R.sugerido != null ? pesos(R.directo + R.ggMonto) : '—', '', true)}
-      ${fila('Precio sugerido sin IVA', R.sugerido != null ? pesos(R.sugerido) : '—', `costo directo ÷ (1 − ${pct(R.gg)} − ${numCL(COSTEO_VAL.margen)}% de margen)`, true)}
+    </table>
+    <div class="toolbar" style="margin:12px 0 6px"><label for="sim-venta" style="margin:0"><b>Precio de venta simulado por prenda</b> (neto, sin IVA)</label>
+      <input id="sim-venta" type="number" min="0" step="any" value="${R.venta != null ? R.venta : ''}" placeholder="Ej: 15000" style="max-width:160px" onchange="simElegir('venta',this.value)"></div>
+    <p class="hint" style="margin:0 0 6px">El % de gasto general sale de gasto general ÷ ventas netas${R.G && R.G.meses ? ' (' + R.G.meses.slice().reverse().map(mesTxt).join(', ') + ')' : ''}: por eso se aplica sobre el precio de venta, no sobre el costo.</p>
+    <table class="mini" id="sim-venta-res"><tr><th>Con ese precio</th><th style="text-align:right">Por prenda</th></tr>
+      ${fila('Precio de venta simulado', R.venta != null ? pesos(R.venta) : '—', R.venta != null ? '' : 'anota el precio para calcular el gasto general y el margen')}
+      ${fila('Gasto general', R.ggMonto != null ? pesos(R.ggMonto) : '—', R.gg != null ? pct(R.gg) + ' del precio de venta' : '')}
+      ${fila('Costo total por prenda', R.total != null ? pesos(R.total) : '—', 'costo directo + gasto general', true)}
+      ${fila('Margen', R.resultado != null ? pesos(R.resultado) + ' · ' + pct(R.margenPct) : '—', R.resultado != null ? 'precio de venta − costo total' : '', true)}
     </table></div>`;
   // la misma prenda con otras telas principales (las demás piezas quedan como se eligieron)
   const otras = telas.filter(i => +i.precio > 0).map(i => ({ i, R: calcSimulacion(SIM.molde, D, i.nombre) })).filter(x => x.R.partes.every(t => t.kg != null)).sort((a, b) => a.R.directo - b.R.directo);
-  if (otras.length > 1) h += `<h2>La misma prenda con otra tela principal</h2><div class="panel" style="overflow-x:auto"><table class="mini" id="sim-otras"><tr><th>Tela principal</th><th style="text-align:right">$ por kg</th><th style="text-align:right">Gramaje</th><th style="text-align:right">Kg por prenda</th><th style="text-align:right">Tela</th><th style="text-align:right">Costo directo</th><th style="text-align:right">Precio sugerido</th></tr>
+  if (otras.length > 1) h += `<h2>La misma prenda con otra tela principal</h2><div class="panel" style="overflow-x:auto"><table class="mini" id="sim-otras"><tr><th>Tela principal</th><th style="text-align:right">$ por kg</th><th style="text-align:right">Gramaje</th><th style="text-align:right">Kg por prenda</th><th style="text-align:right">Tela</th><th style="text-align:right">Costo directo</th>${SIM.venta > 0 ? '<th style="text-align:right">Margen con el precio simulado</th>' : ''}</tr>
       ${otras.map(x => `<tr style="${x.i.nombre === SIM.principal ? 'background:#FFF7E8' : ''}"><td><b>${esc(x.i.nombre)}</b></td><td style="text-align:right">${pesosD(precioKg(x.i))}</td><td style="text-align:right">${gramajeTela(x.i.nombre) ? numCL(Math.round(gramajeTela(x.i.nombre))) + ' g/m²' : '—'}</td>
-        <td style="text-align:right">${numCL(Math.round(x.R.partes.reduce((s, t) => s + t.kg, 0) * 1000) / 1000)}</td><td style="text-align:right">${pesos(x.R.tela)}</td><td style="text-align:right">${pesos(x.R.directo)}</td><td style="text-align:right">${x.R.sugerido != null ? pesos(x.R.sugerido) : '—'}</td></tr>`).join('')}
+        <td style="text-align:right">${numCL(Math.round(x.R.partes.reduce((s, t) => s + t.kg, 0) * 1000) / 1000)}</td><td style="text-align:right">${pesos(x.R.tela)}</td><td style="text-align:right">${pesos(x.R.directo)}</td>${SIM.venta > 0 ? `<td style="text-align:right">${x.R.resultado != null ? pesos(x.R.resultado) + ' · ' + pct(x.R.margenPct) : '—'}</td>` : ''}</tr>`).join('')}
     </table><p class="hint">Mismo molde; las demás piezas en las telas que elegiste arriba.</p></div>`;
   v.innerHTML = h;
 }

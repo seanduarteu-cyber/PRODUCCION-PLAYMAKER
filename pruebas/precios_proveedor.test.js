@@ -1,4 +1,4 @@
-// Costeo › Precios por proveedor (SQL 23A), Ploteo y margen (4 tintas por separado) y Simular costo.
+// Costeo › Precios por proveedor (SQL 23A), Ploteo y estampado (4 tintas por separado) y Simular costo.
 // Bases simuladas con estado (Producción, Fichas y Ventas): leen, cambian, agregan y borran filas como Supabase.
 const { chromium, contexto } = require('./comun_movil');
 let fallas = 0; const ok = (c, m) => { console.log((c ? 'OK   ' : 'FALLA') + ' ' + m); if (!c) fallas++; };
@@ -97,7 +97,7 @@ const config = () => JSON.parse(DB.prod.plan_config.find(c => c.clave === 'coste
   // 1 · por producto: el costeo usa el más caro de los proveedores activos
   await ir('precios');
   const chips = await p.$$eval('#view-costeo .chips:first-of-type .chip', c => c.map(x => x.textContent).join(' | '));
-  ok(chips === 'Pedidos | Por molde | Simular costo | Precios | Insumos por prenda | Ploteo, estampado y margen | Gasto general', 'pestañas: ' + chips);
+  ok(chips === 'Pedidos | Por molde | Simular costo | Precios | Insumos por prenda | Ploteo y estampado | Gasto general', 'pestañas: ' + chips);
   ok(/\$9\.500\/kg/.test(await filaProd(1)) && /★ Telas Norte/.test(await filaProd(1)) && /\b2\b/.test(await filaProd(1)), 'Pro: dos proveedores; el costeo usa el más caro, Telas Norte $9.500/kg · ' + await filaProd(1));
   await p.evaluate(() => verPreciosProducto(1)); await p.waitForTimeout(400);
   const mod = (await p.innerText('#modal')).replace(/\s+/g, ' ');
@@ -136,7 +136,7 @@ const config = () => JSON.parse(DB.prod.plan_config.find(c => c.clave === 'coste
   await p.click('#lp-ok'); await p.waitForTimeout(1200);
   ok(insumo(6).precio === 600 && lineas(6)[0].presentacion === 'rollo' && lineas(6)[0].contenido === 100, 'el papel (stock en metros) queda a $600 por metro');
 
-  // 5 · Ploteo y margen: las 4 tintas, cada una con su rendimiento
+  // 5 · Ploteo y estampado: las 4 tintas, cada una con su rendimiento
   await p.evaluate(() => cerrarModal()); await ir('valores');
   const rend = { C: [11, 400], M: [12, 500], Y: [13, 500], K: [14, 800] };
   for (const [k, [id, m]] of Object.entries(rend)) { await p.selectOption('#cv-t-' + k, String(id)); await p.fill('#cv-tc-' + k, '1000'); await p.fill('#cv-tm-' + k, String(m)); }
@@ -161,11 +161,15 @@ const config = () => JSON.parse(DB.prod.plan_config.find(c => c.clave === 'coste
   const tot = c => c.a.Pro + c.a.Nacional, area = cortes.reduce((s, c) => s + tot(c), 0) / 14;
   const espalda = cortes.reduce((s, c) => s + c.a.Nacional / tot(c) * c.pr, 0) / 14;
   const pNac = 2600 * 1000 / (1.5 * 160), ploteo = 2 * 600 + 2 * 381.25 + 2 * 150, resto = 130 + 3000 + ploteo;
-  const telaPro = area * 0.15 * 9000, directo = telaPro + resto, gg = 550000 / 3000000, sug = directo / (1 - gg - 0.3);
+  const telaPro = area * 0.15 * 9000, directo = telaPro + resto, gg = 550000 / 3000000;
   const limpio = t => t.replace(/\s+/g, ' ');
   const res = limpio(await p.innerText('#sim-res'));
   const pesos = n => '$' + Math.round(n).toLocaleString('es-CL');
-  ok(res.includes('Costo directo ' + pesos(directo)) && res.includes('Precio sugerido sin IVA') && res.includes(pesos(sug)), `todo en Pro: costo directo ${pesos(directo)} y precio sugerido ${pesos(sug)} · ` + res.slice(0, 160));
+  ok(res.includes('Costo directo ' + pesos(directo)) && !/sugerido/i.test(res), `todo en Pro: costo directo ${pesos(directo)}, sin precio sugerido · ` + res.slice(0, 160));
+  await p.fill('#sim-venta', '20000'); await p.dispatchEvent('#sim-venta', 'change'); await p.waitForTimeout(1200);
+  const vres = limpio(await p.innerText('#sim-venta-res'));
+  ok(vres.includes('Gasto general') && vres.includes(pesos(20000 * gg)) && vres.includes(pesos(directo + 20000 * gg)) && vres.includes(pesos(20000 - directo - 20000 * gg)),
+    `precio de venta simulado $20.000: gasto general ${pesos(20000 * gg)} (sobre la venta), costo total ${pesos(directo + 20000 * gg)}, margen ${pesos(20000 - directo - 20000 * gg)}`);
   ok(/Confección promedio pagado al taller \(8 prendas\) \$3\.000/.test(res) && /Insumos por prenda lo común a todas y lo de este molde \$130/.test(res) && /2 m ploteados por prenda/.test(res), 'confección pagada, insumos comunes y 2 m ploteados por prenda');
   const piezasTx = limpio(await p.innerText('#sim-piezas'));
   ok((await p.$$('#sim-piezas select')).length === 2 && /Delantero y Manga: siempre en la tela principal/.test(await p.innerText('#view-costeo')), 'frente y mangas fijos en la tela principal; se elige la tela de la espalda y del cuello');

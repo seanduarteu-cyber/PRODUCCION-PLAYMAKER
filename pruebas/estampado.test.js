@@ -45,7 +45,7 @@ const costeo = () => DB.prod.plan_costeo, config = () => JSON.parse(DB.prod.plan
 
   // 1 · precio por bajada de plancha (uno para todo)
   await costeoModo('valores');
-  ok(/Ploteo, estampado y margen/.test(await p.innerText('#view-costeo .chips')), 'la pestaña se llama «Ploteo, estampado y margen»');
+  ok(/Ploteo y estampado/.test(await p.innerText('#view-costeo .chips')), 'la pestaña se llama «Ploteo y estampado»');
   await p.fill('#cv-bajada', '150'); await p.click('#view-costeo .acciones .btn.pri'); await p.waitForTimeout(800);
   ok(config().bajada === 150, 'se guarda el precio por bajada de plancha: $150');
   ok(await p.evaluate(() => CATEG_INS.includes('Aplicación')), 'los insumos tienen la categoría «Aplicación»');
