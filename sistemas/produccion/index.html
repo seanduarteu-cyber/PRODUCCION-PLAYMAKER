@@ -7114,14 +7114,14 @@ async function pintarValoresCosteo(v, chips) {
       <p class="hint">El mismo para cualquier aplicación (escudo, vinilo, texturizado…): lo que cambia es el precio de la aplicación, que sale de Precios.</p>
       <h2>Moldes sin registros (estimación)</h2>
       <p class="hint">Mientras un molde no tenga cortes ni ploteos registrados, su tela y su ploteo se estiman con el <b>promedio de los moldes del mismo tipo de prenda</b> (adulto e infantil por separado). Si un tipo aún no tiene registros, se usa la referencia que anotes aquí (adulto, por prenda; la tela en kg, con merma).</p>
-      <div style="overflow-x:auto"><table class="mini" id="cv-ref"><tr><th>Prenda</th><th>Promedio de lo registrado (adulto)</th><th style="text-align:right">Referencia: kg de tela</th><th style="text-align:right">Referencia: m de ploteo</th></tr>
+      <div style="overflow-x:auto"><table class="mini" id="cv-ref"><tr><th>Prenda</th><th>Promedio de lo registrado (adulto)</th><th style="text-align:right">Referencia: kg de tela</th><th style="text-align:right">Referencia: m de papel</th></tr>
         ${PRENDAS_MOLDE.map(([k, nom]) => { const x = (PROM_TIPO || {})[k + '|ad'] || {}, r = refEst(k);
           const prom = [x.pr ? `${numCL(r2(x.kg / x.pr))} kg (${x.cortes} corte${x.cortes !== 1 ? 's' : ''})` : '', x.prM ? `${numCL(r2(x.m / x.prM))} m (${x.ploteos} ploteo${x.ploteos !== 1 ? 's' : ''})` : ''].filter(Boolean).join(' · ') || '<span class="hint">sin registros</span>';
           return `<tr><td>${esc(nom)}</td><td>${prom}</td><td style="text-align:right"><input type="number" min="0" step="0.01" data-ref-kg="${k}" value="${+r.kg > 0 ? +r.kg : ''}" placeholder="kg" style="width:90px;text-align:right"></td>
             <td style="text-align:right"><input type="number" min="0" step="0.05" data-ref-m="${k}" value="${+r.m > 0 ? +r.m : ''}" placeholder="m" style="width:90px;text-align:right"></td></tr>`; }).join('')}
       </table></div>
       <label for="cv-inf" style="margin-top:8px">Prendas infantiles: % del adulto</label><input id="cv-inf" type="number" min="10" max="150" step="5" value="${Math.round(factorInf() * 100)}" style="max-width:160px">
-      <p class="hint">La camiseta adulto parte en 0,18 kg de tela y 0,8 m de ploteo por prenda (medido en mesas reales S, L y XL). Lo registrado manda: en cuanto un tipo de prenda tenga cortes o ploteos, se usa su promedio.</p>
+      <p class="hint">La camiseta adulto parte en 0,18 kg de tela (medido en mesas reales S, L y XL) y 1,5 m de papel de sublimación por prenda; el papel de protección, los mismos metros (según «Metros de protección por metro ploteado»). Lo registrado manda: en cuanto un tipo de prenda tenga cortes o ploteos, se usa su promedio.</p>
       <div class="acciones"><button class="btn pri" onclick="guardarValoresCosteo()">Guardar</button></div></div>`;
   calcTintas();
 }
@@ -7148,8 +7148,10 @@ async function guardarValoresCosteo() {
   const sinRend = COLORES_TINTA.filter(([k]) => T[k] && !(T[k].cc > 0 && T[k].m > 0)).map(([, nom]) => nom);
   if (sinRend.length && !confirm(`Falta el rendimiento de: ${sinRend.join(', ')}.\n\nSin él, esa tinta no se suma al costo. ¿Guardar igual?`)) return;
   const ref = {}, num = el => { const x = parseFloat(String(el.value).replace(',', '.')); return x > 0 ? x : null; };
-  document.querySelectorAll('[data-ref-kg]').forEach(el => { const k = el.dataset.refKg, kg = num(el), m = num(document.querySelector(`[data-ref-m="${k}"]`) || {});
-    if (kg || m) ref[k] = Object.assign({}, kg ? { kg } : {}, m ? { m } : {}); });
+  document.querySelectorAll('[data-ref-kg]').forEach(el => { const k = el.dataset.refKg, d = REF_EST[k] || {};
+    const kg = num(el), m = num(document.querySelector(`[data-ref-m="${k}"]`) || {}), x = {};
+    if (kg && kg !== d.kg) x.kg = kg; if (m && m !== d.m) x.m = m;   // lo igual al valor de partida no se guarda
+    if (Object.keys(x).length) ref[k] = x; });
   COSTEO_VAL = { ...COSTEO_VAL, papel: $('cv-papel').value, tintas: T, prot: $('cv-prot').value, protF: numIn('cv-protf') == null ? 1 : numIn('cv-protf'), bajada: n('cv-bajada'),
     ref, infPct: numIn('cv-inf') || 70 };
   COSTEO_DATOS = null; SIM_DATOS = {}; await guardarConfig('costeo_valores', JSON.stringify(COSTEO_VAL)); renderCosteo();
@@ -7168,13 +7170,18 @@ let SIM = { molde: '', principal: '', piezas: {}, sub: true }, SIM_DATOS = {}, C
    Mientras un molde no tenga cortes (kg de tela) ni ploteos (metros) registrados, se estima con el PROMEDIO de los
    moldes del mismo tipo de prenda (camiseta, short…), por separado adulto e infantil: kg de tela por prenda (con merma)
    y metros ploteados por prenda. Si un tipo no tiene registros, se usa la referencia anotada en «Ploteo, estampado y
-   margen» (camiseta adulto: 0,18 kg de tela y 0,8 m de ploteo, si no se anota otra). Infantil: un % del adulto. */
-const REF_EST = { camiseta: { kg: 0.18, m: 0.8 } };   // de partida: mesas reales S, L y XL medidas en noviembre 2026
+   margen» (camiseta adulto: 0,18 kg de tela y 1,5 m de papel de sublimación, si no se anota otra; el papel de
+   protección, los mismos metros). Infantil: un % del adulto. */
+const REF_EST = { camiseta: { kg: 0.18, m: 1.5 } };   // de partida: tela de mesas reales S, L y XL; papel, lo que se ocupa en la práctica
+// valores de partida anteriores: si quedaron guardados tal cual (al guardar la pestaña), valen los de partida actuales
+const REF_EST_ANTES = { camiseta: { m: 0.8 } };
+const refEst = tipo => { const r = (COSTEO_VAL.ref || {})[tipo] || {}, d = REF_EST[tipo] || {}, a = REF_EST_ANTES[tipo] || {};
+  const v = k => +r[k] > 0 && +r[k] !== a[k] ? +r[k] : d[k];
+  return { kg: v('kg'), m: v('m') }; };
 let PROM_TIPO = null;
 const tipoMolde = n => { const i = MOLDES_INFO[String(n)]; return i ? (i.prenda || prendaDeCodigo(i.codigo)) : ''; };
 const esInfantilMolde = n => { const i = MOLDES_INFO[String(n)]; return !!i && /infantil/i.test(i.descripcion || ''); };
 const factorInf = () => { const x = +COSTEO_VAL.infPct; return x > 0 && x <= 150 ? x / 100 : 0.7; };
-const refEst = tipo => { const r = (COSTEO_VAL.ref || {})[tipo]; return r && (+r.kg > 0 || +r.m > 0) ? r : REF_EST[tipo] || {}; };
 // promedios de lo registrado, por tipo de prenda y grupo (adulto / infantil)
 async function cargarPromediosTipo() {
   if (PROM_TIPO) return PROM_TIPO;

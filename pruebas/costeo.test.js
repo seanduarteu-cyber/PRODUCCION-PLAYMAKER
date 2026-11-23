@@ -249,7 +249,7 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   ok(est.s17.plEst && est.s17.mPP === 2 && !est.s17.faltan.some(x => /cortes registrados|ploteos registrados/.test(x)), 'y el ploteo con el promedio de las camisetas (16 m ÷ 8 = 2 m por prenda); ya no falta nada de eso');
   ok(est.s20.est && Math.abs(est.s20.kg - 0.4875 * 0.7) < 1e-6 && Math.abs(est.s20.mPP - 1.4) < 1e-9 && /× 70% del adulto/.test(est.s20.como), 'molde 20 (infantil, sin cortes de infantiles): el promedio adulto × 70%');
   ok(!est.s106.est && est.s106.kg == null && est.s106.faltan.some(x => /cortes registrados de falda o su peso de referencia/.test(x)), 'falda sin registros ni referencia: pide el peso de referencia');
-  ok(est.ref.est && est.ref.kg === 0.18 && est.ref.mPP === 0.8 && /referencia anotada para camiseta/.test(est.ref.como), 'sin ningún corte de camisetas: la referencia de partida (0,18 kg y 0,8 m por camiseta)');
+  ok(est.ref.est && est.ref.kg === 0.18 && est.ref.mPP === 1.5 && /referencia anotada para camiseta/.test(est.ref.como), 'sin ningún corte de camisetas: la referencia de partida (0,18 kg de tela y 1,5 m de papel por camiseta)');
   ok(est.ped.t0 && est.ped.t0.est && Math.abs(est.ped.t0.kgEst - 0.4875 * 5) < 1e-6 && Math.abs(est.ped.tela - 0.4875 * 5 * est.pk) < 0.01 && est.ped.metros === 10 && est.ped.metrosEst &&
     est.ped.faltan[0] === 'registro del corte (tela estimada con el peso promedio)', 'pedido sin ficha ni corte: tela con el peso promedio × 5 prendas y el $/kg promedio de las telas cortadas; ploteo 2 m × 5');
   await p.evaluate(() => { COSTEO_MODO = 'simular'; SIM.molde = '17'; SIM.principal = 'Pro'; SIM.piezas = {}; SIM_DATOS = {}; renderCosteo(); }); await p.waitForTimeout(1500);
@@ -267,7 +267,13 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
     'Ploteo y estampado: promedio de lo registrado por prenda, referencia de la camiseta y % infantil');
   await p.fill('[data-ref-kg="falda"]', '0.12'); await p.fill('#cv-inf', '65'); await p.click('#view-costeo .acciones .btn.pri'); await p.waitForTimeout(800);
   const cv = JSON.parse(config.find(c => c.clave === 'costeo_valores').valor);
-  ok(cv.ref && cv.ref.falda && cv.ref.falda.kg === 0.12 && cv.ref.camiseta.kg === 0.18 && cv.infPct === 65, 'se guardan la referencia de la falda y el % infantil');
+  ok(cv.ref && cv.ref.falda && cv.ref.falda.kg === 0.12 && !cv.ref.camiseta && cv.infPct === 65, 'se guardan la referencia de la falda y el % infantil (la camiseta, igual al valor de partida, no se guarda)');
+  const rf = await p.evaluate(() => { const antes = COSTEO_VAL.ref, out = {};
+    COSTEO_VAL.ref = { camiseta: { kg: 0.18, m: 0.8 } }; out.viejo = refEst('camiseta');
+    COSTEO_VAL.ref = { camiseta: { m: 1.2 } }; out.propio = refEst('camiseta');
+    COSTEO_VAL.ref = antes; out.prot = (COSTEO_VAL.protF === '' ? 1 : +COSTEO_VAL.protF); return out; });
+  ok(rf.viejo.m === 1.5 && rf.viejo.kg === 0.18 && rf.propio.m === 1.2 && rf.propio.kg === 0.18 && rf.prot === 1,
+    'el 0,8 m guardado antes como valor de partida pasa a 1,5 m; un valor propio (1,2 m) se respeta; protección = los mismos metros');
   const f106 = await p.evaluate(async () => { const D = await datosSimMolde(106), R = calcSimulacion(106, D, 'Pro'); return R.partes[0].kg; });
   ok(Math.abs(f106 - 0.12) < 1e-9, 'la falda ya tiene valor: 0,12 kg de referencia');
   // lo pesado manda: un corte sin las prendas anotadas (toma las del pedido) y uno registrado para el pedido completo

@@ -132,9 +132,11 @@ MOLDES SIN REGISTROS: PESO PROMEDIO (estimación)
   con merma (y m² si las telas tienen gramaje, así una tela más pesada se nota). Lo mismo con el ploteo: metros por
   prenda de los ploteos registrados de ese tipo.
 - Si un tipo de prenda aún no tiene registros, se usa la referencia de «Ploteo y estampado» › «Moldes sin
-  registros»: kg de tela y metros de ploteo por prenda (adulto). La camiseta parte en 0,18 kg y 0,8 m (medido en mesas
-  reales S, L y XL). Infantil: un % del adulto (70% si no se anota otro); si solo hay registros de adultos, el infantil es
-  ese promedio × ese %.
+  registros»: kg de tela y metros de ploteo por prenda (adulto). La camiseta parte en 0,18 kg de tela (medido en mesas
+  reales S, L y XL) y 1,5 m de papel de sublimación por prenda; el papel de protección, los mismos metros (1 m de
+  protección por metro ploteado, si no se anota otro). Infantil: un % del adulto (70% si no se anota otro: 1,05 m); si
+  solo hay registros de adultos, el infantil es ese promedio × ese %. Al guardar la pestaña, lo que queda igual al valor
+  de partida no se guarda (si el valor de partida cambia, llega solo); el 0,8 m de partida anterior pasa a 1,5 m.
 - Vale en Simular costo (cualquier molde y cualquier tela dan un valor, marcado «estimado», con de dónde sale) y en el
   costeo de los pedidos sin corte ni consumo teórico (por ejemplo, sin ficha en Fichas): la tela va con el peso promedio
   × las prendas y, si no se sabe qué tela es, con el $ por kg promedio de las telas cortadas.
