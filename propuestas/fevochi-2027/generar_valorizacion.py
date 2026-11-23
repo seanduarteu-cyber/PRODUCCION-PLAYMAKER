@@ -6,10 +6,10 @@ Uso:
 Lee Proyeccion_Ropa_Selecciones_FEVOCHI_2027_original.xlsx (hojas SELECCIONES ROPA 2027 y CUERPO TÉCNICO 2027:
 jugadores por categoría y prendas por jugador, con colores escritos junto a la cantidad, p. ej. "2 roja-azul")
 y crea Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsx:
-  - RESUMEN: por selección y categoría, valor total del canje y valor a precio federación de lo que se paga (con
-    neto e IVA), y lo mismo por prenda.
+  - RESUMEN: por selección y categoría, valor total del canje (a precio público general) y valor a precio
+    federación de lo que se paga (con neto e IVA), y lo mismo por prenda.
   - SELECCIONES ROPA 2027 y CUERPO TÉCNICO 2027: una fila por categoría y prenda: unidades por jugador, total de
-    unidades, precio público (solo referencia), precio federación, canje (SÍ: 100% de descuento en esa prenda; viene
+    unidades, precio público (valoriza el canje), precio federación, canje (SÍ: 100% de descuento en esa prenda; viene
     marcado en los equipos adultos de todas las selecciones) y valor a pagar.
   - PRECIOS: por prenda, precio público general, descuento y precio federación (todos con IVA). El descuento
     general se aplica a las prendas sin descuento propio.
@@ -257,7 +257,7 @@ def main():
     logo(se, "logo_fevochi.png")
     encabezado(se, "SELECCIONES 2027: ROPA VALORIZADA POR CATEGORÍA",
                "Celdas amarillas: jugadores, unidades por jugador y canje (editables). CANJE SÍ = 100% de descuento en esa "
-               "prenda. El precio público es solo referencia.")
+               "prenda. El precio público solo valoriza el canje.")
     dv_canje = DataValidation(type="list", formula1='"SÍ,NO"', allow_blank=True, errorTitle="Canje",
                               error="Elige SÍ (canje, 100% de descuento) o NO.")
     r = 5
@@ -268,7 +268,7 @@ def main():
         r += 1
         cabecera(se, r, 2, ["CATEGORÍA", "CANTIDAD DE JUGADORES" if "MASCULINA" in titulo else "CANTIDAD DE JUGADORAS",
                             "PRENDA", "COLORES", "UNIDADES POR JUGADOR" if "MASCULINA" in titulo else
-                            "UNIDADES POR JUGADORA", "TOTAL UNIDADES", "PRECIO PÚBLICO (REFERENCIA)",
+                            "UNIDADES POR JUGADORA", "TOTAL UNIDADES", "PRECIO PÚBLICO",
                             "PRECIO FEDERACIÓN", "CANJE", "VALOR A PAGAR"])
         r += 1
         filas_cat = []
@@ -325,7 +325,7 @@ def main():
     logo(ct, "logo_fevochi_2.png")
     encabezado(ct, "CUERPOS TÉCNICOS 2027: ROPA VALORIZADA",
                "Celdas amarillas: personas, cantidad por técnico y canje (editables). CANJE SÍ = 100% de descuento en esa "
-               "prenda. El precio público es solo referencia.")
+               "prenda. El precio público solo valoriza el canje.")
     dv_canje_ct = DataValidation(type="list", formula1='"SÍ,NO"', allow_blank=True, errorTitle="Canje",
                                  error="Elige SÍ (canje, 100% de descuento) o NO.")
     r = 5
@@ -335,7 +335,7 @@ def main():
         ct.row_dimensions[r].height = 20
         r += 1
         cabecera(ct, r, 2, ["INDUMENTARIA COMPETENCIAS", "PERSONAS", "CANTIDAD POR TÉCNICO", "TOTAL UNIDADES",
-                            "PRECIO PÚBLICO (REFERENCIA)", "PRECIO FEDERACIÓN", "CANJE", "VALOR A PAGAR"])
+                            "PRECIO PÚBLICO", "PRECIO FEDERACIÓN", "CANJE", "VALOR A PAGAR"])
         r += 1
         f0 = r
         for k, (prenda, unid) in enumerate(items):
@@ -374,9 +374,9 @@ def main():
     rs = wb.create_sheet("RESUMEN", 0)
     logo(rs, "logo_fevochi.png")
     encabezado(rs, "VALORIZACIÓN ROPA SELECCIONES FEVOCHI 2027",
-               "Valores con IVA. Las prendas en canje (100% de descuento) van solo en VALOR TOTAL DEL CANJE; el valor a "
-               "precio federación, el neto y el IVA son de las prendas que se pagan. El precio público es solo referencia.")
-    cabecera(rs, 5, 2, ["SELECCIÓN", "CATEGORÍA", "JUGADORES O PERSONAS", "TOTAL UNIDADES", "VALOR TOTAL DEL CANJE",
+               "Valores con IVA. Las prendas en canje (100% de descuento) se valorizan a precio público general en VALOR "
+               "TOTAL DEL CANJE; el valor a precio federación, el neto y el IVA son de las prendas que se pagan.")
+    cabecera(rs, 5, 2, ["SELECCIÓN", "CATEGORÍA", "JUGADORES O PERSONAS", "TOTAL UNIDADES", "VALOR TOTAL DEL CANJE (PRECIO PÚBLICO)",
                         "VALOR PRECIO FEDERACIÓN", "NETO", "IVA"], alto=36)
     S, T = "'SELECCIONES ROPA 2027'", "'CUERPO TÉCNICO 2027'"
     r = 6
@@ -399,9 +399,9 @@ def main():
         nombre = titulo.replace("SELECCIÓN ", "").capitalize()
         r0 = r
         for k, (cat, f0, s) in enumerate(filas_cat):
-            g, i, j = rango(S, "G", f0, s - 1), rango(S, "I", f0, s - 1), rango(S, "J", f0, s - 1)
+            g, h, j = rango(S, "G", f0, s - 1), rango(S, "H", f0, s - 1), rango(S, "J", f0, s - 1)
             fila_resumen(r, nombre if k == 0 else None, cat, f"={S}!C{s}", f"={S}!G{s}",
-                         f'=SUMPRODUCT(({j}="SÍ")*{g}*{i})', f"={S}!K{s}")
+                         f'=SUMPRODUCT(({j}="SÍ")*{g}*{h})', f"={S}!K{s}")
             r += 1
         fila_resumen(r, f"Total {nombre.lower()}", None, *[f"=SUM({c}{r0}:{c}{r - 1})" for c in "DEFG"], f_tot, r_sub)
         filas_total.append(r)
@@ -409,9 +409,9 @@ def main():
     fct0 = r
     for k, (titulo, f0, ft) in enumerate(totales_ct):
         nombre = titulo.replace("CUERPO TÉCNICO ", "").capitalize()
-        e, g, h = rango(T, "E", f0, ft - 1), rango(T, "G", f0, ft - 1), rango(T, "H", f0, ft - 1)
+        e, f, h = rango(T, "E", f0, ft - 1), rango(T, "F", f0, ft - 1), rango(T, "H", f0, ft - 1)
         fila_resumen(r, "Cuerpos técnicos" if k == 0 else None, nombre, f"={T}!C{ft}", f"={T}!E{ft}",
-                     f'=SUMPRODUCT(({h}="SÍ")*{e}*{g})', f"={T}!I{ft}")
+                     f'=SUMPRODUCT(({h}="SÍ")*{e}*{f})', f"={T}!I{ft}")
         r += 1
     fila_resumen(r, "Total cuerpos técnicos", None, *[f"=SUM({c}{fct0}:{c}{r - 1})" for c in "DEFG"], f_tot, r_sub)
     filas_total.append(r)
@@ -424,8 +424,8 @@ def main():
     r += 4
     celda(rs, f"B{r}", "VALOR POR PRENDA", f_sec, alinear=Alignment(vertical="center"), borde=False)
     r += 1
-    cabecera(rs, r, 2, ["PRENDA", None, "PRECIO PÚBLICO (REFERENCIA)", "DESCUENTO", "PRECIO FEDERACIÓN",
-                        "TOTAL UNIDADES", "VALOR TOTAL DEL CANJE", "VALOR PRECIO FEDERACIÓN"], alto=36)
+    cabecera(rs, r, 2, ["PRENDA", None, "PRECIO PÚBLICO", "DESCUENTO", "PRECIO FEDERACIÓN",
+                        "TOTAL UNIDADES", "VALOR TOTAL DEL CANJE (PRECIO PÚBLICO)", "VALOR PRECIO FEDERACIÓN"], alto=36)
     rs.merge_cells(f"B{r}:C{r}")
     r += 1
     p0 = r
@@ -440,7 +440,7 @@ def main():
             celda(rs, f"F{r}", f"=PRECIOS!E{fp}", formato=PESOS)
             celda(rs, f"G{r}", f'=SUMIF({S}!$D:$D,"{p}",{S}!$G:$G)+SUMIF({T}!$B:$B,"{p}",{T}!$E:$E)', formato=NUM)
             celda(rs, f"H{r}", f'=(SUMIFS({S}!$G:$G,{S}!$D:$D,"{p}",{S}!$J:$J,"SÍ")'
-                               f'+SUMIFS({T}!$E:$E,{T}!$B:$B,"{p}",{T}!$H:$H,"SÍ"))*F{r}', formato=PESOS)
+                               f'+SUMIFS({T}!$E:$E,{T}!$B:$B,"{p}",{T}!$H:$H,"SÍ"))*D{r}', formato=PESOS)
             celda(rs, f"I{r}", f'=SUMIF({S}!$D:$D,"{p}",{S}!$K:$K)+SUMIF({T}!$B:$B,"{p}",{T}!$I:$I)', f_tot, PESOS)
             r += 1
     celda(rs, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
