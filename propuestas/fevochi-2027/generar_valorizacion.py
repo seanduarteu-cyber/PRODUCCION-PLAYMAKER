@@ -6,8 +6,8 @@ Uso:
 Lee Proyeccion_Ropa_Selecciones_FEVOCHI_2027_original.xlsx (hojas SELECCIONES ROPA 2027 y CUERPO TÉCNICO 2027:
 jugadores por categoría y prendas por jugador, con colores escritos junto a la cantidad, p. ej. "2 roja-azul")
 y crea Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsx:
-  - RESUMEN: valor por selección y categoría a precio federación, canje, total a pagar, neto e IVA, y valor por
-    prenda.
+  - RESUMEN: por selección y categoría, valor total del canje y valor a precio federación de lo que se paga (con
+    neto e IVA), y lo mismo por prenda.
   - SELECCIONES ROPA 2027 y CUERPO TÉCNICO 2027: una fila por categoría y prenda: unidades por jugador, total de
     unidades, precio público (solo referencia), precio federación, canje (SÍ: 100% de descuento en esa prenda; viene
     marcado en los equipos adultos de todas las selecciones) y valor a pagar.
@@ -374,24 +374,23 @@ def main():
     rs = wb.create_sheet("RESUMEN", 0)
     logo(rs, "logo_fevochi.png")
     encabezado(rs, "VALORIZACIÓN ROPA SELECCIONES FEVOCHI 2027",
-               "Valores con IVA a precio federación. El canje (100% de descuento en las prendas marcadas SÍ) se descuenta "
-               "antes del neto y el IVA. El precio público general es solo referencia.")
-    cabecera(rs, 5, 2, ["SELECCIÓN", "CATEGORÍA", "JUGADORES O PERSONAS", "TOTAL UNIDADES", "VALOR PRECIO FEDERACIÓN",
-                        "CANJE", "TOTAL A PAGAR", "NETO", "IVA"], alto=36)
+               "Valores con IVA. Las prendas en canje (100% de descuento) van solo en VALOR TOTAL DEL CANJE; el valor a "
+               "precio federación, el neto y el IVA son de las prendas que se pagan. El precio público es solo referencia.")
+    cabecera(rs, 5, 2, ["SELECCIÓN", "CATEGORÍA", "JUGADORES O PERSONAS", "TOTAL UNIDADES", "VALOR TOTAL DEL CANJE",
+                        "VALOR PRECIO FEDERACIÓN", "NETO", "IVA"], alto=36)
     S, T = "'SELECCIONES ROPA 2027'", "'CUERPO TÉCNICO 2027'"
     r = 6
     filas_total = []
 
-    def fila_resumen(r, sel, cat, jug, unid, bruto, canje, pagar, fuente=f_norm, relleno=None):
+    def fila_resumen(r, sel, cat, jug, unid, canje, pagar, fuente=f_norm, relleno=None):
         celda(rs, f"B{r}", sel, fuente, relleno=relleno, alinear=izq)
         celda(rs, f"C{r}", cat, fuente, relleno=relleno, alinear=izq)
         celda(rs, f"D{r}", jug, fuente, NUM, relleno)
         celda(rs, f"E{r}", unid, fuente, NUM, relleno)
-        celda(rs, f"F{r}", bruto, fuente, PESOS, relleno)
-        celda(rs, f"G{r}", canje, fuente, PESOS, relleno)
-        celda(rs, f"H{r}", pagar, fuente if relleno else f_tot, PESOS, relleno)
-        celda(rs, f"I{r}", f"=ROUND(H{r}/(1+PRECIOS!$C$4),0)", fuente, PESOS, relleno)
-        celda(rs, f"J{r}", f"=H{r}-I{r}", fuente, PESOS, relleno)
+        celda(rs, f"F{r}", canje, fuente, PESOS, relleno)
+        celda(rs, f"G{r}", pagar, fuente if relleno else f_tot, PESOS, relleno)
+        celda(rs, f"H{r}", f"=ROUND(G{r}/(1+PRECIOS!$C$4),0)", fuente, PESOS, relleno)
+        celda(rs, f"I{r}", f"=G{r}-H{r}", fuente, PESOS, relleno)
 
     def rango(hoja, col, a, b):
         return f"{hoja}!{col}{a}:{col}{b}"
@@ -401,10 +400,10 @@ def main():
         r0 = r
         for k, (cat, f0, s) in enumerate(filas_cat):
             g, i, j = rango(S, "G", f0, s - 1), rango(S, "I", f0, s - 1), rango(S, "J", f0, s - 1)
-            fila_resumen(r, nombre if k == 0 else None, cat, f"={S}!C{s}", f"={S}!G{s}", f"=SUMPRODUCT({g},{i})",
+            fila_resumen(r, nombre if k == 0 else None, cat, f"={S}!C{s}", f"={S}!G{s}",
                          f'=SUMPRODUCT(({j}="SÍ")*{g}*{i})', f"={S}!K{s}")
             r += 1
-        fila_resumen(r, f"Total {nombre.lower()}", None, *[f"=SUM({c}{r0}:{c}{r - 1})" for c in "DEFGH"], f_tot, r_sub)
+        fila_resumen(r, f"Total {nombre.lower()}", None, *[f"=SUM({c}{r0}:{c}{r - 1})" for c in "DEFG"], f_tot, r_sub)
         filas_total.append(r)
         r += 1
     fct0 = r
@@ -412,24 +411,21 @@ def main():
         nombre = titulo.replace("CUERPO TÉCNICO ", "").capitalize()
         e, g, h = rango(T, "E", f0, ft - 1), rango(T, "G", f0, ft - 1), rango(T, "H", f0, ft - 1)
         fila_resumen(r, "Cuerpos técnicos" if k == 0 else None, nombre, f"={T}!C{ft}", f"={T}!E{ft}",
-                     f"=SUMPRODUCT({e},{g})", f'=SUMPRODUCT(({h}="SÍ")*{e}*{g})', f"={T}!I{ft}")
+                     f'=SUMPRODUCT(({h}="SÍ")*{e}*{g})', f"={T}!I{ft}")
         r += 1
-    fila_resumen(r, "Total cuerpos técnicos", None, *[f"=SUM({c}{fct0}:{c}{r - 1})" for c in "DEFGH"], f_tot, r_sub)
+    fila_resumen(r, "Total cuerpos técnicos", None, *[f"=SUM({c}{fct0}:{c}{r - 1})" for c in "DEFG"], f_tot, r_sub)
     filas_total.append(r)
     r += 1
-    fila_resumen(r, "TOTAL GENERAL", None, *["=" + "+".join(f"{col}{x}" for x in filas_total) for col in "DEFGH"],
+    fila_resumen(r, "TOTAL GENERAL", None, *["=" + "+".join(f"{col}{x}" for x in filas_total) for col in "DEFG"],
                  f_gran, r_gran)
     rs.row_dimensions[r].height = 22
     total_general = r
-    celda(rs, f"B{r + 1}", f'=IF(ROUND(F{r}-G{r}-H{r},0)=0,"Control: valor federación menos canje es igual al total '
-                           f'a pagar.","Revisar: el canje no cuadra con el total a pagar.")', f_nota,
-          alinear=Alignment(vertical="center"), borde=False)
 
     r += 4
     celda(rs, f"B{r}", "VALOR POR PRENDA", f_sec, alinear=Alignment(vertical="center"), borde=False)
     r += 1
     cabecera(rs, r, 2, ["PRENDA", None, "PRECIO PÚBLICO (REFERENCIA)", "DESCUENTO", "PRECIO FEDERACIÓN",
-                        "TOTAL UNIDADES", "VALOR PRECIO FEDERACIÓN", "CANJE", "TOTAL A PAGAR"], alto=36)
+                        "TOTAL UNIDADES", "VALOR TOTAL DEL CANJE", "VALOR PRECIO FEDERACIÓN"], alto=36)
     rs.merge_cells(f"B{r}:C{r}")
     r += 1
     p0 = r
@@ -443,21 +439,20 @@ def main():
             celda(rs, f"E{r}", f"=IF(N(D{r})=0,0,1-F{r}/D{r})", formato='0.0%;-0.0%;"-"')
             celda(rs, f"F{r}", f"=PRECIOS!E{fp}", formato=PESOS)
             celda(rs, f"G{r}", f'=SUMIF({S}!$D:$D,"{p}",{S}!$G:$G)+SUMIF({T}!$B:$B,"{p}",{T}!$E:$E)', formato=NUM)
-            celda(rs, f"H{r}", f"=G{r}*F{r}", formato=PESOS)
-            celda(rs, f"I{r}", f'=(SUMIFS({S}!$G:$G,{S}!$D:$D,"{p}",{S}!$J:$J,"SÍ")'
+            celda(rs, f"H{r}", f'=(SUMIFS({S}!$G:$G,{S}!$D:$D,"{p}",{S}!$J:$J,"SÍ")'
                                f'+SUMIFS({T}!$E:$E,{T}!$B:$B,"{p}",{T}!$H:$H,"SÍ"))*F{r}', formato=PESOS)
-            celda(rs, f"J{r}", f'=SUMIF({S}!$D:$D,"{p}",{S}!$K:$K)+SUMIF({T}!$B:$B,"{p}",{T}!$I:$I)', f_tot, PESOS)
+            celda(rs, f"I{r}", f'=SUMIF({S}!$D:$D,"{p}",{S}!$K:$K)+SUMIF({T}!$B:$B,"{p}",{T}!$I:$I)', f_tot, PESOS)
             r += 1
     celda(rs, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
     for col in "CDEF":
         celda(rs, f"{col}{r}", None, f_gran, relleno=r_gran)
     rs.merge_cells(f"B{r}:C{r}")
-    for col, fmt in (("G", NUM), ("H", PESOS), ("I", PESOS), ("J", PESOS)):
+    for col, fmt in (("G", NUM), ("H", PESOS), ("I", PESOS)):
         celda(rs, f"{col}{r}", f"=SUM({col}{p0}:{col}{r - 1})", f_gran, fmt, r_gran)
-    celda(rs, f"B{r + 1}", f'=IF(AND(J{r}=H{total_general},I{r}=G{total_general}),"Control: la suma por prenda '
+    celda(rs, f"B{r + 1}", f'=IF(AND(H{r}=F{total_general},I{r}=G{total_general}),"Control: la suma por prenda '
                            f'coincide con el total general.","Revisar: la suma por prenda no coincide con el total '
                            f'general.")', f_nota, alinear=Alignment(vertical="center"), borde=False)
-    for col, ancho in zip("BCDEFGHIJ", (31, 18, 15, 13, 17, 14, 17, 15, 15)):
+    for col, ancho in zip("BCDEFGHI", (31, 18, 15, 13, 17, 17, 17, 15)):
         rs.column_dimensions[col].width = ancho
 
     for ws in wb.worksheets:
