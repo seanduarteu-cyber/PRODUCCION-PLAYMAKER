@@ -130,7 +130,10 @@ MOLDES SIN REGISTROS: PESO PROMEDIO (estimación)
 - Vale en Simular costo (cualquier molde y cualquier tela dan un valor, marcado «estimado», con de dónde sale) y en el
   costeo de los pedidos sin corte ni consumo teórico (por ejemplo, sin ficha en Fichas): la tela va con el peso promedio
   × las prendas y, si no se sabe qué tela es, con el $ por kg promedio de las telas cortadas.
-- Lo registrado manda: en cuanto el molde tenga sus cortes y ploteos, se usan los suyos.
+- Lo registrado manda: en cuanto el molde tenga sus cortes y ploteos, se usan los suyos. Orden para la tela: lo pesado en
+  el corte → el consumo teórico (despiece) → el peso promedio de su tipo → la referencia anotada.
+- Lo pesado siempre cuenta como real: un corte sin las prendas cortadas anotadas toma las prendas del pedido, y uno
+  registrado para el pedido completo se asigna a su molde si el pedido lleva uno solo.
 
 LO QUE NECESITAN CARGAR
 - Precios en Costeo → «Precios»: cada producto con su(s) proveedor(es); en telas, el ancho y el gramaje.

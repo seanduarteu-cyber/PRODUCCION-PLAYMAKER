@@ -7185,7 +7185,7 @@ async function cargarPromediosTipo() {
   });
   // ploteos: metros de cada molde en cada pedido ÷ sus prendas (las del corte o, si no, las del desglose)
   const pl = await todasLasFilas(api, 'plan_costeo?select=planificacion_id,molde,metros&etapa=eq.PLOTEO').catch(() => []) || [];
-  const prC = {}; (CORTES_SIM || []).forEach(r => { const k = r.planificacion_id + '|' + r.molde; prC[k] = Math.max(prC[k] || 0, +r.prendas || 0); });
+  const prC = {}; (CORTES_SIM || []).forEach(r => { const k = r.planificacion_id + '|' + (r.molde || r.moldeUnico || ''); prC[k] = Math.max(prC[k] || 0, prendasCorte(r)); });
   const sinCorte = Array.from(new Set(pl.filter(r => !prC[r.planificacion_id + '|' + r.molde]).map(r => r.planificacion_id))), desg = {};
   for (let k = 0; k < sinCorte.length; k += 100)
     ((await api(`planificacion?select=id,desglose&id=in.(${sinCorte.slice(k, k + 100).join(',')})`).catch(() => [])) || []).forEach(p => { desg[p.id] = jsonDe(p.desglose) || {}; });
@@ -7234,8 +7234,19 @@ async function cargarCortesSim() {
   const base = 'plan_costeo?select=id,planificacion_id,cot,molde,tela,kg_cortado,kg_merma,prendas';
   try { CORTES_SIM = await todasLasFilas(api, base + ',piezas&etapa=eq.CORTE') || []; PIEZAS_COL = true; }
   catch (e) { CORTES_SIM = await todasLasFilas(api, base + '&etapa=eq.CORTE').catch(() => []) || []; PIEZAS_COL = false; }
+  // Lo pesado es real y siempre manda: un corte sin las prendas cortadas anotadas toma las del pedido (su desglose), y
+  // uno registrado para el pedido completo es del molde, si el pedido lleva uno solo. Así no queda fuera del costo por
+  // prenda de su molde ni del promedio, y ese molde no se estima.
+  const pids = Array.from(new Set(CORTES_SIM.filter(r => !(+r.prendas > 0) || !r.molde).map(r => r.planificacion_id))), desg = {};
+  for (let k = 0; k < pids.length; k += 100)
+    ((await api(`planificacion?select=id,desglose&id=in.(${pids.slice(k, k + 100).join(',')})`).catch(() => [])) || []).forEach(p => { desg[p.id] = jsonDe(p.desglose) || {}; });
+  CORTES_SIM.forEach(r => { const d = desg[r.planificacion_id]; if (!d) return;
+    const ms = Object.keys(d).filter(k => esClaveMolde(k) && +d[k] > 0);
+    if (!r.molde && ms.length === 1) r.moldeUnico = ms[0];
+    const m = r.molde || r.moldeUnico; if (!(+r.prendas > 0) && m && +d[m] > 0) r.prendasPed = +d[m]; });
   return CORTES_SIM;
 }
+const prendasCorte = r => +r.prendas > 0 ? +r.prendas : +r.prendasPed || 0;   // las cortadas o, si no se anotaron, las del pedido
 // cortes anteriores sin las piezas de cada tela: se completan desde la ficha del pedido, mientras exista
 async function completarPiezasCortes() {
   if (!PIEZAS_COL) return 0;
@@ -7254,9 +7265,10 @@ async function completarPiezasCortes() {
 // cortes agrupados por pedido y molde: cada tela con sus kg (con merma) y sus piezas
 function gruposCorte(cual) {
   const G = {};
-  (CORTES_SIM || []).filter(r => cual(r.molde)).forEach(r => {
-    const g = G[r.planificacion_id + '|' + r.molde] = G[r.planificacion_id + '|' + r.molde] || { molde: r.molde, prendas: 0, telas: {} };
-    g.prendas = Math.max(g.prendas, +r.prendas || 0);
+  (CORTES_SIM || []).filter(r => cual(r.molde || r.moldeUnico || '')).forEach(r => {
+    const mo = r.molde || r.moldeUnico || '';
+    const g = G[r.planificacion_id + '|' + mo] = G[r.planificacion_id + '|' + mo] || { molde: mo, prendas: 0, telas: {} };
+    g.prendas = Math.max(g.prendas, prendasCorte(r));
     const t = g.telas[r.tela] = g.telas[r.tela] || { kg: 0, piezas: null };
     t.kg += (+r.kg_cortado || 0) + (+r.kg_merma || 0); if (Array.isArray(r.piezas) && r.piezas.length) t.piezas = r.piezas;
   });
@@ -7302,7 +7314,7 @@ async function datosSimMolde(n) {
     todasLasFilas(api, `plan_costeo?select=planificacion_id,etapa,molde,metros&etapa=in.(PLOTEO,SUBL)&molde=like.${pat}`).catch(() => []),
     todasLasFilas(api, `plan_asignaciones?select=planificacion_id,tipo_prenda,cantidad,precio_unit&etapa=eq.CONFEC&tipo_prenda=like.${pat}`).catch(() => [])]);
   // prendas de cada molde en cada pedido para los ploteos: las del corte o, si no, las del desglose
-  const prC = {}; (CORTES_SIM || []).forEach(r => { const k = r.planificacion_id + '|' + r.molde; prC[k] = Math.max(prC[k] || 0, +r.prendas || 0); });
+  const prC = {}; (CORTES_SIM || []).forEach(r => { const k = r.planificacion_id + '|' + (r.molde || r.moldeUnico || ''); prC[k] = Math.max(prC[k] || 0, prendasCorte(r)); });
   const pids = Array.from(new Set(rows.map(r => r.planificacion_id))), desg = {};
   for (let k = 0; k < pids.length; k += 100)
     ((await api(`planificacion?select=id,desglose&id=in.(${pids.slice(k, k + 100).join(',')})`).catch(() => [])) || []).forEach(p => { desg[p.id] = jsonDe(p.desglose) || {}; });

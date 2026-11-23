@@ -261,6 +261,18 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   ok(cv.ref && cv.ref.falda && cv.ref.falda.kg === 0.12 && cv.ref.camiseta.kg === 0.18 && cv.infPct === 65, 'se guardan la referencia de la falda y el % infantil');
   const f106 = await p.evaluate(async () => { const D = await datosSimMolde(106), R = calcSimulacion(106, D, 'Pro'); return R.partes[0].kg; });
   ok(Math.abs(f106 - 0.12) < 1e-9, 'la falda ya tiene valor: 0,12 kg de referencia');
+  // lo pesado manda: un corte sin las prendas anotadas (toma las del pedido) y uno registrado para el pedido completo
+  // (el pedido lleva un solo molde) cuentan como reales para su molde
+  costeo.push({ id: 900, etapa: 'CORTE', planificacion_id: 2, cot: 'COT-4001', molde: '18 · FUTHOMU02', tela: 'Pro', kg_cortado: 3.2, kg_merma: 0, prendas: null },
+    { id: 901, etapa: 'CORTE', planificacion_id: 2, cot: 'COT-4001', molde: '', tela: 'Nacional', kg_cortado: 0.8, kg_merma: 0, prendas: null });
+  const pesado = await p.evaluate(async () => {
+    CORTES_SIM = null; SIM_DATOS = {}; PROM_TIPO = null;
+    const D = await datosSimMolde(18), R = calcSimulacion(18, D, 'Pro'); await cargarPromediosTipo();
+    return { cortes: D.cortes.length, kgPP: R.kgPP, est: R.telaEst, prom17: estimacionTipo(17).kgPP };
+  });
+  ok(pesado.cortes === 2 && Math.abs(pesado.kgPP - 7.9 / 16) < 1e-9 && !pesado.est && Math.abs(pesado.prom17 - 7.9 / 16) < 1e-9,
+    'molde 18: el corte sin prendas anotadas (8 del pedido) y el del pedido completo cuentan como reales: (3,9 + 4,0) kg ÷ 16 prendas, sin estimar');
+  costeo.splice(costeo.findIndex(x => x.id === 900), 2);
 
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
   await b.close();
