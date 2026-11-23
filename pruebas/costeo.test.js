@@ -283,6 +283,26 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
     'molde 18: el corte sin prendas anotadas (8 del pedido) y el del pedido completo cuentan como reales: (3,9 + 4,0) kg ÷ 16 prendas, sin estimar');
   costeo.splice(costeo.findIndex(x => x.id === 900), 2);
 
+  // 10 · pedido antiguo con desglose incompleto (1 BK-CSUB + 1 BK-SH de 40 vendidas, sin N° de molde): la venta
+  // se toma en la parte de esas 2 prendas (si no, todo el gasto general del pedido cae sobre 2 prendas) y la tela y el
+  // ploteo se estiman por el tipo de prenda que dice el código
+  const inc = await p.evaluate(() => {
+    const G = { pct: 0.498, meses: ['2026-08', '2026-09', '2026-10'] };
+    const R = calcCosteo({ id: 98, cot: 'COT-9998', cliente: 'Antiguo', prendas: 2, desglose: { 'BK-CSUB': 1, 'BK-SH': 1 }, requiere_sublimacion: true },
+      { rows: [], asig: [], fc: null, venta: 1180000, ventaCant: 40, gg: G });
+    const T = calcCosteo({ id: 97, cot: 'COT-9997', cliente: 'Completo', prendas: 40, desglose: { 'BK-CSUB': 20, 'BK-SH': 20 }, requiere_sublimacion: true },
+      { rows: [], asig: [], fc: null, venta: 1180000, ventaCant: 40, gg: G });
+    return { venta: R.venta, ventaTotal: R.ventaTotal, gg: R.ggMonto, inc: R.desgloseIncompleto, faltan: R.faltan, porPrenda: R.porPrenda, margen: R.margen,
+      cam: { tela: R.moldes[0].tela, est: !!(R.moldes[0].telas[0] || {}).est, metros: R.moldes[0].metros },
+      sho: { tela: R.moldes[1].tela, como: (R.moldes[1].telas[0] || {}).como || '' }, tVenta: T.venta, tInc: T.desgloseIncompleto || null, tGG: T.ggMonto };
+  });
+  ok(inc.venta === 59000 && inc.ventaTotal === 1180000 && Math.abs(inc.gg - 59000 * 0.498) < 1e-6 && inc.inc.costeadas === 2 && inc.inc.vendidas === 40 &&
+    inc.faltan.includes('desglose por molde: tiene 2 de 40 prendas (se usa esa parte de la venta)') && inc.porPrenda < 40000,
+    'desglose de 2 de 40 prendas: venta $59.000 (2/40 de $1.180.000) y gasto general $29.382, no $587.640 sobre 2 prendas (por prenda ' + Math.round(inc.porPrenda) + ')');
+  ok(inc.cam.est && inc.cam.tela > 0 && inc.cam.metros > 0 && inc.sho.tela > 0 && /short/.test(inc.sho.como),
+    'sin N° de molde: la tela y el ploteo se estiman por el tipo de prenda del código (BK-CSUB camiseta, BK-SH short): ' + inc.sho.como);
+  ok(inc.tVenta === 1180000 && !inc.tInc && Math.abs(inc.tGG - 1180000 * 0.498) < 1e-6, 'con el desglose completo (40 de 40) se usa la venta entera');
+
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
   await b.close();
   console.log(fallas ? fallas + ' FALLAS' : 'TODO OK'); process.exit(fallas ? 1 : 0);

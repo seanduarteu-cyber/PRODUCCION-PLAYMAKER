@@ -74,6 +74,10 @@ Costo total del molde = tela + insumos por consumo + confección + ploteo y subl
      septiembre y octubre. Es «provisorio» si alguno de esos meses tiene gastos en revisión.
    - Se aplica a la venta neta del pedido (si el pedido no está en Ventas, sobre el costo) y se reparte entre sus
      moldes según el costo directo de cada uno.
+   - Si el desglose por molde de Planificación tiene MENOS prendas que las vendidas (la cantidad en Ventas o las prendas
+     del pedido), se usa solo la parte de la venta de esas prendas (venta × costeadas ÷ vendidas) para el gasto general y
+     el margen, y avisa «desglose por molde: tiene 2 de 40 prendas». Antes, el gasto general de toda la venta caía sobre
+     esas pocas prendas y su costo por prenda se disparaba (ej. BK-CSUB a $500.038). Completa el desglose del pedido.
    - Las horas de las áreas (revisión, sublimación…) están dentro de este gasto (sueldos).
 8. Resultado: costo total de cada molde y por prenda; total del pedido, venta neta y margen (venta neta − costo total).
    No hay precio sugerido.
@@ -138,6 +142,8 @@ MOLDES SIN REGISTROS: PESO PROMEDIO (estimación)
   el corte → el consumo teórico (despiece) → el peso promedio de su tipo → la referencia anotada.
 - Lo pesado siempre cuenta como real: un corte sin las prendas cortadas anotadas toma las prendas del pedido, y uno
   registrado para el pedido completo se asigna a su molde si el pedido lleva uno solo.
+- Pedidos antiguos con solo el código, sin N° de molde («BK-CSUB», «BK-SH»): se busca el molde con ese código; si no
+  hay, se estima por el tipo de prenda que indica el código (…SH short, BK-CSUB camiseta, etc.).
 
 LO QUE NECESITAN CARGAR
 - Precios en Costeo → «Precios»: cada producto con su(s) proveedor(es); en telas, el ancho y el gramaje.

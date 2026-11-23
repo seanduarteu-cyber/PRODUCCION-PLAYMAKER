@@ -6010,7 +6010,7 @@ function calcCosteo(p, c) {
       Object.entries((teo.porTipo[t.tipo] || {}).telas || {}).forEach(([tela, m]) => { const pm = precioM(insumoPorNombre(tela));
         M.telas.push({ tela, teoM: m, pm, costo: pm == null ? 0 : m * pm, real: false }); if (pm == null || !m) M.faltan.push((m ? 'precio de ' : 'consumo teórico de ') + tela); });
       // sin consumo teórico (molde sin despiece o pedido sin ficha): el peso promedio de su tipo de prenda
-      const inf = infoClave(t.tipo), E = inf ? estimacionTipo(inf.numero) : null;
+      const E = estimacionDeTipo(t.tipo);
       if (E && E.kgPP != null && !M.telas.some(x => x.teoM > 0)) {
         const tela = (M.telas[0] || {}).tela || '', i = insumoPorNombre(tela), g = gramajeTela(tela), pkT = precioKg(i), pk = pkT != null ? pkT : E.pkProm;
         const kgPP = E.areaPP != null && g ? E.areaPP * g / 1000 : E.kgPP, kg = kgPP * t.cant;
@@ -6035,7 +6035,7 @@ function calcCosteo(p, c) {
     const pl = deMolde('PLOTEO', t.tipo)[0], plS = sueltas('PLOTEO').reduce((s, r) => s + (+r.metros || 0), 0), sb = deMolde('SUBL', t.tipo)[0];
     M.metros = pl ? +pl.metros || 0 : plS * reparto(t, y => metrosTeo(y.tipo));
     // sin metros registrados (ni del pedido completo): los metros promedio de su tipo de prenda
-    if (conSub && !pl && !plS) { const inf = infoClave(t.tipo), E = inf ? estimacionTipo(inf.numero) : null;
+    if (conSub && !pl && !plS) { const E = estimacionDeTipo(t.tipo);
       if (E && E.mPP != null) { M.metros = E.mPP * t.cant; M.metrosEst = `${numCL(r2(E.mPP))} m por prenda × ${t.cant}: ${E.fuenteM}`; } }
     M.papel = M.metros * (pM || 0); M.tinta = M.metros * tM.porMetro;
     M.mProt = sb && sb.metros != null ? +sb.metros : conSub ? M.metros * protF : 0; M.prot = M.mProt * (prM || 0);
@@ -6061,6 +6061,15 @@ function calcCosteo(p, c) {
   const suma = k => R.moldes.reduce((s, m) => s + (m[k] || 0), 0);
   ['tela', 'insumos', 'confeccion', 'indirecto', 'directo', 'kgTotal', 'kgMerma'].forEach(k => { R[k] = suma(k); });
   R.unidades = tipos.reduce((s, t) => s + t.cant, 0);
+  // La venta es del pedido completo. Si aquí se costean menos prendas que las vendidas (desglose por molde incompleto),
+  // se usa la parte de la venta que corresponde a esas prendas: si no, todo el gasto general del pedido caería sobre
+  // unas pocas prendas y su costo por prenda se dispara.
+  const vendidas = Math.max(+c.ventaCant || 0, +p.prendas || 0);
+  if (vendidas > R.unidades && R.unidades > 0) {
+    R.desgloseIncompleto = { costeadas: R.unidades, vendidas };
+    R.faltan.push(`desglose por molde: tiene ${R.unidades} de ${vendidas} prendas` + (c.venta != null ? ' (se usa esa parte de la venta)' : ''));
+    if (c.venta != null) { R.ventaTotal = c.venta; c = Object.assign({}, c, { venta: c.venta * R.unidades / vendidas }); R.venta = c.venta; }
+  }
   // gasto general del pedido: % del mes sobre su venta neta (sin venta, sobre el precio a costo); se reparte por costo directo
   const k = R.gg && R.gg.pct != null ? R.gg.pct : null;
   R.ggMonto = k == null ? 0 : c.venta != null ? c.venta * k : R.directo * k / Math.max(0.05, 1 - k);
@@ -6370,19 +6379,20 @@ async function cargarCosteo() {
     Promise.all(tandas.map(t => todasLasFilas(api, `plan_asignaciones?select=planificacion_id,tipo_prenda,cantidad,precio_unit,ejecutante&etapa=eq.CONFEC&planificacion_id=in.(${t})`))).then(ls => ls.forEach(l => asig.push(...(l || [])))).catch(() => {})]);
   await cargarPromediosTipo().catch(() => { PROM_TIPO = {}; });   // para estimar los moldes sin registros (necesita los precios)
   // venta neta de cada pedido (Ventas)
-  const ventas = {}, cierre = {}, cots = Array.from(new Set(proy.map(p => baseCot(p.cot))));
+  const ventas = {}, cantV = {}, cierre = {}, cots = Array.from(new Set(proy.map(p => baseCot(p.cot))));
   for (let i = 0; i < cots.length; i += 60) {
     const lote = cots.slice(i, i + 60), refs = lote.concat(lote.map(c => c.replace(/^COT-/, '')));
-    try { (await apiV(`pedidos?select=cot,neto,fecha&cot=${inLista(refs)}`) || []).forEach(x => { const c = normCot(x.cot); ventas[c] = (ventas[c] || 0) + (+x.neto || 0);
+    try { (await apiV(`pedidos?select=cot,neto,fecha,cantidad&cot=${inLista(refs)}`) || []).forEach(x => { const c = normCot(x.cot); ventas[c] = (ventas[c] || 0) + (+x.neto || 0);
+      cantV[c] = (cantV[c] || 0) + (+x.cantidad || 0);
       if (x.fecha && (!cierre[c] || x.fecha < cierre[c])) cierre[c] = x.fecha; }); } catch (e) {}
   }
   // fichas de los moldes que aún no registran su corte: su tela se estima con el consumo teórico
   await cargarFichasCosteo(proy.filter(p => moldesDePedido(p).some(t => !rows.some(r => r.planificacion_id === p.id && r.etapa === 'CORTE' && (r.molde || '') === t.tipo))).map(p => p.cot));
-  return COSTEO_DATOS = { d1, d2, proy, rows, asig, ventas, cierre };
+  return COSTEO_DATOS = { d1, d2, proy, rows, asig, ventas, cantV, cierre };
 }
 const costeoDe = p => { const D = COSTEO_DATOS, G = calcularGG();
   return calcCosteo(p, { rows: D.rows.filter(r => r.planificacion_id === p.id), asig: D.asig.filter(a => a.planificacion_id === p.id), fc: COSTEO_FICHAS[p.cot] || null,
-    venta: p.cot === baseCot(p.cot) && D.ventas[normCot(p.cot)] != null ? D.ventas[normCot(p.cot)] : null,
+    venta: p.cot === baseCot(p.cot) && D.ventas[normCot(p.cot)] != null ? D.ventas[normCot(p.cot)] : null, ventaCant: (D.cantV || {})[normCot(p.cot)] || null,
     gg: G.pct(mesDe((D.cierre || {})[normCot(baseCot(p.cot))]) || mesDe(p.fecha_ingreso_ficha) || mesDe(F.hoy())) }); };
 const barraPeriodo = (D, q, conQ) => `<div class="toolbar"><label style="margin:0">Desde <input id="cs-desde" type="date" value="${D.d1}" onchange="renderCosteo()"></label>
       <label style="margin:0">Hasta <input id="cs-hasta" type="date" value="${D.d2}" onchange="renderCosteo()"></label>
@@ -6405,7 +6415,7 @@ async function pintarCosteoPedidos(v, chips) {
       <th style="text-align:right">Costo por prenda</th><th style="text-align:right">Venta neta</th><th style="text-align:right">Margen</th><th></th></tr>
       ${lista.map(({ p, r }) => `<tr class="cs-ped" style="background:var(--fondo,#F4F5F7)"><td><b>${esc(p.cot)}</b> · ${esc(p.cliente)}<div class="hint">${F.corta(p.fecha_ingreso_ficha)} · gasto general ${pct(r.gg && r.gg.pct)}${r.gg && r.gg.provisorio ? ' (provisorio)' : ''}</div></td>
           ${num(r.unidades)}${num(pesos(r.tela))}${num(pesos(r.insumos))}${num(pesos(r.confeccion))}${num(pesos(r.indirecto))}${num(pesos(r.ggMonto))}${num('<b>' + pesos(r.total) + '</b>')}<td></td>
-          ${num(r.venta != null ? pesos(r.venta) : '—')}<td style="text-align:right;color:${r.margen != null && r.margen < 0 ? '#A8121E' : 'inherit'}">${r.margenPct != null ? pct(r.margenPct) : '—'}</td>
+          ${num(r.venta != null ? pesos(r.venta) + (r.ventaTotal != null ? `<div class="hint">parte de ${pesos(r.ventaTotal)}</div>` : '') : '—')}<td style="text-align:right;color:${r.margen != null && r.margen < 0 ? '#A8121E' : 'inherit'}">${r.margenPct != null ? pct(r.margenPct) : '—'}</td>
           <td><button class="btn sm" onclick="verCosteo(${p.id})">Ver</button></td></tr>` +
         r.moldes.map(m => `<tr class="cs-molde" data-molde="${esc(m.tipo)}"><td style="padding-left:22px">${esc(m.tipo || 'Todo el pedido')}<div class="hint">${esc(m.tipo ? prendaDeTipo(m.tipo) : '')}${m.faltan.length ? ` · <span style="color:#A8121E">falta: ${esc(m.faltan.slice(0, 2).join(', '))}${m.faltan.length > 2 ? '…' : ''}</span>` : ''}</div></td>
           ${num(m.cant)}${num(pesos(m.tela) + (m.telaReal ? '' : '<div class="hint">estimada</div>'))}${num(pesos(m.insumos))}${num(pesos(m.confeccion) + (m.confecReal ? '' : '<div class="hint">tarifa</div>'))}
@@ -6475,7 +6485,7 @@ async function verCosteo(pid) {
       ${otrosP.map((o, i) => fila(esc(o.tela), `${pesos(o.monto)} <button class="btn sm" title="Quitar" onclick="quitarOtroCosto(${pid},${i})">×</button>`, 'otro costo · ' + esc(o.molde || 'todo el pedido'))).join('')}
       ${fila('Gasto general ' + pct(r.gg && r.gg.pct), pesos(r.ggMonto), r.gg && r.gg.meses.length ? `gasto general ÷ ventas netas de ${r.gg.meses.slice().reverse().map(mesTxt).join(', ')}` + (r.venta != null ? ', sobre la venta neta' : ', sobre el costo (sin venta en Ventas)') + (r.gg.provisorio ? ' · provisorio: hay gastos en revisión en Ventas' : '') : 'sin meses con datos desde el inicio del análisis')}
       ${fila('<b>Costo total del pedido</b>', '<b>' + pesos(r.total) + '</b>')}
-      ${fila('Venta neta', r.venta != null ? pesos(r.venta) : '—', r.venta != null ? 'Ventas' : (p.cot !== baseCot(p.cot) ? 'parte de un pedido: la venta está en ' + esc(baseCot(p.cot)) : 'no se encontró en Ventas'))}
+      ${fila('Venta neta', r.venta != null ? pesos(r.venta) : '—', r.ventaTotal != null ? `parte de la venta de ${pesos(r.ventaTotal)} en Ventas: ${r.desgloseIncompleto.costeadas} de ${r.desgloseIncompleto.vendidas} prendas (el desglose por molde está incompleto)` : r.venta != null ? 'Ventas' : (p.cot !== baseCot(p.cot) ? 'parte de un pedido: la venta está en ' + esc(baseCot(p.cot)) : 'no se encontró en Ventas'))}
       ${fila('Margen', r.margen != null ? `${pesos(r.margen)} · ${pct(r.margenPct)}` : '—')}
     </table>`, pid);
 }
@@ -6516,7 +6526,7 @@ function exportarCosteo() {
     n(m.tela), numCL(m.kgTotal), numCL(m.kgMerma), m.kgTotal ? pct(m.kgMerma / m.kgTotal) : '', n(m.insumos), n(m.confeccion), numCL(m.metros), n(m.papel + m.tinta), n(m.prot), n(m.estampado), n(m.otrosT),
     n(m.directo), r.gg && r.gg.pct != null ? pct(r.gg.pct) : '', n(m.gg), n(m.total), n(m.porPrenda), n(r.venta), n(r.margen), m.faltan.join(' · ')])); });
   const csv = '﻿' + ['Pedido', 'Cliente', 'Ingreso', 'Molde', 'Prenda', 'Cantidad', 'Prendas cortadas', 'Tela', 'Kg tela', 'Kg merma', '% merma', 'Insumos', 'Confección', 'Metros ploteo',
-    'Papel y tinta', 'Papel protección', 'Estampado y aplicaciones', 'Otros', 'Costo directo', '% gasto general', 'Gasto general', 'Costo total del molde', 'Costo por prenda', 'Venta neta del pedido',
+    'Papel y tinta', 'Papel protección', 'Estampado y aplicaciones', 'Otros', 'Costo directo', '% gasto general', 'Gasto general', 'Costo total del molde', 'Costo por prenda', 'Venta neta (prendas costeadas)',
     'Margen del pedido', 'Falta'].join(';') + '\n' + filas.map(f => f.map(esc2).join(';')).join('\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
   a.download = `Costeo_PMK_${D.d1}_${D.d2}.csv`; a.click(); URL.revokeObjectURL(a.href);
@@ -7192,8 +7202,16 @@ async function cargarPromediosTipo() {
 }
 // Estimación por prenda para el molde n: kg de tela (y m² si se conoce el gramaje), $ por kg promedio de sus telas y
 // metros de ploteo, con de dónde sale cada una
-function estimacionTipo(n) {
-  const P = PROM_TIPO || {}, tipo = tipoMolde(n), inf = esInfantilMolde(n), fi = factorInf();
+// el molde de un tipo del pedido: su N° («18 · FUTHOMU02») o, en pedidos antiguos con solo el código («BK-SH»), el molde con ese código
+const moldeDeTipo = t => { const i = infoClave(t); if (i) return i.numero; const c = normIns(String(t || '').split(' · ')[0]); if (!c) return null;
+  const m = Object.values(MOLDES_INFO).find(x => normIns(x.codigo) === c); return m ? m.numero : null; };
+// estimación de un tipo del pedido; sin molde conocido, por el tipo de prenda que indica su código (camiseta si no dice otra)
+function estimacionDeTipo(t) {
+  if (!t) return null; const n = moldeDeTipo(t);
+  return n != null ? estimacionTipo(n) : estimacionTipo(null, { tipo: prendaDeCodigo(String(t).split(' · ')[0]), inf: /IN(MUJ|HOM|UNI|SH)|SHIN\b|INFANTIL/i.test(t) });
+}
+function estimacionTipo(n, forzado) {
+  const P = PROM_TIPO || {}, tipo = forzado ? forzado.tipo : tipoMolde(n), inf = forzado ? forzado.inf : esInfantilMolde(n), fi = factorInf();
   const E = { kgPP: null, areaPP: null, pkProm: null, fuente: '', mPP: null, fuenteM: '', tipo, nom: tipo ? nomPrendaFicha(tipo).toLowerCase() : 'esta prenda' };
   if (!tipo) return E;
   const grupo = g => g === 'inf' ? 'infantil' : 'adulto', mio = inf ? 'inf' : 'ad', otro = inf ? 'ad' : 'inf';
