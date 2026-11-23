@@ -84,7 +84,7 @@ def leer(wb):
             elif isinstance(b, str) and b.startswith("Total "):
                 actual[1].append((cat, filas, v))
                 filas = []
-            elif isinstance(b, str) and b.startswith("TOTAL ") and cat and not filas == []:
+            elif isinstance(b, str) and (b == "TOTAL" or b.startswith("TOTAL ")) and cat and filas:
                 actual[1].append((cat, filas, v))
                 filas = []
             elif v.get("prenda") and isinstance(v.get("unidades"), (int, float)):

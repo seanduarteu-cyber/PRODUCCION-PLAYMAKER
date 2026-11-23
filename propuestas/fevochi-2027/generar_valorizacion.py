@@ -342,7 +342,7 @@ def main():
             celda(se, f"K{r}", f"=SUM(K{f0}:K{r - 1})", f_tot, PESOS, r_sub)
             filas_cat.append((cat, f0, r))
             r += 1
-        celda(se, f"B{r}", f"TOTAL {titulo}", f_gran, relleno=r_gran, alinear=izq)
+        celda(se, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)  # el título de la sección va arriba
         for col in "CDEFGHIJK":
             celda(se, f"{col}{r}", None, f_gran, relleno=r_gran)
         celda(se, f"C{r}", "=" + "+".join(f"C{s}" for _, _, s in filas_cat), f_gran, NUM, r_gran)
@@ -394,7 +394,7 @@ def main():
             celda(ct, f"I{r}", f'=IF(H{r}="SÍ",0,E{r}*G{r})', f_tot, PESOS)
             r += 1
         dv_canje_ct.add(f"H{f0}:H{r - 1}")
-        celda(ct, f"B{r}", f"TOTAL {titulo}", f_gran, relleno=r_gran, alinear=izq)
+        celda(ct, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
         for col in "CDEFGHI":
             celda(ct, f"{col}{r}", None, f_gran, relleno=r_gran)
         celda(ct, f"C{r}", f"=C{f0}", f_gran, NUM, r_gran)
