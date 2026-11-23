@@ -5,7 +5,7 @@ Uso:
 
 Lee Proyeccion_Ropa_Selecciones_FEVOCHI_2027_original.xlsx (hojas SELECCIONES ROPA 2027 y CUERPO TÉCNICO 2027:
 jugadores por categoría y prendas por jugador, con colores escritos junto a la cantidad, p. ej. "2 roja-azul")
-y crea Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsx:
+y crea Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsm (con macros):
   - RESUMEN: por selección y categoría, valor total del canje (a precio público general) y valor a precio
     federación de lo que se paga (con neto e IVA), y lo mismo por prenda.
   - SELECCIONES ROPA 2027 y CUERPO TÉCNICO 2027: una fila por categoría y prenda: unidades por jugador, total de
@@ -13,20 +13,56 @@ y crea Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsx:
     marcado en los equipos adultos de todas las selecciones) y valor a pagar.
   - PRECIOS: por prenda, precio público general, descuento y precio federación (todos con IVA). El descuento
     general se aplica a las prendas sin descuento propio.
-Si la planilla de valorización ya existe, se conservan los precios, jugadores y unidades que tenga cargados.
+  - COSTOS (uso interno): costo unitario y código de inventario por prenda, costo del canje y de lo vendido, venta
+    neta y resultado del convenio. No va en el PDF de la federación.
+En RESUMEN, el vínculo GENERAR PDF PARA LA FEDERACIÓN corre la macro GenerarPDFFederacion: exporta a PDF todas las
+hojas visibles menos COSTOS, en la misma carpeta de la planilla (requiere habilitar macros).
+Si la planilla de valorización ya existe, se conservan los precios, costos, jugadores y unidades que tenga cargados.
 """
 
 import re
+import sys
 from pathlib import Path
 
 import openpyxl
 from openpyxl.drawing.image import Image as XLImage
+from openpyxl.formatting.rule import CellIsRule
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.datavalidation import DataValidation
+from openpyxl.worksheet.hyperlink import Hyperlink
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from vba_proyecto import agregar_vba  # noqa: E402
 
 DIR = Path(__file__).parent
 ORIGEN = DIR / "Proyeccion_Ropa_Selecciones_FEVOCHI_2027_original.xlsx"
-SALIDA = DIR / "Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsx"
+SALIDA = DIR / "Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsm"
+ANTERIOR = DIR / "Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsx"  # versión sin macros, solo para traspasar valores
+HOJA_INTERNA = "COSTOS"
+MACRO_PDF = """' Genera el PDF para la federacion: todas las hojas visibles menos COSTOS (uso interno).
+Sub GenerarPDFFederacion()
+    Dim hojas() As Variant, n As Integer, ws As Worksheet, ruta As String, activa As Worksheet
+    Set activa = ActiveSheet
+    For Each ws In ThisWorkbook.Worksheets
+        If ws.Name <> "COSTOS" And ws.Visible = xlSheetVisible Then
+            n = n + 1
+            ReDim Preserve hojas(1 To n)
+            hojas(n) = ws.Name
+        End If
+    Next ws
+    ruta = ThisWorkbook.Path & Application.PathSeparator & "Valorizacion_FEVOCHI_2027_Federacion.pdf"
+    ThisWorkbook.Worksheets(hojas).Select
+    ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=ruta, Quality:=xlQualityStandard, _
+        IncludeDocProperties:=True, IgnorePrintAreas:=False, OpenAfterPublish:=True
+    activa.Select
+    MsgBox "PDF guardado en: " & ruta, vbInformation, "PDF para la federacion"
+End Sub
+"""
+EVENTO_VINCULO = """' El vinculo GENERAR PDF de la hoja RESUMEN (su texto de ayuda dice PDF) corre la macro.
+Private Sub Workbook_SheetFollowHyperlink(ByVal Sh As Object, ByVal Target As Hyperlink)
+    If InStr(1, Target.ScreenTip, "PDF", vbTextCompare) > 0 Then GenerarPDFFederacion
+End Sub
+"""
 IVA = 0.19
 
 # prendas con precio propio, por grupo (el nombre es la llave entre hojas: no cambiarlo en una sola parte)
@@ -125,10 +161,16 @@ def leer_proyeccion():
 
 def leer_previo():
     """Valores ya cargados en la valorización (precios, jugadores, unidades), para no perderlos."""
-    if not SALIDA.exists():
+    origen = SALIDA if SALIDA.exists() else ANTERIOR
+    if not origen.exists():
         return None
-    wb = openpyxl.load_workbook(SALIDA)
-    previo = {"precios": {}, "iva": None, "descuento": None, "celdas": {}}
+    wb = openpyxl.load_workbook(origen)
+    previo = {"precios": {}, "iva": None, "descuento": None, "celdas": {}, "costos": {}}
+    if HOJA_INTERNA in wb.sheetnames:
+        co = wb[HOJA_INTERNA]
+        for r in range(1, co.max_row + 1):
+            if co.cell(r, 2).value and co.cell(r, 4).font.color is not None and co.cell(r, 4).font.color.rgb == "FF0000FF":
+                previo["costos"][texto(co.cell(r, 2).value)] = (co.cell(r, 3).value, co.cell(r, 4).value)
     pr = wb["PRECIOS"]
     for r in range(8, pr.max_row + 1):
         if pr.cell(r, 2).value:  # público, descuento propio, observaciones
@@ -374,8 +416,8 @@ def main():
     rs = wb.create_sheet("RESUMEN", 0)
     logo(rs, "logo_fevochi.png")
     encabezado(rs, "VALORIZACIÓN ROPA SELECCIONES FEVOCHI 2027",
-               "Valores con IVA. Las prendas en canje (100% de descuento) se valorizan a precio público general en VALOR "
-               "TOTAL DEL CANJE; el valor a precio federación, el neto y el IVA son de las prendas que se pagan.")
+               "Valores con IVA. El canje (100% de descuento) se valoriza a precio público general; el resto, a precio "
+               "federación.")
     cabecera(rs, 5, 2, ["SELECCIÓN", "CATEGORÍA", "JUGADORES O PERSONAS", "TOTAL UNIDADES", "VALOR TOTAL DEL CANJE (PRECIO PÚBLICO)",
                         "VALOR PRECIO FEDERACIÓN", "NETO", "IVA"], alto=36)
     S, T = "'SELECCIONES ROPA 2027'", "'CUERPO TÉCNICO 2027'"
@@ -454,6 +496,97 @@ def main():
                            f'general.")', f_nota, alinear=Alignment(vertical="center"), borde=False)
     for col, ancho in zip("BCDEFGHI", (31, 18, 15, 13, 17, 17, 17, 15)):
         rs.column_dimensions[col].width = ancho
+    fila_prenda_rs = {p: p0 + k for k, p in enumerate(p for _, ps in PRENDAS for p in ps)}
+    rs.print_area = f"A1:I{r + 1}"  # el vínculo del PDF queda fuera de lo que se imprime
+
+    # vínculo que genera el PDF para la federación (macro GenerarPDFFederacion, vía Workbook_SheetFollowHyperlink)
+    rs.merge_cells("K2:M3")
+    celda(rs, "K2", "GENERAR PDF PARA LA FEDERACIÓN", Font(name="Calibri", size=11, bold=True, color="FFFFFF",
+                                                                    underline="single"), relleno=r_gran)
+    for col in "LM":
+        for fila in (2, 3):
+            rs[f"{col}{fila}"].fill = r_gran
+    rs["K2"].hyperlink = Hyperlink(ref="K2", location="RESUMEN!K2",
+                                   tooltip="Generar PDF para la federacion (todas las hojas menos COSTOS)")
+    celda(rs, "K4", "Exporta todas las hojas menos COSTOS a un PDF en la misma carpeta de esta planilla.", f_nota,
+          alinear=Alignment(vertical="top", wrap_text=True), borde=False)
+    celda(rs, "K6", "Requiere habilitar macros. Si no funciona: Archivo, Exportar, PDF, con las hojas RESUMEN, PRECIOS, "
+                    "SELECCIONES ROPA 2027 y CUERPO TÉCNICO 2027 seleccionadas.", f_nota,
+          alinear=Alignment(vertical="top", wrap_text=True), borde=False)
+    rs.merge_cells("K4:M5")
+    rs.merge_cells("K6:M9")
+    for col in "KLM":
+        rs.column_dimensions[col].width = 14
+    rs.row_dimensions[2].height = rs.row_dimensions[3].height = 18
+
+    # ---------------------------------------------------------------- COSTOS (uso interno)
+    co = wb.create_sheet(HOJA_INTERNA)
+    co.sheet_properties.tabColor = "C00000"
+    logo(co, "logo_fevochi.png")
+    encabezado(co, "COSTOS DEL CONVENIO (USO INTERNO, NO VA EN EL PDF)",
+               "Celdas amarillas: código de inventario y costo unitario neto (sin IVA) de cada prenda. Unidades y "
+               "ventas vienen de las demás hojas.")
+    cabecera(co, 5, 2, ["PRENDA", "CÓDIGO INVENTARIO", "COSTO UNITARIO NETO", "UNIDADES EN CANJE",
+                        "UNIDADES VENDIDAS", "TOTAL UNIDADES", "COSTO DEL CANJE", "COSTO DE LO VENDIDO",
+                        "COSTO TOTAL (INVENTARIO)", "VENTA NETA FEDERACIÓN", "MARGEN DE LA VENTA", "MARGEN %"], alto=40)
+    r = 6
+    c0 = r
+    for _, prendas in PRENDAS:
+        for p in prendas:
+            fr = fila_prenda_rs[p]
+            codigo, costo = previo["costos"].get(p, (None, None)) if previo else (None, None)
+            celda(co, f"B{r}", p, alinear=izq)
+            celda(co, f"C{r}", codigo, f_input, relleno=r_input, alinear=izq)
+            celda(co, f"D{r}", costo, f_input, PESOS, r_input)
+            celda(co, f"E{r}", f'=SUMIFS({S}!$G:$G,{S}!$D:$D,"{p}",{S}!$J:$J,"SÍ")'
+                               f'+SUMIFS({T}!$E:$E,{T}!$B:$B,"{p}",{T}!$H:$H,"SÍ")', formato=NUM)
+            celda(co, f"F{r}", f"=G{r}-E{r}", formato=NUM)
+            celda(co, f"G{r}", f"=RESUMEN!G{fr}", formato=NUM)
+            celda(co, f"H{r}", f"=E{r}*N(D{r})", formato=PESOS)
+            celda(co, f"I{r}", f"=F{r}*N(D{r})", formato=PESOS)
+            celda(co, f"J{r}", f"=H{r}+I{r}", f_tot, PESOS)
+            celda(co, f"K{r}", f"=ROUND(RESUMEN!I{fr}/(1+PRECIOS!$C$4),0)", formato=PESOS)
+            celda(co, f"L{r}", f"=K{r}-I{r}", f_tot, PESOS)
+            celda(co, f"M{r}", f'=IF(OR(K{r}=0,N(D{r})=0),"",L{r}/K{r})', formato='0.0%;-0.0%;"-"')
+            r += 1
+    celda(co, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
+    for col in "CD":
+        celda(co, f"{col}{r}", None, f_gran, relleno=r_gran)
+    for col in "EFGHIJKL":
+        celda(co, f"{col}{r}", f"=SUM({col}{c0}:{col}{r - 1})", f_gran, NUM if col in "EFG" else PESOS, r_gran)
+    celda(co, f"M{r}", f'=IF(OR(K{r}=0,COUNT(D{c0}:D{r - 1})<ROWS(D{c0}:D{r - 1})),"",L{r}/K{r})', f_gran,
+          '0.0%;-0.0%;"-"', r_gran)
+    tc = r
+    r += 3
+    celda(co, f"B{r}", "RESULTADO DEL CONVENIO", f_sec, alinear=Alignment(vertical="center"), borde=False)
+    r += 1
+    resultado = [
+        ("Valor del canje para la federación (precio público, con IVA)", f"=RESUMEN!F{total_general}", f_norm),
+        ("Costo real del canje para Playmaker (neto)", f"=H{tc}", f_norm),
+        ("Venta a la federación (neto, sin IVA)", f"=K{tc}", f_norm),
+        ("Costo de lo vendido (neto)", f"=I{tc}", f_norm),
+        ("Margen de la venta", f"=L{tc}", f_tot),
+        ("Resultado del convenio (margen de la venta menos costo del canje)", f"=L{tc}-H{tc}", f_tot),
+        ("Costo total de inventario a producir (canje y venta)", f"=J{tc}", f_tot),
+    ]
+    for k, (txt, f, fuente) in enumerate(resultado):
+        celda(co, f"B{r}", txt, fuente, alinear=izq)
+        for col in "CDEF":
+            celda(co, f"{col}{r}", None)
+        co.merge_cells(f"B{r}:F{r}")
+        celda(co, f"G{r}", f, fuente, PESOS, r_sub if fuente is f_tot else None)
+        r += 1
+    co.conditional_formatting.add(f"G{r - 2}", CellIsRule(operator="lessThan", formula=["0"],
+                                                          fill=PatternFill("solid", fgColor="F6D5D0")))
+    celda(co, f"B{r + 1}", "Si falta el costo de una prenda, sus costos quedan en cero: completa la columna COSTO "
+                           "UNITARIO NETO para que el resultado sea real.", f_nota, alinear=Alignment(vertical="center"),
+          borde=False)
+    dvc = DataValidation(type="decimal", operator="greaterThanOrEqual", formula1="0", allow_blank=True,
+                         errorTitle="Costo", error="Ingresa un costo en pesos (0 o más).")
+    co.add_data_validation(dvc)
+    dvc.add(f"D{c0}:D{tc - 1}")
+    for col, ancho in zip("BCDEFGHIJKLM", (34, 15, 13, 12, 12, 12, 15, 15, 16, 16, 15, 10)):
+        co.column_dimensions[col].width = ancho
 
     for ws in wb.worksheets:
         ws.sheet_view.showGridLines = False
@@ -462,6 +595,9 @@ def main():
         ws.sheet_properties.pageSetUpPr.fitToPage = True
         ws.page_setup.fitToWidth, ws.page_setup.fitToHeight = 1, 0
     se.freeze_panes = "B5"
+    for k, ws in enumerate(wb.worksheets, start=1):  # nombres VBA de las hojas (como los asigna Excel)
+        ws.sheet_properties.codeName = f"Sheet{k}"
+    agregar_vba(wb, MACRO_PDF, EVENTO_VINCULO)
     wb.save(SALIDA)
     n_filas = sum(len(items) for _, cats in selecciones for _, _, items in cats)
     print(f"OK  {SALIDA.name}  ({len(selecciones)} selecciones, {n_filas} filas de prendas, {len(tecnicos)} cuerpos técnicos)")

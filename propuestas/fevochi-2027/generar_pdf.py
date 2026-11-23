@@ -3,7 +3,7 @@
 Uso:
     python3 propuestas/fevochi-2027/generar_pdf.py
 
-Lee Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsx (los valores que la planilla tiene calculados) y crea
+Lee Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsm (los valores que la planilla tiene calculados) y crea
 valorizacion_fevochi.html y Propuesta_Valorizacion_FEVOCHI_2027.pdf. Si se cambian precios, descuentos, canje o
 cantidades en la planilla, basta guardarla y volver a correr este script. Si la planilla no trae valores
 calculados (por ejemplo, recién generada con generar_valorizacion.py), se recalcula con LibreOffice.
@@ -16,7 +16,7 @@ from pathlib import Path
 import openpyxl
 
 DIR = Path(__file__).parent
-PLANILLA = DIR / "Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsx"
+PLANILLA = DIR / "Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsm"
 HTML = DIR / "valorizacion_fevochi.html"
 PDF = DIR / "Propuesta_Valorizacion_FEVOCHI_2027.pdf"
 FECHA = "Santiago, 23 de noviembre de 2026"
