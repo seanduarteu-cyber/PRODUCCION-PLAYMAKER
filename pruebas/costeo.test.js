@@ -170,9 +170,9 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   const ggP = (await p.innerText('#gg-pedidos')).replace(/\s+/g, ' '), ggM = await p.$$eval('#gg-meses tr', trs => trs.slice(1).map(t => t.innerText.replace(/\s+/g, ' ')));
   ok(/noviembre 2026 agosto 2026, septiembre 2026, octubre 2026 \$3\.000\.000 \$550\.000 18,3% provisorio/.test(ggP), 'pedidos de noviembre: $550.000 de gasto general ÷ $3.000.000 de ventas netas = 18,3%, provisorio (sin prendas vendidas anotadas, la mano de obra interna queda en el gasto general): ' + ggP.slice(0, 200));
   const fM = m => ggM.find(x => x.startsWith(m)) || '';
-  ok(/^octubre 2026 \$1\.000\.000 \$0 \$0 \$100\.000 \$100\.000 10% \$40\.000 1 gasto \$0 0 1 venta sin cantidad$/.test(fM('octubre')), 'octubre: sin la venta anulada; tela, comisión e IVA no entran; software en neto; $40.000 en revisión: ' + fM('octubre'));
-  ok(/^septiembre 2026 \$1\.000\.000 \$120\.000 \$15\.000 \$15\.000 \$150\.000 15% — \$0 0 1 venta sin cantidad$/.test(fM('septiembre')), 'septiembre: arriendo repartido 80/10/10: ' + fM('septiembre'));
-  ok(/^agosto 2026 \$1\.000\.000 \$0 \$0 \$0 \$0 0% — \$300\.000 0 1 venta sin cantidad$/.test(fM('agosto')), 'agosto: el sueldo de producción ya no es gasto general: es mano de obra interna: ' + fM('agosto'));
+  ok(/^octubre 2026 \$1\.000\.000 \$0 \$0 \$100\.000 \$100\.000 10% \$40\.000 1 gasto \$0 sin confirmar: se usa el sugerido sugerido: 0 ver detalle Aceptar sugerido 1 sin ficha ni cantidad$/.test(fM('octubre')), 'octubre: sin la venta anulada; tela, comisión e IVA no entran; software en neto; $40.000 en revisión: ' + fM('octubre'));
+  ok(/^septiembre 2026 \$1\.000\.000 \$120\.000 \$15\.000 \$15\.000 \$150\.000 15% — \$0 sin confirmar: se usa el sugerido sugerido: 0 ver detalle Aceptar sugerido 1 sin ficha ni cantidad$/.test(fM('septiembre')), 'septiembre: arriendo repartido 80/10/10: ' + fM('septiembre'));
+  ok(/^agosto 2026 \$1\.000\.000 \$0 \$0 \$0 \$0 0% — \$300\.000 sin confirmar: se usa el sugerido sugerido: 0 ver detalle Aceptar sugerido 1 sin ficha ni cantidad$/.test(fM('agosto')), 'agosto: el sueldo de producción ya no es gasto general: es mano de obra interna: ' + fM('agosto'));
   ok(/\$550\.000 18,3% provisorio \$300\.000 en el gasto general 0 —/.test(ggP), 'sin prendas vendidas anotadas en esos meses, la mano de obra interna ($300.000) queda en el gasto general');
   ok(!ggM.some(x => /marzo/.test(x)) && /\$19\.000 de IVA se descontaron según el IVA habitual de la cuenta/.test(await p.innerText('#view-costeo')), 'marzo no aparece (el análisis parte en abril) y avisa el IVA descontado por supuesto');
   // sin el SQL 21B en Ventas: avisa en vez de calcular con otra cosa
@@ -356,16 +356,29 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   const pc = await p.evaluate(() => {
     const f = d => factorVenta(d), extra = [{ cot: '3990', fecha: '2026-06-10', neto: 0, cantidad: 10, descripcion: 'KIT DIAMANTE CON MEDIAS' },
       { cot: '3991', fecha: '2026-06-11', neto: 0, cantidad: 30, descripcion: 'MEDIAS DEPORTIVAS' }, { cot: '3992', fecha: '2026-06-12', neto: 0, cantidad: 15, descripcion: 'Dúo pack oro' },
-      { cot: '3993', fecha: '2026-06-13', neto: 0, cantidad: 12, descripcion: 'CAMISETAS DE FUTBOL' }, { cot: '4000', fecha: '2026-06-14', neto: 0, cantidad: 3, descripcion: 'KIT' }];
+      { cot: '3993', fecha: '2026-06-13', neto: 0, cantidad: 12, descripcion: 'CAMISETAS DE FUTBOL' }, { cot: '4001', fecha: '2026-06-14', neto: 0, cantidad: 3, descripcion: 'KIT' }];
     GG_DATOS.ps.push(...extra); const m = calcularGG().mes('2026-06'); GG_DATOS.ps.splice(GG_DATOS.ps.length - extra.length, extra.length);
     return { f: [f('20 KIT ORO'), f('DUO DIAMANTE'), f('MEDIAS'), f('ESCUDOS BORDADOS'), f('CAMISETAS + ESCUDOS'), f('Indumentaria de rugby')],
       desg: prendasDesglose({ '18 · FUTHOMU02': 8, '46 · BK-SH': 2, 'VINILO': true, 'MEDIAS-ADL': true }),
-      txt: textoVentaPrendas({ cantidad: 20, descripcion: 'KIT DIAMANTE' }), m: { pr: m.prendas, real: m.nReal, est: m.nEst, kit: m.nKit } };
+      txt: textoVentaPrendas({ cantidad: 20, descripcion: 'KIT DIAMANTE' }), m: { pr: m.prendas, ficha: m.nFicha, est: m.nEst, kit: m.nKit, det: m.det.find(x => x.cot === 'COT-4001') } };
   });
   ok(pc.f.join() === '2,2,0,0,1,1' && pc.desg === 10 && pc.txt === '20 kits o dúos = 40 prendas a confeccionar',
     'regla: kit y dúo = 2 prendas; solo medias o aplicaciones = 0; con prendas = 1; el desglose no cuenta medias ni servicios: ' + JSON.stringify(pc.f));
-  ok(pc.m.pr === 20 + 0 + 30 + 12 + 10 && pc.m.real === 1 && pc.m.est === 4 && pc.m.kit === 3,
-    'junio: 10 kits = 20, 30 medias = 0, 15 dúos = 30, 12 camisetas = 12 y el pedido con desglose usa su desglose (10, no 3 kits): ' + JSON.stringify(pc.m));
+  ok(pc.m.pr === 20 + 0 + 30 + 12 + 8 && pc.m.ficha === 1 && pc.m.est === 4 && pc.m.kit === 3 && /^ficha: Camiseta 8$/.test(pc.m.det.origen),
+    'junio: sin ficha, 10 kits = 20, 30 medias = 0, 15 dúos = 30, 12 camisetas = 12; el pedido con ficha usa sus prendas (8 camisetas, no 3 kits × 2): ' + JSON.stringify(pc.m));
+  // sugerido desde las fichas: se acepta o se registra a mano; manda en la mano de obra por prenda
+  await p.evaluate(() => { COSTEO_MODO = 'gg'; renderCosteo(); }); await p.waitForTimeout(1500);
+  const sugNov = await p.evaluate(() => calcularGG().mes('2026-11').prendasCalc);
+  await p.evaluate(() => verPrendasMes('2026-11')); await p.waitForTimeout(300);
+  const detNov = (await p.innerText('#pm-detalle')).replace(/\s+/g, ' ');
+  ok(sugNov === 10 && /COT-4000 Club Costeo 10 10 ficha: Camiseta 8 · Short o calza 2/.test(detNov), 'noviembre: sugerido 10 desde la ficha de COT-4000; el detalle muestra cada venta y de dónde sale: ' + detNov.slice(0, 160));
+  await p.evaluate(() => cerrarModal());
+  await p.click('[data-pm="2026-10"] ~ div button'); await p.fill('[data-pm="2026-09"]', '400'); await p.click('#gg-pm-guardar'); await p.waitForTimeout(1500);
+  const pmG = JSON.parse(config.find(c => c.clave === 'costeo_valores').valor).prendasMes || {};
+  const g3 = await p.evaluate(() => { const x = calcularGG().pct('2026-11'); return { pr: x.prendas, pp: x.modPP, nm: x.nManual }; });
+  ok(pmG['2026-10'] === 100 && pmG['2026-09'] === 400 && pmG['2026-08'] == null && g3.pr === 600 && g3.nm === 2 && Math.abs(g3.pp - 520000 / 600) < 1e-9
+    && /registrado por ti/.test(await p.innerText('#gg-meses')),
+    'octubre: se acepta el sugerido (100); septiembre: se registra a mano (400); agosto sigue con el sugerido (100): 600 prendas y $867 por prenda: ' + JSON.stringify({ pmG, g3 }));
 
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
   await b.close();
