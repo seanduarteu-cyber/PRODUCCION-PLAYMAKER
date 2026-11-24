@@ -76,10 +76,18 @@ costos + gasto general
    - LEYES SOCIALES (3.03): cada mes se reparten según los sueldos que cotizan (3.01, 3.02 y 4.01; los socios no cotizan) de cada grupo:
      la parte de quienes hacen la prenda va a la mano de obra interna; el resto, al gasto general de cada área.
    - MANO DE OBRA INTERNA POR PRENDA = (sueldos de quienes hacen la prenda + su parte de las leyes sociales) de los
-     mismos 3 meses del gasto general ÷ prendas vendidas en esos 3 meses (la «cantidad» de cada venta en Ventas). Va en
-     el costo directo de cada molde (× sus prendas), en Por molde, en Simular costo y en el Excel. Si esos meses no
-     tienen prendas vendidas anotadas, no se puede repartir por prenda y queda dentro del gasto general (así no se
-     pierde); la tabla «Cada mes» muestra cuántas ventas no tienen cantidad.
+     mismos 3 meses del gasto general ÷ PRENDAS A CONFECCIONAR vendidas en esos 3 meses. Va en el costo directo de
+     cada molde (× sus prendas), en Por molde, en Simular costo y en el Excel. Si esos meses no tienen prendas anotadas,
+     no se puede repartir por prenda y queda dentro del gasto general (así no se pierde).
+   - PRENDAS A CONFECCIONAR: solo las prendas que se cosen. Las medias y las aplicaciones (escudos, vinilo, DTF,
+     bordados…) no cuentan. Un kit o un dúo (duo pack) son 2 prendas por unidad: camiseta y short; el kit trae además
+     medias, que no cuentan. De cada venta del mes se toma el desglose del pedido en Planificación (las medias y
+     aplicaciones ya van aparte como servicios; las partes del pedido se suman). Si el pedido aún no tiene desglose, se
+     estima con Ventas: «Cantidad» (un kit o dúo es 1) × 2 si la descripción dice kit o dúo, × 0 si solo dice medias o
+     aplicaciones, × 1 en lo demás. La tabla «Cada mes» dice cuántas ventas se estimaron así y cuántas no tienen
+     cantidad. La misma regla se usa al comparar el desglose con la venta al ingresar una ficha, en «Pendientes de
+     ficha» y para la parte de la venta de un pedido con desglose incompleto. En Ventas, bajo «Cantidad» se muestra
+     cuántas prendas a confeccionar son.
    - Todo en NETO: los gastos sin el IVA que se recupera con factura afecta; las ventas sin IVA, sin las anuladas y
      menos las devoluciones. Si un gasto no dice su documento, se usa el del proveedor o, si no, el IVA habitual de la
      cuenta (supuesto: la pantalla avisa cuánto IVA se descontó así).

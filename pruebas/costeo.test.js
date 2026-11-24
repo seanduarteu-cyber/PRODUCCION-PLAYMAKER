@@ -344,12 +344,28 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   const cam2 = (await p.$$eval('#cs-tabla tr.cs-molde', trs => trs.map(t => t.innerText.replace(/\s+/g, ' '))))[0] || '';
   ok(/ 8 \$[\d.]+ \$[\d.]+ \$24\.000 \$13\.867 /.test(cam2), 'pedido: la camiseta lleva 8 × $1.733 = $13.867 de mano de obra interna en su costo directo: ' + cam2);
   await p.evaluate(() => verCosteo(1)); await p.waitForTimeout(700);
-  ok(/Mano de obra interna\s+\$1\.733 por prenda: sueldos y leyes sociales de quienes hacen la prenda \(\$520\.000\) ÷ 300 prendas vendidas en agosto 2026, septiembre 2026, octubre 2026\s+\$13\.867/.test(await p.innerText('#modal')),
+  ok(/Mano de obra interna\s+\$1\.733 por prenda: sueldos y leyes sociales de quienes hacen la prenda \(\$520\.000\) ÷ 300 prendas a confeccionar vendidas en agosto 2026, septiembre 2026, octubre 2026\s+\$13\.867/.test(await p.innerText('#modal')),
     'detalle: de dónde sale la mano de obra interna');
   await p.evaluate(() => cerrarModal());
   const sim = await p.evaluate(async () => { SIM_DATOS = {}; const D = await datosSimMolde(17), R = calcSimulacion(17, D, 'Pro'); return { mo: R.mo, directo: R.directo }; });
   ok(Math.abs(sim.mo - 520000 / 300) < 1e-9, 'Simular costo: la mano de obra interna por prenda ($1.733) va en el costo directo');
   await p.evaluate(() => { COSTEO_Q = ''; });
+
+  // 12 · prendas a confeccionar: solo las que se cosen (sin medias ni aplicaciones); kit y dúo = 2 por unidad; manda
+  // el desglose del pedido en Planificación y, si aún no lo tiene, la cantidad de la venta
+  const pc = await p.evaluate(() => {
+    const f = d => factorVenta(d), extra = [{ cot: '3990', fecha: '2026-06-10', neto: 0, cantidad: 10, descripcion: 'KIT DIAMANTE CON MEDIAS' },
+      { cot: '3991', fecha: '2026-06-11', neto: 0, cantidad: 30, descripcion: 'MEDIAS DEPORTIVAS' }, { cot: '3992', fecha: '2026-06-12', neto: 0, cantidad: 15, descripcion: 'Dúo pack oro' },
+      { cot: '3993', fecha: '2026-06-13', neto: 0, cantidad: 12, descripcion: 'CAMISETAS DE FUTBOL' }, { cot: '4000', fecha: '2026-06-14', neto: 0, cantidad: 3, descripcion: 'KIT' }];
+    GG_DATOS.ps.push(...extra); const m = calcularGG().mes('2026-06'); GG_DATOS.ps.splice(GG_DATOS.ps.length - extra.length, extra.length);
+    return { f: [f('20 KIT ORO'), f('DUO DIAMANTE'), f('MEDIAS'), f('ESCUDOS BORDADOS'), f('CAMISETAS + ESCUDOS'), f('Indumentaria de rugby')],
+      desg: prendasDesglose({ '18 · FUTHOMU02': 8, '46 · BK-SH': 2, 'VINILO': true, 'MEDIAS-ADL': true }),
+      txt: textoVentaPrendas({ cantidad: 20, descripcion: 'KIT DIAMANTE' }), m: { pr: m.prendas, real: m.nReal, est: m.nEst, kit: m.nKit } };
+  });
+  ok(pc.f.join() === '2,2,0,0,1,1' && pc.desg === 10 && pc.txt === '20 kits o dúos = 40 prendas a confeccionar',
+    'regla: kit y dúo = 2 prendas; solo medias o aplicaciones = 0; con prendas = 1; el desglose no cuenta medias ni servicios: ' + JSON.stringify(pc.f));
+  ok(pc.m.pr === 20 + 0 + 30 + 12 + 10 && pc.m.real === 1 && pc.m.est === 4 && pc.m.kit === 3,
+    'junio: 10 kits = 20, 30 medias = 0, 15 dúos = 30, 12 camisetas = 12 y el pedido con desglose usa su desglose (10, no 3 kits): ' + JSON.stringify(pc.m));
 
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
   await b.close();

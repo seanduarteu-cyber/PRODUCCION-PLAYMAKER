@@ -311,6 +311,13 @@ function atender(req, u) {
     PARAMS_G.sueldos_personas = antes;
     return { sin: sin && sin.total, con: con && con.total, k: con && con.kLeyes };
   });
+  const pcv = await p.evaluate(() => { const c = document.getElementById('f-cantidad'), d = document.getElementById('f-descripcion'), o = () => document.getElementById('f-prendas-conf').textContent;
+    c.value = '20'; d.value = 'KIT DIAMANTE'; pintarPrendasConf('f-cantidad', 'f-descripcion', 'f-prendas-conf'); const kit = o();
+    d.value = 'MEDIAS DEPORTIVAS'; pintarPrendasConf('f-cantidad', 'f-descripcion', 'f-prendas-conf'); const med = o();
+    d.value = 'CAMISETAS DE FUTBOL'; pintarPrendasConf('f-cantidad', 'f-descripcion', 'f-prendas-conf'); const cam = o();
+    c.value = ''; d.value = ''; pintarPrendasConf('f-cantidad', 'f-descripcion', 'f-prendas-conf'); return { kit, med, cam }; });
+  ok(pcv.kit === '20 kits o dúos = 40 prendas a confeccionar' && /0 prendas a confeccionar/.test(pcv.med) && pcv.cam === '20 prendas a confeccionar',
+    'venta: bajo «Cantidad» dice cuántas prendas se confeccionan (kit o dúo × 2; medias 0): ' + JSON.stringify(pcv));
   ok(mo.sin === 1100000 && Math.abs(mo.con - 660000) < 1e-6 && Math.abs(mo.k - 0.6) < 1e-9,
     'conciliación: sin elegir, los sueldos de producción y diseño + leyes van al costo directo ($1.100.000); con Belén en gasto general, $600.000 + 60% de las leyes ($660.000): ' + JSON.stringify(mo));
 

@@ -552,7 +552,7 @@ const PMK_ACCESO = (() => {
             oninput="acFilter()" onfocus="acFilter()" onblur="setTimeout(acHide,200)">
           <div class="autocomplete-list" id="ac-list" style="display:none"></div>
         </div>
-        <div class="form-group"><label class="lbl">Descripci&#243;n</label><input type="text" id="f-descripcion" placeholder="Tipo de indumentaria"></div>
+        <div class="form-group"><label class="lbl">Descripci&#243;n</label><input type="text" id="f-descripcion" placeholder="Tipo de indumentaria (ej: KIT DIAMANTE, DÚO ORO, CAMISETAS)" oninput="pintarPrendasConf('f-cantidad','f-descripcion','f-prendas-conf')"></div>
         <div class="form-group"><label class="lbl">Canal de venta</label>
           <select id="f-canal" onchange="toggleSubcanal()">
             <option value="">&#8212; seleccionar &#8212;</option>
@@ -574,7 +574,8 @@ const PMK_ACCESO = (() => {
         </div>
       </div>
       <div class="form-grid">
-        <div class="form-group"><label class="lbl">Cantidad</label><input type="number" id="f-cantidad" placeholder="0" min="0"></div>
+        <div class="form-group"><label class="lbl">Cantidad <span style="font-weight:400;color:#9CA3AF">(unidades vendidas: un kit o d&#250;o es 1)</span></label><input type="number" id="f-cantidad" placeholder="0" min="0" oninput="pintarPrendasConf('f-cantidad','f-descripcion','f-prendas-conf')">
+          <div id="f-prendas-conf" style="font-size:11px;color:#6B7280;margin-top:4px"></div></div>
         <div class="form-group">
           <label class="lbl" style="display:flex;justify-content:space-between;align-items:center">
             Dise&#241;ador
@@ -2092,8 +2093,9 @@ function editarVenta(id){
     </div>
     <div class="form-grid">
       <div class="form-group"><label class="lbl">Cliente *</label><input type="text" id="ev-cliente" value="${esc2(r.cliente)}"></div>
-      <div class="form-group"><label class="lbl">Descripci&#243;n</label><input type="text" id="ev-descripcion" value="${esc2(r.descripcion)}"></div>
-      <div class="form-group"><label class="lbl">Cantidad</label><input type="number" id="ev-cantidad" min="0" value="${r.cantidad||0}"></div>
+      <div class="form-group"><label class="lbl">Descripci&#243;n</label><input type="text" id="ev-descripcion" value="${esc2(r.descripcion)}" oninput="pintarPrendasConf('ev-cantidad','ev-descripcion','ev-prendas-conf')"></div>
+      <div class="form-group"><label class="lbl">Cantidad <span style="font-weight:400;color:#9CA3AF">(un kit o d&#250;o es 1)</span></label><input type="number" id="ev-cantidad" min="0" value="${r.cantidad||0}" oninput="pintarPrendasConf('ev-cantidad','ev-descripcion','ev-prendas-conf')">
+        <div id="ev-prendas-conf" style="font-size:11px;color:#6B7280;margin-top:4px">${textoPrendasConf(r.cantidad,r.descripcion)}</div></div>
     </div>
     <div class="form-grid">
       <div class="form-group"><label class="lbl">Canal de venta</label>
@@ -3458,6 +3460,18 @@ async function guardarPropuestasProv(){
     (revAntes>revDespues?" · "+(revAntes-revDespues)+" gasto"+(revAntes-revDespues===1?"":"s")+" salieron de Revisión":""));
 }
 
+// ── Prendas a confeccionar (la misma regla que Planificación) ──
+// Solo cuentan las prendas que se cosen: medias y aplicaciones (escudos, vinilo, DTF, bordados…) no. Un kit o un dúo
+// (duo pack) son 2 prendas por unidad: camiseta y short (el kit trae además medias, que no cuentan).
+const RE_KIT_DUO=/\b(KITS?|D[UÚ]OS?)\b/i, RE_SOLO_SERV=/MEDIA|CALCET|ESCUDO|VINILO|DTF|BORDAD|PARCHE|TEXTURIZ|APLICACI|ESTAMPAD/i;
+const RE_PRENDA_V=/CAMISET|POLERA|SHORT|CALZA|PANTAL|BUZO|POLER[OÓ]N|CORTAVIENT|PARKA|FALDA|\bTOP\b|CHAQUETA|JERSEY|PETO|INDUMENTARIA|UNIFORME|EQUIPO/i;
+function factorVenta(desc){const d=String(desc||"");return RE_KIT_DUO.test(d)?2:RE_SOLO_SERV.test(d)&&!RE_PRENDA_V.test(d)?0:1;}
+function prendasConfeccion(cant,desc){return(Number(cant)||0)*factorVenta(desc);}
+function textoPrendasConf(cant,desc){const c=Number(cant)||0,f=factorVenta(desc);if(!c)return"";
+  return f===2?`${c} kit${c===1?"":"s"} o d&#250;o${c===1?"":"s"} = <b>${c*2} prendas a confeccionar</b>`:f===0?"Medias o aplicaciones: <b>0 prendas a confeccionar</b>":`<b>${c} prendas a confeccionar</b>`;}
+function pintarPrendasConf(idCant,idDesc,idOut){const o=document.getElementById(idOut);if(!o)return;
+  o.innerHTML=textoPrendasConf((document.getElementById(idCant)||{}).value,(document.getElementById(idDesc)||{}).value);}
+
 // ── Remuneraciones por persona (Planificación › Costeo › Gasto general; gestion_parametros «sueldos_personas») ──
 // Las de quienes hacen la prenda (diseño, producción, corte, calandra, estampado) son costo directo: «mano de obra
 // interna», con su parte de las leyes sociales (según los sueldos con contrato de cada grupo). Las demás (ventas, socios,
@@ -4508,7 +4522,7 @@ function verDetalle(id){
       </div>
       <div><div style="font-size:11px;color:#6B7280">Canal</div><div>${r.canal||"&#8212;"}</div></div>
       <div><div style="font-size:11px;color:#6B7280">Tipo de venta</div><div>${r.tipo_venta||"Sin especificar"}</div></div>
-      <div><div style="font-size:11px;color:#6B7280">Cantidad</div><div>${r.cantidad||"&#8212;"}</div></div>
+      <div><div style="font-size:11px;color:#6B7280">Cantidad</div><div>${r.cantidad||"&#8212;"}${r.cantidad&&factorVenta(r.descripcion)!==1?`<div style="font-size:11px;color:#6B7280">${textoPrendasConf(r.cantidad,r.descripcion)}</div>`:""}</div></div>
       <div><div style="font-size:11px;color:#6B7280">Dise&#241;ador</div><div>${r.disenador||"&#8212;"}</div></div>
     </div>
     <div style="margin-bottom:16px">
@@ -4683,6 +4697,7 @@ function calcTotales(){
 }
 function resetForm(){
   ["f-fecha","f-cot","f-cliente","f-descripcion","f-cantidad","f-total","f-disenador","f-ndoc"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+  {const pc=document.getElementById("f-prendas-conf");if(pc)pc.innerHTML="";}
   ["f-vendedor","f-canal","f-tipodoc"].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   document.getElementById("abonos-container").innerHTML="";abonosCount=0;calcTotales();
   document.getElementById("form-alert").innerHTML="";

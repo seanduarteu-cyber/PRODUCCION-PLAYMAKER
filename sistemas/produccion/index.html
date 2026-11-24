@@ -894,6 +894,19 @@ const camisetaConMangas = i => !!i && (i.prenda || prendaDeCodigo(i.codigo)) ===
 const claveMolde = (num, larga) => { const i = MOLDES_INFO[String(num)]; return etqMolde(num) + ' · ' + (i ? i.codigo : '?') + (larga ? ' · ML' : ''); };
 const infoClave = k => { const x = String(k).match(/^(E?\d{1,3}) · /); return x ? MOLDES_INFO[String(numDeEtq(x[1]))] || null : null; };
 const esClaveMolde = k => /^E?\d{1,3} · /.test(String(k));
+// PRENDAS A CONFECCIONAR: solo las que se cosen. Las medias y las aplicaciones (escudos, vinilo, DTF, bordados…) no
+// cuentan. Un kit o un dúo (duo pack) son 2 prendas por unidad: camiseta y short (el kit trae además medias, que no
+// cuentan). En Ventas cada venta tiene una sola «Cantidad»: se lleva a prendas con su descripción; en Planificación
+// manda el desglose del pedido (de la ficha), donde las medias y aplicaciones ya van aparte como servicios.
+const RE_KIT_DUO = /\b(KITS?|D[UÚ]OS?)\b/i;
+const RE_SOLO_SERV = /MEDIA|CALCET|ESCUDO|VINILO|DTF|BORDAD|PARCHE|TEXTURIZ|APLICACI|ESTAMPAD/i;
+const RE_PRENDA_V = /CAMISET|POLERA|SHORT|CALZA|PANTAL|BUZO|POLER[OÓ]N|CORTAVIENT|PARKA|FALDA|\bTOP\b|CHAQUETA|JERSEY|PETO|INDUMENTARIA|UNIFORME|EQUIPO/i;
+const factorVenta = desc => { const d = String(desc || ''); return RE_KIT_DUO.test(d) ? 2 : RE_SOLO_SERV.test(d) && !RE_PRENDA_V.test(d) ? 0 : 1; };
+const prendasDeVenta = v => v.prendasConf != null ? v.prendasConf : (+v.cantidad || 0) * factorVenta(v.descripcion);
+const prendasDesglose = d => Object.entries((d && typeof d === 'object' ? d : (() => { try { return JSON.parse(d || 'null'); } catch (e) { return null; } })()) || {})
+  .filter(([k, v]) => typeof v === 'number' && v > 0 && !/MEDIA/i.test(k)).reduce((t, [, v]) => t + v, 0);
+const textoVentaPrendas = v => { const c = +v.cantidad || 0, n = prendasDeVenta(v);
+  return v.prendasConf != null || n === c ? `${c} unidades` : factorVenta(v.descripcion) === 2 ? `${c} kits o dúos = ${n} prendas a confeccionar` : `${c} unidades de medias o aplicaciones (0 prendas a confeccionar)`; };
 function construirGrupos() {
   if (!Object.keys(MOLDES_INFO).length) MOLDES_INFO = infoDesdeRespaldo();
   const porDep = {};
@@ -2638,8 +2651,8 @@ function actualizarGrid(cid) {
   const tot = $(cid + '-total'); if (!tot) return;
   const { total } = leerGrid(cid);
   const v = cid === 'f-desglose' && VENTA_SEL && VENTA_SEL.cotN === normCot($('f-cot').value) ? VENTA_SEL : null;
-  tot.innerHTML = `Total: ${total} prenda${total !== 1 ? 's' : ''}` + (v && v.cantidad ? (total === v.cantidad
-    ? ` <span class="vref">· coincide con la venta</span>` : ` <span class="vref" style="color:#9E0C24">· la venta registra ${v.cantidad} unidades</span>`) : '');
+  tot.innerHTML = `Total: ${total} prenda${total !== 1 ? 's' : ''}` + (v && v.cantidad ? (total === prendasDeVenta(v)
+    ? ` <span class="vref">· coincide con la venta</span>` : ` <span class="vref" style="color:#9E0C24">· la venta registra ${esc(textoVentaPrendas(v))}</span>`) : '');
 }
 function resumenDesglose(d) {
   if (!d || !Object.keys(d).length) return '';
@@ -3063,7 +3076,8 @@ async function cargarPorIngresar() {
         if (COTS_PLAN.has(p.ref)) continue;
         await marcarFichaAprobada(p.ref, p);
         const cant = (p.prendas || []).reduce((s, x) => s + (parseInt(x.cant) || 0), 0);
-        VENTAS_PEND.push({ ...v, cotN: p.ref, cotVenta: v.cotN, parte: p, cantidad: cant || v.cantidad,
+        const conf = (p.prendas || []).filter(x => !/media/i.test(String(x.prenda || ''))).reduce((s, x) => s + (parseInt(x.cant) || 0), 0);
+        VENTAS_PEND.push({ ...v, cotN: p.ref, cotVenta: v.cotN, parte: p, cantidad: cant || v.cantidad, prendasConf: cant ? conf : null,
           descripcion: (p.prendas || []).length ? txtPrendasDis(p.prendas) : v.descripcion });
       }
       if (estadoDis(v.cotN) !== 'cerrado') EN_DISENO++;
@@ -3148,7 +3162,7 @@ function renderListaSF() {
           : '<span class="tag abierta">Falta confirmar en Fichas</span>')
       : '<span class="tag sin">Sin ficha de tallas</span>';
     return `<div class="sf"><div><b>${esc(v.cotN)} · ${esc(v.cliente)}</b>
-      <div class="s">${v.cantidad || 0} unid. vendidas · venta ${F.corta((v.created_at || '').slice(0, 10))}${v.vendedor ? ' · ' + esc(v.vendedor) : ''}</div>
+      <div class="s">${v.cantidad || 0} unid. vendidas${prendasDeVenta(v) !== (+v.cantidad || 0) ? ` (${prendasDeVenta(v)} prendas a confeccionar)` : ''} · venta ${F.corta((v.created_at || '').slice(0, 10))}${v.vendedor ? ' · ' + esc(v.vendedor) : ''}</div>
       ${v.parte && (v.parte.prendas || []).length ? `<div class="s">${esc(v.descripcion)}${FICHAS_MAP[v.cotN] && FICHAS_MAP[v.cotN].parteDe && normCot(FICHAS_MAP[v.cotN].parteDe) !== v.cotN ? ' · usa la ficha de ' + esc(FICHAS_MAP[v.cotN].parteDe) : ''}</div>` : ''}
       <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">${tagF}${v.parte ? ` <span class="tag nuevo">${v.parte.total ? 'Diseño aprobado' : 'Parte ' + v.parte.n + ' · diseño aprobado'}</span>` : ''}${v.parte && v.parte.bloqueo ? ' <span class="tag bloq">Bloqueo</span>' : ''}${v.sinVenta ? ' <span class="tag ant">No está en Ventas</span>' : ''}${old ? ` <span class="tag ant">Sistema anterior: ${esc(old.estado)}</span>` : ''}</div></div>
       <div style="display:flex;flex-direction:column;gap:6px;align-items:stretch;min-width:132px">
@@ -3248,7 +3262,7 @@ async function guardarFicha() {
   if (COTS_PLAN.has(cot)) return toast(`${cot} ya tiene ficha en planificación`, 'err');
   if (faltaDiseno(cot)) return alert(`${cot} no puede ingresar a producción: su diseño aún no está aprobado en Diseño.\n\nApruébalo (total o parcial) en la pestaña Diseño.`);
   const v = VENTA_SEL && VENTA_SEL.cotN === cot ? VENTA_SEL : null;
-  if (v && v.cantidad && v.cantidad !== prendas && !confirm(`El desglose suma ${prendas} prendas y la venta registra ${v.cantidad} unidades.\n\n¿Ingresar la ficha de todas formas?`)) return;
+  if (v && v.cantidad && prendasDeVenta(v) !== prendas && !confirm(`El desglose suma ${prendas} prendas y la venta registra ${textoVentaPrendas(v)}.\n\n¿Ingresar la ficha de todas formas?`)) return;
   if (!est && llevaEstampado(desglose) && !confirm('Marcaste servicios que normalmente van en estampado, pero la ficha dice "No requiere estampado".\n\n¿Continuar sin etapa de estampado?')) return;
   // Regla: ningún pedido entra a producción sin tallas completas y confirmadas por el cliente
   const ef = estadoFicha(cot);
@@ -5873,7 +5887,7 @@ async function cargarGG(desdeMes) {
   const d = desdeMes + '-01';
   try {
     const [ps, gs, cs, par] = await Promise.all([
-      todasLasFilas(apiV, `pedidos?select=cot,fecha,neto,total,estado,cantidad&fecha=gte.${d}&order=fecha.asc,id.asc`),
+      todasLasFilas(apiV, `pedidos?select=cot,fecha,neto,total,estado,cantidad,descripcion&fecha=gte.${d}&order=fecha.asc,id.asc`),
       todasLasFilas(apiV, `v_gastos_neto?select=gasto_id,periodo,cuenta_codigo,nivel,estado,monto_bruto,monto_neto,origen_iva,iva_recuperable&periodo=gte.${d}&order=periodo.asc,gasto_id.asc`),
       apiV('plan_cuentas?select=codigo,nombre,nivel,prorrateo&order=codigo.asc'),
       apiV('gestion_parametros?select=clave,valor&order=clave.asc')]);
@@ -5884,7 +5898,11 @@ async function cargarGG(desdeMes) {
     for (let k = 0; k < ids.length; k += 150)
       try { ((await apiV(`gastos?select=id,proveedor&id=in.(${ids.slice(k, k + 150).join(',')})`)) || []).forEach(x => { prov[String(+x.id)] = x.proveedor || ''; }); }
       catch (e) { provOk = false; }
-    GG_DATOS = { desde: desdeMes, ps: ps || [], gs: gs || [], cuentas: cs || [], par: P, prov, provOk, ok: true };
+    // prendas a confeccionar de cada pedido según su desglose en Planificación (sus partes se suman al pedido)
+    const desg = {};
+    ((await todasLasFilas(api, 'planificacion?select=cot,desglose').catch(() => [])) || []).forEach(x => { const n = prendasDesglose(x.desglose);
+      if (n > 0) { const k = normCot(baseCot(x.cot)); desg[k] = (desg[k] || 0) + n; } });
+    GG_DATOS = { desde: desdeMes, ps: ps || [], gs: gs || [], cuentas: cs || [], par: P, prov, provOk, desg, ok: true };
   } catch (e) { GG_DATOS = { desde: desdeMes, ps: [], gs: [], cuentas: [], par: {}, ok: false, error: e.message, falta: /^404/.test(e.message) }; }
   return GG_DATOS;
 }
@@ -5909,10 +5927,15 @@ function calcularGG() {
   });
   const destinoDe = g => { const x = PER[normIns(nomDe(g))]; return x && x.destino ? x.destino : CTAS_REMUN[g.cuenta_codigo]; };
   const M = {}, fila = m => M[m] = M[m] || { mes: m, ventas: 0, devol: 0, prod: 0, venta: 0, admin: 0, total: 0, leyes: 0, revision: 0, nRev: 0, ivaSup: 0,
-    sDir: 0, bDir: 0, bGen: { prod: 0, venta: 0, admin: 0 }, leyesDir: 0, mod: 0, prendas: 0, sinCant: 0 };
+    sDir: 0, bDir: 0, bGen: { prod: 0, venta: 0, admin: 0 }, leyesDir: 0, mod: 0, prendas: 0, sinCant: 0, nReal: 0, nEst: 0, nKit: 0 };
   GG_DATOS.ps.forEach(p => { const m = mesDe(p.fecha); if (!m || m < ini || /anul/i.test(p.estado || '')) return;
     const f = fila(m); f.ventas += p.neto != null && p.neto !== '' ? +p.neto || 0 : Math.round((+p.total || 0) / 1.19);
-    if (+p.cantidad > 0) f.prendas += +p.cantidad; else f.sinCant++; });
+    // prendas a confeccionar: las del desglose del pedido en Planificación; si aún no lo tiene, las de la venta (kit o
+    // dúo × 2; solo medias o aplicaciones: 0)
+    const real = (GG_DATOS.desg || {})[normCot(p.cot)];
+    if (real > 0) { f.prendas += real; f.nReal++; }
+    else if (+p.cantidad > 0) { f.prendas += prendasDeVenta(p); f.nEst++; if (factorVenta(p.descripcion) !== 1) f.nKit++; }
+    else f.sinCant++; });
   GG_DATOS.gs.forEach(g => {
     const m = mesDe(g.periodo); if (!m || m < ini) return;
     const f = fila(m), n = +g.monto_neto || 0;
@@ -5948,7 +5971,7 @@ function calcularGG() {
     // por prenda y vuelve al gasto general (así no se pierde)
     const modPP = prendas > 0 ? mod / prendas : null, modEnGG = modPP == null && mod > 0, g = sum('total') + (modEnGG ? mod : 0);
     return { meses: ms, ventas: v, gastos: g, pct: v > 0 ? g / v : null, provisorio: ms.some(x => (M[x] && M[x].nRev > 0) || x >= hoyM),
-      mod, prendas, modPP, modEnGG, sinCant: sum('sinCant') };
+      mod, prendas, modPP, modEnGG, sinCant: sum('sinCant'), nReal: sum('nReal'), nEst: sum('nEst') };
   };
   return { pct: pctMes, mes: m => M[m] || null, inicio: ini, personas: Object.values(PER).sort((a, b) => b.total - a.total), provOk: GG_DATOS.provOk !== false };
 }
@@ -6111,7 +6134,7 @@ function calcCosteo(p, c) {
   });
   const suma = k => R.moldes.reduce((s, m) => s + (m[k] || 0), 0);
   ['tela', 'insumos', 'confeccion', 'manoObra', 'indirecto', 'directo', 'kgTotal', 'kgMerma'].forEach(k => { R[k] = suma(k); });
-  if (R.gg && R.gg.modEnGG) R.faltan.push('prendas vendidas en Ventas de esos meses (la mano de obra interna queda en el gasto general)');
+  if (R.gg && R.gg.modEnGG) R.faltan.push('prendas a confeccionar vendidas en esos meses (la mano de obra interna queda en el gasto general)');
   R.unidades = tipos.reduce((s, t) => s + t.cant, 0);
   // La venta es del pedido completo. Si aquí se costean menos prendas que las vendidas (desglose por molde incompleto),
   // se usa la parte de la venta que corresponde a esas prendas: si no, todo el gasto general del pedido caería sobre
@@ -6434,8 +6457,8 @@ async function cargarCosteo() {
   const ventas = {}, cantV = {}, cierre = {}, cots = Array.from(new Set(proy.map(p => baseCot(p.cot))));
   for (let i = 0; i < cots.length; i += 60) {
     const lote = cots.slice(i, i + 60), refs = lote.concat(lote.map(c => c.replace(/^COT-/, '')));
-    try { (await apiV(`pedidos?select=cot,neto,fecha,cantidad&cot=${inLista(refs)}`) || []).forEach(x => { const c = normCot(x.cot); ventas[c] = (ventas[c] || 0) + (+x.neto || 0);
-      cantV[c] = (cantV[c] || 0) + (+x.cantidad || 0);
+    try { (await apiV(`pedidos?select=cot,neto,fecha,cantidad,descripcion&cot=${inLista(refs)}`) || []).forEach(x => { const c = normCot(x.cot); ventas[c] = (ventas[c] || 0) + (+x.neto || 0);
+      cantV[c] = (cantV[c] || 0) + prendasDeVenta(x);
       if (x.fecha && (!cierre[c] || x.fecha < cierre[c])) cierre[c] = x.fecha; }); } catch (e) {}
   }
   // fichas de los moldes que aún no registran su corte: su tela se estima con el consumo teórico
@@ -6544,8 +6567,8 @@ async function verCosteo(pid) {
 }
 // de dónde sale la mano de obra interna por prenda (sueldos y leyes de quienes hacen la prenda ÷ prendas vendidas)
 const textoManoObra = G => !G || !G.meses || !G.meses.length ? 'sin meses con datos desde el inicio del análisis'
-  : G.modPP != null ? `${pesos(G.modPP)} por prenda: sueldos y leyes sociales de quienes hacen la prenda (${pesos(G.mod)}) ÷ ${G.prendas.toLocaleString('es-CL')} prendas vendidas en ${G.meses.slice().reverse().map(mesTxt).join(', ')}`
-  : G.mod > 0 ? 'sin prendas vendidas anotadas en Ventas en esos meses: queda en el gasto general' : 'sin sueldos de quienes hacen la prenda en esos meses';
+  : G.modPP != null ? `${pesos(G.modPP)} por prenda: sueldos y leyes sociales de quienes hacen la prenda (${pesos(G.mod)}) ÷ ${G.prendas.toLocaleString('es-CL')} prendas a confeccionar vendidas en ${G.meses.slice().reverse().map(mesTxt).join(', ')}`
+  : G.mod > 0 ? 'sin prendas a confeccionar anotadas en esos meses: queda en el gasto general' : 'sin sueldos de quienes hacen la prenda en esos meses';
 // otro costo del pedido (bordado, medias compradas, despacho…): de un molde o de todo el pedido (se reparte por prendas)
 function abrirOtroCosto(pid) {
   const p = proyCosteo(pid); if (!p) return;
@@ -7102,7 +7125,7 @@ async function pintarGG(v, chips) {
     return;
   }
   const G = calcularGG(), meses = [mHoy].concat(mesesAntes(mHoy, 11)).filter(m => m >= G.inicio);
-  const cero = { ventasNetas: 0, prod: 0, venta: 0, admin: 0, total: 0, pct: null, revision: 0, nRev: 0, ivaSup: 0, mod: 0, prendas: 0, sinCant: 0, leyes: 0, kDir: 0 };
+  const cero = { ventasNetas: 0, prod: 0, venta: 0, admin: 0, total: 0, pct: null, revision: 0, nRev: 0, ivaSup: 0, mod: 0, prendas: 0, sinCant: 0, leyes: 0, kDir: 0, nReal: 0, nEst: 0, nKit: 0 };
   const ivaSup = meses.reduce((s, m) => s + (G.mes(m) || cero).ivaSup, 0);
   const td = x => `<td style="text-align:right">${x}</td>`;
   const nomCta = c => { const x = GG_DATOS.cuentas.find(y => y.codigo === c); return c + (x && x.nombre ? ' ' + x.nombre : ''); };
@@ -7125,14 +7148,14 @@ async function pintarGG(v, chips) {
     `<p class="hint"><b>Gasto general</b> = las cuentas de gasto general de Ventas › Gastos (producción, venta y marketing, administración), en <b>neto</b> (sin el IVA que se recupera con factura afecta), según el mes al que corresponde cada gasto. No entra el costo directo (telas, talleres, papel y tinta, avíos, comisiones…), que ya está en el costeo de cada pedido, ni lo que está fuera del resultado (IVA, inversiones, retiros). Tampoco los <b>sueldos de quienes hacen la prenda</b> ni su parte de las leyes sociales: son la <b>mano de obra interna</b>, un costo directo por prenda. <b>Ventas netas</b>: pedidos cerrados en el mes, sin IVA y sin anuladas, menos devoluciones. El análisis parte en ${mesTxt(G.inicio)}. La clasificación de cada gasto se hace en Ventas › Gastos.</p>
     ${admin && pend.length ? `<div class="aviso warn">Hay ${pend.length} persona${pend.length !== 1 ? 's' : ''} con sueldo sin confirmar si va${pend.length !== 1 ? 'n' : ''} al costo directo o al gasto general: <a href="#gg-sueldos">revisar abajo</a>.</div>` : ''}
     <h2>Cada mes</h2>
-    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-meses"><tr><th>Mes</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">G. general producción</th><th style="text-align:right">G. general venta y marketing</th><th style="text-align:right">G. general administración</th><th style="text-align:right">Total gasto general</th><th style="text-align:right">% del mes</th><th style="text-align:right">En revisión</th><th style="text-align:right" title="Sueldos y leyes sociales de quienes hacen la prenda: costo directo, no gasto general">Mano de obra interna</th><th style="text-align:right">Prendas vendidas</th></tr>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-meses"><tr><th>Mes</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">G. general producción</th><th style="text-align:right">G. general venta y marketing</th><th style="text-align:right">G. general administración</th><th style="text-align:right">Total gasto general</th><th style="text-align:right">% del mes</th><th style="text-align:right">En revisión</th><th style="text-align:right" title="Sueldos y leyes sociales de quienes hacen la prenda: costo directo, no gasto general">Mano de obra interna</th><th style="text-align:right" title="Solo prendas que se cosen: sin medias ni aplicaciones; un kit o un dúo son 2 prendas">Prendas a confeccionar</th></tr>
       ${meses.map(m => { const f = G.mes(m) || cero; return `<tr><td><b>${mesTxt(m)}</b>${m === mHoy ? '<div class="hint">en curso</div>' : ''}</td>${td(pesos(f.ventasNetas))}${td(pesos(f.prod))}${td(pesos(f.venta))}${td(pesos(f.admin))}${td('<b>' + pesos(f.total) + '</b>')}${td(pct(f.pct))}
         ${td(f.nRev ? `<span style="color:#B45309">${pesos(f.revision)}</span><div class="hint">${f.nRev} gasto${f.nRev !== 1 ? 's' : ''}</div>` : '—')}
-        ${td(pesos(f.mod) + (f.leyes ? `<div class="hint">${pct(f.kDir)} de las leyes sociales</div>` : ''))}${td(f.prendas.toLocaleString('es-CL') + (f.sinCant ? `<div class="hint">${f.sinCant} venta${f.sinCant !== 1 ? 's' : ''} sin cantidad</div>` : ''))}</tr>`; }).join('')}
+        ${td(pesos(f.mod) + (f.leyes ? `<div class="hint">${pct(f.kDir)} de las leyes sociales</div>` : ''))}${td(f.prendas.toLocaleString('es-CL') + (f.nEst ? `<div class="hint">${f.nEst} venta${f.nEst !== 1 ? 's' : ''} sin desglose: estimada${f.nEst !== 1 ? 's' : ''} desde Ventas${f.nKit ? ` (${f.nKit} kit, dúo o solo medias)` : ''}</div>` : '') + (f.sinCant ? `<div class="hint">${f.sinCant} venta${f.sinCant !== 1 ? 's' : ''} sin cantidad</div>` : ''))}</tr>`; }).join('')}
     </table></div>
     <h2>% que se aplica a los pedidos</h2>
-    <p class="hint">A cada pedido se le aplica el % de los <b>3 meses anteriores</b> al mes en que se cerró la venta: gasto general de esos 3 meses ÷ ventas netas de esos 3 meses. Es <b>provisorio</b> si alguno de esos meses todavía tiene gastos en revisión. La <b>mano de obra interna</b> de esos 3 meses se divide por las prendas vendidas en ellos y va a cada prenda en su costo directo (sin prendas vendidas anotadas en Ventas, queda en el gasto general).</p>
-    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-pedidos"><tr><th>Pedidos cerrados en</th><th>Se calcula con</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">Gasto general</th><th style="text-align:right">% gasto general</th><th style="text-align:right">Mano de obra interna</th><th style="text-align:right">Prendas vendidas</th><th style="text-align:right">Mano de obra por prenda</th></tr>
+    <p class="hint">A cada pedido se le aplica el % de los <b>3 meses anteriores</b> al mes en que se cerró la venta: gasto general de esos 3 meses ÷ ventas netas de esos 3 meses. Es <b>provisorio</b> si alguno de esos meses todavía tiene gastos en revisión. La <b>mano de obra interna</b> de esos 3 meses se divide por las <b>prendas a confeccionar</b> vendidas en ellos y va a cada prenda en su costo directo (sin prendas anotadas, queda en el gasto general). Prendas a confeccionar: solo las que se cosen, sin medias ni aplicaciones; un kit o un dúo son 2 prendas. Se toman del desglose del pedido en Planificación; si aún no tiene, de la cantidad de la venta en Ventas (kit o dúo × 2).</p>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-pedidos"><tr><th>Pedidos cerrados en</th><th>Se calcula con</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">Gasto general</th><th style="text-align:right">% gasto general</th><th style="text-align:right">Mano de obra interna</th><th style="text-align:right">Prendas a confeccionar</th><th style="text-align:right">Mano de obra por prenda</th></tr>
       ${meses.map(m => { const x = G.pct(m); return `<tr><td><b>${mesTxt(m)}</b></td><td class="hint">${x.meses.length ? x.meses.slice().reverse().map(mesTxt).join(', ') : 'sin meses desde ' + mesTxt(G.inicio)}</td>${td(pesos(x.ventas))}${td(pesos(x.gastos))}${td('<b>' + pct(x.pct) + '</b>' + (x.provisorio && x.meses.length ? '<div class="hint" style="color:#B45309">provisorio</div>' : ''))}
         ${td(pesos(x.mod) + (x.modEnGG ? '<div class="hint" style="color:#B45309">en el gasto general</div>' : ''))}${td(x.prendas.toLocaleString('es-CL'))}${td('<b>' + (x.modPP != null ? pesos(x.modPP) : '—') + '</b>')}</tr>`; }).join('')}
     </table></div>
@@ -7488,7 +7511,7 @@ function calcSimulacion(n, D, principal) {
   // VENTA (simulado aquí); la mano de obra interna (sueldos de quienes hacen la prenda) es por prenda, en el costo directo
   const G = GG_DATOS && GG_DATOS.ok ? calcularGG().pct(mesDe(F.hoy())) : null, gg = G && G.pct != null ? G.pct : null;
   const mo = G && G.modPP != null ? G.modPP : 0;
-  if (G && G.modEnGG) faltan.push('prendas vendidas en Ventas (la mano de obra interna queda en el gasto general)');
+  if (G && G.modEnGG) faltan.push('prendas a confeccionar vendidas (la mano de obra interna queda en el gasto general)');
   const directo = tela + b.costo + conf + mo + papel + tinta + prot + aplicT + planchado;
   if (gg == null) faltan.push('% de gasto general');
   const venta = +SIM.venta > 0 ? +SIM.venta : null, ggMonto = venta != null && gg != null ? venta * gg : null;
