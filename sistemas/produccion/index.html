@@ -5903,22 +5903,21 @@ async function cargarGG(desdeMes) {
     for (let k = 0; k < ids.length; k += 150)
       try { ((await apiV(`gastos?select=id,proveedor&id=in.(${ids.slice(k, k + 150).join(',')})`)) || []).forEach(x => { prov[String(+x.id)] = x.proveedor || ''; }); }
       catch (e) { provOk = false; }
-    // prendas a confeccionar de cada pedido según su desglose en Planificación (sus partes se suman al pedido)
-    const desg = {};
-    ((await todasLasFilas(api, 'planificacion?select=cot,desglose').catch(() => [])) || []).forEach(x => { const n = prendasDesglose(x.desglose);
-      if (n > 0) { const k = normCot(baseCot(x.cot)); desg[k] = (desg[k] || 0) + n; } });
     // prendas de cada ficha de tallas (Fichas): lo vendido de cada prenda, sin medias (un kit trae camiseta y short, y
     // sus medias no cuentan). La ficha del pedido manda; si solo hay fichas de sus partes, se suman.
     const fich = {};
-    ((await todasLasFilas(apiF, 'fichas_tallas?select=ref,items').catch(() => [])) || []).forEach(x => {
+    ((await todasLasFilas(apiF, 'fichas_tallas?select=ref,proyecto,cliente,items,created_at').catch(() =>
+        todasLasFilas(apiF, 'fichas_tallas?select=ref,items,created_at')).catch(() => [])) || []).forEach(x => {
       const r = normCot(x.ref), k = baseCot(r), det = {}; let n = 0;
       (jsonDe(x.items) || []).forEach(it => { if (!it || esMediasFicha(it.prenda)) return; const c = parseInt(it.cant, 10) || 0; if (c <= 0) return;
         n += c; const nom = nomPrendaFicha(basePrendaFicha(it.prenda)) || it.prenda; det[nom] = (det[nom] || 0) + c; });
       if (!(n > 0)) return;
-      if (r === k) fich[k] = { n, det, exacta: true };
-      else if (!fich[k] || !fich[k].exacta) { const y = fich[k] = fich[k] || { n: 0, det: {}, exacta: false }; y.n += n; Object.entries(det).forEach(([a, b]) => { y.det[a] = (y.det[a] || 0) + b; }); }
+      const mes = mesDe(x.created_at), info = { proyecto: x.proyecto || '', cliente: x.cliente || '' };
+      if (r === k) fich[k] = { n, det, exacta: true, mes, ...info };
+      else if (!fich[k] || !fich[k].exacta) { const y = fich[k] = fich[k] || { n: 0, det: {}, exacta: false, mes, ...info };
+        y.n += n; if (mes && (!y.mes || mes < y.mes)) y.mes = mes; Object.entries(det).forEach(([a, b]) => { y.det[a] = (y.det[a] || 0) + b; }); }
     });
-    GG_DATOS = { desde: desdeMes, ps: ps || [], gs: gs || [], cuentas: cs || [], par: P, prov, provOk, desg, fich, ok: true };
+    GG_DATOS = { desde: desdeMes, ps: ps || [], gs: gs || [], cuentas: cs || [], par: P, prov, provOk, fich, ok: true };
   } catch (e) { GG_DATOS = { desde: desdeMes, ps: [], gs: [], cuentas: [], par: {}, ok: false, error: e.message, falta: /^404/.test(e.message) }; }
   return GG_DATOS;
 }
@@ -5944,20 +5943,13 @@ function calcularGG() {
   const destinoDe = g => { const x = PER[normIns(nomDe(g))]; return x && x.destino ? x.destino : CTAS_REMUN[g.cuenta_codigo]; };
   const M = {}, fila = m => M[m] = M[m] || { mes: m, ventas: 0, devol: 0, prod: 0, venta: 0, admin: 0, total: 0, leyes: 0, revision: 0, nRev: 0, ivaSup: 0,
     sDir: 0, bDir: 0, bGen: { prod: 0, venta: 0, admin: 0 }, leyesDir: 0, mod: 0, prendas: 0, sinCant: 0, nFicha: 0, nReal: 0, nEst: 0, nKit: 0, det: [] };
-  const contados = new Set();   // un pedido con varias filas en Ventas cuenta su ficha o desglose una sola vez
   GG_DATOS.ps.forEach(p => { const m = mesDe(p.fecha); if (!m || m < ini || /anul/i.test(p.estado || '')) return;
-    const f = fila(m); f.ventas += p.neto != null && p.neto !== '' ? +p.neto || 0 : Math.round((+p.total || 0) / 1.19);
-    // prendas a confeccionar (sugeridas): las de su ficha de tallas en Fichas; si no tiene ficha, las del desglose del
-    // pedido en Planificación; si tampoco, las de la venta (kit o dúo × 2; solo medias o aplicaciones: 0)
-    const k = normCot(p.cot), fi = (GG_DATOS.fich || {})[k], real = (GG_DATOS.desg || {})[k];
-    const d = { cot: k, cliente: p.cliente || '', desc: p.descripcion || '', cant: +p.cantidad || 0, n: 0, origen: '' };
-    if ((fi || real > 0) && contados.has(k)) d.origen = 'ya contada en otra venta del mismo pedido';
-    else if (fi) { contados.add(k); d.n = fi.n; d.origen = 'ficha: ' + Object.entries(fi.det).map(([a, b]) => a + ' ' + b).join(' · '); f.nFicha++; }
-    else if (real > 0) { contados.add(k); d.n = real; d.origen = 'desglose en Planificación'; f.nReal++; }
-    else if (d.cant > 0) { d.n = prendasDeVenta(p); f.nEst++; const fv = factorVenta(p.descripcion);
-      d.origen = 'sin ficha: estimada desde Ventas' + (fv === 2 ? ' (kit o dúo × 2)' : fv === 0 ? ' (solo medias o aplicaciones)' : ''); if (fv !== 1) f.nKit++; }
-    else { f.sinCant++; d.origen = 'sin ficha ni cantidad en Ventas'; }
-    f.prendas += d.n; f.det.push(d); });
+    const f = fila(m); f.ventas += p.neto != null && p.neto !== '' ? +p.neto || 0 : Math.round((+p.total || 0) / 1.19); });
+  // prendas a confeccionar sugeridas de cada mes: el total de prendas de las fichas de tallas del panel creadas en el
+  // mes (lo vendido de cada prenda, sin medias; un kit trae camiseta y short; un pedido con partes cuenta una vez)
+  Object.entries(GG_DATOS.fich || {}).forEach(([k, x]) => { if (!x.mes || x.mes < ini) return; const f = fila(x.mes);
+    f.prendas += x.n; f.nFicha++;
+    f.det.push({ cot: k, cliente: x.cliente, desc: x.proyecto, n: x.n, origen: Object.entries(x.det).map(([a, b]) => a + ' ' + b).join(' · ') }); });
   GG_DATOS.gs.forEach(g => {
     const m = mesDe(g.periodo); if (!m || m < ini) return;
     const f = fila(m), n = +g.monto_neto || 0;
@@ -6592,7 +6584,7 @@ async function verCosteo(pid) {
 }
 // de dónde sale la mano de obra interna por prenda (sueldos y leyes de quienes hacen la prenda ÷ prendas vendidas)
 const textoManoObra = G => !G || !G.meses || !G.meses.length ? 'sin meses con datos desde el inicio del análisis'
-  : G.modPP != null ? `${pesos(G.modPP)} por prenda: sueldos y leyes sociales de quienes hacen la prenda (${pesos(G.mod)}) ÷ ${G.prendas.toLocaleString('es-CL')} prendas a confeccionar${G.nManual ? (G.nManual === G.meses.length ? ' (definidas por ti)' : ' (en parte definidas por ti)') : ' vendidas'} en ${G.meses.slice().reverse().map(mesTxt).join(', ')}`
+  : G.modPP != null ? `${pesos(G.modPP)} por prenda: sueldos y leyes sociales de quienes hacen la prenda (${pesos(G.mod)}) ÷ ${G.prendas.toLocaleString('es-CL')} prendas a confeccionar (${Math.round(G.prendas / G.meses.length).toLocaleString('es-CL')} al mes) de ${G.meses.slice().reverse().map(mesTxt).join(', ')}, ${G.nManual ? (G.nManual === G.meses.length ? 'registradas por ti' : 'en parte registradas por ti y en parte de las fichas') : 'según las fichas de tallas (sin confirmar)'}`
   : G.mod > 0 ? 'sin prendas a confeccionar anotadas en esos meses: queda en el gasto general' : 'sin sueldos de quienes hacen la prenda en esos meses';
 // otro costo del pedido (bordado, medias compradas, despacho…): de un molde o de todo el pedido (se reparte por prendas)
 function abrirOtroCosto(pid) {
@@ -7174,22 +7166,22 @@ async function pintarGG(v, chips) {
     `<p class="hint"><b>Gasto general</b> = las cuentas de gasto general de Ventas › Gastos (producción, venta y marketing, administración), en <b>neto</b> (sin el IVA que se recupera con factura afecta), según el mes al que corresponde cada gasto. No entra el costo directo (telas, talleres, papel y tinta, avíos, comisiones…), que ya está en el costeo de cada pedido, ni lo que está fuera del resultado (IVA, inversiones, retiros). Tampoco los <b>sueldos de quienes hacen la prenda</b> ni su parte de las leyes sociales: son la <b>mano de obra interna</b>, un costo directo por prenda. <b>Ventas netas</b>: pedidos cerrados en el mes, sin IVA y sin anuladas, menos devoluciones. El análisis parte en ${mesTxt(G.inicio)}. La clasificación de cada gasto se hace en Ventas › Gastos.</p>
     ${admin && pend.length ? `<div class="aviso warn">Hay ${pend.length} persona${pend.length !== 1 ? 's' : ''} con sueldo sin confirmar si va${pend.length !== 1 ? 'n' : ''} al costo directo o al gasto general: <a href="#gg-sueldos">revisar abajo</a>.</div>` : ''}
     <h2>Cada mes</h2>
-    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-meses"><tr><th>Mes</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">G. general producción</th><th style="text-align:right">G. general venta y marketing</th><th style="text-align:right">G. general administración</th><th style="text-align:right">Total gasto general</th><th style="text-align:right">% del mes</th><th style="text-align:right">En revisión</th><th style="text-align:right" title="Sueldos y leyes sociales de quienes hacen la prenda: costo directo, no gasto general">Mano de obra interna</th><th style="text-align:right" title="Sugeridas desde las fichas de tallas (sin medias ni aplicaciones; un kit o un dúo son 2 prendas). Acepta el sugerido o escribe el total del mes">Prendas a confeccionar</th></tr>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-meses"><tr><th>Mes</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">G. general producción</th><th style="text-align:right">G. general venta y marketing</th><th style="text-align:right">G. general administración</th><th style="text-align:right">Total gasto general</th><th style="text-align:right">% del mes</th><th style="text-align:right">En revisión</th><th style="text-align:right" title="Sueldos y leyes sociales de quienes hacen la prenda: costo directo, no gasto general">Mano de obra interna</th><th style="text-align:right" title="Sugerido: total de prendas de las fichas de tallas creadas en el mes (sin medias; un kit o un dúo son 2 prendas). Acepta el sugerido o escribe el total del mes">Prendas a confeccionar</th></tr>
       ${meses.map(m => { const f = G.mes(m) || cero; return `<tr><td><b>${mesTxt(m)}</b>${m === mHoy ? '<div class="hint">en curso</div>' : ''}</td>${td(pesos(f.ventasNetas))}${td(pesos(f.prod))}${td(pesos(f.venta))}${td(pesos(f.admin))}${td('<b>' + pesos(f.total) + '</b>')}${td(pct(f.pct))}
         ${td(f.nRev ? `<span style="color:#B45309">${pesos(f.revision)}</span><div class="hint">${f.nRev} gasto${f.nRev !== 1 ? 's' : ''}</div>` : '—')}
         ${td(pesos(f.mod) + (f.leyes ? `<div class="hint">${pct(f.kDir)} de las leyes sociales</div>` : ''))}${td(`<input type="number" min="0" step="1" data-pm="${m}" value="${PM[m] != null ? PM[m] : ''}" placeholder="${f.prendasCalc.toLocaleString('es-CL')}" aria-label="Prendas a confeccionar de ${mesTxt(m)}" style="width:100px;text-align:right">`
           + `<div class="hint">${PM[m] != null ? '<b>registrado por ti</b>' : f.det.length ? '<span style="color:#B45309">sin confirmar: se usa el sugerido</span>' : ''}</div>`
           + `<div class="hint">sugerido: <b>${f.prendasCalc.toLocaleString('es-CL')}</b>${f.det.length ? ` <a href="#" onclick="verPrendasMes('${m}');return false">ver detalle</a>` : ''}`
           + ` <button class="btn sm" type="button" onclick="usarSugeridoMes('${m}',${f.prendasCalc})" title="Copiar el sugerido; luego Guardar">Aceptar sugerido</button></div>`
-          + `<div class="hint">${[f.nFicha ? f.nFicha + ' de fichas' : '', f.nReal ? f.nReal + ' del desglose' : '', f.nEst ? f.nEst + ' estimada' + (f.nEst !== 1 ? 's' : '') + ' desde Ventas (sin ficha)' : '', f.sinCant ? f.sinCant + ' sin ficha ni cantidad' : ''].filter(Boolean).join(' · ')}</div>`)}</tr>`; }).join('')}
+          + `<div class="hint">${f.nFicha ? f.nFicha + ' ficha' + (f.nFicha !== 1 ? 's' : '') + ' creada' + (f.nFicha !== 1 ? 's' : '') + ' en el mes' : ''}</div>`)}</tr>`; }).join('')}
     </table>
-    <div class="acciones" style="justify-content:space-between;flex-wrap:wrap;gap:8px"><span class="hint" style="margin:0">Prendas a confeccionar de cada mes: el sistema las <b>sugiere desde las fichas de tallas</b> de las ventas del mes (sin medias ni aplicaciones; un kit o un dúo traen 2 prendas). Acepta el sugerido o escribe el total y guarda: ese número manda en la mano de obra por prenda. Vacío: se usa el sugerido.</span>
+    <div class="acciones" style="justify-content:space-between;flex-wrap:wrap;gap:8px"><span class="hint" style="margin:0">Prendas a confeccionar de cada mes: el sistema <b>sugiere el total de prendas de las fichas de tallas</b> creadas en el panel ese mes (sin medias; un kit o un dúo traen 2 prendas). Acepta el sugerido o escribe el total y guarda: la mano de obra por prenda usa el total de los 3 meses anteriores (su promedio mensual). Vacío: se usa el sugerido.</span>
       <button class="btn pri" id="gg-pm-guardar" onclick="guardarPrendasMes()">Guardar prendas del mes</button></div></div>
     <h2>% que se aplica a los pedidos</h2>
-    <p class="hint">A cada pedido se le aplica el % de los <b>3 meses anteriores</b> al mes en que se cerró la venta: gasto general de esos 3 meses ÷ ventas netas de esos 3 meses. Es <b>provisorio</b> si alguno de esos meses todavía tiene gastos en revisión. La <b>mano de obra interna</b> de esos 3 meses se divide por las <b>prendas a confeccionar</b> vendidas en ellos y va a cada prenda en su costo directo (sin prendas anotadas, queda en el gasto general). Prendas a confeccionar: solo las que se cosen, sin medias ni aplicaciones; un kit o un dúo son 2 prendas. Se toman del desglose del pedido en Planificación; si aún no tiene, de la cantidad de la venta en Ventas (kit o dúo × 2).</p>
-    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-pedidos"><tr><th>Pedidos cerrados en</th><th>Se calcula con</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">Gasto general</th><th style="text-align:right">% gasto general</th><th style="text-align:right">Mano de obra interna</th><th style="text-align:right">Prendas a confeccionar</th><th style="text-align:right">Mano de obra por prenda</th></tr>
+    <p class="hint">A cada pedido se le aplica el % de los <b>3 meses anteriores</b> al mes en que se cerró la venta: gasto general de esos 3 meses ÷ ventas netas de esos 3 meses. Es <b>provisorio</b> si alguno de esos meses todavía tiene gastos en revisión. La <b>mano de obra interna</b> de esos 3 meses se divide por las <b>prendas a confeccionar</b> de esos 3 meses (las registradas por ti o, si no, las de las fichas de tallas) y va a cada prenda en su costo directo (sin prendas, queda en el gasto general). Prendas a confeccionar: solo las que se cosen, sin medias ni aplicaciones; un kit o un dúo son 2 prendas.</p>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-pedidos"><tr><th>Pedidos cerrados en</th><th>Se calcula con</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">Gasto general</th><th style="text-align:right">% gasto general</th><th style="text-align:right">Mano de obra interna</th><th style="text-align:right">Prendas a confeccionar (3 meses)</th><th style="text-align:right">Mano de obra por prenda</th></tr>
       ${meses.map(m => { const x = G.pct(m); return `<tr><td><b>${mesTxt(m)}</b></td><td class="hint">${x.meses.length ? x.meses.slice().reverse().map(mesTxt).join(', ') : 'sin meses desde ' + mesTxt(G.inicio)}</td>${td(pesos(x.ventas))}${td(pesos(x.gastos))}${td('<b>' + pct(x.pct) + '</b>' + (x.provisorio && x.meses.length ? '<div class="hint" style="color:#B45309">provisorio</div>' : ''))}
-        ${td(pesos(x.mod) + (x.modEnGG ? '<div class="hint" style="color:#B45309">en el gasto general</div>' : ''))}${td(x.prendas.toLocaleString('es-CL') + (x.nManual ? `<div class="hint">${x.nManual === x.meses.length ? 'definidas por ti' : x.nManual + ' de ' + x.meses.length + ' meses definidos por ti'}</div>` : ''))}${td('<b>' + (x.modPP != null ? pesos(x.modPP) : '—') + '</b>')}</tr>`; }).join('')}
+        ${td(pesos(x.mod) + (x.modEnGG ? '<div class="hint" style="color:#B45309">en el gasto general</div>' : ''))}${td(x.prendas.toLocaleString('es-CL') + (x.meses.length ? `<div class="hint">${Math.round(x.prendas / x.meses.length).toLocaleString('es-CL')} al mes</div>` : '') + (x.nManual ? `<div class="hint">${x.nManual === x.meses.length ? 'registradas por ti' : x.nManual + ' de ' + x.meses.length + ' meses registrados por ti'}</div>` : ''))}${td('<b>' + (x.modPP != null ? pesos(x.modPP) : '—') + '</b>')}</tr>`; }).join('')}
     </table></div>
     ${ivaSup > 0 ? `<p class="hint">De estos meses, ${pesos(ivaSup)} de IVA se descontaron según el IVA habitual de la cuenta (supuesto). Se confirma marcando el tipo de documento del proveedor o del gasto en Ventas, y en la Fase 3 con el libro de compras.</p>` : ''}
     ${personas}`;
@@ -7201,11 +7193,11 @@ function verPrendasMes(m) {
   const f = calcularGG().mes(m); if (!f) return;
   const L = f.det.slice().sort((a, b) => b.n - a.n || a.cot.localeCompare(b.cot));
   abrirModal(`<h3>Prendas a confeccionar · ${mesTxt(m)}</h3>
-    <p class="hint">Ventas cerradas en el mes (sin anuladas). Cada una con las prendas de su ficha de tallas (sin medias); si no tiene ficha, las del desglose en Planificación o, si tampoco, la cantidad de Ventas (kit o dúo × 2). Ordenadas de mayor a menor: revisa las que no calcen.</p>
-    <div style="overflow-x:auto"><table class="mini" id="pm-detalle"><tr><th>Pedido</th><th>Descripción en Ventas</th><th style="text-align:right">Cantidad en Ventas</th><th style="text-align:right">Prendas a confeccionar</th><th>De dónde</th></tr>
-      ${L.map(d => `<tr><td><b>${esc(d.cot)}</b><div class="hint">${esc(d.cliente)}</div></td><td>${esc(d.desc)}</td><td style="text-align:right">${d.cant.toLocaleString('es-CL')}</td>
-        <td style="text-align:right"><b>${d.n.toLocaleString('es-CL')}</b></td><td class="hint">${esc(d.origen)}</td></tr>`).join('')}
-      <tr><td colspan="3"><b>Sugerido del mes</b></td><td style="text-align:right"><b>${f.prendasCalc.toLocaleString('es-CL')}</b></td><td>${f.manual ? 'registrado por ti: <b>' + f.prendas.toLocaleString('es-CL') + '</b>' : ''}</td></tr></table></div>`);
+    <p class="hint">Fichas de tallas creadas en el panel este mes, con lo vendido de cada prenda (sin medias). Ordenadas de mayor a menor: revisa las que no calcen.</p>
+    <div style="overflow-x:auto"><table class="mini" id="pm-detalle"><tr><th>Ficha</th><th>Proyecto</th><th>Prendas</th><th style="text-align:right">Total</th></tr>
+      ${L.map(d => `<tr><td><b>${esc(d.cot)}</b><div class="hint">${esc(d.cliente)}</div></td><td>${esc(d.desc)}</td><td class="hint">${esc(d.origen)}</td>
+        <td style="text-align:right"><b>${d.n.toLocaleString('es-CL')}</b></td></tr>`).join('')}
+      <tr><td colspan="3"><b>Sugerido del mes</b>${f.manual ? ' · registrado por ti: <b>' + f.prendas.toLocaleString('es-CL') + '</b>' : ''}</td><td style="text-align:right"><b>${f.prendasCalc.toLocaleString('es-CL')}</b></td></tr></table></div>`);
 }
 // guarda el total de prendas a confeccionar de cada mes escrito a mano (vacío: se usa el sugerido)
 async function guardarPrendasMes() {

@@ -45,6 +45,7 @@ const ficha = { id: 1, ref: 'COT-4000', proyecto: 'Uniformes', cliente: 'Club Co
 const dets = Array.from({ length: 8 }, (_, i) => ({ id: 'p' + i, ref: 'COT-4000', calce: 'Masculino', manga: 'Corta', tallas: Object.assign({ camiseta: ['S', 'M'][i % 2] }, i < 2 ? { short: 'M' } : {}), created_at: ahora }));
 // COT-4001: sin corte registrado, la tela se estima con el consumo teórico de su ficha (8 m de Pro y 2,4 m de Nacional)
 const ficha2 = Object.assign({}, ficha, { id: 2, ref: 'COT-4001', items: [{ prenda: 'camiseta', cant: 8 }], specs: { camiseta: ficha.specs.camiseta } });
+const fichasF = [ficha, ficha2];   // Fichas › fichas_tallas (las secciones 11 y 12 agregan fichas de otros meses)
 const dets2 = Array.from({ length: 8 }, (_, i) => ({ id: 'q' + i, ref: 'COT-4001', calce: 'Masculino', manga: 'Corta', tallas: { camiseta: 'M' }, created_at: ahora }));
 // Ventas: ventas netas de agosto a octubre (3.000.000, sin la anulada) y gastos ya clasificados (v_gastos_neto, SQL 21B);
 // el pedido se cerró en noviembre: usa agosto, septiembre y octubre
@@ -72,7 +73,7 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   plan_usuarios: [{ usuario: 'sean.duarte', nombre: 'Sean Duarte', rol: 'admin', roles: ['admin'], activo: true }],
   plan_ejecutantes: [{ id: 1, nombre: 'Pedro Corte', area: 'Corte', activo: true }, { id: 2, nombre: 'Taller Las Rosas', area: 'Confección', activo: true }],
   plan_tarifas: [{ tipo: '18 · FUTHOMU02', precio: 3000 }, { tipo: '46 · BK-SH', precio: 2000 }],
-  plan_insumos_stock: insumos, plan_insumos: insumos, moldes, fichas_tallas: [ficha, ficha2], fichas_detalle: dets.concat(dets2), catalogo_tecnico: [], pedidos: ventasPed,
+  plan_insumos_stock: insumos, plan_insumos: insumos, moldes, fichas_tallas: fichasF, fichas_detalle: dets.concat(dets2), catalogo_tecnico: [], pedidos: ventasPed,
   v_gastos_neto: vGastosNeto, plan_cuentas: planCuentas, gestion_parametros: gestionParametros, gastos: gastosV } };
 
 (async () => {
@@ -170,10 +171,10 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   const ggP = (await p.innerText('#gg-pedidos')).replace(/\s+/g, ' '), ggM = await p.$$eval('#gg-meses tr', trs => trs.slice(1).map(t => t.innerText.replace(/\s+/g, ' ')));
   ok(/noviembre 2026 agosto 2026, septiembre 2026, octubre 2026 \$3\.000\.000 \$550\.000 18,3% provisorio/.test(ggP), 'pedidos de noviembre: $550.000 de gasto general ÷ $3.000.000 de ventas netas = 18,3%, provisorio (sin prendas vendidas anotadas, la mano de obra interna queda en el gasto general): ' + ggP.slice(0, 200));
   const fM = m => ggM.find(x => x.startsWith(m)) || '';
-  ok(/^octubre 2026 \$1\.000\.000 \$0 \$0 \$100\.000 \$100\.000 10% \$40\.000 1 gasto \$0 sin confirmar: se usa el sugerido sugerido: 0 ver detalle Aceptar sugerido 1 sin ficha ni cantidad$/.test(fM('octubre')), 'octubre: sin la venta anulada; tela, comisión e IVA no entran; software en neto; $40.000 en revisión: ' + fM('octubre'));
-  ok(/^septiembre 2026 \$1\.000\.000 \$120\.000 \$15\.000 \$15\.000 \$150\.000 15% — \$0 sin confirmar: se usa el sugerido sugerido: 0 ver detalle Aceptar sugerido 1 sin ficha ni cantidad$/.test(fM('septiembre')), 'septiembre: arriendo repartido 80/10/10: ' + fM('septiembre'));
-  ok(/^agosto 2026 \$1\.000\.000 \$0 \$0 \$0 \$0 0% — \$300\.000 sin confirmar: se usa el sugerido sugerido: 0 ver detalle Aceptar sugerido 1 sin ficha ni cantidad$/.test(fM('agosto')), 'agosto: el sueldo de producción ya no es gasto general: es mano de obra interna: ' + fM('agosto'));
-  ok(/\$550\.000 18,3% provisorio \$300\.000 en el gasto general 0 —/.test(ggP), 'sin prendas vendidas anotadas en esos meses, la mano de obra interna ($300.000) queda en el gasto general');
+  ok(/^octubre 2026 \$1\.000\.000 \$0 \$0 \$100\.000 \$100\.000 10% \$40\.000 1 gasto \$0 sugerido: 0 Aceptar sugerido$/.test(fM('octubre')), 'octubre: sin la venta anulada; tela, comisión e IVA no entran; software en neto; $40.000 en revisión: ' + fM('octubre'));
+  ok(/^septiembre 2026 \$1\.000\.000 \$120\.000 \$15\.000 \$15\.000 \$150\.000 15% — \$0 sugerido: 0 Aceptar sugerido$/.test(fM('septiembre')), 'septiembre: arriendo repartido 80/10/10: ' + fM('septiembre'));
+  ok(/^agosto 2026 \$1\.000\.000 \$0 \$0 \$0 \$0 0% — \$300\.000 sugerido: 0 Aceptar sugerido$/.test(fM('agosto')), 'agosto: el sueldo de producción ya no es gasto general: es mano de obra interna: ' + fM('agosto'));
+  ok(/\$550\.000 18,3% provisorio \$300\.000 en el gasto general 0 0 al mes —/.test(ggP), 'sin prendas a confeccionar en esos meses (sin fichas), la mano de obra interna ($300.000) queda en el gasto general');
   ok(!ggM.some(x => /marzo/.test(x)) && /\$19\.000 de IVA se descontaron según el IVA habitual de la cuenta/.test(await p.innerText('#view-costeo')), 'marzo no aparece (el análisis parte en abril) y avisa el IVA descontado por supuesto');
   // sin el SQL 21B en Ventas: avisa en vez de calcular con otra cosa
   await ctx.route(/nnisdusdujcpkrbjqnhe\.supabase\.co\/rest\/v1\/v_gastos_neto/, r => r.fulfill({ status: 404, contentType: 'application/json', body: '{"code":"PGRST205"}' }));
@@ -315,6 +316,9 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   // 11 · sueldos por persona: los de quienes hacen la prenda son costo directo (mano de obra interna, por prenda), no
   // gasto general; la diseñadora de vestuario y ventas son gasto general; las leyes sociales se reparten según los sueldos
   ventasPed[1].cantidad = 100; ventasPed[2].cantidad = 100; ventasPed[3].cantidad = 100;
+  // las prendas del mes salen de las fichas de tallas creadas en el panel ese mes (100 prendas sin medias cada una)
+  [['COT-3900', '2026-08-10'], ['COT-3901', '2026-09-10'], ['COT-3902', '2026-10-10']].forEach(([ref, d]) => fichasF.push({ id: ref, ref, proyecto: 'Prueba ' + ref, cliente: 'Cliente ' + ref,
+    items: [{ prenda: 'camiseta', cant: 60 }, { prenda: 'short', cant: 40 }, { prenda: 'medias', cant: 100 }], specs: {}, created_at: d + 'T12:00:00Z' }));
   vGastosNeto.push(gn(9, '2026-09-01', '3.02', '3', 'clasificado', 200000, 200000), gn(10, '2026-09-01', '3.01', '3', 'clasificado', 200000, 200000),
     gn(11, '2026-09-01', '3.03', '3', 'clasificado', 40000, 40000), gn(12, '2026-10-01', '4.01', '4', 'clasificado', 100000, 100000));
   gastosV.push({ id: 1, proveedor: 'GERALDINE PRUEBA' }, { id: 9, proveedor: 'BELÉN PRUEBA' }, { id: 10, proveedor: 'Geraldine Prueba' }, { id: 12, proveedor: 'VENDEDORA PRUEBA' });
@@ -344,34 +348,36 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   const cam2 = (await p.$$eval('#cs-tabla tr.cs-molde', trs => trs.map(t => t.innerText.replace(/\s+/g, ' '))))[0] || '';
   ok(/ 8 \$[\d.]+ \$[\d.]+ \$24\.000 \$13\.867 /.test(cam2), 'pedido: la camiseta lleva 8 × $1.733 = $13.867 de mano de obra interna en su costo directo: ' + cam2);
   await p.evaluate(() => verCosteo(1)); await p.waitForTimeout(700);
-  ok(/Mano de obra interna\s+\$1\.733 por prenda: sueldos y leyes sociales de quienes hacen la prenda \(\$520\.000\) ÷ 300 prendas a confeccionar vendidas en agosto 2026, septiembre 2026, octubre 2026\s+\$13\.867/.test(await p.innerText('#modal')),
+  ok(/Mano de obra interna\s+\$1\.733 por prenda: sueldos y leyes sociales de quienes hacen la prenda \(\$520\.000\) ÷ 300 prendas a confeccionar \(100 al mes\) de agosto 2026, septiembre 2026, octubre 2026, según las fichas de tallas \(sin confirmar\)\s+\$13\.867/.test(await p.innerText('#modal')),
     'detalle: de dónde sale la mano de obra interna');
   await p.evaluate(() => cerrarModal());
   const sim = await p.evaluate(async () => { SIM_DATOS = {}; const D = await datosSimMolde(17), R = calcSimulacion(17, D, 'Pro'); return { mo: R.mo, directo: R.directo }; });
   ok(Math.abs(sim.mo - 520000 / 300) < 1e-9, 'Simular costo: la mano de obra interna por prenda ($1.733) va en el costo directo');
   await p.evaluate(() => { COSTEO_Q = ''; });
 
-  // 12 · prendas a confeccionar: solo las que se cosen (sin medias ni aplicaciones); kit y dúo = 2 por unidad; manda
-  // el desglose del pedido en Planificación y, si aún no lo tiene, la cantidad de la venta
-  const pc = await p.evaluate(() => {
-    const f = d => factorVenta(d), extra = [{ cot: '3990', fecha: '2026-06-10', neto: 0, cantidad: 10, descripcion: 'KIT DIAMANTE CON MEDIAS' },
-      { cot: '3991', fecha: '2026-06-11', neto: 0, cantidad: 30, descripcion: 'MEDIAS DEPORTIVAS' }, { cot: '3992', fecha: '2026-06-12', neto: 0, cantidad: 15, descripcion: 'Dúo pack oro' },
-      { cot: '3993', fecha: '2026-06-13', neto: 0, cantidad: 12, descripcion: 'CAMISETAS DE FUTBOL' }, { cot: '4001', fecha: '2026-06-14', neto: 0, cantidad: 3, descripcion: 'KIT' }];
-    GG_DATOS.ps.push(...extra); const m = calcularGG().mes('2026-06'); GG_DATOS.ps.splice(GG_DATOS.ps.length - extra.length, extra.length);
+  // 12 · prendas a confeccionar: solo las que se cosen (sin medias ni aplicaciones); kit y dúo = 2 por unidad. El
+  // total del mes sale de las fichas de tallas creadas en el panel ese mes; un pedido con partes cuenta una vez
+  fichasF.push({ ref: 'COT-3990', cliente: 'Kit', items: [{ prenda: 'camiseta', cant: 10 }, { prenda: 'short', cant: 10 }, { prenda: 'medias', cant: 10 }], created_at: '2026-06-10T10:00:00Z' },
+    { ref: 'COT-3991-1', cliente: 'Partes', items: [{ prenda: 'camiseta', cant: 5 }], created_at: '2026-06-11T10:00:00Z' },
+    { ref: 'COT-3991-2', cliente: 'Partes', items: [{ prenda: 'short', cant: 5 }], created_at: '2026-06-12T10:00:00Z' },
+    { ref: 'COT-3992', cliente: 'Solo medias', items: [{ prenda: 'medias', cant: 30 }], created_at: '2026-06-12T10:00:00Z' });
+  const pc = await p.evaluate(async () => {
+    const f = d => factorVenta(d); GG_DATOS = null; await cargarGG('2026-04'); const m = calcularGG().mes('2026-06');
     return { f: [f('20 KIT ORO'), f('DUO DIAMANTE'), f('MEDIAS'), f('ESCUDOS BORDADOS'), f('CAMISETAS + ESCUDOS'), f('Indumentaria de rugby')],
       desg: prendasDesglose({ '18 · FUTHOMU02': 8, '46 · BK-SH': 2, 'VINILO': true, 'MEDIAS-ADL': true }),
-      txt: textoVentaPrendas({ cantidad: 20, descripcion: 'KIT DIAMANTE' }), m: { pr: m.prendas, ficha: m.nFicha, est: m.nEst, kit: m.nKit, det: m.det.find(x => x.cot === 'COT-4001') } };
+      txt: textoVentaPrendas({ cantidad: 20, descripcion: 'KIT DIAMANTE' }), m: { pr: m.prendas, ficha: m.nFicha, det: m.det.map(x => x.cot + '=' + x.n + ' ' + x.origen) } };
   });
   ok(pc.f.join() === '2,2,0,0,1,1' && pc.desg === 10 && pc.txt === '20 kits o dúos = 40 prendas a confeccionar',
-    'regla: kit y dúo = 2 prendas; solo medias o aplicaciones = 0; con prendas = 1; el desglose no cuenta medias ni servicios: ' + JSON.stringify(pc.f));
-  ok(pc.m.pr === 20 + 0 + 30 + 12 + 8 && pc.m.ficha === 1 && pc.m.est === 4 && pc.m.kit === 3 && /^ficha: Camiseta 8$/.test(pc.m.det.origen),
-    'junio: sin ficha, 10 kits = 20, 30 medias = 0, 15 dúos = 30, 12 camisetas = 12; el pedido con ficha usa sus prendas (8 camisetas, no 3 kits × 2): ' + JSON.stringify(pc.m));
+    'regla en Ventas e ingreso: kit y dúo = 2 prendas; solo medias o aplicaciones = 0; con prendas = 1; el desglose no cuenta medias ni servicios: ' + JSON.stringify(pc.f));
+  ok(pc.m.pr === 30 && pc.m.ficha === 2 && pc.m.det.includes('COT-3990=20 Camiseta 10 · Short o calza 10') && pc.m.det.includes('COT-3991=10 Camiseta 5 · Short o calza 5'),
+    'junio desde las fichas del panel: el kit cuenta camiseta y short (20, sin sus medias), las partes de un pedido se suman (10) y una ficha de solo medias no cuenta: ' + JSON.stringify(pc.m));
   // sugerido desde las fichas: se acepta o se registra a mano; manda en la mano de obra por prenda
   await p.evaluate(() => { COSTEO_MODO = 'gg'; renderCosteo(); }); await p.waitForTimeout(1500);
   const sugNov = await p.evaluate(() => calcularGG().mes('2026-11').prendasCalc);
   await p.evaluate(() => verPrendasMes('2026-11')); await p.waitForTimeout(300);
   const detNov = (await p.innerText('#pm-detalle')).replace(/\s+/g, ' ');
-  ok(sugNov === 10 && /COT-4000 Club Costeo 10 10 ficha: Camiseta 8 · Short o calza 2/.test(detNov), 'noviembre: sugerido 10 desde la ficha de COT-4000; el detalle muestra cada venta y de dónde sale: ' + detNov.slice(0, 160));
+  ok(sugNov === 18 && /COT-4000 Club Costeo Uniformes Camiseta 8 · Short o calza 2 10/.test(detNov) && /COT-4001 .* Camiseta 8 8/.test(detNov),
+    'noviembre: sugerido 18 desde las fichas creadas en el mes (COT-4000: 10, COT-4001: 8); el detalle muestra cada ficha: ' + detNov.slice(0, 200));
   await p.evaluate(() => cerrarModal());
   await p.click('[data-pm="2026-10"] ~ div button'); await p.fill('[data-pm="2026-09"]', '400'); await p.click('#gg-pm-guardar'); await p.waitForTimeout(1500);
   const pmG = JSON.parse(config.find(c => c.clave === 'costeo_valores').valor).prendasMes || {};
