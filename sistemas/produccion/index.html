@@ -5857,7 +5857,7 @@ const AREA_GG = { '3': 'prod', '4': 'venta', '5': 'admin' };
 // general y se guarda en Ventas (gestion_parametros «sueldos_personas»); sin elegir, según la cuenta donde más se le pagó.
 // Lo que va al costo directo, con su parte de las leyes sociales, es la «mano de obra interna» de cada prenda.
 const CTAS_REMUN = { '3.01': 'directo', '3.02': 'directo', '3.04': 'directo', '3.05': 'general', '4.01': 'general', '4.10': 'general', '5.08': 'general', '5.10': 'general' };
-const CTAS_BASE_LEYES = ['3.01', '3.02', '4.01', '5.10'];   // sueldos con contrato: las leyes sociales se reparten según ellos
+const CTAS_BASE_LEYES = ['3.01', '3.02', '4.01'];   // sueldos que cotizan: las leyes sociales se reparten según ellos (los socios no cotizan)
 const DESTINO_TXT = { directo: 'Costo directo (hace la prenda)', general: 'Gasto general' };
 const sueldosPersonas = () => { let v = GG_DATOS && GG_DATOS.par ? GG_DATOS.par.sueldos_personas : null;
   if (typeof v === 'string') try { v = JSON.parse(v); } catch (e) { v = null; }

@@ -3463,7 +3463,7 @@ async function guardarPropuestasProv(){
 // interna», con su parte de las leyes sociales (según los sueldos con contrato de cada grupo). Las demás (ventas, socios,
 // aseo, diseño de vestuario) son gasto general. Sin elegir, cada persona va según la cuenta donde más se le pagó.
 const CTAS_REMUN_V={"3.01":"directo","3.02":"directo","3.04":"directo","3.05":"general","4.01":"general","4.10":"general","5.08":"general","5.10":"general"};
-const CTAS_BASE_LEYES_V=["3.01","3.02","4.01","5.10"];
+const CTAS_BASE_LEYES_V=["3.01","3.02","4.01"];   // los socios (5.10) no cotizan
 const normPer=x=>String(x||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\s+/g," ").trim();
 function manoObraPorMes(ini){
   let SP=PARAMS_G.sueldos_personas;if(typeof SP==="string"){try{SP=JSON.parse(SP);}catch(e){SP=null;}}SP=SP&&typeof SP==="object"?SP:{};

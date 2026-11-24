@@ -73,7 +73,7 @@ costos + gasto general
      confirma, cada persona va según la cuenta donde más se le pagó: 3.01 sueldos de producción, 3.02 sueldos de diseño
      y 3.04 jornales → costo directo; 3.05 honorarios de producción, 4.01 y 4.10 ventas y marketing, 5.08 práctica y
      5.10 socios → gasto general. Una persona nueva aparece «sin confirmar» y la pantalla avisa.
-   - LEYES SOCIALES (3.03): cada mes se reparten según los sueldos con contrato (3.01, 3.02, 4.01 y 5.10) de cada grupo:
+   - LEYES SOCIALES (3.03): cada mes se reparten según los sueldos que cotizan (3.01, 3.02 y 4.01; los socios no cotizan) de cada grupo:
      la parte de quienes hacen la prenda va a la mano de obra interna; el resto, al gasto general de cada área.
    - MANO DE OBRA INTERNA POR PRENDA = (sueldos de quienes hacen la prenda + su parte de las leyes sociales) de los
      mismos 3 meses del gasto general ÷ prendas vendidas en esos 3 meses (la «cantidad» de cada venta en Ventas). Va en
