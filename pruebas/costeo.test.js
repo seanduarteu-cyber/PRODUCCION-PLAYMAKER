@@ -386,6 +386,17 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
     && /registrado por ti/.test(await p.innerText('#gg-meses')),
     'octubre: se acepta el sugerido (100); septiembre: se registra a mano (400); agosto sigue con el sugerido (100): 600 prendas y $867 por prenda: ' + JSON.stringify({ pmG, g3 }));
 
+  // 13 · desde diciembre 2026 las prendas del mes son las de los pedidos ingresados a producción ese mes: solo prendas
+  // de vestir del desglose (sin medias, aplicaciones ni otros artículos); las fichas de ese mes ya no cuentan
+  proys.push({ id: 30, cot: 'COT-5000', cliente: 'Club Diciembre', prendas: 45, desglose: { '18 · FUTHOMU02': 20, '46 · BK-SH': 20, 'MEDIAS-ADL': true, 'VINILO': true, 'BOLSO': 5 },
+    fecha_ingreso_ficha: '2026-12-03', fecha_entrega_cliente: '2027-01-10', tipo: 'normal', requiere_sublimacion: true, estado_general: 'en_produccion', created_at: ahora });
+  fichasF.push({ ref: 'COT-5001', cliente: 'Ficha de diciembre', items: [{ prenda: 'camiseta', cant: 50 }], created_at: '2026-12-05T10:00:00Z' });
+  const dic = await p.evaluate(async () => { GG_DATOS = null; await cargarGG('2026-04'); const m = calcularGG().mes('2026-12');
+    return { pr: m.prendas, n: m.nIngr, fichas: m.nFicha, det: m.det.map(x => x.cot + '=' + x.n + ' ' + x.origen) }; });
+  ok(dic.pr === 40 && dic.n === 1 && !dic.fichas && dic.det[0] === 'COT-5000=40 18 · FUTHOMU02 20 · 46 · BK-SH 20',
+    'diciembre: 40 prendas de vestir del pedido ingresado (camisetas y shorts; sin medias, vinilo ni bolsos); la ficha creada en diciembre no cuenta: ' + JSON.stringify(dic));
+  proys.splice(proys.findIndex(x => x.id === 30), 1);
+
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
   await b.close();
   console.log(fallas ? fallas + ' FALLAS' : 'TODO OK'); process.exit(fallas ? 1 : 0);
