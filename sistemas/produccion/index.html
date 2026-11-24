@@ -5852,30 +5852,67 @@ const pct = x => x == null || !isFinite(x) ? '—' : (Math.round(x * 1000) / 10)
 // según el mes al que corresponde cada gasto. No entra el costo directo (nivel 2: ya está en el costeo de cada
 // pedido) ni lo que está fuera del resultado. Ventas netas: pedidos cerrados en el mes, sin IVA y sin anuladas.
 const AREA_GG = { '3': 'prod', '4': 'venta', '5': 'admin' };
+// Remuneraciones: cada PERSONA va al COSTO DIRECTO (hace la prenda: diseño, jefa de producción, calandra, estampado,
+// corte…) o al GASTO GENERAL (ventas, socios, aseo, diseño de vestuario…). Se elige por persona en Costeo › Gasto
+// general y se guarda en Ventas (gestion_parametros «sueldos_personas»); sin elegir, según la cuenta donde más se le pagó.
+// Lo que va al costo directo, con su parte de las leyes sociales, es la «mano de obra interna» de cada prenda.
+const CTAS_REMUN = { '3.01': 'directo', '3.02': 'directo', '3.04': 'directo', '3.05': 'general', '4.01': 'general', '4.10': 'general', '5.08': 'general', '5.10': 'general' };
+const CTAS_BASE_LEYES = ['3.01', '3.02', '4.01', '5.10'];   // sueldos con contrato: las leyes sociales se reparten según ellos
+const DESTINO_TXT = { directo: 'Costo directo (hace la prenda)', general: 'Gasto general' };
+const sueldosPersonas = () => { let v = GG_DATOS && GG_DATOS.par ? GG_DATOS.par.sueldos_personas : null;
+  if (typeof v === 'string') try { v = JSON.parse(v); } catch (e) { v = null; }
+  return v && typeof v === 'object' ? v : {}; };
+async function apiVParametro(clave, valor, descripcion) {   // única escritura en Ventas: un parámetro de gestión
+  const r = await fetch(`${VENTAS_URL}/rest/v1/gestion_parametros?on_conflict=clave`, { method: 'POST',
+    body: JSON.stringify([{ clave, valor, descripcion, actualizado_por: USER.nombre, updated_at: new Date().toISOString() }]),
+    headers: { apikey: VENTAS_KEY, Authorization: 'Bearer ' + VENTAS_KEY, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=minimal' } });
+  if (!r.ok) throw new Error(r.status + ' ' + await r.text());
+}
 async function cargarGG(desdeMes) {
   if (GG_DATOS && GG_DATOS.ok && GG_DATOS.desde <= desdeMes) return GG_DATOS;
   const d = desdeMes + '-01';
   try {
     const [ps, gs, cs, par] = await Promise.all([
-      todasLasFilas(apiV, `pedidos?select=cot,fecha,neto,total,estado&fecha=gte.${d}&order=fecha.asc,id.asc`),
+      todasLasFilas(apiV, `pedidos?select=cot,fecha,neto,total,estado,cantidad&fecha=gte.${d}&order=fecha.asc,id.asc`),
       todasLasFilas(apiV, `v_gastos_neto?select=gasto_id,periodo,cuenta_codigo,nivel,estado,monto_bruto,monto_neto,origen_iva,iva_recuperable&periodo=gte.${d}&order=periodo.asc,gasto_id.asc`),
       apiV('plan_cuentas?select=codigo,nombre,nivel,prorrateo&order=codigo.asc'),
       apiV('gestion_parametros?select=clave,valor&order=clave.asc')]);
     const P = {}; (par || []).forEach(x => { P[x.clave] = x.valor; });
-    GG_DATOS = { desde: desdeMes, ps: ps || [], gs: gs || [], cuentas: cs || [], par: P, ok: true };
+    // a quién se pagó cada remuneración (el proveedor del gasto)
+    const ids = Array.from(new Set((gs || []).filter(g => CTAS_REMUN[g.cuenta_codigo]).map(g => g.gasto_id))), prov = {};
+    let provOk = true;
+    for (let k = 0; k < ids.length; k += 150)
+      try { ((await apiV(`gastos?select=id,proveedor&id=in.(${ids.slice(k, k + 150).join(',')})`)) || []).forEach(x => { prov[String(+x.id)] = x.proveedor || ''; }); }
+      catch (e) { provOk = false; }
+    GG_DATOS = { desde: desdeMes, ps: ps || [], gs: gs || [], cuentas: cs || [], par: P, prov, provOk, ok: true };
   } catch (e) { GG_DATOS = { desde: desdeMes, ps: [], gs: [], cuentas: [], par: {}, ok: false, error: e.message, falta: /^404/.test(e.message) }; }
   return GG_DATOS;
 }
 // cada mes por separado y el % de los 3 meses anteriores a un mes
 function calcularGG() {
-  if (!GG_DATOS || !GG_DATOS.ok) return { pct: () => ({ meses: [], ventas: 0, gastos: 0, pct: null, provisorio: false }), mes: () => null, inicio: '2026-04' };
+  if (!GG_DATOS || !GG_DATOS.ok) return { pct: () => ({ meses: [], ventas: 0, gastos: 0, pct: null, provisorio: false, mod: 0, prendas: 0, modPP: null }), mes: () => null, inicio: '2026-04', personas: [], provOk: true };
   const P = GG_DATOS.par, ini = mesDe(typeof P.inicio_analisis === 'string' ? P.inicio_analisis : '2026-04-01');
   const pl = P.prorrateo_local && typeof P.prorrateo_local === 'object' ? P.prorrateo_local : { produccion: 80, ventas: 10, administracion: 10 };
   const tot = (+pl.produccion || 0) + (+pl.ventas || 0) + (+pl.administracion || 0) || 100;
   const cta = {}; GG_DATOS.cuentas.forEach(c => { cta[c.codigo] = c; });
-  const M = {}, fila = m => M[m] = M[m] || { mes: m, ventas: 0, devol: 0, prod: 0, venta: 0, admin: 0, total: 0, leyes: 0, sProd: 0, sVenta: 0, revision: 0, nRev: 0, ivaSup: 0 };
+  // personas con remuneraciones desde el inicio del análisis y adónde va cada una
+  const SP = sueldosPersonas(), prov = GG_DATOS.prov || {}, nomDe = g => String(prov[String(+g.gasto_id)] || '').trim(), PER = {};
+  GG_DATOS.gs.forEach(g => { if (!CTAS_REMUN[g.cuenta_codigo] || g.estado !== 'clasificado') return; const m = mesDe(g.periodo); if (!m || m < ini) return;
+    const nom = nomDe(g), k = normIns(nom), n = +g.monto_neto || 0;
+    const x = PER[k] = PER[k] || { clave: k, nombres: {}, total: 0, cuentas: {}, meses: new Set() };
+    x.nombres[nom] = (x.nombres[nom] || 0) + 1; x.total += n; x.cuentas[g.cuenta_codigo] = (x.cuentas[g.cuenta_codigo] || 0) + n; x.meses.add(m); });
+  Object.values(PER).forEach(x => {
+    x.nombre = Object.entries(x.nombres).sort((a, b) => b[1] - a[1])[0][0] || '(sin nombre en el gasto)';
+    x.sugerido = CTAS_REMUN[Object.entries(x.cuentas).sort((a, b) => b[1] - a[1])[0][0]];
+    x.elegido = SP[x.clave] === 'directo' || SP[x.clave] === 'general' ? SP[x.clave] : null;
+    x.destino = x.clave ? x.elegido || x.sugerido : null;   // sin nombre: cada pago según su cuenta
+  });
+  const destinoDe = g => { const x = PER[normIns(nomDe(g))]; return x && x.destino ? x.destino : CTAS_REMUN[g.cuenta_codigo]; };
+  const M = {}, fila = m => M[m] = M[m] || { mes: m, ventas: 0, devol: 0, prod: 0, venta: 0, admin: 0, total: 0, leyes: 0, revision: 0, nRev: 0, ivaSup: 0,
+    sDir: 0, bDir: 0, bGen: { prod: 0, venta: 0, admin: 0 }, leyesDir: 0, mod: 0, prendas: 0, sinCant: 0 };
   GG_DATOS.ps.forEach(p => { const m = mesDe(p.fecha); if (!m || m < ini || /anul/i.test(p.estado || '')) return;
-    fila(m).ventas += p.neto != null && p.neto !== '' ? +p.neto || 0 : Math.round((+p.total || 0) / 1.19); });
+    const f = fila(m); f.ventas += p.neto != null && p.neto !== '' ? +p.neto || 0 : Math.round((+p.total || 0) / 1.19);
+    if (+p.cantidad > 0) f.prendas += +p.cantidad; else f.sinCant++; });
   GG_DATOS.gs.forEach(g => {
     const m = mesDe(g.periodo); if (!m || m < ini) return;
     const f = fila(m), n = +g.monto_neto || 0;
@@ -5883,25 +5920,37 @@ function calcularGG() {
     if (g.nivel === '1') { f.devol += n; return; }
     const area = AREA_GG[g.nivel]; if (!area) return;
     if (g.origen_iva === 'cuenta' && g.iva_recuperable) f.ivaSup += (+g.monto_bruto || 0) - n;
-    if (g.cuenta_codigo === '3.01' || g.cuenta_codigo === '3.02') f.sProd += n;
-    if (g.cuenta_codigo === '4.01') f.sVenta += n;
     const pr = (cta[g.cuenta_codigo] || {}).prorrateo;
+    if (pr === 'sueldos') { f.leyes += n; return; }   // leyes sociales: se reparten al final del mes, según los sueldos
+    if (CTAS_REMUN[g.cuenta_codigo]) {   // remuneraciones: de quien hace la prenda → costo directo (no es gasto general)
+      const base = CTAS_BASE_LEYES.includes(g.cuenta_codigo);
+      if (destinoDe(g) === 'directo') { f.sDir += n; if (base) f.bDir += n; return; }
+      if (base) f.bGen[area] += n;
+    }
     if (pr === 'local') { f.prod += n * (+pl.produccion || 0) / tot; f.venta += n * (+pl.ventas || 0) / tot; f.admin += n * (+pl.administracion || 0) / tot; }
-    else if (pr === 'sueldos') f.leyes += n;
     else f[area] += n;
     f.total += n;
   });
-  // leyes sociales: según los sueldos de producción (y diseño) y de venta del mes
-  Object.values(M).forEach(f => { const s = f.sProd + f.sVenta, k = s > 0 ? f.sProd / s : 1;
-    f.prod += f.leyes * k; f.venta += f.leyes * (1 - k);
-    f.ventasNetas = f.ventas - f.devol; f.pct = f.ventasNetas > 0 ? f.total / f.ventasNetas : null; });
+  // leyes sociales del mes: la parte de los sueldos (con contrato) de quienes hacen la prenda va al costo directo; el
+  // resto, al gasto general de cada área según sus sueldos. Mano de obra interna = esos sueldos + su parte de leyes.
+  Object.values(M).forEach(f => {
+    const bG = f.bGen.prod + f.bGen.venta + f.bGen.admin, b = f.bDir + bG;
+    f.kDir = b > 0 ? f.bDir / b : 0; f.leyesDir = f.leyes * f.kDir;
+    const lg = f.leyes - f.leyesDir;
+    if (bG > 0) ['prod', 'venta', 'admin'].forEach(a => { f[a] += lg * f.bGen[a] / bG; }); else f.prod += lg;
+    f.total += lg; f.mod = f.sDir + f.leyesDir;
+    f.ventasNetas = f.ventas - f.devol; f.pct = f.ventasNetas > 0 ? f.total / f.ventasNetas : null; f.modPP = f.prendas > 0 ? f.mod / f.prendas : null; });
   const hoyM = mesDe(F.hoy());
   const pctMes = mes => {
     const ms = mesesAntes(mes, 3).filter(x => x >= ini);
-    const v = ms.reduce((s, x) => s + (M[x] ? M[x].ventasNetas : 0), 0), g = ms.reduce((s, x) => s + (M[x] ? M[x].total : 0), 0);
-    return { meses: ms, ventas: v, gastos: g, pct: v > 0 ? g / v : null, provisorio: ms.some(x => (M[x] && M[x].nRev > 0) || x >= hoyM) };
+    const sum = k => ms.reduce((s, x) => s + (M[x] ? M[x][k] : 0), 0), v = sum('ventasNetas'), mod = sum('mod'), prendas = sum('prendas');
+    // mano de obra interna por prenda = la de esos 3 meses ÷ prendas vendidas en ellos; sin prendas no se puede repartir
+    // por prenda y vuelve al gasto general (así no se pierde)
+    const modPP = prendas > 0 ? mod / prendas : null, modEnGG = modPP == null && mod > 0, g = sum('total') + (modEnGG ? mod : 0);
+    return { meses: ms, ventas: v, gastos: g, pct: v > 0 ? g / v : null, provisorio: ms.some(x => (M[x] && M[x].nRev > 0) || x >= hoyM),
+      mod, prendas, modPP, modEnGG, sinCant: sum('sinCant') };
   };
-  return { pct: pctMes, mes: m => M[m] || null, inicio: ini };
+  return { pct: pctMes, mes: m => M[m] || null, inicio: ini, personas: Object.values(PER).sort((a, b) => b.total - a.total), provOk: GG_DATOS.provOk !== false };
 }
 // precio de un insumo por kg o por metro (las telas se compran en una de las dos; el rendimiento es m por kg)
 const precioKg = i => !i || !(+i.precio > 0) ? null : i.unidad === 'kg' ? +i.precio : i.unidad === 'm' && +i.rendimiento > 0 ? +i.precio * +i.rendimiento : null;
@@ -6055,11 +6104,14 @@ function calcCosteo(p, c) {
     if (M.bajadas && !(+COSTEO_VAL.bajada > 0)) M.faltan.push('precio por bajada de plancha');
     if (p.requiere_estampado && ESTAMP_OK === true && !deMolde('ESTAMP', t.tipo).length) M.faltan.push('aplicaciones del estampado');
     M.indirecto = M.papel + M.tinta + M.prot + M.otrosT + M.estampado;
-    M.directo = M.tela + M.insumos + M.confeccion + M.indirecto;
+    // mano de obra interna: sueldos y leyes sociales de quienes hacen la prenda ÷ prendas vendidas (3 meses del gasto general)
+    M.manoObra = c.gg && c.gg.modPP != null ? c.gg.modPP * t.cant : 0;
+    M.directo = M.tela + M.insumos + M.confeccion + M.manoObra + M.indirecto;
     R.moldes.push(M);
   });
   const suma = k => R.moldes.reduce((s, m) => s + (m[k] || 0), 0);
-  ['tela', 'insumos', 'confeccion', 'indirecto', 'directo', 'kgTotal', 'kgMerma'].forEach(k => { R[k] = suma(k); });
+  ['tela', 'insumos', 'confeccion', 'manoObra', 'indirecto', 'directo', 'kgTotal', 'kgMerma'].forEach(k => { R[k] = suma(k); });
+  if (R.gg && R.gg.modEnGG) R.faltan.push('prendas vendidas en Ventas de esos meses (la mano de obra interna queda en el gasto general)');
   R.unidades = tipos.reduce((s, t) => s + t.cant, 0);
   // La venta es del pedido completo. Si aquí se costean menos prendas que las vendidas (desglose por molde incompleto),
   // se usa la parte de la venta que corresponde a esas prendas: si no, todo el gasto general del pedido caería sobre
@@ -6405,22 +6457,22 @@ async function pintarCosteoPedidos(v, chips) {
   const conV = lista.filter(x => x.r.venta != null), margen = conV.reduce((s, x) => s + x.r.margen, 0), vConV = conV.reduce((s, x) => s + x.r.venta, 0);
   const kgM = tot('kgMerma'), kgT = tot('kgTotal'), num = x => `<td style="text-align:right">${x}</td>`;
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + avisoSql20() +
-    `<p class="hint">Cada pedido con el costo de <b>cada molde por separado</b> (camisetas, shorts…): tela pesada en el corte de ese molde (o estimada), insumos por consumo, confección, ploteo y sublimación, y su parte del gasto general del mes.</p>
+    `<p class="hint">Cada pedido con el costo de <b>cada molde por separado</b> (camisetas, shorts…): tela pesada en el corte de ese molde (o estimada), insumos por consumo, confección, mano de obra interna (sueldos de quienes hacen la prenda), ploteo y sublimación, y su parte del gasto general del mes.</p>
     ${barraPeriodo(D, q, true)}
     <div class="resumen">${dato('Pedidos', lista.length, false, U.toLocaleString('es-CL') + ' prendas')}${dato('Costo total', pesosCorto(T), false, 'con gasto general')}
       ${dato('Margen', vConV ? pct(margen / vConV) : '—', vConV && margen < 0, vConV ? pesosCorto(margen) + ' sobre ' + pesosCorto(vConV) : 'sin ventas')}
       ${dato('Merma de tela', kgT ? pct(kgM / kgT) : '—', false, kgT ? numCL(kgM) + ' de ' + numCL(kgT) + ' kg' : 'sin registros de corte')}</div>
     <div class="panel" style="overflow-x:auto"><table class="mini" id="cs-tabla"><tr><th style="min-width:210px">Pedido y molde</th><th style="text-align:right">Prendas</th><th style="text-align:right">Tela</th><th style="text-align:right">Insumos</th>
-      <th style="text-align:right">Confección</th><th style="text-align:right" title="Papel y tinta de ploteo, protección de sublimación, aplicaciones y bajadas de plancha, otros costos">Ploteo, estampado y otros</th><th style="text-align:right">Gasto general</th><th style="text-align:right">Costo total</th>
+      <th style="text-align:right">Confección</th><th style="text-align:right" title="Sueldos y leyes sociales de quienes hacen la prenda (diseño, producción, corte, calandra, estampado), por prenda">Mano de obra interna</th><th style="text-align:right" title="Papel y tinta de ploteo, protección de sublimación, aplicaciones y bajadas de plancha, otros costos">Ploteo, estampado y otros</th><th style="text-align:right">Gasto general</th><th style="text-align:right">Costo total</th>
       <th style="text-align:right">Costo por prenda</th><th style="text-align:right">Venta neta</th><th style="text-align:right">Margen</th><th></th></tr>
       ${lista.map(({ p, r }) => `<tr class="cs-ped" style="background:var(--fondo,#F4F5F7)"><td><b>${esc(p.cot)}</b> · ${esc(p.cliente)}<div class="hint">${F.corta(p.fecha_ingreso_ficha)} · gasto general ${pct(r.gg && r.gg.pct)}${r.gg && r.gg.provisorio ? ' (provisorio)' : ''}</div></td>
-          ${num(r.unidades)}${num(pesos(r.tela))}${num(pesos(r.insumos))}${num(pesos(r.confeccion))}${num(pesos(r.indirecto))}${num(pesos(r.ggMonto))}${num('<b>' + pesos(r.total) + '</b>')}<td></td>
+          ${num(r.unidades)}${num(pesos(r.tela))}${num(pesos(r.insumos))}${num(pesos(r.confeccion))}${num(pesos(r.manoObra))}${num(pesos(r.indirecto))}${num(pesos(r.ggMonto))}${num('<b>' + pesos(r.total) + '</b>')}<td></td>
           ${num(r.venta != null ? pesos(r.venta) + (r.ventaTotal != null ? `<div class="hint">parte de ${pesos(r.ventaTotal)}</div>` : '') : '—')}<td style="text-align:right;color:${r.margen != null && r.margen < 0 ? '#A8121E' : 'inherit'}">${r.margenPct != null ? pct(r.margenPct) : '—'}</td>
           <td><button class="btn sm" onclick="verCosteo(${p.id})">Ver</button></td></tr>` +
         r.moldes.map(m => `<tr class="cs-molde" data-molde="${esc(m.tipo)}"><td style="padding-left:22px">${esc(m.tipo || 'Todo el pedido')}<div class="hint">${esc(m.tipo ? prendaDeTipo(m.tipo) : '')}${m.faltan.length ? ` · <span style="color:#A8121E">falta: ${esc(m.faltan.slice(0, 2).join(', '))}${m.faltan.length > 2 ? '…' : ''}</span>` : ''}</div></td>
-          ${num(m.cant)}${num(pesos(m.tela) + (m.telaReal ? '' : '<div class="hint">estimada</div>'))}${num(pesos(m.insumos))}${num(pesos(m.confeccion) + (m.confecReal ? '' : '<div class="hint">tarifa</div>'))}
+          ${num(m.cant)}${num(pesos(m.tela) + (m.telaReal ? '' : '<div class="hint">estimada</div>'))}${num(pesos(m.insumos))}${num(pesos(m.confeccion) + (m.confecReal ? '' : '<div class="hint">tarifa</div>'))}${num(pesos(m.manoObra))}
           ${num(pesos(m.indirecto))}${num(pesos(m.gg))}${num(pesos(m.total))}${num('<b>' + (m.porPrenda != null ? pesos(m.porPrenda) : '—') + '</b>')}<td></td><td></td><td></td></tr>`).join('')).join('')
-        || '<tr><td colspan="12" class="hint">No hay pedidos ingresados en este período.</td></tr>'}
+        || '<tr><td colspan="13" class="hint">No hay pedidos ingresados en este período.</td></tr>'}
     </table></div>`;
   const ip = $('cs-q'); if (ip && q) { ip.focus(); ip.setSelectionRange(ip.value.length, ip.value.length); }
 }
@@ -6428,8 +6480,8 @@ async function pintarCosteoPedidos(v, chips) {
 async function pintarCosteoMoldes(v, chips) {
   const D = await cargarCosteo(), A = {};
   D.proy.forEach(p => costeoDe(p).moldes.forEach(m => { if (!m.tipo) return;
-    const a = A[m.tipo] = A[m.tipo] || { tipo: m.tipo, pedidos: 0, prendas: 0, total: 0, tela: 0, insumos: 0, confeccion: 0, indirecto: 0, gg: 0, min: null, max: null, estimados: 0 };
-    a.pedidos++; a.prendas += m.cant; ['total', 'tela', 'insumos', 'confeccion', 'indirecto', 'gg'].forEach(k => { a[k] += m[k] || 0; });
+    const a = A[m.tipo] = A[m.tipo] || { tipo: m.tipo, pedidos: 0, prendas: 0, total: 0, tela: 0, insumos: 0, confeccion: 0, manoObra: 0, indirecto: 0, gg: 0, min: null, max: null, estimados: 0 };
+    a.pedidos++; a.prendas += m.cant; ['total', 'tela', 'insumos', 'confeccion', 'manoObra', 'indirecto', 'gg'].forEach(k => { a[k] += m[k] || 0; });
     if (m.porPrenda != null) { a.min = a.min == null ? m.porPrenda : Math.min(a.min, m.porPrenda); a.max = a.max == null ? m.porPrenda : Math.max(a.max, m.porPrenda); }
     if (!m.telaReal) a.estimados++; }));
   const orden = t => { const i = infoClave(t); return i ? ordenInfo(i) : 99999; };
@@ -6437,13 +6489,13 @@ async function pintarCosteoMoldes(v, chips) {
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + avisoSql20() +
     `<p class="hint">Costo por prenda de cada molde en los pedidos del período (promedio ponderado por prendas), con su rango entre pedidos.</p>${barraPeriodo(D, '', false)}
     <div class="panel" style="overflow-x:auto"><table class="mini" id="cs-moldes"><tr><th>Molde</th><th style="text-align:right">Pedidos</th><th style="text-align:right">Prendas</th><th style="text-align:right">Tela</th>
-      <th style="text-align:right">Insumos</th><th style="text-align:right">Confección</th><th style="text-align:right">Ploteo y otros</th><th style="text-align:right">Gasto general</th>
+      <th style="text-align:right">Insumos</th><th style="text-align:right">Confección</th><th style="text-align:right">Mano de obra interna</th><th style="text-align:right">Ploteo y otros</th><th style="text-align:right">Gasto general</th>
       <th style="text-align:right">Costo por prenda</th><th style="text-align:right">Rango</th></tr>
       ${L.map(a => `<tr><td><b>${esc(a.tipo)}</b><div class="hint">${esc(prendaDeTipo(a.tipo))}${a.estimados ? ` · tela estimada en ${a.estimados} pedido${a.estimados !== 1 ? 's' : ''}` : ''}</div></td>
         <td style="text-align:right">${a.pedidos}</td><td style="text-align:right">${a.prendas}</td><td style="text-align:right">${u(a, 'tela')}</td><td style="text-align:right">${u(a, 'insumos')}</td>
-        <td style="text-align:right">${u(a, 'confeccion')}</td><td style="text-align:right">${u(a, 'indirecto')}</td><td style="text-align:right">${u(a, 'gg')}</td>
+        <td style="text-align:right">${u(a, 'confeccion')}</td><td style="text-align:right">${u(a, 'manoObra')}</td><td style="text-align:right">${u(a, 'indirecto')}</td><td style="text-align:right">${u(a, 'gg')}</td>
         <td style="text-align:right"><b>${u(a, 'total')}</b></td><td style="text-align:right" class="hint">${a.min != null ? pesos(a.min) + ' – ' + pesos(a.max) : '—'}</td></tr>`).join('')
-        || '<tr><td colspan="10" class="hint">No hay pedidos con moldes en este período.</td></tr>'}
+        || '<tr><td colspan="11" class="hint">No hay pedidos con moldes en este período.</td></tr>'}
     </table></div>`;
 }
 async function verCosteo(pid) {
@@ -6463,6 +6515,7 @@ async function verCosteo(pid) {
         ${fila('Tela', pesos(m.tela))}
         ${fila('Insumos por consumo', pesos(m.insumos), pesos(m.insumoUnit) + ' por prenda (lo del molde y lo común)')}
         ${fila('Confección', pesos(m.confeccion), m.confecReal ? esc(m.talleres.join(' · ')) : 'tarifa del molde (sin taller asignado)')}
+        ${fila('Mano de obra interna', pesos(m.manoObra), textoManoObra(r.gg))}
         ${fila('Papel y tinta de ploteo', pesos(m.papel + m.tinta), m.metrosEst ? 'estimado: ' + esc(m.metrosEst) : m.metros ? numCL(m.metros) + ' m ploteados' : 'sin metros registrados')}
         ${fila('Papel de protección (sublimación)', pesos(m.prot), m.mProt ? numCL(m.mProt) + ' m' : '')}
         ${m.aplicaciones.length ? fila('Estampado y aplicaciones', pesos(m.estampado), esc(m.aplicaciones.map(a => `${a.nombre}: ${numCL(a.cant)} por prenda`).join(' · ')) + ` · ${numCL(m.bajadas)} bajadas de plancha (${pesos(m.planchado)})`) : ''}
@@ -6489,6 +6542,10 @@ async function verCosteo(pid) {
       ${fila('Margen', r.margen != null ? `${pesos(r.margen)} · ${pct(r.margenPct)}` : '—')}
     </table>`, pid);
 }
+// de dónde sale la mano de obra interna por prenda (sueldos y leyes de quienes hacen la prenda ÷ prendas vendidas)
+const textoManoObra = G => !G || !G.meses || !G.meses.length ? 'sin meses con datos desde el inicio del análisis'
+  : G.modPP != null ? `${pesos(G.modPP)} por prenda: sueldos y leyes sociales de quienes hacen la prenda (${pesos(G.mod)}) ÷ ${G.prendas.toLocaleString('es-CL')} prendas vendidas en ${G.meses.slice().reverse().map(mesTxt).join(', ')}`
+  : G.mod > 0 ? 'sin prendas vendidas anotadas en Ventas en esos meses: queda en el gasto general' : 'sin sueldos de quienes hacen la prenda en esos meses';
 // otro costo del pedido (bordado, medias compradas, despacho…): de un molde o de todo el pedido (se reparte por prendas)
 function abrirOtroCosto(pid) {
   const p = proyCosteo(pid); if (!p) return;
@@ -6523,9 +6580,9 @@ function exportarCosteo() {
   const esc2 = v => /[",;\n]/.test(String(v ?? '')) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v ?? ''), n = x => x == null ? '' : Math.round(x);
   const filas = [];
   D.proy.forEach(p => { const r = costeoDe(p); r.moldes.forEach(m => filas.push([p.cot, p.cliente, p.fecha_ingreso_ficha, m.tipo || 'Todo el pedido', m.tipo ? prendaDeTipo(m.tipo) : '', m.cant, m.cortadas || '',
-    n(m.tela), numCL(m.kgTotal), numCL(m.kgMerma), m.kgTotal ? pct(m.kgMerma / m.kgTotal) : '', n(m.insumos), n(m.confeccion), numCL(m.metros), n(m.papel + m.tinta), n(m.prot), n(m.estampado), n(m.otrosT),
+    n(m.tela), numCL(m.kgTotal), numCL(m.kgMerma), m.kgTotal ? pct(m.kgMerma / m.kgTotal) : '', n(m.insumos), n(m.confeccion), n(m.manoObra), numCL(m.metros), n(m.papel + m.tinta), n(m.prot), n(m.estampado), n(m.otrosT),
     n(m.directo), r.gg && r.gg.pct != null ? pct(r.gg.pct) : '', n(m.gg), n(m.total), n(m.porPrenda), n(r.venta), n(r.margen), m.faltan.join(' · ')])); });
-  const csv = '﻿' + ['Pedido', 'Cliente', 'Ingreso', 'Molde', 'Prenda', 'Cantidad', 'Prendas cortadas', 'Tela', 'Kg tela', 'Kg merma', '% merma', 'Insumos', 'Confección', 'Metros ploteo',
+  const csv = '﻿' + ['Pedido', 'Cliente', 'Ingreso', 'Molde', 'Prenda', 'Cantidad', 'Prendas cortadas', 'Tela', 'Kg tela', 'Kg merma', '% merma', 'Insumos', 'Confección', 'Mano de obra interna', 'Metros ploteo',
     'Papel y tinta', 'Papel protección', 'Estampado y aplicaciones', 'Otros', 'Costo directo', '% gasto general', 'Gasto general', 'Costo total del molde', 'Costo por prenda', 'Venta neta (prendas costeadas)',
     'Margen del pedido', 'Falta'].join(';') + '\n' + filas.map(f => f.map(esc2).join(';')).join('\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
@@ -7045,22 +7102,51 @@ async function pintarGG(v, chips) {
     return;
   }
   const G = calcularGG(), meses = [mHoy].concat(mesesAntes(mHoy, 11)).filter(m => m >= G.inicio);
-  const cero = { ventasNetas: 0, prod: 0, venta: 0, admin: 0, total: 0, pct: null, revision: 0, nRev: 0, ivaSup: 0 };
+  const cero = { ventasNetas: 0, prod: 0, venta: 0, admin: 0, total: 0, pct: null, revision: 0, nRev: 0, ivaSup: 0, mod: 0, prendas: 0, sinCant: 0, leyes: 0, kDir: 0 };
   const ivaSup = meses.reduce((s, m) => s + (G.mes(m) || cero).ivaSup, 0);
   const td = x => `<td style="text-align:right">${x}</td>`;
+  const nomCta = c => { const x = GG_DATOS.cuentas.find(y => y.codigo === c); return c + (x && x.nombre ? ' ' + x.nombre : ''); };
+  const pend = G.personas.filter(x => x.clave && !x.elegido);
+  // personas con remuneraciones: cada una va al costo directo (hace la prenda) o al gasto general (solo administración ve los montos)
+  const admin = tienePerfil('admin');
+  const personas = !admin ? '' : `<h2 id="gg-sueldos">Sueldos: costo directo o gasto general</h2>
+    <p class="hint">Los sueldos de <b>quienes hacen la prenda</b> (diseño, jefa de producción, calandra, estampado, corte, confección interna…) son <b>costo directo variable</b>: no entran al gasto general, van a cada prenda como <b>mano de obra interna</b>. Los de ventas, socios (gerencia), aseo, diseño de vestuario (desarrollo de moldes nuevos) y otros que no tocan la prenda son <b>gasto general</b>. Las <b>leyes sociales</b> se reparten entre los dos según los sueldos con contrato de cada grupo (cuentas ${CTAS_BASE_LEYES.join(', ')}). Se toma cada pago de remuneraciones de Ventas › Gastos (${Object.keys(CTAS_REMUN).join(', ')}) y la persona es el proveedor del gasto. Lo que se elige aquí queda en Ventas.</p>
+    ${!G.provOk ? '<div class="aviso warn">No se pudo leer a quién se pagó cada remuneración en Ventas: por ahora cada pago va según su cuenta.</div>' : ''}
+    ${pend.length ? `<div class="aviso warn" id="gg-sin-confirmar">${pend.length} persona${pend.length !== 1 ? 's' : ''} sin confirmar: por ahora va${pend.length !== 1 ? 'n' : ''} según la cuenta donde más se le${pend.length !== 1 ? 's' : ''} pagó. Revisa y guarda.</div>` : ''}
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-personas"><tr><th>Persona (proveedor del gasto)</th><th>Cuentas</th><th style="text-align:right">Pagado desde ${mesTxt(G.inicio)}</th><th>Va a</th></tr>
+      ${G.personas.map(x => `<tr data-persona="${esc(x.clave)}"><td><b>${esc(x.nombre)}</b>${Object.keys(x.nombres).length > 1 ? `<div class="hint">también: ${esc(Object.keys(x.nombres).filter(n => n !== x.nombre).join(', '))}</div>` : ''}</td>
+        <td class="hint">${Object.entries(x.cuentas).sort((a, b) => b[1] - a[1]).map(([c]) => esc(nomCta(c))).join('<br>')}</td>
+        ${td(pesos(x.total) + `<div class="hint">${x.meses.size} mes${x.meses.size !== 1 ? 'es' : ''}</div>`)}
+        <td>${x.clave ? `<select data-sp="${esc(x.clave)}">${['directo', 'general'].map(d => `<option value="${d}" ${x.destino === d ? 'selected' : ''}>${DESTINO_TXT[d]}</option>`).join('')}</select>
+          <div class="hint">${x.elegido ? 'elegido' : '<span style="color:#B45309">sin confirmar</span> · según su cuenta'}</div>` : '<span class="hint">cada pago según su cuenta</span>'}</td></tr>`).join('')
+        || '<tr><td colspan="4" class="hint">No hay remuneraciones clasificadas desde el inicio del análisis.</td></tr>'}
+    </table>${G.personas.some(x => x.clave) ? '<div class="acciones"><button class="btn pri" onclick="guardarSueldosPersonas()">Guardar</button></div>' : ''}</div>`;
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips +
-    `<p class="hint"><b>Gasto general</b> = las cuentas de gasto general de Ventas › Gastos (producción, venta y marketing, administración), en <b>neto</b> (sin el IVA que se recupera con factura afecta), según el mes al que corresponde cada gasto. No entra el costo directo (telas, talleres, papel y tinta, avíos, comisiones…), que ya está en el costeo de cada pedido, ni lo que está fuera del resultado (IVA, inversiones, retiros). <b>Ventas netas</b>: pedidos cerrados en el mes, sin IVA y sin anuladas, menos devoluciones. El análisis parte en ${mesTxt(G.inicio)}. La clasificación de cada gasto se hace en Ventas › Gastos.</p>
+    `<p class="hint"><b>Gasto general</b> = las cuentas de gasto general de Ventas › Gastos (producción, venta y marketing, administración), en <b>neto</b> (sin el IVA que se recupera con factura afecta), según el mes al que corresponde cada gasto. No entra el costo directo (telas, talleres, papel y tinta, avíos, comisiones…), que ya está en el costeo de cada pedido, ni lo que está fuera del resultado (IVA, inversiones, retiros). Tampoco los <b>sueldos de quienes hacen la prenda</b> ni su parte de las leyes sociales: son la <b>mano de obra interna</b>, un costo directo por prenda. <b>Ventas netas</b>: pedidos cerrados en el mes, sin IVA y sin anuladas, menos devoluciones. El análisis parte en ${mesTxt(G.inicio)}. La clasificación de cada gasto se hace en Ventas › Gastos.</p>
+    ${admin && pend.length ? `<div class="aviso warn">Hay ${pend.length} persona${pend.length !== 1 ? 's' : ''} con sueldo sin confirmar si va${pend.length !== 1 ? 'n' : ''} al costo directo o al gasto general: <a href="#gg-sueldos">revisar abajo</a>.</div>` : ''}
     <h2>Cada mes</h2>
-    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-meses"><tr><th>Mes</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">G. general producción</th><th style="text-align:right">G. general venta y marketing</th><th style="text-align:right">G. general administración</th><th style="text-align:right">Total gasto general</th><th style="text-align:right">% del mes</th><th style="text-align:right">En revisión</th></tr>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-meses"><tr><th>Mes</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">G. general producción</th><th style="text-align:right">G. general venta y marketing</th><th style="text-align:right">G. general administración</th><th style="text-align:right">Total gasto general</th><th style="text-align:right">% del mes</th><th style="text-align:right">En revisión</th><th style="text-align:right" title="Sueldos y leyes sociales de quienes hacen la prenda: costo directo, no gasto general">Mano de obra interna</th><th style="text-align:right">Prendas vendidas</th></tr>
       ${meses.map(m => { const f = G.mes(m) || cero; return `<tr><td><b>${mesTxt(m)}</b>${m === mHoy ? '<div class="hint">en curso</div>' : ''}</td>${td(pesos(f.ventasNetas))}${td(pesos(f.prod))}${td(pesos(f.venta))}${td(pesos(f.admin))}${td('<b>' + pesos(f.total) + '</b>')}${td(pct(f.pct))}
-        ${td(f.nRev ? `<span style="color:#B45309">${pesos(f.revision)}</span><div class="hint">${f.nRev} gasto${f.nRev !== 1 ? 's' : ''}</div>` : '—')}</tr>`; }).join('')}
+        ${td(f.nRev ? `<span style="color:#B45309">${pesos(f.revision)}</span><div class="hint">${f.nRev} gasto${f.nRev !== 1 ? 's' : ''}</div>` : '—')}
+        ${td(pesos(f.mod) + (f.leyes ? `<div class="hint">${pct(f.kDir)} de las leyes sociales</div>` : ''))}${td(f.prendas.toLocaleString('es-CL') + (f.sinCant ? `<div class="hint">${f.sinCant} venta${f.sinCant !== 1 ? 's' : ''} sin cantidad</div>` : ''))}</tr>`; }).join('')}
     </table></div>
     <h2>% que se aplica a los pedidos</h2>
-    <p class="hint">A cada pedido se le aplica el % de los <b>3 meses anteriores</b> al mes en que se cerró la venta: gasto general de esos 3 meses ÷ ventas netas de esos 3 meses. Es <b>provisorio</b> si alguno de esos meses todavía tiene gastos en revisión.</p>
-    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-pedidos"><tr><th>Pedidos cerrados en</th><th>Se calcula con</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">Gasto general</th><th style="text-align:right">% gasto general</th></tr>
-      ${meses.map(m => { const x = G.pct(m); return `<tr><td><b>${mesTxt(m)}</b></td><td class="hint">${x.meses.length ? x.meses.slice().reverse().map(mesTxt).join(', ') : 'sin meses desde ' + mesTxt(G.inicio)}</td>${td(pesos(x.ventas))}${td(pesos(x.gastos))}${td('<b>' + pct(x.pct) + '</b>' + (x.provisorio && x.meses.length ? '<div class="hint" style="color:#B45309">provisorio</div>' : ''))}</tr>`; }).join('')}
+    <p class="hint">A cada pedido se le aplica el % de los <b>3 meses anteriores</b> al mes en que se cerró la venta: gasto general de esos 3 meses ÷ ventas netas de esos 3 meses. Es <b>provisorio</b> si alguno de esos meses todavía tiene gastos en revisión. La <b>mano de obra interna</b> de esos 3 meses se divide por las prendas vendidas en ellos y va a cada prenda en su costo directo (sin prendas vendidas anotadas en Ventas, queda en el gasto general).</p>
+    <div class="panel" style="overflow-x:auto"><table class="mini" id="gg-pedidos"><tr><th>Pedidos cerrados en</th><th>Se calcula con</th><th style="text-align:right">Ventas netas</th><th style="text-align:right">Gasto general</th><th style="text-align:right">% gasto general</th><th style="text-align:right">Mano de obra interna</th><th style="text-align:right">Prendas vendidas</th><th style="text-align:right">Mano de obra por prenda</th></tr>
+      ${meses.map(m => { const x = G.pct(m); return `<tr><td><b>${mesTxt(m)}</b></td><td class="hint">${x.meses.length ? x.meses.slice().reverse().map(mesTxt).join(', ') : 'sin meses desde ' + mesTxt(G.inicio)}</td>${td(pesos(x.ventas))}${td(pesos(x.gastos))}${td('<b>' + pct(x.pct) + '</b>' + (x.provisorio && x.meses.length ? '<div class="hint" style="color:#B45309">provisorio</div>' : ''))}
+        ${td(pesos(x.mod) + (x.modEnGG ? '<div class="hint" style="color:#B45309">en el gasto general</div>' : ''))}${td(x.prendas.toLocaleString('es-CL'))}${td('<b>' + (x.modPP != null ? pesos(x.modPP) : '—') + '</b>')}</tr>`; }).join('')}
     </table></div>
-    ${ivaSup > 0 ? `<p class="hint">De estos meses, ${pesos(ivaSup)} de IVA se descontaron según el IVA habitual de la cuenta (supuesto). Se confirma marcando el tipo de documento del proveedor o del gasto en Ventas, y en la Fase 3 con el libro de compras.</p>` : ''}`;
+    ${ivaSup > 0 ? `<p class="hint">De estos meses, ${pesos(ivaSup)} de IVA se descontaron según el IVA habitual de la cuenta (supuesto). Se confirma marcando el tipo de documento del proveedor o del gasto en Ventas, y en la Fase 3 con el libro de compras.</p>` : ''}
+    ${personas}`;
+}
+// guarda en Ventas a qué va el sueldo de cada persona (costo directo o gasto general)
+async function guardarSueldosPersonas() {
+  const SP = Object.assign({}, sueldosPersonas());
+  document.querySelectorAll('[data-sp]').forEach(el => { if (el.dataset.sp) SP[el.dataset.sp] = el.value === 'directo' ? 'directo' : 'general'; });
+  try { await apiVParametro('sueldos_personas', SP, 'Remuneraciones por persona: «directo» (hace la prenda: mano de obra interna, costo directo) o «general» (gasto general). Se elige en Planificación › Costeo › Gasto general.'); }
+  catch (e) { return toast('No se pudo guardar en Ventas: ' + String(e.message).slice(0, 120), 'err'); }
+  GG_DATOS.par.sueldos_personas = SP; COSTEO_DATOS = null; SIM_DATOS = {};
+  toast('Guardado: los sueldos de quienes hacen la prenda van al costo directo'); renderCosteo();
 }
 // ploteo: papel por metro (del rollo), las 4 tintas por separado (cc por metro según la experiencia × $ por cc) y protección
 const COLORES_TINTA = [['C', 'Cian'], ['M', 'Magenta'], ['Y', 'Amarillo'], ['K', 'Negro']];
@@ -7398,13 +7484,16 @@ function calcSimulacion(n, D, principal) {
   const aplicT = aplic.reduce((s, a) => s + a.costo, 0), bajadas = aplic.reduce((s, a) => s + a.baj, 0), planchado = bajadas * (+COSTEO_VAL.bajada || 0);
   aplic.filter(a => !(+a.i.precio > 0)).forEach(a => faltan.push('precio de ' + a.i.nombre));
   if (bajadas && !(+COSTEO_VAL.bajada > 0)) faltan.push('precio por bajada de plancha (Ploteo y estampado)');
-  const directo = tela + b.costo + conf + papel + tinta + prot + aplicT + planchado;
-  // gasto general: su % sale de gasto general ÷ ventas netas, así que se aplica sobre el PRECIO DE VENTA (simulado aquí)
+  // gasto general y mano de obra interna de los 3 meses anteriores: el % de gasto general se aplica sobre el PRECIO DE
+  // VENTA (simulado aquí); la mano de obra interna (sueldos de quienes hacen la prenda) es por prenda, en el costo directo
   const G = GG_DATOS && GG_DATOS.ok ? calcularGG().pct(mesDe(F.hoy())) : null, gg = G && G.pct != null ? G.pct : null;
+  const mo = G && G.modPP != null ? G.modPP : 0;
+  if (G && G.modEnGG) faltan.push('prendas vendidas en Ventas (la mano de obra interna queda en el gasto general)');
+  const directo = tela + b.costo + conf + mo + papel + tinta + prot + aplicT + planchado;
   if (gg == null) faltan.push('% de gasto general');
   const venta = +SIM.venta > 0 ? +SIM.venta : null, ggMonto = venta != null && gg != null ? venta * gg : null;
   const total = ggMonto != null ? directo + ggMonto : null, resultado = total != null ? venta - total : null;
-  return { pz, sec, partes, tela, insumos: b.costo, conf, confComo, mPP, protPP, papel, tinta, prot, aplic, aplicT, bajadas, planchado, directo, gg, G, venta, ggMonto, total, resultado,
+  return { pz, sec, partes, tela, insumos: b.costo, conf, confComo, mo, mPP, protPP, papel, tinta, prot, aplic, aplicT, bajadas, planchado, directo, gg, G, venta, ggMonto, total, resultado,
     margenPct: resultado != null ? resultado / venta : null,
     kgPP, areaPP, sinGram: Array.from(sinGram), cortes: D.cortes.length, prCortes: prK, ploteos: D.ploteos.length, faltan: Array.from(new Set(faltan)),
     E, telaEst: partes.some(t => t.est), plEst };
@@ -7464,6 +7553,7 @@ async function pintarSimulador(v, chips) {
         t.kg != null ? `${numCL(Math.round(t.kg * 1000) / 1000)} kg (${R.partes.length > 1 ? numCL(Math.round(t.share * 1000) / 10) + '% de la prenda, ' : ''}${t.como})${t.pk != null ? ' × ' + pesosD(t.pk) + '/kg' : ''}` : '')).join('')}
       ${fila('Insumos por prenda', pesos(R.insumos), 'lo común a todas y lo de este molde')}
       ${fila('Confección', pesos(R.conf), R.confComo)}
+      ${fila('Mano de obra interna', pesos(R.mo), textoManoObra(R.G))}
       ${SIM.sub ? fila('Papel y tinta de ploteo', pesos(R.papel + R.tinta), R.mPP ? numCL(r2(R.mPP)) + ' m ploteados por prenda' + (R.plEst ? ' (estimado: ' + esc(R.E.fuenteM) + ')' : '') : 'sin ploteos registrados') + fila('Papel de protección', pesos(R.prot), R.protPP ? numCL(r2(R.protPP)) + ' m por prenda' : '') : ''}
       ${R.aplic.length ? fila('Aplicaciones', pesos(R.aplicT), esc(R.aplic.map(a => `${a.i.nombre} × ${numCL(a.cant)}`).join(' · '))) + fila('Bajadas de plancha', pesos(R.planchado), `${numCL(R.bajadas)} × ${pesosD(+COSTEO_VAL.bajada || 0)}`) : ''}
       ${fila('Costo directo', pesos(R.directo), '', true)}

@@ -60,7 +60,9 @@ const vGastosNeto = [gn(1, '2026-08-01', '3.01', '3', 'clasificado', 300000, 300
   gn(6, '2026-10-01', 'F.01', 'F', 'clasificado', 80000, 80000),                                  // pago de IVA: fuera
   gn(7, '2026-10-01', null, null, 'revision', 40000, 40000),                                       // en revisión: el % es provisorio
   gn(8, '2026-03-01', '3.01', '3', 'clasificado', 999999, 999999)];                                // antes de abril: no se usa
-const planCuentas = [{ codigo: '3.01', nivel: '3', prorrateo: null }, { codigo: '3.07', nivel: '3', prorrateo: 'local' }, { codigo: '5.02', nivel: '5', prorrateo: null }];
+const planCuentas = [{ codigo: '3.01', nivel: '3', prorrateo: null, nombre: 'Sueldos de producción' }, { codigo: '3.07', nivel: '3', prorrateo: 'local' }, { codigo: '5.02', nivel: '5', prorrateo: null },
+  { codigo: '3.02', nivel: '3', prorrateo: null, nombre: 'Sueldos de diseño' }, { codigo: '3.03', nivel: '3', prorrateo: 'sueldos' }, { codigo: '4.01', nivel: '4', prorrateo: null }];
+const gastosV = [];   // Ventas › gastos: a quién se pagó cada remuneración (se llena en la sección 11)
 const gestionParametros = [{ clave: 'inicio_analisis', valor: '2026-04-01' }, { clave: 'prorrateo_local', valor: { produccion: 80, ventas: 10, administracion: 10 } }];
 
 // planificacion filtra por fecha de ingreso como la base (gte / lte), para probar el período de Costeo
@@ -71,7 +73,7 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   plan_ejecutantes: [{ id: 1, nombre: 'Pedro Corte', area: 'Corte', activo: true }, { id: 2, nombre: 'Taller Las Rosas', area: 'Confección', activo: true }],
   plan_tarifas: [{ tipo: '18 · FUTHOMU02', precio: 3000 }, { tipo: '46 · BK-SH', precio: 2000 }],
   plan_insumos_stock: insumos, plan_insumos: insumos, moldes, fichas_tallas: [ficha, ficha2], fichas_detalle: dets.concat(dets2), catalogo_tecnico: [], pedidos: ventasPed,
-  v_gastos_neto: vGastosNeto, plan_cuentas: planCuentas, gestion_parametros: gestionParametros } };
+  v_gastos_neto: vGastosNeto, plan_cuentas: planCuentas, gestion_parametros: gestionParametros, gastos: gastosV } };
 
 (async () => {
   const b = await chromium.launch();
@@ -142,9 +144,9 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   const iP = filas.findIndex(t => /COT-4000/.test(t)), cam = filas[iP + 1] || '', sho = filas[iP + 2] || '', ped = filas[iP] || '';
   // camiseta: tela 36.100 · insumos 1.040 · confección 24.000 · ploteo 12.000 · directo 73.140 · GG 46.270 → 119.410 (14.926 c/u)
   // short: tela 6.000 · insumos 800 · confección 4.000 · ploteo 3.000 · directo 13.800 · GG 8.730 → 22.530 (11.265 c/u)
-  ok(/^cs-molde\|18 · FUTHOMU02 .*Camiseta.* 8 \$36\.100 \$1\.040 \$24\.000 \$12\.000 \$46\.270 \$119\.410 \$14\.926/.test(cam), 'camisetas: costo total del molde $119.410, $14.926 por prenda: ' + cam);
-  ok(/^cs-molde\|46 · BK-SH .*Short.* 2 \$6\.000 \$800 \$4\.000 \$3\.000 \$8\.730 \$22\.530 \$11\.265/.test(sho), 'shorts: costo total del molde $22.530, $11.265 por prenda: ' + sho);
-  ok(/^cs-ped\|COT-4000 .* 10 \$42\.100 \$1\.840 \$28\.000 \$15\.000 \$55\.000 \$141\.940 \$300\.000 52,7%/.test(ped), 'pedido: suma de sus moldes ($141.940), venta $300.000, margen 52,7%: ' + ped);
+  ok(/^cs-molde\|18 · FUTHOMU02 .*Camiseta.* 8 \$36\.100 \$1\.040 \$24\.000 \$0 \$12\.000 \$46\.270 \$119\.410 \$14\.926/.test(cam), 'camisetas: costo total del molde $119.410, $14.926 por prenda: ' + cam);
+  ok(/^cs-molde\|46 · BK-SH .*Short.* 2 \$6\.000 \$800 \$4\.000 \$0 \$3\.000 \$8\.730 \$22\.530 \$11\.265/.test(sho), 'shorts: costo total del molde $22.530, $11.265 por prenda: ' + sho);
+  ok(/^cs-ped\|COT-4000 .* 10 \$42\.100 \$1\.840 \$28\.000 \$0 \$15\.000 \$55\.000 \$141\.940 \$300\.000 52,7%/.test(ped), 'pedido: suma de sus moldes ($141.940), venta $300.000, margen 52,7%: ' + ped);
   const f2 = filas.slice(filas.findIndex(t => /COT-4001/.test(t))).join(' / ');
   ok(/\$30\.000 estimada/.test(f2) && /falta: registro del corte/.test(f2), 'COT-4001 sin corte: tela estimada con el consumo teórico ($30.000) y avisa qué falta');
   await p.evaluate(() => verCosteo(1)); await p.waitForTimeout(800);
@@ -166,11 +168,12 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   // 4 · gasto general desde la clasificación de Ventas, en neto: cada mes y el % de los 3 meses anteriores
   await p.evaluate(() => { COSTEO_MODO = 'gg'; renderCosteo(); }); await p.waitForTimeout(1200);
   const ggP = (await p.innerText('#gg-pedidos')).replace(/\s+/g, ' '), ggM = await p.$$eval('#gg-meses tr', trs => trs.slice(1).map(t => t.innerText.replace(/\s+/g, ' ')));
-  ok(/noviembre 2026 agosto 2026, septiembre 2026, octubre 2026 \$3\.000\.000 \$550\.000 18,3% provisorio/.test(ggP), 'pedidos de noviembre: $550.000 de gasto general ÷ $3.000.000 de ventas netas = 18,3%, provisorio: ' + ggP.slice(0, 200));
+  ok(/noviembre 2026 agosto 2026, septiembre 2026, octubre 2026 \$3\.000\.000 \$550\.000 18,3% provisorio/.test(ggP), 'pedidos de noviembre: $550.000 de gasto general ÷ $3.000.000 de ventas netas = 18,3%, provisorio (sin prendas vendidas anotadas, la mano de obra interna queda en el gasto general): ' + ggP.slice(0, 200));
   const fM = m => ggM.find(x => x.startsWith(m)) || '';
-  ok(/^octubre 2026 \$1\.000\.000 \$0 \$0 \$100\.000 \$100\.000 10% \$40\.000 1 gasto$/.test(fM('octubre')), 'octubre: sin la venta anulada; tela, comisión e IVA no entran; software en neto; $40.000 en revisión: ' + fM('octubre'));
-  ok(/^septiembre 2026 \$1\.000\.000 \$120\.000 \$15\.000 \$15\.000 \$150\.000 15% —$/.test(fM('septiembre')), 'septiembre: arriendo repartido 80/10/10: ' + fM('septiembre'));
-  ok(/^agosto 2026 \$1\.000\.000 \$300\.000 \$0 \$0 \$300\.000 30% —$/.test(fM('agosto')), 'agosto: sueldos de producción: ' + fM('agosto'));
+  ok(/^octubre 2026 \$1\.000\.000 \$0 \$0 \$100\.000 \$100\.000 10% \$40\.000 1 gasto \$0 0 1 venta sin cantidad$/.test(fM('octubre')), 'octubre: sin la venta anulada; tela, comisión e IVA no entran; software en neto; $40.000 en revisión: ' + fM('octubre'));
+  ok(/^septiembre 2026 \$1\.000\.000 \$120\.000 \$15\.000 \$15\.000 \$150\.000 15% — \$0 0 1 venta sin cantidad$/.test(fM('septiembre')), 'septiembre: arriendo repartido 80/10/10: ' + fM('septiembre'));
+  ok(/^agosto 2026 \$1\.000\.000 \$0 \$0 \$0 \$0 0% — \$300\.000 0 1 venta sin cantidad$/.test(fM('agosto')), 'agosto: el sueldo de producción ya no es gasto general: es mano de obra interna: ' + fM('agosto'));
+  ok(/\$550\.000 18,3% provisorio \$300\.000 en el gasto general 0 —/.test(ggP), 'sin prendas vendidas anotadas en esos meses, la mano de obra interna ($300.000) queda en el gasto general');
   ok(!ggM.some(x => /marzo/.test(x)) && /\$19\.000 de IVA se descontaron según el IVA habitual de la cuenta/.test(await p.innerText('#view-costeo')), 'marzo no aparece (el análisis parte en abril) y avisa el IVA descontado por supuesto');
   // sin el SQL 21B en Ventas: avisa en vez de calcular con otra cosa
   await ctx.route(/nnisdusdujcpkrbjqnhe\.supabase\.co\/rest\/v1\/v_gastos_neto/, r => r.fulfill({ status: 404, contentType: 'application/json', body: '{"code":"PGRST205"}' }));
@@ -308,6 +311,45 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   ok(inc.cam.est && inc.cam.tela > 0 && inc.cam.metros > 0 && inc.sho.tela > 0 && /short/.test(inc.sho.como),
     'sin N° de molde: la tela y el ploteo se estiman por el tipo de prenda del código (BK-CSUB camiseta, BK-SH short): ' + inc.sho.como);
   ok(inc.tVenta === 1180000 && !inc.tInc && Math.abs(inc.tGG - 1180000 * 0.498) < 1e-6, 'con el desglose completo (40 de 40) se usa la venta entera');
+
+  // 11 · sueldos por persona: los de quienes hacen la prenda son costo directo (mano de obra interna, por prenda), no
+  // gasto general; la diseñadora de vestuario y ventas son gasto general; las leyes sociales se reparten según los sueldos
+  ventasPed[1].cantidad = 100; ventasPed[2].cantidad = 100; ventasPed[3].cantidad = 100;
+  vGastosNeto.push(gn(9, '2026-09-01', '3.02', '3', 'clasificado', 200000, 200000), gn(10, '2026-09-01', '3.01', '3', 'clasificado', 200000, 200000),
+    gn(11, '2026-09-01', '3.03', '3', 'clasificado', 40000, 40000), gn(12, '2026-10-01', '4.01', '4', 'clasificado', 100000, 100000));
+  gastosV.push({ id: 1, proveedor: 'GERALDINE PRUEBA' }, { id: 9, proveedor: 'BELÉN PRUEBA' }, { id: 10, proveedor: 'Geraldine Prueba' }, { id: 12, proveedor: 'VENDEDORA PRUEBA' });
+  await ctx.route(/nnisdusdujcpkrbjqnhe\.supabase\.co\/rest\/v1\/gestion_parametros/, r => {
+    const q = r.request(); if (q.method() === 'GET') return r.fulfill({ contentType: 'application/json', body: JSON.stringify(gestionParametros) });
+    [].concat(JSON.parse(q.postData())).forEach(x => { const ya = gestionParametros.find(y => y.clave === x.clave); if (ya) Object.assign(ya, x); else gestionParametros.push(x); });
+    return r.fulfill({ status: 201, contentType: 'application/json', body: '' }); });
+  await p.evaluate(() => { GG_DATOS = null; COSTEO_DATOS = null; COSTEO_MODO = 'gg'; renderCosteo(); }); await p.waitForTimeout(1500);
+  const per = await p.$$eval('#gg-personas tr[data-persona]', trs => trs.map(t => ({ k: t.dataset.persona, v: (t.querySelector('select') || {}).value, tx: t.innerText.replace(/\s+/g, ' ') })));
+  const g1 = await p.evaluate(() => { const x = calcularGG().pct('2026-11'); return { pct: x.pct, mod: x.mod, pr: x.prendas, pp: x.modPP }; });
+  ok(per.length === 3 && per.find(x => x.k === 'geraldine prueba').v === 'directo' && /también: Geraldine Prueba/.test(per.find(x => x.k === 'geraldine prueba').tx) &&
+    per.find(x => x.k === 'belen prueba').v === 'directo' && per.find(x => x.k === 'vendedora prueba').v === 'general' && per.every(x => /sin confirmar/.test(x.tx)) &&
+    /3 personas sin confirmar/.test(await p.textContent('#gg-sin-confirmar')),
+    'lista de personas con sueldo (el mismo nombre escrito distinto es una sola): sin confirmar, cada una según su cuenta: ' + per.map(x => x.k + '=' + x.v).join(', '));
+  ok(Math.abs(g1.pct - 350000 / 3000000) < 1e-9 && g1.mod === 740000 && g1.pr === 300 && Math.abs(g1.pp - 740000 / 300) < 1e-9,
+    'sin confirmar: gasto general $350.000 (11,7%); mano de obra interna $740.000 (sueldos de producción y diseño + leyes) ÷ 300 prendas vendidas');
+  await p.selectOption('[data-sp="belen prueba"]', 'general'); await p.click('#gg-personas + .acciones .btn.pri'); await p.waitForTimeout(1500);
+  const sp = (gestionParametros.find(x => x.clave === 'sueldos_personas') || {}).valor || {};
+  ok(sp['belen prueba'] === 'general' && sp['geraldine prueba'] === 'directo' && sp['vendedora prueba'] === 'general', 'se guarda en Ventas a qué va cada persona: ' + JSON.stringify(sp));
+  const g2 = await p.evaluate(() => { const G = calcularGG(), x = G.pct('2026-11'), sep = G.mes('2026-09'); return { pct: x.pct, mod: x.mod, pp: x.modPP, k: sep.kDir, ld: sep.leyesDir, prod: sep.prod }; });
+  const sep = (await p.$$eval('#gg-meses tr', trs => trs.map(t => t.innerText.replace(/\s+/g, ' ')))).find(x => x.startsWith('septiembre')) || '';
+  ok(Math.abs(g2.k - 0.5) < 1e-9 && g2.ld === 20000 && g2.prod === 120000 + 200000 + 20000 && /50% de las leyes sociales/.test(sep),
+    'septiembre: leyes sociales $40.000 repartidas según los sueldos: 50% al costo directo (Geraldine) y 50% al gasto general (Belén): ' + sep);
+  ok(Math.abs(g2.pct - 0.19) < 1e-9 && g2.mod === 520000 && Math.abs(g2.pp - 520000 / 300) < 1e-9 && !/sin confirmar/.test(await p.innerText('#gg-personas')),
+    'Belén al gasto general: gasto general $570.000 (19%); mano de obra interna $520.000 ÷ 300 = $1.733 por prenda');
+  await p.evaluate(() => { COSTEO_MODO = 'pedidos'; COSTEO_Q = 'COT-4000'; COSTEO_PER = null; COSTEO_DATOS = null; renderCosteo(); }); await p.waitForTimeout(2500);
+  const cam2 = (await p.$$eval('#cs-tabla tr.cs-molde', trs => trs.map(t => t.innerText.replace(/\s+/g, ' '))))[0] || '';
+  ok(/ 8 \$[\d.]+ \$[\d.]+ \$24\.000 \$13\.867 /.test(cam2), 'pedido: la camiseta lleva 8 × $1.733 = $13.867 de mano de obra interna en su costo directo: ' + cam2);
+  await p.evaluate(() => verCosteo(1)); await p.waitForTimeout(700);
+  ok(/Mano de obra interna\s+\$1\.733 por prenda: sueldos y leyes sociales de quienes hacen la prenda \(\$520\.000\) ÷ 300 prendas vendidas en agosto 2026, septiembre 2026, octubre 2026\s+\$13\.867/.test(await p.innerText('#modal')),
+    'detalle: de dónde sale la mano de obra interna');
+  await p.evaluate(() => cerrarModal());
+  const sim = await p.evaluate(async () => { SIM_DATOS = {}; const D = await datosSimMolde(17), R = calcSimulacion(17, D, 'Pro'); return { mo: R.mo, directo: R.directo }; });
+  ok(Math.abs(sim.mo - 520000 / 300) < 1e-9, 'Simular costo: la mano de obra interna por prenda ($1.733) va en el costo directo');
+  await p.evaluate(() => { COSTEO_Q = ''; });
 
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
   await b.close();

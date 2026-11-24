@@ -14,6 +14,9 @@ COSTO DIRECTO Y GASTO GENERAL
 - Costo directo (nivel 2): se asigna a cada pedido según lo que consume (tela, taller, papel y tinta,
   aplicaciones, avíos, packaging, prendas para reventa, comisiones, despachos).
 - Gasto general (niveles 3, 4 y 5): no se asigna a un pedido; entra en el % de gasto general del costeo.
+  (Sueldos por persona: los de quienes hacen la prenda y su parte de las leyes sociales son costo directo, «mano de
+  obra interna»; se elige por persona en Planificación › Costeo › Gasto general y Conciliación los muestra en Costo
+  directo. Ver LEEME_costeo.)
   Nivel 3 = gasto general de producción (sueldos de producción y diseño, leyes sociales, jornales, arriendo,
   servicios, mantención…), nivel 4 = de venta y marketing, nivel 5 = de administración.
 

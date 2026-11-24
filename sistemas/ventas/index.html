@@ -3166,7 +3166,7 @@ function renderPlanCuentas(){
   const propias=new Set(CUENTAS.map(c=>normTxt(c.nombre)));
   const alias=ALIAS_CAT.filter(a=>!propias.has(normTxt(a.categoria))).sort((a,b)=>(nCat[normTxt(b.categoria)]||0)-(nCat[normTxt(a.categoria)]||0));
   el.innerHTML=`
-    <div class="search-bar"><span class="cta-sub" style="flex:1"><b>Costo directo</b> (nivel 2): se asigna a cada pedido seg&#250;n lo que consume. <b>Gasto general</b> (niveles 3, 4 y 5): no se asigna a un pedido; entra en el % de gasto general del costeo. Montos desde ${mesTxt(ini)}, solo gastos ya clasificados (con impuestos incluidos; el IVA se separa en la Fase 3).</span>
+    <div class="search-bar"><span class="cta-sub" style="flex:1"><b>Costo directo</b> (nivel 2): se asigna a cada pedido seg&#250;n lo que consume. <b>Gasto general</b> (niveles 3, 4 y 5): no se asigna a un pedido; entra en el % de gasto general del costeo. Salvo los <b>sueldos de quienes hacen la prenda</b> (diseño, producci&#243;n, corte, calandra, estampado) y su parte de las leyes sociales: son costo directo (mano de obra interna); se elige por persona en Planificaci&#243;n › Costeo › Gasto general. Montos desde ${mesTxt(ini)}, solo gastos ya clasificados (con impuestos incluidos; el IVA se separa en la Fase 3).</span>
       <button class="btn btn-primary btn-sm" onclick="abrirCuentaForm('')">+ Nueva cuenta</button></div>
     <div class="card"><div class="tbl-wrap"><table class="pc-tabla"><thead><tr><th>C&#243;digo</th><th>Cuenta</th><th>Qu&#233; entra</th><th>Trato</th><th>Gastos</th><th></th></tr></thead><tbody>${filas}</tbody></table></div></div>
     <div class="card"><div class="card-header"><h2>Traducci&#243;n de las categor&#237;as antiguas</h2></div>
@@ -3458,6 +3458,31 @@ async function guardarPropuestasProv(){
     (revAntes>revDespues?" · "+(revAntes-revDespues)+" gasto"+(revAntes-revDespues===1?"":"s")+" salieron de Revisión":""));
 }
 
+// ── Remuneraciones por persona (Planificación › Costeo › Gasto general; gestion_parametros «sueldos_personas») ──
+// Las de quienes hacen la prenda (diseño, producción, corte, calandra, estampado) son costo directo: «mano de obra
+// interna», con su parte de las leyes sociales (según los sueldos con contrato de cada grupo). Las demás (ventas, socios,
+// aseo, diseño de vestuario) son gasto general. Sin elegir, cada persona va según la cuenta donde más se le pagó.
+const CTAS_REMUN_V={"3.01":"directo","3.02":"directo","3.04":"directo","3.05":"general","4.01":"general","4.10":"general","5.08":"general","5.10":"general"};
+const CTAS_BASE_LEYES_V=["3.01","3.02","4.01","5.10"];
+const normPer=x=>String(x||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\s+/g," ").trim();
+function manoObraPorMes(ini){
+  let SP=PARAMS_G.sueldos_personas;if(typeof SP==="string"){try{SP=JSON.parse(SP);}catch(e){SP=null;}}SP=SP&&typeof SP==="object"?SP:{};
+  const mesG=g=>{const k=clasifDe(g);return(k&&k.periodo_devengo?k.periodo_devengo:(g.fecha||"")).slice(0,7);};
+  const per={};
+  GASTOS.forEach(g=>{const c=cuentaDeGasto(g);if(!CTAS_REMUN_V[c])return;const m=mesG(g);if(!m||m<ini)return;
+    const k=normPer(g.proveedor),x=per[k]=per[k]||{};x[c]=(x[c]||0)+(Number(g.monto)||0);});
+  const destino=(k,c)=>!k?CTAS_REMUN_V[c]:SP[k]==="directo"||SP[k]==="general"?SP[k]:CTAS_REMUN_V[Object.entries(per[k]||{[c]:1}).sort((a,b)=>b[1]-a[1])[0][0]];
+  const M={};
+  GASTOS.forEach(g=>{const c=cuentaDeGasto(g),cu=cuentaDe(c);if(!cu)return;const m=mesG(g);if(!m||m<ini)return;const n=Number(g.monto)||0;
+    const f=M[m]=M[m]||{dir:{},bDir:0,bGen:0,leyes:{}};
+    if(cu.prorrateo==="sueldos"){f.leyes[cu.nivel]=(f.leyes[cu.nivel]||0)+n;return;}
+    if(!CTAS_REMUN_V[c])return;const base=CTAS_BASE_LEYES_V.includes(c);
+    if(destino(normPer(g.proveedor),c)==="directo"){f.dir[cu.nivel]=(f.dir[cu.nivel]||0)+n;if(base)f.bDir+=n;}else if(base)f.bGen+=n;});
+  Object.values(M).forEach(f=>{const b=f.bDir+f.bGen,k=b>0?f.bDir/b:0;
+    Object.entries(f.leyes).forEach(([nv,x])=>{f.dir[nv]=(f.dir[nv]||0)+x*k;});f.kLeyes=k;f.total=Object.values(f.dir).reduce((s,x)=>s+x,0);});
+  return M;
+}
+
 // ── Conciliación: crudo = gastos = clasificado + en revisión, y avance por mes ──
 async function renderConciliacionGastos(){
   const el=document.getElementById("gsub-conciliacion");if(!el)return;
@@ -3473,13 +3498,17 @@ async function renderConciliacionGastos(){
     const c=cuentaDe(cuentaDeGasto(g));
     if(!c)f.rev+=m;else f.n[c.nivel]=(f.n[c.nivel]||0)+m;
   });
+  // la mano de obra interna (sueldos de quienes hacen la prenda y su parte de leyes sociales) pasa al costo directo
+  const MO=manoObraPorMes(ini.slice(0,7));
+  Object.entries(MO).forEach(([m,x])=>{const f=meses[m];if(!f||!x.total)return;
+    Object.entries(x.dir).forEach(([nv,v])=>{f.n[nv]=(f.n[nv]||0)-v;f.n["2"]=(f.n["2"]||0)+v;});f.mo=x.total;});
   const orden=Object.keys(meses).sort();
   const cab={"2":"Costo directo","3":"Gasto general<br>producci&#243;n","4":"Gasto general<br>venta y marketing","5":"Gasto general<br>administraci&#243;n","6":"Bajo EBITDA","1":"Devoluciones","F":"Fuera del resultado"};
   el.innerHTML=`<div id="conc-kpis" class="kpi-grid"><div class="kpi"><label>Conciliaci&#243;n</label><div class="val" style="font-size:14px;color:#9CA3AF">Consultando la base&#8230;</div></div></div>
     <div class="card"><div class="card-header"><h2>Por mes al que corresponde (desde ${mesTxt(ini)})</h2></div>
-      <p class="cta-sub" style="padding:10px 16px 0">Montos con impuestos. &#171;En revisi&#243;n&#187; todav&#237;a no tiene cuenta. Total = suma de las columnas.</p>
+      <p class="cta-sub" style="padding:10px 16px 0">Montos con impuestos. &#171;En revisi&#243;n&#187; todav&#237;a no tiene cuenta. Total = suma de las columnas. El costo directo incluye la <b>mano de obra interna</b>: los sueldos de quienes hacen la prenda y su parte de las leyes sociales (se elige por persona en Planificaci&#243;n › Costeo › Gasto general); no son gasto general.</p>
       <div class="tbl-wrap"><table><thead><tr><th>Mes</th>${cols.map(c=>`<th style="text-align:right">${cab[c]}</th>`).join("")}<th style="text-align:right">En revisi&#243;n</th><th style="text-align:right">Total</th></tr></thead><tbody>
-      ${orden.map(m=>{const f=meses[m];return `<tr><td style="white-space:nowrap;font-weight:700">${mesTxt(m)}</td>${cols.map(c=>`<td style="text-align:right">${f.n[c]?clp(f.n[c]):"&#8212;"}</td>`).join("")}
+      ${orden.map(m=>{const f=meses[m];return `<tr><td style="white-space:nowrap;font-weight:700">${mesTxt(m)}</td>${cols.map(c=>`<td style="text-align:right">${Math.round(f.n[c]||0)?clp(f.n[c]):"&#8212;"}${c==="2"&&f.mo?`<div class="cta-sub">incl. mano de obra ${clp(f.mo)}</div>`:""}</td>`).join("")}
         <td style="text-align:right;color:${f.rev?"#C2410C":"#9CA3AF"}">${f.rev?clp(f.rev):"&#8212;"}</td><td style="text-align:right;font-weight:700">${clp(f.tot)}</td></tr>`;}).join("")||'<tr><td colspan="10" class="no-results">Sin gastos</td></tr>'}
       </tbody></table></div></div>`;
   let v=null;

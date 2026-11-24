@@ -297,6 +297,22 @@ function atender(req, u) {
   const conc = (await p.textContent('#conc-kpis')).replace(/\s+/g, ' ');
   ok(/Diferencia\s*\$0\s*✓ Cuadra/.test(conc), 'conciliación: diferencia $0 y cuadra (' + conc.slice(0, 160) + '…)');
   ok(/Oct 2026/.test(await p.textContent('#gsub-conciliacion')) && !/Mar 2026/.test(await p.textContent('#gsub-conciliacion')), 'por mes desde abril (marzo no aparece)');
+  // mano de obra interna: el sueldo de quien hace la prenda y su parte de las leyes sociales son costo directo, no
+  // gasto general; la diseñadora de vestuario (elegida «general» en Planificación) sigue en el gasto general
+  const mo = await p.evaluate(() => {
+    const extra = [{ id: 990001, fecha: '2026-12-31', proveedor: 'GERALDINE PRUEBA', monto: 600000, c: '3.01' }, { id: 990002, fecha: '2026-12-31', proveedor: 'BELÉN PRUEBA', monto: 400000, c: '3.02' },
+      { id: 990003, fecha: '2026-12-31', proveedor: 'PREVIRED', monto: 100000, c: '3.03' }];
+    const antes = PARAMS_G.sueldos_personas;
+    extra.forEach(x => { GASTOS.push({ id: x.id, fecha: x.fecha, proveedor: x.proveedor, monto: x.monto, descripcion: 'PRUEBA' }); CLASIF[String(x.id)] = { gasto_id: x.id, cuenta_codigo: x.c, estado: 'clasificado' }; });
+    const sin = manoObraPorMes('2026-04')['2026-12'];
+    PARAMS_G.sueldos_personas = { 'belen prueba': 'general' };
+    const con = manoObraPorMes('2026-04')['2026-12'];
+    extra.forEach(x => { GASTOS.splice(GASTOS.findIndex(g => g.id === x.id), 1); delete CLASIF[String(x.id)]; });
+    PARAMS_G.sueldos_personas = antes;
+    return { sin: sin && sin.total, con: con && con.total, k: con && con.kLeyes };
+  });
+  ok(mo.sin === 1100000 && Math.abs(mo.con - 660000) < 1e-6 && Math.abs(mo.k - 0.6) < 1e-9,
+    'conciliación: sin elegir, los sueldos de producción y diseño + leyes van al costo directo ($1.100.000); con Belén en gasto general, $600.000 + 60% de las leyes ($660.000): ' + JSON.stringify(mo));
 
   // ── Claude: formulario, Revisión y prueba de precisión ──
   await p.click('[data-gsub="lista"]');

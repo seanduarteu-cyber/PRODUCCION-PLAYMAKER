@@ -19,7 +19,8 @@ costo total y su costo por prenda; el pedido es la suma de sus moldes. «Por mol
 molde en el período (promedio entre los pedidos que lo llevan).
 
 CÓMO SE CALCULA EL COSTO DE CADA MOLDE
-Costo total del molde = tela + insumos por consumo + confección + ploteo y sublimación + otros costos + gasto general
+Costo total del molde = tela + insumos por consumo + confección + mano de obra interna + ploteo y sublimación + otros
+costos + gasto general
 
 1. Tela (precio de Inventario → Insumos)
    - Al terminar Corte se abre «Corte · COT-…» con cada molde del pedido por separado: por cada tela de ese molde,
@@ -63,12 +64,29 @@ Costo total del molde = tela + insumos por consumo + confección + ploteo y subl
      marketing, administración), según el mes al que corresponde cada gasto. La clasificación se hace en Ventas › Gastos.
      No entra el costo directo (nivel 2: telas, talleres, papel y tinta, avíos, comisiones…) ni lo que está fuera del
      resultado (IVA, inversiones, retiros de socios). La remuneración de socios sí es gasto general (administración).
+   - SUELDOS POR PERSONA: los sueldos de QUIENES HACEN LA PRENDA (diseño, jefa de producción, calandra, estampado,
+     corte, confección interna…) NO son gasto general: son costo directo variable («mano de obra interna»). Los de
+     ventas, socios (gerencia), aseo, diseño de vestuario (desarrollo de moldes nuevos) y otros que no tocan la prenda
+     sí son gasto general. Se elige por persona al final de Costeo › Gasto general («Sueldos: costo directo o gasto
+     general», solo administración) y queda guardado en Ventas (parámetro «sueldos_personas»). La persona es el
+     proveedor del gasto; el mismo nombre escrito con o sin tildes o mayúsculas es una sola persona. Mientras no se
+     confirma, cada persona va según la cuenta donde más se le pagó: 3.01 sueldos de producción, 3.02 sueldos de diseño
+     y 3.04 jornales → costo directo; 3.05 honorarios de producción, 4.01 y 4.10 ventas y marketing, 5.08 práctica y
+     5.10 socios → gasto general. Una persona nueva aparece «sin confirmar» y la pantalla avisa.
+   - LEYES SOCIALES (3.03): cada mes se reparten según los sueldos con contrato (3.01, 3.02, 4.01 y 5.10) de cada grupo:
+     la parte de quienes hacen la prenda va a la mano de obra interna; el resto, al gasto general de cada área.
+   - MANO DE OBRA INTERNA POR PRENDA = (sueldos de quienes hacen la prenda + su parte de las leyes sociales) de los
+     mismos 3 meses del gasto general ÷ prendas vendidas en esos 3 meses (la «cantidad» de cada venta en Ventas). Va en
+     el costo directo de cada molde (× sus prendas), en Por molde, en Simular costo y en el Excel. Si esos meses no
+     tienen prendas vendidas anotadas, no se puede repartir por prenda y queda dentro del gasto general (así no se
+     pierde); la tabla «Cada mes» muestra cuántas ventas no tienen cantidad.
    - Todo en NETO: los gastos sin el IVA que se recupera con factura afecta; las ventas sin IVA, sin las anuladas y
      menos las devoluciones. Si un gasto no dice su documento, se usa el del proveedor o, si no, el IVA habitual de la
      cuenta (supuesto: la pantalla avisa cuánto IVA se descontó así).
    - «Cada mes»: ventas netas, gasto general de producción, de venta y marketing y de administración (arriendo, luz,
-     agua, aseo y mantención del local repartidos 80/10/10; leyes sociales según los sueldos), total, % del mes y lo que
-     sigue en revisión en Ventas. Desde abril 2026 (los meses anteriores no se usan).
+     agua, aseo y mantención del local repartidos 80/10/10; leyes sociales según los sueldos), total, % del mes, lo que
+     sigue en revisión en Ventas, la mano de obra interna (y qué % de las leyes sociales lleva) y las prendas vendidas.
+     Desde abril 2026 (los meses anteriores no se usan).
    - % que se aplica a un pedido = gasto general ÷ ventas netas de los 3 MESES ANTERIORES al mes en que se cerró la venta
      (si el pedido no está en Ventas, el mes en que entró a producción). Ej: una venta cerrada en noviembre usa agosto,
      septiembre y octubre. Es «provisorio» si alguno de esos meses tiene gastos en revisión.
@@ -78,7 +96,8 @@ Costo total del molde = tela + insumos por consumo + confección + ploteo y subl
      del pedido), se usa solo la parte de la venta de esas prendas (venta × costeadas ÷ vendidas) para el gasto general y
      el margen, y avisa «desglose por molde: tiene 2 de 40 prendas». Antes, el gasto general de toda la venta caía sobre
      esas pocas prendas y su costo por prenda se disparaba (ej. BK-CSUB a $500.038). Completa el desglose del pedido.
-   - Las horas de las áreas (revisión, sublimación…) están dentro de este gasto (sueldos).
+   - Las horas de las áreas (revisión, sublimación…) están en la mano de obra interna (sueldos de quienes hacen la
+     prenda), no en el gasto general.
 8. Resultado: costo total de cada molde y por prenda; total del pedido, venta neta y margen (venta neta − costo total).
    No hay precio sugerido.
 
