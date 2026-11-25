@@ -14,8 +14,9 @@ Propuesta_Comercial_Los_Leones_2027.xlsm:
   - LNB 2027 y LNF 2027: lo solicitado por el club, por sección y prenda: tallas, unidades, precios, canje
     (SÍ: 100% de descuento; viene marcado en todo lo solicitado por los primeros equipos y su cuerpo técnico) y
     valor a pagar.
-  - FORMATIVAS 2027: lista de productos a precio club para las series formativas; unidades por completar con la
-    proyección de compra del club.
+  - FORMATIVAS 2027: compra de las series formativas a precio club, por rama (varones y damas) y categoría
+    (Sub-11 a Sub-20): jugadores, producto (a elegir de la lista de precios) y unidades por jugador, con el mismo
+    formato que la valorización FEVOCHI. Canje NO por defecto.
   - COSTOS (uso interno): costo unitario y código de inventario por producto, costo del canje y de lo vendido,
     venta neta y resultado. No va en el PDF.
 Si la planilla ya existe, se conservan los precios, descuentos, unidades, canje y costos cargados en ella.
@@ -47,6 +48,12 @@ HOJA_INTERNA = "COSTOS"
 EQUIPOS = [("LNB", "LNB 2027", "Primer equipo masculino, Liga Nacional de Básquetbol"),
            ("LNF", "LNF 2027", "Primer equipo femenino, Liga Nacional Femenina")]
 LINEAS = ["Juego", "Entrenamiento", "Presentación y viaje", "Socios e hinchas"]
+RAMAS = ["Varones", "Damas"]
+CATEGORIAS = ["Sub-11", "Sub-13", "Sub-14", "Sub-16", "Sub-18", "Sub-20"]
+# prendas que trae cada categoría formativa (se pueden cambiar en la planilla) y filas libres para agregar otras
+PRENDAS_FORMATIVAS = ["camiseta_juego", "short_juego", "calcetas", "polera_calentamiento", "poleron_buzo",
+                      "pantalon_buzo"]
+FILAS_LIBRES = 1
 
 MACRO_PDF = """' Genera el PDF de la propuesta para el club: todas las hojas visibles menos COSTOS (uso interno).
 Sub GenerarPDFClub()
@@ -315,32 +322,72 @@ def main():
 
     # ---------------------------------------------------------------- FORMATIVAS 2027
     fo = wb.create_sheet("FORMATIVAS 2027")
-    encabezado(fo, "SERIES FORMATIVAS: PRECIO CLUB POR PRODUCTO",
-               "Las series formativas compran a precio club. Unidades por completar con la proyección de compra del "
-               "club (celdas amarillas).")
-    cabecera(fo, 5, 2, ["PRODUCTO", "LÍNEA", "PRECIO PÚBLICO", "PRECIO CLUB", "UNIDADES", "VALOR A PAGAR"])
-    r = 6
-    fo0 = r
-    for k, (nombre, l, _p, _a, _ref) in PRODUCTOS.items():
-        celda(fo, f"B{r}", nombre, alinear=izq)
-        celda(fo, f"C{r}", l, f_gris, alinear=izq)
-        celda(fo, f"D{r}", "=" + precio_de(k, "C"), f_gris, PESOS)
-        celda(fo, f"E{r}", "=" + precio_de(k), f_tot, PESOS)
-        entrada(fo, f"F{r}", None, NUM)
-        celda(fo, f"G{r}", f"=N(F{r})*E{r}", f_tot, PESOS)
-        r += 1
-    celda(fo, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
-    for col in "CDEFG":
-        celda(fo, f"{col}{r}", None, f_gran, relleno=r_gran)
-    celda(fo, f"F{r}", f"=SUM(F{fo0}:F{r - 1})", f_gran, NUM, r_gran)
-    celda(fo, f"G{r}", f"=SUM(G{fo0}:G{r - 1})", f_gran, PESOS, r_gran)
-    fo_tot = r
+    encabezado(fo, "SERIES FORMATIVAS 2027: COMPRA A PRECIO CLUB POR CATEGORÍA",
+               "Celdas amarillas: jugadores, producto (lista desplegable) y unidades por jugador. El precio viene de la "
+               "hoja PRECIOS. CANJE SÍ = 100% de descuento en esa prenda.")
+    cabecera(fo, 5, 2, ["CATEGORÍA", "PRODUCTO PLAYMAKER", "JUGADORES", "UNIDADES POR JUGADOR", "TOTAL UNIDADES",
+                        "PRECIO PÚBLICO", "PRECIO CLUB", "CANJE", "VALOR A PAGAR"])
+    rango_nombres = f"PRECIOS!$B$8:$B${ultima_precio}"
+    dv_prod = DataValidation(type="list", formula1=f"={rango_nombres}", allow_blank=True, errorTitle="Producto",
+                             error="Elige un producto de la hoja PRECIOS.")
+    dv_canje_f = DataValidation(type="list", formula1='"SÍ,NO"', allow_blank=True, errorTitle="Canje",
+                                error="Elige SÍ (canje, 100% de descuento) o NO.")
     dv_f = DataValidation(type="whole", operator="greaterThanOrEqual", formula1="0", allow_blank=True,
-                          errorTitle="Unidades", error="Ingresa un número entero (0 o más).")
-    fo.add_data_validation(dv_f)
-    dv_f.add(f"F{fo0}:F{fo_tot - 1}")
-    for col, ancho in zip("BCDEFG", (38, 20, 14, 14, 12, 16)):
+                          errorTitle="Cantidad", error="Ingresa un número entero (0 o más).")
+
+    def precio_por_nombre(ref, col):
+        return (f"IFERROR(N(INDEX(PRECIOS!${col}$8:${col}${ultima_precio},MATCH({ref},{rango_nombres},0))),0)")
+
+    r = 6
+    formativas = []  # (rama, [(categoría, primera fila, fila subtotal)], fila total rama)
+    for rama in RAMAS:
+        celda(fo, f"B{r}", f"FORMATIVAS {rama.upper()}", f_sec, alinear=Alignment(vertical="center"), borde=False)
+        fo.row_dimensions[r].height = 20
+        r += 1
+        cats = []
+        for cat in CATEGORIAS:
+            f0 = r
+            productos = [nombre_producto(k) for k in PRENDAS_FORMATIVAS] + [None] * FILAS_LIBRES
+            for k, prod in enumerate(productos):
+                if k == 0:
+                    celda(fo, f"B{r}", cat, f_tot)
+                    entrada(fo, f"D{r}", None, NUM)
+                else:
+                    celda(fo, f"B{r}", None)
+                    celda(fo, f"D{r}", f"=N(D{f0})", f_gris, NUM)
+                entrada(fo, f"C{r}", prod, alinear=izq)
+                entrada(fo, f"E{r}", 1 if prod else None, NUM)
+                celda(fo, f"F{r}", f"=N(D{r})*N(E{r})", formato=NUM)
+                celda(fo, f"G{r}", "=" + precio_por_nombre(f"C{r}", "C"), f_gris, PESOS)
+                celda(fo, f"H{r}", "=" + precio_por_nombre(f"C{r}", "E"), formato=PESOS)
+                entrada(fo, f"I{r}", "NO")
+                celda(fo, f"J{r}", f'=IF(I{r}="SÍ",0,F{r}*H{r})', f_tot, PESOS)
+                r += 1
+            dv_prod.add(f"C{f0}:C{r - 1}")
+            dv_canje_f.add(f"I{f0}:I{r - 1}")
+            dv_f.add(f"D{f0}")
+            dv_f.add(f"E{f0}:E{r - 1}")
+            celda(fo, f"B{r}", f"Total {cat}", f_tot, relleno=r_sub, alinear=izq)
+            for col in "CEGHI":
+                celda(fo, f"{col}{r}", None, relleno=r_sub)
+            celda(fo, f"D{r}", f"=N(D{f0})", f_tot, NUM, r_sub)
+            celda(fo, f"F{r}", f"=SUM(F{f0}:F{r - 1})", f_tot, NUM, r_sub)
+            celda(fo, f"J{r}", f"=SUM(J{f0}:J{r - 1})", f_tot, PESOS, r_sub)
+            cats.append((cat, f0, r))
+            r += 1
+        celda(fo, f"B{r}", f"TOTAL {rama.upper()}", f_gran, relleno=r_gran, alinear=izq)
+        for col in "CDEFGHIJ":
+            celda(fo, f"{col}{r}", None, f_gran, relleno=r_gran)
+        for col, fmt in (("D", NUM), ("F", NUM), ("J", PESOS)):
+            celda(fo, f"{col}{r}", "=" + "+".join(f"{col}{s_}" for _, _, s_ in cats), f_gran, fmt, r_gran)
+        fo.row_dimensions[r].height = 20
+        formativas.append((rama, cats, r))
+        r += 3
+    for dv_ in (dv_prod, dv_canje_f, dv_f):
+        fo.add_data_validation(dv_)
+    for col, ancho in zip("BCDEFGHIJ", (16, 36, 12, 13, 12, 13, 13, 9, 15)):
         fo.column_dimensions[col].width = ancho
+    fo.freeze_panes = "B6"
 
     # ---------------------------------------------------------------- RESUMEN
     rs = wb.create_sheet("RESUMEN", 0)
@@ -373,9 +420,17 @@ def main():
         filas_total.append(r)
         r += 1
     F = "'FORMATIVAS 2027'"
-    fila_resumen(r, "Series formativas", "Compras a precio club", f"={F}!F{fo_tot}", 0, f"={F}!G{fo_tot}", f_tot, r_sub)
-    filas_total.append(r)
-    r += 1
+    for rama, cats, ft in formativas:
+        r0 = r
+        for k, (cat, f0, s_) in enumerate(cats):
+            fu, gp, ic = (f"{F}!{c}{f0}:{c}{s_ - 1}" for c in "FGI")
+            fila_resumen(r, f"Formativas {rama.lower()}" if k == 0 else None, cat, f"={F}!F{s_}",
+                         f'=SUMPRODUCT(({ic}="SÍ")*{fu}*{gp})', f"={F}!J{s_}")
+            r += 1
+        fila_resumen(r, f"Total formativas {rama.lower()}", None, *[f"=SUM({c}{r0}:{c}{r - 1})" for c in "DEF"],
+                     f_tot, r_sub)
+        filas_total.append(r)
+        r += 1
     fila_resumen(r, "TOTAL GENERAL", None, *["=" + "+".join(f"{c}{x}" for x in filas_total) for c in "DEF"],
                  f_gran, r_gran)
     rs.row_dimensions[r].height = 22
@@ -398,11 +453,11 @@ def main():
         celda(rs, f"D{r}", f"=IF(N(C{r})=0,0,1-E{r}/C{r})", formato=PCT)
         celda(rs, f"E{r}", f"=PRECIOS!E{fp}", formato=PESOS)
         unid = "+".join(f'SUMIF({h}!$C:$C,"{nombre}",{h}!$E:$E)' for h in hojas_det)
-        celda(rs, f"F{r}", f'={unid}+SUMIF({F}!$B:$B,"{nombre}",{F}!$F:$F)', formato=NUM)
+        celda(rs, f"F{r}", f'={unid}+SUMIF({F}!$C:$C,"{nombre}",{F}!$F:$F)', formato=NUM)
         canje = "+".join(f'SUMIFS({h}!$E:$E,{h}!$C:$C,"{nombre}",{h}!$H:$H,"SÍ")' for h in hojas_det)
-        celda(rs, f"G{r}", f"=({canje})*C{r}", formato=PESOS)
+        celda(rs, f"G{r}", f'=({canje}+SUMIFS({F}!$F:$F,{F}!$C:$C,"{nombre}",{F}!$I:$I,"SÍ"))*C{r}', formato=PESOS)
         pagar = "+".join(f'SUMIF({h}!$C:$C,"{nombre}",{h}!$I:$I)' for h in hojas_det)
-        celda(rs, f"H{r}", f'={pagar}+SUMIF({F}!$B:$B,"{nombre}",{F}!$G:$G)', f_tot, PESOS)
+        celda(rs, f"H{r}", f'={pagar}+SUMIF({F}!$C:$C,"{nombre}",{F}!$J:$J)', f_tot, PESOS)
         r += 1
     celda(rs, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
     for col in "CDE":
@@ -452,7 +507,7 @@ def main():
         celda(co, f"C{r}", codigo, f_input, relleno=r_input, alinear=izq)
         celda(co, f"D{r}", costo, f_input, PESOS, r_input)
         canje = "+".join(f'SUMIFS({h}!$E:$E,{h}!$C:$C,"{nombre}",{h}!$H:$H,"SÍ")' for h in hojas_det)
-        celda(co, f"E{r}", f"={canje}", formato=NUM)
+        celda(co, f"E{r}", f'={canje}+SUMIFS({F}!$F:$F,{F}!$C:$C,"{nombre}",{F}!$I:$I,"SÍ")', formato=NUM)
         celda(co, f"F{r}", f"=G{r}-E{r}", formato=NUM)
         celda(co, f"G{r}", f"=RESUMEN!F{fr}", formato=NUM)
         celda(co, f"H{r}", f"=E{r}*N(D{r})", formato=PESOS)
