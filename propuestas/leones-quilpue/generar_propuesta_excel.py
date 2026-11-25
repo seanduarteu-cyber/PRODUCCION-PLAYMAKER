@@ -6,15 +6,15 @@ Uso:
 Lee la solicitud del club (Solicitud_indumentaria_CDC_Los_Leones_2027_v2.xlsx, hojas LNB y LNF, prendas por talla)
 y los precios de lista del simulador interno (Canje_Leones_Quilpue_2027.xlsx, hoja Precios), y crea
 Propuesta_Comercial_Los_Leones_2027.xlsm:
-  - RESUMEN: por equipo y sección, valor del canje (a precio público general) y valor a precio club de lo que se
-    paga (neto e IVA); valor por producto. Vínculo GENERAR PDF PARA EL CLUB (macro): exporta a PDF todas las hojas
+  - RESUMEN: por equipo y sección, valor del canje (a precio público general) y valor a pagar de lo que se compra
+    (a precio primer equipo o formativas, con neto e IVA); valor por producto. Vínculo GENERAR PDF PARA EL CLUB (macro): exporta a PDF todas las hojas
     visibles menos COSTOS.
-  - PRECIOS: por producto, precio público general, descuento y precio club (con IVA). El precio club es el de lo
-    que el club compre fuera del canje y el de las series formativas.
+  - PRECIOS: tres precios por producto (con IVA): público (hinchas y tienda oficial), primer equipo (lo que LNB y
+    LNF compren fuera del canje) y formativas. Los dos últimos salen del público con su descuento, terminados en 900.
   - LNB 2027 y LNF 2027: lo solicitado por el club, por sección y prenda: tallas, unidades, precios, canje
     (SÍ: 100% de descuento; viene marcado en todo lo solicitado por los primeros equipos y su cuerpo técnico) y
     valor a pagar.
-  - FORMATIVAS 2027: compra de las series formativas a precio club, por rama (varones y damas) y categoría
+  - FORMATIVAS 2027: compra de las series formativas a precio formativas, por rama (varones y damas) y categoría
     (Sub-11 a Sub-20): jugadores, producto (a elegir de la lista de precios) y unidades por jugador, con el mismo
     formato que la valorización FEVOCHI. Canje NO por defecto.
   - COSTOS (uso interno): costo unitario y código de inventario por producto, costo del canje y de lo vendido,
@@ -43,7 +43,7 @@ SIMULADOR = DIR / "Canje_Leones_Quilpue_2027.xlsx"
 SALIDA = DIR / "Propuesta_Comercial_Los_Leones_2027.xlsm"
 LOGO = DIR.parent / "_recursos" / "playmaker_logo_horizontal_navy.png"
 IVA = 0.19
-DESCUENTO = 0.10  # descuento general sobre el precio público (precio club y formativas)
+DESCUENTOS = {"primer": 0.20, "formativas": 0.10}  # descuento general sobre el precio público, por tipo de precio
 HOJA_INTERNA = "COSTOS"
 EQUIPOS = [("LNB", "LNB 2027", "Primer equipo masculino, Liga Nacional de Básquetbol"),
            ("LNF", "LNF 2027", "Primer equipo femenino, Liga Nacional Femenina")]
@@ -140,10 +140,22 @@ def leer_previo():
     azul = lambda c: c.font is not None and c.font.color is not None and c.font.color.rgb == "FF0000FF"  # noqa: E731
     previo = {"precios": {}, "costos": {}, "celdas": {}}
     pr = wb["PRECIOS"]
-    previo["iva"], previo["descuento"] = pr["C4"].value, pr["C5"].value
-    for r in range(8, pr.max_row + 1):
-        if pr.cell(r, 2).value and azul(pr.cell(r, 3)):
-            previo["precios"][texto(pr.cell(r, 2).value)] = (pr.cell(r, 3).value, pr.cell(r, 4).value, pr.cell(r, 7).value)
+    previo["iva"], previo["descuentos"] = pr["C4"].value, {}
+    for r in range(5, 8):
+        etq = texto(pr.cell(r, 2).value).lower()
+        if "primer equipo" in etq:
+            previo["descuentos"]["primer"] = pr.cell(r, 3).value
+        elif "formativas" in etq or "club" in etq:  # el formato anterior tenía un solo descuento club
+            previo["descuentos"]["formativas"] = pr.cell(r, 3).value
+    cab = next(r for r in range(1, 15) if texto(pr.cell(r, 2).value) == "PRODUCTO")
+    cols = {texto(pr.cell(cab, c).value).upper(): c for c in range(2, pr.max_column + 1)}
+    col = lambda *claves: next((c for t, c in cols.items() if all(k in t for k in claves)), None)  # noqa: E731
+    c_pub, c_obs = col("PRECIO PÚBLICO"), col("OBSERVACIONES")
+    c_dpe, c_dfo = col("DESCUENTO", "PRIMER"), col("DESCUENTO", "FORMATIVAS") or col("DESCUENTO CLUB")
+    for r in range(cab + 1, pr.max_row + 1):
+        if pr.cell(r, 2).value and azul(pr.cell(r, c_pub)):
+            v = lambda c: pr.cell(r, c).value if c else None  # noqa: E731
+            previo["precios"][texto(pr.cell(r, 2).value)] = (v(c_pub), v(c_dpe), v(c_dfo), v(c_obs))
     if HOJA_INTERNA in wb.sheetnames:
         co = wb[HOJA_INTERNA]
         for r in range(1, co.max_row + 1):
@@ -221,53 +233,63 @@ def main():
     # ---------------------------------------------------------------- PRECIOS
     pr = wb.active
     pr.title = "PRECIOS"
-    encabezado(pr, "PRECIOS POR PRODUCTO", "Precio público general (con IVA) y descuento: el precio club se calcula "
-                                           "solo, terminado en 900, y aplica a lo que el club compre fuera del canje y "
-                                           "a las series formativas.")
+    encabezado(pr, "PRECIOS POR PRODUCTO 2027", "Tres precios con IVA: público (hinchas y tienda oficial), primer equipo "
+                                                "(compras de LNB y LNF fuera del canje) y formativas. Los dos últimos se "
+                                                "calculan con su descuento y terminan en 900.")
     celda(pr, "B4", "IVA", f_tot, alinear=izq)
     celda(pr, "C4", previo["iva"] if previo and previo.get("iva") is not None else IVA, f_input, "0%", r_input)
-    celda(pr, "B5", "Descuento general para el club", f_tot, alinear=izq)
-    celda(pr, "C5", previo["descuento"] if previo and previo.get("descuento") is not None else DESCUENTO, f_input,
-          "0%", r_input)
-    celda(pr, "D5", "Se aplica a los productos que no tienen un descuento propio en la columna DESCUENTO.", f_nota,
+    prev_d = previo.get("descuentos", {}) if previo else {}
+    for fila, clave_d, txt in ((5, "primer", "Descuento general primer equipo"),
+                               (6, "formativas", "Descuento general formativas")):
+        celda(pr, f"B{fila}", txt, f_tot, alinear=izq)
+        v = prev_d.get(clave_d)
+        celda(pr, f"C{fila}", v if v is not None else DESCUENTOS[clave_d], f_input, "0%", r_input)
+    celda(pr, "D5", "Se aplica a los productos que no tienen un descuento propio en su columna de descuento.", f_nota,
           alinear=Alignment(vertical="center"), borde=False)
-    cabecera(pr, 7, 2, ["PRODUCTO", "PRECIO PÚBLICO GENERAL (CON IVA)", "DESCUENTO CLUB", "PRECIO CLUB (CON IVA)",
-                        "PRECIO CLUB NETO", "OBSERVACIONES"], alto=36)
-    fila_precio, r = {}, 8
+    cabecera(pr, 8, 2, ["PRODUCTO", "PRECIO PÚBLICO (HINCHAS Y TIENDA)", "DESCUENTO PRIMER EQUIPO",
+                        "PRECIO PRIMER EQUIPO", "DESCUENTO FORMATIVAS", "PRECIO FORMATIVAS", "OBSERVACIONES"], alto=40)
+    PRIMERA_PRECIO = 9
+    fila_precio, r = {}, PRIMERA_PRECIO
+
+    def con_descuento(fila, col_desc, celda_general):
+        # precio con descuento, llevado al valor terminado en 900 más cercano (como los precios de lista)
+        return (f'=IF(N(C{fila})=0,0,ROUND((N(C{fila})*(1-IF({col_desc}{fila}="",{celda_general},{col_desc}{fila}))'
+                f'-900)/1000,0)*1000+900)')
+
     for linea in LINEAS:
         celda(pr, f"B{r}", linea.upper(), Font(name="Calibri", size=10, bold=True, color=NAVY), relleno=r_sub,
               alinear=izq)
-        for col in "CDEFG":
+        for col in "CDEFGH":
             celda(pr, f"{col}{r}", None, relleno=r_sub)
         r += 1
         for k, (nombre, l, _p, _a, _ref) in PRODUCTOS.items():
             if l != linea:
                 continue
             fila_precio[k] = r
-            publico, desc, obs = (previo["precios"].get(nombre, (None, None, None)) if previo else (None, None, None))
+            publico, d_pe, d_fo, obs = (previo["precios"].get(nombre, (None,) * 4) if previo else (None,) * 4)
             celda(pr, f"B{r}", nombre, alinear=izq)
             celda(pr, f"C{r}", publico if publico is not None else lista[k], f_input, PESOS, r_input)
-            celda(pr, f"D{r}", desc, f_input, "0%", r_input)
-            # precio con descuento llevado al valor terminado en 900 más cercano (como los precios de lista)
-            celda(pr, f"E{r}", f'=IF(N(C{r})=0,0,ROUND((N(C{r})*(1-IF(D{r}="",$C$5,D{r}))-900)/1000,0)*1000+900)',
-                  f_tot, PESOS)
-            celda(pr, f"F{r}", f"=ROUND(E{r}/(1+$C$4),0)", formato=PESOS)
-            celda(pr, f"G{r}", obs, f_input, relleno=r_input, alinear=izq)
+            celda(pr, f"D{r}", d_pe, f_input, "0%", r_input)
+            celda(pr, f"E{r}", con_descuento(r, "D", "$C$5"), f_tot, PESOS)
+            celda(pr, f"F{r}", d_fo, f_input, "0%", r_input)
+            celda(pr, f"G{r}", con_descuento(r, "F", "$C$6"), f_tot, PESOS)
+            celda(pr, f"H{r}", obs, f_input, relleno=r_input, alinear=izq)
             r += 1
     ultima_precio = r - 1
-    for col, ancho in zip("BCDEFG", (38, 18, 13, 16, 15, 40)):
+    for col, ancho in zip("BCDEFGH", (38, 17, 13, 14, 13, 14, 36)):
         pr.column_dimensions[col].width = ancho
     dv = DataValidation(type="decimal", operator="greaterThanOrEqual", formula1="0", allow_blank=True,
                         errorTitle="Precio", error="Ingresa un precio en pesos (0 o más).")
     pr.add_data_validation(dv)
-    dv.add(f"C8:C{ultima_precio}")
+    dv.add(f"C{PRIMERA_PRECIO}:C{ultima_precio}")
     dvp = DataValidation(type="decimal", operator="between", formula1="0", formula2="1", allow_blank=True,
                          errorTitle="Descuento", error="Ingresa un porcentaje entre 0% y 100%.")
     pr.add_data_validation(dvp)
-    dvp.add("C5")
-    dvp.add(f"D8:D{ultima_precio}")
+    dvp.add("C5:C6")
+    dvp.add(f"D{PRIMERA_PRECIO}:D{ultima_precio}")
+    dvp.add(f"F{PRIMERA_PRECIO}:F{ultima_precio}")
 
-    def precio_de(k, col="E"):  # E: precio club; C: precio público
+    def precio_de(k, col="E"):  # C: público; E: primer equipo; G: formativas
         return f"PRECIOS!${col}${fila_precio[k]}"
 
     # ---------------------------------------------------------------- LNB 2027 y LNF 2027
@@ -278,7 +300,7 @@ def main():
                    f"{descripcion}, jugadores y cuerpo técnico. CANJE SÍ = 100% de descuento en esa prenda. Celdas "
                    "amarillas editables.")
         cabecera(ws, 5, 2, ["PRENDA SOLICITADA", "PRODUCTO PLAYMAKER", "TALLAS", "UNIDADES", "PRECIO PÚBLICO",
-                            "PRECIO CLUB", "CANJE", "VALOR A PAGAR"])
+                            "PRECIO PRIMER EQUIPO", "CANJE", "VALOR A PAGAR"])
         dv_canje = DataValidation(type="list", formula1='"SÍ,NO"', allow_blank=True, errorTitle="Canje",
                                   error="Elige SÍ (canje, 100% de descuento) o NO.")
         dv_u = DataValidation(type="whole", operator="greaterThanOrEqual", formula1="0", allow_blank=True,
@@ -322,12 +344,12 @@ def main():
 
     # ---------------------------------------------------------------- FORMATIVAS 2027
     fo = wb.create_sheet("FORMATIVAS 2027")
-    encabezado(fo, "SERIES FORMATIVAS 2027: COMPRA A PRECIO CLUB POR CATEGORÍA",
+    encabezado(fo, "SERIES FORMATIVAS 2027: COMPRA A PRECIO FORMATIVAS POR CATEGORÍA",
                "Celdas amarillas: jugadores, producto (lista desplegable) y unidades por jugador. El precio viene de la "
                "hoja PRECIOS. CANJE SÍ = 100% de descuento en esa prenda.")
     cabecera(fo, 5, 2, ["CATEGORÍA", "PRODUCTO PLAYMAKER", "JUGADORES", "UNIDADES POR JUGADOR", "TOTAL UNIDADES",
-                        "PRECIO PÚBLICO", "PRECIO CLUB", "CANJE", "VALOR A PAGAR"])
-    rango_nombres = f"PRECIOS!$B$8:$B${ultima_precio}"
+                        "PRECIO PÚBLICO", "PRECIO FORMATIVAS", "CANJE", "VALOR A PAGAR"])
+    rango_nombres = f"PRECIOS!$B${PRIMERA_PRECIO}:$B${ultima_precio}"
     dv_prod = DataValidation(type="list", formula1=f"={rango_nombres}", allow_blank=True, errorTitle="Producto",
                              error="Elige un producto de la hoja PRECIOS.")
     dv_canje_f = DataValidation(type="list", formula1='"SÍ,NO"', allow_blank=True, errorTitle="Canje",
@@ -336,7 +358,8 @@ def main():
                           errorTitle="Cantidad", error="Ingresa un número entero (0 o más).")
 
     def precio_por_nombre(ref, col):
-        return (f"IFERROR(N(INDEX(PRECIOS!${col}$8:${col}${ultima_precio},MATCH({ref},{rango_nombres},0))),0)")
+        return (f"IFERROR(N(INDEX(PRECIOS!${col}${PRIMERA_PRECIO}:${col}${ultima_precio},"
+                f"MATCH({ref},{rango_nombres},0))),0)")
 
     r = 6
     formativas = []  # (rama, [(categoría, primera fila, fila subtotal)], fila total rama)
@@ -359,7 +382,7 @@ def main():
                 entrada(fo, f"E{r}", 1 if prod else None, NUM)
                 celda(fo, f"F{r}", f"=N(D{r})*N(E{r})", formato=NUM)
                 celda(fo, f"G{r}", "=" + precio_por_nombre(f"C{r}", "C"), f_gris, PESOS)
-                celda(fo, f"H{r}", "=" + precio_por_nombre(f"C{r}", "E"), formato=PESOS)
+                celda(fo, f"H{r}", "=" + precio_por_nombre(f"C{r}", "G"), formato=PESOS)
                 entrada(fo, f"I{r}", "NO")
                 celda(fo, f"J{r}", f'=IF(I{r}="SÍ",0,F{r}*H{r})', f_tot, PESOS)
                 r += 1
@@ -392,10 +415,10 @@ def main():
     # ---------------------------------------------------------------- RESUMEN
     rs = wb.create_sheet("RESUMEN", 0)
     encabezado(rs, "PROPUESTA COMERCIAL 2027: CLUB DEPORTIVO COLEGIO LOS LEONES DE QUILPUÉ",
-               "Valores con IVA. El canje (100% de descuento) se valoriza a precio público general; el resto, a precio "
-               "club.")
+               "Valores con IVA. El canje (100% de descuento) se valoriza a precio público; lo que se compra, a precio "
+               "primer equipo (LNB y LNF) o formativas.")
     cabecera(rs, 5, 2, ["EQUIPO", "SECCIÓN", "UNIDADES", "VALOR TOTAL DEL CANJE (PRECIO PÚBLICO)",
-                        "VALOR PRECIO CLUB", "NETO", "IVA"], alto=36)
+                        "VALOR A PAGAR", "NETO", "IVA"], alto=36)
     r, filas_total = 6, []
 
     def fila_resumen(r, equipo, seccion, unid, canje, pagar, fuente=f_norm, relleno=None):
@@ -439,8 +462,8 @@ def main():
     r += 4
     celda(rs, f"B{r}", "VALOR POR PRODUCTO", f_sec, alinear=Alignment(vertical="center"), borde=False)
     r += 1
-    cabecera(rs, r, 2, ["PRODUCTO", "PRECIO PÚBLICO", "DESCUENTO", "PRECIO CLUB", "TOTAL UNIDADES",
-                        "VALOR TOTAL DEL CANJE (PRECIO PÚBLICO)", "VALOR PRECIO CLUB"], alto=36)
+    cabecera(rs, r, 2, ["PRODUCTO", "PRECIO PÚBLICO (HINCHAS)", "PRECIO PRIMER EQUIPO", "PRECIO FORMATIVAS",
+                        "TOTAL UNIDADES", "VALOR TOTAL DEL CANJE (PRECIO PÚBLICO)", "VALOR A PAGAR"], alto=40)
     r += 1
     p0 = r
     hojas_det = [f"'{h}'" for _, h, _ in EQUIPOS]
@@ -450,8 +473,8 @@ def main():
         fila_producto[k] = r
         celda(rs, f"B{r}", nombre, alinear=izq)
         celda(rs, f"C{r}", f"=PRECIOS!C{fp}", f_gris, PESOS)
-        celda(rs, f"D{r}", f"=IF(N(C{r})=0,0,1-E{r}/C{r})", formato=PCT)
-        celda(rs, f"E{r}", f"=PRECIOS!E{fp}", formato=PESOS)
+        celda(rs, f"D{r}", f"=PRECIOS!E{fp}", formato=PESOS)
+        celda(rs, f"E{r}", f"=PRECIOS!G{fp}", formato=PESOS)
         unid = "+".join(f'SUMIF({h}!$C:$C,"{nombre}",{h}!$E:$E)' for h in hojas_det)
         celda(rs, f"F{r}", f'={unid}+SUMIF({F}!$C:$C,"{nombre}",{F}!$F:$F)', formato=NUM)
         canje = "+".join(f'SUMIFS({h}!$E:$E,{h}!$C:$C,"{nombre}",{h}!$H:$H,"SÍ")' for h in hojas_det)
