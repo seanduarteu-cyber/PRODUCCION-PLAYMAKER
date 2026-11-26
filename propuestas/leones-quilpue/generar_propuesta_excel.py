@@ -17,7 +17,8 @@ Propuesta_Comercial_Los_Leones_2027.xlsm:
     canje de esta primera etapa y se muestra aparte como canje por definir.
   - FORMATIVAS 2027: compra de las series formativas a precio formativas, por rama (varones y damas) y categoría
     (Sub-11 a Sub-20): jugadores, producto (a elegir de la lista de precios) y unidades por jugador, con el mismo
-    formato que la valorización FEVOCHI. Canje NO por defecto.
+    formato que la valorización FEVOCHI. Canje NO por defecto. La camiseta y el short de juego de las formativas
+    son productos propios (con su precio), distintos de los del primer equipo.
   - COSTOS (uso interno): costo unitario y código de inventario por producto, costo del canje y de lo vendido,
     venta neta y resultado. No va en el PDF.
 Si la planilla ya existe, se conservan los precios, descuentos, unidades, canje y costos cargados en ella.
@@ -37,7 +38,8 @@ from openpyxl.worksheet.hyperlink import Hyperlink
 DIR = Path(__file__).parent
 sys.path.insert(0, str(DIR))
 sys.path.insert(0, str(DIR.parent))
-from generar_propuesta import PRENDAS, PRODUCTOS, SECCIONES, clave  # noqa: E402
+from generar_propuesta import PRENDAS, SECCIONES, clave  # noqa: E402
+from generar_propuesta import PRODUCTOS as PRODUCTOS_BASE  # noqa: E402
 from vba_proyecto import agregar_vba  # noqa: E402
 
 SOLICITUD = DIR / "Solicitud_indumentaria_CDC_Los_Leones_2027_v2.xlsx"
@@ -53,9 +55,27 @@ LINEAS = ["Juego", "Entrenamiento", "Presentación y viaje", "Socios e hinchas"]
 RAMAS = ["Varones", "Damas"]
 CATEGORIAS = ["Sub-11", "Sub-13", "Sub-14", "Sub-16", "Sub-18", "Sub-20"]
 # prendas que trae cada categoría formativa (se pueden cambiar en la planilla) y filas libres para agregar otras
-PRENDAS_FORMATIVAS = ["camiseta_juego", "short_juego", "calcetas", "polera_calentamiento", "poleron_buzo",
+PRENDAS_FORMATIVAS = ["camiseta_juego_formativas", "short_juego_formativas", "calcetas", "polera_calentamiento", "poleron_buzo",
                       "pantalon_buzo"]
 FILAS_LIBRES = 1
+
+# La indumentaria de juego de las formativas es otro producto, con su propio precio: la del primer equipo se
+# distingue en el nombre. Los nombres anteriores se traspasan al leer una planilla ya cargada.
+NOMBRES_PRIMER_EQUIPO = {"camiseta_juego": "Camiseta de juego primer equipo",
+                         "short_juego": "Short de juego primer equipo"}
+JUEGO_FORMATIVAS = {  # clave: (nombre, línea, precio público por defecto, adicional, referencia)
+    "camiseta_juego_formativas": ("Camiseta de juego formativas", "Juego", 20900, True,
+                                  "Versión para series formativas, con su propio precio"),
+    "short_juego_formativas": ("Short de juego formativas", "Juego", 18900, True,
+                               "Versión para series formativas, con su propio precio"),
+}
+PRODUCTOS = {}
+for _k, _v in PRODUCTOS_BASE.items():
+    PRODUCTOS[_k] = (NOMBRES_PRIMER_EQUIPO.get(_k, _v[0]),) + tuple(_v[1:])
+    if _k == "short_juego":
+        PRODUCTOS.update(JUEGO_FORMATIVAS)
+ALIAS = {PRODUCTOS_BASE[k][0]: n for k, n in NOMBRES_PRIMER_EQUIPO.items()}  # nombre anterior -> nombre nuevo
+ALIAS_FORMATIVAS = {PRODUCTOS_BASE[k][0]: JUEGO_FORMATIVAS[k + "_formativas"][0] for k in NOMBRES_PRIMER_EQUIPO}
 ETAPA_1, ETAPA_2 = "1° SEMESTRE", "2° SEMESTRE"
 COLORES_2_SEMESTRE = ("azul", "negr")  # indumentaria de juego de estos colores: 2° semestre
 
@@ -129,7 +149,7 @@ def precios_lista():
     precios = {k: v[2] for k, v in PRODUCTOS.items()}
     if SIMULADOR.exists():
         pr = openpyxl.load_workbook(SIMULADOR)["Precios"]
-        nombres = {v[0]: k for k, v in PRODUCTOS.items()}
+        nombres = {v[0]: k for k, v in PRODUCTOS_BASE.items()}
         for r in range(5, pr.max_row + 1):
             n = texto(pr.cell(r, 1).value).replace(" (nueva)", "")
             if n in nombres and isinstance(pr.cell(r, 3).value, (int, float)):
@@ -159,12 +179,14 @@ def leer_previo():
     for r in range(cab + 1, pr.max_row + 1):
         if pr.cell(r, 2).value and azul(pr.cell(r, c_pub)):
             v = lambda c: pr.cell(r, c).value if c else None  # noqa: E731
-            previo["precios"][texto(pr.cell(r, 2).value)] = (v(c_pub), v(c_dpe), v(c_dfo), v(c_obs))
+            n = texto(pr.cell(r, 2).value)
+            previo["precios"][ALIAS.get(n, n)] = (v(c_pub), v(c_dpe), v(c_dfo), v(c_obs))
     if HOJA_INTERNA in wb.sheetnames:
         co = wb[HOJA_INTERNA]
         for r in range(1, co.max_row + 1):
             if co.cell(r, 2).value and azul(co.cell(r, 4)):
-                previo["costos"][texto(co.cell(r, 2).value)] = (co.cell(r, 3).value, co.cell(r, 4).value)
+                n = texto(co.cell(r, 2).value)
+                previo["costos"][ALIAS.get(n, n)] = (co.cell(r, 3).value, co.cell(r, 4).value)
     for hoja in [h for _, h, _ in EQUIPOS] + ["FORMATIVAS 2027"]:
         if hoja not in wb.sheetnames:
             continue
@@ -176,7 +198,11 @@ def leer_previo():
         for row in ws.iter_rows(min_row=cab + 1):
             for c in row:
                 if azul(c) and c.value is not None and nombres.get(c.column):
-                    previo["celdas"][(hoja, c.row, nombres[c.column])] = c.value
+                    v = c.value
+                    if nombres[c.column] == "PRODUCTO PLAYMAKER" and isinstance(v, str):
+                        # en formativas, la indumentaria de juego pasa a su versión formativa
+                        v = ALIAS_FORMATIVAS.get(v, v) if hoja == "FORMATIVAS 2027" else ALIAS.get(v, v)
+                    previo["celdas"][(hoja, c.row, nombres[c.column])] = v
     return previo
 
 
@@ -289,6 +315,8 @@ def main():
             celda(pr, f"E{r}", con_descuento(r, "D", "$C$5"), f_tot, PESOS)
             celda(pr, f"F{r}", d_fo, f_input, "0%", r_input)
             celda(pr, f"G{r}", con_descuento(r, "F", "$C$6"), f_tot, PESOS)
+            if obs is None and k in JUEGO_FORMATIVAS:
+                obs = JUEGO_FORMATIVAS[k][4]
             celda(pr, f"H{r}", obs, f_input, relleno=r_input, alinear=izq)
             r += 1
     ultima_precio = r - 1
