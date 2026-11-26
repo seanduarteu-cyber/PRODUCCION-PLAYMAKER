@@ -397,6 +397,71 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
     'diciembre: 40 prendas de vestir del pedido ingresado (camisetas y shorts; sin medias, vinilo ni bolsos); la ficha creada en diciembre no cuenta: ' + JSON.stringify(dic));
   proys.splice(proys.findIndex(x => x.id === 30), 1);
 
+  // 14 · telas del pedido: al ingresar, cada molde con las telas de la ficha; se confirma la tela y su proveedor; se
+  // descuenta el estimado (cortes del mismo molde con la misma tela); sin estimado, el cortador debe pesar
+  await ctx.route(/ygcsqrylpibhofvetdyh\.supabase\.co\/rest\/v1\/planificacion\?id=eq\.\d+/, r => { const q = r.request();
+    if (q.method() !== 'PATCH') return r.fallback(); const id = +new URL(q.url()).searchParams.get('id').slice(3), x = proys.find(y => y.id === id);
+    if (x) Object.assign(x, JSON.parse(q.postData())); return r.fulfill({ contentType: 'application/json', body: '[]' }); });
+  const pesosPro = costeo.filter(r => r.etapa === 'CORTE' && r.molde === '18 · FUTHOMU02' && r.tela === 'Pro' && +r.prendas > 0);
+  const kgPro = pesosPro.reduce((t, r) => t + (+r.kg_cortado || 0) + (+r.kg_merma || 0), 0) / pesosPro.reduce((t, r) => t + +r.prendas, 0);
+  movs = movs.filter(m => m.planificacion_id !== 2);
+  const ti = await p.evaluate(async () => {
+    FICHAS_MAP['COT-4001'] = (await apiF('fichas_tallas?select=*')).find(f => f.ref === 'COT-4001');
+    DETS_MAP['COT-4001'] = (await apiF('fichas_detalle?select=*')).filter(d => d.ref === 'COT-4001');
+    CORTES_SIM = null; await Promise.all([cargarInsumos(), cargarCortesSim()]);
+    if (!$('f-consumo')) document.body.insertAdjacentHTML('beforeend', '<div id="f-consumo"></div>');
+    const desg = { '18 · FUTHOMU02': 8, 'MEDIAS-ADL': true };
+    leerGrid = (orig => cid => cid === 'f-desglose' ? { desglose: desg, total: 8 } : orig(cid))(leerGrid);
+    const fm = telasFichaPorMolde('COT-4001'); pintarTelasIngreso('COT-4001', desg);
+    const filas1 = [...document.querySelectorAll('#ti-tabla tr[data-ti]')].map(t => t.innerText.replace(/\s+/g, ' '));
+    const falta1 = faltaTelasIngreso('COT-4001');
+    cambiarTelaIngreso(0, 'prov', 'Lafayette', true); cambiarTelaIngreso(1, 'tela', 'Dry fit'); cambiarTelaIngreso(1, 'prov', 'Comercial Alameda', true);
+    const filas2 = [...document.querySelectorAll('#ti-tabla tr[data-ti]')].map(t => t.innerText.replace(/\s+/g, ' '));
+    const falta2 = faltaTelasIngreso('COT-4001');
+    const n = await guardarTelasPedido(proyCosteo(2), 'COT-4001');   // (al ingresar, la recarga trae las telas guardadas)
+    return { fm, filas1, falta1, filas2, falta2, n };
+  });
+  ok(JSON.stringify(ti.fm) === JSON.stringify({ '18 · FUTHOMU02': ['Pro', 'Nacional'] }), 'ingreso: el molde trae las telas de la ficha (Pro y la manga en Nacional): ' + JSON.stringify(ti.fm));
+  ok(ti.filas1.length === 2 && new RegExp(String(Math.round(kgPro * 8 * 100) / 100).replace('.', ',') + ' ?kg ?8 × ').test(ti.filas1[0]) && /promedio de \d+ cortes? \(\d+ prendas\) de este molde con esta tela/.test(ti.filas1[0])
+    && ti.falta1.length === 2 && ti.falta1.every(x => /falta el proveedor/.test(x)),
+    'ingreso: Pro con su estimado (8 × kg por prenda de los cortes del mismo molde con Pro); falta elegir el proveedor de cada tela: ' + ti.filas1[0]);
+  ok(/sin estimado/.test(ti.filas2[1]) && !ti.falta2.length && ti.n === 1, 'ingreso: se cambia la manga a Dry fit (sin cortes de este molde con esa tela: sin estimado) y se eligen los proveedores; se descuenta solo el estimado de Pro');
+  const plan2 = proys.find(x => x.id === 2).telas || [], mv2 = movs.filter(m => m.planificacion_id === 2);
+  ok(plan2.length === 2 && plan2[0].tela === 'Pro' && plan2[0].proveedor === 'Lafayette' && Math.abs(plan2[0].kg_prenda - kgPro) < 1e-3 && plan2[1].tela === 'Dry fit' && plan2[1].kg_prenda == null
+    && mv2.length === 1 && mv2[0].insumo_id === 1 && Math.abs(mv2[0].cantidad + kgPro * 8) < 0.01 && mv2[0].proveedor === 'Lafayette' && /^Estimado al ingresar · 18 · FUTHOMU02: 8 prendas × /.test(mv2[0].nota),
+    'se guardan las telas del pedido (con proveedor y estimado) y se descuenta del stock el estimado de Pro con su proveedor: ' + JSON.stringify(mv2.map(m => m.cantidad + ' ' + m.nota)));
+  // corte: Dry fit no tiene estimado, así que hay que pesarla: no se puede terminar sin registrar ni guardar sin ella
+  await p.evaluate(() => abrirRegistroCosteo(2, 'CORTE', true)); await p.waitForTimeout(700);
+  const mc = await p.innerText('#modal');
+  ok(/Hay que pesar: 18 · FUTHOMU02 · Dry fit/.test(mc) && /Pesar: obligatorio/.test(mc) && !/Terminar sin registrar/.test(mc) && /descontado al ingresar/.test(mc),
+    'corte: avisa que Dry fit se pesa obligatoriamente, muestra lo estimado de Pro y no deja terminar sin registrar');
+  await p.evaluate(() => cerrarModal()); await p.evaluate(() => abrirRegistroCosteo(2, 'CORTE')); await p.waitForTimeout(700);
+  await p.fill('#rc-c-0-0', '3.1'); await p.fill('#rc-m-0-0', '0.3'); await p.click('#modal .acciones .btn.pri'); await p.waitForTimeout(600);
+  ok(!costeo.some(r => r.planificacion_id === 2 && r.etapa === 'CORTE') && await p.isVisible('#rc-c-0-1'), 'sin el peso de Dry fit no se guarda el corte');
+  await p.fill('#rc-c-0-1', '1'); await p.fill('#rc-m-0-1', '0.2'); await p.click('#modal .acciones .btn.pri'); await p.waitForTimeout(1200);
+  const mv3 = movs.filter(m => m.planificacion_id === 2).map(m => ({ i: m.insumo_id, c: m.cantidad, p: m.proveedor, n: m.nota }));
+  ok(costeo.filter(r => r.planificacion_id === 2 && r.etapa === 'CORTE').length === 2 && mv3.length === 2 && mv3.find(m => m.i === 1).c === -3.4 && mv3.find(m => m.i === 1).p === 'Lafayette'
+    && /^Corte pesado/.test(mv3.find(m => m.i === 1).n) && Math.abs(mv3.find(m => m.i === 9).c + 1.2 * 5) < 1e-9 && mv3.find(m => m.i === 9).p === 'Comercial Alameda',
+    'corte: lo pesado reemplaza al estimado en el stock (Pro 3,4 kg con Lafayette; Dry fit 1,2 kg = 6 m con Comercial Alameda): ' + JSON.stringify(mv3));
+  // el costeo usa el precio del proveedor elegido
+  const pk = await p.evaluate(() => { const antes = [PRECIOS, PRECIOS_OK]; PRECIOS = [{ id: 1, insumo_id: 1, proveedor: 'Lafayette', presentacion: 'kg', precio: 12000, activo: true },
+    { id: 2, insumo_id: 1, proveedor: 'Otro', presentacion: 'kg', precio: 15000, activo: true }]; PRECIOS_OK = true;
+    const r = { prov: precioKgPedido(proyCosteo(2), '18 · FUTHOMU02', insumoDe(1)), sin: precioKgPedido(proyCosteo(1), '18 · FUTHOMU02', insumoDe(1)), ins: precioKg(insumoDe(1)) }; [PRECIOS, PRECIOS_OK] = antes; return r; });
+  ok(pk.prov === 12000 && pk.sin === pk.ins && pk.ins !== 12000, 'costeo: la tela del pedido con el precio de su proveedor (Lafayette $12.000/kg); sin proveedor elegido, el precio del insumo: ' + JSON.stringify(pk));
+  // registros de pesos: todos los cortes, con su kg por prenda frente al promedio del mismo molde y tela
+  costeo.push({ id: 950, etapa: 'CORTE', planificacion_id: 31, cot: 'COT-5002', molde: '18 · FUTHOMU02', tela: 'Pro', kg_cortado: 30, kg_merma: 0, prendas: 8, usuario: 'Cortador', updated_at: '2026-11-20T10:00:00Z' });
+  await p.evaluate(() => { CORTES_SIM = null; COSTEO_MODO = 'pesos'; PESOS_Q = ''; PESOS_ALERTA = false; renderCosteo(); }); await p.waitForTimeout(1500);
+  const raro = (await p.innerText('#ps-tabla tr[data-peso="950"]')).replace(/\s+/g, ' ');
+  const nTodos = await p.$$eval('#ps-tabla tr[data-peso]', t => t.length);
+  await p.check('#view-costeo input[type=checkbox]'); await p.waitForTimeout(900);
+  const nRaros = await p.$$eval('#ps-tabla tr[data-peso]', t => t.length);
+  const est18 = await p.evaluate(() => estimadoMoldeTela('18 · FUTHOMU02', 'Pro'));
+  ok(/COT-5002 .*18 · FUTHOMU02 Pro 8 30 0 0% 3,75 /.test(raro) && /más de 1,2 kg por prenda/.test(raro) && /% de lo típico/.test(raro) && /no entra al estimado/.test(raro)
+    && nTodos === costeo.filter(r => r.etapa === 'CORTE').length && nRaros === 1,
+    'registros de pesos: lista todos los cortes y marca solo el de 30 kg para 8 camisetas (3,75 kg por prenda, lejos de lo típico); el filtro deja solo ese: ' + raro);
+  ok(est18.fuera === 1 && est18.cortes === 2 && est18.kgPP < 0.5, 'el peso mal anotado no entra al estimado del molde con esa tela hasta corregirlo: ' + JSON.stringify(est18));
+  costeo.splice(costeo.findIndex(r => r.id === 950), 1);
+
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
   await b.close();
   console.log(fallas ? fallas + ' FALLAS' : 'TODO OK'); process.exit(fallas ? 1 : 0);

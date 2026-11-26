@@ -28,10 +28,29 @@ costos + gasto general
      el botón «Registrar kilos» de la tarjeta.
    - Costo = (kg cortados + kg merma) × precio por kg. Si la tela se lleva en metros, precio por kg = precio por metro ×
      rendimiento (m por kg): cada tela necesita su precio y, si va en metros, su rendimiento.
-   - Mientras no se registra el corte, la tela se estima con el consumo teórico del molde (consumo por pieza del
-     catálogo de moldes del panel), y el pedido queda marcado «falta: registro del corte».
-   - El stock de tela queda con lo que de verdad se usó: el consumo real reemplaza al teórico descontado al ingresar.
-   - Se puede «Terminar sin registrar» (el costeo queda incompleto y se registra después desde Costeo).
+   - TELAS DEL PEDIDO (al ingresar a producción, requiere el SQL 26A): en «Ingreso a producción», la sección «Telas del
+     pedido» trae cada molde del desglose con las telas que indica la ficha para ese molde (la tela de la prenda y las
+     de las piezas del despiece). Quien ingresa CONFIRMA la tela (puede cambiarla, agregar o quitar) y ELIGE SU
+     PROVEEDOR (obligatorio): sin eso el pedido no ingresa. Queda guardado en el pedido.
+   - ESTIMADO EN KILOS: kg por prenda = promedio de todos los cortes ya pesados del MISMO MOLDE con la MISMA TELA (se
+     afina con cada corte nuevo). Al ingresar se descuenta del stock: prendas × kg por prenda, con el proveedor elegido.
+     Con 3 cortes o más, uno muy lejos de lo típico (más de 2,5 veces o menos de 0,4 veces la mediana) se considera mal
+     anotado y no entra al estimado hasta que se corrija (ver «Registros de pesos»).
+   - SIN ESTIMADO (no hay cortes de ese molde con esa tela): no se descuenta al ingresar y en el corte esa tela se PESA
+     OBLIGATORIAMENTE: el registro del corte lo avisa, no guarda sin ese peso y no ofrece «Terminar sin registrar».
+   - Al registrar el corte, lo pesado de cada molde y tela REEMPLAZA al estimado en el stock; lo que no se pesó sigue con
+     su estimado. Los movimientos de stock dicen «Estimado al ingresar» o «Corte pesado» y llevan el proveedor.
+   - Costo de la tela: con el precio del PROVEEDOR ELEGIDO al ingresar (Precios por proveedor); sin proveedor o sin
+     precio de ese proveedor, el precio del insumo.
+   - Mientras no se registra el corte, el costeo usa lo estimado al ingresar; si el pedido no lo tiene (ingresado antes
+     del SQL 26A), el consumo teórico del molde o el peso promedio de su tipo de prenda. Queda marcado «falta: registro
+     del corte».
+   - «Terminar sin registrar» solo si todas las telas del pedido tienen estimado.
+   - REGISTROS DE PESOS (Costeo › Registros de pesos): todos los cortes pesados, con su kg por prenda frente a lo típico
+     del mismo molde con la misma tela (la mediana; con 2 cortes, el otro). Marca los que se ven raros: lejos de lo
+     típico (±40%), más de 1,2 kg o menos de 50 g por prenda, merma sobre 35%, sin prendas anotadas, solo merma.
+     «Solo los que se ven raros» los filtra y «Editar» abre el registro del corte de ese pedido (aunque ya se haya
+     entregado) para corregirlo.
 2. Insumos por consumo (Costeo → «Insumos por prenda»)
    - Lo que lleva UNA prenda de cada insumo (elástico, hilo, cierre, etiqueta, bolsa…), en la unidad del insumo.
    - Los insumos que no son tela hay que crearlos primero («+ Nuevo insumo» en esa misma pestaña o en Precios): las
