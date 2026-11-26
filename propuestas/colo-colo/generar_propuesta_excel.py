@@ -21,8 +21,8 @@ FEVOCHI y de Los Leones:
     técnico y del stock comercial, costo de lo vendido y margen, canje de los primeros equipos (a precio público y a
     costo) y margen total, con un supuesto de otros costos (% de la venta) y el punto de equilibrio.
   - COSTOS (uso interno): costo y margen por producto y resultado de la propuesta.
-En formativas y comercial se usa la cantidad ajustada del club (Q ADAPTADA o Q MODIFICADA) y, si no la tiene,
-la cantidad pedida. Si la planilla ya existe, se conservan los precios, descuentos, costos y cantidades cargados,
+En formativas y comercial se usa la cantidad ajustada del club (Q ADAPTADA o Q MODIFICADA); si la dejó en blanco,
+queda en 0, igual que en los totales de su planilla (esas filas se marcan para revisarlas). Si la planilla ya existe, se conservan los precios, descuentos, costos y cantidades cargados,
 y las celdas que el usuario haya agregado debajo o a la derecha de las tablas.
 """
 
@@ -33,7 +33,7 @@ from pathlib import Path
 import openpyxl
 import openpyxl.utils
 from openpyxl.drawing.image import Image as XLImage
-from openpyxl.formatting.rule import CellIsRule
+from openpyxl.formatting.rule import CellIsRule, FormulaRule
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.worksheet.hyperlink import Hyperlink
@@ -148,7 +148,8 @@ def titulo_rama(s):
 
 
 def leer_requerimiento():
-    """Por categoría: [(rama, tipo, prenda, modelo, color, producto, cantidad pedida, cantidad ajustada)]."""
+    """Por categoría: [(rama, tipo, prenda, modelo, color, producto, cantidad pedida, cantidad ajustada, sin ajuste)].
+    sin ajuste: el club dejó en blanco la cantidad ajustada (cuenta como 0, como en los totales de su planilla)."""
     wb = openpyxl.load_workbook(REQUERIMIENTO)
     datos = {}
     for clave, pestaña, *_x in CATEGORIAS:
@@ -168,10 +169,12 @@ def leer_requerimiento():
                 sys.exit(f"Prenda sin producto asignado: {d} (agrégala en MAPA)")
             g, h = ws.cell(r, 7).value, ws.cell(r, 8).value
             pedida = g if isinstance(g, (int, float)) else 0
-            ajustada = h if isinstance(h, (int, float)) else pedida
+            ajustada = h if isinstance(h, (int, float)) else 0
+            sin_ajuste = clave != "canje" and not isinstance(h, (int, float)) and pedida > 0
             prenda = texto(d).replace("ò", "ó").replace("à", "á")
             filas.append((rama, tipo, prenda[0].upper() + prenda[1:], texto(ws.cell(r, 5).value).capitalize(),
-                          texto(ws.cell(r, 6).value), k, pedida, ajustada if clave != "canje" else pedida))
+                          texto(ws.cell(r, 6).value), k, pedida, ajustada if clave != "canje" else pedida,
+                          sin_ajuste))
         datos[clave] = filas
     return datos
 
@@ -397,8 +400,8 @@ def main():
         encabezado(ws, f"{titulo.upper()} 2027",
                    ("Todo en canje: el valor del canje es el valor a precio público menos lo que paga el club (con "
                     "100% de descuento, el club no paga)." if es_canje else
-                    f"Precio {etq.lower()} de la hoja PRECIOS. CANTIDAD: la ajustada por el club (o la pedida si no "
-                    "la ajustó).") + " Celdas amarillas editables.")
+                    f"Precio {etq.lower()} de la hoja PRECIOS. CANTIDAD: la ajustada por el club (si la dejó en "
+                    "blanco, 0, como en sus totales; esas filas quedan marcadas).") + " Celdas amarillas editables.")
         cabecera(ws, 5, 2, ["RAMA", "TIPO", "PRENDA SOLICITADA", "MODELO", "COLOR", "PRODUCTO PLAYMAKER",
                             "CANTIDAD PEDIDA", "CANTIDAD", "PRECIO PÚBLICO", f"PRECIO {etq}",
                             "VALOR A PRECIO PÚBLICO", "VALOR A PAGAR", "VALOR DEL CANJE" if es_canje else
@@ -410,7 +413,7 @@ def main():
                               errorTitle="Cantidad", error="Ingresa un número entero (0 o más).")
         r, ramas, rama_actual, f0 = 6, [], None, None
         filas = datos[clave]
-        for i, (rama, tipo, prenda, modelo, color, k, pedida, cant) in enumerate(filas):
+        for i, (rama, tipo, prenda, modelo, color, k, pedida, cant, sin_ajuste) in enumerate(filas):
             if rama != rama_actual:
                 if rama_actual is not None:
                     ramas.append((rama_actual, f0, r - 1))
@@ -424,7 +427,11 @@ def main():
             d_, k_ = asignado[(clave, i)]
             celda(ws, f"G{r}", nombre_producto(k_, d_), f_input, relleno=r_input, alinear=izq)
             celda(ws, f"H{r}", pedida, f_gris, NUM)
-            entrada(ws, f"I{r}", cant, NUM)
+            v_prev = previo["celdas"].get((hoja, r, "CANTIDAD")) if previo else None
+            if sin_ajuste and v_prev == pedida:  # el formato anterior ponía la pedida: pasa a 0 como en el club
+                celda(ws, f"I{r}", cant, f_input, NUM, r_input)
+            else:
+                entrada(ws, f"I{r}", cant, NUM)
             celda(ws, f"J{r}", "=" + por_nombre(f"G{r}", "D"), f_gris, PESOS)
             celda(ws, f"K{r}", "=" + por_nombre(f"G{r}", col_precio[clave]), formato=PESOS)
             celda(ws, f"L{r}", f"=N(I{r})*J{r}", formato=PESOS)
@@ -438,6 +445,9 @@ def main():
         dv_u.add(f"I6:I{r - 1}")
         ws.add_data_validation(dv_prod)
         ws.add_data_validation(dv_u)
+        if not es_canje:  # pedida por el club pero sin cantidad (Q en blanco o 0): se marca para revisarla
+            ws.conditional_formatting.add(f"H6:I{r - 1}", FormulaRule(formula=["AND($H6>0,N($I6)=0)"],
+                                                                      fill=PatternFill("solid", fgColor="F8CBAD")))
         celda(ws, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
         for col in "CDEFGJK":
             celda(ws, f"{col}{r}", None, f_gran, relleno=r_gran)
