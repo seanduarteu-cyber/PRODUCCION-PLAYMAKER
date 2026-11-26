@@ -1,0 +1,95 @@
+/* Estilo de la propuesta comercial 2027 para el CSD Colo-Colo (lo usa generar_pdf.py): negro y blanco del club. */
+@font-face { font-family: "Poppins"; font-weight: 400; src: url("../_recursos/fonts/Poppins-Regular.ttf"); }
+@font-face { font-family: "Poppins"; font-weight: 600; src: url("../_recursos/fonts/Poppins-SemiBold.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 700; src: url("../_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+@font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+@page { size: A4; margin: 0; }
+:root { --negro: #111111; --texto: #1A1A1A; --suave: #3A3A3A; --gris: #6B6B6B; --linea: #D9D9D9; --fondo: #F4F4F2;
+        --claro: #E6E6E6; --sub: #EDEDEB; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: #fff; }
+body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; padding: 18mm 18mm 0; background: #fff; }
+.page:last-child { page-break-after: auto; }
+
+.cab { display: flex; justify-content: space-between; font-size: 6.6pt; letter-spacing: 2.4px; padding-bottom: 7px; border-bottom: 1pt solid var(--negro); }
+.cab b { color: var(--negro); font-weight: 600; }
+.cab span { color: var(--gris); }
+.pie { position: absolute; left: 18mm; right: 18mm; bottom: 11mm; display: flex; align-items: center; justify-content: space-between;
+       border-top: 0.6pt solid var(--linea); padding-top: 6px; font-size: 5.6pt; letter-spacing: 1.6px; color: var(--gris); }
+.pie img { height: 9px; filter: brightness(0); }
+.pie .num { font-family: "Playfair"; font-weight: 700; font-size: 8.5pt; letter-spacing: 0; color: var(--negro); }
+
+h1 { font-family: "Playfair"; font-weight: 700; font-size: 23pt; color: var(--negro); margin-top: 14px; line-height: 1.15; }
+h2 { font-size: 7.4pt; font-weight: 600; letter-spacing: 2.4px; color: var(--negro); margin-top: 16px; padding-bottom: 5px; border-bottom: 1pt solid var(--negro); }
+.intro { font-size: 9pt; line-height: 1.6; margin-top: 10px; color: var(--suave); }
+.intro.corta { font-size: 8.4pt; margin-top: 6px; }
+.leyenda { font-size: 7pt; color: var(--gris); margin-top: 6px; line-height: 1.5; }
+
+/* tablas */
+table.tabla { width: 100%; border-collapse: collapse; margin-top: 10px; }
+table.tabla th { background: var(--negro); color: #fff; font-size: 6pt; letter-spacing: 1.1px; font-weight: 600; text-align: left; padding: 6px 7px; }
+table.tabla th.n { text-align: right; white-space: normal; }
+table.tabla td { font-size: 7.8pt; padding: 4px 7px; border-bottom: 0.6pt solid var(--linea); vertical-align: top; line-height: 1.35; }
+table.tabla .n { text-align: right; white-space: nowrap; }
+table.tabla .b { font-weight: 600; color: var(--negro); }
+table.tabla td.canje { text-align: right; white-space: nowrap; font-weight: 600; color: var(--negro); background: var(--fondo); }
+table.tabla tr.total td { background: var(--negro); color: #fff; font-weight: 600; border-bottom: 0; }
+table.tabla tr.sub td { background: var(--sub); font-weight: 600; color: var(--negro); }
+table.tabla tr.sec td { font-size: 6.6pt; letter-spacing: 2px; color: var(--negro); font-weight: 600; padding-top: 9px; padding-bottom: 3px;
+                        border-bottom: 1pt solid var(--negro); }
+table.tabla tr.cat td:first-child { font-weight: 600; }
+table.tabla .suave { color: var(--gris); font-size: 7pt; }
+table.res td { padding-top: 3px; padding-bottom: 3px; }
+table.det, table.precios { table-layout: fixed; }
+table.det td, table.precios td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+table.det th, table.precios th { vertical-align: bottom; line-height: 1.3; }
+table.det td { padding-top: 2.5px; padding-bottom: 2.5px; font-size: 7.2pt; line-height: 1.3; }
+table.precios td { padding-top: 2.5px; padding-bottom: 2.5px; font-size: 7.4pt; line-height: 1.3; }
+table.det tr.sec td, table.precios tr.sec td { padding-top: 7px; padding-bottom: 2px; }
+table.precios col.p { width: 37%; } table.precios col.l { width: 15%; } table.precios col.m { width: 16%; }
+table.det col.p { width: 33%; } table.det col.mo { width: 11%; } table.det col.co { width: 14%; } table.det col.u { width: 9%; }
+table.det.c6 col.m { width: 16.5%; }
+table.det.c7 col.p { width: 28%; } table.det.c7 col.mo { width: 10%; } table.det.c7 col.co { width: 13%; }
+table.det.c7 col.u { width: 8%; } table.det.c7 col.m { width: 13.66%; }
+table.det td.co { white-space: normal; }
+.page.detalle h1 { font-size: 19pt; margin-top: 10px; }
+
+/* cifras */
+.cifras { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
+.cifras > div { background: var(--fondo); border-left: 3px solid var(--negro); padding: 10px 11px; }
+.cifras small { display: block; font-size: 5.8pt; letter-spacing: 1.4px; color: var(--gris); font-weight: 600; }
+.cifras b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 14pt; color: var(--negro); margin-top: 3px; }
+.cifras span { display: block; font-size: 6.8pt; color: var(--gris); margin-top: 2px; line-height: 1.35; }
+
+/* portada y cierre */
+.portada { background: var(--negro); color: #fff; text-align: center; padding-top: 30mm; }
+.portada::after { content: ""; position: absolute; inset: 9mm; border: 0.5pt solid rgba(255,255,255,.35); pointer-events: none; }
+.portada .logo { height: 30px; }
+.portada .kicker { margin-top: 32mm; font-size: 8.5pt; font-weight: 600; letter-spacing: 4px; color: #BDBDBD; }
+.portada h1 { color: #fff; font-size: 33pt; margin-top: 12px; }
+.portada .sub { font-family: "Playfair"; font-style: italic; font-size: 12pt; color: #D0D0D0; margin: 14px auto 0; width: 140mm; line-height: 1.5; }
+.portada .regla { width: 40mm; height: 0.8pt; background: #fff; margin: 16mm auto 0; }
+.cifras-portada { display: flex; justify-content: center; margin: 12mm auto 0; width: 160mm; }
+.cifras-portada div { flex: 1; padding: 0 8px; border-right: 0.6pt solid rgba(255,255,255,.35); }
+.cifras-portada div:last-child { border-right: 0; }
+.cifras-portada b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 21pt; color: #fff; }
+.cifras-portada span { font-size: 7.4pt; letter-spacing: 1px; color: #BDBDBD; }
+.portada .firma { margin-top: 26mm; }
+.firma small { display: block; font-size: 7pt; letter-spacing: 3px; color: #BDBDBD; font-weight: 600; margin-bottom: 6px; }
+.firma b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 15pt; color: #fff; }
+.firma span { display: block; font-size: 8.4pt; color: #BDBDBD; margin-top: 4px; }
+.portada .pie { border-top-color: rgba(255,255,255,.25); color: #BDBDBD; }
+.portada .pie img { filter: brightness(0) invert(1); }
+.portada .pie .num { color: #fff; }
+.cierre { padding-top: 32mm; }
+.cierre .kicker { margin-top: 0; }
+.pasos-cierre { width: 140mm; margin: 16mm auto 0; text-align: left; }
+.pasos-cierre > div { display: flex; gap: 16px; padding: 13px 0; border-bottom: 0.6pt solid rgba(255,255,255,.2); }
+.pasos-cierre em { font-family: "Playfair"; font-style: normal; font-weight: 700; font-size: 19pt; color: #fff; width: 30px; }
+.pasos-cierre b { display: block; font-size: 10pt; color: #fff; }
+.pasos-cierre p { font-size: 8.2pt; color: #C8C8C8; margin-top: 3px; line-height: 1.5; }
+.cierre .lema { font-family: "Playfair"; font-style: italic; font-size: 14pt; color: #fff; margin-top: 18mm; }
+.cierre .firma { margin-top: 10mm; }
