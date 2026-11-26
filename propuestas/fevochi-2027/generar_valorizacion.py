@@ -169,7 +169,7 @@ def leer_previo():
     if HOJA_INTERNA in wb.sheetnames:
         co = wb[HOJA_INTERNA]
         for r in range(1, co.max_row + 1):
-            if co.cell(r, 2).value and co.cell(r, 4).font.color is not None and co.cell(r, 4).font.color.rgb == "FF0000FF":
+            if co.cell(r, 2).value and co.cell(r, 4).font.color is not None and str(co.cell(r, 4).font.color.rgb)[-6:] == "0000FF":
                 previo["costos"][texto(co.cell(r, 2).value)] = (co.cell(r, 3).value, co.cell(r, 4).value)
     pr = wb["PRECIOS"]
     for r in range(8, pr.max_row + 1):
@@ -181,7 +181,7 @@ def leer_previo():
         ws = wb[hoja]
         for row in ws.iter_rows():
             for c in row:
-                if c.font and c.font.color is not None and c.font.color.rgb == "FF0000FF" and c.value is not None:
+                if c.font and c.font.color is not None and str(c.font.color.rgb)[-6:] == "0000FF" and c.value is not None:
                     previo["celdas"][(hoja, c.coordinate)] = c.value
     return previo
 

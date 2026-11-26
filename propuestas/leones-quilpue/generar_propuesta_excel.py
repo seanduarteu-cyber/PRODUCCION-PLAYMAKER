@@ -161,7 +161,7 @@ def leer_previo():
     if not SALIDA.exists():
         return None
     wb = openpyxl.load_workbook(SALIDA)
-    azul = lambda c: c.font is not None and c.font.color is not None and c.font.color.rgb == "FF0000FF"  # noqa: E731
+    azul = lambda c: c.font is not None and c.font.color is not None and str(c.font.color.rgb)[-6:] == "0000FF"  # noqa: E731
     previo = {"precios": {}, "costos": {}, "celdas": {}}
     pr = wb["PRECIOS"]
     previo["iva"], previo["descuentos"] = pr["C4"].value, {}
@@ -294,9 +294,10 @@ def main():
     fila_precio, r = {}, PRIMERA_PRECIO
 
     def con_descuento(fila, col_desc, celda_general):
-        # precio con descuento, llevado al valor terminado en 900 más cercano (como los precios de lista)
-        return (f'=IF(N(C{fila})=0,0,ROUND((N(C{fila})*(1-IF({col_desc}{fila}="",{celda_general},{col_desc}{fila}))'
-                f'-900)/1000,0)*1000+900)')
+        # precio con descuento, llevado al valor terminado en 900 más cercano (como los precios de lista); con un
+        # descuento de 100% (o un precio que quede bajo $500) el precio es 0, nunca negativo
+        neto = f'N(C{fila})*(1-IF({col_desc}{fila}="",{celda_general},{col_desc}{fila}))'
+        return f"=IF({neto}<=0,0,MAX(0,ROUND(({neto}-900)/1000,0)*1000+900))"
 
     for linea in LINEAS:
         celda(pr, f"B{r}", linea.upper(), Font(name="Calibri", size=10, bold=True, color=NAVY), relleno=r_sub,
