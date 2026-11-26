@@ -873,6 +873,31 @@ const prendaDeCodigo = c => /FALDA/i.test(c) ? 'falda' : /^PE-MUJU/i.test(c) ? '
   /^CA-L-/i.test(c) ? 'calza_larga' : /^BU-/i.test(c) ? 'buzo' :
   (/SH/.test(c) || /^CA-/i.test(c)) ? 'short' : 'camiseta';
 // sección y orden de cada N° en el catálogo ordenado
+// sección del catálogo de cada molde (la del catálogo ordenado; si no está, la de la tabla de Fichas)
+const secMolde = i => (SECCION_CATALOGO[i.numero] || {}).deporte || i.deporte || 'Otros moldes';
+// opciones de un selector de moldes: agrupadas por sección como en el catálogo, filtradas por la búsqueda
+const etqMoldeCat = i => MOLDES_FICHAS[String(i.numero)] || etqMolde(i.numero);
+// moldes que calzan con la búsqueda (N°, código, descripción o sección), por sección y en el orden del catálogo
+function moldesBuscados(q) {
+  const x = normIns(q || ''), secs = CATALOGO_ORDENADO.map(([d]) => d), si = i => { const k = secs.indexOf(secMolde(i)); return k < 0 ? 99 : k; };
+  return Object.values(MOLDES_INFO).filter(i => !x || normIns(etqMoldeCat(i) + ' ' + secMolde(i)).includes(x) || String(i.numero) === x || normIns(etqMolde(i.numero)) === x)
+    .sort((a, b) => si(a) - si(b) || secMolde(a).localeCompare(secMolde(b)) || ordenInfo(a) - ordenInfo(b) || a.numero - b.numero);
+}
+function opcionesMoldes(sel, q, extra) {
+  const lista = moldesBuscados(q), s0 = sel && MOLDES_INFO[String(sel)];
+  if (s0 && !lista.includes(s0)) lista.unshift(s0);   // el elegido sigue a la vista aunque no calce con la búsqueda
+  const secs = []; lista.forEach(i => { if (secs.indexOf(secMolde(i)) < 0) secs.push(secMolde(i)); });
+  return secs.map(d => { const ms = lista.filter(i => secMolde(i) === d);
+    return `<optgroup label="${esc(d)} (${ms.length})">${ms.map(i => `<option value="${i.numero}" ${String(sel) === String(i.numero) ? 'selected' : ''}>${esc(etqMoldeCat(i))}${extra ? extra(i) : ''}</option>`).join('')}</optgroup>`; }).join('');
+}
+// ¿están todos los moldes del catálogo del 18-11? (los que no llegan desde la tabla moldes de Fichas, o están desactivados)
+function avisoCatalogoMoldes() {
+  const tot = Object.keys(SECCION_CATALOGO).length, faltan = Object.keys(SECCION_CATALOGO).filter(n => !MOLDES_INFO[n]).map(Number);
+  const otros = Object.keys(MOLDES_INFO).filter(n => !SECCION_CATALOGO[n]).length;
+  return faltan.length
+    ? `<div class="aviso warn" id="aviso-catalogo">Faltan ${faltan.length} de los ${tot} moldes del catálogo del 18-11: ${faltan.map(etqMolde).join(', ')}. No están en el catálogo de moldes de Fichas o están desactivados (se revisa con el SQL 17C).</div>`
+    : `<p class="hint" id="aviso-catalogo">Están los ${tot} moldes del catálogo del 18-11${otros ? ` y ${otros} molde${otros !== 1 ? 's' : ''} más fuera de él` : ''}.</p>`;
+}
 const SECCION_CATALOGO = (() => { const sec = {}; let k = 0; CATALOGO_ORDENADO.forEach(([dep, nums]) => nums.forEach(n => { sec[n] = { deporte: dep, orden: (++k) * 10 }; })); return sec; })();
 // sin el SQL 17A (sin orden en la base) la sección sale del catálogo ordenado, si el código coincide con el del catálogo
 const seccionDeFila = r => r.orden == null && SECCION_CATALOGO[r.numero] && (CODIGO_CATALOGO[String(r.numero)] === r.codigo || CODIGOS_ANTERIORES[r.numero] === r.codigo) ? SECCION_CATALOGO[r.numero] : null;
@@ -7289,7 +7314,7 @@ async function pintarConsumoMolde(v, chips) {
   v.innerHTML = '<h1>Costeo de prendas</h1>' + chips + avisoSql20() +
     `<p class="hint">Lo que lleva <b>una prenda</b> de cada insumo que no es tela (elástico, hilo, cierre, etiqueta, bolsa…), en la unidad del insumo. Elige <b>«Común a todas las prendas»</b> para lo que llevan todas (por ejemplo, la etiqueta y la bolsa), o un molde para lo que lleva solo ese molde. La tela no va aquí: sale del corte. El precio de cada insumo es el de Precios.</p>
     <div class="toolbar"><select id="bom-molde" onchange="BOM_SEL=this.value;renderCosteo()" style="min-width:280px"><option value="*" ${sel === '*' ? 'selected' : ''}>Común a todas las prendas${cuenta('*') ? ' (' + cuenta('*') + ')' : ''}</option>
-      ${moldes.map(m => `<option value="${m.numero}" ${String(sel) === String(m.numero) ? 'selected' : ''}>${esc(MOLDES_FICHAS[String(m.numero)] || etqMolde(m.numero))}${cuenta(m.numero) ? ' (' + cuenta(m.numero) + ')' : ''}</option>`).join('')}</select></div>
+      ${opcionesMoldes(sel, '', i => cuenta(i.numero) ? ' (' + cuenta(i.numero) + ')' : '')}</select></div>
     <h2>${esc(nomM(sel))}</h2>
     <div class="panel"><table class="mini"><tr><th>Insumo</th><th style="text-align:right">Por prenda</th><th style="text-align:right">Precio</th><th style="text-align:right">Costo por prenda</th><th></th></tr>
       ${lista.map(r => { const i = insumoDe(r.insumo_id); return `<tr><td>${i ? esc(i.nombre) : 'Insumo ' + r.insumo_id}</td>
@@ -7523,6 +7548,15 @@ async function guardarValoresCosteo() {
    despiece o un % que se anota aquí. La superficie de la prenda sale de los kg de sus cortes ÷ el gramaje de sus telas;
    con el gramaje y el precio de cada tela elegida, su costo. Se suman insumos, confección, ploteo y protección (costo
    directo). El gasto general se aplica sobre un precio de venta simulado que se anota (su % sale de ventas). */
+let SIM_MQ = '';   // búsqueda de moldes en Simular costo
+// filtra el selector de moldes de Simular costo sin repintar la pantalla (el cursor sigue en el buscador)
+function filtrarSimMoldes(q) {
+  SIM_MQ = q; const s = $('sim-molde'); if (!s) return;
+  s.innerHTML = '<option value="">— Elige el molde —</option>' + opcionesMoldes(SIM.molde, q);
+  const n = moldesBuscados(q).length, el = $('sim-molde-n');
+  if (el) el.textContent = q.trim() ? (n ? `${n} molde${n !== 1 ? 's' : ''} con «${q.trim()}»${n === 1 ? ' · Enter para elegirlo' : ''}` : `Ningún molde con «${q.trim()}»`) : '';
+}
+function elegirPrimerSimMolde() { const m = moldesBuscados(SIM_MQ)[0]; if (m) simElegir('molde', String(m.numero)); }
 let SIM = { molde: '', principal: '', piezas: {}, sub: true }, SIM_DATOS = {}, CORTES_SIM = null, PIEZAS_COL = null, PARTES_EST = null, SIM_COMPLETADO = false;
 /* ---------- Estimación para moldes sin registros ----------
    Mientras un molde no tenga cortes (kg de tela) ni ploteos (metros) registrados, se estima con el PROMEDIO de los
@@ -7787,8 +7821,11 @@ async function pintarSimulador(v, chips) {
   let h = '<h1>Costeo de prendas</h1>' + chips +
     `<p class="hint">Estima cuánto costaría una prenda según el molde y las telas que elijas, con lo registrado de ese molde: los <b>kg pesados en los cortes</b> (con merma), los <b>metros ploteados</b> y lo pagado en confección. El frente y las mangas van en la tela principal; qué parte de la prenda es cada otra pieza (espalda, cuello, entrepierna…) se aprende de los cortes, donde cada tela se pesa por separado.</p>
     ${PIEZAS_COL === false ? '<div class="aviso warn">Falta correr el <b>SQL 23B</b> en Supabase de Producción: sin él no se sabe qué piezas llevaba cada tela en los cortes; se usan los metros del despiece o el % que anotes.</div>' : ''}
-    <div class="panel"><div class="grid2"><div><label for="sim-molde">Molde</label><select id="sim-molde" onchange="simElegir('molde',this.value)"><option value="">— Elige el molde —</option>
-        ${moldes.map(m => `<option value="${m.numero}" ${String(SIM.molde) === String(m.numero) ? 'selected' : ''}>${esc(MOLDES_FICHAS[String(m.numero)] || etqMolde(m.numero))}</option>`).join('')}</select></div>
+    <div class="panel">${avisoCatalogoMoldes()}
+      <div class="grid2"><div><label for="sim-molde">Molde</label>
+        <input id="sim-molde-q" placeholder="Buscar molde: N°, código, deporte o descripción" value="${esc(SIM_MQ)}" oninput="filtrarSimMoldes(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();elegirPrimerSimMolde()}" style="margin-bottom:6px">
+        <select id="sim-molde" onchange="simElegir('molde',this.value)"><option value="">— Elige el molde —</option>${opcionesMoldes(SIM.molde, SIM_MQ)}</select>
+        <div class="hint" id="sim-molde-n">${SIM_MQ.trim() ? `${moldesBuscados(SIM_MQ).length} molde(s) con «${esc(SIM_MQ.trim())}»` : ''}</div></div>
       <div><label for="sim-tela">Tela principal (frente y mangas)</label><select id="sim-tela" onchange="simElegir('principal',this.value)">${optTela(SIM.principal)}</select></div></div>
       <label style="display:flex;align-items:center;gap:6px;margin-top:8px;font-weight:400"><input type="checkbox" style="width:auto" ${SIM.sub ? 'checked' : ''} onchange="simElegir('sub',this.checked)"> Sublimada (lleva ploteo y papel de protección)</label>`;
   if (!SIM.molde) { v.innerHTML = h + '</div>'; return; }
@@ -7879,7 +7916,7 @@ function renderMoldes() {
     const m = Math.round(pz.reduce((s, q) => s + (+q.consumo || 0), 0) * 100) / 100;
     return `${pz.length} pieza${pz.length > 1 ? 's' : ''}: ${esc(pz.map(q => q.pieza + (q.cant > 1 ? ' ×' + q.cant : '')).join(', '))}` +
       (m ? ` · <b>${numCL(m)} m</b> por prenda${pz.some(q => !(+q.consumo > 0)) ? ' (piezas sin consumo)' : ''}` : ' · <span style="color:#A86B00">sin consumo de tela</span>'); };
-  $('view-moldes').innerHTML = `<h1>Moldes vigentes</h1>
+  $('view-moldes').innerHTML = `<h1>Moldes vigentes</h1>${avisoCatalogoMoldes()}
     <p class="hint">Catálogo único de moldes vigentes con su guía de tallas y su despiece: es el mismo del panel de Fichas. El despiece (piezas, cantidad y metros de tela por prenda) lo cargan las fichas nuevas y Planificación lo usa para descontar la tela y para el costeo. Un pedido solo ingresa a producción si cada prenda tiene su molde.</p>
     <div class="toolbar"><input id="q-moldes" placeholder="Buscar por código, deporte o calce" value="${esc(qTxt)}" oninput="renderMoldes()">
       ${edita ? `<a class="btn" style="text-decoration:none" href="${linkFichas('molde=todos')}" title="Abre el catálogo de moldes en el panel de Fichas">Catálogo de moldes y despiece</a>` : ''}</div>

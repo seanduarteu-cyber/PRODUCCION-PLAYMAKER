@@ -161,6 +161,11 @@ PRECIOS POR PROVEEDOR (SQL 23A)
 SIMULAR COSTO
 - Se elige el molde, la TELA PRINCIPAL (el frente y las mangas van siempre en ella) y, si alguna otra pieza va en otra
   tela (espalda microperforada o meche, cuello en rib, entrepierna de lycra…), su tela. Y si es sublimada.
+- Elegir el molde: los moldes van por sección como en el catálogo (Fútbol, Básquetbol, Vóleibol, Hockey, Rugby,
+  Multideporte, Salida y entrenamiento, Running y atletismo), con cuántos tiene cada una. El buscador de arriba filtra
+  por N°, código, descripción o deporte; con Enter se elige el primero que calce. Arriba dice si están los 104 moldes
+  del catálogo del 18-11 o cuáles faltan (no llegan desde Fichas o están desactivados). Lo mismo en Insumos por prenda
+  (por sección) y en Moldes vigentes (el aviso).
 - Tela: de los cortes ya registrados de ese molde salen los kg por prenda (con merma); con el gramaje de esas telas se
   llevan a superficie (m² por prenda) y con el gramaje y el precio por kg de cada tela elegida, el costo. Así una tela
   más pesada o más cara se nota. Si una tela no tiene gramaje, se usan los kg pesados; si el molde no tiene cortes, los

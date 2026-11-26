@@ -462,6 +462,24 @@ const datos = { tablas: { planificacion: u => /select=cot&/.test(u.search) ? pro
   ok(est18.fuera === 1 && est18.cortes === 2 && est18.kgPP < 0.5, 'el peso mal anotado no entra al estimado del molde con esa tela hasta corregirlo: ' + JSON.stringify(est18));
   costeo.splice(costeo.findIndex(r => r.id === 950), 1);
 
+  // 15 · Simular costo: los moldes por sección como en el catálogo (con cuántos tiene cada una) y un buscador; se
+  // confirma que estén los 104 moldes del catálogo del 18-11
+  await p.evaluate(() => { COSTEO_MODO = 'simular'; SIM.molde = ''; SIM_MQ = ''; renderCosteo(); }); await p.waitForTimeout(1500);
+  const grupos = await p.$$eval('#sim-molde optgroup', gs => gs.map(g => [g.label, g.querySelectorAll('option').length]));
+  const total = grupos.reduce((t, g) => t + g[1], 0), aviso = await p.textContent('#aviso-catalogo');
+  ok(grupos.map(g => g[0].replace(/ \(\d+\)$/, '')).join(',') === 'Fútbol,Básquetbol,Vóleibol,Hockey,Rugby,Multideporte,Salida y entrenamiento,Running y atletismo' && total === 104
+    && grupos[0][0] === 'Fútbol (36)' && /Están los 104 moldes del catálogo del 18-11/.test(aviso),
+    'Simular costo: los 104 moldes, por sección en el orden del catálogo, con cuántos tiene cada una: ' + grupos.map(g => g[0]).join(' · '));
+  await p.fill('#sim-molde-q', 'running'); await p.waitForTimeout(200);
+  const run = await p.$$eval('#sim-molde option[value]:not([value=""])', os => os.map(o => o.value));
+  ok(run.join() === '91,92,93' && /3 moldes con «running»/.test(await p.textContent('#sim-molde-n')) && await p.evaluate(() => document.activeElement.id) === 'sim-molde-q',
+    'buscar «running» deja solo los 91, 92 y 93 sin perder el cursor del buscador');
+  await p.fill('#sim-molde-q', 'FUTHOMU02'); await p.press('#sim-molde-q', 'Enter'); await p.waitForTimeout(1500);
+  ok(String(await p.evaluate(() => SIM.molde)) === '18' && await p.inputValue('#sim-molde') === '18', 'Enter elige el primer molde que calza (18 · FUTHOMU02)');
+  const falta = await p.evaluate(() => { const x = MOLDES_INFO['89']; delete MOLDES_INFO['89']; const t = avisoCatalogoMoldes(); MOLDES_INFO['89'] = x; return t; });
+  ok(/Faltan 1 de los 104 moldes del catálogo del 18-11: 89/.test(falta), 'si un molde del catálogo no llega desde Fichas, se avisa cuál falta');
+  await p.evaluate(() => { SIM_MQ = ''; SIM.molde = ''; });
+
   ok(!errores.length, 'sin errores JS ' + errores.join(' | '));
   await b.close();
   console.log(fallas ? fallas + ' FALLAS' : 'TODO OK'); process.exit(fallas ? 1 : 0);
