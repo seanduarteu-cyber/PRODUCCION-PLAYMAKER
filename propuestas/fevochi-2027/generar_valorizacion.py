@@ -13,11 +13,15 @@ y crea Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsm (con macros):
     marcado en los equipos adultos de todas las selecciones) y valor a pagar.
   - PRECIOS: por prenda, precio público general, descuento y precio federación (todos con IVA). El descuento
     general se aplica a las prendas sin descuento propio.
+  - RESUMEN NEGOCIO (uso interno): por selección y cuerpo técnico, venta neta, costo de lo vendido y margen, canje
+    (a precio público y a costo) y margen total del negocio, con un supuesto de otros costos (% de la venta) y el
+    punto de equilibrio. No va en el PDF de la federación.
   - COSTOS (uso interno): costo unitario y código de inventario por prenda, costo del canje y de lo vendido, venta
     neta y resultado del convenio. No va en el PDF de la federación.
 En RESUMEN, el vínculo GENERAR PDF PARA LA FEDERACIÓN corre la macro GenerarPDFFederacion: exporta a PDF todas las
-hojas visibles menos COSTOS, en la misma carpeta de la planilla (requiere habilitar macros).
-Si la planilla de valorización ya existe, se conservan los precios, costos, jugadores y unidades que tenga cargados.
+hojas visibles menos COSTOS y RESUMEN NEGOCIO, en la misma carpeta de la planilla (requiere habilitar macros).
+Si la planilla de valorización ya existe, se conservan los precios, costos, jugadores y unidades que tenga cargados,
+y las celdas que el usuario haya agregado debajo o a la derecha de las tablas.
 """
 
 import re
@@ -39,12 +43,14 @@ ORIGEN = DIR / "Proyeccion_Ropa_Selecciones_FEVOCHI_2027_original.xlsx"
 SALIDA = DIR / "Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsm"
 ANTERIOR = DIR / "Valorizacion_Ropa_Selecciones_FEVOCHI_2027.xlsx"  # versión sin macros, solo para traspasar valores
 HOJA_INTERNA = "COSTOS"
-MACRO_PDF = """' Genera el PDF para la federacion: todas las hojas visibles menos COSTOS (uso interno).
+HOJA_NEGOCIO = "RESUMEN NEGOCIO"  # uso interno, no va en el PDF
+MACRO_PDF = """' Genera el PDF para la federacion: todas las hojas visibles menos las internas (COSTOS y
+' RESUMEN NEGOCIO).
 Sub GenerarPDFFederacion()
     Dim hojas() As Variant, n As Integer, ws As Worksheet, ruta As String, activa As Worksheet
     Set activa = ActiveSheet
     For Each ws In ThisWorkbook.Worksheets
-        If ws.Name <> "COSTOS" And ws.Visible = xlSheetVisible Then
+        If ws.Name <> "COSTOS" And InStr(1, ws.Name, "NEGOCIO", vbTextCompare) = 0 And ws.Visible = xlSheetVisible Then
             n = n + 1
             ReDim Preserve hojas(1 To n)
             hojas(n) = ws.Name
@@ -165,7 +171,7 @@ def leer_previo():
     if not origen.exists():
         return None
     wb = openpyxl.load_workbook(origen)
-    previo = {"precios": {}, "iva": None, "descuento": None, "celdas": {}, "costos": {}}
+    previo = {"precios": {}, "iva": None, "descuento": None, "celdas": {}, "costos": {}, "supuestos": {}, "extras": {}}
     if HOJA_INTERNA in wb.sheetnames:
         co = wb[HOJA_INTERNA]
         for r in range(1, co.max_row + 1):
@@ -177,6 +183,16 @@ def leer_previo():
             previo["precios"][texto(pr.cell(r, 2).value)] = (pr.cell(r, 3).value, pr.cell(r, 4).value,
                                                              pr.cell(r, 7).value)
     previo["iva"], previo["descuento"] = pr["C4"].value, pr["C5"].value
+    if HOJA_NEGOCIO in wb.sheetnames:
+        sn = wb[HOJA_NEGOCIO]
+        for r in range(4, 8):
+            c = sn.cell(r, 3)
+            if sn.cell(r, 2).value and c.font.color is not None and str(c.font.color.rgb)[-6:] == "0000FF":
+                previo["supuestos"][texto(sn.cell(r, 2).value)] = c.value
+    for hoja in ("RESUMEN", "PRECIOS", "SELECCIONES ROPA 2027", "CUERPO TÉCNICO 2027"):
+        if hoja in wb.sheetnames:
+            previo["extras"][hoja] = [(c.row, c.column, c.value, c.number_format, bool(c.font and c.font.b))
+                                      for row in wb[hoja].iter_rows() for c in row if c.value is not None]
     for hoja in ("SELECCIONES ROPA 2027", "CUERPO TÉCNICO 2027"):
         ws = wb[hoja]
         for row in ws.iter_rows():
@@ -507,8 +523,8 @@ def main():
         for fila in (2, 3):
             rs[f"{col}{fila}"].fill = r_gran
     rs["K2"].hyperlink = Hyperlink(ref="K2", location="RESUMEN!K2",
-                                   tooltip="Generar PDF para la federacion (todas las hojas menos COSTOS)")
-    celda(rs, "K4", "Exporta todas las hojas menos COSTOS a un PDF en la misma carpeta de esta planilla.", f_nota,
+                                   tooltip="Generar PDF para la federacion (todas las hojas menos COSTOS y RESUMEN NEGOCIO)")
+    celda(rs, "K4", "Exporta todas las hojas menos COSTOS y RESUMEN NEGOCIO (uso interno) a un PDF en la misma carpeta.", f_nota,
           alinear=Alignment(vertical="top", wrap_text=True), borde=False)
     celda(rs, "K6", "Requiere habilitar macros. Si no funciona: Archivo, Exportar, PDF, con las hojas RESUMEN, PRECIOS, "
                     "SELECCIONES ROPA 2027 y CUERPO TÉCNICO 2027 seleccionadas.", f_nota,
@@ -587,6 +603,166 @@ def main():
     dvc.add(f"D{c0}:D{tc - 1}")
     for col, ancho in zip("BCDEFGHIJKLM", (34, 15, 13, 12, 12, 12, 15, 15, 16, 16, 15, 10)):
         co.column_dimensions[col].width = ancho
+
+    # ---------------------------------------------------------------- RESUMEN NEGOCIO (uso interno)
+    sn = wb.create_sheet(HOJA_NEGOCIO, 1)
+    sn.sheet_properties.tabColor = "C00000"
+    logo(sn, "logo_fevochi.png")
+    encabezado(sn, "RESUMEN DEL NEGOCIO FEVOCHI 2027: VENTA NETA, COSTOS Y MARGEN TOTAL (USO INTERNO, NO VA EN EL PDF)",
+               "Todo neto, sin IVA, salvo el canje a precio público. Se actualiza solo con lo cargado en las demás hojas "
+               "(precios, jugadores, unidades, canje y costos unitarios de la hoja COSTOS).")
+    PCT = '0.0%;-0.0%;"-"'
+    otros_txt = "Otros costos del negocio (% de la venta neta: despacho, comisiones, etc.)"
+    otros_v = previo.get("supuestos", {}).get(otros_txt) if previo else None
+    celda(sn, "B5", otros_txt, f_tot, alinear=izq)
+    celda(sn, "C5", otros_v if otros_v is not None else 0, f_input, "0%", r_input)
+    celda(sn, "D5", "Supuesto para simular: parte en 0%.", f_nota, alinear=Alignment(vertical="center"), borde=False)
+    dvs = DataValidation(type="decimal", operator="between", formula1="0", formula2="1", allow_blank=False,
+                         errorTitle="Supuesto", error="Ingresa un porcentaje entre 0% y 100%.")
+    sn.add_data_validation(dvs)
+    dvs.add("C5")
+    for g0, g1, txt, fondo in (("C", "G", "VENTA A LA FEDERACIÓN (SIN IVA)", "2F5597"),
+                               ("H", "J", "CANJE (100% DE DESCUENTO)", "7030A0"), ("K", "L", "RESULTADO", NAVY)):
+        celda(sn, f"{g0}7", txt, Font(name="Calibri", size=10, bold=True, color="FFFFFF"),
+              relleno=PatternFill("solid", fgColor=fondo))
+        sn.merge_cells(f"{g0}7:{g1}7")
+    cabecera(sn, 8, 2, ["LÍNEA", "UNIDADES VENDIDAS", "VENTA NETA", "COSTO DE LO VENDIDO", "MARGEN DE LA VENTA",
+                        "MARGEN % DE LA VENTA", "UNIDADES EN CANJE", "CANJE A PRECIO PÚBLICO (CON IVA)",
+                        "COSTO DEL CANJE", "MARGEN TOTAL", "MARGEN TOTAL % SOBRE VENTA"], alto=40)
+    costo_n, costo_d = f"COSTOS!$B${c0}:$B${tc - 1}", f"COSTOS!$D${c0}:$D${tc - 1}"
+
+    def suma(hoja, rangos, expr):
+        """SUMPRODUCT de expr (con {p} prenda, {u} unidades, {h} precio público, {c} canje) sobre cada rango."""
+        partes = []
+        for a, b, cp, cu, ch, cc in rangos:
+            rg = {k: f"{hoja}!{col}{a}:{col}{b}" for k, col in (("p", cp), ("u", cu), ("h", ch), ("c", cc))}
+            rg["costo"] = f"SUMIF({costo_n},{rg['p']},{costo_d})"
+            partes.append("SUMPRODUCT(" + expr.format(**rg) + ")")
+        return "+".join(partes)
+
+    def fila_neg(r, txt, uv, venta, cv, uc, canje, cc, fuente=f_norm, relleno=None):
+        celda(sn, f"B{r}", txt, fuente, relleno=relleno, alinear=izq)
+        for col, v, fmt in (("C", uv, NUM), ("D", venta, PESOS), ("E", cv, PESOS), ("H", uc, NUM), ("I", canje, PESOS),
+                            ("J", cc, PESOS)):
+            celda(sn, f"{col}{r}", v, fuente, fmt, relleno)
+        celda(sn, f"F{r}", f"=D{r}-E{r}", fuente if relleno else f_tot, PESOS, relleno)
+        celda(sn, f"G{r}", f'=IF(D{r}=0,"",F{r}/D{r})', fuente, PCT, relleno)
+        celda(sn, f"K{r}", f"=F{r}-J{r}", fuente if relleno else f_tot, PESOS, relleno)
+        celda(sn, f"L{r}", f'=IF(D{r}=0,"",K{r}/D{r})', fuente, PCT, relleno)
+
+    def titulo_neg(r, txt):
+        celda(sn, f"B{r}", txt, Font(name="Calibri", size=10, bold=True, color=NAVY), relleno=r_sub, alinear=izq)
+        for col in "CDEFGHIJKL":
+            celda(sn, f"{col}{r}", None, relleno=r_sub)
+
+    def fila_de(r, txt, hoja, rangos, total_pagar):
+        fila_neg(r, txt, "=" + suma(hoja, rangos, '{u}*({c}<>"SÍ")'),
+                 f"=ROUND({total_pagar}/(1+PRECIOS!$C$4),0)", "=" + suma(hoja, rangos, '{costo}*{u}*({c}<>"SÍ")'),
+                 "=" + suma(hoja, rangos, '{u}*({c}="SÍ")'), "=" + suma(hoja, rangos, '{u}*{h}*({c}="SÍ")'),
+                 "=" + suma(hoja, rangos, '{costo}*{u}*({c}="SÍ")'))
+
+    r = 9
+    titulo_neg(r, "SELECCIONES")
+    r += 1
+    s0 = r
+    for titulo, filas_cat, ft in totales_sel:
+        rangos = [(f0, s_ - 1, "D", "G", "H", "J") for _, f0, s_ in filas_cat]
+        fila_de(r, "Selección " + titulo.replace("SELECCIÓN ", "").lower(), S, rangos, f"{S}!K{ft}")
+        r += 1
+    fila_neg(r, "Total selecciones", *[f"=SUM({c}{s0}:{c}{r - 1})" for c in "CDEHIJ"], fuente=f_tot, relleno=r_sub)
+    sub = [r]
+    r += 1
+    titulo_neg(r, "CUERPOS TÉCNICOS")
+    r += 1
+    s0 = r
+    for titulo, f0, ft in totales_ct:
+        fila_de(r, titulo.capitalize(), T, [(f0, ft - 1, "B", "E", "F", "H")], f"{T}!I{ft}")
+        r += 1
+    fila_neg(r, "Total cuerpos técnicos", *[f"=SUM({c}{s0}:{c}{r - 1})" for c in "CDEHIJ"], fuente=f_tot,
+             relleno=r_sub)
+    sub.append(r)
+    r += 1
+    titulo_neg(r, "OTROS COSTOS")
+    r += 1
+    fila_neg(r, "Otros costos del negocio (% de la venta neta)", None, 0, "=ROUND((" + "+".join(f"D{x}" for x in sub)
+             + ")*$C$5,0)", None, 0, 0)
+    otros = r
+    r += 1
+    fila_neg(r, "MARGEN TOTAL DEL NEGOCIO", *["=" + "+".join(f"{c}{x}" for x in sub + [otros]) for c in "CDEHIJ"],
+             fuente=f_gran, relleno=r_gran)
+    tn = r
+    sn.row_dimensions[r].height = 22
+    for col in "FGKL":
+        sn.conditional_formatting.add(f"{col}{tn}", CellIsRule(operator="lessThan", formula=["0"],
+                                                               fill=PatternFill("solid", fgColor="C00000")))
+    celda(sn, f"B{r + 1}", f'=IF(AND(ABS(D{tn}-COSTOS!K{tc})<=10,ROUND(E{tn}-E{otros},0)=COSTOS!I{tc},J{tn}=COSTOS!H{tc}),"Control: '
+                           f'coincide con la hoja COSTOS (la venta neta puede diferir en unos pesos por redondeo).",'
+                           f'"Revisar: no coincide con la hoja COSTOS.")', f_nota,
+          alinear=Alignment(vertical="center"), borde=False)
+
+    r += 4
+    celda(sn, f"B{r}", "RESULTADO DEL NEGOCIO 2027", f_sec, alinear=Alignment(vertical="center"), borde=False)
+    r += 1
+    cabecera(sn, r, 2, ["CONCEPTO", None, "MONTO", "% SOBRE VENTA NETA"], alto=24)
+    sn.merge_cells(f"B{r}:C{r}")
+    r += 1
+    ev, fv = ("+".join(f"{c}{x}" for x in sub) for c in "EF")  # costo y margen de la venta (sin otros costos)
+    m_venta = f"IF(D{tn}=0,0,({fv})/D{tn})"
+    kpis = [
+        ("Venta neta a la federación (sin IVA)", f"=D{tn}", True, f_norm),
+        ("Costo de lo vendido", f"={ev}", True, f_norm),
+        ("Margen de la venta", f"={fv}", True, f_tot),
+        ("Costo del canje (inversión en la federación)", f"=J{tn}", True, f_norm),
+        ("Otros costos del negocio", f"=E{otros}", True, f_norm),
+        ("MARGEN TOTAL DEL NEGOCIO", f"=K{tn}", True, f_gran),
+        (None, None, None, None),
+        ("Canje entregado a la federación, a precio público (con IVA)", f"=I{tn}", False, f_norm),
+        ("Costo total a producir (canje y venta)", f"={ev}+J{tn}", False, f_norm),
+        ("Unidades a producir (canje y venta)", f"=C{tn}+H{tn}", False, f_norm),
+        ("Venta neta necesaria para cubrir el canje y los otros costos (punto de equilibrio, con el margen % actual "
+         "de la venta)", f'=IF({m_venta}-$C$5<=0,"No se cubre",ROUND(J{tn}/({m_venta}-$C$5),0))', False,
+         f_norm),
+        ("Venta neta actual sobre el punto de equilibrio", "PE", False, f_norm),
+    ]
+    fila_pe = r + len(kpis) - 2
+    for txt, f, con_pct, fuente in kpis:
+        if txt is None:
+            r += 1
+            continue
+        relleno = r_gran if fuente is f_gran else (r_sub if fuente is f_tot else None)
+        celda(sn, f"B{r}", txt, fuente, relleno=relleno, alinear=izq)
+        celda(sn, f"C{r}", None, fuente, relleno=relleno)
+        sn.merge_cells(f"B{r}:C{r}")
+        if f == "PE":
+            celda(sn, f"D{r}", f'=IF(ISNUMBER(D{fila_pe}),IF(D{fila_pe}=0,"",D{tn}/D{fila_pe}),"")', fuente, "0%",
+                  relleno)
+        else:
+            celda(sn, f"D{r}", f, fuente, NUM if txt.startswith("Unidades") else PESOS, relleno)
+        celda(sn, f"E{r}", f'=IF(D{tn}=0,"",D{r}/D{tn})' if con_pct else None, fuente, PCT, relleno)
+        if fuente is f_gran:
+            sn.row_dimensions[r].height = 22
+            sn.conditional_formatting.add(f"D{r}:E{r}", CellIsRule(operator="lessThan", formula=["0"],
+                                                                    fill=PatternFill("solid", fgColor="C00000")))
+        if len(txt) > 70:
+            sn.row_dimensions[r].height = 30
+        r += 1
+    celda(sn, f"B{r + 1}", "Si falta el costo de una prenda (hoja COSTOS), su costo queda en cero y el margen se ve "
+                           "mayor de lo real.", f_nota, alinear=Alignment(vertical="center"), borde=False)
+    for col, ancho in zip("BCDEFGHIJKL", (50, 12, 15, 15, 15, 11, 12, 16, 15, 15, 12)):
+        sn.column_dimensions[col].width = ancho
+    sn.freeze_panes = "C9"
+
+    # celdas que el usuario agregó fuera de las tablas (abajo o a la derecha de lo generado): se conservan
+    if previo:
+        for hoja, celdas_ in previo["extras"].items():
+            if hoja not in wb.sheetnames:
+                continue
+            ws = wb[hoja]
+            lim_r, lim_c = ws.max_row, ws.max_column
+            for fila, col, valor, formato, negrita in celdas_:
+                if fila > lim_r or col > lim_c:
+                    c = ws.cell(fila, col, valor)
+                    c.number_format, c.font = formato, Font(name="Calibri", size=11, bold=negrita)
 
     for ws in wb.worksheets:
         ws.sheet_view.showGridLines = False
