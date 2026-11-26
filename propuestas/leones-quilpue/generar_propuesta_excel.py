@@ -18,6 +18,8 @@ Propuesta_Comercial_Los_Leones_2027.xlsm:
     (Sub-11 a Sub-20): jugadores, producto (a elegir de la lista de precios) y unidades por jugador, con el mismo
     formato que la valorización FEVOCHI. Canje NO por defecto. La camiseta y el short de juego de las formativas
     son productos propios (con su precio), distintos de los del primer equipo.
+  - TIENDA OFICIAL 2027: venta al público (hinchas) de todos los productos a precio público, con unidades por
+    semestre (por defecto, las estimadas por el usuario: 300 camisetas de juego y 100 polerones de buzo).
   - COSTOS (uso interno): costo unitario y código de inventario por producto, costo del canje y de lo vendido,
     venta neta y resultado. No va en el PDF.
 Si la planilla ya existe, se conservan los precios, descuentos, unidades, canje y costos cargados en ella.
@@ -76,6 +78,8 @@ for _k, _v in PRODUCTOS_BASE.items():
 ALIAS = {PRODUCTOS_BASE[k][0]: n for k, n in NOMBRES_PRIMER_EQUIPO.items()}  # nombre anterior -> nombre nuevo
 ALIAS_FORMATIVAS = {PRODUCTOS_BASE[k][0]: JUEGO_FORMATIVAS[k + "_formativas"][0] for k in NOMBRES_PRIMER_EQUIPO}
 ETAPA_1, ETAPA_2 = "1° SEMESTRE", "2° SEMESTRE"
+HOJA_TIENDA = "TIENDA OFICIAL 2027"
+TIENDA_INICIAL = {"camiseta_juego": (300, 0), "poleron_buzo": (100, 0)}  # unidades 1° y 2° semestre (del usuario)
 COLORES_2_SEMESTRE = ("azul", "negr")  # indumentaria de juego de estos colores: 2° semestre
 
 MACRO_PDF = """' Genera el PDF de la propuesta para el club: todas las hojas visibles menos COSTOS (uso interno).
@@ -186,11 +190,11 @@ def leer_previo():
             if co.cell(r, 2).value and azul(co.cell(r, 4)):
                 n = texto(co.cell(r, 2).value)
                 previo["costos"][ALIAS.get(n, n)] = (co.cell(r, 3).value, co.cell(r, 4).value)
-    for hoja in [h for _, h, _ in EQUIPOS] + ["FORMATIVAS 2027"]:
+    for hoja in [h for _, h, _ in EQUIPOS] + ["FORMATIVAS 2027", HOJA_TIENDA]:
         if hoja not in wb.sheetnames:
             continue
         ws = wb[hoja]
-        cab = next((r for r in range(1, 15) if texto(ws.cell(r, 2).value) in ("PRENDA SOLICITADA", "CATEGORÍA")), None)
+        cab = next((r for r in range(1, 15) if texto(ws.cell(r, 2).value) in ("PRENDA SOLICITADA", "CATEGORÍA", "PRODUCTO")), None)
         if cab is None:
             continue
         nombres = {c: texto(ws.cell(cab, c).value) for c in range(2, ws.max_column + 1)}
@@ -544,11 +548,56 @@ def main():
         ("Costo (neto)", f"=SUMPRODUCT({uno}*{FR}*L$6:L${ultima_fo})", f"=SUMPRODUCT({dos}*{FR}*L$6:L${ultima_fo})"),
     ])
 
+    # ---------------------------------------------------------------- TIENDA OFICIAL (venta a hinchas)
+    ti = wb.create_sheet(HOJA_TIENDA)
+    encabezado(ti, "TIENDA OFICIAL 2027: VENTA AL PÚBLICO (HINCHAS)",
+               "Todos los productos a precio público. Celdas amarillas: unidades que se proyecta vender en cada "
+               "semestre.")
+    cabecera(ti, 5, 2, ["PRODUCTO", "LÍNEA", "PRECIO PÚBLICO", "UNIDADES 1° SEMESTRE", "UNIDADES 2° SEMESTRE",
+                        "TOTAL UNIDADES", "VENTA 1° SEMESTRE", "VENTA 2° SEMESTRE", "VENTA TOTAL"])
+    cabecera_interna(ti, 5, 11, ["COSTO UNITARIO (INTERNO)", "COSTO 1° SEMESTRE (INTERNO)",
+                                 "COSTO 2° SEMESTRE (INTERNO)"])
+    dv_t = DataValidation(type="whole", operator="greaterThanOrEqual", formula1="0", allow_blank=True,
+                          errorTitle="Unidades", error="Ingresa un número entero (0 o más).")
+    r = 6
+    t0 = r
+    for k, (nombre, l, *_x) in PRODUCTOS.items():
+        u1_, u2_ = TIENDA_INICIAL.get(k, (None, None))
+        celda(ti, f"B{r}", nombre, alinear=izq)
+        celda(ti, f"C{r}", l, f_gris, alinear=izq)
+        celda(ti, f"D{r}", "=" + precio_de(k, "C"), formato=PESOS)
+        entrada(ti, f"E{r}", u1_, NUM)
+        entrada(ti, f"F{r}", u2_, NUM)
+        celda(ti, f"G{r}", f"=N(E{r})+N(F{r})", formato=NUM)
+        celda(ti, f"H{r}", f"=N(E{r})*D{r}", formato=PESOS)
+        celda(ti, f"I{r}", f"=N(F{r})*D{r}", formato=PESOS)
+        celda(ti, f"J{r}", f"=H{r}+I{r}", f_tot, PESOS)
+        celda(ti, f"K{r}", f"=N(COSTOS!$D${fila_costo[k]})", f_gris, PESOS)
+        celda(ti, f"L{r}", f"=N(E{r})*K{r}", formato=PESOS)
+        celda(ti, f"M{r}", f"=N(F{r})*K{r}", formato=PESOS)
+        r += 1
+    dv_t.add(f"E{t0}:F{r - 1}")
+    ti.add_data_validation(dv_t)
+    celda(ti, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
+    for col in "CD":
+        celda(ti, f"{col}{r}", None, f_gran, relleno=r_gran)
+    for col, fmt in (("E", NUM), ("F", NUM), ("G", NUM), ("H", PESOS), ("I", PESOS), ("J", PESOS), ("L", PESOS),
+                     ("M", PESOS)):
+        celda(ti, f"{col}{r}", f"=SUM({col}{t0}:{col}{r - 1})", f_gran, fmt, r_int if col in "LM" else r_gran)
+    celda(ti, f"K{r}", None, relleno=r_int)
+    ti_tot = r
+    for col, ancho in zip("BCDEFGHIJKLM", (36, 20, 13, 13, 13, 12, 15, 15, 15, 13, 15, 15)):
+        ti.column_dimensions[col].width = ancho
+    ti.freeze_panes = "B6"
+    ti.print_area = f"A1:J{ti_tot}"
+    bloque_semestres(ti, 15, [("Canje", 0, 0), ("Ventas (con IVA)", f"=H{ti_tot}", f"=I{ti_tot}"),
+                              ("Costo (neto)", f"=L{ti_tot}", f"=M{ti_tot}")])
+
     # ---------------------------------------------------------------- RESUMEN
     rs = wb.create_sheet("RESUMEN", 0)
     encabezado(rs, "PROPUESTA COMERCIAL 2027: CLUB DEPORTIVO COLEGIO LOS LEONES DE QUILPUÉ",
                "Valores con IVA. LNB, LNF y cuerpo técnico: todo en canje, valorizado a precio público, en el semestre "
-               "elegido. Formativas: compras a precio formativas.")
+               "elegido. Ventas: formativas a precio formativas y tienda oficial a precio público.")
     rs.merge_cells("D4:F4")
     rs.merge_cells("G4:I4")
     rs.merge_cells("J4:M4")
@@ -556,9 +605,9 @@ def main():
                                ("J", "M", "TOTAL CONVENIO", NAVY)):
         celda(rs, f"{c0}4", txt, Font(name="Calibri", size=10, bold=True, color="FFFFFF"),
               relleno=PatternFill("solid", fgColor=fondo))
-    cabecera(rs, 5, 2, ["EQUIPO", "SECCIÓN", "UNIDADES", "CANJE (PRECIO PÚBLICO)", "COMPRAS", "UNIDADES",
-                        "CANJE (PRECIO PÚBLICO)", "COMPRAS", "CANJE TOTAL", "COMPRAS TOTAL", "NETO COMPRAS",
-                        "IVA COMPRAS"], alto=36)
+    cabecera(rs, 5, 2, ["EQUIPO", "SECCIÓN", "UNIDADES", "CANJE (PRECIO PÚBLICO)", "VENTAS", "UNIDADES",
+                        "CANJE (PRECIO PÚBLICO)", "VENTAS", "CANJE TOTAL", "VENTAS TOTAL", "NETO VENTAS",
+                        "IVA VENTAS"], alto=36)
     r, filas_total = 6, []
 
     def fila_resumen(r, equipo, seccion, u1, c1, p1, u2=0, c2=0, p2=0, fuente=f_norm, relleno=None):
@@ -602,6 +651,11 @@ def main():
                      fuente=f_tot, relleno=r_sub)
         filas_total.append(r)
         r += 1
+    T = f"'{HOJA_TIENDA}'"
+    fila_resumen(r, "Tienda oficial", "Venta al público (hinchas)", f"={T}!E{ti_tot}", 0, f"={T}!H{ti_tot}",
+                 f"={T}!F{ti_tot}", 0, f"={T}!I{ti_tot}", fuente=f_tot, relleno=r_sub)
+    filas_total.append(r)
+    r += 1
     fila_resumen(r, "TOTAL CONVENIO", None, *["=" + "+".join(f"{c}{x}" for x in filas_total) for c in "DEFGHI"],
                  fuente=f_gran, relleno=r_gran)
     rs.row_dimensions[r].height = 22
@@ -612,7 +666,7 @@ def main():
     r += 1
     cabecera(rs, r, 2, ["PRODUCTO", "PRECIO PÚBLICO (HINCHAS)", "PRECIO PRIMER EQUIPO", "PRECIO FORMATIVAS",
                         "TOTAL UNIDADES", "CANJE 1° SEMESTRE", "CANJE 2° SEMESTRE", "CANJE TOTAL",
-                        "COMPRAS TOTAL"], alto=40)
+                        "VENTAS TOTAL"], alto=40)
     r += 1
     p0 = r
     hojas_det = [f"'{h}'" for _, h, _ in EQUIPOS]
@@ -625,7 +679,8 @@ def main():
         celda(rs, f"D{r}", f"=PRECIOS!E{fp}", formato=PESOS)
         celda(rs, f"E{r}", f"=PRECIOS!G{fp}", formato=PESOS)
         unid = "+".join(f'SUMIF({h}!$C:$C,"{nombre}",{h}!$E:$E)' for h in hojas_det)
-        celda(rs, f"F{r}", f'={unid}+SUMIF({F}!$C:$C,"{nombre}",{F}!$F:$F)', formato=NUM)
+        celda(rs, f"F{r}", f'={unid}+SUMIF({F}!$C:$C,"{nombre}",{F}!$F:$F)+SUMIF({T}!$B:$B,"{nombre}",{T}!$G:$G)',
+              formato=NUM)
         c1 = "+".join(f'SUMIFS({h}!$E:$E,{h}!$C:$C,"{nombre}",{h}!$F:$F,"<>{ETAPA_2}")' for h in hojas_det)
         celda(rs, f"G{r}", f'=({c1}+SUMIFS({F}!$F:$F,{F}!$C:$C,"{nombre}",{F}!$J:$J,"SÍ",{F}!$G:$G,"<>{ETAPA_2}"))'
                            f'*C{r}', formato=PESOS)
@@ -633,7 +688,8 @@ def main():
         celda(rs, f"H{r}", f'=({c2}+SUMIFS({F}!$F:$F,{F}!$C:$C,"{nombre}",{F}!$J:$J,"SÍ",{F}!$G:$G,"{ETAPA_2}"))'
                            f'*C{r}', formato=PESOS)
         celda(rs, f"I{r}", f"=G{r}+H{r}", f_tot, PESOS)
-        celda(rs, f"J{r}", f'=SUMIF({F}!$C:$C,"{nombre}",{F}!$K:$K)', f_tot, PESOS)  # compras: formativas
+        celda(rs, f"J{r}", f'=SUMIF({F}!$C:$C,"{nombre}",{F}!$K:$K)+SUMIF({T}!$B:$B,"{nombre}",{T}!$J:$J)', f_tot,
+              PESOS)  # ventas: formativas y tienda
         r += 1
     celda(rs, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
     for col in "CDE":
@@ -723,12 +779,15 @@ def main():
         ("costo_canje", "Costo del canje (neto)",
          f'={LNB}!K{tl}+{LNF}!K{tf}+SUMPRODUCT(({cj}="SÍ")*{u1}*{rf}*{cu})',
          f'={LNB}!L{tl}+{LNF}!L{tf}+SUMPRODUCT(({cj}="SÍ")*{u2}*{rf}*{cu})', f_norm),
-        ("ventas", "Ventas a formativas (con IVA)", f'=SUMPRODUCT(({cj}<>"SÍ")*{u1}*{rf}*{pf})',
+        ("ventas_fo", "Ventas a formativas (con IVA)", f'=SUMPRODUCT(({cj}<>"SÍ")*{u1}*{rf}*{pf})',
          f'=SUMPRODUCT(({cj}<>"SÍ")*{u2}*{rf}*{pf})', f_norm),
-        ("ventas_netas", "Ventas netas (sin IVA)", "=ROUND({ventas1}/(1+PRECIOS!$C$4),0)",
-         "=ROUND({ventas2}/(1+PRECIOS!$C$4),0)", f_norm),
-        ("costo_venta", "Costo de lo vendido (neto)", f'=SUMPRODUCT(({cj}<>"SÍ")*{u1}*{rf}*{cu})',
-         f'=SUMPRODUCT(({cj}<>"SÍ")*{u2}*{rf}*{cu})', f_norm),
+        ("ventas_ti", "Ventas tienda oficial a hinchas (con IVA)", f"='{HOJA_TIENDA}'!H{ti_tot}",
+         f"='{HOJA_TIENDA}'!I{ti_tot}", f_norm),
+        ("ventas_netas", "Ventas netas (sin IVA)", "=ROUND(({ventas_fo1}+{ventas_ti1})/(1+PRECIOS!$C$4),0)",
+         "=ROUND(({ventas_fo2}+{ventas_ti2})/(1+PRECIOS!$C$4),0)", f_norm),
+        ("costo_venta", "Costo de lo vendido (neto)",
+         f"=SUMPRODUCT(({cj}<>\"SÍ\")*{u1}*{rf}*{cu})+'{HOJA_TIENDA}'!L{ti_tot}",
+         f"=SUMPRODUCT(({cj}<>\"SÍ\")*{u2}*{rf}*{cu})+'{HOJA_TIENDA}'!M{ti_tot}", f_norm),
         ("margen", "Margen de la venta", "={ventas_netas1}-{costo_venta1}", "={ventas_netas2}-{costo_venta2}", f_tot),
         ("resultado", "Resultado (margen de la venta menos costo del canje)", "={margen1}-{costo_canje1}",
          "={margen2}-{costo_canje2}", f_tot),
