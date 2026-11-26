@@ -6,7 +6,9 @@ Uso:
 Lee el requerimiento del club (Requerimiento_Indumentaria_2027_CSD_Colo_Colo.xlsx: pestañas CANJE 1EROS EQUIPOS,
 FORMATIVAS y COMERCIAL) y crea Propuesta_Comercial_CSD_Colo_Colo_2027.xlsm, con el formato de la valorización
 FEVOCHI y de Los Leones:
-  - PRECIOS: un precio público por producto (se escribe una sola vez) y tres descuentos, uno por categoría:
+  - PRECIOS: por disciplina (básquetbol, futsal, vóleibol, patín, Esperanza Alba e institucional), cada producto
+    con su precio (la camiseta de juego de básquetbol es distinta de la de futsal o la de vóleibol). Un precio
+    público por producto (se escribe una sola vez) y tres descuentos, uno por categoría:
     canje (100%), formativas y cuerpo técnico, y comercial (stock que el club compra para su tienda). Cada precio
     sale del público con su descuento, terminado en 900. Un producto puede tener su propio descuento en cada
     categoría. Al lado, fuera de lo que se imprime, el costo unitario neto y el margen de cada precio.
@@ -72,7 +74,19 @@ PRODUCTOS = {
     "chaqueta_pres": ("Chaqueta de presentación", "Presentación", 65900, "Lista Los Leones 2027", 28000),
     "parka": ("Parka", "Presentación", 79900, "Lista Los Leones 2027", 35000),
 }
-LINEAS = ["Juego", "Entrenamiento", "Presentación"]
+# disciplina de cada rama del requerimiento: cada disciplina tiene su propia lista de productos y precios (su camiseta
+# de juego, su short, etc.). Cuerpo técnico, directorio y oficina comparten la ropa institucional.
+RAMA_DISCIPLINA = {"Cuerpo Técnico": "Institucional", "Directorio": "Institucional", "Oficina": "Institucional"}
+TITULO_DISCIPLINA = {"Institucional": "INSTITUCIONAL (CUERPO TÉCNICO, DIRECTORIO Y OFICINA)"}
+SUFIJO_DISCIPLINA = {"Esperanza Alba": "Esperanza Alba"}  # en el nombre del producto; las demás van en minúscula
+
+
+def disciplina_de(rama):
+    return RAMA_DISCIPLINA.get(rama, rama)
+
+
+def nombre_producto(k, disciplina):
+    return f"{PRODUCTOS[k][0]} {SUFIJO_DISCIPLINA.get(disciplina, disciplina.lower())}"
 # prenda del requerimiento (normalizada) -> producto
 MAPA = {
     "camiseta juego": "camiseta_juego", "short juego": "short_juego", "calzas juego": "calza_juego",
@@ -256,12 +270,36 @@ def main():
         ws.row_dimensions[1].height = 20
         ws.column_dimensions["A"].width = 3
 
+    # ---------------------------------------------------------------- producto de cada fila, por disciplina
+    disciplinas = []
+    for clave in ("canje", "formativas", "comercial"):
+        for fila in datos[clave]:
+            d = disciplina_de(fila[0])
+            if d not in disciplinas:
+                disciplinas.append(d)
+    disciplinas.sort(key=lambda d: d == "Institucional")  # institucional al final
+    por_base = {v[0]: k for k, v in PRODUCTOS.items()}  # nombres del formato anterior (sin disciplina)
+    por_nombre_var = {nombre_producto(k, d): (d, k) for d in disciplinas for k in PRODUCTOS}
+    asignado, usados = {}, set()
+    for clave, _p, hoja, *_x in CATEGORIAS:
+        for i, fila in enumerate(datos[clave]):
+            d, k = disciplina_de(fila[0]), fila[5]
+            v = previo["celdas"].get((hoja, 6 + i, "PRODUCTO PLAYMAKER")) if previo else None
+            if v in por_nombre_var:
+                d, k = por_nombre_var[v]
+            elif v in por_base:
+                k = por_base[v]
+            asignado[(clave, i)] = (d, k)
+            usados.add((d, k))
+    lista_productos = [(d, k) for d in disciplinas for k in PRODUCTOS if (d, k) in usados]
+
     # ---------------------------------------------------------------- PRECIOS
     pr = wb.active
     pr.title = "PRECIOS"
-    encabezado(pr, "LISTA DE PRECIOS 2027", "El precio público se escribe una vez. Cada categoría tiene su descuento "
-                                            "general (arriba) y un producto puede tener uno propio. Precios con IVA, "
-                                            "terminados en 900.")
+    encabezado(pr, "LISTA DE PRECIOS 2027 POR DISCIPLINA", "Cada disciplina con sus productos. El precio público se "
+                                                          "escribe una vez; cada categoría tiene su descuento general "
+                                                          "(arriba) y un producto puede tener uno propio. Precios con "
+                                                          "IVA, terminados en 900.")
     gen = previo["generales"] if previo else {}
     celda(pr, "B4", "IVA", f_tot, alinear=izq)
     celda(pr, "C4", gen.get("iva", IVA), f_input, "0%", r_input)
@@ -285,17 +323,20 @@ def main():
     col_desc = {"canje": "E", "formativas": "G", "comercial": "I"}
     col_precio = {"canje": "F", "formativas": "H", "comercial": "J"}
     fila_precio, r = {}, 10
-    for linea in LINEAS:
-        celda(pr, f"B{r}", linea.upper(), Font(name="Calibri", size=10, bold=True, color=NAVY), relleno=r_sub,
-              alinear=izq)
+    for disc in disciplinas:
+        celda(pr, f"B{r}", TITULO_DISCIPLINA.get(disc, disc.upper()), Font(name="Calibri", size=10, bold=True,
+              color=NAVY), relleno=r_sub, alinear=izq)
         for col in "CDEFGHIJK":
             celda(pr, f"{col}{r}", None, relleno=r_sub)
         r += 1
-        for k, (nombre, l, precio, ref, costo) in PRODUCTOS.items():
-            if l != linea:
+        for d, k in lista_productos:
+            if d != disc:
                 continue
-            fila_precio[k] = r
-            pv = previo["precios"].get(nombre, {}) if previo else {}
+            base, l, precio, ref, costo = PRODUCTOS[k]
+            nombre = nombre_producto(k, d)
+            fila_precio[(d, k)] = r
+            # valores cargados: los de este producto o, del formato anterior, los del producto sin disciplina
+            pv = (previo["precios"].get(nombre) or previo["precios"].get(base) or {}) if previo else {}
             celda(pr, f"B{r}", nombre, alinear=izq)
             celda(pr, f"C{r}", l, f_gris, alinear=izq)
             celda(pr, f"D{r}", pv.get("PRECIO PÚBLICO (CON IVA)", precio), f_input, PESOS, r_input)
@@ -311,7 +352,7 @@ def main():
                 celda(pr, f"{col}{r}", f'=IF(OR(N({cp}{r})=0,N(M{r})=0),"",1-M{r}/({cp}{r}/(1+$C$4)))', formato=PCT)
             r += 1
     ultima_precio = r - 1
-    for col, ancho in zip("BCDEFGHIJKLMNOPQ", (40, 14, 14, 12, 12, 13, 14, 12, 13, 28, 2, 15, 14, 14, 14, 34)):
+    for col, ancho in zip("BCDEFGHIJKLMNOPQ", (46, 14, 14, 12, 12, 13, 14, 12, 13, 28, 2, 15, 14, 14, 14, 34)):
         pr.column_dimensions[col].width = ancho
     pr.print_area = f"A1:K{ultima_precio}"
     dv = DataValidation(type="decimal", operator="greaterThanOrEqual", formula1="0", allow_blank=True,
@@ -365,7 +406,8 @@ def main():
             celda(ws, f"D{r}", prenda, alinear=izq)
             celda(ws, f"E{r}", modelo or None, f_gris, alinear=izq)
             celda(ws, f"F{r}", color, f_gris, alinear=izq)
-            entrada(ws, f"G{r}", PRODUCTOS[k][0], alinear=izq)
+            d_, k_ = asignado[(clave, i)]
+            celda(ws, f"G{r}", nombre_producto(k_, d_), f_input, relleno=r_input, alinear=izq)
             celda(ws, f"H{r}", pedida, f_gris, NUM)
             entrada(ws, f"I{r}", cant, NUM)
             celda(ws, f"J{r}", "=" + por_nombre(f"G{r}", "D"), f_gris, PESOS)
@@ -395,7 +437,7 @@ def main():
             for col in "BCDEFGHIJKLMN":
                 ws[f"{col}{a}"].border = Border(left=fino, right=fino, bottom=fino,
                                                 top=Side(style="medium", color=NAVY))
-        for col, ancho in zip("BCDEFGHIJKLMNOPQ", (15, 14, 30, 11, 13, 32, 10, 10, 12, 13, 14, 14, 14, 2, 13, 14)):
+        for col, ancho in zip("BCDEFGHIJKLMNOPQ", (15, 14, 30, 11, 13, 44, 10, 10, 12, 13, 14, 14, 14, 2, 13, 14)):
             ws.column_dimensions[col].width = ancho
         ws.freeze_panes = "D6"
         ws.print_area = f"A1:N{tot}"
@@ -460,9 +502,18 @@ def main():
     p0 = r
     fila_producto = {}
     hojas = {clave: f"'{detalle[clave][0]}'" for clave in col_precio}
-    for k, (nombre, *_x) in PRODUCTOS.items():
-        fp = fila_precio[k]
-        fila_producto[k] = r
+    disc_actual = None
+    for d, k in lista_productos:
+        if d != disc_actual:
+            disc_actual = d
+            celda(rs, f"B{r}", TITULO_DISCIPLINA.get(d, d.upper()), Font(name="Calibri", size=10, bold=True,
+                  color=NAVY), relleno=r_sub, alinear=izq)
+            for col in "CDEFGHIJ":
+                celda(rs, f"{col}{r}", None, relleno=r_sub)
+            r += 1
+        nombre = nombre_producto(k, d)
+        fp = fila_precio[(d, k)]
+        fila_producto[(d, k)] = r
         celda(rs, f"B{r}", nombre, alinear=izq)
         celda(rs, f"C{r}", f"=PRECIOS!D{fp}", f_gris, PESOS)
         celda(rs, f"D{r}", f"=PRECIOS!H{fp}", formato=PESOS)
@@ -484,7 +535,7 @@ def main():
     celda(rs, f"B{r + 1}", f'=IF(AND(I{r}=E{tg},J{r}=F{tg},F{r}+G{r}+H{r}=D{tg}),"Control: la suma por producto '
                            f'coincide con el total de la propuesta.","Revisar: la suma por producto no coincide con el '
                            f'total.")', f_nota, alinear=Alignment(vertical="center"), borde=False)
-    for col, ancho in zip("BCDEFGHIJ", (34, 30, 13, 15, 15, 13, 14, 14, 17)):
+    for col, ancho in zip("BCDEFGHIJ", (46, 30, 13, 15, 15, 13, 14, 14, 17)):
         rs.column_dimensions[col].width = ancho
     rs.column_dimensions["J"].width = 17
     rs.print_area = f"A1:J{r + 1}"
@@ -518,10 +569,18 @@ def main():
                         "MARGEN DE LA VENTA", "MARGEN %"], alto=40)
     r = 6
     c0 = r
-    for k, (nombre, *_x) in PRODUCTOS.items():
-        fr = fila_producto[k]
-        celda(co, f"B{r}", nombre, alinear=izq)
-        celda(co, f"C{r}", f"=N(PRECIOS!M{fila_precio[k]})", formato=PESOS)
+    disc_actual = None
+    for d, k in lista_productos:
+        if d != disc_actual:
+            disc_actual = d
+            celda(co, f"B{r}", TITULO_DISCIPLINA.get(d, d.upper()), Font(name="Calibri", size=10, bold=True,
+                  color=NAVY), relleno=r_sub, alinear=izq)
+            for col in "CDEFGHIJKL":
+                celda(co, f"{col}{r}", None, relleno=r_sub)
+            r += 1
+        fr = fila_producto[(d, k)]
+        celda(co, f"B{r}", nombre_producto(k, d), alinear=izq)
+        celda(co, f"C{r}", f"=N(PRECIOS!M{fila_precio[(d, k)]})", formato=PESOS)
         celda(co, f"D{r}", f"=RESUMEN!F{fr}", formato=NUM)
         celda(co, f"E{r}", f"=RESUMEN!G{fr}+RESUMEN!H{fr}", formato=NUM)
         celda(co, f"F{r}", f"=D{r}+E{r}", formato=NUM)
@@ -565,7 +624,7 @@ def main():
         r += 1
     celda(co, f"B{r + 1}", "Si falta el costo de un producto, sus costos quedan en cero: completa la columna COSTO "
                            "UNITARIO NETO en la hoja PRECIOS.", f_nota, alinear=Alignment(vertical="center"), borde=False)
-    for col, ancho in zip("BCDEFGHIJKL", (36, 13, 12, 12, 12, 15, 15, 16, 15, 15, 10)):
+    for col, ancho in zip("BCDEFGHIJKL", (46, 13, 12, 12, 12, 15, 15, 16, 15, 15, 10)):
         co.column_dimensions[col].width = ancho
 
     for k, ws in enumerate(wb.worksheets, start=1):
