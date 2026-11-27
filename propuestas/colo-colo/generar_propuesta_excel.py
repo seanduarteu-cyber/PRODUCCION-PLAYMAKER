@@ -1,4 +1,4 @@
-"""Propuesta comercial 2027 para las ramas deportivas del CSD Colo-Colo, en Excel con macros.
+"""Propuesta comercial por dos temporadas desde 2027 para las ramas deportivas del CSD Colo-Colo, en Excel con macros.
 
 Uso:
     python3 propuestas/colo-colo/generar_propuesta_excel.py
@@ -69,9 +69,9 @@ PARAMETROS_ENTREGA = [  # parámetros internos del cronograma: clave, texto, val
 # hitos para todo el año (una sola fecha): un solo contrato por el negocio completo, y todos los diseños y muestras de la
 # temporada (también los de agosto). Texto, detalle, fecha por defecto.
 HITOS_GENERALES = [
-    ("Firma del contrato", "Un solo contrato por dos temporadas (2027 y 2028) y el negocio completo, una vez aprobado el "
-     "presupuesto.", datetime(2026, 12, 9)),
-    ("Aprobación de diseños", "El club aprueba todos los diseños de la temporada, también los de las prendas que se "
+    ("Firma del contrato", "Un solo contrato por dos temporadas a partir de 2027 y el negocio completo (cantidades y "
+     "canje único), una vez aprobado el presupuesto.", datetime(2026, 12, 9)),
+    ("Aprobación de diseños", "El club aprueba todos los diseños del contrato, también los de las prendas que se "
      "entregan en agosto.", datetime(2026, 12, 15)),
     ("Entrega de muestras", "Playmaker entrega muestras de cada prenda para el visto bueno del club.", datetime(2026, 12, 22)),
     ("Visto bueno de muestras", "El club aprueba las muestras; todas las entregas se fabrican según las muestras aprobadas.",
@@ -388,7 +388,7 @@ def main():
     # ---------------------------------------------------------------- PRECIOS
     pr = wb.active
     pr.title = "PRECIOS"
-    encabezado(pr, "LISTA DE PRECIOS 2027 POR DISCIPLINA", "Cada disciplina con sus productos. El valor formativas y cuerpo "
+    encabezado(pr, "LISTA DE PRECIOS POR DISCIPLINA", "Cada disciplina con sus productos. El valor formativas y cuerpo "
                                                           "técnico se escribe una vez: es lo que paga el club por las "
                                                           "escuelas formativas y el cuerpo técnico, y el valor del canje. "
                                                           "Precios con IVA, terminados en 900.")
@@ -486,7 +486,7 @@ def main():
     for clave, pestaña, hoja, titulo, _d, etq in CATEGORIAS:
         ws = wb.create_sheet(hoja)
         es_canje = clave == "canje"
-        encabezado(ws, f"{titulo.upper()} 2027",
+        encabezado(ws, f"{titulo.upper()}",
                    ("Todo en canje (100% de descuento, el club no paga): se valoriza a valor formativas y cuerpo "
                     "técnico." if es_canje else
                     ("Valor formativas y cuerpo técnico" if clave == "formativas" else "Precio comercial para la tienda")
@@ -575,7 +575,7 @@ def main():
 
     # ---------------------------------------------------------------- RESUMEN
     rs = wb.create_sheet("RESUMEN", 0)
-    encabezado(rs, "PROPUESTA COMERCIAL 2027: RAMAS DEPORTIVAS CSD COLO-COLO",
+    encabezado(rs, "PROPUESTA COMERCIAL RAMAS DEPORTIVAS CSD COLO-COLO: DOS TEMPORADAS DESDE 2027",
                "Valores con IVA. Canje de los primeros equipos valorizado a valor formativas y cuerpo técnico; ventas "
                "de formativas y cuerpo técnico a ese valor y stock para la tienda a precio comercial.")
     cabecera(rs, 5, 2, ["CATEGORÍA", "RAMA", "UNIDADES", "VALOR DEL CANJE (VALOR FORMATIVAS Y CT)", "VENTAS (CON IVA)",
@@ -745,7 +745,7 @@ def main():
     # ---------------------------------------------------------------- RESUMEN NEGOCIO (uso interno)
     sn = wb.create_sheet(HOJA_NEGOCIO, 1)
     sn.sheet_properties.tabColor = "C00000"
-    encabezado(sn, "RESUMEN DEL RESULTADO DEL NEGOCIO 2027: VENTA NETA, COSTOS Y MARGEN TOTAL (USO INTERNO, NO VA EN EL PDF)",
+    encabezado(sn, "RESUMEN DEL RESULTADO DEL NEGOCIO (DOS TEMPORADAS): VENTA NETA, COSTOS Y MARGEN TOTAL (USO INTERNO, NO VA EN EL PDF)",
                "Todo neto, sin IVA, salvo el canje a valor formativas y CT. Por disciplina: ventas de formativas y cuerpo técnico y "
                "stock comercial, canje de los primeros equipos y margen. Se actualiza solo con las demás hojas.")
     sup = previo["supuestos"] if previo else {}
@@ -839,7 +839,7 @@ def main():
           alinear=Alignment(vertical="center"), borde=False)
 
     r += 4
-    celda(sn, f"B{r}", "RESULTADO DEL NEGOCIO 2027", f_sec, alinear=Alignment(vertical="center"), borde=False)
+    celda(sn, f"B{r}", "RESULTADO DEL NEGOCIO (DOS TEMPORADAS)", f_sec, alinear=Alignment(vertical="center"), borde=False)
     r += 1
     cabecera(sn, r, 2, ["CONCEPTO", "MONTO", "% SOBRE VENTA NETA"], alto=24)
     r += 1
@@ -891,7 +891,7 @@ def main():
 
     # ---------------------------------------------------------------- ENTREGAS 2027 (va en el PDF para el club)
     en = wb.create_sheet(HOJA_ENTREGAS, 1)
-    encabezado(en, "CALENDARIO DE ENTREGAS 2027", "Tres entregas: equipos de marzo, stock de la tienda de marzo y agosto. "
+    encabezado(en, "CALENDARIO DE ENTREGAS", "Tres entregas: equipos de marzo, stock de la tienda de marzo y agosto. "
                "La entrega se elige por rama y categoría. El canje se entrega en proporción a las compras.")
     pe = previo["entregas"] if previo else {}
     nombres_e = [n for n, _f in ENTREGAS]
@@ -983,7 +983,7 @@ def main():
     celda(en, f"B{r}", "Proporción canje / compras de la propuesta", f_tot, alinear=izq)
     celda(en, f"C{r}", f"=IF(I{tp}=0,0,H{tp}/I{tp})", f_tot, PCT, r_sub)
     prop = f"$C${r}"
-    celda(en, f"D{r}", "El canje se entrega en esta proporción respecto de las compras que el club realice.", f_nota,
+    celda(en, f"D{r}", "Canje único por las dos temporadas del contrato, proporcional a las compras que el club realice.", f_nota,
           alinear=Alignment(vertical="center"), borde=False)
     r += 1
     celda(en, f"B{r}", "Canje por cada $1.000.000 en compras", alinear=izq)
@@ -1011,7 +1011,7 @@ def main():
     celda(en, f"G{r}", None, f_gran, relleno=r_gran)
     celda(en, f"B{r + 1}", "DIFERENCIA: canje que se entrega menos el que corresponde a las compras de esa entrega. La "
                            "primera lleva más canje (Esperanza Alba recibe solo canje y el stock de la tienda llega después) "
-                           "y las siguientes menos: en el año queda en cero si el club realiza todas las compras.", f_nota,
+                           "y las siguientes menos: en el contrato queda en cero si el club realiza todas las compras.", f_nota,
           alinear=Alignment(vertical="top", wrap_text=True), borde=False)
     en.merge_cells(f"B{r + 1}:L{r + 2}")
     r += 4
@@ -1024,7 +1024,7 @@ def main():
     r += 4
     celda(en, f"B{r}", "CRONOGRAMA", f_sec, alinear=Alignment(vertical="center"), borde=False)
     r += 1
-    cabecera(en, r, 2, ["HITO PARA TODO EL AÑO", "FECHA", "DETALLE"], alto=30)
+    cabecera(en, r, 2, ["HITO PARA TODO EL CONTRATO", "FECHA", "DETALLE"], alto=30)
     en.merge_cells(f"D{r}:L{r}")
     r += 1
     g0 = r
@@ -1085,7 +1085,7 @@ def main():
     en.conditional_formatting.add(f"C{h0}:{openpyxl.utils.get_column_letter(2 + len(ENTREGAS))}{r - 1}",
                                   CellIsRule(operator="lessThan", formula=["TODAY()"],
                                              fill=PatternFill("solid", fgColor="F8CBAD")))
-    celda(en, f"B{r}", "Un solo contrato por dos temporadas (2027 y 2028); todos los diseños y muestras de la temporada antes de fin de año. "
+    celda(en, f"B{r}", "Un solo contrato y canje único por dos temporadas desde 2027; todos los diseños y muestras antes de fin de año. "
                        "Por entrega: curva de tallas y pago para producir. En rojo: fechas que ya pasaron.", f_nota,
           alinear=Alignment(vertical="center"), borde=False)
     for col, ancho in zip("BCDEFGHIJKL", (40, 20, 20, 20, 15, 14, 14, 13, 17, 17, 16)):

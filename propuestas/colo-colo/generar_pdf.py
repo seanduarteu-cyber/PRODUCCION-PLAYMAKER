@@ -138,7 +138,7 @@ def leer_entregas(wb):
             modo = "entregas"
         elif b == "ENTREGA" and c.startswith("COMPRAS"):
             modo = "adelanto"
-        elif b == "HITO PARA TODO EL AÑO":
+        elif b in ("HITO PARA TODO EL CONTRATO", "HITO PARA TODO EL AÑO"):
             modo = "generales"
         elif b == "HITO":
             modo = "hitos"
@@ -162,12 +162,12 @@ def leer_entregas(wb):
 
 
 def pie(n):
-    return (f'<div class="pie"><span>CSD COLO-COLO, TEMPORADAS 2027 Y 2028</span>'
+    return (f'<div class="pie"><span>CSD COLO-COLO, DOS TEMPORADAS DESDE 2027</span>'
             f'<img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">{n:02d}</span></div>')
 
 
 def cab(izq):
-    return f'<div class="cab"><b>{izq}</b><span>PROPUESTA COMERCIAL 2027 Y 2028</span></div>'
+    return f'<div class="cab"><b>{izq}</b><span>PROPUESTA COMERCIAL, DOS TEMPORADAS DESDE 2027</span></div>'
 
 
 def paginar(bloques, primera, resto=FILAS_PAGINA):
@@ -214,11 +214,11 @@ def main():
     # 1. portada
     paginas.append(f"""<section class="page portada">
   <img class="logo" src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker">
-  <div class="kicker">PROPUESTA COMERCIAL, TEMPORADAS 2027 Y 2028</div>
+  <div class="kicker">PROPUESTA COMERCIAL, DOS TEMPORADAS DESDE 2027</div>
   <h1>Ramas deportivas del<br>CSD Colo-Colo</h1>
-  <p class="sub">Indumentaria de juego, entrenamiento y presentación para los primeros equipos, las escuelas formativas, el cuerpo técnico y la tienda del club, con un contrato por dos temporadas</p>
+  <p class="sub">Indumentaria de juego, entrenamiento y presentación para los primeros equipos, las escuelas formativas, el cuerpo técnico y la tienda del club, con un contrato por dos temporadas a partir de 2027</p>
   <div class="regla"></div>
-  <div class="cifras-portada"><div><b>{num(unidades)}</b><span>prendas en la temporada 2027</span></div><div><b>{len(ramas_dep)}</b><span>ramas deportivas</span></div><div><b>{pesos(canje)}</b><span>en canje para los primeros equipos en 2027</span></div></div>
+  <div class="cifras-portada"><div><b>{num(unidades)}</b><span>prendas para las dos temporadas</span></div><div><b>{len(ramas_dep)}</b><span>ramas deportivas</span></div><div><b>{pesos(canje)}</b><span>canje único para los primeros equipos</span></div></div>
   <div class="firma"><small>PRESENTADA POR</small><b>Sean Duarte</b><span>Playmaker SpA, sduarte@playmaker.cl, +56 9 3928 3323</span><span>{fecha}</span></div>
   {pie(n)}
 </section>""")
@@ -242,7 +242,7 @@ def main():
     paginas.append(f"""<section class="page">
   {cab("RESUMEN DE LA PROPUESTA")}
   <h1>Resumen de la propuesta</h1>
-  <p class="intro">Playmaker propone vestir a las ramas deportivas del CSD Colo-Colo en las temporadas 2027 y 2028, con un solo contrato. Esta propuesta detalla la temporada 2027, en tres partes: los primeros equipos de {", ".join(r.lower() if r != "Esperanza Alba" else r for r in ramas_dep[:-1])} y {ramas_dep[-1] if ramas_dep[-1] == "Esperanza Alba" else ramas_dep[-1].lower()} reciben su indumentaria en canje; las escuelas formativas, el cuerpo técnico, el directorio y la oficina la compran a valor formativas y cuerpo técnico, y el club compra stock para su tienda a precio comercial. Las cantidades son las de la planilla de requerimientos del club; las de 2028 se confirman antes de esa temporada.</p>
+  <p class="intro">Playmaker propone vestir a las ramas deportivas del CSD Colo-Colo durante dos temporadas a partir de 2027, con un solo contrato. Las cantidades y el canje de esta propuesta cubren las dos temporadas, en tres partes: los primeros equipos de {", ".join(r.lower() if r != "Esperanza Alba" else r for r in ramas_dep[:-1])} y {ramas_dep[-1] if ramas_dep[-1] == "Esperanza Alba" else ramas_dep[-1].lower()} reciben su indumentaria en canje; las escuelas formativas, el cuerpo técnico, el directorio y la oficina la compran a valor formativas y cuerpo técnico, y el club compra stock para su tienda a precio comercial. Las cantidades son las de la planilla de requerimientos del club.</p>
   <div class="cifras">
     <div><small>PRENDAS</small><b>{num(unidades)}</b><span>canje, formativas y comercial</span></div>
     <div><small>VALOR DEL CANJE</small><b>{pesos(canje)}</b><span>primeros equipos, a valor formativas y cuerpo técnico</span></div>
@@ -308,13 +308,13 @@ def main():
                 + "<th>DETALLE</th></tr>")
         generales = "".join(f'<tr><td>{texto(h[0])}</td><td class="n b">{fecha_txt(h[1])}</td>'
                             f'<td class="suave">{texto(h[2])}</td></tr>' for h in ent["generales"])
-        indice += [(1, "Cronograma", n), (2, "Para todo el año: contrato, diseños y muestras", n),
+        indice += [(1, "Cronograma", n), (2, "Para todo el contrato: firma, diseños y muestras", n),
                    (2, "Por entrega: tallas, pagos, producción y entrega", n)]
         paginas.append(f"""<section class="page">
   {cab("CRONOGRAMA")}
   <h1>Cronograma</h1>
-  <p class="intro">Una vez aprobado el presupuesto se firma un solo contrato por las dos temporadas (2027 y 2028) y el negocio completo. Antes de fin de año quedan aprobados todos los diseños y las muestras de la temporada, también los de las prendas que se entregan en agosto. Después, cada entrega tiene su curva de tallas y su pago para producir.</p>
-  <h2>PARA TODO EL AÑO</h2>
+  <p class="intro">Una vez aprobado el presupuesto se firma un solo contrato por dos temporadas, a partir de 2027, y el negocio completo. Antes de fin de año quedan aprobados todos los diseños y las muestras del contrato, también los de las prendas que se entregan en agosto. Después, cada entrega tiene su curva de tallas y su pago para producir.</p>
+  <h2>PARA TODO EL CONTRATO</h2>
   <table class="tabla val crono gen"><colgroup><col class="h"><col class="f1"><col class="d"></colgroup><tr><th>HITO</th><th class="n">FECHA</th><th>DETALLE</th></tr>{generales}</table>
   <h2>POR ENTREGA</h2>
   <table class="tabla val crono c{cols_e}"><colgroup><col class="h">{'<col class="f">' * cols_e}<col class="d"></colgroup>{th_h}{hitos}</table>
@@ -333,14 +333,14 @@ def main():
         f1 = fecha_txt(ent["entregas"][0][1]) if ent["entregas"] else ""
         cuadre = (f"La entrega del {f1} lleva más canje que el {pct(prop)} de sus compras, porque incluye a Esperanza "
                   f"Alba, que recibe solo canje, y el stock para la tienda llega en la entrega siguiente; las entregas "
-                  f"siguientes llevan menos. En el total del año el canje queda exactamente en el {pct(prop)} de las "
+                  f"siguientes llevan menos. En el total del contrato el canje queda exactamente en el {pct(prop)} de las "
                   f"compras. " if dif and dif > 0 else "")
         indice += [(1, "Canje proporcional a las compras", n), (2, f"Proporción canje / compras ({pct(prop)}) y ejemplo", n),
                    (2, "Compras y canje por entrega", n)]
         paginas.append(f"""<section class="page">
   {cab("CANJE PROPORCIONAL A LAS COMPRAS")}
   <h1>Canje proporcional a las compras</h1>
-  <p class="intro">El canje de los primeros equipos es proporcional a lo que compra el club. En esta propuesta, el canje ({pesos(canje)}) equivale al {pct(prop)} de las compras ({pesos(ventas)}): por cada $1.000.000 que el club compra, recibe {pesos(por_millon)} en indumentaria en canje. Si el club compra menos, el canje baja en la misma proporción; si compra más, sube.</p>
+  <p class="intro">El canje de los primeros equipos es proporcional a lo que compra el club. En esta propuesta, el canje ({pesos(canje)}) equivale al {pct(prop)} de las compras ({pesos(ventas)}): por cada $1.000.000 que el club compra, recibe {pesos(por_millon)} en indumentaria en canje. Si el club compra menos, el canje baja en la misma proporción. El canje es único para las dos temporadas del contrato.</p>
   <div class="cifras tres">
     <div><small>PROPORCIÓN CANJE / COMPRAS</small><b>{pct(prop)}</b><span>del valor de las compras, con IVA</span></div>
     <div><small>POR CADA $1.000.000 EN COMPRAS</small><b>{pesos(por_millon)}</b><span>en canje, a valor formativas y cuerpo técnico</span></div>
@@ -349,23 +349,23 @@ def main():
   <h2>COMPRAS Y CANJE POR ENTREGA</h2>
   <table class="tabla val"><tr><th>ENTREGA</th><th class="n">COMPRAS DEL CLUB</th><th class="n">CANJE QUE SE ENTREGA</th></tr>{"".join(filas)}</table>
   <p class="leyenda">Valores con IVA incluido.</p>
-  <div class="nota-caja"><b>CÓMO SE CUADRA EN LA TEMPORADA</b>{cuadre}Si al cierre de cada temporada las compras realizadas son menores a las de esta propuesta, el canje se ajusta a la misma proporción y la diferencia se liquida en ese momento.</div>
+  <div class="nota-caja"><b>CÓMO SE CUADRA EN EL CONTRATO</b>{cuadre}Si al cierre del contrato las compras realizadas son menores a las de esta propuesta, el canje se ajusta a la misma proporción y la diferencia se liquida en ese momento.</div>
   {pie(n)}
 </section>""")
         n += 1
 
     # condiciones de la propuesta: vigencia, canje, compras, reposición de prendas y pagos
     prop_txt = pct(ent.get("proporcion", 0)) if ent else ""
-    indice += [(1, "Condiciones de la propuesta", n), (2, "Vigencia: contrato por dos temporadas (2027 y 2028)", n),
+    indice += [(1, "Condiciones de la propuesta", n), (2, "Vigencia: dos temporadas desde 2027 y canje único", n),
                (2, "Canje, compras y pagos", n), (2, "Reposición de prendas: precio y personalización", n),
                (2, "Plazos de reposición", n)]
     paginas.append(f"""<section class="page">
   {cab("CONDICIONES")}
   <h1>Condiciones de la propuesta</h1>
   <div class="condiciones">
-    <div><b>VIGENCIA</b><p>Un solo contrato por dos temporadas, 2027 y 2028, para el negocio completo. Esta propuesta valoriza la temporada 2027; las cantidades de 2028 se confirman con el club antes de esa temporada.</p></div>
-    <div><b>CANJE</b><p>Indumentaria de los primeros equipos con 100% de descuento, valorizada a valor formativas y cuerpo técnico. El canje es proporcional a las compras del club{f" ({prop_txt} de las compras)" if prop_txt else ""}.</p></div>
-    <div><b>COMPRAS</b><p>Las escuelas formativas, el cuerpo técnico, el directorio y la oficina compran a valor formativas y cuerpo técnico. El stock para la tienda del club se compra a precio comercial.</p></div>
+    <div><b>VIGENCIA</b><p>Un solo contrato por la duración de dos temporadas, a partir de 2027, para el negocio completo. Como hay temporadas que parten en agosto y terminan el año siguiente, el contrato se cuenta en temporadas y no en años. Las cantidades y el canje de esta propuesta cubren las dos temporadas.</p></div>
+    <div><b>CANJE</b><p>Canje único por las dos temporadas del contrato: indumentaria de los primeros equipos con 100% de descuento, valorizada a valor formativas y cuerpo técnico, proporcional a las compras del club{f" ({prop_txt} de las compras)" if prop_txt else ""}.</p></div>
+    <div><b>COMPRAS</b><p>Las escuelas formativas, el cuerpo técnico, el directorio y la oficina compran a valor formativas y cuerpo técnico. El stock para la tienda se compra a precio comercial. Las compras adicionales que el club necesite se acuerdan por separado.</p></div>
     <div><b>PAGOS</b><p>Cada entrega tiene su orden de compra y su pago, antes de iniciar la producción de esa entrega. Precios con IVA incluido.</p></div>
   </div>
   <h2>REPOSICIÓN DE PRENDAS</h2>
@@ -481,8 +481,8 @@ def main():
   <div class="kicker">CONDICIONES Y PRÓXIMOS PASOS</div>
   <h1>De la propuesta a la cancha</h1>
   <div class="pasos-cierre">
-    <div><em>01</em><div><b>Firma del contrato</b><p>Una vez aprobado el presupuesto, se firma un solo contrato por las dos temporadas (2027 y 2028) y el negocio completo{f", a más tardar el {f_con}" if f_con else ""}.</p></div></div>
-    <div><em>02</em><div><b>Diseños y muestras</b><p>El club aprueba todos los diseños de la temporada, también los de agosto{f", a más tardar el {f_dis}" if f_dis else ""}, y da el visto bueno a las muestras{f" el {f_vb}" if f_vb else ""}. Todas las entregas se fabrican según las muestras aprobadas.</p></div></div>
+    <div><em>01</em><div><b>Firma del contrato</b><p>Una vez aprobado el presupuesto, se firma un solo contrato por dos temporadas, a partir de 2027, y el negocio completo{f", a más tardar el {f_con}" if f_con else ""}.</p></div></div>
+    <div><em>02</em><div><b>Diseños y muestras</b><p>El club aprueba todos los diseños del contrato, también los de agosto{f", a más tardar el {f_dis}" if f_dis else ""}, y da el visto bueno a las muestras{f" el {f_vb}" if f_vb else ""}. Todas las entregas se fabrican según las muestras aprobadas.</p></div></div>
     <div><em>03</em><div><b>Tallas y pagos por entrega</b><p>Para cada entrega, el club entrega la curva de tallas y la orden de compra con el pago de esa parte del pedido, antes de iniciar su producción.</p></div></div>
     <div><em>04</em><div><b>Producción y entregas</b><p>Producción con supervisión y control de calidad de Playmaker{f"; entregas el {txt_ent}" if txt_ent else ""}. El valor final se ajusta a las cantidades confirmadas.</p></div></div>
   </div>
