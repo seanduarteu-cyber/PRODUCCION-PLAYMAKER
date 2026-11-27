@@ -7,13 +7,13 @@ Lee el requerimiento del club (Requerimiento_Indumentaria_2027_CSD_Colo_Colo.xls
 FORMATIVAS y COMERCIAL) y crea Propuesta_Comercial_CSD_Colo_Colo_2027.xlsm, con el formato de la valorización
 FEVOCHI y de Los Leones:
   - PRECIOS: por disciplina (básquetbol, futsal, vóleibol, patín, Esperanza Alba e institucional), cada producto
-    con su precio (la camiseta de juego de básquetbol es distinta de la de futsal o la de vóleibol). Un precio
-    público por producto (se escribe una sola vez) y tres descuentos, uno por categoría:
-    canje (100%), formativas y cuerpo técnico, y comercial (stock que el club compra para su tienda). Cada precio
-    sale del público con su descuento, terminado en 900. Un producto puede tener su propio descuento en cada
-    categoría. Al lado, fuera de lo que se imprime, el costo unitario neto y el margen de cada precio.
+    con su precio (la camiseta de juego de básquetbol es distinta de la de futsal o la de vóleibol). Por producto se
+    escribe una vez el valor formativas y cuerpo técnico: es lo que paga el club por las escuelas formativas y el
+    cuerpo técnico, y el valor con que se calcula el canje (100% de descuento). El precio comercial de la tienda sale
+    de ese valor con un descuento general (un producto puede tener uno propio), terminado en 900. Los descuentos, el
+    costo unitario neto y los márgenes quedan fuera de lo que se imprime.
   - CANJE PRIMEROS EQUIPOS, FORMATIVAS Y CT, COMERCIAL: lo pedido por el club, por rama, con el producto
-    Playmaker (lista desplegable), cantidades, precio, valor a precio público, valor a pagar y descuento (en el
+    Playmaker (lista desplegable), cantidades, valor formativas y CT, precio de la categoría y valor a pagar (en el
     canje, el valor del canje). Columnas internas de costo fuera de lo que se imprime.
   - RESUMEN: por categoría y rama, valor del canje y ventas (neto e IVA); valor por producto. Vínculo GENERAR PDF
     PARA EL CLUB (macro): exporta todas las hojas menos COSTOS y RESUMEN NEGOCIO.
@@ -22,8 +22,8 @@ FEVOCHI y de Los Leones:
     producción, despacho y entrega) calculado hacia atrás desde cada fecha según el volumen, y el canje proporcional a
     las compras (proporción canje / compras de la propuesta, canje adelantado por entrega y simulación).
   - RESUMEN NEGOCIO (uso interno): resultado del negocio por disciplina o rama: venta neta de formativas y cuerpo
-    técnico y del stock comercial, costo de lo vendido y margen, canje de los primeros equipos (a precio público y a
-    costo) y margen total, con un supuesto de otros costos (% de la venta) y el punto de equilibrio.
+    técnico y del stock comercial, costo de lo vendido y margen, canje de los primeros equipos (a valor formativas y CT
+    y a costo) y margen total, con un supuesto de otros costos (% de la venta) y el punto de equilibrio.
   - COSTOS (uso interno): costo y margen por producto y resultado de la propuesta.
 En formativas y comercial se usa la cantidad ajustada del club (Q ADAPTADA o Q MODIFICADA); si la dejó en blanco,
 queda en 0, igual que en los totales de su planilla (esas filas se marcan para revisarlas). Si la planilla ya existe, se conservan los precios, descuentos, costos y cantidades cargados,
@@ -60,21 +60,36 @@ ENTREGAS = [("MARZO", datetime(2027, 3, 1)), ("AGOSTO", datetime(2027, 8, 2))]
 ENTREGA_RAMA = {"Vóleibol": "AGOSTO", "Patín": "AGOSTO"}
 PARAMETROS_ENTREGA = [  # parámetros internos del cronograma: clave, texto, valor por defecto
     ("capacidad", "Capacidad de producción (prendas por semana)", 1000),
-    ("holgura1", "Semanas de holgura antes de la entrega de marzo (vacaciones de febrero)", 2),
-    ("holgura2", "Semanas de holgura antes de la entrega de agosto", 1),
-    ("despacho", "Semanas de control de calidad y despacho", 1),
-    ("tallas", "Semanas entre la curva de tallas y orden de compra y el inicio de producción", 1),
-    ("disenos", "Semanas entre la aprobación de diseños y la curva de tallas", 2),
+]
+# hitos del cronograma: texto, detalle, fecha por defecto de cada entrega (None: la fecha de la entrega)
+HITOS = [
+    ("Aprobación de diseños", "El club aprueba los diseños de juego, entrenamiento y presentación de cada rama.",
+     datetime(2026, 12, 15), datetime(2027, 5, 17)),
+    ("Entrega de muestras", "Playmaker entrega muestras de cada prenda para el visto bueno del club.",
+     datetime(2026, 12, 22), datetime(2027, 5, 24)),
+    ("Visto bueno de muestras", "El club aprueba las muestras; la producción se fabrica según las muestras aprobadas.",
+     datetime(2026, 12, 28), datetime(2027, 5, 31)),
+    ("Cierre del pedido", "Curva de tallas por rama y categoría, firma del contrato y orden de compra con el abono de la "
+     "parte del pedido de esta entrega.", datetime(2026, 12, 30), datetime(2027, 6, 7)),
+    ("Inicio de producción", "Confección en la planta de Playmaker en Santiago.", datetime(2027, 1, 4), datetime(2027, 6, 14)),
+    ("Control de calidad y despacho", "Revisión, etiquetado por rama y categoría, y despacho.", datetime(2027, 2, 22),
+     datetime(2027, 7, 26)),
+    ("Entrega en el club", "Toda la indumentaria de las ramas de esta entrega.", None, None),
 ]
 
 # categorías: clave, pestaña del requerimiento, hoja de la propuesta, título, descuento general, etiqueta del precio
 CATEGORIAS = [
-    ("canje", "CANJE 1EROS EQUIPOS", "CANJE PRIMEROS EQUIPOS", "Canje primeros equipos", 1.00, "CANJE"),
-    ("formativas", "FORMATIVAS", "FORMATIVAS Y CT", "Formativas y cuerpo técnico", 0.15, "FORMATIVAS Y CT"),
-    ("comercial", "COMERCIAL", "COMERCIAL", "Comercial (stock para la tienda)", 0.30, "COMERCIAL"),
+    ("canje", "CANJE 1EROS EQUIPOS", "CANJE PRIMEROS EQUIPOS", "Canje primeros equipos", None, "CANJE"),
+    ("formativas", "FORMATIVAS", "FORMATIVAS Y CT", "Formativas y cuerpo técnico", None, "FORMATIVAS Y CT"),
+    ("comercial", "COMERCIAL", "COMERCIAL", "Comercial (stock para la tienda)", None, "COMERCIAL"),
 ]
 
-# producto: (nombre, línea, precio público de referencia con IVA, referencia del precio,
+# precios: el valor formativas y cuerpo técnico (con IVA) es la base; el canje se valoriza a ese valor y el precio
+# comercial de la tienda sale de él con un descuento (interno: no se muestra al club)
+COL_BASE_PRECIO = "VALOR FORMATIVAS Y CUERPO TÉCNICO (CON IVA)"
+COL_DESC_COMERCIAL = "DESCUENTO COMERCIAL (INTERNO, OPCIONAL)"
+DESCUENTOS = {"canje": 1.00, "comercial": 0.10}  # descuentos generales por defecto sobre el valor formativas y CT
+# producto: (nombre, línea, valor formativas y CT de referencia con IVA, referencia del precio,
 #            costo unitario neto de referencia: costos cargados en la propuesta de Los Leones o su prenda más parecida)
 PRODUCTOS = {
     "camiseta_juego": ("Camiseta de juego", "Juego", 30900, "Lista Los Leones 2027", 14653),
@@ -205,12 +220,15 @@ def leer_previo():
     previo = {"precios": {}, "generales": {}, "celdas": {}, "supuestos": {}, "extras": {}, "entregas": {}}
     pr = wb["PRECIOS"]
     for r in range(4, 9):
-        etq = texto(pr.cell(r, 2).value).lower()
-        for clave, *_x in CATEGORIAS:
-            if clave in etq or (clave == "formativas" and "formativas" in etq):
-                previo["generales"][clave] = pr.cell(r, 3).value
-        if etq == "iva":
-            previo["generales"]["iva"] = pr.cell(r, 3).value
+        for c_etq, c_val in ((2, 3), (8, 12)):
+            etq = texto(pr.cell(r, c_etq).value).lower()
+            if not etq or pr.cell(r, c_val).value is None:
+                continue
+            for clave in ("canje", "comercial", "formativas"):
+                if etq.startswith("descuento") and clave in etq.split(" (")[0]:
+                    previo["generales"][clave] = pr.cell(r, c_val).value
+            if etq == "iva":
+                previo["generales"]["iva"] = pr.cell(r, c_val).value
     cab = next(r for r in range(1, 15) if texto(pr.cell(r, 2).value) == "PRODUCTO")
     cols = {texto(pr.cell(cab, c).value): c for c in range(2, pr.max_column + 1)}
     for r in range(cab + 1, pr.max_row + 1):
@@ -223,18 +241,22 @@ def leer_previo():
                 previo["supuestos"][texto(sn.cell(r, 2).value)] = sn.cell(r, 3).value
     if HOJA_ENTREGAS in wb.sheetnames:
         en = wb[HOJA_ENTREGAS]
-        en_tabla = False
+        modo = None
         for r in range(1, en.max_row + 1):
             b = texto(en.cell(r, 2).value)
-            if b == "RAMA":
-                en_tabla = True
-            elif b == "TOTAL":
-                en_tabla = False
+            if b in ("RAMA", "HITO"):
+                modo = b
+            elif b == "TOTAL" or (modo == "HITO" and not b):
+                modo = None
+            elif modo == "HITO":
+                for c in range(3, 3 + len(ENTREGAS)):
+                    if azul(en.cell(r, c)):
+                        previo["entregas"][f"hito:{b}:{c}"] = en.cell(r, c).value
             elif b and azul(en.cell(r, 3)):
-                previo["entregas"][("rama:" + b) if en_tabla else b] = en.cell(r, 3).value
+                previo["entregas"][("rama:" + b) if modo == "RAMA" else b] = en.cell(r, 3).value
             if en.cell(r, 13).value and azul(en.cell(r, 14)):
                 previo["entregas"][texto(en.cell(r, 13).value)] = en.cell(r, 14).value
-    for hoja in ["RESUMEN", "PRECIOS", HOJA_ENTREGAS] + [c[2] for c in CATEGORIAS]:
+    for hoja in ["RESUMEN", HOJA_ENTREGAS] + [c[2] for c in CATEGORIAS]:
         if hoja in wb.sheetnames:
             previo["extras"][hoja] = [(c.row, c.column, c.value, c.number_format, bool(c.font and c.font.b))
                                       for row in wb[hoja].iter_rows() for c in row if c.value is not None]
@@ -345,37 +367,39 @@ def main():
     # ---------------------------------------------------------------- PRECIOS
     pr = wb.active
     pr.title = "PRECIOS"
-    encabezado(pr, "LISTA DE PRECIOS 2027 POR DISCIPLINA", "Cada disciplina con sus productos. El precio público se "
-                                                          "escribe una vez; cada categoría tiene su descuento general "
-                                                          "(arriba) y un producto puede tener uno propio. Precios con "
-                                                          "IVA, terminados en 900.")
+    encabezado(pr, "LISTA DE PRECIOS 2027 POR DISCIPLINA", "Cada disciplina con sus productos. El valor formativas y cuerpo "
+                                                          "técnico se escribe una vez: es lo que paga el club por las "
+                                                          "escuelas formativas y el cuerpo técnico, y el valor del canje. "
+                                                          "Precios con IVA, terminados en 900.")
     gen = previo["generales"] if previo else {}
     celda(pr, "B4", "IVA", f_tot, alinear=izq)
     celda(pr, "C4", gen.get("iva", IVA), f_input, "0%", r_input)
-    fila_general = {}
-    for i, (clave, _p, _h, titulo, desc, _e) in enumerate(CATEGORIAS):
+    # descuentos generales (internos, fuera de lo que se imprime): canje y precio comercial de la tienda
+    celda(pr, "H4", "PARÁMETROS (USO INTERNO, NO SE IMPRIME)", Font(name="Calibri", size=10, bold=True, color="C00000"),
+          alinear=izq, borde=False)
+    ref_general = {}
+    for i, (clave, texto_gen) in enumerate((("canje", "Descuento canje primeros equipos (sobre el valor formativas y CT)"),
+                                            ("comercial", "Descuento precio comercial tienda (sobre el valor formativas y CT)"))):
         fila = 5 + i
-        fila_general[clave] = fila
-        celda(pr, f"B{fila}", f"Descuento {titulo.lower()}", f_tot, alinear=izq)
+        celda(pr, f"H{fila}", texto_gen, f_tot, alinear=Alignment(vertical="center"), borde=False)
         v = gen.get(clave)
-        celda(pr, f"C{fila}", v if v is not None else desc, f_input, "0%", r_input)
-    celda(pr, "D5", "Canje: 100% de descuento (el club no paga). Se valoriza a precio público.", f_nota,
-          alinear=Alignment(vertical="center"), borde=False)
-    cab_precios = ["PRODUCTO", "LÍNEA", "PRECIO PÚBLICO (CON IVA)"]
-    for clave, _p, _h, _t, _d, etq in CATEGORIAS:
-        cab_precios += [f"DESCUENTO {etq}", f"PRECIO {etq}"]
-    cab_precios += ["OBSERVACIONES"]
-    cabecera(pr, 9, 2, cab_precios, alto=40)
-    cabecera(pr, 9, 13, ["COSTO UNITARIO NETO (INTERNO)", "MARGEN FORMATIVAS Y CT (INTERNO)",
-                         "MARGEN COMERCIAL (INTERNO)", "MARGEN PÚBLICO (INTERNO)",
-                         "REFERENCIA DEL PRECIO (INTERNO)"], alto=40, relleno=r_int)
-    col_desc = {"canje": "E", "formativas": "G", "comercial": "I"}
-    col_precio = {"canje": "F", "formativas": "H", "comercial": "J"}
+        celda(pr, f"L{fila}", v if v is not None else DESCUENTOS[clave], f_input, "0%", r_input)
+        ref_general[clave] = f"$L${fila}"
+    cabecera(pr, 9, 2, ["PRODUCTO", "LÍNEA", COL_BASE_PRECIO, "PRECIO COMERCIAL TIENDA (CON IVA)", "OBSERVACIONES"],
+             alto=40)
+    cabecera(pr, 9, 8, [COL_DESC_COMERCIAL, "PRECIO CANJE (INTERNO)", "COSTO UNITARIO NETO (INTERNO)",
+                        "MARGEN FORMATIVAS Y CT (INTERNO)", "MARGEN COMERCIAL (INTERNO)", "REFERENCIA DEL PRECIO (INTERNO)"],
+             alto=40, relleno=r_int)
+    col_precio = {"canje": "I", "formativas": "D", "comercial": "E"}
+
+    def redondeo(neto):
+        return f"IF({neto}<=0,0,MAX(0,ROUND(({neto}-900)/1000,0)*1000+900))"
+
     fila_precio, r = {}, 10
     for disc in disciplinas:
         celda(pr, f"B{r}", TITULO_DISCIPLINA.get(disc, disc.upper()), Font(name="Calibri", size=10, bold=True,
               color=NAVY), relleno=r_sub, alinear=izq)
-        for col in "CDEFGHIJK":
+        for col in "CDEF":
             celda(pr, f"{col}{r}", None, relleno=r_sub)
         r += 1
         for d, k in lista_productos:
@@ -386,36 +410,40 @@ def main():
             fila_precio[(d, k)] = r
             # valores cargados: los de este producto o, del formato anterior, los del producto sin disciplina
             pv = (previo["precios"].get(nombre) or previo["precios"].get(base) or {}) if previo else {}
+            valor = pv.get(COL_BASE_PRECIO)
+            if valor is None and pv.get("PRECIO PÚBLICO (CON IVA)") is not None:  # formato anterior: público y descuento
+                d_fo = pv.get("DESCUENTO FORMATIVAS Y CT")
+                d_fo = gen.get("formativas", 0) if d_fo is None else d_fo
+                pub = pv["PRECIO PÚBLICO (CON IVA)"]
+                valor = pub if not d_fo else max(0, round((pub * (1 - d_fo) - 900) / 1000) * 1000 + 900)
             celda(pr, f"B{r}", nombre, alinear=izq)
             celda(pr, f"C{r}", l, f_gris, alinear=izq)
-            celda(pr, f"D{r}", pv.get("PRECIO PÚBLICO (CON IVA)", precio), f_input, PESOS, r_input)
-            for clave, *_x in CATEGORIAS:
-                cd, cp, etq = col_desc[clave], col_precio[clave], _x[-1]
-                celda(pr, f"{cd}{r}", pv.get(f"DESCUENTO {etq}"), f_input, "0%", r_input)
-                neto = f'N(D{r})*(1-IF({cd}{r}="",$C${fila_general[clave]},{cd}{r}))'
-                celda(pr, f"{cp}{r}", f"=IF({neto}<=0,0,MAX(0,ROUND(({neto}-900)/1000,0)*1000+900))", f_tot, PESOS)
-            celda(pr, f"K{r}", pv.get("OBSERVACIONES"), f_input, relleno=r_input, alinear=izq)
-            celda(pr, f"Q{r}", pv.get("REFERENCIA DEL PRECIO (INTERNO)", ref), f_input, relleno=r_input, alinear=izq)
-            celda(pr, f"M{r}", pv.get("COSTO UNITARIO NETO (INTERNO)", costo), f_input, PESOS, r_input)
-            for col, cp in (("N", "H"), ("O", "J"), ("P", "D")):
-                celda(pr, f"{col}{r}", f'=IF(OR(N({cp}{r})=0,N(M{r})=0),"",1-M{r}/({cp}{r}/(1+$C$4)))', formato=PCT)
+            celda(pr, f"D{r}", precio if valor is None else valor, f_input, PESOS, r_input)
+            d_co = pv.get(COL_DESC_COMERCIAL, pv.get("DESCUENTO COMERCIAL"))
+            celda(pr, f"H{r}", d_co, f_input, "0%", r_input)
+            celda(pr, f"E{r}", "=" + redondeo(f'N(D{r})*(1-IF(H{r}="",{ref_general["comercial"]},H{r}))'), f_tot, PESOS)
+            celda(pr, f"I{r}", "=" + redondeo(f'N(D{r})*(1-{ref_general["canje"]})'), f_gris, PESOS)
+            celda(pr, f"F{r}", pv.get("OBSERVACIONES"), f_input, relleno=r_input, alinear=izq)
+            celda(pr, f"J{r}", pv.get("COSTO UNITARIO NETO (INTERNO)", costo), f_input, PESOS, r_input)
+            for col, cp in (("K", "D"), ("L", "E")):
+                celda(pr, f"{col}{r}", f'=IF(OR(N({cp}{r})=0,N(J{r})=0),"",1-J{r}/({cp}{r}/(1+$C$4)))', formato=PCT)
+            celda(pr, f"M{r}", pv.get("REFERENCIA DEL PRECIO (INTERNO)", ref), f_input, relleno=r_input, alinear=izq)
             r += 1
     ultima_precio = r - 1
-    for col, ancho in zip("BCDEFGHIJKLMNOPQ", (46, 14, 14, 12, 12, 13, 14, 12, 13, 28, 2, 15, 14, 14, 14, 34)):
+    for col, ancho in zip("BCDEFGHIJKLM", (46, 14, 18, 18, 30, 2, 14, 13, 15, 14, 14, 34)):
         pr.column_dimensions[col].width = ancho
-    pr.print_area = f"A1:K{ultima_precio}"
+    pr.print_area = f"A1:F{ultima_precio}"
     dv = DataValidation(type="decimal", operator="greaterThanOrEqual", formula1="0", allow_blank=True,
                         errorTitle="Precio", error="Ingresa un valor en pesos (0 o más).")
     pr.add_data_validation(dv)
     dv.add(f"D10:D{ultima_precio}")
-    dv.add(f"M10:M{ultima_precio}")
+    dv.add(f"J10:J{ultima_precio}")
     dvp = DataValidation(type="decimal", operator="between", formula1="0", formula2="1", allow_blank=True,
                          errorTitle="Descuento", error="Ingresa un porcentaje entre 0% y 100%.")
     pr.add_data_validation(dvp)
-    dvp.add("C5:C7")
-    for clave in col_desc:
-        dvp.add(f"{col_desc[clave]}10:{col_desc[clave]}{ultima_precio}")
-    for col in "NOP":
+    dvp.add("L5:L6")
+    dvp.add(f"H10:H{ultima_precio}")
+    for col in "KL":
         pr.conditional_formatting.add(f"{col}10:{col}{ultima_precio}", CellIsRule(
             operator="lessThan", formula=["0"], fill=PatternFill("solid", fgColor="F6D5D0")))
     nombres_rango = f"PRECIOS!$B$10:$B${ultima_precio}"
@@ -429,14 +457,15 @@ def main():
         ws = wb.create_sheet(hoja)
         es_canje = clave == "canje"
         encabezado(ws, f"{titulo.upper()} 2027",
-                   ("Todo en canje: el valor del canje es el valor a precio público menos lo que paga el club (con "
-                    "100% de descuento, el club no paga)." if es_canje else
-                    f"Precio {etq.lower()} de la hoja PRECIOS. CANTIDAD: la ajustada por el club (si la dejó en "
-                    "blanco, 0, como en sus totales; esas filas quedan marcadas).") + " Celdas amarillas editables.")
+                   ("Todo en canje (100% de descuento, el club no paga): se valoriza a valor formativas y cuerpo "
+                    "técnico." if es_canje else
+                    ("Valor formativas y cuerpo técnico" if clave == "formativas" else "Precio comercial para la tienda")
+                    + " de la hoja PRECIOS. CANTIDAD: la ajustada por el club (si la dejó en blanco, 0, como en sus "
+                    "totales; esas filas quedan marcadas).") + " Celdas amarillas editables.")
         cabecera(ws, 5, 2, ["RAMA", "TIPO", "PRENDA SOLICITADA", "MODELO", "COLOR", "PRODUCTO PLAYMAKER",
-                            "CANTIDAD PEDIDA", "CANTIDAD", "PRECIO PÚBLICO", f"PRECIO {etq}",
-                            "VALOR A PRECIO PÚBLICO", "VALOR A PAGAR", "VALOR DEL CANJE" if es_canje else
-                            "DESCUENTO OTORGADO"])
+                            "CANTIDAD PEDIDA", "CANTIDAD", "VALOR FORMATIVAS Y CT",
+                            {"canje": "PRECIO CANJE", "formativas": "PRECIO A PAGAR", "comercial": "PRECIO COMERCIAL"}[clave],
+                            "TOTAL A VALOR FORMATIVAS Y CT", "VALOR A PAGAR"] + (["VALOR DEL CANJE"] if es_canje else []))
         cabecera(ws, 5, 16, ["COSTO UNITARIO (INTERNO)", "COSTO TOTAL (INTERNO)"], relleno=r_int)
         dv_prod = DataValidation(type="list", formula1=f"={nombres_rango}", allow_blank=False,
                                  errorTitle="Producto", error="Elige un producto de la hoja PRECIOS.")
@@ -467,8 +496,9 @@ def main():
             celda(ws, f"K{r}", "=" + por_nombre(f"G{r}", col_precio[clave]), formato=PESOS)
             celda(ws, f"L{r}", f"=N(I{r})*J{r}", formato=PESOS)
             celda(ws, f"M{r}", f"=N(I{r})*K{r}", f_tot, PESOS)
-            celda(ws, f"N{r}", f"=L{r}-M{r}", f_tot if es_canje else f_norm, PESOS)
-            celda(ws, f"P{r}", "=" + por_nombre(f"G{r}", "M"), f_gris, PESOS)
+            if es_canje:
+                celda(ws, f"N{r}", f"=L{r}-M{r}", f_tot, PESOS)
+            celda(ws, f"P{r}", "=" + por_nombre(f"G{r}", "J"), f_gris, PESOS)
             celda(ws, f"Q{r}", f"=N(I{r})*P{r}", formato=PESOS)
             r += 1
         ramas.append((rama_actual, f0, r - 1))
@@ -482,7 +512,7 @@ def main():
         celda(ws, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
         for col in "CDEFGJK":
             celda(ws, f"{col}{r}", None, f_gran, relleno=r_gran)
-        for col, fmt in (("H", NUM), ("I", NUM), ("L", PESOS), ("M", PESOS), ("N", PESOS)):
+        for col, fmt in (("H", NUM), ("I", NUM), ("L", PESOS), ("M", PESOS)) + ((("N", PESOS),) if es_canje else ()):
             celda(ws, f"{col}{r}", f"=SUM({col}6:{col}{r - 1})", f_gran, fmt, r_gran)
         celda(ws, f"P{r}", None, relleno=r_int)
         celda(ws, f"Q{r}", f"=SUM(Q6:Q{r - 1})", f_gran, PESOS, r_int)
@@ -490,18 +520,18 @@ def main():
         tot = r
         # separación visual entre ramas
         for _rama, a, _b in ramas[1:]:
-            for col in "BCDEFGHIJKLMN":
+            for col in "BCDEFGHIJKLMN"[:13 if es_canje else 12]:
                 ws[f"{col}{a}"].border = Border(left=fino, right=fino, bottom=fino,
                                                 top=Side(style="medium", color=NAVY))
         for col, ancho in zip("BCDEFGHIJKLMNOPQ", (15, 14, 30, 11, 13, 44, 10, 10, 12, 13, 14, 14, 14, 2, 13, 14)):
             ws.column_dimensions[col].width = ancho
         ws.freeze_panes = "D6"
-        ws.print_area = f"A1:N{tot}"
+        ws.print_area = f"A1:{'N' if es_canje else 'M'}{tot}"
         # totales internos a la derecha
         celda(ws, "S4", "TOTALES (USO INTERNO, NO SE IMPRIME)", Font(name="Calibri", size=10, bold=True, color="C00000"),
               alinear=izq, borde=False)
         cabecera(ws, 5, 19, ["CONCEPTO", "VALOR"], relleno=r_int)
-        filas_int = ([("Valor del canje (precio público, con IVA)", f"=N{tot}"), ("Costo del canje (neto)", f"=Q{tot}")]
+        filas_int = ([("Valor del canje (valor formativas y CT, con IVA)", f"=N{tot}"), ("Costo del canje (neto)", f"=Q{tot}")]
                      if es_canje else
                      [("Ventas (con IVA)", f"=M{tot}"), ("Ventas netas (sin IVA)", f"=ROUND(M{tot}/(1+PRECIOS!$C$4),0)"),
                       ("Costo (neto)", f"=Q{tot}"), ("Margen", "=T7-T8"),
@@ -516,9 +546,9 @@ def main():
     # ---------------------------------------------------------------- RESUMEN
     rs = wb.create_sheet("RESUMEN", 0)
     encabezado(rs, "PROPUESTA COMERCIAL 2027: RAMAS DEPORTIVAS CSD COLO-COLO",
-               "Valores con IVA. Canje de los primeros equipos valorizado a precio público; ventas de formativas, "
-               "cuerpo técnico y stock comercial a su precio de la hoja PRECIOS.")
-    cabecera(rs, 5, 2, ["CATEGORÍA", "RAMA", "UNIDADES", "VALOR DEL CANJE (PRECIO PÚBLICO)", "VENTAS (CON IVA)",
+               "Valores con IVA. Canje de los primeros equipos valorizado a valor formativas y cuerpo técnico; ventas "
+               "de formativas y cuerpo técnico a ese valor y stock para la tienda a precio comercial.")
+    cabecera(rs, 5, 2, ["CATEGORÍA", "RAMA", "UNIDADES", "VALOR DEL CANJE (VALOR FORMATIVAS Y CT)", "VENTAS (CON IVA)",
                         "NETO VENTAS", "IVA VENTAS"], alto=40)
     r, filas_total = 6, []
 
@@ -551,9 +581,9 @@ def main():
     r += 4
     celda(rs, f"B{r}", "VALOR POR PRODUCTO", f_sec, alinear=Alignment(vertical="center"), borde=False)
     r += 1
-    cabecera(rs, r, 2, ["PRODUCTO", "PRECIO PÚBLICO", "PRECIO FORMATIVAS Y CT", "PRECIO COMERCIAL",
+    cabecera(rs, r, 2, ["PRODUCTO", "VALOR FORMATIVAS Y CT", "PRECIO COMERCIAL TIENDA", None,
                         "UNIDADES CANJE", "UNIDADES FORMATIVAS Y CT", "UNIDADES COMERCIAL",
-                        "VALOR DEL CANJE (PRECIO PÚBLICO)", "VENTAS (CON IVA)"], alto=40)
+                        "VALOR DEL CANJE (VALOR FORMATIVAS Y CT)", "VENTAS (CON IVA)"], alto=40)
     r += 1
     p0 = r
     fila_producto = {}
@@ -571,9 +601,8 @@ def main():
         fp = fila_precio[(d, k)]
         fila_producto[(d, k)] = r
         celda(rs, f"B{r}", nombre, alinear=izq)
-        celda(rs, f"C{r}", f"=PRECIOS!D{fp}", f_gris, PESOS)
-        celda(rs, f"D{r}", f"=PRECIOS!H{fp}", formato=PESOS)
-        celda(rs, f"E{r}", f"=PRECIOS!J{fp}", formato=PESOS)
+        celda(rs, f"C{r}", f"=PRECIOS!D{fp}", formato=PESOS)
+        celda(rs, f"D{r}", f"=PRECIOS!E{fp}", formato=PESOS)
         for col, clave in (("F", "canje"), ("G", "formativas"), ("H", "comercial")):
             h = hojas[clave]
             celda(rs, f"{col}{r}", f'=SUMIF({h}!$G:$G,"{nombre}",{h}!$I:$I)', formato=NUM)
@@ -636,7 +665,7 @@ def main():
             r += 1
         fr = fila_producto[(d, k)]
         celda(co, f"B{r}", nombre_producto(k, d), alinear=izq)
-        celda(co, f"C{r}", f"=N(PRECIOS!M{fila_precio[(d, k)]})", formato=PESOS)
+        celda(co, f"C{r}", f"=N(PRECIOS!J{fila_precio[(d, k)]})", formato=PESOS)
         celda(co, f"D{r}", f"=RESUMEN!F{fr}", formato=NUM)
         celda(co, f"E{r}", f"=RESUMEN!G{fr}+RESUMEN!H{fr}", formato=NUM)
         celda(co, f"F{r}", f"=D{r}+E{r}", formato=NUM)
@@ -659,7 +688,7 @@ def main():
     can, fo_, com = (f"'{detalle[c][0]}'" for c in ("canje", "formativas", "comercial"))
     tcan, tfo, tcom = (detalle[c][2] for c in ("canje", "formativas", "comercial"))
     for txt, f, fuente in [
-        ("Valor del canje para el club (precio público, con IVA)", f"={can}!N{tcan}", f_norm),
+        ("Valor del canje para el club (valor formativas y CT, con IVA)", f"={can}!N{tcan}", f_norm),
         ("Costo del canje (neto)", f"=G{tc}", f_norm),
         ("Ventas formativas y cuerpo técnico (con IVA)", f"={fo_}!M{tfo}", f_norm),
         ("Ventas comercial (con IVA)", f"={com}!M{tcom}", f_norm),
@@ -687,7 +716,7 @@ def main():
     sn = wb.create_sheet(HOJA_NEGOCIO, 1)
     sn.sheet_properties.tabColor = "C00000"
     encabezado(sn, "RESUMEN DEL RESULTADO DEL NEGOCIO 2027: VENTA NETA, COSTOS Y MARGEN TOTAL (USO INTERNO, NO VA EN EL PDF)",
-               "Todo neto, sin IVA, salvo el canje a precio público. Por disciplina: ventas de formativas y cuerpo técnico y "
+               "Todo neto, sin IVA, salvo el canje a valor formativas y CT. Por disciplina: ventas de formativas y cuerpo técnico y "
                "stock comercial, canje de los primeros equipos y margen. Se actualiza solo con las demás hojas.")
     sup = previo["supuestos"] if previo else {}
     otros_txt = "Otros costos del negocio (% de la venta neta: despacho, comisiones, etc.)"
@@ -705,7 +734,7 @@ def main():
         sn.merge_cells(f"{g0}7:{g1}7")
     cabecera(sn, 8, 2, ["DISCIPLINA O RAMA", "UNIDADES VENDIDAS", "VENTA NETA FORMATIVAS Y CT", "VENTA NETA COMERCIAL",
                         "VENTA NETA TOTAL", "COSTO DE LO VENDIDO", "MARGEN DE LA VENTA", "MARGEN % DE LA VENTA",
-                        "UNIDADES EN CANJE", "CANJE A PRECIO PÚBLICO (CON IVA)", "COSTO DEL CANJE", "MARGEN TOTAL",
+                        "UNIDADES EN CANJE", "CANJE A VALOR FORMATIVAS Y CT (CON IVA)", "COSTO DEL CANJE", "MARGEN TOTAL",
                         "MARGEN TOTAL % SOBRE VENTA"], alto=48)
     hoja_q = {c: f"'{detalle[c][0]}'" for c in ("canje", "formativas", "comercial")}
     bloques = {c: {rama: (a, b) for rama, a, b in detalle[c][1]} for c in hoja_q}
@@ -796,7 +825,7 @@ def main():
         ("Otros costos del negocio", f"=G{otros}", True, f_norm),
         ("MARGEN TOTAL DEL NEGOCIO", f"=M{tn}", True, f_gran),
         (None, None, None, None),
-        ("Canje entregado al club, a precio público (con IVA)", f"=K{tn}", False, f_norm),
+        ("Canje entregado al club, a valor formativas y CT (con IVA)", f"=K{tn}", False, f_norm),
         ("Costo total a producir (canje y venta)", f"={gv}+L{tn}", False, f_norm),
         ("Unidades a producir (canje y venta)", f"=C{tn}+J{tn}", False, f_norm),
         ("Venta neta necesaria para cubrir el canje y los otros costos (punto de equilibrio, con el margen % actual "
@@ -852,7 +881,7 @@ def main():
 
     celda(en, "B8", "PRENDAS Y VALORES POR RAMA", f_sec, alinear=Alignment(vertical="center"), borde=False)
     cabecera(en, 9, 2, ["RAMA", "ENTREGA", "UNIDADES CANJE", "UNIDADES FORMATIVAS Y CT", "UNIDADES COMERCIAL",
-                        "TOTAL UNIDADES", "VALOR DEL CANJE (PRECIO PÚBLICO)", "COMPRAS (CON IVA)"], alto=40)
+                        "TOTAL UNIDADES", "VALOR DEL CANJE (VALOR FORMATIVAS Y CT)", "COMPRAS (CON IVA)"], alto=40)
     dv_e = DataValidation(type="list", formula1='"' + ",".join(n for n, _ in ENTREGAS) + '"', allow_blank=False,
                           errorTitle="Entrega", error="Elige la entrega de la rama: " + " o ".join(n for n, _ in ENTREGAS))
     en.add_data_validation(dv_e)
@@ -879,7 +908,7 @@ def main():
     celda(en, f"B{r}", "RESUMEN POR ENTREGA", f_sec, alinear=Alignment(vertical="center"), borde=False)
     r += 1
     cabecera(en, r, 2, ["ENTREGA", "FECHA", "UNIDADES CANJE", "UNIDADES FORMATIVAS Y CT", "UNIDADES COMERCIAL",
-                        "TOTAL UNIDADES", "VALOR DEL CANJE (PRECIO PÚBLICO)", "COMPRAS (CON IVA)", "CANJE SOBRE COMPRAS"],
+                        "TOTAL UNIDADES", "VALOR DEL CANJE (VALOR FORMATIVAS Y CT)", "COMPRAS (CON IVA)", "CANJE SOBRE COMPRAS"],
              alto=40)
     r += 1
     p0, fila_ent = r, {}
@@ -917,26 +946,26 @@ def main():
     celda(en, f"B{r}", "Compras por cada $1.000.000 en canje", alinear=izq)
     celda(en, f"C{r}", f"=IF({prop}=0,0,ROUND(1000000/{prop},0))", formato=PESOS)
     r += 2
-    cabecera(en, r, 2, ["ENTREGA", "COMPRAS (CON IVA)", "CANJE QUE CORRESPONDE A LAS COMPRAS", "CANJE PROGRAMADO",
-                        "DIFERENCIA: CANJE ADELANTADO", "DIFERENCIA ACUMULADA"], alto=40)
+    cabecera(en, r, 2, ["ENTREGA", "COMPRAS DEL CLUB (CON IVA)", "CANJE QUE SE ENTREGA",
+                        "CANJE QUE CORRESPONDE SEGÚN LAS COMPRAS", "DIFERENCIA", "DIFERENCIA ACUMULADA"], alto=40)
     r += 1
     q0 = r
     for i, (nombre, _f) in enumerate(ENTREGAS):
         fe = fila_ent[nombre]
         celda(en, f"B{r}", f"Entrega {i + 1}: {nombre.lower()}", f_tot, alinear=izq)
         celda(en, f"C{r}", f"=I{fe}", formato=PESOS)
-        celda(en, f"D{r}", f"=ROUND(C{r}*{prop},0)", formato=PESOS)
-        celda(en, f"E{r}", f"=H{fe}", formato=PESOS)
-        celda(en, f"F{r}", f"=E{r}-D{r}", f_tot, PESOS)
+        celda(en, f"D{r}", f"=H{fe}", formato=PESOS)
+        celda(en, f"E{r}", f"=ROUND(C{r}*{prop},0)", formato=PESOS)
+        celda(en, f"F{r}", f"=D{r}-E{r}", f_tot, PESOS)
         celda(en, f"G{r}", f"=F{r}" if i == 0 else f"=G{r - 1}+F{r}", formato=PESOS)
         r += 1
     celda(en, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
     for col in "CDEF":
         celda(en, f"{col}{r}", f"=SUM({col}{q0}:{col}{r - 1})", f_gran, PESOS, r_gran)
     celda(en, f"G{r}", None, f_gran, relleno=r_gran)
-    celda(en, f"B{r + 1}", "Diferencia positiva: canje entregado por sobre la proporción de las compras de esa entrega, a "
-                           "cuenta de las compras de la entrega siguiente. Al final del año la diferencia acumulada es cero "
-                           "si el club realiza todas las compras de la propuesta.", f_nota,
+    celda(en, f"B{r + 1}", "DIFERENCIA: canje que se entrega menos el que corresponde a las compras de esa entrega. En marzo "
+                           "es positiva (Esperanza Alba recibe solo canje) y en agosto es negativa por el mismo monto: en el "
+                           "año queda en cero si el club realiza todas las compras de la propuesta.", f_nota,
           alinear=Alignment(vertical="top", wrap_text=True), borde=False)
     en.merge_cells(f"B{r + 1}:J{r + 2}")
     en.row_dimensions[r + 1].height = 15
@@ -954,41 +983,46 @@ def main():
     col_det = openpyxl.utils.get_column_letter(3 + len(ENTREGAS))
     en.merge_cells(f"{col_det}{r}:J{r}")
     r += 1
-    # semanas de producción de cada entrega (interno), según el volumen y la capacidad
-    sem = {}
-    fila_int = 6 + len(PARAMETROS_ENTREGA)
-    for i, (nombre, _f) in enumerate(ENTREGAS):
-        celda(en, f"M{fila_int + i}", f"Semanas de producción de la entrega {i + 1} ({nombre.lower()})", f_tot,
-              relleno=r_int_suave, alinear=izq)
-        celda(en, f"N{fila_int + i}", f"=ROUNDUP(G{fila_ent[nombre]}/MAX(1,{ref_par['capacidad']}),0)", f_tot, NUM)
-        sem[nombre] = f"$N${fila_int + i}"
-    hitos = [
-        ("Aprobación de diseños y muestras", "El club aprueba los diseños de juego, entrenamiento y presentación de cada rama."),
-        ("Curva de tallas y orden de compra", "El club entrega las tallas por rama y categoría y confirma la orden de compra."),
-        ("Inicio de producción", "Confección en la planta de Playmaker en Santiago."),
-        ("Control de calidad y despacho", "Revisión, etiquetado por rama y categoría, y despacho."),
-        ("Entrega en el club", "Toda la indumentaria de las ramas de esta entrega."),
-    ]
     h0 = r
-    for k, (txt, det) in enumerate(hitos):
-        celda(en, f"B{r}", txt, f_tot if k == len(hitos) - 1 else f_norm, alinear=izq)
+    fila_hito = {}
+    for k, (txt, det, *fechas) in enumerate(HITOS):
+        fila_hito[txt] = r
+        ultimo = k == len(HITOS) - 1
+        celda(en, f"B{r}", txt, f_tot if ultimo else f_norm, alinear=izq)
         for i, (nombre, _f) in enumerate(ENTREGAS):
             col = openpyxl.utils.get_column_letter(3 + i)
-            f = {0: f"={col}{r + 1}-7*{ref_par['disenos']}", 1: f"={col}{r + 1}-7*{ref_par['tallas']}",
-                 2: f"={col}{r + 1}-7*({sem[nombre]}+{ref_par['holgura' + str(i + 1)]})",
-                 3: f"={col}{r + 1}-7*{ref_par['despacho']}", 4: f"={ref_fecha[nombre]}"}[k]
-            celda(en, f"{col}{r}", f, f_tot if k == len(hitos) - 1 else f_norm, FECHA)
+            if fechas[i] is None:  # la entrega: la fecha de arriba
+                celda(en, f"{col}{r}", f"={ref_fecha[nombre]}", f_tot, FECHA)
+            else:
+                celda(en, f"{col}{r}", pe.get(f"hito:{txt}:{3 + i}", fechas[i]), f_input, FECHA, r_input)
         celda(en, f"{col_det}{r}", det, f_gris, alinear=izq)
         for c in range(4 + len(ENTREGAS), 11):
             celda(en, f"{openpyxl.utils.get_column_letter(c)}{r}", None)
         en.merge_cells(f"{col_det}{r}:J{r}")
+        en.row_dimensions[r].height = 28
         r += 1
+    # control interno: semanas de producción disponibles frente a las necesarias según el volumen
+    fila_int = 6 + len(PARAMETROS_ENTREGA)
+    fi, fd = fila_hito["Inicio de producción"], fila_hito["Control de calidad y despacho"]
+    for i, (nombre, _f) in enumerate(ENTREGAS):
+        col = openpyxl.utils.get_column_letter(3 + i)
+        f = fila_int + 3 * i
+        celda(en, f"M{f}", f"Semanas de producción disponibles, entrega {i + 1} ({nombre.lower()})", f_tot,
+              relleno=r_int_suave, alinear=izq)
+        celda(en, f"N{f}", f"=ROUND(({col}{fd}-{col}{fi})/7,1)", f_tot, '0.0')
+        celda(en, f"M{f + 1}", f"Semanas necesarias según el volumen ({nombre.lower()})", f_tot, relleno=r_int_suave,
+              alinear=izq)
+        celda(en, f"N{f + 1}", f"=ROUNDUP(G{fila_ent[nombre]}/MAX(1,{ref_par['capacidad']}),1)", f_tot, '0.0')
+        celda(en, f"M{f + 2}", "Estado", f_tot, relleno=r_int_suave, alinear=izq)
+        celda(en, f"N{f + 2}", f'=IF(N{f}>=N{f + 1},"OK","FALTAN SEMANAS")', f_tot)
+        en.conditional_formatting.add(f"N{f + 2}", CellIsRule(operator="equal", formula=['"FALTAN SEMANAS"'],
+                                                              fill=PatternFill("solid", fgColor="F8CBAD")))
     en.conditional_formatting.add(f"C{h0}:{openpyxl.utils.get_column_letter(2 + len(ENTREGAS))}{r - 1}",
                                   CellIsRule(operator="lessThan", formula=["TODAY()"],
                                              fill=PatternFill("solid", fgColor="F8CBAD")))
-    celda(en, f"B{r}", "Fechas calculadas hacia atrás desde cada entrega según el volumen de prendas. En rojo: fechas que "
-                       "ya pasaron (adelantar la entrega o ajustar los plazos).", f_nota,
-          alinear=Alignment(vertical="center"), borde=False)
+    celda(en, f"B{r}", "Antes de fin de año quedan cerrados diseños, muestras, tallas, contrato y orden de compra con el "
+                       "abono de la primera parte; la producción de la primera entrega se hace en enero y febrero. En rojo: "
+                       "fechas que ya pasaron.", f_nota, alinear=Alignment(vertical="center"), borde=False)
     for col, ancho in zip("BCDEFGHIJ", (44, 20, 20, 15, 15, 14, 17, 16, 13)):
         en.column_dimensions[col].width = ancho
     en.column_dimensions["L"].width = 2
