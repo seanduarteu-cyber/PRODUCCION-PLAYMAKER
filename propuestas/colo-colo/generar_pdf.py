@@ -117,7 +117,7 @@ def leer_entregas(wb):
     if HOJA_ENTREGAS not in wb.sheetnames:
         return None
     ws = wb[HOJA_ENTREGAS]
-    e = {"ramas": [], "entregas": [], "adelanto": [], "hitos": [], "nombres_entrega": []}
+    e = {"ramas": [], "entregas": [], "adelanto": [], "hitos": [], "generales": [], "nombres_entrega": []}
     modo = None
     for r in range(1, ws.max_row + 1):
         v = [ws.cell(r, c).value for c in range(2, 13)]
@@ -128,6 +128,8 @@ def leer_entregas(wb):
             modo = "entregas"
         elif b == "ENTREGA" and c.startswith("COMPRAS"):
             modo = "adelanto"
+        elif b == "HITO PARA TODO EL AÑO":
+            modo = "generales"
         elif b == "HITO":
             modo = "hitos"
             e["nombres_entrega"] = [texto(x) for x in v[1:] if texto(x) and texto(x) != "DETALLE"]
@@ -142,7 +144,7 @@ def leer_entregas(wb):
             e["sim_compra"] = v[1] or 0
         elif b.startswith("El canje que le corresponde"):
             e["sim_canje"] = v[1] or 0
-        elif modo == "hitos" and (not b or not hasattr(v[1], "day")):  # fin del cronograma (filas con fecha)
+        elif modo in ("hitos", "generales") and (not b or not hasattr(v[1], "day")):  # fin de la tabla (filas con fecha)
             modo = None
         elif modo and b:
             e[modo].append(v)
@@ -279,12 +281,17 @@ def main():
                         + f'<td class="suave">{texto(h[1 + cols_e])}</td></tr>' for k, h in enumerate(ent["hitos"]))
         th_h = ("<tr><th>HITO</th>" + "".join(f'<th class="n">{x.replace(": ", "<br>")}</th>' for x in ent["nombres_entrega"])
                 + "<th>DETALLE</th></tr>")
+        generales = "".join(f'<tr><td>{texto(h[0])}</td><td class="n b">{fecha_txt(h[1])}</td>'
+                            f'<td class="suave">{texto(h[2])}</td></tr>' for h in ent["generales"])
         paginas.append(f"""<section class="page">
   {cab("CRONOGRAMA")}
   <h1>Cronograma</h1>
-  <p class="intro">Una vez aprobado el presupuesto, lo primero es firmar el contrato y emitir la orden de compra con el abono de la primera parte del pedido. Con eso acordado se trabajan los diseños, las muestras y las tallas, que quedan listos antes de fin de año para producir en enero y febrero.</p>
+  <p class="intro">Una vez aprobado el presupuesto se firma un solo contrato por todo el año y el negocio completo. Antes de fin de año quedan aprobados todos los diseños y las muestras de la temporada, también los de las prendas que se entregan en agosto. Después, cada entrega tiene su curva de tallas y su pago para producir.</p>
+  <h2>PARA TODO EL AÑO</h2>
+  <table class="tabla val crono gen"><colgroup><col class="h"><col class="f1"><col class="d"></colgroup><tr><th>HITO</th><th class="n">FECHA</th><th>DETALLE</th></tr>{generales}</table>
+  <h2>POR ENTREGA</h2>
   <table class="tabla val crono c{cols_e}"><colgroup><col class="h">{'<col class="f">' * cols_e}<col class="d"></colgroup>{th_h}{hitos}</table>
-  <p class="leyenda">La producción se fabrica según las muestras aprobadas, con supervisión y control de calidad de Playmaker. Cumplir estas fechas asegura cada entrega a tiempo.</p>
+  <p class="leyenda">Todas las entregas se fabrican según las muestras aprobadas, con supervisión y control de calidad de Playmaker. Cumplir estas fechas asegura cada entrega a tiempo.</p>
   {pie(n)}
 </section>""")
         n += 1
@@ -396,18 +403,19 @@ def main():
 
     # 6. condiciones y próximos pasos
     def hito(nombre, i=0):
-        h = next((x for x in (ent or {}).get("hitos", []) if texto(x[0]).startswith(nombre)), None)
+        h = next((x for x in (ent or {}).get("generales", []) + (ent or {}).get("hitos", [])
+                  if texto(x[0]).startswith(nombre)), None)
         return fecha_txt(h[1 + i]) if h and h[1 + i] else None
-    f_con, f_dis, f_vb = hito("Contrato"), hito("Aprobación de diseños"), hito("Visto bueno")
+    f_con, f_dis, f_vb = hito("Firma del contrato"), hito("Aprobación de diseños"), hito("Visto bueno")
     fechas_ent = [fecha_txt(x[1]) for x in (ent or {}).get("entregas", [])]
     txt_ent = (", ".join(fechas_ent[:-1]) + " y el " + fechas_ent[-1]) if len(fechas_ent) > 1 else "".join(fechas_ent)
     paginas.append(f"""<section class="page portada cierre">
   <div class="kicker">CONDICIONES Y PRÓXIMOS PASOS</div>
   <h1>De la propuesta a la cancha</h1>
   <div class="pasos-cierre">
-    <div><em>01</em><div><b>Contrato y orden de compra</b><p>Una vez aprobado el presupuesto, se firma el contrato y se emite la orden de compra con el abono de la primera parte del pedido{f", a más tardar el {f_con}" if f_con else ""}.</p></div></div>
-    <div><em>02</em><div><b>Aprobación de diseños</b><p>El club aprueba los diseños de juego, entrenamiento y presentación de cada rama{f", a más tardar el {f_dis}" if f_dis else ""}.</p></div></div>
-    <div><em>03</em><div><b>Muestras y tallas</b><p>Playmaker entrega muestras de cada prenda. Con el visto bueno del club y la curva de tallas{f" ({f_vb})" if f_vb else ""}, la producción se fabrica según las muestras aprobadas.</p></div></div>
+    <div><em>01</em><div><b>Firma del contrato</b><p>Una vez aprobado el presupuesto, se firma un solo contrato por todo el año y el negocio completo{f", a más tardar el {f_con}" if f_con else ""}.</p></div></div>
+    <div><em>02</em><div><b>Diseños y muestras</b><p>El club aprueba todos los diseños de la temporada, también los de agosto{f", a más tardar el {f_dis}" if f_dis else ""}, y da el visto bueno a las muestras{f" el {f_vb}" if f_vb else ""}. Todas las entregas se fabrican según las muestras aprobadas.</p></div></div>
+    <div><em>03</em><div><b>Tallas y pagos por entrega</b><p>Para cada entrega, el club entrega la curva de tallas y la orden de compra con el pago de esa parte del pedido, antes de iniciar su producción.</p></div></div>
     <div><em>04</em><div><b>Producción y entregas</b><p>Producción con supervisión y control de calidad de Playmaker{f"; entregas el {txt_ent}" if txt_ent else ""}. El valor final se ajusta a las cantidades confirmadas.</p></div></div>
   </div>
   <p class="lema">Volver a vestir a las ramas del Colo-Colo.</p>

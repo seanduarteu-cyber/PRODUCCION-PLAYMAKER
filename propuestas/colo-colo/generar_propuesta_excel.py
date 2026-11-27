@@ -18,8 +18,9 @@ FEVOCHI y de Los Leones:
   - RESUMEN: por categoría y rama, valor del canje y ventas (neto e IVA); valor por producto. Vínculo GENERAR PDF
     PARA EL CLUB (macro): exporta todas las hojas menos COSTOS y RESUMEN NEGOCIO.
   - ENTREGAS 2027: tres entregas (equipos de marzo, stock de la tienda de marzo y agosto), la entrega de cada rama por
-    categoría, prendas, canje y compras por entrega, cronograma con fechas editables (contrato y orden de compra,
-    diseños, muestras y tallas, producción, despacho y entrega) con control interno de la capacidad del taller externo,
+    categoría, prendas, canje y compras por entrega, cronograma con fechas editables (para todo el año: contrato,
+    diseños y muestras; por entrega: curva de tallas, orden de compra y pago, producción, despacho y entrega) con
+    control interno de la capacidad del taller externo,
     y el canje proporcional a las compras (proporción, diferencia por entrega y simulación).
   - RESUMEN NEGOCIO (uso interno): resultado del negocio por disciplina o rama: venta neta de formativas y cuerpo
     técnico y del stock comercial, costo de lo vendido y margen, canje de los primeros equipos (a valor formativas y CT
@@ -65,18 +66,23 @@ ENTREGA_RAMA = {"Vóleibol": "AGOSTO", "Patín": "AGOSTO"}  # estas ramas, todo 
 PARAMETROS_ENTREGA = [  # parámetros internos del cronograma: clave, texto, valor por defecto
     ("capacidad", "Capacidad de producción del taller externo (prendas por mes)", 3000),
 ]
-# hitos del cronograma: texto, detalle, fecha por defecto de cada entrega (None: la fecha de la entrega). Primero el
-# contrato y la orden de compra (una vez aprobado el presupuesto); después diseños, muestras, tallas y producción.
+# hitos para todo el año (una sola fecha): un solo contrato por el negocio completo, y todos los diseños y muestras de la
+# temporada (también los de agosto). Texto, detalle, fecha por defecto.
+HITOS_GENERALES = [
+    ("Firma del contrato", "Un solo contrato por todo el año y el negocio completo (todas las entregas), una vez aprobado "
+     "el presupuesto.", datetime(2026, 12, 9)),
+    ("Aprobación de diseños", "El club aprueba todos los diseños de la temporada, también los de las prendas que se "
+     "entregan en agosto.", datetime(2026, 12, 15)),
+    ("Entrega de muestras", "Playmaker entrega muestras de cada prenda para el visto bueno del club.", datetime(2026, 12, 22)),
+    ("Visto bueno de muestras", "El club aprueba las muestras; todas las entregas se fabrican según las muestras aprobadas.",
+     datetime(2026, 12, 29)),
+]
+# hitos de cada entrega: texto, detalle, fecha por defecto de cada entrega (None: la fecha de la entrega)
 HITOS = [
-    ("Contrato y orden de compra", "Una vez aprobado el presupuesto: firma del contrato y orden de compra con el abono de "
-     "la parte del pedido de cada entrega.", datetime(2026, 12, 9), datetime(2026, 12, 9), datetime(2027, 5, 10)),
-    ("Aprobación de diseños", "El club aprueba los diseños de juego, entrenamiento y presentación de cada rama.",
-     datetime(2026, 12, 15), datetime(2026, 12, 15), datetime(2027, 5, 17)),
-    ("Entrega de muestras", "Playmaker entrega muestras de cada prenda para el visto bueno del club.",
-     datetime(2026, 12, 22), datetime(2026, 12, 22), datetime(2027, 5, 24)),
-    ("Visto bueno de muestras y curva de tallas", "El club aprueba las muestras y entrega las tallas por rama y "
-     "categoría; la producción se fabrica según las muestras aprobadas.", datetime(2026, 12, 29), datetime(2026, 12, 29),
-     datetime(2027, 5, 31)),
+    ("Curva de tallas", "El club entrega el escalado de tallas por rama y categoría de esta entrega.",
+     datetime(2026, 12, 29), datetime(2027, 2, 15), datetime(2027, 5, 31)),
+    ("Orden de compra y pago para producir", "Orden de compra y abono de la parte del pedido de esta entrega, antes de "
+     "iniciar su producción.", datetime(2026, 12, 30), datetime(2027, 2, 22), datetime(2027, 6, 7)),
     ("Inicio de producción", "Producción con supervisión y control de calidad de Playmaker.", datetime(2027, 1, 4),
      datetime(2027, 2, 25), datetime(2027, 6, 14)),
     ("Control de calidad y despacho", "Revisión, etiquetado por rama y categoría, y despacho.", datetime(2027, 2, 25),
@@ -1009,6 +1015,22 @@ def main():
     r += 4
     celda(en, f"B{r}", "CRONOGRAMA", f_sec, alinear=Alignment(vertical="center"), borde=False)
     r += 1
+    cabecera(en, r, 2, ["HITO PARA TODO EL AÑO", "FECHA", "DETALLE"], alto=30)
+    en.merge_cells(f"D{r}:L{r}")
+    r += 1
+    g0 = r
+    for txt, det, fecha in HITOS_GENERALES:
+        celda(en, f"B{r}", txt, alinear=izq)
+        celda(en, f"C{r}", pe.get(txt, fecha), f_input, FECHA, r_input)
+        celda(en, f"D{r}", det, f_gris, alinear=izq)
+        for c in range(5, 13):
+            celda(en, f"{openpyxl.utils.get_column_letter(c)}{r}", None)
+        en.merge_cells(f"D{r}:L{r}")
+        en.row_dimensions[r].height = 22
+        r += 1
+    en.conditional_formatting.add(f"C{g0}:C{r - 1}", CellIsRule(operator="lessThan", formula=["TODAY()"],
+                                                                fill=PatternFill("solid", fgColor="F8CBAD")))
+    r += 1
     cabecera(en, r, 2, ["HITO"] + [f"ENTREGA {i + 1}: {n}" for i, (n, _f) in enumerate(ENTREGAS)] + ["DETALLE"], alto=30)
     col_det = openpyxl.utils.get_column_letter(3 + len(ENTREGAS))
     en.merge_cells(f"{col_det}{r}:L{r}")
@@ -1054,8 +1076,8 @@ def main():
     en.conditional_formatting.add(f"C{h0}:{openpyxl.utils.get_column_letter(2 + len(ENTREGAS))}{r - 1}",
                                   CellIsRule(operator="lessThan", formula=["TODAY()"],
                                              fill=PatternFill("solid", fgColor="F8CBAD")))
-    celda(en, f"B{r}", "Primero el contrato y la orden de compra; después diseños, muestras y tallas, antes de fin de año, "
-                       "para producir en enero y febrero. En rojo: fechas que ya pasaron.", f_nota,
+    celda(en, f"B{r}", "Un solo contrato por todo el año; todos los diseños y muestras de la temporada antes de fin de año. "
+                       "Por entrega: curva de tallas y pago para producir. En rojo: fechas que ya pasaron.", f_nota,
           alinear=Alignment(vertical="center"), borde=False)
     for col, ancho in zip("BCDEFGHIJKL", (40, 20, 20, 20, 15, 14, 14, 13, 17, 17, 16)):
         en.column_dimensions[col].width = ancho

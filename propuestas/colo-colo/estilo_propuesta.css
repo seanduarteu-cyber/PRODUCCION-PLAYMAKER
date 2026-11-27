@@ -113,3 +113,4 @@ table.crono td.suave { white-space: normal; font-size: 6.9pt; line-height: 1.3; 
 .entregas.tres b { font-size: 13pt; }
 table.crono.c3 col.h { width: 22%; } table.crono.c3 col.f { width: 12%; } table.crono.c3 col.d { width: 42%; }
 table.crono th.n { white-space: normal; }
+table.crono.gen col.h { width: 26%; } table.crono.gen col.f1 { width: 22%; } table.crono.gen col.d { width: 52%; }
