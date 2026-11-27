@@ -5,7 +5,7 @@ Uso:
 
 Lee Propuesta_Comercial_CSD_Colo_Colo_2027.xlsm (los valores que la planilla tiene calculados) y crea
 propuesta_club.html y Propuesta_Comercial_CSD_Colo_Colo_2027.pdf: portada, resumen de la propuesta, calendario de
-entregas, canje proporcional a las compras, lista de precios
+entregas, cronograma, canje proporcional a las compras, lista de precios
 por disciplina, detalle del canje de los primeros equipos, de formativas y cuerpo técnico y del stock comercial, y
 próximos pasos. No incluye costos ni márgenes (hojas COSTOS y RESUMEN NEGOCIO). Si se cambian precios, descuentos o
 cantidades en la planilla, basta guardarla y volver a correr este script. Si la planilla no trae valores calculados,
@@ -107,6 +107,11 @@ def fecha_txt(d):
     return f"{d.day} de {MESES[d.month - 1]} de {d.year}" if hasattr(d, "day") else texto(d)
 
 
+def fecha_corta(d):
+    corto = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
+    return f"{d.day} {corto[d.month - 1]} {d.year}" if hasattr(d, "day") else texto(d)
+
+
 def leer_entregas(wb):
     """Calendario de entregas y canje proporcional, de la hoja ENTREGAS 2027 (None si la planilla no la tiene)."""
     if HOJA_ENTREGAS not in wb.sheetnames:
@@ -115,7 +120,7 @@ def leer_entregas(wb):
     e = {"ramas": [], "entregas": [], "adelanto": [], "hitos": [], "nombres_entrega": []}
     modo = None
     for r in range(1, ws.max_row + 1):
-        v = [ws.cell(r, c).value for c in range(2, 11)]
+        v = [ws.cell(r, c).value for c in range(2, 13)]
         b, c = texto(v[0]), texto(v[1])
         if b == "RAMA":
             modo = "ramas"
@@ -234,38 +239,52 @@ def main():
 </section>""")
     n += 1
 
-    # 3. calendario de entregas y canje proporcional a las compras
+    # 3. calendario de entregas, cronograma y canje proporcional a las compras
     if ent and ent["entregas"]:
-        tarjetas = []
+        categorias = [("primer equipo", 1, 4), ("formativas y cuerpo técnico", 2, 5), ("stock para la tienda", 3, 6)]
+        tarjetas, filas = [], []
         for i, fila in enumerate(ent["entregas"]):
-            nombre = texto(fila[0]).split(": ")[-1].upper()
-            ramas_e = [texto(x[0]) for x in ent["ramas"] if texto(x[1]).upper() == nombre]
+            nombre = texto(fila[0]).split(": ", 1)[-1].upper()
+            ramas_e = [texto(x[0]) for x in ent["ramas"]
+                       if any(texto(x[ce]).upper() == nombre and (x[cu] or 0) > 0 for _t, ce, cu in categorias)]
+            partes = [f"{num(fila[2 + j])} {t}" for j, (t, _ce, _cu) in enumerate(categorias) if fila[2 + j]]
             tarjetas.append(f'<div><small>ENTREGA {i + 1}</small><b>{fecha_txt(fila[1])}</b>'
-                            f'<p>{", ".join(ramas_e)}</p><span>{num(fila[5])} prendas: {num(fila[2])} en canje, '
-                            f'{num(fila[3])} formativas y cuerpo técnico, {num(fila[4])} para la tienda</span></div>')
-        filas = []
-        for x in ent["ramas"]:
-            filas.append(f'<tr><td>{texto(x[0])}</td><td>{texto(x[1]).capitalize()}</td><td class="n">{num(x[2])}</td>'
-                         f'<td class="n">{num(x[3])}</td><td class="n">{num(x[4])}</td><td class="n b">{num(x[5])}</td></tr>')
-        t = ent.get("total_ramas") or [None] * 9
-        filas.append(f'<tr class="total"><td colspan="2">TOTAL</td><td class="n">{num(t[2])}</td><td class="n">{num(t[3])}</td>'
+                            f'<p>{", ".join(ramas_e)}</p><span>{num(fila[5])} prendas: {", ".join(partes)}</span></div>')
+            filas.append(f'<tr class="sec"><td colspan="5">ENTREGA {i + 1}: {fecha_txt(fila[1]).upper()}</td></tr>')
+            for x in ent["ramas"]:
+                u = [(x[cu] or 0) if texto(x[ce]).upper() == nombre else 0 for _t, ce, cu in categorias]
+                if sum(u):
+                    filas.append(f'<tr><td>{texto(x[0])}</td>' + "".join(f'<td class="n">{num(v) if v else ""}</td>' for v in u)
+                                 + f'<td class="n b">{num(sum(u))}</td></tr>')
+            filas.append(f'<tr class="sub"><td>Total entrega {i + 1}</td>'
+                         + "".join(f'<td class="n">{num(fila[2 + j]) if fila[2 + j] else ""}</td>' for j in range(3))
+                         + f'<td class="n">{num(fila[5])}</td></tr>')
+        t = ent.get("total_entregas") or [None] * 9
+        filas.append(f'<tr class="total"><td>TOTAL</td><td class="n">{num(t[2])}</td><td class="n">{num(t[3])}</td>'
                      f'<td class="n">{num(t[4])}</td><td class="n">{num(t[5])}</td></tr>')
-        cols_e = len(ent["nombres_entrega"])
-        hitos = "".join(f'<tr{" class=sub" if k == len(ent["hitos"]) - 1 else ""}><td>{texto(h[0])}</td>'
-                        + "".join(f'<td class="n">{fecha_txt(h[1 + j])}</td>' for j in range(cols_e))
-                        + f'<td class="suave">{texto(h[1 + cols_e])}</td></tr>' for k, h in enumerate(ent["hitos"]))
-        th_h = ("<tr><th>HITO</th>" + "".join(f'<th class="n">{x}</th>' for x in ent["nombres_entrega"])
-                + "<th>DETALLE</th></tr>")
         paginas.append(f"""<section class="page">
   {cab("CALENDARIO DE ENTREGAS")}
   <h1>Calendario de entregas</h1>
-  <p class="intro">La indumentaria se entrega en dos fechas. Cada rama recibe toda su indumentaria (primer equipo, escuelas formativas y stock para la tienda) en una sola entrega: las ramas que inician su temporada en marzo y la indumentaria institucional, en la primera; vóleibol y patín, en el segundo semestre.</p>
-  <div class="entregas">{"".join(tarjetas)}</div>
-  <h2>PRENDAS POR RAMA Y ENTREGA</h2>
-  <table class="tabla val res"><tr><th>RAMA</th><th>ENTREGA</th><th class="n">CANJE</th><th class="n">FORMATIVAS Y CT</th><th class="n">COMERCIAL</th><th class="n">TOTAL PRENDAS</th></tr>{"".join(filas)}</table>
-  <h2>CRONOGRAMA</h2>
-  <table class="tabla val crono"><colgroup><col class="h">{'<col class="f">' * cols_e}<col class="d"></colgroup>{th_h}{hitos}</table>
-  <p class="leyenda">Antes de fin de año quedan cerrados los diseños, las muestras, la curva de tallas, el contrato y la orden de compra con el abono de la primera parte del pedido, para producir en enero y febrero. Cumplir estas fechas asegura la entrega a tiempo.</p>
+  <p class="intro">La indumentaria se entrega en {["una", "dos", "tres", "cuatro", "cinco"][len(ent["entregas"]) - 1]} fechas, según el inicio de temporada de cada rama y el volumen de producción: primero la de los primeros equipos, las escuelas formativas, el cuerpo técnico y los directivos de las ramas que comienzan en marzo; después el stock para la tienda, y en el segundo semestre la de vóleibol y patín.</p>
+  <div class="entregas tres">{"".join(tarjetas)}</div>
+  <h2>PRENDAS POR ENTREGA</h2>
+  <table class="tabla val res"><tr><th>RAMA</th><th class="n">PRIMER EQUIPO (CANJE)</th><th class="n">FORMATIVAS Y CT</th><th class="n">TIENDA</th><th class="n">TOTAL PRENDAS</th></tr>{"".join(filas)}</table>
+  {pie(n)}
+</section>""")
+        n += 1
+
+        cols_e = len(ent["nombres_entrega"])
+        hitos = "".join(f'<tr{" class=sub" if k == len(ent["hitos"]) - 1 else ""}><td>{texto(h[0])}</td>'
+                        + "".join(f'<td class="n">{fecha_corta(h[1 + j])}</td>' for j in range(cols_e))
+                        + f'<td class="suave">{texto(h[1 + cols_e])}</td></tr>' for k, h in enumerate(ent["hitos"]))
+        th_h = ("<tr><th>HITO</th>" + "".join(f'<th class="n">{x.replace(": ", "<br>")}</th>' for x in ent["nombres_entrega"])
+                + "<th>DETALLE</th></tr>")
+        paginas.append(f"""<section class="page">
+  {cab("CRONOGRAMA")}
+  <h1>Cronograma</h1>
+  <p class="intro">Una vez aprobado el presupuesto, lo primero es firmar el contrato y emitir la orden de compra con el abono de la primera parte del pedido. Con eso acordado se trabajan los diseños, las muestras y las tallas, que quedan listos antes de fin de año para producir en enero y febrero.</p>
+  <table class="tabla val crono c{cols_e}"><colgroup><col class="h">{'<col class="f">' * cols_e}<col class="d"></colgroup>{th_h}{hitos}</table>
+  <p class="leyenda">La producción se fabrica según las muestras aprobadas, con supervisión y control de calidad de Playmaker. Cumplir estas fechas asegura cada entrega a tiempo.</p>
   {pie(n)}
 </section>""")
         n += 1
@@ -277,11 +296,11 @@ def main():
         t = ent.get("total_adelanto") or [None] * 9
         filas.append(f'<tr class="total"><td>TOTAL</td><td class="n">{pesos(t[1])}</td><td class="n">{pesos(t[2])}</td></tr>')
         dif = ent["adelanto"][0][4] if ent["adelanto"] else 0
-        primera = texto(ent["adelanto"][0][0]).split(": ")[-1] if ent["adelanto"] else "marzo"
-        segunda = texto(ent["adelanto"][1][0]).split(": ")[-1] if len(ent["adelanto"]) > 1 else "agosto"
-        cuadre = (f"En {primera} se entrega más canje que el {pct(prop)} de las compras de esa entrega, porque incluye a "
-                  f"Esperanza Alba, que recibe solo canje; en {segunda} se entrega menos. En el total del año el canje "
-                  f"queda exactamente en el {pct(prop)} de las compras. " if dif and dif > 0 else "")
+        f1 = fecha_txt(ent["entregas"][0][1]) if ent["entregas"] else ""
+        cuadre = (f"La entrega del {f1} lleva más canje que el {pct(prop)} de sus compras, porque incluye a Esperanza "
+                  f"Alba, que recibe solo canje, y el stock para la tienda llega en la entrega siguiente; las entregas "
+                  f"siguientes llevan menos. En el total del año el canje queda exactamente en el {pct(prop)} de las "
+                  f"compras. " if dif and dif > 0 else "")
         paginas.append(f"""<section class="page">
   {cab("CANJE PROPORCIONAL A LAS COMPRAS")}
   <h1>Canje proporcional a las compras</h1>
@@ -377,18 +396,19 @@ def main():
 
     # 6. condiciones y próximos pasos
     def hito(nombre, i=0):
-        h = next((x for x in (ent or {}).get("hitos", []) if texto(x[0]) == nombre), None)
+        h = next((x for x in (ent or {}).get("hitos", []) if texto(x[0]).startswith(nombre)), None)
         return fecha_txt(h[1 + i]) if h and h[1 + i] else None
-    f_dis, f_cie = hito("Aprobación de diseños"), hito("Cierre del pedido")
+    f_con, f_dis, f_vb = hito("Contrato"), hito("Aprobación de diseños"), hito("Visto bueno")
     fechas_ent = [fecha_txt(x[1]) for x in (ent or {}).get("entregas", [])]
+    txt_ent = (", ".join(fechas_ent[:-1]) + " y el " + fechas_ent[-1]) if len(fechas_ent) > 1 else "".join(fechas_ent)
     paginas.append(f"""<section class="page portada cierre">
   <div class="kicker">CONDICIONES Y PRÓXIMOS PASOS</div>
   <h1>De la propuesta a la cancha</h1>
   <div class="pasos-cierre">
-    <div><em>01</em><div><b>Aprobación de diseños</b><p>El club aprueba los diseños de juego, entrenamiento y presentación de cada rama{f", a más tardar el {f_dis}" if f_dis else ""}.</p></div></div>
-    <div><em>02</em><div><b>Muestras</b><p>Playmaker entrega muestras de cada prenda para el visto bueno del club. La producción se fabrica según las muestras aprobadas.</p></div></div>
-    <div><em>03</em><div><b>Cierre del pedido</b><p>{f"Antes del {f_cie}: " if f_cie else ""}curva de tallas por rama y categoría, firma del contrato y orden de compra con el abono de la primera parte del pedido.</p></div></div>
-    <div><em>04</em><div><b>Producción y entregas</b><p>Confección en planta propia en Santiago{", en enero y febrero para la primera entrega" if f_cie else ""}{f"; entregas el {fechas_ent[0]} y el {fechas_ent[1]}" if len(fechas_ent) > 1 else ""}. El valor final se ajusta a las cantidades confirmadas.</p></div></div>
+    <div><em>01</em><div><b>Contrato y orden de compra</b><p>Una vez aprobado el presupuesto, se firma el contrato y se emite la orden de compra con el abono de la primera parte del pedido{f", a más tardar el {f_con}" if f_con else ""}.</p></div></div>
+    <div><em>02</em><div><b>Aprobación de diseños</b><p>El club aprueba los diseños de juego, entrenamiento y presentación de cada rama{f", a más tardar el {f_dis}" if f_dis else ""}.</p></div></div>
+    <div><em>03</em><div><b>Muestras y tallas</b><p>Playmaker entrega muestras de cada prenda. Con el visto bueno del club y la curva de tallas{f" ({f_vb})" if f_vb else ""}, la producción se fabrica según las muestras aprobadas.</p></div></div>
+    <div><em>04</em><div><b>Producción y entregas</b><p>Producción con supervisión y control de calidad de Playmaker{f"; entregas el {txt_ent}" if txt_ent else ""}. El valor final se ajusta a las cantidades confirmadas.</p></div></div>
   </div>
   <p class="lema">Volver a vestir a las ramas del Colo-Colo.</p>
   <div class="firma"><b>Sean Duarte</b><span>Dueño y CEO de Playmaker SpA</span><span>sduarte@playmaker.cl, +56 9 3928 3323, www.playmaker.cl</span></div>

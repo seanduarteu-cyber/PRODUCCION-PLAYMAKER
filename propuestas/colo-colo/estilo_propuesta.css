@@ -109,3 +109,7 @@ table.crono td { padding-top: 3px; padding-bottom: 3px; font-size: 7.4pt; }
 table.crono td.suave { white-space: normal; font-size: 6.9pt; line-height: 1.3; }
 .nota-caja { margin-top: 18px; background: var(--negro); color: #fff; padding: 12px 14px; font-size: 8.4pt; line-height: 1.55; }
 .nota-caja b { display: block; color: #BDBDBD; font-size: 6.8pt; letter-spacing: 2px; margin-bottom: 3px; }
+.entregas.tres { grid-template-columns: repeat(3, 1fr); }
+.entregas.tres b { font-size: 13pt; }
+table.crono.c3 col.h { width: 22%; } table.crono.c3 col.f { width: 12%; } table.crono.c3 col.d { width: 42%; }
+table.crono th.n { white-space: normal; }

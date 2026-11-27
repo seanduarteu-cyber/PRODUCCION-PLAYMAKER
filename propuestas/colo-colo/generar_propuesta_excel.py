@@ -17,10 +17,10 @@ FEVOCHI y de Los Leones:
     canje, el valor del canje). Columnas internas de costo fuera de lo que se imprime.
   - RESUMEN: por categoría y rama, valor del canje y ventas (neto e IVA); valor por producto. Vínculo GENERAR PDF
     PARA EL CLUB (macro): exporta todas las hojas menos COSTOS y RESUMEN NEGOCIO.
-  - ENTREGAS 2027: dos entregas (marzo y agosto), la entrega de cada rama (toda su indumentaria: primer equipo,
-    formativas y comercial), prendas, canje y compras por entrega, cronograma (diseños, tallas y orden de compra,
-    producción, despacho y entrega) calculado hacia atrás desde cada fecha según el volumen, y el canje proporcional a
-    las compras (proporción canje / compras de la propuesta, canje adelantado por entrega y simulación).
+  - ENTREGAS 2027: tres entregas (equipos de marzo, stock de la tienda de marzo y agosto), la entrega de cada rama por
+    categoría, prendas, canje y compras por entrega, cronograma con fechas editables (contrato y orden de compra,
+    diseños, muestras y tallas, producción, despacho y entrega) con control interno de la capacidad del taller externo,
+    y el canje proporcional a las compras (proporción, diferencia por entrega y simulación).
   - RESUMEN NEGOCIO (uso interno): resultado del negocio por disciplina o rama: venta neta de formativas y cuerpo
     técnico y del stock comercial, costo de lo vendido y margen, canje de los primeros equipos (a valor formativas y CT
     y a costo) y margen total, con un supuesto de otros costos (% de la venta) y el punto de equilibrio.
@@ -54,27 +54,34 @@ IVA = 0.19
 HOJA_INTERNA = "COSTOS"
 HOJA_NEGOCIO = "RESUMEN NEGOCIO"  # uso interno, no va en el PDF
 HOJA_ENTREGAS = "ENTREGAS 2027"
-# entregas del año (nombre, fecha por defecto) y entrega de cada rama: marzo (inicio de temporada) salvo las del segundo
-# semestre. Ambas se pueden cambiar en la planilla.
-ENTREGAS = [("MARZO", datetime(2027, 3, 1)), ("AGOSTO", datetime(2027, 8, 2))]
-ENTREGA_RAMA = {"Vóleibol": "AGOSTO", "Patín": "AGOSTO"}
+# entregas del año (nombre, fecha por defecto). La entrega de cada rama se elige por categoría (primer equipo, formativas
+# y cuerpo técnico, comercial): las ramas de marzo reciben sus equipos el 1 de marzo y el stock de la tienda el 22 de
+# marzo (la capacidad del taller no alcanza para todo el 1 de marzo); vóleibol y patín, todo en agosto.
+ENTREGAS = [("MARZO EQUIPOS", datetime(2027, 3, 1)), ("MARZO TIENDA", datetime(2027, 3, 22)),
+            ("AGOSTO", datetime(2027, 8, 2))]
+CATEGORIAS_ENTREGA = [("canje", "PRIMER EQUIPO"), ("formativas", "FORMATIVAS Y CT"), ("comercial", "COMERCIAL")]
+ENTREGA_DEFECTO = {"canje": "MARZO EQUIPOS", "formativas": "MARZO EQUIPOS", "comercial": "MARZO TIENDA"}
+ENTREGA_RAMA = {"Vóleibol": "AGOSTO", "Patín": "AGOSTO"}  # estas ramas, todo en agosto
 PARAMETROS_ENTREGA = [  # parámetros internos del cronograma: clave, texto, valor por defecto
-    ("capacidad", "Capacidad de producción (prendas por semana)", 1000),
+    ("capacidad", "Capacidad de producción del taller externo (prendas por mes)", 3000),
 ]
-# hitos del cronograma: texto, detalle, fecha por defecto de cada entrega (None: la fecha de la entrega)
+# hitos del cronograma: texto, detalle, fecha por defecto de cada entrega (None: la fecha de la entrega). Primero el
+# contrato y la orden de compra (una vez aprobado el presupuesto); después diseños, muestras, tallas y producción.
 HITOS = [
+    ("Contrato y orden de compra", "Una vez aprobado el presupuesto: firma del contrato y orden de compra con el abono de "
+     "la parte del pedido de cada entrega.", datetime(2026, 12, 9), datetime(2026, 12, 9), datetime(2027, 5, 10)),
     ("Aprobación de diseños", "El club aprueba los diseños de juego, entrenamiento y presentación de cada rama.",
-     datetime(2026, 12, 15), datetime(2027, 5, 17)),
+     datetime(2026, 12, 15), datetime(2026, 12, 15), datetime(2027, 5, 17)),
     ("Entrega de muestras", "Playmaker entrega muestras de cada prenda para el visto bueno del club.",
-     datetime(2026, 12, 22), datetime(2027, 5, 24)),
-    ("Visto bueno de muestras", "El club aprueba las muestras; la producción se fabrica según las muestras aprobadas.",
-     datetime(2026, 12, 28), datetime(2027, 5, 31)),
-    ("Cierre del pedido", "Curva de tallas por rama y categoría, firma del contrato y orden de compra con el abono de la "
-     "parte del pedido de esta entrega.", datetime(2026, 12, 30), datetime(2027, 6, 7)),
-    ("Inicio de producción", "Confección en la planta de Playmaker en Santiago.", datetime(2027, 1, 4), datetime(2027, 6, 14)),
-    ("Control de calidad y despacho", "Revisión, etiquetado por rama y categoría, y despacho.", datetime(2027, 2, 22),
-     datetime(2027, 7, 26)),
-    ("Entrega en el club", "Toda la indumentaria de las ramas de esta entrega.", None, None),
+     datetime(2026, 12, 22), datetime(2026, 12, 22), datetime(2027, 5, 24)),
+    ("Visto bueno de muestras y curva de tallas", "El club aprueba las muestras y entrega las tallas por rama y "
+     "categoría; la producción se fabrica según las muestras aprobadas.", datetime(2026, 12, 29), datetime(2026, 12, 29),
+     datetime(2027, 5, 31)),
+    ("Inicio de producción", "Producción con supervisión y control de calidad de Playmaker.", datetime(2027, 1, 4),
+     datetime(2027, 2, 25), datetime(2027, 6, 14)),
+    ("Control de calidad y despacho", "Revisión, etiquetado por rama y categoría, y despacho.", datetime(2027, 2, 25),
+     datetime(2027, 3, 16), datetime(2027, 7, 26)),
+    ("Entrega en el club", "Toda la indumentaria de esta entrega.", None, None, None),
 ]
 
 # categorías: clave, pestaña del requerimiento, hoja de la propuesta, título, descuento general, etiqueta del precio
@@ -241,21 +248,29 @@ def leer_previo():
                 previo["supuestos"][texto(sn.cell(r, 2).value)] = sn.cell(r, 3).value
     if HOJA_ENTREGAS in wb.sheetnames:
         en = wb[HOJA_ENTREGAS]
-        modo = None
+        modo, entregas_col = None, {}
         for r in range(1, en.max_row + 1):
             b = texto(en.cell(r, 2).value)
             if b in ("RAMA", "HITO"):
                 modo = b
+                if b == "HITO":  # columnas de fechas: "ENTREGA n: NOMBRE" (se guarda por nombre de la entrega)
+                    entregas_col = {c: texto(en.cell(r, c).value).split(": ", 1)[-1] for c in range(3, 8)
+                                    if texto(en.cell(r, c).value).startswith("ENTREGA ")}
             elif b == "TOTAL" or (modo == "HITO" and not b):
                 modo = None
             elif modo == "HITO":
-                for c in range(3, 3 + len(ENTREGAS)):
+                for c, nombre_e in entregas_col.items():
                     if azul(en.cell(r, c)):
-                        previo["entregas"][f"hito:{b}:{c}"] = en.cell(r, c).value
+                        previo["entregas"][f"hito:{b}:{nombre_e}"] = en.cell(r, c).value
+            elif modo == "RAMA":
+                for c in range(3, 3 + len(CATEGORIAS_ENTREGA)):
+                    if azul(en.cell(r, c)):
+                        previo["entregas"][f"rama:{b}:{c}"] = en.cell(r, c).value
             elif b and azul(en.cell(r, 3)):
-                previo["entregas"][("rama:" + b) if modo == "RAMA" else b] = en.cell(r, 3).value
-            if en.cell(r, 13).value and azul(en.cell(r, 14)):
-                previo["entregas"][texto(en.cell(r, 13).value)] = en.cell(r, 14).value
+                previo["entregas"][b] = en.cell(r, 3).value
+            for c_etq in (13, 14):  # parámetros internos (M/N en el formato anterior, N/O ahora)
+                if en.cell(r, c_etq).value and azul(en.cell(r, c_etq + 1)):
+                    previo["entregas"][texto(en.cell(r, c_etq).value)] = en.cell(r, c_etq + 1).value
     for hoja in ["RESUMEN", HOJA_ENTREGAS] + [c[2] for c in CATEGORIAS]:
         if hoja in wb.sheetnames:
             previo["extras"][hoja] = [(c.row, c.column, c.value, c.number_format, bool(c.font and c.font.b))
@@ -852,18 +867,19 @@ def main():
         if len(txt) > 60:
             sn.row_dimensions[r].height = 30
         r += 1
-    celda(sn, f"B{r + 1}", "Si falta el costo de un producto (hoja PRECIOS, columna COSTO UNITARIO NETO), su costo queda "
-                           "en cero y el margen se ve mayor de lo real.", f_nota, alinear=Alignment(vertical="center"),
-          borde=False)
+    celda(sn, f"B{r + 1}", "Costo unitario: costo directo de producción en taller externo (3.000 prendas al mes), sin gastos "
+                           "generales de Playmaker. Si falta el costo de un producto (hoja PRECIOS), su costo queda en cero "
+                           "y el margen se ve mayor de lo real.", f_nota, alinear=Alignment(vertical="center"), borde=False)
     for col, ancho in zip("BCDEFGHIJKLMN", (52, 15, 14, 14, 15, 15, 15, 11, 11, 16, 15, 15, 12)):
         sn.column_dimensions[col].width = ancho
     sn.freeze_panes = "C9"
 
     # ---------------------------------------------------------------- ENTREGAS 2027 (va en el PDF para el club)
     en = wb.create_sheet(HOJA_ENTREGAS, 1)
-    encabezado(en, "CALENDARIO DE ENTREGAS 2027", "Dos entregas, marzo y agosto: cada rama recibe toda su indumentaria en "
-               "la entrega que se le asigna. El canje se entrega en proporción a las compras.")
+    encabezado(en, "CALENDARIO DE ENTREGAS 2027", "Tres entregas: equipos de marzo, stock de la tienda de marzo y agosto. "
+               "La entrega se elige por rama y categoría. El canje se entrega en proporción a las compras.")
     pe = previo["entregas"] if previo else {}
+    nombres_e = [n for n, _f in ENTREGAS]
     FECHA = '[$-340A]d "de" mmmm "de" yyyy'
     ref_fecha = {}
     for i, (nombre, fecha) in enumerate(ENTREGAS):
@@ -871,54 +887,69 @@ def main():
         celda(en, f"B{5 + i}", txt, f_tot, alinear=izq)
         celda(en, f"C{5 + i}", pe.get(txt, fecha), f_input, FECHA, r_input)
         ref_fecha[nombre] = f"$C${5 + i}"
-    celda(en, "M4", "PARÁMETROS DEL CRONOGRAMA (USO INTERNO, NO SE IMPRIME)",
+    celda(en, "N4", "PARÁMETROS DEL CRONOGRAMA (USO INTERNO, NO SE IMPRIME)",
           Font(name="Calibri", size=10, bold=True, color="C00000"), alinear=izq, borde=False)
     ref_par = {}
     for i, (k, txt, v) in enumerate(PARAMETROS_ENTREGA):
-        celda(en, f"M{5 + i}", txt, f_tot, relleno=r_int_suave, alinear=izq)
-        celda(en, f"N{5 + i}", pe.get(txt, v), f_input, NUM, r_input)
-        ref_par[k] = f"$N${5 + i}"
+        celda(en, f"N{5 + i}", txt, f_tot, relleno=r_int_suave, alinear=izq)
+        celda(en, f"O{5 + i}", pe.get(txt, v), f_input, NUM, r_input)
+        ref_par[k] = f"$O${5 + i}"
+    semana = f"(MAX(1,{ref_par['capacidad']})*12/52)"  # prendas por semana
 
-    celda(en, "B8", "PRENDAS Y VALORES POR RAMA", f_sec, alinear=Alignment(vertical="center"), borde=False)
-    cabecera(en, 9, 2, ["RAMA", "ENTREGA", "UNIDADES CANJE", "UNIDADES FORMATIVAS Y CT", "UNIDADES COMERCIAL",
-                        "TOTAL UNIDADES", "VALOR DEL CANJE (VALOR FORMATIVAS Y CT)", "COMPRAS (CON IVA)"], alto=40)
-    dv_e = DataValidation(type="list", formula1='"' + ",".join(n for n, _ in ENTREGAS) + '"', allow_blank=False,
-                          errorTitle="Entrega", error="Elige la entrega de la rama: " + " o ".join(n for n, _ in ENTREGAS))
+    f0 = 5 + len(ENTREGAS) + 2
+    celda(en, f"B{f0}", "PRENDAS Y VALORES POR RAMA", f_sec, alinear=Alignment(vertical="center"), borde=False)
+    cabecera(en, f0 + 1, 2, ["RAMA"] + [f"ENTREGA {t}" for _c, t in CATEGORIAS_ENTREGA]
+             + ["UNIDADES PRIMER EQUIPO (CANJE)", "UNIDADES FORMATIVAS Y CT", "UNIDADES COMERCIAL", "TOTAL UNIDADES",
+                "VALOR DEL CANJE (VALOR FORMATIVAS Y CT)", "COMPRAS FORMATIVAS Y CT (CON IVA)",
+                "COMPRAS COMERCIAL (CON IVA)"], alto=48)
+    dv_e = DataValidation(type="list", formula1='"' + ",".join(nombres_e) + '"', allow_blank=False,
+                          errorTitle="Entrega", error="Elige una entrega: " + ", ".join(nombres_e))
     en.add_data_validation(dv_e)
-    r = e0 = 10
+    r = e0 = f0 + 2
     for rama in ramas_neg:
         celda(en, f"B{r}", rama, alinear=izq)
-        celda(en, f"C{r}", pe.get("rama:" + rama, ENTREGA_RAMA.get(rama, ENTREGAS[0][0])), f_input, relleno=r_input)
-        celda(en, f"D{r}", "=" + suma_rama("canje", rama, "I"), formato=NUM)
-        celda(en, f"E{r}", "=" + suma_rama("formativas", rama, "I"), formato=NUM)
-        celda(en, f"F{r}", "=" + suma_rama("comercial", rama, "I"), formato=NUM)
-        celda(en, f"G{r}", f"=D{r}+E{r}+F{r}", f_tot, NUM)
-        celda(en, f"H{r}", "=" + suma_rama("canje", rama, "N"), formato=PESOS)
-        celda(en, f"I{r}", "=" + "+".join(suma_rama(c, rama, "M") for c in ("formativas", "comercial", "canje")),
-              f_tot, PESOS)
+        for j, (cat, _t) in enumerate(CATEGORIAS_ENTREGA):
+            col = openpyxl.utils.get_column_letter(3 + j)
+            v = pe.get(f"rama:{rama}:{3 + j}")
+            if v not in nombres_e:
+                v = ENTREGA_RAMA.get(rama, ENTREGA_DEFECTO[cat])
+            celda(en, f"{col}{r}", v, f_input, relleno=r_input)
+        celda(en, f"F{r}", "=" + suma_rama("canje", rama, "I"), formato=NUM)
+        celda(en, f"G{r}", "=" + suma_rama("formativas", rama, "I"), formato=NUM)
+        celda(en, f"H{r}", "=" + suma_rama("comercial", rama, "I"), formato=NUM)
+        celda(en, f"I{r}", f"=F{r}+G{r}+H{r}", f_tot, NUM)
+        celda(en, f"J{r}", "=" + suma_rama("canje", rama, "N"), formato=PESOS)
+        celda(en, f"K{r}", "=" + suma_rama("formativas", rama, "M") + "+" + suma_rama("canje", rama, "M"), formato=PESOS)
+        celda(en, f"L{r}", "=" + suma_rama("comercial", rama, "M"), formato=PESOS)
         r += 1
-    dv_e.add(f"C{e0}:C{r - 1}")
+    dv_e.add(f"C{e0}:E{r - 1}")
     celda(en, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
-    celda(en, f"C{r}", None, f_gran, relleno=r_gran)
-    for col in "DEFGHI":
-        celda(en, f"{col}{r}", f"=SUM({col}{e0}:{col}{r - 1})", f_gran, PESOS if col in "HI" else NUM, r_gran)
+    for col in "CDE":
+        celda(en, f"{col}{r}", None, f_gran, relleno=r_gran)
+    for col in "FGHIJKL":
+        celda(en, f"{col}{r}", f"=SUM({col}{e0}:{col}{r - 1})", f_gran, PESOS if col in "JKL" else NUM, r_gran)
     tr = r
+    rng = lambda col: f"${col}${e0}:${col}${tr - 1}"  # noqa: E731
 
     r += 3
     celda(en, f"B{r}", "RESUMEN POR ENTREGA", f_sec, alinear=Alignment(vertical="center"), borde=False)
     r += 1
-    cabecera(en, r, 2, ["ENTREGA", "FECHA", "UNIDADES CANJE", "UNIDADES FORMATIVAS Y CT", "UNIDADES COMERCIAL",
-                        "TOTAL UNIDADES", "VALOR DEL CANJE (VALOR FORMATIVAS Y CT)", "COMPRAS (CON IVA)", "CANJE SOBRE COMPRAS"],
-             alto=40)
+    cabecera(en, r, 2, ["ENTREGA", "FECHA", "UNIDADES PRIMER EQUIPO (CANJE)", "UNIDADES FORMATIVAS Y CT",
+                        "UNIDADES COMERCIAL", "TOTAL UNIDADES", "VALOR DEL CANJE (VALOR FORMATIVAS Y CT)",
+                        "COMPRAS (CON IVA)", "CANJE SOBRE COMPRAS"], alto=48)
     r += 1
     p0, fila_ent = r, {}
     for i, (nombre, _f) in enumerate(ENTREGAS):
         fila_ent[nombre] = r
         celda(en, f"B{r}", f"Entrega {i + 1}: {nombre.lower()}", f_tot, alinear=izq)
         celda(en, f"C{r}", f"={ref_fecha[nombre]}", formato=FECHA)
-        for col in "DEFGHI":
-            celda(en, f"{col}{r}", f'=SUMIF($C${e0}:$C${tr - 1},"{nombre}",{col}${e0}:{col}${tr - 1})',
-                  f_tot if col in "GHI" else f_norm, PESOS if col in "HI" else NUM)
+        celda(en, f"D{r}", f'=SUMIF({rng("C")},"{nombre}",{rng("F")})', formato=NUM)
+        celda(en, f"E{r}", f'=SUMIF({rng("D")},"{nombre}",{rng("G")})', formato=NUM)
+        celda(en, f"F{r}", f'=SUMIF({rng("E")},"{nombre}",{rng("H")})', formato=NUM)
+        celda(en, f"G{r}", f"=D{r}+E{r}+F{r}", f_tot, NUM)
+        celda(en, f"H{r}", f'=SUMIF({rng("C")},"{nombre}",{rng("J")})', f_tot, PESOS)
+        celda(en, f"I{r}", f'=SUMIF({rng("D")},"{nombre}",{rng("K")})+SUMIF({rng("E")},"{nombre}",{rng("L")})', f_tot,
+              PESOS)
         celda(en, f"J{r}", f'=IF(I{r}=0,"",H{r}/I{r})', formato=PCT)
         r += 1
     celda(en, f"B{r}", "TOTAL", f_gran, relleno=r_gran, alinear=izq)
@@ -927,9 +958,9 @@ def main():
         celda(en, f"{col}{r}", f"=SUM({col}{p0}:{col}{r - 1})", f_gran, PESOS if col in "HI" else NUM, r_gran)
     celda(en, f"J{r}", f'=IF(I{r}=0,"",H{r}/I{r})', f_gran, PCT, r_gran)
     tp = r
-    celda(en, f"B{r + 1}", f'=IF(G{tp}=G{tr},"Control: todas las prendas tienen entrega asignada.","Revisar: hay ramas '
-                           f'sin entrega asignada (columna ENTREGA).")', f_nota, alinear=Alignment(vertical="center"),
-          borde=False)
+    celda(en, f"B{r + 1}", f'=IF(AND(G{tp}=I{tr},I{tp}=K{tr}+L{tr},H{tp}=J{tr}),"Control: todas las prendas tienen entrega '
+                           f'asignada.","Revisar: hay prendas sin entrega asignada (columnas ENTREGA).")', f_nota,
+          alinear=Alignment(vertical="center"), borde=False)
 
     r += 4
     celda(en, f"B{r}", "CANJE PROPORCIONAL A LAS COMPRAS", f_sec, alinear=Alignment(vertical="center"), borde=False)
@@ -963,12 +994,11 @@ def main():
     for col in "CDEF":
         celda(en, f"{col}{r}", f"=SUM({col}{q0}:{col}{r - 1})", f_gran, PESOS, r_gran)
     celda(en, f"G{r}", None, f_gran, relleno=r_gran)
-    celda(en, f"B{r + 1}", "DIFERENCIA: canje que se entrega menos el que corresponde a las compras de esa entrega. En marzo "
-                           "es positiva (Esperanza Alba recibe solo canje) y en agosto es negativa por el mismo monto: en el "
-                           "año queda en cero si el club realiza todas las compras de la propuesta.", f_nota,
+    celda(en, f"B{r + 1}", "DIFERENCIA: canje que se entrega menos el que corresponde a las compras de esa entrega. La "
+                           "primera lleva más canje (Esperanza Alba recibe solo canje y el stock de la tienda llega después) "
+                           "y las siguientes menos: en el año queda en cero si el club realiza todas las compras.", f_nota,
           alinear=Alignment(vertical="top", wrap_text=True), borde=False)
-    en.merge_cells(f"B{r + 1}:J{r + 2}")
-    en.row_dimensions[r + 1].height = 15
+    en.merge_cells(f"B{r + 1}:L{r + 2}")
     r += 4
     sim_txt = "Simulación: si el club compra (con IVA)"
     celda(en, f"B{r}", sim_txt, f_tot, alinear=izq)
@@ -981,7 +1011,7 @@ def main():
     r += 1
     cabecera(en, r, 2, ["HITO"] + [f"ENTREGA {i + 1}: {n}" for i, (n, _f) in enumerate(ENTREGAS)] + ["DETALLE"], alto=30)
     col_det = openpyxl.utils.get_column_letter(3 + len(ENTREGAS))
-    en.merge_cells(f"{col_det}{r}:J{r}")
+    en.merge_cells(f"{col_det}{r}:L{r}")
     r += 1
     h0 = r
     fila_hito = {}
@@ -994,41 +1024,45 @@ def main():
             if fechas[i] is None:  # la entrega: la fecha de arriba
                 celda(en, f"{col}{r}", f"={ref_fecha[nombre]}", f_tot, FECHA)
             else:
-                celda(en, f"{col}{r}", pe.get(f"hito:{txt}:{3 + i}", fechas[i]), f_input, FECHA, r_input)
+                celda(en, f"{col}{r}", pe.get(f"hito:{txt}:{nombre}", fechas[i]), f_input, FECHA, r_input)
         celda(en, f"{col_det}{r}", det, f_gris, alinear=izq)
-        for c in range(4 + len(ENTREGAS), 11):
+        for c in range(4 + len(ENTREGAS), 13):
             celda(en, f"{openpyxl.utils.get_column_letter(c)}{r}", None)
-        en.merge_cells(f"{col_det}{r}:J{r}")
+        en.merge_cells(f"{col_det}{r}:L{r}")
         en.row_dimensions[r].height = 28
         r += 1
-    # control interno: semanas de producción disponibles frente a las necesarias según el volumen
+    # control interno: semanas de producción disponibles frente a las necesarias según el volumen y la capacidad
     fila_int = 6 + len(PARAMETROS_ENTREGA)
     fi, fd = fila_hito["Inicio de producción"], fila_hito["Control de calidad y despacho"]
     for i, (nombre, _f) in enumerate(ENTREGAS):
         col = openpyxl.utils.get_column_letter(3 + i)
         f = fila_int + 3 * i
-        celda(en, f"M{f}", f"Semanas de producción disponibles, entrega {i + 1} ({nombre.lower()})", f_tot,
+        celda(en, f"N{f}", f"Semanas de producción disponibles, entrega {i + 1} ({nombre.lower()})", f_tot,
               relleno=r_int_suave, alinear=izq)
-        celda(en, f"N{f}", f"=ROUND(({col}{fd}-{col}{fi})/7,1)", f_tot, '0.0')
-        celda(en, f"M{f + 1}", f"Semanas necesarias según el volumen ({nombre.lower()})", f_tot, relleno=r_int_suave,
+        celda(en, f"O{f}", f"=ROUND(({col}{fd}-{col}{fi})/7,1)", f_tot, '0.0')
+        celda(en, f"N{f + 1}", f"Semanas necesarias según el volumen ({nombre.lower()})", f_tot, relleno=r_int_suave,
               alinear=izq)
-        celda(en, f"N{f + 1}", f"=ROUNDUP(G{fila_ent[nombre]}/MAX(1,{ref_par['capacidad']}),1)", f_tot, '0.0')
-        celda(en, f"M{f + 2}", "Estado", f_tot, relleno=r_int_suave, alinear=izq)
-        celda(en, f"N{f + 2}", f'=IF(N{f}>=N{f + 1},"OK","FALTAN SEMANAS")', f_tot)
-        en.conditional_formatting.add(f"N{f + 2}", CellIsRule(operator="equal", formula=['"FALTAN SEMANAS"'],
+        celda(en, f"O{f + 1}", f"=ROUNDUP(G{fila_ent[nombre]}/{semana},1)", f_tot, '0.0')
+        celda(en, f"N{f + 2}", "Estado", f_tot, relleno=r_int_suave, alinear=izq)
+        celda(en, f"O{f + 2}", f'=IF(O{f}>=O{f + 1},"OK","FALTAN SEMANAS")', f_tot)
+        en.conditional_formatting.add(f"O{f + 2}", CellIsRule(operator="equal", formula=['"FALTAN SEMANAS"'],
                                                               fill=PatternFill("solid", fgColor="F8CBAD")))
+    f = fila_int + 3 * len(ENTREGAS)
+    celda(en, f"N{f}", "Producción en taller externo: el costo de la propuesta es costo directo, sin gastos generales de "
+                       "Playmaker.", f_nota, alinear=Alignment(vertical="top", wrap_text=True), borde=False)
+    en.merge_cells(f"N{f}:O{f + 1}")
     en.conditional_formatting.add(f"C{h0}:{openpyxl.utils.get_column_letter(2 + len(ENTREGAS))}{r - 1}",
                                   CellIsRule(operator="lessThan", formula=["TODAY()"],
                                              fill=PatternFill("solid", fgColor="F8CBAD")))
-    celda(en, f"B{r}", "Antes de fin de año quedan cerrados diseños, muestras, tallas, contrato y orden de compra con el "
-                       "abono de la primera parte; la producción de la primera entrega se hace en enero y febrero. En rojo: "
-                       "fechas que ya pasaron.", f_nota, alinear=Alignment(vertical="center"), borde=False)
-    for col, ancho in zip("BCDEFGHIJ", (44, 20, 20, 15, 15, 14, 17, 16, 13)):
+    celda(en, f"B{r}", "Primero el contrato y la orden de compra; después diseños, muestras y tallas, antes de fin de año, "
+                       "para producir en enero y febrero. En rojo: fechas que ya pasaron.", f_nota,
+          alinear=Alignment(vertical="center"), borde=False)
+    for col, ancho in zip("BCDEFGHIJKL", (40, 20, 20, 20, 15, 14, 14, 13, 17, 17, 16)):
         en.column_dimensions[col].width = ancho
-    en.column_dimensions["L"].width = 2
-    en.column_dimensions["M"].width = 70
-    en.column_dimensions["N"].width = 12
-    en.print_area = f"A1:J{r}"
+    en.column_dimensions["M"].width = 2
+    en.column_dimensions["N"].width = 64
+    en.column_dimensions["O"].width = 14
+    en.print_area = f"A1:L{r}"
 
     # celdas que el usuario agregó fuera de las tablas (abajo o a la derecha de lo generado): se conservan
     if previo:
