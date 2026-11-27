@@ -70,7 +70,7 @@ table.det td.co { white-space: normal; }
 .portada .logos { display: flex; justify-content: center; align-items: center; gap: 22px; }
 .portada .logos img.pm { height: 30px; }
 .portada .logos i { width: 0.6pt; height: 76px; background: rgba(255,255,255,.4); }
-.portada .logos .escudo { background: #fff; border-radius: 6px; padding: 6px 7px; display: inline-flex; }
+.portada .logos .escudo { display: inline-flex; }
 .portada .logos .escudo img { height: 92px; }
 .portada .kicker { margin-top: 20mm; font-size: 8.5pt; font-weight: 600; letter-spacing: 4px; color: #BDBDBD; }
 .portada h1 { color: #fff; font-size: 33pt; margin-top: 12px; }
