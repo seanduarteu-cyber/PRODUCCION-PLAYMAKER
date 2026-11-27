@@ -213,7 +213,7 @@ def main():
 
     # 1. portada
     paginas.append(f"""<section class="page portada">
-  <img class="logo" src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker">
+  <div class="logos"><img class="pm" src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><i></i><span class="escudo"><img src="escudo_colo_colo.png" alt="CSD Colo-Colo"></span></div>
   <div class="kicker">PROPUESTA COMERCIAL, DOS TEMPORADAS DESDE 2027</div>
   <h1>Ramas deportivas del<br>CSD Colo-Colo</h1>
   <p class="sub">Indumentaria de juego, entrenamiento y presentación para los primeros equipos, las escuelas formativas, el cuerpo técnico y la tienda del club, con un contrato por dos temporadas a partir de 2027</p>
@@ -478,6 +478,7 @@ def main():
     txt_ent = (", ".join(fechas_ent[:-1]) + " y el " + fechas_ent[-1]) if len(fechas_ent) > 1 else "".join(fechas_ent)
     indice += [(1, "Próximos pasos", n), (2, "Contrato, diseños, tallas, pagos y entregas", n)]
     paginas.append(f"""<section class="page portada cierre">
+  <div class="logos"><img class="pm" src="../_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker"><i></i><span class="escudo"><img src="escudo_colo_colo.png" alt="CSD Colo-Colo"></span></div>
   <div class="kicker">CONDICIONES Y PRÓXIMOS PASOS</div>
   <h1>De la propuesta a la cancha</h1>
   <div class="pasos-cierre">
