@@ -69,8 +69,8 @@ PARAMETROS_ENTREGA = [  # parámetros internos del cronograma: clave, texto, val
 # hitos para todo el año (una sola fecha): un solo contrato por el negocio completo, y todos los diseños y muestras de la
 # temporada (también los de agosto). Texto, detalle, fecha por defecto.
 HITOS_GENERALES = [
-    ("Firma del contrato", "Un solo contrato por todo el año y el negocio completo (todas las entregas), una vez aprobado "
-     "el presupuesto.", datetime(2026, 12, 9)),
+    ("Firma del contrato", "Un solo contrato por dos temporadas (2027 y 2028) y el negocio completo, una vez aprobado el "
+     "presupuesto.", datetime(2026, 12, 9)),
     ("Aprobación de diseños", "El club aprueba todos los diseños de la temporada, también los de las prendas que se "
      "entregan en agosto.", datetime(2026, 12, 15)),
     ("Entrega de muestras", "Playmaker entrega muestras de cada prenda para el visto bueno del club.", datetime(2026, 12, 22)),
@@ -451,9 +451,14 @@ def main():
             celda(pr, f"M{r}", pv.get("REFERENCIA DEL PRECIO (INTERNO)", ref), f_input, relleno=r_input, alinear=izq)
             r += 1
     ultima_precio = r - 1
+    # reposición de prendas: no es parte del canje; dos opciones de precio
+    celda(pr, f"B{r + 1}", "REPOSICIÓN DE PRENDAS (NO FORMA PARTE DEL CANJE)", f_sec, alinear=izq, borde=False)
+    for k, txt in enumerate(("A precio comercial de tienda: la personalización corre por cuenta del club.",
+                             "A valor formativas y cuerpo técnico: la personalización corre por cuenta de Playmaker.")):
+        celda(pr, f"B{r + 2 + k}", txt, f_norm, alinear=Alignment(vertical="center"), borde=False)
     for col, ancho in zip("BCDEFGHIJKLM", (46, 14, 18, 18, 30, 2, 14, 13, 15, 14, 14, 34)):
         pr.column_dimensions[col].width = ancho
-    pr.print_area = f"A1:F{ultima_precio}"
+    pr.print_area = f"A1:F{r + 3}"
     dv = DataValidation(type="decimal", operator="greaterThanOrEqual", formula1="0", allow_blank=True,
                         errorTitle="Precio", error="Ingresa un valor en pesos (0 o más).")
     pr.add_data_validation(dv)
@@ -1076,7 +1081,7 @@ def main():
     en.conditional_formatting.add(f"C{h0}:{openpyxl.utils.get_column_letter(2 + len(ENTREGAS))}{r - 1}",
                                   CellIsRule(operator="lessThan", formula=["TODAY()"],
                                              fill=PatternFill("solid", fgColor="F8CBAD")))
-    celda(en, f"B{r}", "Un solo contrato por todo el año; todos los diseños y muestras de la temporada antes de fin de año. "
+    celda(en, f"B{r}", "Un solo contrato por dos temporadas (2027 y 2028); todos los diseños y muestras de la temporada antes de fin de año. "
                        "Por entrega: curva de tallas y pago para producir. En rojo: fechas que ya pasaron.", f_nota,
           alinear=Alignment(vertical="center"), borde=False)
     for col, ancho in zip("BCDEFGHIJKL", (40, 20, 20, 20, 15, 14, 14, 13, 17, 17, 16)):

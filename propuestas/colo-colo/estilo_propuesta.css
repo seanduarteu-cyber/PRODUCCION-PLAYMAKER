@@ -114,3 +114,10 @@ table.crono td.suave { white-space: normal; font-size: 6.9pt; line-height: 1.3; 
 table.crono.c3 col.h { width: 22%; } table.crono.c3 col.f { width: 12%; } table.crono.c3 col.d { width: 42%; }
 table.crono th.n { white-space: normal; }
 table.crono.gen col.h { width: 26%; } table.crono.gen col.f1 { width: 22%; } table.crono.gen col.d { width: 52%; }
+
+/* condiciones */
+.condiciones { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.condiciones > div { background: var(--fondo); border-left: 3px solid var(--negro); padding: 11px 13px; }
+.condiciones b { display: block; font-size: 6.6pt; letter-spacing: 2px; color: var(--negro); font-weight: 600; }
+.condiciones p { font-size: 8.2pt; line-height: 1.55; color: var(--suave); margin-top: 4px; }
+table.repo td { font-size: 8.4pt; padding-top: 7px; padding-bottom: 7px; }
