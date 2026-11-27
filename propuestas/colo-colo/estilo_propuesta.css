@@ -122,3 +122,11 @@ table.crono.gen col.h { width: 26%; } table.crono.gen col.f1 { width: 22%; } tab
 .condiciones p { font-size: 8.2pt; line-height: 1.55; color: var(--suave); margin-top: 4px; }
 table.repo td { font-size: 8.4pt; padding-top: 7px; padding-bottom: 7px; }
 table.repo.plazos { width: 70%; }
+
+/* índice */
+.indice { column-count: 2; column-gap: 12mm; margin-top: 16px; }
+.indice .grupo { break-inside: avoid; margin-bottom: 12px; }
+.indice a { display: flex; justify-content: space-between; gap: 8px; color: inherit; text-decoration: none; }
+.indice .i1 a { font-size: 9.2pt; font-weight: 600; color: var(--negro); border-bottom: 1pt solid var(--negro); padding: 5px 0 4px; }
+.indice .i2 a { font-size: 7.8pt; color: var(--suave); padding: 3px 0 3px 10px; border-bottom: 0.5pt dotted var(--linea); line-height: 1.35; }
+.indice span.p { font-family: "Playfair"; font-weight: 700; color: var(--negro); white-space: nowrap; }

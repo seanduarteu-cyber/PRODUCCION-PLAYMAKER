@@ -4,7 +4,7 @@ Uso:
     python3 propuestas/colo-colo/generar_pdf.py
 
 Lee Propuesta_Comercial_CSD_Colo_Colo_2027.xlsm (los valores que la planilla tiene calculados) y crea
-propuesta_club.html y Propuesta_Comercial_CSD_Colo_Colo_2027.pdf: portada, resumen de la propuesta, calendario de
+propuesta_club.html y Propuesta_Comercial_CSD_Colo_Colo_2027.pdf: portada, índice con enlaces, resumen de la propuesta, calendario de
 entregas, cronograma, canje proporcional a las compras, condiciones (vigencia y reposición de prendas), lista de precios
 por disciplina, detalle del canje de los primeros equipos, de formativas y cuerpo técnico y del stock comercial, y
 próximos pasos. No incluye costos ni márgenes (hojas COSTOS y RESUMEN NEGOCIO). Si se cambian precios, descuentos o
@@ -67,8 +67,8 @@ def leer(wb):
     disciplinas = []  # [(título, [producto])]
     for r in range(cab + 1, pr.max_row + 1):
         b = texto(pr.cell(r, 2).value)
-        if not b:
-            continue
+        if not b:  # fin de la lista (debajo van las notas de reposición)
+            break
         if pr.cell(r, 4).value is None:
             disciplinas.append((b, []))
         elif disciplinas:
@@ -105,6 +105,16 @@ def leer(wb):
 
 def fecha_txt(d):
     return f"{d.day} de {MESES[d.month - 1]} de {d.year}" if hasattr(d, "day") else texto(d)
+
+
+def secciones(filas):
+    """Títulos de rama o disciplina que empiezan en esta página (sin las continuaciones)."""
+    return [t for f in filas for t in re.findall(r'<tr class="sec"><td colspan="\d+">([^<]+)</td>', f)
+            if "CONTINUACIÓN" not in t]
+
+
+def nombre_indice(t):
+    return texto(t).capitalize().replace("Esperanza alba", "Esperanza Alba")
 
 
 def fecha_corta(d):
@@ -213,6 +223,9 @@ def main():
   {pie(n)}
 </section>""")
     n += 1
+    pos_indice, n_indice = len(paginas), n  # la página 2 es el índice: se arma al final, con las páginas de cada punto
+    n += 1
+    indice = []  # (nivel, texto, página)
 
     # 2. resumen de la propuesta
     filas = []
@@ -224,6 +237,8 @@ def main():
     filas.append(f'<tr class="total"><td colspan="2">TOTAL DE LA PROPUESTA</td><td class="n">{num(unidades)}</td>'
                  f'<td class="n">{pesos(canje)}</td><td class="n">{pesos(ventas)}</td></tr>')
     fo, co = tot_cat.get("formativas", [0] * 7), tot_cat.get("comercial", [0] * 7)
+    indice += [(1, "Resumen de la propuesta", n), (2, "Cifras principales: prendas, canje y compras", n),
+               (2, "Valor por categoría y rama", n)]
     paginas.append(f"""<section class="page">
   {cab("RESUMEN DE LA PROPUESTA")}
   <h1>Resumen de la propuesta</h1>
@@ -264,6 +279,16 @@ def main():
         t = ent.get("total_entregas") or [None] * 9
         filas.append(f'<tr class="total"><td>TOTAL</td><td class="n">{num(t[2])}</td><td class="n">{num(t[3])}</td>'
                      f'<td class="n">{num(t[4])}</td><td class="n">{num(t[5])}</td></tr>')
+        indice.append((1, "Calendario de entregas", n))
+        for i, fila in enumerate(ent["entregas"]):
+            nombre = texto(fila[0]).split(": ", 1)[-1].upper()
+            ramas_e = [texto(x[0]) for x in ent["ramas"]
+                       if any(texto(x[ce]).upper() == nombre and (x[cu] or 0) > 0 for _t, ce, cu in categorias)]
+            solo_tienda = not fila[2] and not fila[3] and fila[4]
+            que = ("stock para la tienda" if solo_tienda else " y ".join(ramas_e) if len(ramas_e) <= 2
+                   else "primeros equipos, formativas e institucional")
+            indice.append((2, f"Entrega {i + 1}, {fecha_txt(fila[1])}: {que}", n))
+        indice.append((2, "Prendas por entrega y rama", n))
         paginas.append(f"""<section class="page">
   {cab("CALENDARIO DE ENTREGAS")}
   <h1>Calendario de entregas</h1>
@@ -283,6 +308,8 @@ def main():
                 + "<th>DETALLE</th></tr>")
         generales = "".join(f'<tr><td>{texto(h[0])}</td><td class="n b">{fecha_txt(h[1])}</td>'
                             f'<td class="suave">{texto(h[2])}</td></tr>' for h in ent["generales"])
+        indice += [(1, "Cronograma", n), (2, "Para todo el año: contrato, diseños y muestras", n),
+                   (2, "Por entrega: tallas, pagos, producción y entrega", n)]
         paginas.append(f"""<section class="page">
   {cab("CRONOGRAMA")}
   <h1>Cronograma</h1>
@@ -308,6 +335,8 @@ def main():
                   f"Alba, que recibe solo canje, y el stock para la tienda llega en la entrega siguiente; las entregas "
                   f"siguientes llevan menos. En el total del año el canje queda exactamente en el {pct(prop)} de las "
                   f"compras. " if dif and dif > 0 else "")
+        indice += [(1, "Canje proporcional a las compras", n), (2, f"Proporción canje / compras ({pct(prop)}) y ejemplo", n),
+                   (2, "Compras y canje por entrega", n)]
         paginas.append(f"""<section class="page">
   {cab("CANJE PROPORCIONAL A LAS COMPRAS")}
   <h1>Canje proporcional a las compras</h1>
@@ -327,6 +356,9 @@ def main():
 
     # condiciones de la propuesta: vigencia, canje, compras, reposición de prendas y pagos
     prop_txt = pct(ent.get("proporcion", 0)) if ent else ""
+    indice += [(1, "Condiciones de la propuesta", n), (2, "Vigencia: contrato por dos temporadas (2027 y 2028)", n),
+               (2, "Canje, compras y pagos", n), (2, "Reposición de prendas: precio y personalización", n),
+               (2, "Plazos de reposición", n)]
     paginas.append(f"""<section class="page">
   {cab("CONDICIONES")}
   <h1>Condiciones de la propuesta</h1>
@@ -368,6 +400,9 @@ def main():
         intro = ('<p class="intro">Cada disciplina tiene sus propios productos y precios. El valor formativas y cuerpo '
                  'técnico es lo que paga el club por las escuelas formativas y el cuerpo técnico, y con él se calcula el '
                  'canje. El precio comercial es el del stock para la tienda del club.</p>' if k == 0 else "")
+        if k == 0:
+            indice.append((1, "Precios por disciplina", n))
+        indice += [(2, nombre_indice(t), n) for t in secciones(filas)]
         paginas.append(f"""<section class="page detalle">
   {cab("LISTA DE PRECIOS")}
   <h1>Precios por disciplina{" (continuación)" if k else ""}</h1>
@@ -420,6 +455,9 @@ def main():
                 + '<col class="m">' * (cols - 4) + "</colgroup>")
         kick, titulo, intro = textos[clave]
         for k, filas in enumerate(paginar(bloques, FILAS_PAGINA - 3)):
+            if k == 0:
+                indice.append((1, titulo, n))
+            indice += [(2, nombre_indice(t), n) for t in secciones(filas)]
             paginas.append(f"""<section class="page detalle">
   {cab(kick)}
   <h1>{titulo}{" (continuación)" if k else ""}</h1>
@@ -438,6 +476,7 @@ def main():
     f_con, f_dis, f_vb = hito("Firma del contrato"), hito("Aprobación de diseños"), hito("Visto bueno")
     fechas_ent = [fecha_txt(x[1]) for x in (ent or {}).get("entregas", [])]
     txt_ent = (", ".join(fechas_ent[:-1]) + " y el " + fechas_ent[-1]) if len(fechas_ent) > 1 else "".join(fechas_ent)
+    indice += [(1, "Próximos pasos", n), (2, "Contrato, diseños, tallas, pagos y entregas", n)]
     paginas.append(f"""<section class="page portada cierre">
   <div class="kicker">CONDICIONES Y PRÓXIMOS PASOS</div>
   <h1>De la propuesta a la cancha</h1>
@@ -451,6 +490,23 @@ def main():
   <div class="firma"><b>Sean Duarte</b><span>Dueño y CEO de Playmaker SpA</span><span>sduarte@playmaker.cl, +56 9 3928 3323, www.playmaker.cl</span></div>
   {pie(n)}
 </section>""")
+
+    grupos, actual = [], None
+    for nivel, txt, pag in indice:
+        enlace = f'<a href="#p{pag}"><span>{txt}</span><span class="p">{pag:02d}</span></a>'
+        if nivel == 1:
+            actual = [f'<div class="i1">{enlace}</div>']
+            grupos.append(actual)
+        else:
+            actual.append(f'<div class="i2">{enlace}</div>')
+    paginas.insert(pos_indice, f"""<section class="page">
+  {cab("ÍNDICE")}
+  <h1>Índice</h1>
+  <p class="intro">Los puntos principales de la propuesta y la página donde se encuentran. Cada punto es un enlace a su página.</p>
+  <div class="indice">{"".join('<div class="grupo">' + "".join(g) + "</div>" for g in grupos)}</div>
+  {pie(n_indice)}
+</section>""")
+    paginas = [h.replace('<section class="', f'<section id="p{i + 1}" class="', 1) for i, h in enumerate(paginas)]
 
     css = (DIR / "estilo_propuesta.css").read_text(encoding="utf-8")
     HTML.write_text(f"""<!doctype html>
