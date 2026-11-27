@@ -4,7 +4,8 @@ Uso:
     python3 propuestas/colo-colo/generar_pdf.py
 
 Lee Propuesta_Comercial_CSD_Colo_Colo_2027.xlsm (los valores que la planilla tiene calculados) y crea
-propuesta_club.html y Propuesta_Comercial_CSD_Colo_Colo_2027.pdf: portada, resumen de la propuesta, lista de precios
+propuesta_club.html y Propuesta_Comercial_CSD_Colo_Colo_2027.pdf: portada, resumen de la propuesta, calendario de
+entregas, canje proporcional a las compras, lista de precios
 por disciplina, detalle del canje de los primeros equipos, de formativas y cuerpo técnico y del stock comercial, y
 próximos pasos. No incluye costos ni márgenes (hojas COSTOS y RESUMEN NEGOCIO). Si se cambian precios, descuentos o
 cantidades en la planilla, basta guardarla y volver a correr este script. Si la planilla no trae valores calculados,
@@ -28,6 +29,7 @@ RECALC = Path("/root/.claude/skills/synced/bc307280-4611-44d6-aa94-f2bad7ad32ae_
 MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre",
          "diciembre"]
 HOJAS = {"canje": "CANJE PRIMEROS EQUIPOS", "formativas": "FORMATIVAS Y CT", "comercial": "COMERCIAL"}
+HOJA_ENTREGAS = "ENTREGAS 2027"
 SUFIJOS = r" (básquetbol|futsal|vóleibol|patín|Esperanza Alba|institucional)$"  # disciplina al final del producto
 FILAS_PAGINA = 46  # filas de tabla que caben en una página de detalle (con título)
 
@@ -107,6 +109,47 @@ def leer(wb):
     return descuentos, disciplinas, resumen, total, detalle
 
 
+def fecha_txt(d):
+    return f"{d.day} de {MESES[d.month - 1]} de {d.year}" if hasattr(d, "day") else texto(d)
+
+
+def leer_entregas(wb):
+    """Calendario de entregas y canje proporcional, de la hoja ENTREGAS 2027 (None si la planilla no la tiene)."""
+    if HOJA_ENTREGAS not in wb.sheetnames:
+        return None
+    ws = wb[HOJA_ENTREGAS]
+    e = {"ramas": [], "entregas": [], "adelanto": [], "hitos": [], "nombres_entrega": []}
+    modo = None
+    for r in range(1, ws.max_row + 1):
+        v = [ws.cell(r, c).value for c in range(2, 11)]
+        b, c = texto(v[0]), texto(v[1])
+        if b == "RAMA":
+            modo = "ramas"
+        elif b == "ENTREGA" and c == "FECHA":
+            modo = "entregas"
+        elif b == "ENTREGA" and c.startswith("COMPRAS"):
+            modo = "adelanto"
+        elif b == "HITO":
+            modo = "hitos"
+            e["nombres_entrega"] = [texto(x) for x in v[1:] if texto(x) and texto(x) != "DETALLE"]
+        elif b == "TOTAL" and modo:
+            e["total_" + modo] = v
+            modo = None
+        elif b.startswith("Proporción canje"):
+            e["proporcion"] = v[1] or 0
+        elif b.startswith("Canje por cada"):
+            e["por_millon"] = v[1] or 0
+        elif b.startswith("Simulación"):
+            e["sim_compra"] = v[1] or 0
+        elif b.startswith("El canje que le corresponde"):
+            e["sim_canje"] = v[1] or 0
+        elif modo == "hitos" and (not b or b.startswith("Fechas")):
+            modo = None
+        elif modo and b:
+            e[modo].append(v)
+    return e
+
+
 def pie(n):
     return (f'<div class="pie"><span>CSD COLO-COLO, TEMPORADA 2027</span>'
             f'<img src="../_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">{n:02d}</span></div>')
@@ -142,7 +185,9 @@ def paginar(bloques, primera, resto=FILAS_PAGINA):
 
 
 def main():
-    descuentos, disciplinas, resumen, total, detalle = leer(libro())
+    wb = libro()
+    descuentos, disciplinas, resumen, total, detalle = leer(wb)
+    ent = leer_entregas(wb)
     unidades, canje, ventas, neto, iva = total[2], total[3], total[4], total[5], total[6]
     hoy = date.today()
     fecha = f"Santiago, {hoy.day} de {MESES[hoy.month - 1]} de {hoy.year}"
@@ -198,7 +243,76 @@ def main():
 </section>""")
     n += 1
 
-    # 3. lista de precios por disciplina
+    # 3. calendario de entregas y canje proporcional a las compras
+    if ent and ent["entregas"]:
+        tarjetas = []
+        for i, fila in enumerate(ent["entregas"]):
+            nombre = texto(fila[0]).split(": ")[-1].upper()
+            ramas_e = [texto(x[0]) for x in ent["ramas"] if texto(x[1]).upper() == nombre]
+            tarjetas.append(f'<div><small>ENTREGA {i + 1}</small><b>{fecha_txt(fila[1])}</b>'
+                            f'<p>{", ".join(ramas_e)}</p><span>{num(fila[5])} prendas: {num(fila[2])} en canje, '
+                            f'{num(fila[3])} formativas y cuerpo técnico, {num(fila[4])} para la tienda</span></div>')
+        filas = []
+        for x in ent["ramas"]:
+            filas.append(f'<tr><td>{texto(x[0])}</td><td>{texto(x[1]).capitalize()}</td><td class="n">{num(x[2])}</td>'
+                         f'<td class="n">{num(x[3])}</td><td class="n">{num(x[4])}</td><td class="n b">{num(x[5])}</td></tr>')
+        t = ent.get("total_ramas") or [None] * 9
+        filas.append(f'<tr class="total"><td colspan="2">TOTAL</td><td class="n">{num(t[2])}</td><td class="n">{num(t[3])}</td>'
+                     f'<td class="n">{num(t[4])}</td><td class="n">{num(t[5])}</td></tr>')
+        cols_e = len(ent["nombres_entrega"])
+        hitos = "".join(f'<tr{" class=sub" if k == len(ent["hitos"]) - 1 else ""}><td>{texto(h[0])}</td>'
+                        + "".join(f'<td class="n">{fecha_txt(h[1 + j])}</td>' for j in range(cols_e))
+                        + f'<td class="suave">{texto(h[1 + cols_e])}</td></tr>' for k, h in enumerate(ent["hitos"]))
+        th_h = ("<tr><th>HITO</th>" + "".join(f'<th class="n">{x}</th>' for x in ent["nombres_entrega"])
+                + "<th>DETALLE</th></tr>")
+        paginas.append(f"""<section class="page">
+  {cab("CALENDARIO DE ENTREGAS")}
+  <h1>Calendario de entregas</h1>
+  <p class="intro">La indumentaria se entrega en dos fechas. Cada rama recibe toda su indumentaria (primer equipo, series formativas y stock para la tienda) en una sola entrega: las ramas que inician su temporada en marzo y la indumentaria institucional, en la primera; vóleibol y patín, en el segundo semestre.</p>
+  <div class="entregas">{"".join(tarjetas)}</div>
+  <h2>PRENDAS POR RAMA Y ENTREGA</h2>
+  <table class="tabla val res"><tr><th>RAMA</th><th>ENTREGA</th><th class="n">CANJE</th><th class="n">FORMATIVAS Y CT</th><th class="n">COMERCIAL</th><th class="n">TOTAL PRENDAS</th></tr>{"".join(filas)}</table>
+  <h2>CRONOGRAMA</h2>
+  <table class="tabla val crono">{th_h}{hitos}</table>
+  <p class="leyenda">Las fechas de cada hito se calculan hacia atrás desde la entrega, según el volumen de prendas. Cumplir la aprobación de diseños y la curva de tallas en estas fechas asegura la entrega a tiempo.</p>
+  {pie(n)}
+</section>""")
+        n += 1
+
+        prop, por_millon = ent.get("proporcion", 0), ent.get("por_millon", 0)
+        filas, adelanto = [], 0
+        for i, x in enumerate(ent["adelanto"]):
+            dif = x[4] or 0
+            if i == 0:
+                adelanto = dif
+            filas.append(f'<tr><td>{texto(x[0])}</td><td class="n">{pesos(x[1])}</td><td class="n">{pesos(x[2])}</td>'
+                         f'<td class="canje">{pesos(x[3])}</td><td class="n b">{pesos(dif) if dif > 0 else ("-" + pesos(-dif) if dif < 0 else "")}</td></tr>')
+        t = ent.get("total_adelanto") or [None] * 9
+        filas.append(f'<tr class="total"><td>TOTAL</td><td class="n">{pesos(t[1])}</td><td class="n">{pesos(t[2])}</td>'
+                     f'<td class="n">{pesos(t[3])}</td><td class="n"></td></tr>')
+        primera = texto(ent["adelanto"][0][0]).split(": ")[-1] if ent["adelanto"] else "marzo"
+        segunda = texto(ent["adelanto"][1][0]).split(": ")[-1] if len(ent["adelanto"]) > 1 else "agosto"
+        condicion = (f"La entrega de {primera} incluye {pesos(adelanto)} de canje por sobre la proporción de sus compras "
+                     f"(Esperanza Alba recibe solo canje). Esa diferencia es un adelanto a cuenta de las compras de {segunda}. "
+                     if adelanto > 0 else "")
+        paginas.append(f"""<section class="page">
+  {cab("CANJE PROPORCIONAL A LAS COMPRAS")}
+  <h1>Canje proporcional a las compras</h1>
+  <p class="intro">El canje de los primeros equipos se entrega en la misma proporción que tiene esta propuesta entre canje y compras: {pesos(canje)} de canje sobre {pesos(ventas)} de compras. Si el club compra menos, el canje baja en la misma proporción; si compra más, sube.</p>
+  <div class="cifras tres">
+    <div><small>PROPORCIÓN CANJE / COMPRAS</small><b>{pct(prop)}</b><span>del valor de las compras, con IVA</span></div>
+    <div><small>CANJE POR CADA $1.000.000 EN COMPRAS</small><b>{pesos(por_millon)}</b><span>valorizado a precio público</span></div>
+    <div><small>EJEMPLO</small><b>{pesos(ent.get("sim_canje", 0))}</b><span>de canje con compras por {pesos(ent.get("sim_compra", 0))}</span></div>
+  </div>
+  <h2>CANJE Y COMPRAS POR ENTREGA</h2>
+  <table class="tabla val"><tr><th>ENTREGA</th><th class="n">COMPRAS</th><th class="n">CANJE QUE CORRESPONDE</th><th class="n">CANJE PROGRAMADO</th><th class="n">CANJE ADELANTADO</th></tr>{"".join(filas)}</table>
+  <p class="leyenda">Valores con IVA incluido. Canje que corresponde: compras de la entrega multiplicadas por la proporción ({pct(prop)}).</p>
+  <div class="nota-caja"><b>CONDICIÓN DEL CANJE</b>{condicion}Al cierre de la temporada, el canje total se ajusta a la proporción de las compras efectivamente realizadas en el año, y cualquier diferencia se liquida en ese momento.</div>
+  {pie(n)}
+</section>""")
+        n += 1
+
+    # 4. lista de precios por disciplina
     bloques = []
     for titulo, productos in disciplinas:
         b = [f'<tr class="sec"><td colspan="5">{titulo}</td></tr>']
@@ -224,7 +338,7 @@ def main():
 </section>""")
         n += 1
 
-    # 4. detalle por categoría
+    # 5. detalle por categoría
     textos = {
         "canje": ("CANJE PRIMEROS EQUIPOS", "Canje de los primeros equipos",
                   "Indumentaria de juego, entrenamiento y presentación de los primeros equipos, en canje (100% de descuento). Se valoriza a precio público."),
@@ -276,7 +390,7 @@ def main():
 </section>""")
             n += 1
 
-    # 5. condiciones y próximos pasos
+    # 6. condiciones y próximos pasos
     paginas.append(f"""<section class="page portada cierre">
   <div class="kicker">CONDICIONES Y PRÓXIMOS PASOS</div>
   <h1>De la propuesta a la cancha</h1>

@@ -93,3 +93,16 @@ table.det td.co { white-space: normal; }
 .pasos-cierre p { font-size: 8.2pt; color: #C8C8C8; margin-top: 3px; line-height: 1.5; }
 .cierre .lema { font-family: "Playfair"; font-style: italic; font-size: 14pt; color: #fff; margin-top: 18mm; }
 .cierre .firma { margin-top: 10mm; }
+
+/* calendario de entregas y canje proporcional */
+.entregas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.entregas > div { background: var(--fondo); border-left: 3px solid var(--negro); padding: 11px 13px; }
+.entregas small { display: block; font-size: 6pt; letter-spacing: 1.6px; color: var(--gris); font-weight: 600; }
+.entregas b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 15pt; color: var(--negro); margin-top: 3px; }
+.entregas p { font-size: 8.2pt; font-weight: 600; color: var(--negro); margin-top: 4px; line-height: 1.4; }
+.entregas span { display: block; font-size: 7pt; color: var(--gris); margin-top: 3px; line-height: 1.4; }
+.cifras.tres { grid-template-columns: repeat(3, 1fr); }
+table.crono td { padding-top: 4px; padding-bottom: 4px; }
+table.crono td.suave { white-space: normal; }
+.nota-caja { margin-top: 18px; background: var(--negro); color: #fff; padding: 12px 14px; font-size: 8.4pt; line-height: 1.55; }
+.nota-caja b { display: block; color: #BDBDBD; font-size: 6.8pt; letter-spacing: 2px; margin-bottom: 3px; }
