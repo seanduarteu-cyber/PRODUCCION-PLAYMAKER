@@ -344,7 +344,7 @@ def main():
   </table>
   <p class="leyenda">Los precios de cada prenda están en la lista de precios por disciplina.</p>
   <h2>PLAZOS DE REPOSICIÓN</h2>
-  <p class="intro">Las reposiciones son principalmente de indumentaria personalizada de los primeros equipos. El plazo de entrega depende de la cantidad de prendas del pedido y se cuenta desde su confirmación.</p>
+  <p class="intro">Las reposiciones son principalmente de indumentaria personalizada de los primeros equipos. Cada reposición se pide con una solicitud, adjuntando la orden de compra correspondiente. El plazo de entrega depende de la cantidad de prendas del pedido y se cuenta desde la recepción de la solicitud con su orden de compra.</p>
   <table class="tabla val repo plazos"><tr><th>CANTIDAD DE PRENDAS DEL PEDIDO</th><th class="n">PLAZO DE ENTREGA</th></tr>
     <tr><td>Hasta 10 prendas</td><td class="n b">5 días hábiles</td></tr>
     <tr><td>De 11 a 20 prendas</td><td class="n b">10 días hábiles</td></tr>

@@ -455,8 +455,9 @@ def main():
     celda(pr, f"B{r + 1}", "REPOSICIÓN DE PRENDAS (NO FORMA PARTE DEL CANJE)", f_sec, alinear=izq, borde=False)
     notas_repo = ("A precio comercial de tienda: la personalización corre por cuenta del club.",
                   "A valor formativas y cuerpo técnico: la personalización corre por cuenta de Playmaker.",
-                  "Plazo de entrega desde la confirmación del pedido: hasta 10 prendas, 5 días hábiles; de 11 a 20 "
-                  "prendas, 10 días hábiles; más de 20 prendas, 15 días hábiles.")
+                  "Se pide con una solicitud, adjuntando la orden de compra correspondiente.",
+                  "Plazo de entrega desde la recepción de la solicitud con su orden de compra: hasta 10 prendas, 5 días "
+                  "hábiles; de 11 a 20 prendas, 10 días hábiles; más de 20 prendas, 15 días hábiles.")
     for k, txt in enumerate(notas_repo):
         celda(pr, f"B{r + 2 + k}", txt, f_norm, alinear=Alignment(vertical="center"), borde=False)
     for col, ancho in zip("BCDEFGHIJKLM", (46, 14, 18, 18, 30, 2, 14, 13, 15, 14, 14, 34)):
