@@ -1,0 +1,184 @@
+<!doctype html>
+<!--
+  Propuesta laboral: Responsable Comercial y de Marketing (formato de propuestas de Playmaker).
+  Exportar a PDF:  bash propuestas/html_a_pdf.sh equipo/propuesta_laboral.html equipo/Propuesta_Laboral_Sebastian_Lazo.pdf
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Propuesta laboral: Responsable Comercial y de Marketing</title>
+<style>
+  @font-face { font-family: "Poppins"; font-weight: 400; src: url("../propuestas/_recursos/fonts/Poppins-Regular.ttf"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; src: url("../propuestas/_recursos/fonts/Poppins-SemiBold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 700; src: url("../propuestas/_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../propuestas/_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+  @page { size: A4; margin: 0; }
+  :root { --navy: #141E3C; --oro: #B1A542; --marfil: #F7F3E7; --texto: #1C2233; --suave: #3A3F52; --gris: #6E7280; --linea: #DCD8CB; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #fff; }
+  body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; padding: 21mm 20mm 0; background: #fff; }
+  .page:last-child { page-break-after: auto; }
+  .page::before { content: ""; position: absolute; inset: 7mm; border: 0.6pt solid var(--oro); pointer-events: none; }
+
+  .cab { display: flex; justify-content: space-between; font-size: 6.6pt; letter-spacing: 2.4px; padding-bottom: 7px; border-bottom: 0.6pt solid var(--linea); }
+  .cab b { color: var(--oro); font-weight: 600; }
+  .cab span { color: var(--gris); }
+  .pie { position: absolute; left: 20mm; right: 20mm; bottom: 12mm; display: flex; align-items: center; justify-content: space-between;
+         border-top: 0.6pt solid var(--linea); padding-top: 6px; font-size: 5.6pt; letter-spacing: 1.6px; color: var(--gris); }
+  .pie img { height: 9px; }
+  .pie .num { font-family: "Playfair"; font-weight: 700; font-size: 8.5pt; letter-spacing: 0; color: var(--navy); }
+
+  h1 { font-family: "Playfair"; font-weight: 700; font-size: 23pt; color: var(--navy); margin-top: 16px; line-height: 1.15; }
+  h2 { font-size: 7.4pt; font-weight: 600; letter-spacing: 2.4px; color: var(--oro); margin-top: 18px; padding-bottom: 5px; border-bottom: 0.6pt solid var(--linea); }
+  .intro { font-size: 9.2pt; line-height: 1.65; margin-top: 12px; }
+  ul.puntos { list-style: none; margin-top: 8px; }
+  ul.puntos li { font-size: 8.6pt; line-height: 1.5; color: var(--suave); padding-left: 12px; position: relative; margin-bottom: 6px; }
+  ul.puntos li::before { content: ""; position: absolute; left: 0; top: 6px; width: 4px; height: 4px; background: var(--oro); }
+  ul.puntos li b { color: var(--navy); font-weight: 600; }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 9mm; margin-top: 4px; }
+  .dos h2 { margin-top: 16px; }
+
+  /* portada */
+  .portada { background: var(--navy); color: var(--marfil); text-align: center; padding-top: 30mm; }
+  .portada::after { content: ""; position: absolute; inset: 9.5mm; border: 0.4pt solid rgba(177,165,66,.55); pointer-events: none; }
+  .portada .logo { height: 30px; }
+  .portada .kicker { margin-top: 34mm; font-size: 8.5pt; font-weight: 600; letter-spacing: 4px; color: var(--oro); }
+  .portada h1 { color: var(--marfil); font-size: 31pt; margin-top: 12px; }
+  .portada .sub { font-family: "Playfair"; font-style: italic; font-size: 12pt; color: #C9C4B4; margin: 14px auto 0; width: 140mm; line-height: 1.5; }
+  .portada .regla { width: 40mm; height: 0.8pt; background: var(--oro); margin: 16mm auto 0; }
+  .portada .para small { display: block; font-size: 7pt; letter-spacing: 3px; color: var(--oro); font-weight: 600; margin-top: 14mm; }
+  .portada .para b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 22pt; color: var(--marfil); margin-top: 6px; }
+  .firma { margin-top: 30mm; }
+  .firma small { display: block; font-size: 7pt; letter-spacing: 3px; color: var(--oro); font-weight: 600; margin-bottom: 6px; }
+  .firma b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 15pt; color: var(--marfil); }
+  .firma span { display: block; font-size: 8.4pt; color: #A9A492; margin-top: 4px; }
+  .portada .pie { border-top-color: rgba(247,243,231,.25); color: #C9C4B4; }
+  .portada .pie img { filter: brightness(0) invert(1); }
+  .portada .pie .num { color: var(--marfil); }
+
+  /* diagrama, condiciones y nota */
+  .diagrama { margin-top: 12px; }
+  .diagrama svg { width: 100%; height: auto; display: block; }
+  .cifras { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+  .cifras > div { background: var(--marfil); border-left: 3px solid var(--oro); padding: 10px 11px; }
+  .cifras small { display: block; font-size: 6pt; letter-spacing: 1.6px; color: var(--oro); font-weight: 600; }
+  .cifras b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 13pt; color: var(--navy); margin-top: 3px; line-height: 1.2; }
+  .cifras span { display: block; font-size: 6.8pt; color: var(--gris); margin-top: 3px; line-height: 1.35; }
+  .nota-caja { margin-top: 14px; background: var(--navy); color: var(--marfil); padding: 13px 15px; font-size: 8.8pt; line-height: 1.6; position: relative; }
+  .nota-caja b { display: block; color: var(--oro); font-size: 6.8pt; letter-spacing: 2px; margin-bottom: 4px; }
+  .leyenda { font-size: 7pt; color: var(--gris); margin-top: 6px; line-height: 1.5; }
+  .cierre-firma { margin-top: 16mm; padding-top: 10px; border-top: 0.6pt solid var(--linea); width: 70mm; }
+  .cierre-firma b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 12pt; color: var(--navy); }
+  .cierre-firma span { display: block; font-size: 8pt; color: var(--gris); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<!-- 1. portada -->
+<section class="page portada">
+  <img class="logo" src="../propuestas/_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker">
+  <div class="kicker">PROPUESTA LABORAL</div>
+  <h1>Responsable Comercial<br>y de Marketing</h1>
+  <p class="sub">Un cargo que integra la gestión del área de ventas y el nuevo departamento de marketing de Playmaker</p>
+  <div class="regla"></div>
+  <div class="para"><small>DIRIGIDA A</small><b>Sebastián Lazo</b></div>
+  <div class="firma"><small>PRESENTADA POR</small><b>Sean Duarte</b><span>Dueño y CEO de Playmaker SpA</span><span>Santiago, 27 de noviembre de 2026</span></div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../propuestas/_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">01</span></div>
+</section>
+
+<!-- 2. el cargo, cómo se integra y condiciones -->
+<section class="page">
+  <div class="cab"><b>EL CARGO</b><span>PROPUESTA LABORAL</span></div>
+  <h1>El cargo</h1>
+  <p class="intro">El Responsable Comercial y de Marketing conduce dos líneas de trabajo que funcionan como un solo cargo: la gestión del área de ventas y el marketing y posicionamiento de la marca. Playmaker deja de trabajar con una agencia externa: el marketing y la gestión de redes pasan a ser un departamento propio de Playmaker, que queda a cargo de este puesto.</p>
+
+  <h2>CÓMO SE INTEGRA</h2>
+  <div class="diagrama">
+    <svg viewBox="0 0 680 300" role="img" aria-label="Marketing genera la demanda que ventas convierte" font-family="Poppins, sans-serif">
+      <defs><marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6E7280"/></marker></defs>
+      <rect x="190" y="4" width="300" height="54" rx="6" fill="#141E3C"/>
+      <text x="340" y="28" text-anchor="middle" font-size="12.5" font-weight="600" fill="#F7F3E7">Responsable Comercial y de Marketing</text>
+      <text x="340" y="46" text-anchor="middle" font-size="10" fill="#B1A542" letter-spacing="1.5">UN SOLO CARGO</text>
+      <g fill="none" stroke="#6E7280" stroke-width="1.1">
+        <path d="M340 58V78"/><path d="M340 78H140V100" marker-end="url(#flecha)"/><path d="M340 78H540V100" marker-end="url(#flecha)"/>
+        <path d="M412 142H268" marker-end="url(#flecha)"/><path d="M268 176H412" marker-end="url(#flecha)"/>
+        <path d="M140 226V246" marker-end="url(#flecha)"/><path d="M540 226V246" marker-end="url(#flecha)"/>
+      </g>
+      <rect x="4" y="100" width="264" height="126" rx="6" fill="#F7F3E7" stroke="#B1A542" stroke-width="1"/>
+      <text x="18" y="122" font-size="12" font-weight="600" fill="#141E3C">Área comercial</text>
+      <text x="18" y="141" font-size="10.2" fill="#3A3F52">Gestión del equipo de ventas</text>
+      <text x="18" y="157" font-size="10.2" fill="#3A3F52">Cartera de clientes y seguimiento</text>
+      <text x="18" y="173" font-size="10.2" fill="#3A3F52">Márgenes, precios y descuentos</text>
+      <text x="18" y="189" font-size="10.2" fill="#3A3F52">Catálogo, listas de precios y plantillas</text>
+      <text x="18" y="205" font-size="10.2" fill="#3A3F52">Reportes de ventas a la gerencia</text>
+      <rect x="412" y="100" width="264" height="126" rx="6" fill="#F7F3E7" stroke="#B1A542" stroke-width="1"/>
+      <text x="426" y="122" font-size="12" font-weight="600" fill="#141E3C">Marketing (departamento propio)</text>
+      <text x="426" y="141" font-size="10.2" fill="#3A3F52">Posicionamiento de la marca</text>
+      <text x="426" y="157" font-size="10.2" fill="#3A3F52">Redes sociales y contenido</text>
+      <text x="426" y="173" font-size="10.2" fill="#3A3F52">Campañas, preventas y publicidad</text>
+      <text x="426" y="189" font-size="10.2" fill="#3A3F52">Web y relaciones públicas</text>
+      <text x="426" y="205" font-size="10.2" fill="#3A3F52">Registro del origen de cada venta</text>
+      <text x="340" y="134" text-anchor="middle" font-size="9.6" fill="#6E7280">demanda y consultas</text>
+      <text x="340" y="193" text-anchor="middle" font-size="9.6" fill="#6E7280">qué se vende y</text>
+      <text x="340" y="206" text-anchor="middle" font-size="9.6" fill="#6E7280">con qué margen</text>
+      <rect x="4" y="246" width="672" height="40" rx="6" fill="none" stroke="#B1A542" stroke-width="1"/>
+      <text x="340" y="270" text-anchor="middle" font-size="11" fill="#141E3C">Un solo informe mensual a la gerencia, con un registro común del origen de cada venta</text>
+    </svg>
+  </div>
+  <ul class="puntos">
+    <li><b>Marketing genera la demanda:</b> consultas, preventas y campañas que el equipo comercial convierte en ventas.</li>
+    <li><b>Ventas orienta al marketing:</b> qué se vende, a quién y con qué margen, para ajustar mensajes y campañas.</li>
+    <li><b>Un mismo registro e informe:</b> cada venta queda con su origen, y ambas líneas se rinden en un solo informe mensual a la gerencia.</li>
+  </ul>
+
+  <h2>CONDICIONES ECONÓMICAS</h2>
+  <div class="cifras">
+    <div><small>PERÍODO</small><b>Dic 2026 a mar 2027</b><span>4 meses</span></div>
+    <div><small>MODALIDAD</small><b>Honorarios</b><span>prestación de servicios con boleta</span></div>
+    <div><small>HONORARIOS</small><b>$1.000.000</b><span>líquidos mensuales</span></div>
+    <div><small>BOLETA BRUTA</small><b>$1.190.476</b><span>de enero a marzo (16%); $1.179.941 en diciembre (15,25%)</span></div>
+  </div>
+  <p class="leyenda">La boleta se emite por el monto bruto que incluye la retención legal, para que el pago líquido sea de $1.000.000 cada mes.</p>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../propuestas/_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">02</span></div>
+</section>
+
+<!-- 3. funciones -->
+<section class="page">
+  <div class="cab"><b>FUNCIONES DEL CARGO</b><span>PROPUESTA LABORAL</span></div>
+  <h1>Funciones del cargo</h1>
+  <div class="nota-caja"><b>MARKETING, AHORA DENTRO DE PLAYMAKER</b>Playmaker deja la agencia externa y crea su propio departamento de marketing. El cargo asume todo lo que hoy hace la agencia (redes sociales, contenido y gestión de la comunidad) y lo integra con el área comercial: Playmaker pasa a ser su propia agencia.</div>
+  <div class="dos">
+    <div>
+      <h2>ÁREA COMERCIAL</h2>
+      <p class="intro" style="font-size:8.6pt;margin-top:8px">Conduce el área de ventas: no es un vendedor más, sino quien ordena, mide y hace crecer la venta del equipo.</p>
+      <ul class="puntos">
+        <li><b>Gestión del equipo de ventas:</b> metas individuales, seguimiento semanal y acompañamiento del vendedor que se incorpora.</li>
+        <li><b>Cartera y seguimiento:</b> orden de clientes, cotizaciones y oportunidades, con seguimiento hasta el cierre.</li>
+        <li><b>Márgenes y precios:</b> margen por producto, canal y tipo de cliente; política de precios y descuentos.</li>
+        <li><b>Herramientas comerciales:</b> catálogo, listas de precios estándar y plantillas de propuesta, para que el área no dependa de la gerencia.</li>
+        <li><b>Reportes:</b> tablero semanal de ventas e informe mensual a la gerencia.</li>
+        <li><b>Apoyo a la gerencia:</b> en propuestas a clubes y federaciones.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>MARKETING Y POSICIONAMIENTO DE MARCA</h2>
+      <p class="intro" style="font-size:8.6pt;margin-top:8px">Dirige el nuevo departamento de marketing de Playmaker, con el foco puesto en generar ventas medibles.</p>
+      <ul class="puntos">
+        <li><b>Posicionamiento:</b> qué es Playmaker, para quién y por qué elegirla, con un mismo mensaje en redes, web, propuestas y prensa.</li>
+        <li><b>Redes sociales y contenido:</b> plan y calendario de publicaciones, creación de contenido y gestión de la comunidad.</li>
+        <li><b>Campañas, preventas y publicidad:</b> acciones orientadas a la venta junto a los clubes, y manejo de la inversión en avisos.</li>
+        <li><b>Web y canales directos:</b> tienda en línea, catálogo y base de clientes actual.</li>
+        <li><b>Relaciones públicas:</b> presencia en prensa y casos de los clubes que vestimos.</li>
+        <li><b>Medición:</b> registro del origen de cada consulta y de cada venta.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cierre-firma"><b>Sean Duarte</b><span>Dueño y CEO de Playmaker SpA</span></div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../propuestas/_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">03</span></div>
+</section>
+
+</body>
+</html>
