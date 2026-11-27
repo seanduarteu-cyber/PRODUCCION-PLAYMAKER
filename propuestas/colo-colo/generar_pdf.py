@@ -363,7 +363,7 @@ def main():
   {cab("CONDICIONES")}
   <h1>Condiciones de la propuesta</h1>
   <div class="condiciones">
-    <div><b>VIGENCIA</b><p>Un solo contrato por la duración de dos temporadas, a partir de 2027, para el negocio completo. Como hay temporadas que parten en agosto y terminan el año siguiente, el contrato se cuenta en temporadas y no en años. Las cantidades y el canje de esta propuesta cubren las dos temporadas.</p></div>
+    <div><b>VIGENCIA</b><p>Contrato por dos temporadas, a partir de 2027. Las cantidades y el canje de esta propuesta cubren ambas temporadas.</p></div>
     <div><b>CANJE</b><p>Canje único por las dos temporadas del contrato: indumentaria de los primeros equipos con 100% de descuento, valorizada a valor formativas y cuerpo técnico, proporcional a las compras del club{f" ({prop_txt} de las compras)" if prop_txt else ""}.</p></div>
     <div><b>COMPRAS</b><p>Las escuelas formativas, el cuerpo técnico, el directorio y la oficina compran a valor formativas y cuerpo técnico. El stock para la tienda se compra a precio comercial. Las compras adicionales que el club necesite se acuerdan por separado.</p></div>
     <div><b>PAGOS</b><p>Cada entrega tiene su orden de compra y su pago, antes de iniciar la producción de esa entrega. Precios con IVA incluido.</p></div>
