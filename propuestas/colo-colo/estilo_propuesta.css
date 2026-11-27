@@ -121,3 +121,4 @@ table.crono.gen col.h { width: 26%; } table.crono.gen col.f1 { width: 22%; } tab
 .condiciones b { display: block; font-size: 6.6pt; letter-spacing: 2px; color: var(--negro); font-weight: 600; }
 .condiciones p { font-size: 8.2pt; line-height: 1.55; color: var(--suave); margin-top: 4px; }
 table.repo td { font-size: 8.4pt; padding-top: 7px; padding-bottom: 7px; }
+table.repo.plazos { width: 70%; }

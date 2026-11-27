@@ -453,12 +453,15 @@ def main():
     ultima_precio = r - 1
     # reposición de prendas: no es parte del canje; dos opciones de precio
     celda(pr, f"B{r + 1}", "REPOSICIÓN DE PRENDAS (NO FORMA PARTE DEL CANJE)", f_sec, alinear=izq, borde=False)
-    for k, txt in enumerate(("A precio comercial de tienda: la personalización corre por cuenta del club.",
-                             "A valor formativas y cuerpo técnico: la personalización corre por cuenta de Playmaker.")):
+    notas_repo = ("A precio comercial de tienda: la personalización corre por cuenta del club.",
+                  "A valor formativas y cuerpo técnico: la personalización corre por cuenta de Playmaker.",
+                  "Plazo de entrega desde la confirmación del pedido: hasta 10 prendas, 5 días hábiles; de 11 a 20 "
+                  "prendas, 10 días hábiles; más de 20 prendas, 15 días hábiles.")
+    for k, txt in enumerate(notas_repo):
         celda(pr, f"B{r + 2 + k}", txt, f_norm, alinear=Alignment(vertical="center"), borde=False)
     for col, ancho in zip("BCDEFGHIJKLM", (46, 14, 18, 18, 30, 2, 14, 13, 15, 14, 14, 34)):
         pr.column_dimensions[col].width = ancho
-    pr.print_area = f"A1:F{r + 3}"
+    pr.print_area = f"A1:F{r + 1 + len(notas_repo)}"
     dv = DataValidation(type="decimal", operator="greaterThanOrEqual", formula1="0", allow_blank=True,
                         errorTitle="Precio", error="Ingresa un valor en pesos (0 o más).")
     pr.add_data_validation(dv)

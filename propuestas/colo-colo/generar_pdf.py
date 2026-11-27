@@ -343,6 +343,13 @@ def main():
     <tr><td class="b">A valor formativas</td><td>Valor formativas y cuerpo técnico</td><td>Por cuenta de Playmaker (incluida en el precio)</td></tr>
   </table>
   <p class="leyenda">Los precios de cada prenda están en la lista de precios por disciplina.</p>
+  <h2>PLAZOS DE REPOSICIÓN</h2>
+  <p class="intro">Las reposiciones son principalmente de indumentaria personalizada de los primeros equipos. El plazo de entrega depende de la cantidad de prendas del pedido y se cuenta desde su confirmación.</p>
+  <table class="tabla val repo plazos"><tr><th>CANTIDAD DE PRENDAS DEL PEDIDO</th><th class="n">PLAZO DE ENTREGA</th></tr>
+    <tr><td>Hasta 10 prendas</td><td class="n b">5 días hábiles</td></tr>
+    <tr><td>De 11 a 20 prendas</td><td class="n b">10 días hábiles</td></tr>
+    <tr><td>Más de 20 prendas</td><td class="n b">15 días hábiles</td></tr>
+  </table>
   {pie(n)}
 </section>""")
     n += 1
