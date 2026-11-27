@@ -1,0 +1,241 @@
+<!doctype html>
+<!--
+  Anexo de la propuesta laboral: indicadores y entregables del cargo Responsable Comercial y de Marketing.
+  Exportar a PDF:  bash propuestas/html_a_pdf.sh equipo/indicadores_entregables.html equipo/Indicadores_y_Entregables_Responsable_Comercial_Marketing.pdf
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Indicadores y entregables del cargo</title>
+<style>
+  @font-face { font-family: "Poppins"; font-weight: 400; src: url("../propuestas/_recursos/fonts/Poppins-Regular.ttf"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; src: url("../propuestas/_recursos/fonts/Poppins-SemiBold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 700; src: url("../propuestas/_recursos/fonts/PlayfairDisplay-Bold.ttf"); }
+  @font-face { font-family: "Playfair"; font-weight: 400; font-style: italic; src: url("../propuestas/_recursos/fonts/PlayfairDisplay-Italic.ttf"); }
+
+  @page { size: A4; margin: 0; }
+  :root { --navy: #141E3C; --oro: #B1A542; --marfil: #F7F3E7; --texto: #1C2233; --suave: #3A3F52; --gris: #6E7280; --linea: #DCD8CB; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #fff; }
+  body { font-family: "Poppins", sans-serif; color: var(--texto); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; padding: 21mm 20mm 0; background: #fff; }
+  .page:last-child { page-break-after: auto; }
+  .page::before { content: ""; position: absolute; inset: 7mm; border: 0.6pt solid var(--oro); pointer-events: none; }
+
+  .cab { display: flex; justify-content: space-between; font-size: 6.6pt; letter-spacing: 2.4px; padding-bottom: 7px; border-bottom: 0.6pt solid var(--linea); }
+  .cab b { color: var(--oro); font-weight: 600; }
+  .cab span { color: var(--gris); }
+  .pie { position: absolute; left: 20mm; right: 20mm; bottom: 12mm; display: flex; align-items: center; justify-content: space-between;
+         border-top: 0.6pt solid var(--linea); padding-top: 6px; font-size: 5.6pt; letter-spacing: 1.6px; color: var(--gris); }
+  .pie img { height: 9px; }
+  .pie .num { font-family: "Playfair"; font-weight: 700; font-size: 8.5pt; letter-spacing: 0; color: var(--navy); }
+
+  h1 { font-family: "Playfair"; font-weight: 700; font-size: 23pt; color: var(--navy); margin-top: 16px; line-height: 1.15; }
+  h2 { font-size: 7.4pt; font-weight: 600; letter-spacing: 2.4px; color: var(--oro); margin-top: 18px; padding-bottom: 5px; border-bottom: 0.6pt solid var(--linea); }
+  .intro { font-size: 9.2pt; line-height: 1.65; margin-top: 12px; }
+  .leyenda { font-size: 7pt; color: var(--gris); margin-top: 6px; line-height: 1.5; }
+
+  /* portada */
+  .portada { background: var(--navy); color: var(--marfil); text-align: center; padding-top: 30mm; }
+  .portada::after { content: ""; position: absolute; inset: 9.5mm; border: 0.4pt solid rgba(177,165,66,.55); pointer-events: none; }
+  .portada .logo { height: 30px; }
+  .portada .kicker { margin-top: 34mm; font-size: 8.5pt; font-weight: 600; letter-spacing: 4px; color: var(--oro); }
+  .portada h1 { color: var(--marfil); font-size: 31pt; margin-top: 12px; }
+  .portada .sub { font-family: "Playfair"; font-style: italic; font-size: 12pt; color: #C9C4B4; margin: 14px auto 0; width: 140mm; line-height: 1.5; }
+  .portada .regla { width: 40mm; height: 0.8pt; background: var(--oro); margin: 16mm auto 0; }
+  .portada .para small { display: block; font-size: 7pt; letter-spacing: 3px; color: var(--oro); font-weight: 600; margin-top: 14mm; }
+  .portada .para b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 22pt; color: var(--marfil); margin-top: 6px; }
+  .firma { margin-top: 30mm; }
+  .firma small { display: block; font-size: 7pt; letter-spacing: 3px; color: var(--oro); font-weight: 600; margin-bottom: 6px; }
+  .firma b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 15pt; color: var(--marfil); }
+  .firma span { display: block; font-size: 8.4pt; color: #A9A492; margin-top: 4px; }
+  .portada .pie { border-top-color: rgba(247,243,231,.25); color: #C9C4B4; }
+  .portada .pie img { filter: brightness(0) invert(1); }
+  .portada .pie .num { color: var(--marfil); }
+
+  /* bloques */
+  .nota-caja { margin-top: 14px; background: var(--navy); color: var(--marfil); padding: 13px 15px; font-size: 8.6pt; line-height: 1.6; }
+  .nota-caja b { display: block; color: var(--oro); font-size: 6.8pt; letter-spacing: 2px; margin-bottom: 4px; }
+  .dos-areas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .dos-areas > div { background: var(--marfil); border-left: 3px solid var(--oro); padding: 11px 13px; }
+  .dos-areas small { display: block; font-size: 6.2pt; letter-spacing: 1.8px; color: var(--oro); font-weight: 600; }
+  .dos-areas b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 12.5pt; color: var(--navy); margin-top: 3px; }
+  .dos-areas span { display: block; font-size: 7.6pt; color: var(--suave); margin-top: 4px; line-height: 1.5; }
+
+  .tablero { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 12px; }
+  .tablero > div { border: 0.6pt solid var(--linea); padding: 9px 9px 10px; min-height: 30mm; position: relative; }
+  .tablero > div.mk { background: var(--marfil); }
+  .tablero i { font-style: normal; font-family: "Playfair"; font-weight: 700; font-size: 15pt; color: var(--oro); display: block; line-height: 1; }
+  .tablero small { display: block; font-size: 5.4pt; letter-spacing: 1.4px; color: var(--gris); font-weight: 600; margin-top: 5px; }
+  .tablero b { display: block; font-size: 7.4pt; color: var(--navy); font-weight: 600; margin-top: 3px; line-height: 1.3; }
+  .tablero span { display: block; font-size: 6.6pt; color: var(--gris); margin-top: 4px; line-height: 1.4; }
+
+  .fuentes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
+  .fuentes > div { border-top: 2px solid var(--navy); padding: 8px 2px 0; }
+  .fuentes b { display: block; font-size: 7.4pt; color: var(--navy); font-weight: 600; line-height: 1.3; }
+  .fuentes span { display: block; font-size: 6.7pt; color: var(--gris); margin-top: 4px; line-height: 1.45; }
+
+  table.kpi { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  table.kpi th { background: var(--navy); color: var(--marfil); font-size: 5.9pt; letter-spacing: 1.4px; font-weight: 600; text-align: left; padding: 6px 7px; }
+  table.kpi td { font-size: 7.2pt; line-height: 1.42; color: var(--suave); padding: 6px 7px; border-bottom: 0.5pt solid var(--linea); vertical-align: top; }
+  table.kpi tr:nth-child(even) td { background: #FBF9F3; }
+  table.kpi td:first-child { color: var(--navy); font-weight: 600; }
+  table.kpi td:last-child { color: var(--gris); white-space: nowrap; }
+  table.kpi td em { font-style: normal; color: var(--oro); font-weight: 600; }
+
+  .periodicos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .periodicos > div { background: var(--marfil); border-left: 3px solid var(--oro); padding: 11px 13px; }
+  .periodicos small { display: block; font-size: 6.2pt; letter-spacing: 1.8px; color: var(--oro); font-weight: 600; }
+  .periodicos b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 12.5pt; color: var(--navy); margin-top: 3px; }
+  .periodicos ul { list-style: none; margin-top: 6px; }
+  .periodicos li { font-size: 7.5pt; line-height: 1.45; color: var(--suave); padding-left: 10px; position: relative; margin-bottom: 3px; }
+  .periodicos li::before { content: ""; position: absolute; left: 0; top: 5.5px; width: 3.5px; height: 3.5px; background: var(--oro); }
+
+  .cierre-firma { margin-top: 12mm; padding-top: 10px; border-top: 0.6pt solid var(--linea); width: 70mm; }
+  .cierre-firma b { display: block; font-family: "Playfair"; font-weight: 700; font-size: 12pt; color: var(--navy); }
+  .cierre-firma span { display: block; font-size: 8pt; color: var(--gris); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<!-- 1. portada -->
+<section class="page portada">
+  <img class="logo" src="../propuestas/_recursos/playmaker_logo_horizontal_blanco.png" alt="Playmaker">
+  <div class="kicker">ANEXO DE LA PROPUESTA LABORAL</div>
+  <h1>Indicadores y entregables<br>del cargo</h1>
+  <p class="sub">Responsable Comercial y de Marketing: qué se mide, cómo se calcula y qué se entrega en la primera etapa</p>
+  <div class="regla"></div>
+  <div class="para"><small>DIRIGIDO A</small><b>Sebastián Lazo</b></div>
+  <div class="firma"><small>PRESENTADO POR</small><b>Sean Duarte</b><span>Dueño y CEO de Playmaker SpA</span><span>Santiago, 27 de noviembre de 2026</span></div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../propuestas/_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">01</span></div>
+</section>
+
+<!-- 2. cómo se mide -->
+<section class="page">
+  <div class="cab"><b>CÓMO SE MIDE EL CARGO</b><span>INDICADORES Y ENTREGABLES</span></div>
+  <h1>Cómo se mide el cargo</h1>
+  <p class="intro">El cargo reúne dos áreas que se miden de forma distinta y que se conectan en un mismo dato: el origen de cada consulta y de cada venta. Con ese registro se sabe qué canal trae a cada cliente, cuánto costó traerlo y cuánto margen dejó.</p>
+  <div class="dos-areas">
+    <div><small>ÁREA COMERCIAL</small><b>Cuánto vale lo que entra</b><span>Que lo vendido deje margen, se cobre a tiempo, se pueda producir y se pueda prever.</span></div>
+    <div><small>MARKETING</small><b>Cuánto entra y cuánto cuesta</b><span>Que lleguen más consultas, de mejor calidad y a menor costo, y que la marca sea la primera opción de los clubes.</span></div>
+  </div>
+
+  <div class="nota-caja"><b>PRIMERO LA LÍNEA BASE</b>En esta primera etapa los indicadores se miden y se informan. Diciembre es un mes de diagnóstico: con los números reales de ventas, márgenes, cobro y consultas se arma la línea base, y a partir de ella la gerencia define las metas por separado.</div>
+
+  <h2>TABLERO PRINCIPAL: 10 INDICADORES</h2>
+  <div class="tablero">
+    <div><i>1</i><small>COMERCIAL</small><b>Ventas netas por canal</b><span>Frente al punto de equilibrio de $30M</span></div>
+    <div><i>2</i><small>COMERCIAL</small><b>Margen de contribución por proyecto</b><span>Qué ventas dejan plata</span></div>
+    <div><i>3</i><small>COMERCIAL</small><b>Conversión de cotización a venta</b><span>Cuánto de lo cotizado se cierra</span></div>
+    <div><i>4</i><small>COMERCIAL</small><b>Pipeline a 90 días</b><span>Qué ventas vienen</span></div>
+    <div><i>5</i><small>COMERCIAL</small><b>Días de cobro y cartera vencida</b><span>Si lo vendido llega a la caja</span></div>
+    <div><i>6</i><small>COMERCIAL</small><b>Prendas comprometidas frente a la capacidad</b><span>3.000 prendas al mes</span></div>
+    <div class="mk"><i>7</i><small>MARKETING</small><b>Consultas por canal de origen</b><span>De dónde llega la demanda</span></div>
+    <div class="mk"><i>8</i><small>MARKETING</small><b>Ventas originadas por marketing</b><span>Monto y porcentaje del total</span></div>
+    <div class="mk"><i>9</i><small>MARKETING</small><b>Inversión en avisos sobre ventas</b><span>Tope de 5% de las ventas que generan</span></div>
+    <div class="mk"><i>10</i><small>MARKETING</small><b>Preventas por campaña</b><span>Unidades y venta de cada campaña con clubes</span></div>
+  </div>
+
+  <h2>DE DÓNDE SALEN LOS DATOS</h2>
+  <div class="fuentes">
+    <div><b>Registro de consultas y ventas</b><span>Cada consulta desde que llega hasta que se cierra: origen, cotización, venta, costo directo y margen.</span></div>
+    <div><b>Registro de facturas y cobranza</b><span>Emisión, vencimiento y pago de cada factura, por cliente, canal y vendedor.</span></div>
+    <div><b>Marketing mensual</b><span>Inversión en avisos, costo del departamento, web, redes y calendario de contenido.</span></div>
+    <div><b>Preventas y clientes</b><span>Resultados de cada campaña de preventa y ventas anuales por cliente.</span></div>
+  </div>
+  <p class="leyenda">Los cuatro registros alimentan el tablero de indicadores en Excel, que calcula cada indicador de forma automática.</p>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../propuestas/_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">02</span></div>
+</section>
+
+<!-- 3. indicadores comerciales -->
+<section class="page">
+  <div class="cab"><b>ÁREA COMERCIAL</b><span>INDICADORES Y ENTREGABLES</span></div>
+  <h1>Indicadores del área comercial</h1>
+  <table class="kpi">
+    <colgroup><col style="width:21%"><col style="width:23%"><col style="width:44%"><col style="width:12%"></colgroup>
+    <tr><th>INDICADOR</th><th>QUÉ RESPONDE</th><th>CÓMO SE CALCULA</th><th>FRECUENCIA</th></tr>
+    <tr><td>Ventas netas por canal</td><td>¿Dónde se vende y cuánto falta para el punto de equilibrio?</td><td>Suma de las facturas del mes sin IVA, separadas en clubes y federaciones, tiendas de clubes y web. Se compara con el punto de equilibrio de $30M.</td><td>Semanal</td></tr>
+    <tr><td>Margen de contribución por proyecto</td><td>¿Qué ventas dejan plata y cuáles no?</td><td>(Venta neta menos costo directo) dividido por la venta neta. Costo directo: prendas, taller, sublimación, personalización y despacho.</td><td>Por proyecto</td></tr>
+    <tr><td>Descuento promedio</td><td>¿Cuánto margen se cede para cerrar?</td><td>Promedio del descuento sobre el precio de lista en las ventas cerradas del mes.</td><td>Mensual</td></tr>
+    <tr><td>Conversión de cotización a venta</td><td>De lo que se cotiza, ¿cuánto se cierra?</td><td>Cotizaciones ganadas dividido por cotizaciones resueltas (ganadas más perdidas), en número y en monto.</td><td>Mensual</td></tr>
+    <tr><td>Pipeline a 90 días</td><td>¿Qué ventas vienen?</td><td>Monto de las cotizaciones abiertas con cierre esperado en los próximos 90 días.</td><td>Semanal</td></tr>
+    <tr><td>Ticket promedio</td><td>¿Se cierran proyectos más grandes?</td><td>Venta neta cerrada dividido por el número de ventas cerradas.</td><td>Mensual</td></tr>
+    <tr><td>Ciclo de venta</td><td>¿Cuánto se demora en cerrar?</td><td>Promedio de días entre la primera consulta y la orden de compra.</td><td>Mensual</td></tr>
+    <tr><td>Días de cobro</td><td>¿Lo vendido se convierte en caja?</td><td>Promedio de días entre la emisión de cada factura y su pago. Forma alternativa: cuentas por cobrar dividido por las ventas del mes, multiplicado por 30.</td><td>Mensual</td></tr>
+    <tr><td>Cartera vencida</td><td>¿A quién hay que cobrar hoy?</td><td>Suma de las facturas impagas con fecha de vencimiento pasada, por cliente y por días de atraso.</td><td>Semanal</td></tr>
+    <tr><td>Prendas comprometidas frente a la capacidad</td><td>¿Se puede producir a tiempo lo vendido?</td><td>Prendas vendidas con entrega en cada mes dividido por la capacidad de 3.000 prendas mensuales.</td><td>Mensual</td></tr>
+    <tr><td>Recompra de clubes</td><td>¿Los clubes vuelven?</td><td>Clientes del año anterior que vuelven a comprar, dividido por los clientes del año anterior.</td><td>Trimestral</td></tr>
+    <tr><td>Concentración de clientes</td><td>¿Se depende de pocos clientes?</td><td>Ventas de los 5 clientes mayores dividido por las ventas totales del año.</td><td>Trimestral</td></tr>
+    <tr><td>Ventas por vendedor</td><td>¿Cómo rinde cada vendedor?</td><td>Venta neta facturada, cotizaciones emitidas y conversión de cada vendedor.</td><td>Mensual</td></tr>
+  </table>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../propuestas/_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">03</span></div>
+</section>
+
+<!-- 4. indicadores de marketing -->
+<section class="page">
+  <div class="cab"><b>MARKETING</b><span>INDICADORES Y ENTREGABLES</span></div>
+  <h1>Indicadores de marketing</h1>
+  <table class="kpi">
+    <colgroup><col style="width:21%"><col style="width:23%"><col style="width:44%"><col style="width:12%"></colgroup>
+    <tr><th>INDICADOR</th><th>QUÉ RESPONDE</th><th>CÓMO SE CALCULA</th><th>FRECUENCIA</th></tr>
+    <tr><td>Consultas por canal de origen</td><td>¿De dónde llega la demanda?</td><td>Número de consultas nuevas según su origen: avisos pagados, redes sociales, web, prensa, eventos, referidos, prospección del vendedor y clientes actuales.</td><td>Semanal</td></tr>
+    <tr><td>Consultas que llegan a cotización</td><td>¿Son consultas de calidad?</td><td>Consultas que se cotizan dividido por las consultas recibidas.</td><td>Mensual</td></tr>
+    <tr><td>Ventas originadas por marketing</td><td>¿Cuánto vende marketing?</td><td>Venta neta cerrada cuyo origen es un canal de marketing, en monto y como porcentaje de la venta cerrada total.</td><td>Mensual</td></tr>
+    <tr><td>Inversión en avisos sobre ventas</td><td>¿La publicidad se paga?</td><td>Inversión en avisos dividido por la venta neta que esos avisos generaron. <em>Tope definido por la gerencia: 5%</em>, es decir, un retorno de al menos 20 veces lo invertido.</td><td>Mensual</td></tr>
+    <tr><td>Costo por consulta</td><td>¿Cuánto cuesta cada consulta?</td><td>Inversión en avisos dividido por las consultas que llegaron por avisos.</td><td>Mensual</td></tr>
+    <tr><td>Costo de conseguir un cliente nuevo</td><td>¿Cuánto cuesta ganar un club?</td><td>(Inversión en avisos más costo del departamento) dividido por los clientes nuevos ganados.</td><td>Trimestral</td></tr>
+    <tr><td>Web y tienda en línea</td><td>¿La web vende o solo muestra?</td><td>Visitas; pedidos dividido por visitas (conversión); venta dividido por pedidos (ticket).</td><td>Mensual</td></tr>
+    <tr><td>Preventas por campaña</td><td>¿Funcionan las campañas con los clubes?</td><td>Unidades y venta neta de cada campaña de preventa, comparadas con la campaña anterior del mismo club.</td><td>Por campaña</td></tr>
+    <tr><td>Redes sociales</td><td>¿Crece la marca?</td><td>Alcance; interacciones dividido por alcance; crecimiento de seguidores. Indicador de apoyo.</td><td>Mensual</td></tr>
+    <tr><td>Calendario de contenido</td><td>¿Se publica lo planificado?</td><td>Publicaciones realizadas dividido por publicaciones planificadas.</td><td>Semanal</td></tr>
+    <tr><td>Costo del departamento frente a la agencia</td><td>¿Internalizar fue buena decisión?</td><td>Costo mensual del departamento (honorarios, herramientas y producción de contenido) comparado con lo que se pagaba a la agencia.</td><td>Trimestral</td></tr>
+  </table>
+  <div class="nota-caja"><b>SEGUIDORES Y ALCANCE SON INDICADORES DE APOYO</b>Seguidores, interacciones y alcance muestran si la marca crece, pero no son un resultado por sí solos. El resultado de marketing se mide en consultas, cotizaciones y ventas con su origen registrado.</div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../propuestas/_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">04</span></div>
+</section>
+
+<!-- 5. entregables -->
+<section class="page">
+  <div class="cab"><b>ENTREGABLES</b><span>INDICADORES Y ENTREGABLES</span></div>
+  <h1>Entregables de la primera etapa</h1>
+  <h2>DICIEMBRE: DIAGNÓSTICO</h2>
+  <table class="kpi">
+    <colgroup><col style="width:26%"><col style="width:52%"><col style="width:22%"></colgroup>
+    <tr><th>ENTREGABLE</th><th>CONTENIDO</th><th>PLAZO</th></tr>
+    <tr><td>Traspaso desde la agencia</td><td>Accesos a las cuentas de redes, avisos y web; contenidos, piezas y resultados de las campañas anteriores.</td><td>Primera quincena de diciembre</td></tr>
+    <tr><td>Registro de origen funcionando</td><td>Toda consulta y venta nueva queda registrada con su canal de origen, su cotización y su resultado.</td><td>Primera quincena de diciembre</td></tr>
+    <tr><td>Línea base</td><td>Ventas por canal, margen por proyecto, conversión y días de cobro de los últimos 12 meses, con los datos disponibles.</td><td>Al cierre de diciembre</td></tr>
+    <tr><td>Tablero de indicadores</td><td>Tablero en Excel con los 10 indicadores principales, cargado con la línea base.</td><td>Al cierre de diciembre</td></tr>
+    <tr><td>Diagnóstico y plan de trabajo</td><td>Qué canales, clientes y productos funcionan, qué margen deja cada línea, y el plan comercial y de marketing de enero a marzo.</td><td>Al cierre de diciembre</td></tr>
+  </table>
+
+  <h2>DESDE ENERO: ENTREGAS PERIÓDICAS</h2>
+  <div class="periodicos">
+    <div><small>CADA LUNES, CON LA SEMANA ANTERIOR</small><b>Tablero semanal</b>
+      <ul>
+        <li>Ventas facturadas y avance frente al punto de equilibrio</li>
+        <li>Cotizaciones emitidas, ganadas y perdidas</li>
+        <li>Pipeline abierto a 90 días</li>
+        <li>Consultas por canal de origen</li>
+        <li>Cartera vencida y facturas por vencer</li>
+        <li>Calendario de contenido cumplido</li>
+      </ul>
+    </div>
+    <div><small>PRIMEROS 5 DÍAS HÁBILES DE CADA MES</small><b>Informe mensual a la gerencia</b>
+      <ul>
+        <li>Ventas por canal y por vendedor frente al punto de equilibrio</li>
+        <li>Margen por proyecto y descuento promedio</li>
+        <li>Conversión, ticket promedio y ciclo de venta</li>
+        <li>Días de cobro y capacidad de producción comprometida</li>
+        <li>Consultas y ventas de marketing; inversión en avisos frente al tope de 5%</li>
+        <li>Plan del mes siguiente</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cierre-firma"><b>Sean Duarte</b><span>Dueño y CEO de Playmaker SpA</span></div>
+  <div class="pie"><span>UN CLUB, UNA FAMILIA.</span><img src="../propuestas/_recursos/playmaker_logo_horizontal_navy.png" alt="Playmaker"><span class="num">05</span></div>
+</section>
+
+</body>
+</html>
